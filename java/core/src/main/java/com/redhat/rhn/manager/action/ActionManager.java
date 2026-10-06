@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.action;
 
 import static com.suse.manager.utils.MinionServerUtils.isMinionServer;
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
@@ -83,6 +84,7 @@ import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -105,10 +107,12 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -145,6 +149,50 @@ public class ActionManager extends BaseManager {
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     private ActionManager() {
+    }
+
+    /**
+     * Prepare Salt calls for regular and transactional minions.
+     *
+     * @param calls Salt calls mapped to their target minions
+     * @return prepared Salt calls with their target minions
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> prepareSaltCalls(
+            Map<LocalCall<?>, List<MinionSummary>> calls) {
+        Map<LocalCall<?>, List<MinionSummary>> result = new HashMap<>();
+        Map<LocalCall<?>, List<MinionSummary>> transactionalCalls = new HashMap<>();
+
+        calls.forEach((call, minions) -> {
+            if (minions.isEmpty()) {
+                result.put(call, minions);
+                return;
+            }
+
+            Map<Boolean, List<MinionSummary>> minionsByTransactionalUpdate = minions.stream()
+                    .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
+            List<MinionSummary> regularMinions = minionsByTransactionalUpdate.get(false);
+            if (!regularMinions.isEmpty()) {
+                result.put(call, regularMinions);
+            }
+
+            List<MinionSummary> transactionalMinions = minionsByTransactionalUpdate.get(true);
+            if (!transactionalMinions.isEmpty()) {
+                transactionalCalls.put(call, transactionalMinions);
+            }
+        });
+
+        TransactionalActionManager.prepareSaltCalls(transactionalCalls).forEach((call, minions) -> {
+            if (result.containsKey(call)) {
+                List<MinionSummary> mergedMinions = new ArrayList<>(result.get(call));
+                mergedMinions.addAll(minions);
+                result.put(call, mergedMinions);
+            }
+            else {
+                result.put(call, minions);
+            }
+        });
+
+        return result;
     }
 
 
@@ -1371,6 +1419,30 @@ public class ActionManager extends BaseManager {
     }
 
     /**
+     * Schedule a Btrfs snapshot refresh action against a system.
+     *
+     * @param scheduler      User scheduling the action
+     * @param server         Server for which the action affects
+     * @param earliestAction date to run the action
+     * @return the scheduled action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     */
+    public static Action scheduleSnapshotRefreshAction(User scheduler, Server server, Date earliestAction)
+            throws TaskomaticApiException {
+        checkSaltOrManagementEntitlement(server.getId());
+        Action action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_SNAPSHOTS_REFRESH_LIST)
+                .withSchedulerUser(scheduler)
+                .withOrg(scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg())
+                .withEarliest(earliestAction)
+                .build();
+        ServerActionFactory.createAddServerAction(server, action);
+        ActionFactory.save(action);
+        taskomaticApi.scheduleActionExecution(action);
+        return action;
+    }
+
+    /**
      * Schedule a scheduleHardwareRefreshAction against a system or systems
      *
      * @param scheduler      User scheduling the action.
@@ -1942,7 +2014,7 @@ public class ActionManager extends BaseManager {
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
                                                         Optional<Map<String, Object>> pillar, Date earliest,
                                                         Optional<Boolean> test, boolean recurring) {
-        return scheduleApplyStates(scheduler, sids, mods, pillar, earliest, test, recurring, false);
+        return scheduleApplyStates(scheduler, sids, mods, pillar, earliest, test, recurring, false, false);
     }
 
     /**
@@ -1956,12 +2028,34 @@ public class ActionManager extends BaseManager {
      * @param earliest  action will not be executed before this date
      * @param test      run states in test-only mode
      * @param recurring whether the state is being applied recurring
-     * @param direct    whenther the state should be executed as direct call
+     * @param direct    whether the state should be executed as direct call
      * @return the action object
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
                                                         Optional<Map<String, Object>> pillar, Date earliest,
                                                         Optional<Boolean> test, boolean recurring, boolean direct) {
+        return scheduleApplyStates(scheduler, sids, mods, pillar, earliest, test, recurring, direct, false);
+    }
+
+    /**
+     * Schedule state application given a list of state modules. Salt will apply the
+     * highstate if an empty list of state modules is given.
+     *
+     * @param scheduler the user who is scheduling
+     * @param sids      list of server ids
+     * @param mods      list of state modules to be applied
+     * @param pillar    optional pillar map
+     * @param earliest  action will not be executed before this date
+     * @param test      run states in test-only mode
+     * @param recurring whether the state is being applied recurring
+     * @param direct    whether the state should be executed as direct call
+     * @param useTransactionalUpdate whether transactional systems should execute through transactional-update
+     * @return the action object
+     */
+    public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
+                                                        Optional<Map<String, Object>> pillar, Date earliest,
+                                                        Optional<Boolean> test, boolean recurring, boolean direct,
+                                                        boolean useTransactionalUpdate) {
 
         ApplyStatesAction action = (ApplyStatesAction) new ActionBuilder()
                 .ofType(ActionTypeEnum.TYPE_APPLY_STATES)
@@ -1976,6 +2070,7 @@ public class ActionManager extends BaseManager {
         actionDetails.setPillarsMap(pillar);
         test.ifPresent(actionDetails::setTest);
         actionDetails.setDirect(direct);
+        actionDetails.setUseTransactionalUpdate(useTransactionalUpdate);
         action.setDetails(actionDetails);
         action = ActionFactory.save(action);
 

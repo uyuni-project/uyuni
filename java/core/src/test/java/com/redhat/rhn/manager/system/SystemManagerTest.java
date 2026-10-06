@@ -78,6 +78,7 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
+import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Server;
@@ -1957,6 +1958,60 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(eventDetail.getPickedUp());
         assertNull(eventDetail.getCompleted());
 
+    }
+
+    /**
+     * Verify that an action waiting for a transactional reboot is reported as such both in the
+     * event list and in the event details, and that the indicator clears once the reboot is done.
+     */
+    @Test
+    public void testSystemEventPendingRebootAction() throws Exception {
+        final MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        final Long waitingActionId = createTestAction(minion, ActionTypeEnum.TYPE_APPLY_STATES,
+                ServerAction::setStatusCompleted);
+        final Long plainActionId = createTestAction(minion, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST,
+                ServerAction::setStatusCompleted);
+
+        final MinionTransactionalActionHistory history =
+                MinionTransactionalActionHistory.create(minion.getId(), waitingActionId);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(true, true);
+        assertTrue(history.isWaitingForReboot());
+        HibernateFactory.getSession().persist(history);
+        HibernateFactory.getSession().flush();
+
+        final Long sid = minion.getId();
+        final Long oid = user.getOrg().getId();
+
+        assertTrue(SystemManager.systemEventDetails(sid, oid, waitingActionId).isPendingRebootAction());
+        assertFalse(SystemManager.systemEventDetails(sid, oid, plainActionId).isPendingRebootAction());
+
+        assertTrue(uniqueEventFor(minion, waitingActionId).isPendingRebootAction());
+        assertFalse(uniqueEventFor(minion, plainActionId).isPendingRebootAction());
+
+        // Once the reboot is done the action no longer matches the pending reboot filters
+        history.recordAfterRebootScheduled();
+        assertFalse(history.isWaitingForReboot());
+        HibernateFactory.getSession().flush();
+
+        assertFalse(SystemManager.systemEventDetails(sid, oid, waitingActionId).isPendingRebootAction());
+        assertFalse(uniqueEventFor(minion, waitingActionId).isPendingRebootAction());
+    }
+
+    /**
+     * Look up the single history event of a server for the given action, failing when the query
+     * reports the action more than once.
+     */
+    private SystemEventDto uniqueEventFor(Server server, Long actionId) {
+        final List<SystemEventDto> events =
+                SystemManager.systemEventHistory(server, user.getOrg(), null, null, null).stream()
+                        .filter(event -> actionId.equals(event.getId()))
+                        .toList();
+
+        assertEquals(1, events.size(), "expected exactly one history event for action " + actionId);
+
+        return events.get(0);
     }
 
     @Test

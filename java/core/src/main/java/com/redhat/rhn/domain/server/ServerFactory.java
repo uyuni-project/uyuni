@@ -1175,7 +1175,9 @@ public class ServerFactory extends HibernateFactory {
     public static List<Server> listSystemsInSsm(User user) {
         return getSession().createNativeQuery("""
                 select           S.*,
+                                 mi.server_id,
                                  mi.container_runtime,
+                                 mi.transactional_mode,
                                  mi.minion_id,
                                  mi.kernel_live_version,
                                  mi.ssh_push_port,

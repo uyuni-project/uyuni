@@ -486,7 +486,12 @@ public class StatesAPI {
                         checkUserHasPermissionsOnServer(server, user);
                         return ActionManager.scheduleApplyStates(user,
                                 Arrays.asList(json.getTargetId()), json.getStates(),
-                                getScheduleDate(json));
+                                Optional.empty(),
+                                getScheduleDate(json),
+                                Optional.empty(),
+                                false,
+                                false,
+                                json.isUseTransactionalUpdate());
                     },
                     (groupId) -> {
                         ServerGroup group = getEntityIfExists(
@@ -506,7 +511,12 @@ public class StatesAPI {
 
                         return ActionManager.scheduleApplyStates(user,
                                 minionServerIds, states,
-                                getScheduleDate(json));
+                                Optional.empty(),
+                                getScheduleDate(json),
+                                Optional.empty(),
+                                false,
+                                false,
+                                json.isUseTransactionalUpdate());
 
                     },
                     (orgId) -> {
@@ -518,7 +528,13 @@ public class StatesAPI {
                                 .collect(Collectors.toList());
 
                         return ActionManager.scheduleApplyStates(user,
-                                minionServerIds, json.getStates(), getScheduleDate(json));
+                                minionServerIds, json.getStates(),
+                                Optional.empty(),
+                                getScheduleDate(json),
+                                Optional.empty(),
+                                false,
+                                false,
+                                json.isUseTransactionalUpdate());
                     }
             );
 

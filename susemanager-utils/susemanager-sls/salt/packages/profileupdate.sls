@@ -68,4 +68,11 @@ kernel_live_version:
 {%- else %}
       - module: sync_modules
 {%- endif %}
+
+{%- if grains.get('transactional', False) %}
+package-profile-snapper-list-snapshots:
+  cmd.run:
+    - name: snapper --json --no-dbus list
+{%- endif %}
+
 {% endif %}

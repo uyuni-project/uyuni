@@ -68,6 +68,33 @@ public class SystemEventDtoSerializerTest {
 
         assertTrue(xml.contains("<name>completed</name>"));
         assertTrue(xml.contains("<dateTime.iso8601>20211005T17:00:00</dateTime.iso8601>"));
+
+        assertTrue(xml.contains("<name>pending_reboot</name>"));
+        assertTrue(xml.contains("<boolean>0</boolean>"));
+    }
+
+    @Test
+    public void testSerializeSystemEventDtoWaitingForReboot() {
+
+        final SystemEventDtoSerializer serializer = new SystemEventDtoSerializer();
+
+        final SystemEventDto dto = new SystemEventDto();
+
+        dto.setId(26L);
+        dto.setHistoryType(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST.getLabel());
+        dto.setHistoryTypeName("Hardware List Refresh");
+        dto.setHistoryStatus(ActionFactory.STATUS_COMPLETED.getName());
+        dto.setSummary("Hardware List Refresh scheduled by (system)");
+        dto.setPendingRebootActionId(26L);
+
+        final Writer output = new StringWriter();
+
+        serializer.serialize(dto, output, new XmlRpcSerializer());
+
+        final String xml = output.toString();
+
+        assertTrue(xml.contains("<name>pending_reboot</name>"));
+        assertTrue(xml.contains("<boolean>1</boolean>"));
     }
 
 }

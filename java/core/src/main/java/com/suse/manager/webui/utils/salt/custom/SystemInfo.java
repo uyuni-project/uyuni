@@ -56,6 +56,15 @@ public class SystemInfo {
     }
 
     /**
+     * Gets the transactional grain when it is a boolean.
+     *
+     * @return the transactional grain
+     */
+    public Optional<Boolean> getTransactional() {
+        return getGrains().getOptionalAsBoolean("transactional");
+    }
+
+    /**
      * Gets the uptime of minion in seconds returned by status.uptime modules
      *
      * @return the grains

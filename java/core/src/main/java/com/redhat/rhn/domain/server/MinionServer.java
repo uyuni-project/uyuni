@@ -29,6 +29,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,8 +37,11 @@ import java.util.stream.Collectors;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
@@ -70,11 +74,19 @@ public class MinionServer extends Server implements SaltConfigurable {
     @Column(name = "container_runtime")
     private String containerRuntime;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "transactional_mode")
+    private TransactionalMode transactionalMode = TransactionalMode.UNKNOWN;
+
     @Column
     private String uname;
 
     @Column(name = "os_family")
     private String osFamily;
+
+    @OneToOne(mappedBy = "minionServer", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+    @SuppressWarnings("java:S1948") // Hibernate association; Java serialization is not its persistence contract.
+    private MinionSnapshotInfo snapshotInfo;
 
 
     /**
@@ -369,6 +381,44 @@ public class MinionServer extends Server implements SaltConfigurable {
     }
 
     /**
+     * @return the mode indicated by the transactional grain
+     */
+    public TransactionalMode getTransactionalMode() {
+        return transactionalMode;
+    }
+
+    /**
+     * @param transactionalModeIn the mode indicated by the transactional grain
+     */
+    public void setTransactionalMode(TransactionalMode transactionalModeIn) {
+        this.transactionalMode = transactionalModeIn;
+    }
+
+    /**
+     * Update the mode indicated by the transactional grain when it has a valid boolean value.
+     *
+     * @param transactional the transactional grain, if present and valid
+     */
+    public void updateTransactionalMode(Optional<Boolean> transactional) {
+        transactional.ifPresent(value -> setTransactionalMode(
+                value ? TransactionalMode.TRANSACTIONAL : TransactionalMode.NON_TRANSACTIONAL));
+    }
+
+    /**
+     * Return the effective transactional classification of this minion.
+     *
+     * A valid observation of the transactional grain prevails over the operating system name.
+     * While the observation is still {@link TransactionalMode#UNKNOWN} the classification by
+     * the operating system name is used as a fallback.
+     *
+     * @return <code>true</code> if the minion has to be treated as transactional
+     */
+    @Override
+    public boolean isTransactionalUpdate() {
+        return transactionalMode.isTransactional(getOs());
+    }
+
+    /**
      * @return the uname
      */
     public String getUname() {
@@ -417,6 +467,69 @@ public class MinionServer extends Server implements SaltConfigurable {
     @Override
     public void setOsFamilySuse() {
         this.osFamily = ServerConstants.OS_FAMILY_SUSE;
+    }
+
+    /**
+     * @return the number of the currently active (booted) Btrfs snapshot, or null
+     */
+    public Long getActiveSnapshot() {
+        return snapshotInfo != null ? snapshotInfo.getActiveSnapshot() : null;
+    }
+
+    /**
+     * @param activeSnapshotIn the active snapshot number to set
+     */
+    public void setActiveSnapshot(Long activeSnapshotIn) {
+        getOrCreateSnapshotInfo().setActiveSnapshot(activeSnapshotIn);
+    }
+
+    /**
+     * @return the number of the default (next-boot) Btrfs snapshot, or null
+     */
+    public Long getDefaultSnapshot() {
+        return snapshotInfo != null ? snapshotInfo.getDefaultSnapshot() : null;
+    }
+
+    /**
+     * @param defaultSnapshotIn the default snapshot number to set
+     */
+    public void setDefaultSnapshot(Long defaultSnapshotIn) {
+        getOrCreateSnapshotInfo().setDefaultSnapshot(defaultSnapshotIn);
+    }
+
+    /**
+     * @return snapshot detail objects, or null when not available
+     */
+    public List<Map<String, Object>> getSnapshotDetails() {
+        return snapshotInfo != null ? snapshotInfo.getSnapshotDetails() : null;
+    }
+
+    /**
+     * @param snapshotDetailsIn snapshot detail objects, or null to clear
+     */
+    public void setSnapshotDetails(List<Map<String, Object>> snapshotDetailsIn) {
+        getOrCreateSnapshotInfo().setSnapshotDetails(snapshotDetailsIn);
+    }
+
+    /**
+     * @return when the Btrfs snapshot information was last updated, or null
+     */
+    public Date getSnapshotUpdated() {
+        return snapshotInfo != null ? snapshotInfo.getSnapshotUpdated() : null;
+    }
+
+    /**
+     * @param snapshotUpdatedIn when the Btrfs snapshot information was last updated
+     */
+    public void setSnapshotUpdated(Date snapshotUpdatedIn) {
+        getOrCreateSnapshotInfo().setSnapshotUpdated(snapshotUpdatedIn);
+    }
+
+    private MinionSnapshotInfo getOrCreateSnapshotInfo() {
+        if (snapshotInfo == null) {
+            snapshotInfo = new MinionSnapshotInfo(this);
+        }
+        return snapshotInfo;
     }
 
 }

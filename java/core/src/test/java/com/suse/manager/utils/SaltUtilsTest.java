@@ -30,8 +30,13 @@ import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
+import com.redhat.rhn.domain.server.TransactionalMode;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.webui.services.TestSaltApi;
+import com.suse.manager.webui.services.TestSystemQuery;
+import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.results.Change;
 import com.suse.salt.netapi.utils.Xor;
@@ -105,6 +110,22 @@ public class SaltUtilsTest extends BaseTestCaseWithUser {
         Pkg.Info initramfsToolsInfo = Json.GSON.fromJson(initramfsToolsJson, new TypeToken<Pkg.Info>() { }.getType());
         assertEquals("initramfs-tools-0.130ubuntu3.8.all",
                 SaltUtils.packageToKey("initramfs-tools", initramfsToolsInfo));
+    }
+
+    @Test
+    public void testSystemInfoUpdatesTransactionalMode() {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Map<String, Object> stateResult = Map.of(
+                "changes", Map.of("ret", Map.of("transactional", true)),
+                "result", true);
+        Map<String, Object> response = Map.of(
+                "module_|-grains_update_|-grains.items_|-run", stateResult);
+        SystemInfo systemInfo = Json.GSON.fromJson(Json.GSON.toJson(response), SystemInfo.class);
+
+        SaltUtils saltUtils = new SaltUtils(new TestSystemQuery(), new TestSaltApi());
+        saltUtils.updateSystemInfo(systemInfo, minion);
+
+        assertEquals(TransactionalMode.TRANSACTIONAL, TestUtils.reload(minion).getTransactionalMode());
     }
 
     /**

@@ -41,7 +41,7 @@ public class MinionSummary {
     public MinionSummary(MinionServer minion) {
         this(minion.getId(), minion.getMinionId(), minion.getDigitalServerId(),
                 minion.getMachineId(), minion.getContactMethodLabel().orElse(null), minion.getOs(),
-                minion.doesOsSupportsTransactionalUpdate());
+                minion.isTransactionalUpdate());
     }
 
     /**
@@ -53,11 +53,12 @@ public class MinionSummary {
      * @param machineIdIn the machine id
      * @param contactMethodLabelIn the contact method label
      * @param osIn the minion os
+     * @param transactionalModeIn the persisted observation of the transactional grain
      */
     public MinionSummary(Long serverIdIn, String minionIdIn, String digitalServerIdIn, String machineIdIn,
-            String contactMethodLabelIn, String osIn) {
+            String contactMethodLabelIn, String osIn, TransactionalMode transactionalModeIn) {
         this(serverIdIn, minionIdIn, digitalServerIdIn, machineIdIn, contactMethodLabelIn, osIn,
-            ServerConstants.SLEMICRO.equals(osIn));
+            transactionalModeIn.isTransactional(osIn));
     }
 
     /**

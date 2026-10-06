@@ -10,6 +10,16 @@
     ],
     "jid": "20160407084101455804",
     "return": {
+      "cmd_|-package-profile-snapper-list-snapshots_|-snapper --json --no-dbus list_|-run": {
+        "name": "snapper --json --no-dbus list",
+        "result": true,
+        "changes": {
+          "retcode": 0,
+          "stdout": "{\"root\":[]}",
+          "stderr": ""
+        },
+        "comment": ""
+      },
       "module_|-products_|-pkg.list_products_|-run": {
         "comment": "Module function pkg.list_products executed",
         "name": "pkg.list_products",
