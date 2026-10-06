@@ -2101,7 +2101,7 @@ class RepoSync(object):
             new_version = 0
             for n in notice["version"].split("."):
                 new_version = (new_version + int(n)) * 100
-            notice["version"] = new_version / 100
+            notice["version"] = new_version // 100
         if RepoSync._is_old_suse_style(notice):
             # old suse style; we need to append the version to id
             # to get a seperate patch for every issue
