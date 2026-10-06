@@ -84,7 +84,7 @@
                             (none)
                         </c:if>
                         <c:if test="${!empty channel_description}">
-                            <c:out value="${channel_description}" />
+                            <span class="text-pre-line"><c:out value="${channel_description}" /></span>
                         </c:if>
                     </div>
                 </div>

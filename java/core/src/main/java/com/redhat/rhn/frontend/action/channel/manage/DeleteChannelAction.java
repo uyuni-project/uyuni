@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.action.channel.manage;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.channel.Channel;
@@ -26,6 +25,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.channel.ChannelDescriptionHelper;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -67,9 +67,7 @@ public class DeleteChannelAction extends RhnAction {
 
         // Stuff the channel object into the request so the page can use its values
         request.setAttribute("channel", channel);
-        String description = channel.getDescription();
-        request.setAttribute("channel_description",
-                description == null ? null : StringUtil.htmlToPlainText(description));
+        request.setAttribute("channel_description", ChannelDescriptionHelper.getDisplayDescription(channel));
         // The channel doesn't carry its subscribed system count, so add this separately
         int subscribedSystemsCount = SystemManager.countSystemsSubscribedToChannel(channelId, user);
         request.setAttribute("subscribedSystemsCount", subscribedSystemsCount);

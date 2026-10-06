@@ -103,7 +103,7 @@
                                 <span class="no-details"><bean:message key="none.message"/></span>
                             </c:when>
                             <c:otherwise>
-                                <c:out value="${channel_description}"/>
+                                <span class="text-pre-line"><c:out value="${channel_description}"/></span>
                             </c:otherwise>
                         </c:choose>
                         </div>

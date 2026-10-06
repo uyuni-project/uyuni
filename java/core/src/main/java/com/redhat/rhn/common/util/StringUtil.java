@@ -715,8 +715,7 @@ public class StringUtil {
      * @return the plain-text representation
      */
     public static String htmlToPlainText(String html) {
-        HtmlToPlainText helper = new HtmlToPlainText();
-        return helper.convert(html);
+        return HtmlToPlainText.convert(html);
     }
 
     /**
