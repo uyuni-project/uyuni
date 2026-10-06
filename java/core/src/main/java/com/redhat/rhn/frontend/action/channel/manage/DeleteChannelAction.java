@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.channel.manage;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.channel.Channel;
@@ -66,6 +67,9 @@ public class DeleteChannelAction extends RhnAction {
 
         // Stuff the channel object into the request so the page can use its values
         request.setAttribute("channel", channel);
+        String description = channel.getDescription();
+        request.setAttribute("channel_description",
+                description == null ? null : StringUtil.toPlainText(description));
         // The channel doesn't carry its subscribed system count, so add this separately
         int subscribedSystemsCount = SystemManager.countSystemsSubscribedToChannel(channelId, user);
         request.setAttribute("subscribedSystemsCount", subscribedSystemsCount);
