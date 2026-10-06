@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.channel;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -93,6 +94,9 @@ public class ChannelDetailsAction extends RhnAction {
         request.setAttribute("pack_size", ChannelFactory.getPackageCount(chan));
         request.setAttribute("globally", chan.isGloballySubscribable(user.getOrg()));
         request.setAttribute("channel", chan);
+        String description = chan.getDescription();
+        request.setAttribute("channel_description",
+                description == null ? null : StringUtil.toPlainText(description));
         request.setAttribute("channel_last_modified", LocalizationService.
                     getInstance().formatCustomDate(chan.getLastModified()));
         //Check the status of the channel

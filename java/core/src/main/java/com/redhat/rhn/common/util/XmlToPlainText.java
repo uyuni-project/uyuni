@@ -64,7 +64,7 @@ class XmlToPlainText {
         }
         else if (current instanceof Element elem) {
             if ("a".equalsIgnoreCase(elem.getName())) {
-                href = elem.getAttributeValue("href").trim();
+                href = StringUtils.trimToNull(elem.getAttributeValue("href"));
             }
             for (Object o : elem.getContent()) {
                 toPlainText(o);
@@ -92,4 +92,3 @@ class XmlToPlainText {
         }
     }
 }
-

@@ -405,6 +405,21 @@ public class StringUtilTest  {
     }
 
     @Test
+    public void testProductDescriptionToPlainText() {
+        String input = "<p> The SUSE Linux Enterprise Real Time aims to reduce the latency. </p> " +
+                "<p> Packages in this module are generally supported until a newer version is released. </p>";
+
+        String expected = "The SUSE Linux Enterprise Real Time aims to reduce the latency. " +
+                "Packages in this module are generally supported until a newer version is released.";
+        assertEquals(expected, StringUtil.toPlainText(input));
+    }
+
+    @Test
+    public void testAnchorWithoutHrefToPlainText() {
+        assertEquals("plain link", StringUtil.toPlainText("<p><a>plain link</a></p>"));
+    }
+
+    @Test
     public void testAddPath() {
         String expected = "/tmp/foo/bar.txt";
         assertEquals(expected, StringUtil.addPath("/tmp/foo", "bar.txt"));
