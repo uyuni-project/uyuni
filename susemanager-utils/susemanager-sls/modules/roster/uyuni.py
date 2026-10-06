@@ -162,8 +162,6 @@ class UyuniRoster:
         self,
         minion_id=None,
         proxies=None,
-        tunnel=False,
-        user=None,
         ssh_push_port=SSH_PUSH_PORT,
     ):
         proxy_command = []
@@ -178,34 +176,13 @@ class UyuniRoster:
                     ssh_push_user=PROXY_SSH_PUSH_USER,
                     in_out_forward=(
                         f"-W {minion_id}:{ssh_push_port}"
-                        if not tunnel and i == len(proxies) - 1
+                        if i == len(proxies) - 1
                         else ""
                     ),
                     proxy_host=proxy.hostname,
                 )
             )
             i += 1
-        if tunnel:
-            proxy_command.append(
-                "/usr/bin/ssh -i {pushKey} -o StrictHostKeyChecking=no "
-                "-o User={user} -R {pushPort}:{proxy}:{sslPort} {minion} "
-                "ssh -i {ownKey} -W {minion}:{sshPort} "
-                "-o StrictHostKeyChecking=no -o User={user} {minion}".format(
-                    pushKey=PROXY_SSH_PUSH_KEY,
-                    user=user,
-                    pushPort=self.ssh_push_port_https,
-                    proxy="localhost",
-                    sslPort=SSL_PORT,
-                    minion=minion_id,
-                    # pylint: disable-next=consider-using-f-string
-                    ownKey="{}{}".format(
-                        # pylint: disable-next=consider-using-f-string
-                        "/root" if user == "root" else "/home/{}".format(user),
-                        "/.ssh/mgr_own_id",
-                    ),
-                    sshPort=ssh_push_port,
-                )
-            )
 
         # pylint: disable-next=consider-using-f-string
         return ["ProxyCommand='{}'".format(" ".join(proxy_command))]
@@ -239,18 +216,24 @@ class UyuniRoster:
                     "ssh_options": self._get_ssh_options(
                         minion_id=minion_id,
                         proxies=proxies,
-                        tunnel=tunnel,
-                        user=self.ssh_push_sudo_user,
                         ssh_push_port=ssh_push_port,
                     )
                 }
             )
-        elif tunnel:
+        if tunnel:
             minion.update(
                 {
                     # pylint: disable-next=consider-using-f-string
                     "remote_port_forwards": "%d:%s:%d"
-                    % (self.ssh_push_port_https, "localhost", SSL_PORT)
+                    % (
+                        self.ssh_push_port_https,
+                        # The forward target is resolved on the salt-master side.
+                        # Clients behind a proxy alias the proxy hostname to
+                        # 127.0.0.1, so the tunnel must land on the proxy for its
+                        # certificate to match the channel URLs.
+                        proxies[-1].hostname if proxies else "localhost",
+                        SSL_PORT,
+                    )
                 }
             )
 
