@@ -69,7 +69,7 @@ public class DeleteChannelAction extends RhnAction {
         request.setAttribute("channel", channel);
         String description = channel.getDescription();
         request.setAttribute("channel_description",
-                description == null ? null : StringUtil.toPlainText(description));
+                description == null ? null : StringUtil.htmlToPlainText(description));
         // The channel doesn't carry its subscribed system count, so add this separately
         int subscribedSystemsCount = SystemManager.countSystemsSubscribedToChannel(channelId, user);
         request.setAttribute("subscribedSystemsCount", subscribedSystemsCount);

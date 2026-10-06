@@ -96,7 +96,7 @@ public class ChannelDetailsAction extends RhnAction {
         request.setAttribute("channel", chan);
         String description = chan.getDescription();
         request.setAttribute("channel_description",
-                description == null ? null : StringUtil.toPlainText(description));
+                description == null ? null : StringUtil.htmlToPlainText(description));
         request.setAttribute("channel_last_modified", LocalizationService.
                     getInstance().formatCustomDate(chan.getLastModified()));
         //Check the status of the channel

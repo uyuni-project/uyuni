@@ -411,12 +411,17 @@ public class StringUtilTest  {
 
         String expected = "The SUSE Linux Enterprise Real Time aims to reduce the latency. " +
                 "Packages in this module are generally supported until a newer version is released.";
-        assertEquals(expected, StringUtil.toPlainText(input));
+        assertEquals(expected, StringUtil.htmlToPlainText(input));
     }
 
     @Test
-    public void testAnchorWithoutHrefToPlainText() {
-        assertEquals("plain link", StringUtil.toPlainText("<p><a>plain link</a></p>"));
+    public void testNonXhtmlToPlainText() {
+        assertEquals("hello world", StringUtil.htmlToPlainText("hello<br>world"));
+        assertEquals("A B", StringUtil.htmlToPlainText("A&nbsp;B"));
+        assertEquals("hello world", StringUtil.htmlToPlainText("<p>hello <strong>world"));
+        assertEquals("plain link", StringUtil.htmlToPlainText("<p><a>plain link</a></p>"));
+        assertEquals("SUSE (https://www.suse.com)",
+                StringUtil.htmlToPlainText("<a href=\"https://www.suse.com\">SUSE</a>"));
     }
 
     @Test

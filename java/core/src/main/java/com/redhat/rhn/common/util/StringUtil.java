@@ -708,6 +708,18 @@ public class StringUtil {
     }
 
     /**
+     * Converts an HTML fragment to plain text. Unlike {@link #toPlainText(String)},
+     * this method accepts non-XHTML tags and HTML entities.
+     *
+     * @param html the HTML fragment to convert
+     * @return the plain-text representation
+     */
+    public static String htmlToPlainText(String html) {
+        HtmlToPlainText helper = new HtmlToPlainText();
+        return helper.convert(html);
+    }
+
+    /**
      * Convert a string of options (name value pairs separated by '=', where the
      * pairs are seperated by 'separator'), into a map.
      * @param options the string of options
