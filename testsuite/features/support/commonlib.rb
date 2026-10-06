@@ -1024,7 +1024,7 @@ def channel_is_synced?(channel)
   repo_path = "/var/cache/rhn/repodata/#{channel}"
   server = get_target('server')
   # Using a temporary dump file to avoid timeout with huge dumpsolv output
-  tmp_file = "/tmp/#{channel}_solv_dump"
+  tmp_file = "/srv/#{channel}_solv_dump"
 
   _, new_file_check_code = server.run("test -f #{repo_path}/solv.new", check_errors: false)
   if new_file_check_code.zero?
