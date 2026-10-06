@@ -288,11 +288,11 @@ public class MinionController {
      */
     public static ModelAndView orgCustomStates(Request request, Response response) {
         String orgId = request.queryParams("oid");
-        List<Server> servers = ServerFactory.listOrgSystems(Long.parseLong(orgId));
         Map<String, Object> data = new HashMap<>();
         data.put("orgId", orgId);
         data.put("orgName", OrgFactory.lookupById(Long.valueOf(orgId)).getName());
-        data.put("hasTransactionalSystems", hasTransactionalSystems(servers));
+        data.put("hasTransactionalSystems",
+                MinionServerFactory.hasTransactionalMinions(Long.parseLong(orgId)));
         data.put("tabs",
                 ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/org_tabs.xml"));
         return new ModelAndView(data, "templates/org/custom.jade");
@@ -343,7 +343,7 @@ public class MinionController {
         data.put("orgId", user.getOrg().getId());
         data.put("orgName", user.getOrg().getName());
         data.put("hasTransactionalSystems",
-                hasTransactionalSystems(ServerFactory.listOrgSystems(user.getOrg().getId())));
+                MinionServerFactory.hasTransactionalMinions(user.getOrg().getId()));
         return new ModelAndView(data, "templates/yourorg/custom.jade");
     }
 
