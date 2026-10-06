@@ -20,12 +20,13 @@ class RemoteNode
     puts "Initializing a remote node for '#{@host}'."
     raise(NotImplementedError, "Host #{@host} is not defined as a valid host in the Test Framework.") unless ENV_VAR_BY_HOST.key? @host
 
-    unless ENV.key? ENV_VAR_BY_HOST[@host]
+    env_var = DEFAULT_HOST_BY_ROLE.key?(@host) ? get_env_var_with_fallback(@host) : ENV_VAR_BY_HOST[@host]
+    unless ENV.key? env_var
       warn "Host #{@host} is not defined as environment variable."
       return
     end
 
-    @target = ENV.fetch(ENV_VAR_BY_HOST[@host], nil).to_s.strip
+    @target = ENV.fetch(env_var, nil).to_s.strip
     clear_motd unless @host == 'localhost'
     out, _err, _code = ssh('echo $HOSTNAME', host: @target)
     @hostname = out.strip

@@ -103,6 +103,15 @@ ENV_VAR_BY_HOST = {
   'salt_migration_minion' => 'SALT_MIGRATION_MINION'
 }.freeze
 
+# Generic client roles resolve to these concrete hosts (keys of ENV_VAR_BY_HOST) when the role's own
+# variable is not set. Bump the distribution of a role here, e.g. 'sle_minion' => 'sles160_minion'.
+DEFAULT_HOST_BY_ROLE = {
+  'sle_minion' => 'sles15sp7_minion',
+  'sshminion' => 'sles15sp7_sshminion',
+  'rhlike_minion' => 'rocky8_minion',
+  'deblike_minion' => 'ubuntu2404_minion'
+}.freeze
+
 HOST_SSH_PORT = 22
 
 SSH_PORT_BY_HOST = {

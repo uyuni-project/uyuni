@@ -1384,16 +1384,17 @@ end
 # environment variable when the primary one is unavailable.
 #
 # @param host_key [String] The key in ENV_VAR_BY_HOST (e.g., 'sle_minion')
-# @param fallback_var [String] The fallback environment variable name to use if the primary variable is not set (e.g., 'SLES15SP7_MINION')
+# @param fallback_var [String] The fallback environment variable name to use if the primary variable is not set.
+#   Defaults to the variable of DEFAULT_HOST_BY_ROLE[host_key] (e.g., 'SLES15SP7_MINION' for 'sle_minion')
 # @return [String] The environment variable name that is set, or the fallback if the primary is not set
 #
 # @example
-#   env_var = get_env_var_with_fallback('sle_minion', 'SLES15SP7_MINION')
+#   env_var = get_env_var_with_fallback('sle_minion')
 #   # Returns 'MINION' if ENV['MINION'] is set, otherwise 'SLES15SP7_MINION'
 #
-# @raise [KeyError] If host_key does not exist in ENV_VAR_BY_HOST
+# @raise [KeyError] If host_key has no DEFAULT_HOST_BY_ROLE entry and no fallback_var is given
 #
-def get_env_var_with_fallback(host_key, fallback_var)
+def get_env_var_with_fallback(host_key, fallback_var = ENV_VAR_BY_HOST.fetch(DEFAULT_HOST_BY_ROLE.fetch(host_key)))
   env_var_name = ENV_VAR_BY_HOST[host_key]
   ENV.key?(env_var_name) ? env_var_name : fallback_var
 end
