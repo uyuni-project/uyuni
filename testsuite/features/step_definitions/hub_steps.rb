@@ -1081,7 +1081,8 @@ RHN_CONF_TESTSUITE_SETTINGS = {
 }.freeze
 
 When(/^I apply the testsuite configuration on the peripheral server "([^"]*)"$/) do |peripheral|
-  node = get_target(peripheral)
+  # Refresh: the node was cached before `mgradm install`, so it doesn't know about mgrctl yet
+  node = get_target(peripheral, refresh: true)
 
   # rhn.conf: idempotent key/value upsert, one sed/append per key rather than a blind append,
   # so re-running this step (or running it against an already-configured server) is a no-op.
