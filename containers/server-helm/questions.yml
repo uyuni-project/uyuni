@@ -1,0 +1,333 @@
+questions:
+  # General
+  - variable: global.fqdn
+    label: Server FQDN
+    description: "Fully qualified domain name the server will answer as. Changing this value later renames the server, handle with care."
+    type: hostname
+    required: true
+    default: ""
+    group: General
+  - label:
+  - variable: server.email
+    label: Notification Email
+    description: "Email address used for the notifications sent by the server."
+    type: string
+    default: "admin@uyuni.lab.org"
+    group: General
+  - variable: timezone
+    label: Time Zone
+    description: "Time zone to set in the containers."
+    type: string
+    default: "Etc/UTC"
+    group: General
+  - variable: server.sccSecret
+    label: SCC Credentials Secret
+    description: "Name of a kubernetes.io/basic-auth secret with the SCC organization mirroring credentials. Leave empty to skip."
+    type: secret
+    default: ""
+    group: General
+
+  # Images
+  - variable: repository
+    label: Image Repository
+    description: "Default repository with the path where to find all the images."
+    type: string
+    required: true
+    default: "registry.opensuse.org/uyuni"
+    group: Images
+  - variable: tag
+    label: Image Tag
+    description: "Default tag to use for all images."
+    type: string
+    default: "latest"
+    group: Images
+  - variable: pullPolicy
+    label: Image Pull Policy
+    type: enum
+    options:
+      - IfNotPresent
+      - Always
+      - Never
+    default: "IfNotPresent"
+    group: Images
+  - variable: registrySecret
+    label: Registry Pull Secret
+    description: "Name of a kubernetes.io/dockerconfigjson secret to pull images from an authenticated registry. Leave empty for no authentication."
+    type: secret
+    default: ""
+    group: Images
+
+  # Ingress and Gateway
+  - variable: gateway.enable
+    label: Use Gateway API
+    description: "Deploy Gateway API 1.4 resources instead of Ingress ones. Note that TCPRoute is still in alpha2 stage."
+    type: boolean
+    default: false
+    group: Ingress
+    show_subquestion_if: true
+    subquestions:
+      - variable: gateway.class
+        label: Gateway Class
+        description: "Name of the gateway class to use. For rke2 with traefik, it is likely to be 'traefik'."
+        type: string
+        default: ""
+      - variable: gateway.name
+        label: Gateway Name
+        description: "Name of an existing gateway to use. Leave empty to deploy a gateway named uyuni-gateway."
+        type: string
+        default: ""
+      - variable: gateway.listeners.http.name
+        label: HTTP Listener Name
+        type: string
+        default: "web"
+      - variable: gateway.listeners.http.port
+        label: HTTP Listener Port
+        type: int
+        min: 1
+        max: 65535
+        default: 8000
+      - variable: gateway.listeners.https.name
+        label: HTTPS Listener Name
+        type: string
+        default: "websecure"
+      - variable: gateway.listeners.https.port
+        label: HTTPS Listener Port
+        type: int
+        min: 1
+        max: 65535
+        default: 8443
+  - variable: ingress.type
+    label: Ingress Type
+    description: "Ingress controller used in the cluster. Use 'traefik' to create Traefik routes, or empty for a generic ingress configured with annotations."
+    type: enum
+    options:
+      - traefik
+      - ""
+    default: "traefik"
+    show_if: "gateway.enable=false"
+    group: Ingress
+  - variable: ingress.class
+    label: Ingress Class
+    description: "Ingress class name to use. Empty means the default one. On rke2 this is likely 'traefik', on K3s it is likely empty."
+    type: string
+    default: "traefik"
+    show_if: "gateway.enable=false"
+    group: Ingress
+  - variable: enableMonitoring
+    label: Expose Monitoring Endpoints
+    description: "Create the ingress or gateway routes for the Prometheus exporters."
+    type: boolean
+    default: true
+    group: Ingress
+
+  # Services
+  - variable: services.type
+    label: Service Type
+    description: "Type of all the externally-facing services."
+    type: enum
+    options:
+      - ClusterIP
+      - NodePort
+      - LoadBalancer
+    default: "ClusterIP"
+    group: Services
+  - variable: services.salt.ports.publish
+    label: Salt Publish NodePort
+    description: "NodePort exposing the Salt publish port (4505)."
+    type: int
+    min: 30000
+    max: 32767
+    default: 30005
+    show_if: "services.type=NodePort"
+    group: Services
+  - variable: services.salt.ports.request
+    label: Salt Request NodePort
+    description: "NodePort exposing the Salt request port (4506)."
+    type: int
+    min: 30000
+    max: 32767
+    default: 30006
+    show_if: "services.type=NodePort"
+    group: Services
+  - variable: services.reportdb.ports.pgsql
+    label: Report Database NodePort
+    description: "NodePort exposing the report database PostgreSQL port (5432)."
+    type: int
+    min: 30000
+    max: 32767
+    default: 30032
+    show_if: "services.type=NodePort"
+    group: Services
+
+  # Components
+  - variable: tftp.enable
+    label: Enable TFTP Server
+    description: "Deploy the TFTP server to PXE boot systems."
+    type: boolean
+    default: false
+    group: Components
+    show_subquestion_if: true
+    subquestions:
+      - variable: tftp.hostNetwork
+        label: Use Host Network
+        description: "Bypass the Kubernetes network layers. May be needed when not using a LoadBalancer for the TFTP server."
+        type: boolean
+        default: false
+  - variable: hubAPI.enable
+    label: Enable Hub XML-RPC API
+    type: boolean
+    default: false
+    group: Components
+  - variable: saline.enable
+    label: Enable Saline
+    description: "Deploy Saline to provide Salt master metrics."
+    type: boolean
+    default: false
+    group: Components
+  - variable: coco.replicas
+    label: Confidential Computing Attestation Replicas
+    description: "Number of replicas for the confidential computing attestation deployment. 0 disables it."
+    type: int
+    min: 0
+    default: 0
+    group: Components
+
+  # Database
+  - variable: db.enable
+    label: Deploy PostgreSQL
+    description: "Deploy a PostgreSQL instance. WARNING: using a third party database is not tested nor supported for now."
+    type: boolean
+    default: true
+    group: Database
+  - variable: db.internal.host
+    label: Internal Database Host
+    description: "Host name of the internal database. It should be in the SANs of the database TLS certificate."
+    type: hostname
+    default: ""
+    show_if: "db.enable=false"
+    group: Database
+  - variable: db.internal.port
+    label: Internal Database Port
+    type: int
+    min: 1
+    max: 65535
+    default: 5432
+    show_if: "db.enable=false"
+    group: Database
+  - variable: db.internal.name
+    label: Internal Database Name
+    type: string
+    default: "susemanager"
+    show_if: "db.enable=false"
+    group: Database
+  - variable: db.report.host
+    label: Report Database Host
+    description: "Host name of the report database. It should be in the SANs of the database TLS certificate."
+    type: hostname
+    default: ""
+    show_if: "db.enable=false"
+    group: Database
+  - variable: db.report.port
+    label: Report Database Port
+    type: int
+    min: 1
+    max: 65535
+    default: 5432
+    show_if: "db.enable=false"
+    group: Database
+  - variable: db.report.name
+    label: Report Database Name
+    type: string
+    default: "reportdb"
+    show_if: "db.enable=false"
+    group: Database
+
+  # Storage
+  - variable: volumes.storageClass
+    label: Default Storage Class
+    description: "Storage class used for all the volume claims. Leave empty to use the cluster default."
+    type: storageclass
+    default: ""
+    group: Storage
+  - variable: volumes.var-pgsql.size
+    label: Database Volume Size
+    description: "Size of the PostgreSQL data volume. Needs to be at least 50Gi on a fast storage."
+    type: string
+    default: "50Gi"
+    show_if: "db.enable=true"
+    group: Storage
+  - variable: volumes.var-spacewalk.size
+    label: Packages Volume Size
+    description: "Size of the volume holding the synchronized packages. Depends on the distributions to manage."
+    type: string
+    default: "100Gi"
+    group: Storage
+  - variable: volumes.srv-www.size
+    label: Web Volume Size
+    description: "Size of the volume with files published over HTTP, including unpacked auto-installation ISOs."
+    type: string
+    default: "100Gi"
+    group: Storage
+  - variable: volumes.var-cache.size
+    label: Cache Volume Size
+    type: string
+    default: "10Gi"
+    group: Storage
+  - variable: volumes.var-search.size
+    label: Search Index Volume Size
+    type: string
+    default: "10Gi"
+    group: Storage
+  - variable: volumes.var-log.size
+    label: Logs Volume Size
+    type: string
+    default: "2Gi"
+    group: Storage
+  - variable: server.mirror.claimName
+    label: Mirror Volume Claim
+    description: "Existing PVC to mount as the server.susemanager.fromdir mirror. Leave empty for none."
+    type: pvc
+    default: ""
+    group: Storage
+
+  # Advanced
+  - variable: server.superPrivileged
+    label: Super Privileged Server
+    description: "May be needed on clusters with SELinux or AppArmor enforced. This is a big security risk."
+    type: boolean
+    default: false
+    group: Advanced
+  - variable: server.apparmorProfile
+    label: AppArmor Profile
+    description: "Name of an AppArmor profile to use for the server pod. It must show up in aa-status output."
+    type: string
+    default: ""
+    group: Advanced
+  - variable: server.selinuxType
+    label: SELinux Type
+    description: "SELinux type to use for the server pod. Leave empty for the container runtime default."
+    type: string
+    default: ""
+    group: Advanced
+  - variable: server.systemdLogLevel
+    label: Systemd Log Level
+    description: "Value passed to systemd's --log-level parameter. Empty keeps the default. Setting it adds a tty to the container."
+    type: enum
+    options:
+      - ""
+      - debug
+      - info
+      - notice
+      - warning
+      - err
+      - crit
+      - alert
+      - emerg
+    default: ""
+    group: Advanced
+  - variable: exposeJavaDebug
+    label: Expose Java Debug Ports
+    description: "Expose ports 8001, 8002 and 8003 to connect a Java debugger to taskomatic, search server and tomcat."
+    type: boolean
+    default: false
+    group: Advanced

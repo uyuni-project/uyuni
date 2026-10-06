@@ -20,3 +20,4 @@ annotations:
       url: https://github.com/uyuni-project/uyuni
     - name: support
       url: https://github.com/uyuni-project/uyuni/issues
+  catalog.cattle.io/os: linux
