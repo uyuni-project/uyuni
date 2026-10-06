@@ -1398,3 +1398,12 @@ def get_env_var_with_fallback(host_key, fallback_var = ENV_VAR_BY_HOST.fetch(DEF
   env_var_name = ENV_VAR_BY_HOST[host_key]
   ENV.key?(env_var_name) ? env_var_name : fallback_var
 end
+
+# Returns the name of the environment variable holding the address of the given host,
+# resolving generic client roles (e.g. 'sle_minion') through DEFAULT_HOST_BY_ROLE.
+#
+# @param host [String] The key in ENV_VAR_BY_HOST.
+# @return [String] The environment variable name.
+def env_var_for_host(host)
+  DEFAULT_HOST_BY_ROLE.key?(host) ? get_env_var_with_fallback(host) : ENV_VAR_BY_HOST[host]
+end

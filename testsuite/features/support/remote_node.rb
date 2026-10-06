@@ -20,7 +20,7 @@ class RemoteNode
     puts "Initializing a remote node for '#{@host}'."
     raise(NotImplementedError, "Host #{@host} is not defined as a valid host in the Test Framework.") unless ENV_VAR_BY_HOST.key? @host
 
-    env_var = DEFAULT_HOST_BY_ROLE.key?(@host) ? get_env_var_with_fallback(@host) : ENV_VAR_BY_HOST[@host]
+    env_var = env_var_for_host(@host)
     unless ENV.key? env_var
       warn "Host #{@host} is not defined as environment variable."
       return
