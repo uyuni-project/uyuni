@@ -47,7 +47,7 @@ function parse_args() {
         # directory - image place
         d)
             # used parameter but no directory given
-            if [ -z "${OPTARG}" ] || $(echo "${OPTARG}" | grep -q "^-"); then
+            if [ -z "${OPTARG}" ] || echo "${OPTARG}" | grep -q "^-"; then
                 print_help
                 exit 1
             fi
@@ -62,7 +62,7 @@ function parse_args() {
         # mount point
         m)
             # used parameter but no directory given
-            if [ -z "${OPTARG}" ] || $(echo "${OPTARG}" | grep -q "^-"); then
+            if [ -z "${OPTARG}" ] || echo "${OPTARG}" | grep -q "^-"; then
                 print_help
                 exit 1
             fi
@@ -72,7 +72,7 @@ function parse_args() {
         # image size
         s)
             # used parameter but no number given
-            if [ -z "${OPTARG}" ] || $(echo "${OPTARG}" | grep -q "^-") || ! [[ "${OPTARG}" =~ ^[0-9]+$ ]]; then
+            if [ -z "${OPTARG}" ] || echo "${OPTARG}" | grep -q "^-" || ! [[ "${OPTARG}" =~ ^[0-9]+$ ]]; then
                 echo "ERROR: Not a decimal number or wrong value given."
                 print_help
                 exit 1

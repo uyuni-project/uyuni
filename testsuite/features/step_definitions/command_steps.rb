@@ -178,9 +178,7 @@ end
 
 Then(/^The amount of packages in channel "([^"]*)" should be the same as before$/) do |channel_label|
   add_context('channels', $api_test.channel.list_all_channels)
-  if get_context('channels').key?(channel_label) && (get_context('package_amount') != get_context('channels')[channel_label]['packages'])
-    raise 'Package counts do not match'
-  end
+  raise 'Package counts do not match' if get_context('channels').key?(channel_label) && (get_context('package_amount') != get_context('channels')[channel_label]['packages'])
 end
 
 Then(/^the channel "([^"]*)" should not be empty$/) do |channel_label|
@@ -195,9 +193,7 @@ end
 
 Then(/^The amount of packages in channel "([^"]*)" should be fewer than before$/) do |channel_label|
   add_context('channels', $api_test.channel.list_all_channels)
-  if get_context('channels').key?(channel_label) && get_context('channels')[channel_label]['packages'] >= $package_amount
-    raise 'Package count is not fewer than before'
-  end
+  raise 'Package count is not fewer than before' if get_context('channels').key?(channel_label) && get_context('channels')[channel_label]['packages'] >= $package_amount
 end
 
 When(/^I delete these channels with spacewalk-remove-channel:$/) do |table|
@@ -281,9 +277,7 @@ Then(/^"([^"]*)" should not be installed on "([^"]*)"$/) do |package, host|
 end
 
 When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |package, status, host|
-  if package.include?('suma') && product == 'Uyuni'
-    package.gsub! 'suma', 'uyuni'
-  end
+  package.gsub! 'suma', 'uyuni' if package.include?('suma') && product == 'Uyuni'
   node = get_target(host)
   if deb_host?(host)
     pkg_version = package.split('-')[-1]
@@ -308,9 +302,7 @@ end
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
   salt = $use_salt_bundle ? 'venv-salt-minion' : 'salt'
-  if host == 'server'
-    salt = 'salt'
-  end
+  salt = 'salt' if host == 'server'
   result, _return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding('UTF-8')
@@ -382,7 +374,7 @@ When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |ser
 end
 
 When(/^I execute mgr-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
-  get_target('server').run("echo -e \'mgrsync.user = \"#{u}\"\nmgrsync.password = \"#{p}\"\n\' > ~/.mgr-sync")
+  get_target('server').run("echo -e 'mgrsync.user = \"#{u}\"\nmgrsync.password = \"#{p}\"\n' > ~/.mgr-sync")
   $command_output, _code = get_target('server').run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", check_errors: false, buffer_size: 1_000_000)
 end
 
@@ -641,7 +633,7 @@ When(/^I extract the log files from all our active nodes$/) do
 end
 
 Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
-  step %(file "/etc/zypp/repos.d/susemanager\:channels.repo" should exist on "#{host}")
+  step %(file "/etc/zypp/repos.d/susemanager:channels.repo" should exist on "#{host}")
 end
 
 Then(/^the repo file should contain the (custom|normal) download endpoint on the "([^"]*)"$/) do |type, target|
@@ -1034,9 +1026,7 @@ When(/^I disable source package syncing$/) do
 end
 
 When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
-  if pattern.include?('suma') && product == 'Uyuni'
-    pattern.gsub! 'suma', 'uyuni'
-  end
+  pattern.gsub! 'suma', 'uyuni' if pattern.include?('suma') && product == 'Uyuni'
   node = get_target(host)
   node.run('zypper ref')
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
@@ -1044,9 +1034,7 @@ When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
 end
 
 When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
-  if pattern.include?('suma') && product == 'Uyuni'
-    pattern.gsub! 'suma', 'uyuni'
-  end
+  pattern.gsub! 'suma', 'uyuni' if pattern.include?('suma') && product == 'Uyuni'
   node = get_target(host)
   node.run('zypper ref')
   cmd = "zypper --non-interactive remove -t pattern #{pattern}"
@@ -1448,9 +1436,7 @@ end
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node = get_target(host)
   salt_call = $use_salt_bundle ? 'venv-salt-call' : 'salt-call'
-  if host == 'server'
-    salt_call = 'salt-call'
-  end
+  salt_call = 'salt-call' if host == 'server'
   source = "#{File.dirname(__FILE__)}/../upload_files/salt/#{state}.sls"
   remote_file = "/usr/share/susemanager/salt/#{state}.sls"
   success = file_inject(node, source, remote_file)
@@ -1872,8 +1858,8 @@ When(/^I change back the server's hostname$/) do
   log "Old hostname: #{old_hostname} - New hostname: #{new_hostname}"
   server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
                    hostname #{new_hostname} &&
-                   sed -i \'$d\' /etc/hosts &&
-                   sed -i \'$d\' /etc/hosts")
+                   sed -i '$d' /etc/hosts &&
+                   sed -i '$d' /etc/hosts")
   get_target('server', refresh: true) # This will refresh the attributes of this node
   hostname, _result = get_target('server').run('hostname')
   hostname.strip!
@@ -1950,7 +1936,7 @@ When(/^I stop the health check tool on "([^"]*)"$/) do |host|
 end
 
 Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^"]*)"$/) do |word, threshold, path, host|
-  count, _ret = get_target(host).run("grep -o -i \'#{word}\' #{path} | wc -l")
+  count, _ret = get_target(host).run("grep -o -i '#{word}' #{path} | wc -l")
   occurences = count.to_i
   raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
 end

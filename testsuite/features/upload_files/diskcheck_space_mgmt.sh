@@ -31,11 +31,15 @@ function cleanup() {
     # it may happen the files are in the "volumes" directory if run in container - in case this needs to be checked as well
     if [ -d /var/lib/containers/storage/volumes ]; then
         # delete the whole directory if created previously
-        NEW_DIR_CHECK_FILE=$(find /var/lib/containers/storage/volumes -name "${DSKCHK_NEW_DIR_FILE}" -print) && [ -n "${NEW_DIR_CHECK_FILE}" ] && [ ${DSKCHK_FILLINGS} -eq 0 ] && { rm -rf $(dirname ${NEW_DIR_CHECK_FILE}); return 0; }
+        NEW_DIR_CHECK_FILE=$(find /var/lib/containers/storage/volumes -name "${DSKCHK_NEW_DIR_FILE}" -print)
+        if [ -n "${NEW_DIR_CHECK_FILE}" ] && [ ${DSKCHK_FILLINGS} -eq 0 ]; then
+            while IFS= read -r CHECK_FILE; do
+                rm -rf "$(dirname "${CHECK_FILE}")"
+            done <<< "${NEW_DIR_CHECK_FILE}"
+            return 0
+        fi
         # delete particular files if exist
-        for FILE_TO_DELETE in $(find /var/lib/containers/storage/volumes -name "${DSKCHK_FILE_PREFIX}*" -print); do
-            rm "${FILE_TO_DELETE}"
-        done
+        find /var/lib/containers/storage/volumes ! -type d -name "${DSKCHK_FILE_PREFIX}*" -delete
     fi
     sync
 }
@@ -51,7 +55,7 @@ function parse_args() {
         # directory - storage and watched place
         d)
             # used parameter but no directory given
-            if [ -z "${OPTARG}" ] || $(echo "${OPTARG}" | grep -q "^-"); then
+            if [ -z "${OPTARG}" ] || echo "${OPTARG}" | grep -q "^-"; then
                 print_help
                 exit 1
             fi
@@ -72,7 +76,7 @@ function parse_args() {
         # percentage of the disk to be filled up
         p)
             # used parameter but no percentage given
-            if [ -z "${OPTARG}" ] || $(echo "${OPTARG}" | grep -q "^-") || ! [[ "${OPTARG}" =~ ^[0-9]+$ ]] || [ ${OPTARG} -ge 100 ]; then
+            if [ -z "${OPTARG}" ] || echo "${OPTARG}" | grep -q "^-" || ! [[ "${OPTARG}" =~ ^[0-9]+$ ]] || [ ${OPTARG} -ge 100 ]; then
                 echo "ERROR: Not a decimal number or wrong value given."
                 print_help
                 exit 1

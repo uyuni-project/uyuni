@@ -115,9 +115,7 @@ When(/^I delete the image "([^"]*)" with version "([^"]*)" via API calls$/) do |
   refute_nil(images_list, 'ERROR: no images at all were retrieved.')
   image_id = 0
   images_list.each do |element|
-    if element['name'] == image_name_todel.strip && element['version'] == version.strip
-      image_id = element['id']
-    end
+    image_id = element['id'] if element['name'] == image_name_todel.strip && element['version'] == version.strip
   end
   if image_id.zero?
     log "Image #{image_name_todel} with version #{version} does not exist, skipping"

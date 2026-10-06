@@ -169,9 +169,7 @@ Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
     break if find(:xpath, '//canvas')
 
     # If the connection failed try reloading since the VM may not have been ready
-    if find(:xpath, '//*[contains(@class, "modal-title") and text() = "Failed to connect"]')
-      refresh_page
-    end
+    refresh_page if find(:xpath, '//*[contains(@class, "modal-title") and text() = "Failed to connect"]')
   end
 end
 
@@ -1456,8 +1454,6 @@ Then(/^the following restrictions should be (enabled|disabled):$/) do |expected_
     raise "Unknown restriction: #{restriction}" unless checkbox_id
 
     actual = checkbox_state(checkbox_id)
-    unless actual == expected_checkbox_state
-      raise "Expected '#{restriction}' to be #{expected_checkbox_state}, but was #{actual}"
-    end
+    raise "Expected '#{restriction}' to be #{expected_checkbox_state}, but was #{actual}" unless actual == expected_checkbox_state
   end
 end
