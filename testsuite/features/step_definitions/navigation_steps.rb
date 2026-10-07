@@ -233,7 +233,10 @@ end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
   # The proxy's base channel follows the proxy's own OS, not the server's.
-  client = 'proxy_nontransactional' if client == 'proxy' && !host_transactional?(client)
+  # In hub topologies the proxies are proxy2 and proxy3.
+  if client.match?(/\Aproxy[23]?\z/)
+    client = host_transactional?(client) ? 'proxy' : 'proxy_nontransactional'
+  end
   select(BASE_CHANNEL_BY_CLIENT[product][client], from: from, exact: false)
 end
 

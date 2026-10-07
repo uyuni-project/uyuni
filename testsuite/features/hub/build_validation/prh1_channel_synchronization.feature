@@ -18,6 +18,21 @@ Feature: Hub ISSv3 channel synchronization to peripheral1
   Scenario: Sync the Ubuntu 24.04 channels from hub to peripheral1 for minion bootstrap
     When I configure hub to sync all "ubuntu-2404" channels to "peripheral1"
 
+  @proxy2
+  Scenario: Sync the Maintenance Update custom channel of proxy2 from hub to peripheral1
+    Given the hub has the Maintenance Update custom channel of "proxy2"
+    And I configure hub to sync the custom channel of proxy "proxy2" to "peripheral1"
+
+  @sles15sp7_minion
+  Scenario: Sync the Maintenance Update custom channel of sles15sp7_minion from hub to peripheral1
+    Given the hub has the Maintenance Update custom channel of "sles15sp7_minion"
+    And I configure hub to sync the custom channel of "sles15sp7_minion" to "peripheral1"
+
+  @ubuntu2404_minion
+  Scenario: Sync the Maintenance Update custom channel of ubuntu2404_minion from hub to peripheral1
+    Given the hub has the Maintenance Update custom channel of "ubuntu2404_minion"
+    And I configure hub to sync the custom channel of "ubuntu2404_minion" to "peripheral1"
+
   Scenario: Trigger channel sync from hub to peripheral1
     Given I am authorized for the "Admin" section on "peripheral1"
     When I initiate channel sync from peripheral "peripheral1"
@@ -30,6 +45,21 @@ Feature: Hub ISSv3 channel synchronization to peripheral1
   @long_running
   Scenario: Wait for Ubuntu 24.04 channels to be synchronized on peripheral1
     And I wait until all synchronized channels for "ubuntu-2404" have finished on peripheral1
+
+  @proxy2
+  Scenario: Wait for the Maintenance Update custom channel of proxy2 to be synchronized on peripheral1
+    Given the hub has the Maintenance Update custom channel of "proxy2"
+    And I wait until the custom channel of proxy "proxy2" has been synced on peripheral1
+
+  @sles15sp7_minion
+  Scenario: Wait for the Maintenance Update custom channel of sles15sp7_minion to be synchronized on peripheral1
+    Given the hub has the Maintenance Update custom channel of "sles15sp7_minion"
+    And I wait until the channel "custom_channel_sles15sp7_minion" has been synced on peripheral1
+
+  @ubuntu2404_minion
+  Scenario: Wait for the Maintenance Update custom channel of ubuntu2404_minion to be synchronized on peripheral1
+    Given the hub has the Maintenance Update custom channel of "ubuntu2404_minion"
+    And I wait until the channel "custom_channel_ubuntu2404_minion" has been synced on peripheral1
 
   Scenario: Verify all channels are solved
     When I wait until all synchronized channels have solved their dependencies on peripheral1

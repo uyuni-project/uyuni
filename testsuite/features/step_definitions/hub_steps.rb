@@ -461,12 +461,29 @@ When(/^I configure hub to sync all "([^"]*)" channels to "([^"]*)"$/) do |search
   find('input.table-input-search').set(search_term)
   find(:xpath, '//tr[contains(@class, "parent-row")]//i[contains(@class, "expand-icon")]', wait: DEFAULT_TIMEOUT).click
   channel_names = all(:xpath, '//tbody/tr', wait: DEFAULT_TIMEOUT, minimum: 2).map { |row| row.find(:xpath, 'td[3]').text }
+  # Expanding a parent row lists all its children, custom channels included: only sync those explicitly searched for
+  channel_names.reject! { |name| name.start_with?('Custom Channel for') && !name.include?(search_term) }
   changed =
     channel_names.reduce(false) do |any_changed, channel_name|
       checkbox_xpath = "//tbody//tr[td[3][normalize-space(.)='#{channel_name}']]//input[@type='checkbox']"
       set_channel_checkbox_state(checkbox_xpath, true) || any_changed
     end
   click_apply_channels_button if changed
+end
+
+# The custom channel is created by the hub pipeline stage "Add MUs Proxy", only when it runs
+# and custom repositories are configured: skip the scenario when the hub does not have it.
+Given(/^the hub has the Maintenance Update custom channel of "([^"]*)"$/) do |host|
+  label = host.start_with?('proxy') ? "proxy_#{proxy_flavour(host)}" : host
+  skip_this_scenario unless api_client_for('server').channel.channel_verified?("custom_channel_#{label}")
+end
+
+When(/^I configure hub to sync the custom channel of proxy "([^"]*)" to "([^"]*)"$/) do |proxy, host|
+  step %(I configure hub to sync channel "Custom Channel for proxy_#{proxy_flavour(proxy)}" to "#{host}")
+end
+
+When(/^I configure hub to sync the custom channel of "((?!proxy)[^"]*)" to "([^"]*)"$/) do |client, host|
+  step %(I configure hub to sync channel "Custom Channel for #{client}" to "#{host}")
 end
 
 When(/^I select target organization "([^"]*)" for channel "([^"]*)" on "([^"]*)"$/) do |org, channel, _host|
@@ -612,6 +629,11 @@ When(/^I wait at most (\d+) seconds until channel "([^"]*)" has been synced on "
 
     sleep 10
   end
+end
+
+When(/^I wait until the custom channel of proxy "([^"]*)" has been synced on (peripheral1|peripheral2)$/) do |proxy, host|
+  channel = "custom_channel_proxy_#{proxy_flavour(proxy)}"
+  wait_for_channels([channel], "channel '#{channel}'", host: host, margin: 0)
 end
 
 # ISSv2 prerequisite checks (A-09)

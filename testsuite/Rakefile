@@ -13,6 +13,32 @@ junit_results = '-f junit -o results_junit'
 build_number = ENV.fetch('BUILD_NUMBER', nil)
 result_folder = build_number.nil? ? 'results' : "results/#{build_number}"
 
+# Renders a generated Maintenance Update feature: fills the channel label and the host whose own
+# flavour decides the parent channel (and which must be defined, hence its extra tag).
+def render_mu_feature(source, destination, client, channel, host)
+  content = File.read(source).gsub('<channel>', channel).gsub('<parent_host>', host)
+  content.sub!(/^@#{client}$/, "@#{client} @#{host}") unless host == client
+  File.write(destination, content)
+end
+
+# The distinct flavours of the proxies (proxy, proxy2, proxy3), each with the first host having it.
+# A host whose flavour cannot be detected is skipped with a warning.
+#
+# @return [Hash<String, String>] flavour suffix => proxy host
+def proxy_mu_flavours
+  return $proxy_mu_flavours if $proxy_mu_flavours
+
+  %w[constants remote_nodes_env proxy_flavour].each { |lib| require_relative "features/support/#{lib}" }
+  hosts = %w[proxy proxy2 proxy3].select { |host| ENV.key?(ENV_VAR_BY_HOST[host]) }
+  flavours = {}
+  hosts.each do |host|
+    flavours[proxy_flavours([host]).first] ||= host
+  rescue StandardError => e
+    warn "Skipping #{host} for the Maintenance Update channels: flavour detection failed (#{e.message})"
+  end
+  $proxy_mu_flavours = flavours
+end
+
 namespace :cucumber do
   # Define the timestamp before the loop starts.
   timestamp = Time.now.strftime('%Y%m%d%H%M%S')
@@ -252,12 +278,24 @@ namespace :utils do
     clients.reject! { |client| client.include?('ssh') }
     clients.reject! { |client| client.include?('monitoring_server') }
     clients.each do |client|
+      client_name = File.basename(client, '.feature')
+      output_path = 'features/build_validation/add_MU_repositories'
       Rake::Task['utils:generate_feature'].invoke(
-        'features/build_validation/add_MU_repositories/add_maintenance_update_repositories.template',
-        File.basename(client, '.feature'),
-        'features/build_validation/add_MU_repositories'
+        "#{output_path}/add_maintenance_update_repositories.template",
+        client_name,
+        output_path
       )
       Rake::Task['utils:generate_feature'].reenable
+      generated = "#{output_path}/#{client_name}_add_maintenance_update_repositories.feature"
+      # The proxy channel is per flavour, detected from the proxy hosts' own OS: one feature per distinct
+      # flavour, the first one keeping the plain file name.
+      flavours = client_name == 'proxy' && ENV['PROXY'] ? proxy_mu_flavours : {}
+      flavours.drop(1).each do |flavour, host|
+        feature = "#{output_path}/proxy_#{flavour}_add_maintenance_update_repositories.feature"
+        render_mu_feature(generated, feature, client_name, "proxy_#{flavour}", host)
+      end
+      flavour, host = flavours.first
+      render_mu_feature(generated, generated, client_name, flavour ? "proxy_#{flavour}" : client_name, host || client_name)
     end
   end
 
@@ -415,6 +453,14 @@ namespace :jenkins do
         "run_sets/build_validation/build_validation_add_maintenance_update_repositories_#{minion}.yml"
       )
       Rake::Task['jenkins:generate_rake_run_step'].reenable
+      # The other proxy flavour features run in the same run set
+      next unless minion == 'proxy'
+
+      proxy_mu_flavours.keys.drop(1).each do |flavour|
+        feature = "features/build_validation/add_MU_repositories/proxy_#{flavour}_add_maintenance_update_repositories.feature"
+        yaml = "run_sets/build_validation/build_validation_add_maintenance_update_repositories_#{minion}.yml"
+        sh "echo '- #{feature}' >> #{yaml}", verbose: false
+      end
     end
   end
 

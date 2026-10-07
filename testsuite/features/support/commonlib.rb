@@ -934,7 +934,7 @@ end
 # This method handles the lifecycle of channel synchronization by:
 # 1 Initializing shared context variables (idempotent).
 # 2 Calculating a cumulative timeout: Sum of (channel_timeouts) + 900s flat margin.
-# 3 Polling the system until packages are downloaded or the timeout expires.
+# 3 Polling the system until packages are downloaded and repomd.xml exists, or the timeout expires.
 # 4 Updating a global 'channels_timeout' budget used by the step solving packages dependencies for each channel
 #
 # @param channels [String, Array<String>] A single channel name or an array of channel names.
@@ -961,7 +961,7 @@ def wait_for_channels(channels, label, host: 'server', margin: 900)
 
   # --- Execution Loop ---
   begin
-    repeat_until_timeout(timeout: timeout, message: "Sync failed for #{label}") do
+    repeat_until_timeout(timeout: timeout, message: "Sync failed for #{label}", report_result: true) do
       # Remove channels from the local tracking list as they complete
       channels.reject! { |c| channel_packages_are_downloaded?(c, host) }
       break if channels.empty?
@@ -970,19 +970,35 @@ def wait_for_channels(channels, label, host: 'server', margin: 900)
         log "#{time_spent / 60}m / #{timeout / 60}m waiting for #{label} synchronization"
       end
       sleep checking_rate
+      "channels #{channels.join(', ')} not synced: packages not downloaded or repomd.xml missing on #{host}"
     end
   rescue StandardError => e
     log "Failed channels for #{label}: #{channels}. #{e.message}"
+    missing = channels.select { |c| c.include?('custom_channel') && !repomd_present?(c, host) }
+    unless missing.empty?
+      paths = missing.map { |c| "/var/cache/rhn/repodata/#{c}/repomd.xml" }
+      e = e.class.new("#{e.message} (missing on #{host}: #{paths.join(', ')})")
+    end
     # Cleanup: Remove failed channels from the solving queue
     add_context('channels_to_wait_solv_file', get_context('channels_to_wait_solv_file') - channels)
     add_context('channels_failed_downloading', get_context('channels_failed_downloading') + channels)
     # Credit the remaining time budget to the global channels timeout
     add_context('channels_timeout', get_context('channels_timeout') + (timeout - time_spent))
-    raise unless $build_validation
+    raise e unless $build_validation
   else
     # Success: Add the "saved" time from this run to the global channels timeout
     add_context('channels_timeout', get_context('channels_timeout') + (timeout - time_spent))
   end
+end
+
+# Check that the repository metadata of a channel has been generated on the given host
+#
+# @param channel_name [String] the label of the channel
+# @param host [String] the target node
+# @return [Boolean] true if /var/cache/rhn/repodata/<label>/repomd.xml exists
+def repomd_present?(channel_name, host)
+  _out, code = get_target(host).run("test -f /var/cache/rhn/repodata/#{channel_name}/repomd.xml", check_errors: false)
+  code.zero?
 end
 
 # This method checks if the channel with the given label has been fully synced
@@ -1000,7 +1016,7 @@ def channel_packages_are_downloaded?(channel_name, host = 'server')
       monitoring_base_channel = BASE_CHANNEL_BY_CLIENT[product][client]
       matching_minions = BASE_CHANNEL_BY_CLIENT[product].select { |k, v| k.end_with?('_minion') && v == monitoring_base_channel }.keys
       return true if matching_minions.none? { |c| $custom_repositories[c] }
-    elsif $custom_repositories[client].nil?
+    elsif custom_repositories_for(client).nil?
       return true
     end
   end
@@ -1049,6 +1065,12 @@ def channel_packages_are_downloaded?(channel_name, host = 'server')
     next unless line.include?('Sync of channel completed.')
 
     log "DEBUG: Found 'Sync of channel completed.' for #{channel_name} at line #{i + 1}."
+    # Only custom channels are checked: that is the case that failed (metadata generated after the sync,
+    # clients got a 403/404 on repomd.xml); vendor channels are not verified to always have repodata.
+    if channel_name.include?('custom_channel') && !repomd_present?(channel_name, host)
+      log "DEBUG: #{channel_name} is synced but its repomd.xml is missing on #{host}."
+      return false
+    end
     log "SUCCESS: #{channel_name} is fully synchronized."
     return true
   end

@@ -1,6 +1,7 @@
 # Copyright (c) 2024-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+require 'securerandom'
 require 'timeout'
 require_relative 'network_utils'
 
@@ -264,7 +265,7 @@ class RemoteNode
     raise ScriptError, "Remote file #{remote_node_file} does not exist on #{@host}" unless file_exists?(remote_node_file)
 
     if @has_mgrctl
-      tmp_file = File.join('/tmp/', File.basename(remote_node_file))
+      tmp_file = File.join('/tmp/', "#{SecureRandom.hex(4)}-#{File.basename(remote_node_file)}")
       _out, code = run_local("mgrctl cp server:#{remote_node_file} #{tmp_file}", verbose: false)
       raise ScriptError, "Failed to extract #{remote_node_file} from container" unless code.zero?
 

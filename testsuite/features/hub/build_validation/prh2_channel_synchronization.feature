@@ -18,6 +18,21 @@ Feature: Hub ISSv3 channel synchronization to peripheral2
   Scenario: Sync the Rocky Linux 10 channels from hub to peripheral2 for minion bootstrap
     When I configure hub to sync all "rockylinux-10" channels to "peripheral2"
 
+  @proxy3
+  Scenario: Sync the Maintenance Update custom channel of proxy3 from hub to peripheral2
+    Given the hub has the Maintenance Update custom channel of "proxy3"
+    And I configure hub to sync the custom channel of proxy "proxy3" to "peripheral2"
+
+  @slmicro62_minion
+  Scenario: Sync the Maintenance Update custom channel of slmicro62_minion from hub to peripheral2
+    Given the hub has the Maintenance Update custom channel of "slmicro62_minion"
+    And I configure hub to sync the custom channel of "slmicro62_minion" to "peripheral2"
+
+  @rocky10_minion
+  Scenario: Sync the Maintenance Update custom channel of rocky10_minion from hub to peripheral2
+    Given the hub has the Maintenance Update custom channel of "rocky10_minion"
+    And I configure hub to sync the custom channel of "rocky10_minion" to "peripheral2"
+
   Scenario: Trigger channel sync from hub to peripheral2
     Given I am authorized for the "Admin" section on "peripheral2"
     When I initiate channel sync from peripheral "peripheral2"
@@ -28,6 +43,21 @@ Feature: Hub ISSv3 channel synchronization to peripheral2
 
   Scenario: Wait for Rocky Linux 10 channels to be synchronized on peripheral2
     And I wait until all synchronized channels for "rockylinux10" have finished on peripheral2
+
+  @proxy3
+  Scenario: Wait for the Maintenance Update custom channel of proxy3 to be synchronized on peripheral2
+    Given the hub has the Maintenance Update custom channel of "proxy3"
+    And I wait until the custom channel of proxy "proxy3" has been synced on peripheral2
+
+  @slmicro62_minion
+  Scenario: Wait for the Maintenance Update custom channel of slmicro62_minion to be synchronized on peripheral2
+    Given the hub has the Maintenance Update custom channel of "slmicro62_minion"
+    And I wait until the channel "custom_channel_slmicro62_minion" has been synced on peripheral2
+
+  @rocky10_minion
+  Scenario: Wait for the Maintenance Update custom channel of rocky10_minion to be synchronized on peripheral2
+    Given the hub has the Maintenance Update custom channel of "rocky10_minion"
+    And I wait until the channel "custom_channel_rocky10_minion" has been synced on peripheral2
 
   Scenario: Verify all channels are solved
     When I wait until all synchronized channels have solved their dependencies on peripheral2

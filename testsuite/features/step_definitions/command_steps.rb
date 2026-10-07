@@ -465,9 +465,9 @@ Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
   end
 end
 
-When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
+When(/^I wait until the channel "([^"]*)" has been synced(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |channel, host|
   margin = channel.include?('custom_channel') || channel.include?('ptf') ? 0 : 900
-  wait_for_channels([channel], "channel '#{channel}'", margin: margin)
+  wait_for_channels([channel], "channel '#{channel}'", host: host || 'server', margin: margin)
 end
 
 When(/^I wait until all synchronized channels for "([^"]*)" have finished(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |os_product_version, host|
