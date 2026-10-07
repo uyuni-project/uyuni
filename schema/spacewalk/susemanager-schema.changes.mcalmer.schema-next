@@ -1,2 +1,0 @@
-- Support '/next' directory for easier schema upgrade during
-  development and when providing PTFs

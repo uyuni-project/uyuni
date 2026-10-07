@@ -25,7 +25,7 @@
 %define schema_upgrade_folder %{spacewalk_folder}/SchemaUpgrade
 
 Name:           susemanager-schema
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        SQL schema for %{productprettyname} server
 License:        GPL-2.0-only

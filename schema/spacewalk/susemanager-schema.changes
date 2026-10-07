@@ -1,4 +1,31 @@
 -------------------------------------------------------------------
+Wed Oct 07 18:28:42 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Renumber config channel positions to close gaps left by deleting
+    an assigned config channel (ON DELETE CASCADE did not compact
+    the survivors), preventing multiple failures (bsc#1272988)
+  * RBAC: add missing endpoints to 'systems.profiles' namespace
+    (bsc#1271963)
+  * Add an API endpoint to list and filter systems
+  * Fix Ansible path descriptions in access-control groups
+  * Separate Live-Patching Errata for SLE15 SP7 (bsc#1270039)
+  * Create a Queue table for ClmChannelDiff (bsc#1273021)
+  * Support '/next' directory for easier schema upgrade during
+    development and when providing PTFs
+  * Add RBAC mappings for GPG key management endpoints
+  * Increase advisory char limit to 150 in
+    rhnErrata (bsc#1273846)
+  * Only delete outdated data during oval sync instead of the
+    entire data set
+  * Rework User x Address relationship
+  * Make clone channel appstreams idempotent (bsc#1254201)
+  * Fix failed repo-sync due to wrong size of reason column
+    (bsc#1281412)
+  * Ensure that server token relation is unique (bsc#1268744)
+  * Add schema support for transactional system management
+
+-------------------------------------------------------------------
 Wed Aug 05 16:53:44 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0
