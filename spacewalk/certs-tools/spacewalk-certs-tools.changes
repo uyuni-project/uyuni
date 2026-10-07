@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct 08 00:58:33 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Include boot time grain in default Salt minion startup events.
+
+-------------------------------------------------------------------
 Wed Aug 05 13:52:35 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0
