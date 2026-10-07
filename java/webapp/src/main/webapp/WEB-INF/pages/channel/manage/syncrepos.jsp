@@ -84,38 +84,43 @@
         </rl:list>
 
         <div class="checkbox">
-            <label data-bs-toggle="tooltip" title="<bean:message key="channel.manage.sync.nostrict-tt.jsp"/>">
+            <label>
                 <input type="checkbox" name="noStrict" id="noStrict"  <c:if test='${noStrict}'> checked</c:if> />
                 <bean:message key="channel.manage.sync.nostrict.jsp"/>
             </label>
+            <rhn:icon type="header-info" title="channel.manage.sync.nostrict-tt.jsp"/>
         </div>
         
         <div class="checkbox">
-            <label data-bs-toggle="tooltip" title="<bean:message key="channel.manage.sync.noerrata-tt.jsp"/>">
+            <label>
                 <input type="checkbox" name="noErrata" id="noErrata" <c:if test='${noErrata}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.noerrata.jsp"/>
             </label>
+            <rhn:icon type="header-info" title="channel.manage.sync.noerrata-tt.jsp"/>
         </div>
         
         <div class="checkbox">
-            <label data-bs-toggle="tooltip" title="<bean:message key="channel.manage.sync.latestonly-tt.jsp"/>">
+            <label>
                 <input type="checkbox" name="latest" id="latest" <c:if test='${latest}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.latestonly.jsp"/>
             </label>
+            <rhn:icon type="header-info" title="channel.manage.sync.latestonly-tt.jsp"/>
         </div>
         
         <div class="checkbox">
-            <label data-bs-toggle="tooltip" title="<bean:message key="channel.manage.sync.synckickstart-tt.jsp"/>">
+            <label>
                 <input type="checkbox" name="syncKickstart" id="syncKickstart" <c:if test='${syncKickstart}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.synckickstart.jsp"/>
             </label>
+            <rhn:icon type="header-info" title="channel.manage.sync.synckickstart-tt.jsp"/>
         </div>
         
         <div class="checkbox">
-            <label data-bs-toggle="tooltip" title="<bean:message key="channel.manage.sync.fail-tt.jsp"/>">
+            <label>
                 <input type="checkbox" name="fail" id="fail" <c:if test='${fail}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.fail.jsp"/>
             </label>
+            <rhn:icon type="header-info" title="channel.manage.sync.fail-tt.jsp"/>
         </div>
         
         <br/>
