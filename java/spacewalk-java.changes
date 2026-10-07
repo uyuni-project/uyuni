@@ -1,4 +1,127 @@
 -------------------------------------------------------------------
+Wed Oct 07 18:37:10 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Fixed inconsistent SSM and Convert to Proxy buttons state on the
+    System Details tabs. (bsc#1268632)
+  * Fix image status icon to reflect failed image inspections.
+    (bsc#1255090)
+  * Removed "Go to OS image directory listing" link
+    from Images page. (bsc#1251867)
+  * Commit transaction in syncChannel when repo-sync is running for
+    the same channel to prevent possible deadlocks (bsc#1274884)
+  * Handle distupgrade to SLE16 for SSH minions (bsc#1268463)
+  * Optimize cloned channel sync queries in
+    `Errata_queries.xml` to avoid nested loops (bsc#1273071)
+  * Fix virtual instance refresh for mixed SSH and regular
+    minions (bsc#1254316)
+  * Fix Ansible path API descriptions
+  * Fix accessibility markup for mirror credential dialogs.
+  * Add migration path for EL10 products
+  * Enable product migrations to 16.1 for SLES, SLES for SAP and
+    SLE-RT
+  * Fix CLM stuck in building by waiting for
+    full DB commit in ActionExecutor
+  * Remove traditional stack leftover in dist migration
+    and allow the API to proceed product migration
+    even if there are outstanding management
+    stack updates (bsc#1275215)
+  * Stop forcing password-based SAML authentication by default; the
+    requested AuthnContext defaults shipped in the SSO config are now
+    commented out so the IdP can pick the appropriate authentication
+    method (FIDO2, Yubikey, Windows Hello) with strict SAML clients
+    such as Microsoft Edge
+  * Fix config channel position gaps (bsc#1272988)
+  * Fixed custom RBAC role names being incorrectly
+    localized. (bsc#1271116)
+  * Improve handling of invalid issue_date values when creating
+    CLM filters via the API. (bsc#1271467)
+  * Fix Profile tab display in system details menu (bsc#1271963)
+  * Separate Live-Patching Errata for SLE15 SP7 (bsc#1270039)
+  * Fix EOL notifications in containers
+  * Wait for taskomatic before processing events (bsc#1265472)
+  * CVE-2026-71400: Remove cobbler_api endpoint from public interface
+    (bsc#1274613, bsc#1274775)
+  * Fix Hibernate session crash on Errata Sync by
+    dynamically loading default access groups
+    from the active session (bsc#1272298)
+  * Add a fallback errata ID for Ubuntu errata without identification
+  * Remove activation keys when a base channel is deleted
+    (bsc#1233592)
+  * Fix on removing activation keys when a base channel
+    is deleted (bsc#1233592)
+  * Mainframe systems showing wrong os version (bsc#1260342)
+  * Fix duplicate UI entries in rhel10-like minion package
+    upgrades (bsc#1262234)
+  * Set default checksum type for new UI channels to sha256
+    (bsc#1269011)
+  * Fix correct assignment of peripheral entitlement (bsc#1269086)
+  * Make setting of column filters in ListTag idempotent
+    (bsc#1269192)
+  * Add an API endpoint to list and filter systems
+  * Align the pom files after 'com.ongres.scram:client/common' have
+    been renamed to 'com.ongres.scram:scram-client/scram-common'
+  * Avoid autofocus warnings during PJAX navigation.
+  * Align kickstart script ranking handler arguments.
+  * Update woodstox-core to 7.2.1, the version now published in the
+    Uyuni package repository
+  * Removed ORO dependency in favor of Java regex
+  * Removed simple-core dependency in favor of the JDK built-in
+    HttpServer implementation
+  * Use the correct field for ordering ErrataFile (bsc#1279463)
+  * Prevent cascading package operations to checksums (bsc#1272392)
+  * Refactor ClmChannelDiff task to use a queue. This allows
+    the tasks to be executed in parallel and the hibernate
+    cache to stay smaller as results are committed sooner.
+    This should prevent blocking other tasks (bsc#1273021)
+  * Fix manage channel packages UI
+  * Add API endpoints for GPG key management
+  * Fix broken ownership of /var/lib/spacewalk
+  * Remove /var/lib/spacewalk/gpgdir from spacewalk-java
+  * Do not add FQDNs from proxy certificate (bsc#1270141,
+    bsc#1272404)
+  * Do not crash on conflicting FQDNs, add error message
+  * Include CVEs column in the CSV export of the "Patches Relevant to
+    Your Systems" page
+  * Use Channel equality even for ClonedChannel
+    (bsc#1272621)
+  * Remove OVAL section in errata details (bsc#1278406)
+  * Only delete outdated data during oval sync instead of the
+    entire data set
+  * Drop jctools dependency
+  * Fix Channel/Errata/Package bidirectional relationship mappings
+  * Improve error handling/reporting for failed salt functions
+  * Review UpgradeCommand legacy migrations
+  * Rework User x Address relationship
+  * Add delay to package clean to not interfere with repo-sync
+    (bsc#1258500)
+  * Remove udevdb salt module leftovers, udev is used now
+  * Fix CLM not propagating new AppStream module
+    versions to cloned channels (bsc#1254201)
+  * Improve CVE audit performance to avoid timeouts with many systems
+    (bsc#1276449)
+  * Batch OVAL package lookups during CVE audits
+    (bsc#1276449)
+  * Fix NPE on repository metadata generation (bsc#1277592)
+  * Change color of languages and remove spaces in user creation page
+  * Substitute uses of "ActivationKeyFactory.removeKey()" with
+    "ActivationKeyManager.remove()" to take care of cobbler
+    when removing activation keys
+  * Fix race condition when adding or removing a server to or from
+    an activation key (bsc#1268744)
+  * Don't create "/var/spacewalk/gpg" again in CertificateUtils
+  * Add transactional action progress tracking and snapshot refresh
+    support
+  * Support live execution through direct_call on transactional
+    systems
+  * Add transactional execution options for Apply States and remote
+    commands
+  * Support highstate continuation and transactional formula
+    workflows, including recurring formula actions
+  * Prefer the Salt transactional grain when identifying
+    transactional systems
+
+-------------------------------------------------------------------
 Wed Aug 05 15:47:23 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0
