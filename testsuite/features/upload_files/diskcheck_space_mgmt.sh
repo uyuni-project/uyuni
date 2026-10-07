@@ -115,7 +115,7 @@ DSKCHK_USED_SPACE=$(df -BM "${DSKCHK_MOUNT}" | tail -1 | sed 's/\s\+/ /g' | cut 
 DSKCHK_ENDSTATE_SPACE=$((${DSKCHK_MAX_SPACE} / 100 * ${DSKCHK_PERCENTAGE}))
 DSKCHK_ADD_SPACE=$((${DSKCHK_ENDSTATE_SPACE} - ${DSKCHK_USED_SPACE}))
 
-dd if=/dev/zero of="${DSKCHK_DIRECTORY}/${DSKCHK_FILE_PREFIX}$(date +%Y%m%d%H%M%S)" bs=1M count=${DSKCHK_ADD_SPACE}
+fallocate -l $((${DSKCHK_ADD_SPACE}*1024*1024)) "${DSKCHK_DIRECTORY}/${DSKCHK_FILE_PREFIX}$(date +%Y%m%d%H%M%S)"
 sync
 echo "Current space:"
 df -BM "${DSKCHK_MOUNT}"
