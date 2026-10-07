@@ -1,0 +1,1 @@
+ALTER TABLE rhnContentSource ADD COLUMN IF NOT EXISTS download_strategy_id INTEGER NOT NULL DEFAULT 500;
