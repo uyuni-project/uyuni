@@ -43,7 +43,7 @@ public class SystemDetailsMessageFilterTest extends BaseTestCase {
     @SaltTestRootPath
     protected Path tmpSaltRoot;
 
-    @UserForTest(useClassNameForOrg = true)
+    @UserForTest
     private User user;
 
     @Test
