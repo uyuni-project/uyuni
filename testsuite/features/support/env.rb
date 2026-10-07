@@ -550,7 +550,7 @@ Before('@sshminion') do
 end
 
 Before('@build_host') do
-  env_var_name = get_env_var_with_fallback('build_host', 'SLES15SP7_BUILDHOST')
+  env_var_name = get_env_var_with_fallback('build_host')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 

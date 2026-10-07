@@ -109,7 +109,8 @@ DEFAULT_HOST_BY_ROLE = {
   'sle_minion' => 'sles15sp7_minion',
   'sshminion' => 'sles15sp7_sshminion',
   'rhlike_minion' => 'rocky8_minion',
-  'deblike_minion' => 'ubuntu2404_minion'
+  'deblike_minion' => 'ubuntu2404_minion',
+  'build_host' => 'sles15sp7_buildhost'
 }.freeze
 
 HOST_SSH_PORT = 22
