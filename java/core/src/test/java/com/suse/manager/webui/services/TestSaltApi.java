@@ -145,6 +145,17 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
+    public Optional<MgrUtilRunner.UpdateKnowHostResult> updateSaltSSHKnownHost(String user, String oldHostname,
+            String newHostname, int port) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void updateKnownHostsOnPrimaryFqdnChange(MinionServer minion, String previousFqdnName) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void syncGrains(MinionList minionList) {
         throw new UnsupportedOperationException();
     }

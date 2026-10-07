@@ -14,6 +14,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
@@ -113,7 +114,7 @@ public class NetworkMapper {
             // Set primary FQDN to hostname if no primary FQDN is specified
             if (StringUtils.isNotBlank(server.getHostname()) && server.getFqdns().stream()
                    .noneMatch(ServerFQDN::isPrimary)) {
-                server.setPrimaryFQDNWithName(server.getHostname());
+                SystemManager.setPrimaryFqdn(server, server.getHostname());
             }
 
             return Optional.empty();
@@ -144,7 +145,7 @@ public class NetworkMapper {
         if (serverFQDNs.stream().noneMatch(ServerFQDN::isPrimary)) {
             String minionId = serverIn.getMinionId();
             if (fqdns.contains(minionId)) {
-                serverIn.setPrimaryFQDNWithName(minionId);
+                SystemManager.setPrimaryFqdn(serverIn, minionId);
             }
         }
     }

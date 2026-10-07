@@ -27,7 +27,9 @@ import com.suse.manager.reactor.messaging.SaltTestUtils;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.salt.netapi.calls.Call;
 import com.suse.salt.netapi.calls.Client;
+import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.datatypes.AuthMethod;
 import com.suse.salt.netapi.errors.JsonParsingError;
@@ -35,6 +37,9 @@ import com.suse.salt.netapi.errors.JsonParsingError;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.FileUtils;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
@@ -46,6 +51,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -190,6 +196,205 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         assertFalse(listAppender.matchInLogs(dummyRootCA));
         assertFalse(listAppender.matchInLogs(dummyServerCA));
         assertFalse(listAppender.matchInLogs(dummyServerRSAKey));
+    }
+
+    /**
+     * Tests that the Salt SSH known_hosts entries are updated when the primary FQDN of a
+     * system changes, using the given previous FQDN name and the default ssh push port.
+     */
+    @Test
+    public void testUpdateKnownHostsOnPrimaryFqdnChange() {
+        MinionServer minion = mock(MinionServer.class);
+        context().checking(new Expectations() {{
+            allowing(minion).getPrimaryFqdnName();
+            will(returnValue("new.example.com"));
+            allowing(minion).getMinionId();
+            will(returnValue("192.168.100.4"));
+            allowing(minion).getSSHPushPort();
+            will(returnValue(null));
+            allowing(minion).getId();
+            will(returnValue(1000010003L));
+        }});
+        SaltClient saltClient = mock(SaltClient.class);
+        context().checking(new Expectations() {{
+            oneOf(saltClient).call(with(updateSSHKnownHostCall("salt", "old.example.com",
+                            "new.example.com", SaltSSHService.SSH_DEFAULT_PORT)),
+                    with(any(Client.class)), with(any(Optional.class)), with(any(Map.class)),
+                    with(any(TypeToken.class)), with(any(AuthMethod.class)));
+            will(returnValue(SaltTestUtils.getCompletionStage(
+                    "/com/suse/manager/webui/services/impl/service/update_known_host.json",
+                    new TypeToken<MgrUtilRunner.UpdateKnowHostResult>() { }.getType())));
+        }});
+
+        SaltService saltService = new SaltService(saltClient);
+        saltService.updateKnownHostsOnPrimaryFqdnChange(minion, "old.example.com");
+        saltService.close();
+    }
+
+    /**
+     * Tests that the minion id is used as old hostname when no previous FQDN name is known,
+     * and that the ssh push port of the system is used.
+     */
+    @Test
+    public void testUpdateKnownHostsOnPrimaryFqdnChangeFallbackToMinionId() {
+        MinionServer minion = mock(MinionServer.class);
+        context().checking(new Expectations() {{
+            allowing(minion).getPrimaryFqdnName();
+            will(returnValue("new.example.com"));
+            allowing(minion).getMinionId();
+            will(returnValue("192.168.100.4"));
+            allowing(minion).getSSHPushPort();
+            will(returnValue(1233));
+            allowing(minion).getId();
+            will(returnValue(1000010003L));
+        }});
+        SaltClient saltClient = mock(SaltClient.class);
+        context().checking(new Expectations() {{
+            oneOf(saltClient).call(with(updateSSHKnownHostCall("salt", "192.168.100.4",
+                            "new.example.com", 1233)),
+                    with(any(Client.class)), with(any(Optional.class)), with(any(Map.class)),
+                    with(any(TypeToken.class)), with(any(AuthMethod.class)));
+            will(returnValue(SaltTestUtils.getCompletionStage(
+                    "/com/suse/manager/webui/services/impl/service/update_known_host.json",
+                    new TypeToken<MgrUtilRunner.UpdateKnowHostResult>() { }.getType())));
+        }});
+
+        SaltService saltService = new SaltService(saltClient);
+        saltService.updateKnownHostsOnPrimaryFqdnChange(minion, null);
+        saltService.close();
+    }
+
+    /**
+     * Tests that no salt call is performed when the primary FQDN name did not change.
+     */
+    @Test
+    public void testUpdateKnownHostsOnPrimaryFqdnChangeNoOp() {
+        MinionServer minion = mock(MinionServer.class);
+        context().checking(new Expectations() {{
+            allowing(minion).getPrimaryFqdnName();
+            will(returnValue("same.example.com"));
+            allowing(minion).getMinionId();
+            will(returnValue("192.168.100.4"));
+            allowing(minion).getSSHPushPort();
+            will(returnValue(null));
+            allowing(minion).getId();
+            will(returnValue(1000010003L));
+        }});
+        SaltClient saltClient = mock(SaltClient.class);
+        context().checking(new Expectations() {{
+            never(saltClient).call(with(any(Call.class)), with(any(Client.class)),
+                    with(any(Optional.class)), with(any(Map.class)),
+                    with(any(TypeToken.class)), with(any(AuthMethod.class)));
+        }});
+
+        SaltService saltService = new SaltService(saltClient);
+        saltService.updateKnownHostsOnPrimaryFqdnChange(minion, "same.example.com");
+        saltService.close();
+    }
+
+    /**
+     * Tests that a failed known_hosts update (the runner reports an error) is logged and
+     * does not propagate.
+     */
+    @Test
+    public void testUpdateKnownHostsOnPrimaryFqdnChangeRunnerFailure() {
+        MinionServer minion = mock(MinionServer.class);
+        context().checking(new Expectations() {{
+            allowing(minion).getPrimaryFqdnName();
+            will(returnValue("new.example.com"));
+            allowing(minion).getMinionId();
+            will(returnValue("192.168.100.4"));
+            allowing(minion).getSSHPushPort();
+            will(returnValue(null));
+            allowing(minion).getId();
+            will(returnValue(1000010003L));
+        }});
+        SaltClient saltClient = mock(SaltClient.class);
+        context().checking(new Expectations() {{
+            oneOf(saltClient).call(with(updateSSHKnownHostCall("salt", "old.example.com",
+                            "new.example.com", SaltSSHService.SSH_DEFAULT_PORT)),
+                    with(any(Client.class)), with(any(Optional.class)), with(any(Map.class)),
+                    with(any(TypeToken.class)), with(any(AuthMethod.class)));
+            will(returnValue(SaltTestUtils.getCompletionStage(
+                    "/com/suse/manager/webui/services/impl/service/update_known_host_error.json",
+                    new TypeToken<MgrUtilRunner.UpdateKnowHostResult>() { }.getType())));
+        }});
+
+        SaltTestUtils.TestLogAppender appender = SaltTestUtils.enableTestLogging(SaltService.class);
+        SaltService saltService = new SaltService(saltClient);
+        saltService.updateKnownHostsOnPrimaryFqdnChange(minion, "old.example.com");
+        saltService.close();
+        assertTrue(appender.matchInLogs("Failed to update Salt SSH known_hosts entries"));
+    }
+
+    /**
+     * Tests that an exception during the known_hosts update is logged and does not
+     * propagate.
+     */
+    @Test
+    public void testUpdateKnownHostsOnPrimaryFqdnChangeException() {
+        MinionServer minion = mock(MinionServer.class);
+        context().checking(new Expectations() {{
+            allowing(minion).getPrimaryFqdnName();
+            will(returnValue("new.example.com"));
+            allowing(minion).getMinionId();
+            will(returnValue("192.168.100.4"));
+            allowing(minion).getSSHPushPort();
+            will(returnValue(null));
+            allowing(minion).getId();
+            will(returnValue(1000010003L));
+        }});
+        SaltClient saltClient = mock(SaltClient.class);
+        context().checking(new Expectations() {{
+            oneOf(saltClient).call(with(updateSSHKnownHostCall("salt", "old.example.com",
+                            "new.example.com", SaltSSHService.SSH_DEFAULT_PORT)),
+                    with(any(Client.class)), with(any(Optional.class)), with(any(Map.class)),
+                    with(any(TypeToken.class)), with(any(AuthMethod.class)));
+            will(throwException(new RuntimeException("connection refused")));
+        }});
+
+        SaltTestUtils.TestLogAppender appender = SaltTestUtils.enableTestLogging(SaltService.class);
+        SaltService saltService = new SaltService(saltClient);
+        saltService.updateKnownHostsOnPrimaryFqdnChange(minion, "old.example.com");
+        saltService.close();
+        assertTrue(appender.matchInLogs("Error updating Salt SSH known_hosts entries"));
+    }
+
+    /**
+     * Matcher for a <code>mgrutil.update_ssh_known_host</code> runner call with the given
+     * parameters.
+     * @param user the user owning the known_hosts file
+     * @param oldHostname the hostname to rename
+     * @param newHostname the new hostname
+     * @param port the ssh port
+     * @return the matcher for the expectations
+     */
+    private static Matcher<Call<MgrUtilRunner.UpdateKnowHostResult>> updateSSHKnownHostCall(
+            String user, String oldHostname, String newHostname, int port) {
+        Map<String, Object> expectedKwargs = new LinkedHashMap<>();
+        expectedKwargs.put("user", user);
+        expectedKwargs.put("old_hostname", oldHostname);
+        expectedKwargs.put("new_hostname", newHostname);
+        expectedKwargs.put("port", port);
+        return new TypeSafeMatcher<>() {
+
+            @Override
+            protected boolean matchesSafely(Call<MgrUtilRunner.UpdateKnowHostResult> item) {
+                if (!(item instanceof RunnerCall)) {
+                    return false;
+                }
+                Map<String, Object> payload =
+                        ((RunnerCall<MgrUtilRunner.UpdateKnowHostResult>) item).getPayload();
+                return "mgrutil.update_ssh_known_host".equals(payload.get("fun")) &&
+                        expectedKwargs.equals(payload.get("kwarg"));
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("mgrutil.update_ssh_known_host runner call with kwargs ")
+                        .appendValue(expectedKwargs);
+            }
+        };
     }
 
         @AfterEach

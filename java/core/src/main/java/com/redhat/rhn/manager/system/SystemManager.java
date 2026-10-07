@@ -21,6 +21,7 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
 import static java.util.Optional.ofNullable;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.conf.Config;
@@ -66,6 +67,7 @@ import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -1595,6 +1597,31 @@ public class SystemManager extends BaseManager {
         DataResult<ErrataOverview> dr =  m.execute(params);
         dr.setElaborationParams(elabParams);
         return dr;
+    }
+
+    /**
+     * Set the primary FQDN of the system and update the Salt SSH known_hosts entries
+     * when the hostname salt-ssh connects to changed. Only ssh minions are contacted
+     * via salt-ssh, for other systems nothing is updated.
+     *
+     * @param server the server to update
+     * @param fqdnName the name of the FQDN to set as primary
+     */
+    public static void setPrimaryFqdn(Server server, String fqdnName) {
+        String previousFqdnName = server.getFqdns().stream()
+                .filter(ServerFQDN::isPrimary)
+                .findFirst()
+                .map(ServerFQDN::getName)
+                .orElse(null);
+        server.setPrimaryFQDNWithName(fqdnName);
+        Optional<MinionServer> minionOpt = server.asMinionServer();
+        if (minionOpt.isPresent() && isSSHMinion(minionOpt.get())) {
+            GlobalInstanceHolder.SALT_API.updateKnownHostsOnPrimaryFqdnChange(minionOpt.get(), previousFqdnName);
+        }
+    }
+
+    private static boolean isSSHMinion(MinionServer minion) {
+        return List.of("ssh-push", "ssh-push-tunnel").contains(minion.getContactMethod().getLabel());
     }
 
     /**

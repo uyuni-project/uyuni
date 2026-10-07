@@ -7507,7 +7507,7 @@ public class SystemHandler extends BaseHandler {
     public int setPrimaryFqdn(User loggedInUser, Integer sid, String fqdn) {
         Server server = lookupServer(loggedInUser, sid);
         server.lookupFqdn(fqdn).orElseThrow(() -> new NoSuchFQDNException(fqdn));
-        server.setPrimaryFQDNWithName(fqdn);
+        SystemManager.setPrimaryFqdn(server, fqdn);
         return 1;
     }
 

@@ -133,6 +133,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.metrics.SystemsCollector;
+import com.suse.manager.reactor.messaging.SaltTestUtils;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -346,6 +347,47 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         systemManager.deleteServer(user, minion.getId());
 
         assertFalse(MinionServerFactory.findByMinionId(minion.getMinionId()).isPresent());
+    }
+
+    /**
+     * Tests that changing the primary FQDN of an ssh-push minion triggers the update of
+     * the Salt SSH known_hosts entries. The salt-api is not available in the test
+     * environment, so the update fails and the failure is logged.
+     *
+     * @throws java.lang.Exception if anything goes wrong
+     */
+    @Test
+    public void testSetPrimaryFqdnUpdatesKnownHostsForSSHMinion() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
+        ServerFQDN primaryFqdn = new ServerFQDN(minion, "x.example.com");
+        primaryFqdn.setPrimary(true);
+        minion.getFqdns().add(primaryFqdn);
+        minion.addFqdn("y.example.com");
+
+        SaltTestUtils.TestLogAppender appender = SaltTestUtils.enableTestLogging(SaltService.class);
+        SystemManager.setPrimaryFqdn(minion, "y.example.com");
+        assertTrue(appender.matchInLogs("(Error updating|Failed to update) Salt SSH known_hosts entries"));
+    }
+
+    /**
+     * Tests that changing the primary FQDN of a minion which is not contacted via salt-ssh
+     * does not trigger the update of the Salt SSH known_hosts entries.
+     *
+     * @throws java.lang.Exception if anything goes wrong
+     */
+    @Test
+    public void testSetPrimaryFqdnSkipsKnownHostsForRegularMinion() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.DEFAULT));
+        ServerFQDN primaryFqdn = new ServerFQDN(minion, "x.example.com");
+        primaryFqdn.setPrimary(true);
+        minion.getFqdns().add(primaryFqdn);
+        minion.addFqdn("y.example.com");
+
+        SaltTestUtils.TestLogAppender appender = SaltTestUtils.enableTestLogging(SaltService.class);
+        SystemManager.setPrimaryFqdn(minion, "y.example.com");
+        assertFalse(appender.matchInLogs("Salt SSH known_hosts entries"));
     }
 
     @Test
