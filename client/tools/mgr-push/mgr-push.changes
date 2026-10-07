@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct 08 01:02:34 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Fix lint errors in client tools
+
+-------------------------------------------------------------------
 Wed Aug 05 12:24:34 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0
