@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Thu Oct 08 01:10:50 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.3
+  * Add pqcverification-zypp-plugin for post-quantum cryptography
+    for reposync
+  * Remove salt-call from server image healthcheck (bsc#1276498)
+  * Disable internal DB SSL on every container start
+    (bsc#1260806, bsc#1277589)
+  * Fix error handling at buildtime
+  * Ensure GPG directories are accessible by tomcat
+  * Increase start-period (bsc#1271124)
+  * Check disk space on startup
+  * Use correct healthcheck cmd (bsc#1273144)
+  * Drop javamail from the server Dockerfile
+  * Add /var/spacewalk/pqkeys directory for PQC support
+  * Add missing BuildName tag
+
+-------------------------------------------------------------------
 Mon Aug 10 11:47:29 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2
