@@ -1,2 +1,0 @@
-- SonarCloud fix: python:S6659: use startswith or endswith instead
-  of string slicing
