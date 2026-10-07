@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 08 00:49:32 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Use zipped oval file for SLE 16 and Leap 16 to reduce download
+    size
+
+-------------------------------------------------------------------
 Wed Aug 05 16:55:10 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0
