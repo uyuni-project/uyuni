@@ -1,0 +1,8 @@
+{
+  "return": [
+    {
+      "status": "success",
+      "comment": "Renamed 3 known_hosts entries from old.example.com to new.example.com"
+    }
+  ]
+}

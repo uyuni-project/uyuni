@@ -1,1 +1,2 @@
 - Use primary FQDNs in roster
+- Update the Salt SSH known_hosts with the primary FQDN

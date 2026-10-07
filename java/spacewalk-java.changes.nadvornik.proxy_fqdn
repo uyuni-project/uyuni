@@ -1,2 +1,3 @@
 - Support additinal proxy FQDNs
 - Allow selecting a particular proxy FQDN
+- Update the Salt SSH known_hosts with the primary FQDN
