@@ -8,14 +8,8 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     Given I am authorized for the "Admin" section
 
   Scenario: Register this SSH minion for service pack migration
-    When I follow the left menu "Systems > Bootstrapping"
-    Then I should see a "Bootstrap Minions" text
-    When I check "manageWithSSH"
-    And I enter the hostname of "sshminion" as "hostname"
-    And I enter "linux" as "password"
-    And I click on "Bootstrap"
-    # workaround for bsc#1222108
-    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
+    Given "sshminion" is not already registered
+    When I bootstrap "sshminion" via the UI
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sshminion", refreshing the page
 
