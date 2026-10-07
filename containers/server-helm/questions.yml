@@ -2,12 +2,10 @@ questions:
   # General
   - variable: global.fqdn
     label: Server FQDN
-    description: "Fully qualified domain name the server will answer as. Changing this value later renames the server, handle with care."
-    type: hostname
+    description: "Fully qualified domain name the server will answer as, e.g. uyuni.example.com. Changing this value later renames the server, handle with care."
+    type: string
     required: true
-    default: ""
     group: General
-  - label:
   - variable: server.email
     label: Notification Email
     description: "Email address used for the notifications sent by the server."
@@ -37,9 +35,9 @@ questions:
     group: Images
   - variable: tag
     label: Image Tag
-    description: "Default tag to use for all images."
+    description: "Default tag to use for all images. Leave empty to use the chart appVersion."
     type: string
-    default: "latest"
+    default: ""
     group: Images
   - variable: pullPolicy
     label: Image Pull Policy
@@ -195,14 +193,21 @@ questions:
   # Database
   - variable: db.enable
     label: Deploy PostgreSQL
-    description: "Deploy a PostgreSQL instance. WARNING: using a third party database is not tested nor supported for now."
+    description: "Deploy the internal PostgreSQL instance. WARNING: setting this to false is not supported yet."
     type: boolean
     default: true
     group: Database
+    show_subquestion_if: true
+    subquestions:
+      - variable: db.podsCIDR
+        label: Pods CIDR
+        description: "Network IP range allowed to make plain text connections to the database, usually the cluster pods CIDR. The default matches rke2's pods CIDR; K3s also uses 10.42.0.0/16."
+        type: string
+        default: "10.42.0.0/16"
   - variable: db.internal.host
     label: Internal Database Host
     description: "Host name of the internal database. It should be in the SANs of the database TLS certificate."
-    type: hostname
+    type: string
     default: ""
     show_if: "db.enable=false"
     group: Database
@@ -223,7 +228,7 @@ questions:
   - variable: db.report.host
     label: Report Database Host
     description: "Host name of the report database. It should be in the SANs of the database TLS certificate."
-    type: hostname
+    type: string
     default: ""
     show_if: "db.enable=false"
     group: Database
@@ -289,6 +294,12 @@ questions:
     type: pvc
     default: ""
     group: Storage
+  - variable: server.mirror.hostPath
+    label: Mirror Host Path
+    description: "Path on the node to mount as the server.susemanager.fromdir mirror. Strongly discouraged as it ties the server to a node. Leave empty for none."
+    type: string
+    default: ""
+    group: Storage
 
   # Advanced
   - variable: server.superPrivileged
@@ -297,18 +308,18 @@ questions:
     type: boolean
     default: false
     group: Advanced
-  - variable: server.apparmorProfile
-    label: AppArmor Profile
-    description: "Name of an AppArmor profile to use for the server pod. It must show up in aa-status output."
-    type: string
-    default: ""
-    group: Advanced
-  - variable: server.selinuxType
-    label: SELinux Type
-    description: "SELinux type to use for the server pod. Leave empty for the container runtime default."
-    type: string
-    default: ""
-    group: Advanced
+    show_subquestion_if: "false"
+    subquestions:
+      - variable: server.apparmorProfile
+        label: AppArmor Profile
+        description: "Name of an AppArmor profile to use for the server pod. It must show up in aa-status output."
+        type: string
+        default: ""
+      - variable: server.selinuxType
+        label: SELinux Type
+        description: "SELinux type to use for the server pod. Leave empty for the container runtime default."
+        type: string
+        default: ""
   - variable: server.systemdLogLevel
     label: Systemd Log Level
     description: "Value passed to systemd's --log-level parameter. Empty keeps the default. Setting it adds a tty to the container."
