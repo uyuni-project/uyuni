@@ -27,6 +27,9 @@ set -e
 echo -e "\n==> $HELM_SCHEMA\n"
 $HELM_SCHEMA -n -p -r && echo "Done"
 
+echo -e "\n==> gen-questions.sh\n"
+./gen-questions.sh && echo "Done"
+
 echo -e "\n==> helm-docs\n"
 output=$(helm-docs -s file -z '^services\.[^.]*\..*$' -z '^volumes\.[^.]*\..*$' -x 2>&1)
 if echo "$output" | grep -q "Error parsing information"; then
@@ -60,9 +63,9 @@ echo -e "\n==> Checking for modified files\n"
 
 set +e
 
-git diff --exit-code README.md values.schema.json
+git diff --exit-code README.md values.schema.json questions.yml
 if test $? -ne 0; then
-    echo -e "\nHelm documentation or schema is out of date. Run helm-docs and helm-schema to fix it.\n"
+    echo -e "\nHelm documentation or schema is out of date. Run helm-docs, helm-schema and gen-questions.sh to fix it.\n"
     exit 1
 else
     echo -e "OK\n"
