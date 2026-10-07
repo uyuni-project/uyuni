@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Oct 08 01:00:25 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Add PQC admin handling scripts to handle PQC keys
+    and sign metadata
+  * Delete activation keys when removing a base channel (bsc#1233592)
+  * Allow using spacewalk-diskcheck without running service
+  * Increase errata advisory char limit to 150 (bsc#1273846)
+  * Rework User x Address relationship
+
+-------------------------------------------------------------------
 Wed Aug 05 13:47:58 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0
