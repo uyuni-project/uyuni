@@ -21,8 +21,8 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.suse.manager.api.ReadOnly;
 import com.suse.utils.CertificateUtils;
 import com.suse.utils.CertificateUtils.GpgKeyListing;
+import com.suse.utils.GpgKeyException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +57,7 @@ public class AdminGpgHandler extends BaseHandler {
             CertificateUtils.importGpgKey(gpgKey);
             return 1;
         }
-        catch (IOException | RuntimeException e) {
+        catch (GpgKeyException | RuntimeException e) {
             return 0;
         }
     }

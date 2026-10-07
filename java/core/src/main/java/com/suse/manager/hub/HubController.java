@@ -51,6 +51,7 @@ import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
+import com.suse.utils.GpgKeyException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -292,6 +293,10 @@ public class HubController {
         catch (TaskomaticApiException ex) {
             LOGGER.error("Unable to schedule root CA certificate update {}", token.getServerFqdn(), ex);
             return internalServerError(response, "Unable to schedule root CA certificate update");
+        }
+        catch (GpgKeyException ex) {
+            LOGGER.error("Unexpected error while processing the GPG key for {}", token.getServerFqdn(), ex);
+            return internalServerError(response, "Unexpected error while processing the GPG key");
         }
     }
 

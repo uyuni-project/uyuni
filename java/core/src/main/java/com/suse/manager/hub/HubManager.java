@@ -12,7 +12,6 @@
 package com.suse.manager.hub;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.PermissionException;
@@ -75,6 +74,7 @@ import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.scc.SCCTaskManager;
 import com.suse.scc.proxy.SCCProxyFactory;
 import com.suse.utils.CertificateUtils;
+import com.suse.utils.GpgKeyException;
 import com.suse.utils.Maps;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -263,7 +263,7 @@ public class HubManager {
      * @return the persisted remote server
      */
     public IssServer saveNewServer(IssAccessToken accessToken, IssRole role, String rootCA, String gpgKey)
-            throws TaskomaticApiException {
+            throws TaskomaticApiException, GpgKeyException {
         ensureValidToken(accessToken);
 
         return createServer(role, accessToken.getServerFqdn(), rootCA, gpgKey, null);
@@ -527,7 +527,7 @@ public class HubManager {
      * @throws IOException when connecting to the server fails
      */
     public IssPeripheral register(User user, String remoteServer, String username, String password, String rootCA)
-        throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
+            throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
             TaskomaticApiException {
         ensureSatAdmin(user);
 
@@ -558,7 +558,7 @@ public class HubManager {
      * @throws IOException when connecting to the peripheral server fails
      */
     public IssPeripheral register(User user, String remoteServer, String remoteToken, String rootCA)
-        throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
+            throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
             TaskomaticApiException {
         ensureSatAdmin(user);
 
@@ -881,7 +881,14 @@ public class HubManager {
 
         parseAndSaveToken(remoteServer, remoteToken);
 
-        IssServer registeredServer = createServer(IssRole.PERIPHERAL, remoteServer, rootCA, null, user);
+        IssServer registeredServer = null;
+        try {
+            registeredServer = createServer(IssRole.PERIPHERAL, remoteServer, rootCA, null, user);
+        }
+        catch (GpgKeyException eIn) {
+            //this is never happening, since the GPG key argument is null
+            throw new RuntimeException(eIn);
+        }
 
         // Ensure the remote server is a peripheral
         if (!(registeredServer instanceof IssPeripheral peripheral)) {
@@ -1041,7 +1048,7 @@ public class HubManager {
     }
 
     private IssServer createServer(IssRole role, String serverFqdn, String rootCA, String gpgKey, User user)
-            throws TaskomaticApiException {
+            throws TaskomaticApiException, GpgKeyException {
         if (StringUtils.isNotEmpty(rootCA)) {
             taskomaticApi.scheduleSingleRootCaCertUpdate(role, serverFqdn, rootCA);
         }
@@ -1050,12 +1057,7 @@ public class HubManager {
                 IssHub hub = new IssHub(serverFqdn, rootCA);
                 hub.setGpgKey(gpgKey);
                 hubFactory.save(hub);
-                try {
-                    CertificateUtils.importGpgKey(gpgKey);
-                }
-                catch (IOException e) {
-                    throw new RhnRuntimeException("Failed to import the GPG key", e);
-                }
+                CertificateUtils.importGpgKey(gpgKey);
                 yield hub;
             }
             case PERIPHERAL -> {

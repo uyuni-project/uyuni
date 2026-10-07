@@ -9175,6 +9175,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="hub.unexpected_error_root_ca" xml:space="preserve">
         <source>Unexpected error while processing the root certificate. Please check the server logs.</source>
       </trans-unit>
+      <trans-unit id="hub.unexpected_error_gpg_key" xml:space="preserve">
+        <source>Unexpected error while processing the GPG key. Please check the server logs.</source>
+      </trans-unit>
       <trans-unit id="hub.unable_issue_token" xml:space="preserve">
         <source>Unable to issue a token for the remote server. Please check the server logs.</source>
       </trans-unit>
