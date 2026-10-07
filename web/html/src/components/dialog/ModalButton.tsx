@@ -19,6 +19,7 @@ export function ModalButton(props: Props) {
       text={props.text}
       icon={props.icon}
       disabled={props.disabled}
+      tooltipDelay={props.tooltipDelay}
       handler={() => {
         props.onClick?.(props.item);
         if (props.target) {
