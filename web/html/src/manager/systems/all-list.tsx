@@ -5,6 +5,7 @@ import { IconTag } from "components/icontag";
 import * as Systems from "components/systems";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
+import { DateTime } from "components/datetime/DateTime";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
@@ -165,7 +166,7 @@ export function AllSystems(props: Props) {
           columnKey="last_checkin"
           comparator={Utils.sortByText}
           header={t("Last Checked In")}
-          cell={(item) => item.lastCheckin}
+          cell={(item) => <DateTime value={item.lastCheckin} />}
         />
         <Column
           columnKey="channel_labels"
