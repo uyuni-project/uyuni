@@ -2,7 +2,17 @@
 #
 # SPDX-License-Identifier: MIT
 
-{{- if and (not .Values.gateway.enable) (eq ((.Values.ingress).type) "traefik") }}
+{{- $gateway := .Values.gateway | default (dict) -}}
+{{- $ingress := .Values.ingress | default (dict) -}}
+{{- $services := .Values.services | default (dict) -}}
+{{- $servicesType := $services.type | default "ClusterIP" -}}
+{{- $reportdb := $services.reportdb | default (dict) -}}
+{{- $salt := $services.salt | default (dict) -}}
+{{- $taskomatic := $services.taskomatic | default (dict) -}}
+{{- $search := $services.search | default (dict) -}}
+{{- $tomcat := $services.tomcat | default (dict) -}}
+{{- if and (not $gateway.enable) (eq ($ingress.type | default "") "traefik") }}
+
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
@@ -31,7 +41,7 @@ spec:
       - /tasko-jmx
       - /tomcat-jmx
       - /saline
-{{- if ne (default .Values.services.type .Values.services.salt.type) "NodePort" }}
+{{- if ne ($salt.type | default $servicesType) "NodePort" }}
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
@@ -41,7 +51,7 @@ metadata:
   labels:
     app.kubernetes.io/part-of: uyuni
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    kubernetes.io/ingress.class: {{ $ingress.class | quote }}
 spec:
   entryPoints:
     - salt-publish
@@ -59,7 +69,7 @@ metadata:
   labels:
     app.kubernetes.io/part-of: uyuni
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    kubernetes.io/ingress.class: {{ $ingress.class | quote }}
 spec:
   entryPoints:
     - salt-request
@@ -70,7 +80,7 @@ spec:
         port: 4506
 {{- end }}
 {{- if .Values.exposeJavaDebug }}
-{{- if ne (default .Values.services.type .Values.services.taskomatic.type) "NodePort" }}
+{{- if ne ($taskomatic.type | default $servicesType) "NodePort" }}
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
@@ -80,7 +90,7 @@ metadata:
   labels:
     app.kubernetes.io/part-of: uyuni
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    kubernetes.io/ingress.class: {{ $ingress.class | quote }}
 spec:
   entryPoints:
     - tomcat-debug
@@ -90,7 +100,7 @@ spec:
       - name: tomcat
         port: 8003
 {{- end }}
-{{- if ne (default .Values.services.type .Values.services.search.type) "NodePort" }}
+{{- if ne ($search.type | default $servicesType) "NodePort" }}
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
@@ -100,7 +110,7 @@ metadata:
   labels:
     app.kubernetes.io/part-of: uyuni
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    kubernetes.io/ingress.class: {{ $ingress.class | quote }}
 spec:
   entryPoints:
     - search-debug
@@ -110,7 +120,7 @@ spec:
       - name: search
         port: 8002
 {{- end }}
-{{- if ne (default .Values.services.type .Values.services.tomcat.type) "NodePort" }}
+{{- if ne ($tomcat.type | default $servicesType) "NodePort" }}
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
@@ -120,7 +130,7 @@ metadata:
   labels:
     app.kubernetes.io/part-of: uyuni
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    kubernetes.io/ingress.class: {{ $ingress.class | quote }}
 spec:
   entryPoints:
     - tasko-debug

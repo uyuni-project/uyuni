@@ -1,0 +1,664 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in services
+templates:
+  - services.yaml
+set:
+  global.fqdn: uyuni.example.com
+  exposeJavaDebug: true
+tests:
+  - it: should default to ClusterIP services when services is null
+    set:
+      services: null
+    asserts:
+      - equal:
+          path: spec.type
+          value: ClusterIP
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - notExists:
+          path: metadata.annotations
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+  - it: should fall back to the default node ports when the ports are null
+    set:
+      services:
+        type: NodePort
+        reportdb: {ports: null}
+        salt: {ports: null}
+        search: {ports: null}
+        taskomatic: {ports: null}
+        tomcat: {ports: null}
+    asserts:
+      - equal:
+          path: spec.ports[?(@.name=="pgsql")].nodePort
+          value: 30032
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+      - equal:
+          path: spec.ports[?(@.name=="publish")].nodePort
+          value: 30005
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - equal:
+          path: spec.ports[?(@.name=="request")].nodePort
+          value: 30006
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - equal:
+          path: spec.ports[0].nodePort
+          value: 30002
+        documentSelector:
+          path: metadata.name
+          value: search
+      - equal:
+          path: spec.ports[0].nodePort
+          value: 30001
+        documentSelector:
+          path: metadata.name
+          value: taskomatic
+      - equal:
+          path: spec.ports[0].nodePort
+          value: 30003
+        documentSelector:
+          path: metadata.name
+          value: tomcat
+
+  - it: should use the global type and annotations when per-service entries are null
+    set:
+      services:
+        type: LoadBalancer
+        annotations:
+          foo: bar
+        reportdb: null
+        salt: null
+        search: null
+        taskomatic: null
+        tomcat: null
+        tftp: null
+      tftp.enable: true
+    asserts:
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: tomcat
+      - equal:
+          path: metadata.annotations
+          value:
+            foo: bar
+        documentSelector:
+          path: metadata.name
+          value: tftp
+      - equal:
+          path: spec.externalTrafficPolicy
+          value: Local
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+
+  - it: should skip optional services when their configuration is null
+    set:
+      db: null
+      tftp: null
+      hubAPI: null
+      saline: null
+    asserts:
+      - hasDocuments:
+          count: 0
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+          skipEmptyTemplates: true
+      - hasDocuments:
+          count: 0
+        documentSelector:
+          path: metadata.name
+          value: tftp
+          skipEmptyTemplates: true
+      - hasDocuments:
+          count: 0
+        documentSelector:
+          path: metadata.name
+          value: hub-xmlrpc
+          skipEmptyTemplates: true
+      - hasDocuments:
+          count: 0
+        documentSelector:
+          path: metadata.name
+          value: saline
+          skipEmptyTemplates: true
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in traefik-routes
+templates:
+  - traefik-routes.yaml
+set:
+  global.fqdn: uyuni.example.com
+  exposeJavaDebug: true
+tests:
+  - it: should render all TCP routes when gateway and services are null
+    set:
+      gateway: null
+      services: null
+    asserts:
+      - hasDocuments:
+          count: 7
+
+  - it: should not render traefik routes when ingress is null
+    set:
+      ingress: null
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should not render traefik routes when ingress.type is null
+    set:
+      ingress.type: null
+    asserts:
+      - hasDocuments:
+          count: 0
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in gateway
+templates:
+  - gateway.yaml
+set:
+  global.fqdn: uyuni.example.com
+tests:
+  - it: should not render the gateway when gateway is null
+    set:
+      gateway: null
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should render the gateway when gateway.name is null
+    set:
+      gateway.enable: true
+      gateway.name: null
+    asserts:
+      - hasDocuments:
+          count: 1
+
+  - it: should use the default listeners when gateway.listeners is null
+    set:
+      gateway.enable: true
+      gateway.listeners: null
+    asserts:
+      - equal:
+          path: spec.listeners[0]
+          value:
+            name: web
+            protocol: HTTP
+            port: 8000
+            allowedRoutes:
+              namespaces:
+                from: Same
+      - equal:
+          path: spec.listeners[1].name
+          value: websecure
+      - equal:
+          path: spec.listeners[1].port
+          value: 8443
+
+  - it: should not reuse the http name for the https listener
+    set:
+      gateway.enable: true
+      gateway.listeners.http.name: plain
+      gateway.listeners.https: null
+    asserts:
+      - equal:
+          path: spec.listeners[0].name
+          value: plain
+      - equal:
+          path: spec.listeners[1].name
+          value: websecure
+
+  - it: should render all TCP listeners when services and db are null
+    set:
+      gateway.enable: true
+      exposeJavaDebug: true
+      services: null
+      db: null
+    asserts:
+      - lengthEqual:
+          path: spec.listeners
+          count: 7
+      - notContains:
+          path: spec.listeners
+          content:
+            name: reportdb-pgsql
+          any: true
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in routes
+templates:
+  - routes.yaml
+set:
+  global.fqdn: uyuni.example.com
+tests:
+  - it: should not render routes when gateway is null
+    set:
+      gateway: null
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should use the default gateway and listener names when null
+    set:
+      gateway.enable: true
+      gateway.name: null
+      gateway.listeners: null
+    asserts:
+      - equal:
+          path: spec.parentRefs[0]
+          value:
+            name: uyuni-gateway
+            sectionName: web
+        documentSelector:
+          path: metadata.name
+          value: uyuni-ssl-redirect
+      - equal:
+          path: spec.parentRefs[0]
+          value:
+            name: uyuni-gateway
+            sectionName: websecure
+        documentSelector:
+          path: metadata.name
+          value: uyuni-https-routes
+      - equal:
+          path: spec.parentRefs[0]
+          value:
+            name: uyuni-gateway
+            sectionName: web
+        documentSelector:
+          path: metadata.name
+          value: uyuni-nossl-routes
+
+  - it: should skip the optional component routes when they are null
+    set:
+      gateway.enable: true
+      saline: null
+      hubAPI: null
+    asserts:
+      - notContains:
+          path: spec.rules
+          content:
+            backendRefs:
+              - name: saline
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: uyuni-https-routes
+      - notContains:
+          path: spec.rules
+          content:
+            backendRefs:
+              - name: hub-xmlrpc
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: uyuni-https-routes
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in tcp-routes
+templates:
+  - tcp-routes.yaml
+set:
+  global.fqdn: uyuni.example.com
+  exposeJavaDebug: true
+tests:
+  - it: should not render TCP routes when gateway is null
+    set:
+      gateway: null
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should render all TCP routes on the default gateway when values are null
+    set:
+      gateway.enable: true
+      gateway.name: null
+      services: null
+      db: null
+    asserts:
+      - hasDocuments:
+          count: 5
+      - equal:
+          path: spec.parentRefs[0].name
+          value: uyuni-gateway
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in ingress
+templates:
+  - ingress.yaml
+set:
+  global.fqdn: uyuni.example.com
+tests:
+  - it: should render the default ingresses when gateway, saline and hubAPI are null
+    set:
+      gateway: null
+      saline: null
+      hubAPI: null
+    asserts:
+      - hasDocuments:
+          count: 4
+
+  - it: should render generic ingresses when ingress is null
+    set:
+      ingress: null
+    asserts:
+      - notExists:
+          path: spec.ingressClassName
+        documentSelector:
+          path: metadata.name
+          value: uyuni-ingress-ssl
+      - isNullOrEmpty:
+          path: metadata.annotations
+        documentSelector:
+          path: metadata.name
+          value: uyuni-ingress-ssl
+
+  - it: should render the ingresses when ingress.annotations is null
+    set:
+      saline.enable: true
+      hubAPI.enable: true
+      ingress.annotations: null
+    asserts:
+      - hasDocuments:
+          count: 6
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in optional components
+templates:
+  - coco.yaml
+  - hub.yaml
+  - saline.yaml
+  - tftp.yaml
+  - db.yaml
+set:
+  global.fqdn: uyuni.example.com
+tests:
+  - it: should disable optional components when their configuration is null
+    set:
+      coco: null
+      hubAPI: null
+      saline: null
+      tftp: null
+      db: null
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should use the default images when image and tag are null
+    set:
+      coco: {replicas: 1, image: null, tag: null}
+      hubAPI: {enable: true, image: null, tag: null}
+      saline: {enable: true, image: null, tag: null}
+      tftp: {enable: true, image: null, tag: null}
+      db: {enable: true, image: null, tag: null}
+      tag: null
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: registry.opensuse.org/uyuni/server-attestation:0.0.0
+        template: coco.yaml
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: registry.opensuse.org/uyuni/server-hub-xmlrpc-api:0.0.0
+        template: hub.yaml
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: registry.opensuse.org/uyuni/server-saline:0.0.0
+        template: saline.yaml
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: registry.opensuse.org/uyuni/proxy-tftpd:0.0.0
+        template: tftp.yaml
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: registry.opensuse.org/uyuni/server-postgresql:0.0.0
+        template: db.yaml
+
+  - it: should not use the host network when tftp.hostNetwork is null
+    set:
+      tftp: {enable: true, hostNetwork: null}
+    asserts:
+      - notExists:
+          path: spec.template.spec.hostNetwork
+        template: tftp.yaml
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in config
+templates:
+  - config.yaml
+set:
+  global.fqdn: uyuni.example.com
+tests:
+  - it: should require server.email when server is null
+    set:
+      server: null
+    asserts:
+      - failedTemplate:
+          errorMessage: server.email is needed!
+
+  - it: should use the default database connection when db is null
+    set:
+      db: null
+    asserts:
+      - equal:
+          path: data.db_host
+          value: db
+      - equal:
+          path: data.db_port
+          value: "5432"
+      - equal:
+          path: data.db_name
+          value: susemanager
+      - equal:
+          path: data.reportdb_host
+          value: reportdb
+      - equal:
+          path: data.reportdb_port
+          value: "5432"
+      - equal:
+          path: data.reportdb_name
+          value: reportdb
+
+  - it: should use the default external database connection when its values are null
+    set:
+      db:
+        enable: false
+        internal: null
+        report: {host: null, port: null, name: null}
+    asserts:
+      - equal:
+          path: data.db_host
+          value: db
+      - equal:
+          path: data.db_port
+          value: "5432"
+      - equal:
+          path: data.db_name
+          value: susemanager
+      - equal:
+          path: data.reportdb_host
+          value: reportdb
+      - equal:
+          path: data.reportdb_port
+          value: "5432"
+      - equal:
+          path: data.reportdb_name
+          value: reportdb
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in server deployment
+templates:
+  - server.yaml
+set:
+  global.fqdn: uyuni.example.com
+tests:
+  - it: should use the default image when server.image and tags are null
+    set:
+      server.image: null
+      server.tag: null
+      tag: null
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: registry.opensuse.org/uyuni/server:0.0.0
+      - equal:
+          path: spec.template.spec.initContainers[0].image
+          value: registry.opensuse.org/uyuni/server:0.0.0
+
+  - it: should not mount a mirror when server.mirror is null
+    set:
+      server.mirror: null
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: MIRROR_PATH
+          any: true
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: mirror
+          any: true
+
+  - it: should not mount a mirror when the mirror paths are null
+    set:
+      server.mirror: {claimName: null, hostPath: null}
+    asserts:
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: mirror
+          any: true
+
+  - it: should not set optional server fields when they are null
+    set:
+      placement: null
+      server:
+        sccSecret: null
+        systemdLogLevel: null
+        superPrivileged: null
+        selinuxType: null
+        apparmorProfile: null
+        extraVolumes: null
+        extraVolumeMounts: null
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: SCC_USER
+          any: true
+      - notExists:
+          path: spec.template.spec.containers[0].tty
+      - notExists:
+          path: spec.template.spec.containers[0].securityContext.seLinuxOptions.type
+      - notExists:
+          path: spec.template.spec.containers[0].securityContext.appArmorProfile
+      - notExists:
+          path: spec.template.spec.nodeSelector
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in persistent volume claims
+templates:
+  - pvcs.yaml
+set:
+  global.fqdn: uyuni.example.com
+tests:
+  - it: should use the default sizes when volumes is null
+    set:
+      volumes: null
+    asserts:
+      - hasDocuments:
+          count: 25
+      - notExists:
+          path: spec.storageClassName
+      - equal:
+          path: spec.resources.requests.storage
+          value: 100Gi
+        documentSelector:
+          path: metadata.name
+          value: srv-www
+      - equal:
+          path: spec.resources.requests.storage
+          value: 50Gi
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql18
+
+  - it: should use the global storage class when a volume entry is null
+    set:
+      volumes:
+        storageClass: fast
+        var-pgsql: null
+    asserts:
+      - equal:
+          path: spec.storageClassName
+          value: fast
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql18
+      - equal:
+          path: spec.resources.requests.storage
+          value: 50Gi
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql18
+
+  - it: should use the defaults when the volume fields are null
+    set:
+      volumes:
+        var-pgsql:
+          size: null
+          storageClass: null
+          extraLabels: null
+          annotations: null
+          volumeName: null
+          selector: null
+    asserts:
+      - equal:
+          path: spec.resources.requests.storage
+          value: 50Gi
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql18
+      - notExists:
+          path: spec.volumeName
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql18
+      - notExists:
+          path: metadata.annotations
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql18

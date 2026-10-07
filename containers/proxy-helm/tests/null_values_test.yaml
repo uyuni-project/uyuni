@@ -1,0 +1,490 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in configmap
+templates:
+  - templates/config.yaml
+set:
+  global.config: |
+    max_cache_size_mb: 2048
+    server: parent.example.org
+    proxy_fqdn: proxy.example.org
+    email: foo@example.org
+  global.httpd: "httpd_content: test httpd"
+  global.ssh: "ssh_content: test ssh"
+tests:
+  - it: should render empty tuning when the components are null
+    set:
+      squid: null
+      ssh: null
+      httpd: null
+      salt: null
+    asserts:
+      - equal:
+          path: data.squid_tuning
+          value: "# Add your Squid tuning configuration here\n"
+        documentSelector: &configmap
+          path: metadata.name
+          value: proxy-configmap
+      - equal:
+          path: data.ssh_tuning
+          value: "# Add your SSHd tuning configuration here\n"
+        documentSelector: *configmap
+      - equal:
+          path: data.apache_tuning
+          value: "# Add your Apache tuning configuration here\n"
+        documentSelector: *configmap
+      - equal:
+          path: data.salt_tuning
+          value: "# Add your Salt Broker tuning configuration here\n{}\n"
+        documentSelector: *configmap
+
+  - it: should render empty tuning when the tuning values are null
+    set:
+      squid.tuning: null
+      ssh.tuning: null
+      httpd.tuning: null
+      salt.tuning: null
+    asserts:
+      - equal:
+          path: data.squid_tuning
+          value: "# Add your Squid tuning configuration here\n"
+        documentSelector: *configmap
+      - equal:
+          path: data.salt_tuning
+          value: "# Add your Salt Broker tuning configuration here\n{}\n"
+        documentSelector: *configmap
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in deployments
+templates:
+  - templates/deployment.yaml
+  - templates/tftp.yaml
+set:
+  global.config: |
+    max_cache_size_mb: 2048
+    server: parent.example.org
+    proxy_fqdn: proxy.example.org
+    email: foo@example.org
+  global.httpd: "httpd_content: test httpd"
+  global.ssh: "ssh_content: test ssh"
+tests:
+  - it: should use the default images when the components are null
+    set:
+      httpd: null
+      squid: null
+      ssh: null
+      salt: null
+      tftp: null
+      tag: null
+      placement: null
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="httpd")].image
+          value: registry.opensuse.org/uyuni/proxy-httpd:0.0.0
+        template: templates/deployment.yaml
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="squid")].image
+          value: registry.opensuse.org/uyuni/proxy-squid:0.0.0
+        template: templates/deployment.yaml
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="ssh")].image
+          value: registry.opensuse.org/uyuni/proxy-ssh:0.0.0
+        template: templates/deployment.yaml
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="salt-broker")].image
+          value: registry.opensuse.org/uyuni/proxy-salt-broker:0.0.0
+        template: templates/deployment.yaml
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: registry.opensuse.org/uyuni/proxy-tftpd:0.0.0
+        template: templates/tftp.yaml
+      - notExists:
+          path: spec.template.spec.hostNetwork
+        template: templates/tftp.yaml
+      - notExists:
+          path: spec.strategy
+        template: templates/tftp.yaml
+
+  - it: should use the default images when image and tag are null
+    set:
+      httpd: {image: null, tag: null}
+      tftp: {image: null, tag: null}
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="httpd")].image
+          value: registry.opensuse.org/uyuni/proxy-httpd:0.0.0
+        template: templates/deployment.yaml
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: registry.opensuse.org/uyuni/proxy-tftpd:0.0.0
+        template: templates/tftp.yaml
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in services
+templates:
+  - templates/services.yaml
+set:
+  global.config: |
+    max_cache_size_mb: 2048
+    server: parent.example.org
+    proxy_fqdn: proxy.example.org
+    email: foo@example.org
+  global.httpd: "httpd_content: test httpd"
+  global.ssh: "ssh_content: test ssh"
+tests:
+  - it: should default to ClusterIP services when services is null
+    set:
+      services: null
+      tftp: null
+    asserts:
+      - equal:
+          path: spec.type
+          value: ClusterIP
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - equal:
+          path: spec.type
+          value: ClusterIP
+        documentSelector:
+          path: metadata.name
+          value: ssh
+      - notExists:
+          path: metadata.annotations
+        documentSelector:
+          path: metadata.name
+          value: tftp
+
+  - it: should fall back to the default node ports when the ports are null
+    set:
+      services:
+        type: NodePort
+        salt: {ports: null}
+        ssh: {ports: null}
+    asserts:
+      - equal:
+          path: spec.ports[?(@.name=="publish")].nodePort
+          value: 30005
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - equal:
+          path: spec.ports[?(@.name=="request")].nodePort
+          value: 30006
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - equal:
+          path: spec.ports[0].nodePort
+          value: 30022
+        documentSelector:
+          path: metadata.name
+          value: ssh
+
+  - it: should use the global type and annotations when per-service entries are null
+    set:
+      services:
+        type: LoadBalancer
+        annotations:
+          foo: bar
+        salt: null
+        ssh: null
+        tftp: null
+    asserts:
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: ssh
+      - equal:
+          path: metadata.annotations
+          value:
+            foo: bar
+        documentSelector:
+          path: metadata.name
+          value: tftp
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in ingress
+templates:
+  - templates/ingress.yaml
+set:
+  global.config: |
+    max_cache_size_mb: 2048
+    server: parent.example.org
+    proxy_fqdn: proxy.example.org
+    email: foo@example.org
+  global.httpd: "httpd_content: test httpd"
+  global.ssh: "ssh_content: test ssh"
+tests:
+  - it: should render a generic ingress when gateway and ingress are null
+    set:
+      gateway: null
+      ingress: null
+    asserts:
+      - hasDocuments:
+          count: 1
+      - notExists:
+          path: spec.ingressClassName
+      - isNullOrEmpty:
+          path: metadata.annotations
+
+  - it: should keep the traefik annotations when ingress.annotations is null
+    set:
+      ingress.annotations: null
+    asserts:
+      - equal:
+          path: metadata.annotations["traefik.ingress.kubernetes.io/router.tls"]
+          value: "true"
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in traefik-routes
+templates:
+  - templates/traefik-routes.yaml
+set:
+  global.config: |
+    max_cache_size_mb: 2048
+    server: parent.example.org
+    proxy_fqdn: proxy.example.org
+    email: foo@example.org
+  global.httpd: "httpd_content: test httpd"
+  global.ssh: "ssh_content: test ssh"
+tests:
+  - it: should render all routes when gateway and services are null
+    set:
+      gateway: null
+      services: null
+    asserts:
+      - hasDocuments:
+          count: 3
+
+  - it: should not render routes when ingress is null
+    set:
+      ingress: null
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should use the default entry points and no class when they are null
+    set:
+      ingress:
+        class: null
+        entryPoints: null
+    asserts:
+      - notExists:
+          path: metadata.annotations
+      - equal:
+          path: spec.entryPoints
+          value: [ssh]
+        documentSelector:
+          path: metadata.name
+          value: ssh-router
+      - equal:
+          path: spec.entryPoints
+          value: [salt-publish]
+        documentSelector:
+          path: metadata.name
+          value: salt-publish-router
+      - equal:
+          path: spec.entryPoints
+          value: [salt-request]
+        documentSelector:
+          path: metadata.name
+          value: salt-request-router
+
+  - it: should use the default entry points when single entries are null
+    set:
+      ingress.entryPoints: {ssh: null, saltPublish: null, saltRequest: null}
+    asserts:
+      - equal:
+          path: spec.entryPoints
+          value: [ssh]
+        documentSelector:
+          path: metadata.name
+          value: ssh-router
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in gateway
+templates:
+  - templates/gateway.yaml
+set:
+  global.config: |
+    max_cache_size_mb: 2048
+    server: parent.example.org
+    proxy_fqdn: proxy.example.org
+    email: foo@example.org
+  global.httpd: "httpd_content: test httpd"
+  global.ssh: "ssh_content: test ssh"
+tests:
+  - it: should not render the gateway when gateway is null
+    set:
+      gateway: null
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should render the gateway when gateway.name and gateway.class are null
+    set:
+      gateway.enable: true
+      gateway.name: null
+      gateway.class: null
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: spec.gatewayClassName
+          value: ""
+
+  - it: should use the default listeners when gateway.listeners is null
+    set:
+      gateway.enable: true
+      gateway.listeners: null
+    asserts:
+      - equal:
+          path: spec.listeners[0]
+          value:
+            name: web
+            protocol: HTTP
+            port: 8000
+            allowedRoutes:
+              namespaces:
+                from: Same
+      - equal:
+          path: spec.listeners[1].name
+          value: websecure
+      - equal:
+          path: spec.listeners[1].port
+          value: 8443
+
+  - it: should not reuse the http name for the https listener
+    set:
+      gateway.enable: true
+      gateway.listeners.http.name: plain
+      gateway.listeners.https: null
+    asserts:
+      - equal:
+          path: spec.listeners[0].name
+          value: plain
+      - equal:
+          path: spec.listeners[1].name
+          value: websecure
+
+  - it: should render the TCP listeners when services is null
+    set:
+      gateway.enable: true
+      services: null
+    asserts:
+      - lengthEqual:
+          path: spec.listeners
+          count: 5
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in routes
+templates:
+  - templates/routes.yaml
+  - templates/tcp-routes.yaml
+set:
+  global.config: |
+    max_cache_size_mb: 2048
+    server: parent.example.org
+    proxy_fqdn: proxy.example.org
+    email: foo@example.org
+  global.httpd: "httpd_content: test httpd"
+  global.ssh: "ssh_content: test ssh"
+tests:
+  - it: should not render routes when gateway is null
+    set:
+      gateway: null
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should use the default gateway and listener names when null
+    set:
+      gateway.enable: true
+      gateway.name: null
+      gateway.listeners: null
+    asserts:
+      - equal:
+          path: spec.parentRefs
+          value:
+            - name: uyuni-gateway
+              sectionName: websecure
+            - name: uyuni-gateway
+              sectionName: web
+        template: templates/routes.yaml
+
+  - it: should render all TCP routes on the default gateway when values are null
+    set:
+      gateway.enable: true
+      gateway.name: null
+      services: null
+    asserts:
+      - hasDocuments:
+          count: 3
+        template: templates/tcp-routes.yaml
+      - equal:
+          path: spec.parentRefs[0].name
+          value: uyuni-gateway
+        template: templates/tcp-routes.yaml
+
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test null values in volumes
+templates:
+  - templates/volumes.yaml
+set:
+  global.config: |
+    max_cache_size_mb: 2048
+    server: parent.example.org
+    proxy_fqdn: proxy.example.org
+    email: foo@example.org
+  global.httpd: "httpd_content: test httpd"
+  global.ssh: "ssh_content: test ssh"
+tests:
+  - it: should render the default squid volume when volumes is null
+    set:
+      volumes: null
+    asserts:
+      - equal:
+          path: spec.resources.requests.storage
+          value: 2048Mi
+      - notExists:
+          path: spec.storageClassName
+      - notExists:
+          path: metadata.annotations
+
+  - it: should render the default squid volume when its fields are null
+    set:
+      volumes.squid:
+        storageClass: null
+        extraLabels: null
+        annotations: null
+        volumeName: null
+        selector: null
+    asserts:
+      - equal:
+          path: metadata.labels
+          value:
+            app.kubernetes.io/component: proxy
+            app.kubernetes.io/part-of: uyuni
+      - notExists:
+          path: spec.volumeName
+      - notExists:
+          path: spec.selector

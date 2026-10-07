@@ -2,7 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 
-{{- if default .Values.hubAPI.enable false }}
+{{- $hubAPI := .Values.hubAPI | default (dict) -}}
+{{- if default $hubAPI.enable false }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -25,14 +26,14 @@ spec:
         app.kubernetes.io/component: hub-xmlrpc
         app.kubernetes.io/part-of: uyuni
     spec:
-{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" .Values.hubAPI) | nindent 6 }}
+{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" $hubAPI) | nindent 6 }}
       containers:
       - env:
         - name: HUB_API_URL
           value: http://web/rpc/api
         - name: HUB_CONNECT_USING_SSL
           value: "true"
-        image: {{ include "uyuni.image" (dict "name" "server-hub-xmlrpc-api" "global" . "local" .Values.hubAPI) }}
+        image: {{ include "uyuni.image" (dict "name" "server-hub-xmlrpc-api" "global" . "local" $hubAPI) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: hub-xmlrpc
         ports:
@@ -49,7 +50,7 @@ spec:
           until curl -L http://web/rhn/manager/api/api/getVersion; do
             sleep 60
           done
-        image: {{ include "uyuni.image" (dict "name" "server-hub-xmlrpc-api" "global" . "local" .Values.hubAPI) }}
+        image: {{ include "uyuni.image" (dict "name" "server-hub-xmlrpc-api" "global" . "local" $hubAPI) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: server-waiter
 {{- end }}
