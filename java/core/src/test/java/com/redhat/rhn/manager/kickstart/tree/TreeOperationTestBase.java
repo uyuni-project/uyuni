@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.kickstart.tree;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
+import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -32,6 +33,21 @@ public abstract class TreeOperationTestBase extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         KickstartTestUtils.setupTestConfiguration(user);
+        createSuseTreeItems();
+    }
+
+    /**
+     * The generic test setup only creates RHEL-style kernel/initrd files;
+     * SUSE install types look for their loader layout, so create those too.
+     */
+    private void createSuseTreeItems() throws Exception {
+        KickstartableTree tree = new KickstartableTree();
+        tree.setChannel(ChannelFactoryTest.createTestChannel(user));
+        tree.setInstallType(KickstartFactory.
+                lookupKickstartInstallTypeByLabel("suse"));
+        tree.setBasePath(KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath());
+        tree.setOrg(user.getOrg());
+        KickstartableTreeTest.createKickstartTreeItems(tree);
     }
 
     protected void setTestTreeParams(BaseTreeEditOperation cmd) throws Exception {

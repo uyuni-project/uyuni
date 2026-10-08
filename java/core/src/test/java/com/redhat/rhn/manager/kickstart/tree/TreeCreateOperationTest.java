@@ -16,6 +16,7 @@
 package com.redhat.rhn.manager.kickstart.tree;
 
 import static com.redhat.rhn.testing.TestUtils.assertContains;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -87,7 +88,7 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
         setTestTreeParams(cmd);
         cmd.setKernelOptions("");
         cmd.store();
-        assert cmd.getKernelOptions().isEmpty();
+        assertContains(cmd.getKernelOptions(), "inst.repo=");
     }
 
     @Test
@@ -101,5 +102,41 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
         TestUtils.assertContains(cmd.getKernelOptions(), "inst.repo=");
     }
 
+    /**
+     * User-typed options win over the computed distro options: a custom
+     * install= is kept, useonlinerepo= survives, and only the missing
+     * computed options are added.
+     */
+    @Test
+    public void testUserTypedOptionsWin() throws Exception {
+        TreeCreateOperation cmd = new TreeCreateOperation(user);
+        setTestTreeParams(cmd);
+        cmd.setInstallType(KickstartFactory.
+                lookupKickstartInstallTypeByLabel("sles15generic"));
+        cmd.setKernelOptions("install=http://mymirror.example.com/sles15 useonlinerepo=1");
+        assertNull(cmd.store());
+        String kopts = cmd.getKernelOptions();
+        assertContains(kopts, "install=http://mymirror.example.com/sles15");
+        assertContains(kopts, "useonlinerepo=1");
+        assertContains(kopts, "self_update=0");
+        assertEquals(1, kopts.split("install=", -1).length - 1);
+    }
+
+    /**
+     * Re-applying the distro options merge to an already complete set of
+     * options changes nothing.
+     */
+    @Test
+    public void testKernelOptionsIdempotent() throws Exception {
+        TreeCreateOperation cmd = new TreeCreateOperation(user);
+        setTestTreeParams(cmd);
+        cmd.setInstallType(KickstartFactory.
+                lookupKickstartInstallTypeByLabel("opensuse16.1"));
+        cmd.setKernelOptions("");
+        assertNull(cmd.store());
+        String kopts = cmd.getKernelOptions();
+        cmd.applyDistroKernelOptions();
+        assertEquals(kopts, cmd.getKernelOptions());
+    }
 }
 

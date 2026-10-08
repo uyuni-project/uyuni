@@ -15,18 +15,13 @@
 package com.redhat.rhn.manager.kickstart.tree;
 
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroCreateCommand;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Date;
-import java.util.Optional;
-import java.util.StringJoiner;
 
 /**
  * TreeCreateCommand
@@ -65,62 +60,6 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
             return new ValidatorError("distribution.tree.exists", existingTree.getLabel());
         }
 
-        String kopts = this.tree.getKernelOptions();
-        StringJoiner kOptsJoiner = new StringJoiner(" ");
-        kOptsJoiner.add(kopts);
-
-        if (this.tree.getInstallType().isSUSE()) {
-            if (this.tree.getInstallType().isSLES16OrGreater()) {
-                if (!kopts.contains("root=")) {
-                    kOptsJoiner.add("root=live:http://" + getServerFqdn() + "/ks/dist/" + this.tree.getLabel() +
-                            "/LiveOS/squashfs.img");
-                }
-                // Configure URL for the installer self update or disable it
-                if (!kopts.contains("inst.self_update=")) {
-                    kOptsJoiner.add("inst.self_update=" + getSelfUpdateOption());
-                }
-            }
-            else {
-                if (!kopts.contains("install=")) {
-                    kOptsJoiner.add("install=http://" + getServerFqdn() + "/ks/dist/" + this.tree.getLabel());
-                }
-                // Configure URL for YaST self update or disable it
-                if (!kopts.contains("self_update=")) {
-                    kOptsJoiner.add("self_update=" + getSelfUpdateOption());
-                }
-            }
-        }
-        else if (this.tree.getInstallType().isRhel8OrGreater() && !kopts.contains("inst.repo=")) {
-            kOptsJoiner.add("inst.repo=http://" + getServerFqdn() + "/ks/dist/" + this.tree.getLabel());
-        }
-
-        this.tree.setKernelOptions(kOptsJoiner.toString());
         return super.store();
-
-    }
-
-    private String getSelfUpdateOption() {
-        Optional<Channel> installerUpdates = tree.getChannel()
-                .getAccessibleChildrenFor(getUser())
-                .stream()
-                .filter(Channel::isInstallerUpdates)
-                .findFirst();
-        if (installerUpdates.isPresent()) {
-            return "http://" + getServerFqdn() + "/ks/dist/child/" +
-                    installerUpdates.get().getLabel() + "/" + this.tree.getLabel();
-        }
-        return "0";
-    }
-
-    private String getServerFqdn() {
-        String localhost = this.getServerName();
-        try {
-            // Find the FQDN of localhost
-            return InetAddress.getByName(localhost).getCanonicalHostName();
-        }
-        catch (UnknownHostException e) {
-            // Fall back to the local name in this case
-            return localhost;
-        }
     }
 }

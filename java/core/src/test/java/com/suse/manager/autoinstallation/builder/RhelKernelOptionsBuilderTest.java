@@ -87,12 +87,12 @@ public class RhelKernelOptionsBuilderTest extends MockObjectTestCase {
     }
 
     /**
-     * System options are inst.ks.sendmac plus ks= pointing at the Cobbler
+     * System options are inst.ks.sendmac plus inst.ks= pointing at the Cobbler
      * system autoinstall URL.
      */
     @Test
     public void testSystemOptions() {
-        assertEquals("inst.ks.sendmac ks=http://" + FQDN + "/cblr/svc/op/autoinstall/system/system1",
+        assertEquals("inst.ks.sendmac inst.ks=http://" + FQDN + "/cblr/svc/op/autoinstall/system/system1",
                 builder.systemOptions(system()).toString());
     }
 
