@@ -11,6 +11,8 @@ import { flatten } from "utils/jsx";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import styles from "./menu.module.scss";
+import { IconTag } from "components/icontag";
+import { Button } from "components/buttons";
 
 type LinkProps = {
   url: string;
@@ -59,7 +61,7 @@ class Node extends Component<NodeProps> {
         {...DEPRECATED_onClick((event) => this.handleClick(event))}
         role="button"
       >
-        {this.props.icon ? <i className={"fa " + this.props.icon}></i> : null}
+        {this.props.icon ? <IconTag icon={this.props.icon} /> : null}
         <Link
           url={this.props.url}
           target={this.props.target}
@@ -67,7 +69,7 @@ class Node extends Component<NodeProps> {
           betaBadge={betaBadge}
         />
         {this.props.isLeaf ? null : !this.props.isSearchActive ? (
-          <i className={"submenuIcon " + (this.props.isOpen ? "fa fa-angle-up" : "fa fa-angle-down")}></i>
+          <IconTag icon={this.props.isOpen ? "fa-angle-up" : "fa-angle-down"} className="submenuIcon" />
         ) : null}
       </div>
     );
@@ -229,13 +231,9 @@ class Nav extends Component {
           />
           <span className={"input-right-icon " + (isSearchActive ? "clear" : "")}>
             {isSearchActive ? (
-              <i
-                className="fa fa-times-circle-o no-margin"
-                {...DEPRECATED_onClick(this.closeAll)}
-                title={t("Clear Menu")}
-              ></i>
+              <Button icon="fa-times-circle-o icon-size-lg" className="btn-tertiary" handler={this.closeAll} title={t("Clear Menu")} />
             ) : (
-              <i className="fa fa-search no-margin" title={t("Filter menu")}></i>
+              <IconTag icon="fa-search" className="mt-3 me-3" title={t("Filter menu")} />
             )}
           </span>
         </div>
@@ -281,7 +279,7 @@ class Breadcrumb extends Component {
         url="/"
         label={
           <span>
-            SUSE<i className="fa fa-registered"></i> Multi-Linux Manager
+            SUSE <IconTag icon="fa-registered" />Multi-Linux Manager
           </span>
         }
         target=""

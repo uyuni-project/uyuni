@@ -8,6 +8,7 @@ import { Utils } from "utils/functions";
 import Network from "utils/network";
 
 import { type PermissionType, AccessModeByPermissionType } from "./access-mode";
+import { IconTag } from "components/icontag";
 
 type Props = {
   state: any;
@@ -187,7 +188,7 @@ const AccessGroupReview = (props: Props) => {
               return <span>-</span>;
             }
             const state = getCheckState(item, "view");
-            return state === "checked" ? <i className="fa fa-check"></i> : <span>X</span>;
+            return state === "checked" ? <IconTag icon="fa-check" /> : <span>X</span>;
           }}
           width="10%"
         />
@@ -202,7 +203,7 @@ const AccessGroupReview = (props: Props) => {
               return <span>-</span>;
             }
             const state = getCheckState(item, "modify");
-            return state === "checked" ? <i className="fa fa-check"></i> : <span>X</span>;
+            return state === "checked" ? <IconTag icon="fa-check" /> : <span>X</span>;
           }}
           width="10%"
         />

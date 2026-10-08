@@ -10,6 +10,7 @@ import styles from "./channels-selection.module.scss";
 import ChildChannel from "./child-channel";
 import EmptyChild from "./empty-child";
 import RecommendedToggle from "./recommended-toggle";
+import { IconTag } from "components/icontag";
 
 type Props = {
   /** The base channel with all its children */
@@ -74,7 +75,7 @@ const BaseChannel: FC<Props> = ({
           }}
           disabled={isSelectedBaseChannel}
         />
-        <i className={`${styles.arrow} fa ${isOpen ? "fa-angle-down" : "fa-angle-right"}`} />
+        <IconTag icon={`${styles.arrow} ${isOpen ? "fa-angle-down" : "fa-angle-right"}`} />
         <Highlight
           className={styles.collapsible}
           enabled={search !== undefined && search.length > 0}

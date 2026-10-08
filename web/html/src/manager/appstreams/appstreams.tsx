@@ -7,6 +7,7 @@ import { ChannelAppStream } from "./appstreams.type";
 import { AppStreamsChangesConfirm } from "./changes-confirm-appstreams";
 import { AppStreamsList } from "./list-appstreams";
 import { getStreamName, handleModuleEnableDisable } from "./utils";
+import { IconTag } from "components/icontag";
 
 type Props = {
   channelsAppStreams: ChannelAppStream[];
@@ -114,7 +115,7 @@ const AppStreams = ({ channelsAppStreams }: Props) => {
     <>
       {scheduledMsg.length > 0 && <Messages items={scheduledMsg} />}
       <h2>
-        <i className={"fa spacewalk-icon-salt-add"} />
+        <IconTag icon="spacewalk-icon-salt-add" />
         {t("AppStreams")}
         &nbsp;
       </h2>

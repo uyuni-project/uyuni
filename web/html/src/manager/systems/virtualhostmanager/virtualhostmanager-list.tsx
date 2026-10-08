@@ -7,6 +7,7 @@ import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
+import { IconTag } from "components/icontag";
 
 type Props = {
   data?: any;
@@ -46,7 +47,7 @@ class VirtualHostManagerList extends Component<Props, State> {
             header={t("Label")}
             cell={(row) => (
               <a data-senna-off href={"#/details/" + row.id}>
-                <i className="fa spacewalk-icon-virtual-host-manager" />
+                <IconTag icon="spacewalk-icon-virtual-host-manager" />
                 {row.label}
               </a>
             )}

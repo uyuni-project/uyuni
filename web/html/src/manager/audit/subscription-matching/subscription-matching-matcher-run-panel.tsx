@@ -5,6 +5,7 @@ import { fromNow } from "components/datetime/FromNow";
 import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
+import { IconTag } from "components/icontag";
 
 type MatcherRunPanelProps = {
   initialLatestStart?: moment.Moment | null;
@@ -156,7 +157,7 @@ class MatcherScheduleButton extends Component<MatcherScheduleButtonProps> {
 
     return (
       <button type="button" className={buttonClass} disabled={this.props.matcherRunning} onClick={this.onClick}>
-        <i className="fa fa-refresh"></i>
+        <IconTag icon="fa-refresh" />
         {t("Refresh matching data")}
       </button>
     );

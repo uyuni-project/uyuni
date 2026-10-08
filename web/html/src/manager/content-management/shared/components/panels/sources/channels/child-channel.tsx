@@ -7,6 +7,7 @@ import { Highlight } from "components/table/Highlight";
 
 import { ChannelDependencyData, ChannelProcessor } from "./channel-processor";
 import styles from "./channels-selection.module.scss";
+import { IconTag } from "components/icontag";
 
 type Props = {
   /** The child channel */
@@ -70,7 +71,7 @@ const ChildChannel: FC<Props> = ({ search = "", ...props }: Props): ReactElement
       <span>
         {tooltip ? (
           <span>
-            <i className="fa fa-info-circle spacewalk-help-link" title={tooltip}></i>
+            <IconTag icon="fa-info-circle" title={tooltip} />
           </span>
         ) : null}
         {recommended ? (

@@ -3,6 +3,7 @@ import { type ReactNode, Component, useState } from "react";
 import { DEPRECATED_onClick } from "components/utils";
 
 import HighstateSummary from "./highstate-summary";
+import { IconTag } from "components/icontag";
 
 function MinionHighstateSingle({ minion }: { minion: { id: number; name: string } }) {
   return (
@@ -28,7 +29,7 @@ function MinionHighstate({ minion }: { minion: { id: number; name: string } }) {
         <div className="row">
           <strong>{minion.name}</strong>
           <div className="pull-right">
-            <i className={`fa fa-right fa-chevron-${show ? "up" : "down"} fa-1-5x`} />
+            <IconTag icon={`fa-chevron-${show ? "up" : "down"}`} size="lg" />
           </div>
         </div>
       </div>

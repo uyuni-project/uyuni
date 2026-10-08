@@ -14,6 +14,7 @@ import { ProjectMessageType, ProjectSoftwareSourceType } from "../../../type";
 import getRenderedMessages from "../../messages/messages";
 import ChannelsSelection from "./channels/channels-selection";
 import styles from "./sources.module.scss";
+import { IconTag } from "components/icontag";
 
 type SourcesProps = {
   projectId: string;
@@ -74,7 +75,7 @@ const renderSourceEntry = (source) => {
   if (source.state === statesEnum.enum.DETACHED.key) {
     return (
       <div className={`text-danger ${styles.dettached}`}>
-        <i className="fa fa-minus" />
+        <IconTag icon="fa-minus" />
         <b>{source.name}</b>
       </div>
     );
@@ -107,7 +108,7 @@ const Sources = (props: SourcesProps) => {
       panelLevel="2"
       disableEditing={!hasEditingPermissions}
       collapsible
-      customIconClass="fa-small"
+      customIconClass="icon-size-md"
       onCancel={() => cancelAction()}
       onOpen={({ setItem }) => setItem(props.softwareSources.map((source) => source.label))}
       onSave={({ closeDialog, item }) => {

@@ -2,6 +2,7 @@ import { type ReactNode, Children } from "react";
 
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { cloneReactElement, HelpLink } from "components/utils";
+import { IconTag } from "components/icontag";
 
 type Props = {
   title: string;
@@ -41,7 +42,7 @@ function InnerPanel(props: Props) {
   return (
     <div>
       <h2>
-        <i className={`fa ${props.icon}`} />
+        <IconTag icon={`${props.icon}`} />
         {props.title}
         &nbsp;
         {help}

@@ -3,6 +3,7 @@ import { Component } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { IconTag } from "components/icontag";
 
 type Props = Record<never, never>;
 
@@ -88,7 +89,7 @@ class Notifications extends Component<Props, State> {
   render() {
     return (
       <a className="js-spa" href="/rhn/manager/notification-messages">
-        <i className={DEPRECATED_unsafeEquals(this.state.websocket, null) ? "fa fa-bell-slash" : "fa fa-bell"}></i>
+        <IconTag icon={DEPRECATED_unsafeEquals(this.state.websocket, null) ? "fa-bell-slash" : "fa-bell"} />
         {!DEPRECATED_unsafeEquals(this.state.websocket, null) && this.state.unreadMessagesLength > 0 ? (
           <div id="notification-counter" className={this.state.classStyle}>
             {this.state.unreadMessagesLength}

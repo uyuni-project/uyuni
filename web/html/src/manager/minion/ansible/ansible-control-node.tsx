@@ -12,6 +12,7 @@ import Network from "utils/network";
 import { AnsiblePath, createNewAnsiblePath } from "./ansible-path-type";
 import EditAnsiblePath from "./edit-ansible-path";
 import NewAnsiblePath from "./new-ansible-path";
+import { IconTag } from "components/icontag";
 
 type PropsType = {
   minionServerId: number;
@@ -188,7 +189,7 @@ export class AnsibleControlNode extends Component<PropsType, StateType> {
                     <div className="d-block" key={p.id}>
                       <pre className="pointer" {...DEPRECATED_onClick(() => this.setState({ editPlaybookPath: p }))}>
                         {p.path}
-                        <i className="fa fa-edit pull-right" data-bs-toggle="tooltip" title="Edit" />
+                        <IconTag icon="fa-edit" className="pull-right" title="Edit" />
                       </pre>
                     </div>
                   )
@@ -221,7 +222,7 @@ export class AnsibleControlNode extends Component<PropsType, StateType> {
                     <div className="d-block" key={p.id}>
                       <pre className="pointer" {...DEPRECATED_onClick(() => this.setState({ editInventoryPath: p }))}>
                         {p.path}
-                        <i className="fa fa-edit pull-right" data-bs-toggle="tooltip" title="Edit" />
+                        <IconTag icon="fa-edit" className="pull-right" title="Edit" />
                       </pre>
                     </div>
                   )

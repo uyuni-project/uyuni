@@ -13,6 +13,7 @@ import { Table } from "components/table/Table";
 
 import { localizedMoment } from "utils";
 import Network from "utils/network";
+import { IconTag } from "components/icontag";
 
 const ENDPOINTS = {
   SCAN_HISTORY: "/rhn/manager/api/audit/scap/policy",
@@ -185,7 +186,7 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
       <Panel headingLevel="h4" title={t("Scan History")} className="scap-scan-history-panel panel-default">
         {loading ? (
           <div className="text-center">
-            <i className="fa fa-spinner fa-spin fa-2x" />
+            <IconTag icon="fa-spinner fa-spin" size="xl" />
           </div>
         ) : scanHistory.length === 0 ? (
           <div className="alert alert-info">{t("No scans have been performed with this policy yet.")}</div>

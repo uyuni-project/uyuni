@@ -9,6 +9,7 @@ import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { CsvLink, humanReadablePolicy, ToolTip, WarningIcon } from "./subscription-matching-util";
+import { IconTag } from "components/icontag";
 
 type SubscriptionsProps = {
   subscriptions: any[];
@@ -150,7 +151,7 @@ const QuantityCell = (props) => {
       <span>
         <strong>{content}</strong>
         &nbsp;
-        <i className="fa fa-exclamation-triangle text-warning"></i>
+        <IconTag icon="fa-exclamation-triangle" className="text-warning" />
       </span>
     );
   }

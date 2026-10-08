@@ -15,6 +15,7 @@ import { TopPanel } from "components/panels/TopPanel";
 import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
+import { IconTag } from "components/icontag";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/build.jade
 declare global {
@@ -272,7 +273,7 @@ class BuildImage extends Component<Props, State> {
                   <tbody>
                     <tr>
                       <td>
-                        <i className="fa fa-info-circle" />
+                        <IconTag icon="fa-info-circle" />
                         {t("No profile selected")}
                       </td>
                     </tr>

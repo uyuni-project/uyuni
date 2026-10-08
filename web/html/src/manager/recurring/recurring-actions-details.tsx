@@ -17,22 +17,22 @@ import Network from "utils/network";
 
 import { DisplayHighstate } from "../state/display-highstate";
 import { isReadOnly, targetNameLink, targetTypeToString } from "./recurring-actions-utils";
+import { IconTag } from "components/icontag";
 
 function channelIcon(channel) {
-  let iconClass, iconTitle, iconStyle;
+  let iconClass, iconTitle;
   if (channel.type === "state") {
-    iconClass = "fa spacewalk-icon-salt-add";
+    iconClass = "spacewalk-icon-salt-add";
     iconTitle = t("State Configuration Channel");
   } else if (channel.type === "internal_state") {
-    iconClass = "fa spacewalk-icon-salt-add";
+    iconClass = "spacewalk-icon-salt-add border border-black";
     iconTitle = t("Internal State");
-    iconStyle = { border: "1px solid black" };
   } else {
-    iconClass = "fa spacewalk-icon-software-channels";
+    iconClass = "spacewalk-icon-software-channels";
     iconTitle = t("Normal Configuration Channel");
   }
 
-  return <i className={iconClass} data-bs-toggle="tooltip" title={iconTitle} style={iconStyle} />;
+  return <IconTag icon={iconClass} title={iconTitle} />;
 }
 
 export enum RecurringActionType {
@@ -301,7 +301,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
                 header={t("Description")}
                 columnKey="description"
                 cell={(row) => (
-                  <i className="fa fa-info-circle fa-1-5x" data-bs-toggle="tooltip" title={row.description} />
+                  <IconTag icon="fa-info-circle" size="lg" title={row.description} />
                 )}
               />
             </Table>
@@ -329,9 +329,9 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
                 header={t("Description")}
                 columnKey="description"
                 cell={(row) => (
-                  <i
-                    className="fa fa-info-circle fa-1-5x"
-                    data-bs-toggle="tooltip"
+                  <IconTag
+                    icon="fa-info-circle"
+                    size="lg"
                     title={row.description || t("No description")}
                   />
                 )}

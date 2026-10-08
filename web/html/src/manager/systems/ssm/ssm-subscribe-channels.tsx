@@ -17,6 +17,7 @@ import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network, { JsonResult } from "utils/network";
+import { IconTag } from "components/icontag";
 
 // See java/core/src/main/resources/WEB-INF/pages/channel/ssm/channelssub.jsp
 declare global {
@@ -464,7 +465,7 @@ class ChildChannelPage extends Component<ChildChannelProps, ChildChannelState> {
                       )
                     }
                   >
-                    <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                    <IconTag icon="fa-exclamation-triangle" size="lg" />
                     {allowed.incompatibleServers.length} {t("system(s) incompatible")}
                   </button>
                 ) : null}
@@ -482,10 +483,7 @@ class ChildChannelPage extends Component<ChildChannelProps, ChildChannelState> {
                   &nbsp;
                   {this.dependenciesTooltip(child.id) ? (
                     <span>
-                      <i
-                        className="fa fa-info-circle spacewalk-help-link"
-                        title={this.dependenciesTooltip(child.id)}
-                      ></i>
+                      <IconTag icon="fa-info-circle" title={this.dependenciesTooltip(child.id)} />
                     </span>
                   ) : null}
                   &nbsp;
@@ -651,7 +649,7 @@ class SummaryPage extends Component<SummaryPageProps, SummaryPageState> {
                 ) : (
                   t("(None)")
                 )}
-                <i className="fa fa-arrow-right" style={{ margin: "0px 10px 0px 10px" }} aria-hidden="true"></i>
+                <IconTag icon="fa-arrow-right" className="me-3 ms-3" />
                 {allowed.newBaseChannel ? (
                   <ChannelLink id={allowed.newBaseChannel.id} newWindow={true}>
                     {newBaseName}
@@ -681,7 +679,7 @@ class SummaryPage extends Component<SummaryPageProps, SummaryPageState> {
                     data-bs-target="#channelServersPopup"
                     onClick={() => this.showServersListPopUp(newBaseName, allowed.incompatibleServers)}
                   >
-                    <i className="fa fa-exclamation-triangle fa-1-5x" aria-hidden="true"></i>
+                    <IconTag icon="fa-exclamation-triangle" size="lg" />
                     {allowed.incompatibleServers.length} {t("system(s) incompatible")}
                   </button>
                 ) : null}
@@ -788,7 +786,7 @@ class ResultPage extends Component<ResultPageProps> {
                 </span>
               ) : (
                 <span className="text-danger">
-                  <i className="fa fa-exclamation-triangle fa-1-5x" aria-hidden="true"></i>
+                  <IconTag icon="fa-exclamation-triangle" size="lg" />
                   {dto.errorMessage
                     ? messageMap[dto.errorMessage]
                     : t("Unknown error. Could not schedule channel change")}

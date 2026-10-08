@@ -8,6 +8,7 @@ import { Loading } from "components/utils/loading/Loading";
 import Network from "utils/network";
 
 import { AnsiblePath } from "./ansible-path-type";
+import { IconTag } from "components/icontag";
 
 type PropsType = {
   path: AnsiblePath;
@@ -203,7 +204,7 @@ class AccordionPathContent extends Component<PropsType, StateType> {
   render() {
     const header = (
       <button className="div-button panel-heading" onClick={() => this.onToggle()}>
-        <i className={this.state.isOpen || this.state.loading ? "fa fa-chevron-down" : "fa fa-chevron-right"} />
+        <IconTag icon={this.state.isOpen || this.state.loading ? "fa-chevron-down" : "fa-chevron-right"} />
         {this.props.path.path}
       </button>
     );

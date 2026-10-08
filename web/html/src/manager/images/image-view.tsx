@@ -24,6 +24,7 @@ import { ImageViewOverview } from "./image-view-overview";
 import { ImageViewPackages } from "./image-view-packages";
 import { ImageViewPatches } from "./image-view-patches";
 import { ImageViewRuntime } from "./image-view-runtime";
+import { IconTag } from "components/icontag";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
@@ -483,36 +484,40 @@ export class ImageViewList extends Component<ImageViewListProps, ImageViewListSt
     let icon;
 
     if (!row.patches || row.installedPackages === 0) {
-      icon = <i className="fa fa-question-circle fa-1-5x" data-bs-toggle="tooltip" title={t("No information")} />;
+      icon = <IconTag icon="fa-question-circle" size="lg" title={t("No information")} />;
     } else if (row.patches.critical > 0) {
       icon = (
-        <i
-          className="fa fa-exclamation-circle fa-1-5x text-danger"
-          data-bs-toggle="tooltip"
+        <IconTag
+          icon="fa-exclamation-circle"
+          size="lg"
+          status="danger"
           title={t("Critical updates available")}
         />
       );
     } else if (row.patches.noncritical > 0) {
       icon = (
-        <i
-          className="fa fa-exclamation-triangle fa-1-5x text-warning"
-          data-bs-toggle="tooltip"
+        <IconTag
+          icon="fa-exclamation-triangle"
+          size="lg"
+          status="warning"
           title={t("Non-critical updates available")}
         />
       );
     } else if (row.packages > 0) {
       icon = (
-        <i
-          className="fa fa-exclamation-triangle fa-1-5x text-warning"
-          data-bs-toggle="tooltip"
+        <IconTag
+          icon="fa-exclamation-triangle"
+          size="lg"
+          status="warning"
           title={t("Package updates available")}
         />
       );
     } else {
       icon = (
-        <i
-          className="fa fa-check-circle fa-1-5x text-success"
-          data-bs-toggle="tooltip"
+        <IconTag
+          icon="fa-check-circle"
+          size="lg"
+          status="success"
           title={t("Image is up to date")}
         />
       );
@@ -527,24 +532,24 @@ export class ImageViewList extends Component<ImageViewListProps, ImageViewListSt
     // precedence over the build status here.
     if (row.inspectStatusId === 3) {
       icon = (
-        <i className="fa fa-times-circle-o fa-1-5x text-danger" data-bs-toggle="tooltip" title={t("Inspect failed")} />
+        <IconTag icon="fa-times-circle-o" size="lg" status="danger" title={t("Inspect failed")} />
       );
     } else if (row.external) {
       icon = (
-        <i className="fa fa-minus-circle fa-1-5x text-muted" data-bs-toggle="tooltip" title={t("Built externally")} />
+        <IconTag icon="fa fa-minus-circle" size="lg" status="muted" title={t("Built externally")} />
       );
     } else if (row.statusId === 0) {
-      icon = <i className="fa fa-clock-o fa-1-5x" data-bs-toggle="tooltip" title={t("Queued")} />;
+      icon = <IconTag icon="fa fa-clock-o" size="lg" status="muted" title={t("Queued")} />;
     } else if (row.statusId === 1) {
-      icon = <i className="fa fa-exchange fa-1-5x text-info" data-bs-toggle="tooltip" title={t("Building")} />;
+      icon = <IconTag icon="fa fa-exchange" size="lg" status="info" title={t("Building")} />;
     } else if (row.statusId === 2) {
-      icon = <i className="fa fa-check-circle fa-1-5x text-success" data-bs-toggle="tooltip" title={t("Built")} />;
+      icon = <IconTag icon="fa fa-check-circle" size="lg" status="success" title={t("Built")} />;
     } else if (row.statusId === 3) {
       icon = (
-        <i className="fa fa-times-circle-o fa-1-5x text-danger" data-bs-toggle="tooltip" title={t("Build failed")} />
+        <IconTag icon="fa-times-circle-o" size="lg" status="danger" title={t("Build failed")} />
       );
     } else {
-      icon = <i className="fa fa-question-circle fa-1-5x" data-bs-toggle="tooltip" title={t("Unknown")} />;
+      icon = <IconTag icon="fa-question-circle" size="lg" status="muted" title={t("Unknown")} />;
     }
 
     return icon;
@@ -553,9 +558,9 @@ export class ImageViewList extends Component<ImageViewListProps, ImageViewListSt
   renderRuntimeIcon = (row) => {
     if (!this.props.gotRuntimeInfo) {
       return (
-        <i
-          className="fa fa-circle-o-notch fa-spin fa-1-5x"
-          data-bs-toggle="tooltip"
+        <IconTag
+          icon="fa-circle-o-notch fa-spin"
+          size="lg"
           title={t("Waiting for update ...")}
         />
       );
@@ -564,19 +569,21 @@ export class ImageViewList extends Component<ImageViewListProps, ImageViewListSt
     let icon = <span>-</span>;
     if (row.runtimeStatus === 1) {
       icon = (
-        <i
-          className="fa fa-check-circle fa-1-5x text-success"
-          data-bs-toggle="tooltip"
+        <IconTag
+          icon="fa-check-circle"
+          size="lg"
+          status="success"
           title={t("All instances are consistent with {productName}", { productName })}
         />
       );
     } else if (row.runtimeStatus === 2) {
-      icon = <i className="fa fa-question-circle fa-1-5x" data-bs-toggle="tooltip" title={t("No information")} />;
+      icon = <IconTag icon="fa-question-circle" size="lg" title={t("No information")} />;
     } else if (row.runtimeStatus === 3) {
       icon = (
-        <i
-          className="fa fa-exclamation-triangle fa-1-5x text-warning"
-          data-bs-toggle="tooltip"
+        <IconTag
+          icon="fa-exclamation-triangle"
+          size="lg"
+          status="warning"
           title={t("Outdated instances found")}
         />
       );
@@ -615,9 +622,9 @@ export class ImageViewList extends Component<ImageViewListProps, ImageViewListSt
   renderInstances = (row) => {
     if (!this.props.gotRuntimeInfo) {
       return (
-        <i
-          className="fa fa-circle-o-notch fa-spin fa-1-5x"
-          data-bs-toggle="tooltip"
+        <IconTag
+          icon="fa-circle-o-notch fa-spin"
+          size="lg"
           title={t("Waiting for update ...")}
         />
       );

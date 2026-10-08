@@ -3,18 +3,19 @@ import { type ReactNode, Component } from "react";
 import { AceEditor } from "./ace-editor";
 import { LinkButton } from "./buttons";
 import { PopUp } from "./popup";
+import { IconTag } from "./icontag";
 
 function channelIcon(channel) {
   let iconClass, iconTitle;
   if (channel.type === "state") {
-    iconClass = "fa spacewalk-icon-salt-add";
+    iconClass = "spacewalk-icon-salt-add";
     iconTitle = t("State Configuration Channel");
   } else {
-    iconClass = "fa spacewalk-icon-software-channels";
+    iconClass = "spacewalk-icon-software-channels";
     iconTitle = t("Normal Configuration Channel");
   }
 
-  return <i className={iconClass} title={iconTitle} />;
+  return <IconTag icon={iconClass} title={iconTitle} />;
 }
 
 type SaltStatePopupProps = {

@@ -1,3 +1,4 @@
+import { IconTag } from "components/icontag";
 import { type HTMLProps, type ReactNode, Component } from "react";
 /**
  * Various HTML button components.
@@ -41,7 +42,7 @@ class _ButtonBase<P extends BaseProps = BaseProps, S extends BaseState = BaseSta
   renderIcon() {
     const text = this.props.text ?? this.props.children;
     const margin = text ? "" : " no-margin";
-    const icon = this.props.icon && <i className={"fa " + this.props.icon + margin} />;
+    const icon = this.props.icon && <IconTag icon={this.props.icon} className={margin} />;
 
     return icon;
   }
@@ -167,7 +168,7 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
         type={this.props.type ?? "button"}
       >
         {this.state.value === "waiting" ? (
-          <i className={"fa fa-circle-o-notch fa-spin" + margin}></i>
+          <IconTag icon="fa-circle-o-notch fa-spin" className={margin} />
         ) : (
           this.renderIcon()
         )}

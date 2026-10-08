@@ -3,6 +3,7 @@ import { type ReactNode, useEffect, useRef } from "react";
 import { Button, DropdownButton } from "components/buttons";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { IconTag } from "./icontag";
 type PaginationBlockProps = {
   currentPage: number;
   lastPage: number;
@@ -86,7 +87,7 @@ const PaginationButton = (props: PaginationButtonProps) => {
       disabled={props.disabled}
       onClick={props.onClick}
     >
-      <i className={`pagination-icon fa ${props.icon}`} />
+      <IconTag icon={props.icon as string} className="pagination-icon" />
       {props.text}
     </button>
   );
@@ -118,7 +119,7 @@ const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => {
             }}
           >
             <div>{t(`${o} per page`)}</div>
-            <div>{props.currentValue === o ? <i className="fa fa-check" /> : null}</div>
+            <div>{props.currentValue === o ? <IconTag icon="fa-check" /> : null}</div>
           </Button>
         ))}
       />

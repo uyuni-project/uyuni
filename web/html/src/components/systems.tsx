@@ -36,13 +36,24 @@ export function iconAndName(system: SystemOverview) {
       iconTitle: t("Non-Virtual System"),
       condition: () => true,
     },
-  ];
+  ] as const;
   const systemIcon = iconMapping
     .filter((item) => item.condition(system))
-    .map((item) => <IconTag type={item.iconType} title={item.iconTitle} key={item.iconTitle || item.iconType} />)[0];
+    .map((item) => (
+      <IconTag
+        type={item.iconType}
+        size="lg"
+        title={item.iconTitle}
+        key={item.iconTitle || item.iconType}
+      />
+    ))[0];
 
   const proxyIcon = system.proxy ? <IconTag type="header-proxy" title={t("Proxy")} /> : "";
-  const mgrServerIcon = system.mgrServer ? <IconTag type="header-mgr-server" title={t("Peripheral Server")} /> : "";
+  const mgrServerIcon = system.mgrServer ? (
+    <IconTag type="header-mgr-server" title={t("Peripheral Server")} />
+  ) : (
+    ""
+  );
 
   const content = [systemIcon, proxyIcon, mgrServerIcon, system.serverName];
 
@@ -62,13 +73,13 @@ function statusDisplay(system: any, isAdmin: boolean) {
 
   const systems = {
     unentitled: {
-      iconTitle: "System not entitled",
       iconType: "system-unknown",
+      iconTitle: "System not entitled",
       url: isAdmin && "/rhn/systems/details/Edit.do?sid=" + sid,
     },
     awol: {
-      iconTitle: "System not checking in",
       iconType: "system-unknown",
+      iconTitle: "System not checking in",
       url: null,
     },
     kickstarting: {
@@ -93,31 +104,34 @@ function statusDisplay(system: any, isAdmin: boolean) {
     },
     up2date: {
       iconType: "system-ok",
+      iconStatus: "success",
       iconTitle: "System is up to date",
       url: null,
     },
     critical: {
       iconType: "system-crit",
+      iconStatus: "danger",
       iconTitle: "Critical updates available",
       url: "/rhn/systems/details/ErrataList.do?sid=" + sid + "&type=" + t("Security Advisory"),
     },
     updates: {
       iconType: "system-warn",
+      iconStatus: "warning",
       iconTitle: "Updates available",
       url: "/rhn/systems/details/packages/UpgradableList.do?sid=" + sid,
     },
   };
 
-  const { iconType, iconTitle, url } = systems[type];
+  const { iconType, iconStatus, iconTitle, url } = systems[type];
 
   let locked: ReactNode = "";
   if (DEPRECATED_unsafeEquals(system["locked"], 1)) {
-    locked = <IconTag type="system-locked" title={t("System Locked")} />;
+    locked = <IconTag type="system-locked" size="lg" title={t("System Locked")} />;
   }
   return (
     <div>
       <a href={url}>
-        <IconTag type={iconType} title={t(iconTitle)} />
+        <IconTag type={iconType} size="lg" status={iconStatus ? iconStatus : undefined} title={t(iconTitle)} />
       </a>
       {locked}
     </div>

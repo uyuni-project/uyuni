@@ -3,6 +3,7 @@ import { Component } from "react";
 import { productName } from "core/user-preferences";
 
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { IconTag } from "components/icontag";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
@@ -35,7 +36,7 @@ class ImageViewRuntime extends Component<ImageViewRuntimeProps> {
     } else if (!runtimeInfo || runtimeInfo.length === 0) {
       msg = (
         <span>
-          <i className="fa fa-1-5x fa-info-circle" />
+          <IconTag icon="fa-info-circle" size="lg" />
           There is no container running with this image on any <a href="/rhn/manager/vhms">registered cluster</a>.
         </span>
       );
@@ -65,15 +66,17 @@ class PodInfo extends Component<PodInfoProps> {
 
     if (statusId === 1) {
       icon = (
-        <i
-          className="fa fa-check-circle fa-1-5x text-success"
+        <IconTag
+          icon="fa-check-circle"
+          size="lg"
+          status="success"
           title={t("Instance is consistent with {productName}", { productName })}
         />
       );
     } else if (statusId === 2) {
-      icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />;
+      icon = <IconTag icon="fa-question-circle" size="lg" title={t("No information")} />;
     } else if (statusId === 3) {
-      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Instance is outdated")} />;
+      icon = <IconTag icon="fa-exclamation-triangle" size="lg" status="warning" title={t("Instance is outdated")} />;
     } else {
       icon = <span>-</span>;
     }
@@ -105,15 +108,17 @@ class ClusterInfo extends Component<ClusterInfoProps> {
 
     if (statusId === 1) {
       icon = (
-        <i
-          className="fa fa-check-circle fa-1-5x text-success"
+        <IconTag
+          icon="fa-check-circle"
+          size="lg"
+          status="success"
           title={t("Cluster is consistent with {productName", { productName })}
         />
       );
     } else if (statusId === 2) {
-      icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />;
+      icon = <IconTag icon="fa-question-circle" size="lg" title={t("No information")} />;
     } else if (statusId === 3) {
-      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Cluster is outdated")} />;
+      icon = <IconTag icon="fa-exclamation-triangle" size="lg" status="warning" title={t("Cluster is outdated")} />;
     }
 
     return icon ? (

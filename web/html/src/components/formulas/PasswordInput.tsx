@@ -2,6 +2,7 @@ import { Component } from "react";
 
 import { Utils } from "../../utils/functions";
 import { ElementDefinition } from "./FormulaComponentGenerator";
+import { IconTag } from "components/icontag";
 
 const generatePassword = Utils.generatePassword;
 
@@ -70,14 +71,14 @@ class PasswordInput extends Component<Props, State> {
                 title={t("Generate new password")}
                 onClick={this.handleGeneratePassword}
               >
-                <i className="fa fa-key no-margin" />
+                <IconTag icon="fa-key" className="no-margin" />
               </button>
               <button
                 className="btn btn-default"
                 title={t("Show/hide password")}
                 onClick={this.handleToggleShowPassword}
               >
-                <i className={"fa no-margin " + (this.state.showPassword ? "fa-eye-slash" : "fa-eye")} />
+                <IconTag icon={this.state.showPassword ? "fa-eye-slash" : "fa-eye"} className="no-margin" />
               </button>
             </span>
           </div>

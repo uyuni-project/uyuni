@@ -18,6 +18,7 @@ import {
   isFiltered,
 } from "./FormulaComponentGenerator";
 import SectionToggle from "./SectionToggle";
+import { IconTag } from "components/icontag";
 
 const EditGroupSubtype = Formulas.EditGroupSubtype;
 const getEditGroupSubtype = Formulas.getEditGroupSubtype;
@@ -306,8 +307,9 @@ class RemoveButton extends Component<RemoveButtonProps> {
         onClick={() => this.props.handleRemoveItem()}
         disabled={this.props.minItems >= this.props.currentLength}
       >
-        <i className="fa fa-minus" /> Remove
+        <IconTag icon="fa-minus" /> Remove
       </button>
+
     );
   }
 }

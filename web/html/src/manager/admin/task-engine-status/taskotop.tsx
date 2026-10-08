@@ -12,6 +12,7 @@ import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
+import { IconTag } from "components/icontag";
 
 type Props = {
   refreshInterval: number;
@@ -92,7 +93,7 @@ class TaskoTop extends Component<Props> {
       case "running":
         cell = (
           <div>
-            <i className="fa fa-cog fa-spin"></i>
+            <IconTag icon="fa-cog fa-spin" />
             {t(" running")}
           </div>
         );
@@ -100,7 +101,7 @@ class TaskoTop extends Component<Props> {
       case "finished":
         cell = (
           <div className="text-success">
-            <i className="fa fa-thumbs-o-up"></i>
+            <IconTag icon="fa-thumbs-o-up" />
             {t(" finished")}
           </div>
         );
@@ -108,7 +109,7 @@ class TaskoTop extends Component<Props> {
       case "failed":
         cell = (
           <div className="text-danger">
-            <i className="fa fa-exclamation-triangle"></i>
+            <IconTag icon="fa-exclamation-triangle" />
             {t(" failed")}
           </div>
         );
@@ -116,7 +117,7 @@ class TaskoTop extends Component<Props> {
       case "interrupted":
         cell = (
           <div className="text-warning">
-            <i className="fa fa-stop"></i>
+            <IconTag icon="fa-stop" />
             {t(" interrupted")}
           </div>
         );
@@ -124,7 +125,7 @@ class TaskoTop extends Component<Props> {
       case "ready_to_run":
         cell = (
           <div className="text-primary">
-            <i className="fa fa-list-ul"></i>
+            <IconTag icon="fa-list-ul" />
             {t(" ready to run")}
           </div>
         );
@@ -132,7 +133,7 @@ class TaskoTop extends Component<Props> {
       case "skipped":
         cell = (
           <div>
-            <i className="fa fa-angle-double-right"></i>
+            <IconTag icon="fa-angle-double-right" />
             {t(" skipped")}
           </div>
         );
@@ -152,7 +153,7 @@ class TaskoTop extends Component<Props> {
     const title = (
       <div className="spacewalk-toolbar-h1">
         <h1>
-          <i className="fa fa-tachometer"></i>
+          <IconTag icon="fa-tachometer" />
           {t("Task Engine Status")}
           <HelpLink url="reference/admin/task-engine-status.html" />
         </h1>

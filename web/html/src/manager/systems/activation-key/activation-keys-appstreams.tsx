@@ -9,6 +9,7 @@ import { Messages, MessageType, Utils as MessageUtils } from "components/message
 import Network from "utils/network";
 
 import { ChannelAppStream } from "../../appstreams/appstreams.type";
+import { IconTag } from "components/icontag";
 
 declare global {
   interface Window {
@@ -70,7 +71,7 @@ const AppStreams = (props: Props) => {
     <>
       {statusMessage.length > 0 && <Messages items={statusMessage} />}
       <h2>
-        <i className={"fa spacewalk-icon-salt-add"} />
+        <IconTag icon="spacewalk-icon-salt-add" />
         {t("AppStreams")}
       </h2>
       <AppStreamActions numberOfChanges={changes} onReset={handleReset} onSubmit={handleSubmit} />

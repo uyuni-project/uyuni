@@ -15,6 +15,7 @@ import Network from "utils/network";
 
 import { NotificationComparators } from "./comparators";
 import { Notification, NotificationType, Severity } from "./types";
+import { IconTag } from "components/icontag";
 
 // Defines the type of data displayed in the table
 enum DataType {
@@ -235,7 +236,7 @@ export class NotificationList extends Component<Props, State> {
     return (
       <AsyncButton
         id="reaction"
-        icon="fa-rotate-right fa-1-5x"
+        icon="fa-rotate-right icon-size-lg"
         text={t("Retry")}
         action={() => this.onRetry(data.id)}
       />
@@ -253,7 +254,7 @@ export class NotificationList extends Component<Props, State> {
         />
         <AsyncButton
           id="delete"
-          icon="fa-trash fa-1-5x"
+          icon="fa-trash icon-size-lg"
           title={t("Delete Notification")}
           action={() => this.deleteNotifications([row.id])}
         />
@@ -334,22 +335,19 @@ export class NotificationList extends Component<Props, State> {
       case Severity.Info:
         return (
           <span>
-            <i className="fa fa-info-circle" title={t("Info")}></i>
-            {t("Info")}
+            <IconTag icon="fa-info-circle" title={t("Info")} />
           </span>
         );
       case Severity.Warning:
         return (
           <span>
-            <i className="fa fa-exclamation-triangle text-warning" title={t("Warning")}></i>
-            {t("Warning")}
+            <IconTag icon="fa-exclamation-triangle" className="text-warning" title={t("Warning")} />
           </span>
         );
       case Severity.Error:
         return (
           <span>
-            <i className="fa fa-times-circle-o text-danger" title={t("Error")}></i>
-            {t("Error")}
+            <IconTag icon="fa-times-circle-o" className="text-danger" title={t("Error")} />
           </span>
         );
     }

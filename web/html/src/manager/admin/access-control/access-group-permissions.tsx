@@ -15,6 +15,7 @@ import Network from "utils/network";
 
 import { type AccessModeValue, type PermissionType, AccessMode, AccessModeByPermissionType } from "./access-mode";
 import styles from "./AccessGroup.module.scss";
+import { IconTag } from "components/icontag";
 
 type Props = {
   state: AccessGroupState;
@@ -359,7 +360,7 @@ const AccessGroupPermissions = (props: Props) => {
               <b>
                 {row.name}
                 {row.isAPI ? (
-                  <i className={`fa fa-plug ${styles.apiIcon}`} data-bs-toggle="tooltip" title={t("API")} />
+                  <IconTag icon="fa-plug" className={styles.apiIcon} title={t("API")} />
                 ) : (
                   ""
                 )}

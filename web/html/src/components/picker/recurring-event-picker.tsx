@@ -8,6 +8,7 @@ import { Text } from "components/input/text/Text";
 import { localizedMoment } from "utils";
 
 import styles from "./recurring-event-picker.module.scss";
+import { IconTag } from "components/icontag";
 
 export type RecurringType = "hourly" | "daily" | "weekly" | "monthly" | "cron";
 export type CronTimes = {
@@ -361,10 +362,10 @@ class RecurringEventPicker extends Component<RecurringEventPickerProps, Recurrin
             />
           </div>
           <div className={`col-sm-1 ${styles.helpIcon}`}>
-            <i
-              className="fa fa-info-circle fa-1-5x"
+            <IconTag
+              icon="fa-info-circle"
+              size="lg"
               title={t("The action will be executed every hour at the specified minute")}
-              data-bs-toggle="tooltip"
             />
           </div>
         </div>
@@ -460,8 +461,9 @@ class RecurringEventPicker extends Component<RecurringEventPickerProps, Recurrin
             />
           </div>
           <div className={`col-sm-1 ${styles.helpIcon}`}>
-            <i
-              className="fa fa-info-circle fa-1-5x"
+            <IconTag
+              icon="fa-info-circle"
+              size="lg"
               title={t("Days are limited to 28 to have a recurring schedule available for all the months")}
               data-bs-toggle="tooltip"
             />

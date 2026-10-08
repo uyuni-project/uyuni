@@ -3,6 +3,7 @@ import { Component } from "react";
 import { StatesPicker } from "components/states-picker";
 
 import { Messages, MessageType } from "./messages/messages";
+import { IconTag } from "components/icontag";
 
 type ConfigChannelsProps = {
   matchUrl: (filter?: string) => any;
@@ -34,7 +35,7 @@ class ConfigChannels extends Component<ConfigChannelsProps, ConfigChannelsState>
       <span>
         {messages}
         <h2>
-          <i className={"fa spacewalk-icon-salt-add"} />
+          <IconTag icon={"spacewalk-icon-salt-add"} />
           {t("Configuration Channels")}
           &nbsp;
         </h2>

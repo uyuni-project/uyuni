@@ -1,4 +1,5 @@
 import type { HTMLProps, ReactNode } from "react";
+import { IconTag } from "components/icontag";
 
 type LinkProps = {
   id: string | number;
@@ -16,7 +17,7 @@ const targetProps = (props: LinkProps): Partial<HTMLProps<HTMLAnchorElement>> =>
 
 const ChannelAnchorLink = (props: LinkProps) => (
   <a className="channel-anchor-link" href={`/rhn/channels/ChannelDetail.do?cid=${props.id}`} {...targetProps(props)}>
-    <i className="fa fa-link fa-right"></i>
+    <IconTag icon="fa-link" className="fa-right" />
   </a>
 );
 

@@ -1,3 +1,5 @@
+import { IconTag } from "components/icontag";
+
 type LoadingProps = {
   /** Text to be displayed with the loading spinner */
   text?: string;
@@ -7,7 +9,7 @@ type LoadingProps = {
 };
 
 export function Spinner() {
-  return <i className="fa fa-spinner fa-spin fa-1-5x" />;
+  return <IconTag icon="fa-spinner fa-spin" size="lg" />;
 }
 
 export function Loading({ withBorders, text }: LoadingProps) {

@@ -12,6 +12,7 @@ import { Toggler } from "components/toggler";
 import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network, { JsonResult } from "utils/network";
+import { IconTag } from "components/icontag";
 
 declare global {
   var actionChains: ActionChain[];
@@ -545,12 +546,7 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
           </label>{" "}
           &nbsp;
           {this.dependenciesTooltip(c.id) ? (
-            <i
-              className="fa fa-info-circle spacewalk-help-link"
-              data-bs-toggle="tooltip"
-              data-bs-custom-class="wide-tooltip"
-              title={this.dependenciesTooltip(c.id)}
-            ></i>
+            <IconTag icon="fa-info-circle" tooltipWide title={this.dependenciesTooltip(c.id)} />
           ) : null}
           &nbsp;
           {c.recommended ? (
@@ -637,12 +633,12 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
                     {this.state.selectedBase && this.state.selectedBase.id > -1 ? (
                       this.state.dependencyDataAvailable === true ? (
                         <span>
-                          <i className="fa fa-exclamation-triangle fa-1-5x" title={t("No child channels available.")} />
+                          <IconTag icon="fa-exclamation-triangle" size="lg" />
                           {t("No child channels available.")}
                         </span>
                       ) : (
                         <span>
-                          <i className="fa fa-spinner fa-spin fa-1-5x" title={t("Loading...")} />
+                          <IconTag icon="fa-spinner fa-spin" size="lg" />
                           {t("Loading...")}
                         </span>
                       )
@@ -716,7 +712,7 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
               ))}
             {availableChildren.size === 0 && this.state.selectedBase && this.state.selectedBase.id > -1 ? (
               <div>
-                <i className="fa fa-exclamation-triangle fa-1-5x" title={t("No child channels available.")} />
+                <IconTag icon="fa-exclamation-triangle" size="lg" />
                 {t("No child channels available.")}
               </div>
             ) : undefined}

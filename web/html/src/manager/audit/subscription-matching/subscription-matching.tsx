@@ -16,6 +16,8 @@ import { Pins } from "./subscription-matching-pins";
 import { Subscriptions } from "./subscription-matching-subscriptions";
 import { UnmatchedProducts } from "./subscription-matching-unmatched-products";
 import { WarningIcon } from "./subscription-matching-util";
+import { IconTag } from "components/icontag";
+import { LinkButton } from "components/buttons";
 
 type SubscriptionMatchingProps = {
   refreshInterval: number;
@@ -82,16 +84,20 @@ class SubscriptionMatching extends Component<SubscriptionMatchingProps, Subscrip
 
     return (
       <div>
-        <div className="spacewalk-toolbar">
-          <a href="/rhn/manager/vhms">
-            <i className="fa spacewalk-icon-virtual-host-manager"></i>
-            {t("Edit Virtual Host Managers")}
-          </a>
-        </div>
         <TopPanel
           title={t("Subscription Matching")}
           icon="spacewalk-icon-subscription-counting"
           helpUrl="reference/audit/audit-subscription-matching.html"
+          button={ 
+            <div className="pull-right">
+              <LinkButton
+                icon="spacewalk-icon-virtual-host-manager"
+                text={t("Edit Virtual Host Managers")}
+                className="btn-default"
+                href="/rhn/manager/vhms"
+              />
+            </div>
+          }
         />
         <ErrorMessage error={this.state.error} />
         <SubscriptionMatchingTabContainer data={data} onPinChanged={this.onPinChanged} />

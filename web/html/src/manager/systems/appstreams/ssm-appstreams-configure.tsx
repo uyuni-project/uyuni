@@ -8,6 +8,7 @@ import { ActionChain } from "components/action-schedule";
 import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 
 import { DISABLE, NO_CHANGE, SSMAppStreamsList } from "./ssm-appstreams-configure-list";
+import { IconTag } from "components/icontag";
 
 export type Props = { channelAppStreams: ChannelAppStream };
 
@@ -125,7 +126,7 @@ export const SSMAppStreamsConfigure: FC<Props> = ({ channelAppStreams }: Props):
     <>
       <Messages items={scheduledMsg} />
       <h2>
-        <i className={"fa spacewalk-icon-salt-add"} />
+        <IconTag icon="spacewalk-icon-salt-add" />
         {t("AppStreams")}
       </h2>
       {showContent()}

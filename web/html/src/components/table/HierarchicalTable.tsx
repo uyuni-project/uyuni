@@ -15,6 +15,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { SearchField } from "./SearchField";
 import { Table, TableRef } from "./Table";
+import { IconTag } from "components/icontag";
 
 /**
  * @deprecated
@@ -202,10 +203,12 @@ export const DEPRECATED_HierarchicalTable = forwardRef<TableRef, HierarchicalTab
           <div className="expandable-entry">
             <div style={{ paddingLeft: `${indent}px` }}>
               {!row.isLeaf && (
-                <i
-                  className={`fa ${isExpanded ? "fa-angle-down" : "fa-angle-right"} fa-1-5x pointer product-hover`}
+                <span
                   {...DEPRECATED_onClick(() => toggleRowExpanded(rowId))}
-                />
+                  className="pointer product-hover"
+                >
+                  <IconTag icon={isExpanded ? "fa-angle-down" : "fa-angle-right"} size="lg" />
+                </span>
               )}
               {renderCellContent(row, child)}
             </div>

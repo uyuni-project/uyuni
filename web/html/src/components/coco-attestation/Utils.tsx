@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { FromNow } from "components/datetime";
+import { IconTag } from "components/icontag";
 
 // These values have to match those defined in com.suse.manager.attestation.IbmInputDataValidator.java
 export const HOST_KEY_DOCUMENT_FIELD = "host_key_document";
@@ -57,23 +58,23 @@ export function renderStatus(status: string, description: string): ReactNode {
 
   switch (status) {
     case "PENDING":
-      icon = "fa fa-spinner fa-spin";
+      icon = "fa-spinner fa-spin";
       break;
 
     case "SUCCEEDED":
-      icon = "fa fa-check";
+      icon = "fa-check";
       textStyle = "text-success";
       break;
 
     case "FAILED":
-      icon = "fa fa-times";
+      icon = "fa-times";
       textStyle = "text-danger";
       break;
   }
 
   return (
     <span className={textStyle}>
-      {icon && <i className={icon} />}
+      {icon && <IconTag icon={icon} />}
       {t(description)}
     </span>
   );

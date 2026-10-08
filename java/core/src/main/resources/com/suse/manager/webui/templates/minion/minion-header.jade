@@ -26,7 +26,7 @@
         i.fa.fa-desktop
     | #{" " + server.name + " "}
     a(href="/docs/#{docsLocale}/reference/systems/system-details/sd-details.html", target="_blank")
-      i.fa.fa-question-circle.spacewalk-help-link
+      i.fa.fa-question-circle.icon-size-md
 if h.formulaValueEquals(server, "system-lock", "minion_blackout", "true") and not h.hasSshPushContactMethod(server)
   .alert.alert-warning
     p.

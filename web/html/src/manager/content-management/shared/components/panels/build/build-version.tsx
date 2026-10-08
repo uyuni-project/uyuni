@@ -1,3 +1,4 @@
+import { IconTag } from "components/icontag";
 import styles from "./build-version.module.scss";
 
 type Props = {
@@ -14,8 +15,8 @@ const BuildVersion = ({ id, text }: Props) => {
           data-bs-target={`#historyentry_${id}`}
           className={`${styles.version_collapse_line} pointer accordion-toggle collapsed`}
         >
-          <i className="fa fa-chevron-down show-on-collapsed fa-small" />
-          <i className="fa fa-chevron-right hide-on-collapsed fa-small" />
+          <IconTag icon="fa-chevron-down" size="md" className="show-on-collapsed" />
+          <IconTag icon="fa-chevron-right" size="md" className="hide-on-collapsed" />
           <span>{text.split("\n")[0]}</span>
         </div>
         <div className="collapse" id={`historyentry_${id}`}>

@@ -4,6 +4,7 @@ import withPageWrapper from "components/general/with-page-wrapper";
 
 import SusemanagerThemeLogin from "./susemanager/login";
 import UyuniThemeLogin from "./uyuni/login";
+import { IconTag } from "components/icontag";
 
 type Theme = "uyuni" | "suse-light" | "suse-dark";
 
@@ -13,7 +14,7 @@ const products = {
     headerTitle: (
       <>
         <span>SUSE</span>
-        <i className="fa fa-registered" /> <span>Multi-Linux Manager</span>
+        <IconTag icon="fa-registered" /> <span>Multi-Linux Manager</span>
       </>
     ),
     bodyTitle: (

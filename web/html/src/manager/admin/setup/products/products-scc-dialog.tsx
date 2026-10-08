@@ -7,6 +7,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import styles from "./products-scc-dialog.module.scss";
+import { IconTag } from "components/icontag";
 
 const messageMap = {
   // Nothing for now
@@ -189,12 +190,12 @@ class SCCDialog extends Component<Props, SCCDialogState> {
           ) : this.hasRun() ? (
             this.state.steps.every((s) => s.success) ? (
               <span>
-                <i className="fa fa-check text-success" />
+                <IconTag icon="fa-check" className="text-success" />
                 {t("Completed")}
               </span>
             ) : (
               <div>
-                <i className="fa fa-exclamation-triangle text-warning" />
+                <IconTag icon="fa-exclamation-triangle" className="text-warning" />
                 {t("Operation not successful: Empty reply from the server")}(
                 <a href="/rhn/admin/Catalina.do">{t("Details")}</a>)
               </div>

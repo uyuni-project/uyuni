@@ -1,3 +1,4 @@
+import { IconTag } from "components/icontag";
 import type { ReactNode } from "react";
 import ReactModal from "react-modal";
 
@@ -46,7 +47,7 @@ export function Dialog(props: DialogProps) {
             {closableModal && (
               <button type="button" className="close" aria-label="Close" onClick={() => props.onClose?.()}>
                 <span aria-hidden="true">
-                  <i className="fa fa-close"></i>
+                  <IconTag icon="fa-close" />
                 </span>
               </button>
             )}

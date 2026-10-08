@@ -14,6 +14,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { humanReadablePolicy, SystemLabel, ToolTip, WarningIcon } from "./subscription-matching-util";
+import { IconTag } from "components/icontag";
 
 type PinsProps = {
   pinnedMatches: any[];
@@ -158,7 +159,7 @@ class Pins extends Component<PinsProps> {
                   onClick={() => this.onRemovePin(p.id)}
                   content={
                     <span>
-                      <i className="fa fa-trash-o"></i>
+                      <IconTag icon="fa-trash-o" />
                       {t("Delete Pin")}
                     </span>
                   }
@@ -194,7 +195,7 @@ const PinStatus = (props) => {
   if (props.status === "pending") {
     return (
       <span>
-        <i className="fa fa-hourglass-start"></i>
+        <IconTag icon="fa-hourglass-start" />
         <em>{t("pending next run")}</em>
       </span>
     );
@@ -202,7 +203,7 @@ const PinStatus = (props) => {
   if (props.status === "satisfied") {
     return (
       <span>
-        <i className="fa fa-check text-success"></i>
+        <IconTag icon="fa-check" className="text-success" />
         {t("satisfied")}
       </span>
     );
@@ -304,7 +305,7 @@ class AddPinPopUp extends Component<AddPinPopUpProps> {
                   onClick={() => this.onSystemSelected(s.id)}
                   content={
                     <span>
-                      {t("Select")} <i className="fa fa-arrow-right fa-right"></i>
+                      {t("Select")} <IconTag icon="fa fa-arrow-right" className="fa-right" />
                     </span>
                   }
                 />
@@ -328,7 +329,7 @@ class AddPinPopUp extends Component<AddPinPopUpProps> {
           />
           <p>
             <button className="btn btn-default" onClick={this.onBackClicked}>
-              <i className="fa fa-arrow-left"></i>
+              <IconTag icon="fa-arrow-left" />
               {t("Back to sytem selection")}
             </button>
           </p>
@@ -385,7 +386,7 @@ class PinSubscriptionSelector extends Component<PinSubscriptionSelectorProps> {
                 onClick={() => this.props.onSubscriptionSelected(s.id)}
                 content={
                   <span>
-                    <i className="fa fa-map-pin"></i>
+                    <IconTag icon="fa-map-pin" />
                     {t("Save Pin")}
                   </span>
                 }

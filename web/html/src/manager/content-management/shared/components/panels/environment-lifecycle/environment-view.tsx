@@ -5,6 +5,7 @@ import _isEmpty from "lodash/isEmpty";
 import { ProjectEnvironmentType, ProjectHistoryEntry } from "../../../type";
 import BuildVersion from "../build/build-version";
 import { getVersionMessageByNumber } from "../properties/properties.utils";
+import { IconTag } from "components/icontag";
 
 type Props = {
   environment: ProjectEnvironmentType;
@@ -59,7 +60,7 @@ const EnvironmentView = memo((props: Props) => {
             {environmentStatusEnum[props.environment.status].text}
             &nbsp;
             {environmentStatusEnum[props.environment.status].isBuilding && (
-              <i className="fa fa-spinner fa-spin fa-1-5x" />
+              <IconTag icon="fa-spinner fa-spin" size="lg" />
             )}
           </dd>
         </dl>
