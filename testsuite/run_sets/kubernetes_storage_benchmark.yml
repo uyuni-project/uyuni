@@ -1,1 +1,2 @@
 - features/kubernetes/srv_rke2_storage_benchmark.feature
+- features/kubernetes/srv_rke2_postgres_benchmark.feature
