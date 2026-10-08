@@ -7,6 +7,7 @@
 
 @scope_diskcheck
 @containerized_server
+@skip_if_rke2
 @skip_if_github_validation
 Feature: Space monitoring via Diskcheck
   In order to be warned before the server runs out of disk space
