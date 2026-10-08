@@ -61,7 +61,7 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
   node = get_target(host)
   gpg_keys = get_gpg_keys(node, target)
   cmd = "mgr-bootstrap #{force_bundle} &&
-  sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
+  sed -i s'/^exit 1//' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
   sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=#{gpg_keys.join(',')}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
@@ -95,5 +95,5 @@ end
 
 Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node = get_target(host)
-  node.run("sed -i \'s/#{get_target('server').full_hostname}//\' /etc/hosts")
+  node.run("sed -i 's/#{get_target('server').full_hostname}//' /etc/hosts")
 end

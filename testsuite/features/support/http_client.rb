@@ -99,9 +99,7 @@ class HttpClient
       cookies = answer.headers['Set-cookie']
       cookies.split(',').each do |cookie|
         # isolate the new session cookie, but ignore the expired one (with Max-Age=0)
-        if cookie.include?('pxt-session-cookie=') && !cookie.include?('Max-Age=0;')
-          session_cookie = cookie.split(';')[0]
-        end
+        session_cookie = cookie.split(';')[0] if cookie.include?('pxt-session-cookie=') && !cookie.include?('Max-Age=0;')
       end
       session_cookie
     else

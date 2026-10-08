@@ -216,9 +216,7 @@ When(/^I click on preview$/) do
   end
 
   # After the loop, check if the run button is still not visible
-  unless page.has_button?('run', visible: true)
-    raise "Preview button not working: the run button is not visible after #{max_attempts} attempts."
-  end
+  raise "Preview button not working: the run button is not visible after #{max_attempts} attempts." unless page.has_button?('run', visible: true)
 end
 
 When(/^I click on stop waiting$/) do
@@ -260,9 +258,7 @@ end
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
   get_target('server').run("zypper --non-interactive remove #{package}-formula")
   # Remove automatically installed dependency if needed
-  if package == 'uyuni-config'
-    get_target('server').run("zypper --non-interactive remove #{package}-modules")
-  end
+  get_target('server').run("zypper --non-interactive remove #{package}-modules") if package == 'uyuni-config'
 end
 
 When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
@@ -495,9 +491,7 @@ When(/^I change the state of "([^"]*)" to "([^"]*)" and "([^"]*)"$/) do |pkg, st
   # Options for instd_state are Any or Latest
   # Default if you pick Installed is Latest
   find("##{pkg}-pkg-state").select(state)
-  if !instd_state.to_s.empty? && state == 'Installed'
-    find("##{pkg}-version-constraint").select(instd_state)
-  end
+  find("##{pkg}-version-constraint").select(instd_state) if !instd_state.to_s.empty? && state == 'Installed'
 end
 
 When(/^I click apply$/) do

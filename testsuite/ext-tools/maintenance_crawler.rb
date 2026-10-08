@@ -164,8 +164,8 @@ options[:architecture] = 'x86_64'
 opt_parser =
   OptionParser.new do |opt|
     opt.banner = 'Usage: maintenance_crawler list_MI_numbers(separated by comma) [OPTIONS]'
-    opt.separator  ''
-    opt.separator  'Options'
+    opt.separator ''
+    opt.separator 'Options'
 
     opt.on('-t n', '--thread-count=n', OptionParser::DecimalInteger, 'Process using a thread pool of size n') do |thread_count|
       options[:thread_count] = thread_count

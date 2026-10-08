@@ -1,0 +1,46 @@
+name: Cucumber dry run
+
+# Fails when a step in a feature file is undefined or matches more than one step definition.
+# No server is needed: --dry-run loads the step definitions but executes nothing. features/support is replaced by
+# ext-tools/dry_run/support because features/support/env.rb connects to the infrastructure when loaded.
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/cucumber_dry_run.yml'
+      - 'testsuite/features/**.feature'
+      - 'testsuite/features/**.rb'
+      - 'testsuite/ext-tools/dry_run_report.rb'
+      - 'testsuite/ext-tools/dry_run/**'
+      - 'testsuite/config/cucumber.yml'
+      - 'testsuite/Gemfile'
+
+permissions:
+  contents: read
+
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+    - uses: ruby/setup-ruby@8aeb6ff8030dd539317f8e1769a044873b56ea71 #v1.268.0
+      with:
+        ruby-version: '3.4'
+
+    - name: Install gems
+      run: |
+        sudo apt-get install -y libpq-dev
+        cd testsuite
+        gem install bundler
+        bundle install
+
+    - name: Dry run
+      run: |
+        cd testsuite
+        status=0
+        # No --guess: it would hide ambiguous steps. --strict: undefined steps must fail.
+        bundle exec cucumber --no-profile --dry-run --strict --no-color -f progress -f json -o dry_run.json -r ext-tools/dry_run -r features/step_definitions features || status=$?
+        ruby ext-tools/dry_run_report.rb dry_run.json || status=1
+        exit $status
