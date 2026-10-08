@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.manager.kickstart.tree;
 
+import static com.redhat.rhn.testing.TestUtils.assertContains;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
