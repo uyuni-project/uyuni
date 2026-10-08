@@ -105,8 +105,9 @@ end
 When(/^I add pre-generated SSH public key to authorized_keys of host "([^"]*)"$/) do |host|
   key_filename = 'id_rsa_bootstrap-passphrase_linux.pub'
   target = get_target(host)
-  ret_code = file_inject(target, "#{File.dirname(__FILE__)}/../upload_files/ssh_keypair/#{key_filename}", "/tmp/#{key_filename}")
-  target.run("cat /tmp/#{key_filename} >> /root/.ssh/authorized_keys", timeout: 500)
+  tmp_dir = '/srv'
+  ret_code = file_inject(target, "#{File.dirname(__FILE__)}/../upload_files/ssh_keypair/#{key_filename}", "#{tmp_dir}/#{key_filename}")
+  target.run("cat #{tmp_dir}/#{key_filename} >> /root/.ssh/authorized_keys", timeout: 500)
   raise ScriptError, 'Error copying ssh pubkey to host' unless ret_code
 end
 

@@ -75,23 +75,23 @@ end
 When(/^I setup a git_pillar environment on the Salt master$/) do
   file = 'salt_git_pillar_setup.sh'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
+  dest = "/srv/#{file}"
   success = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection failed' unless success
 
   # Execute "salt_git_pillar_setup.sh setup" on the server
-  get_target('server').run("sh /tmp/#{file} setup", check_errors: true, verbose: true)
+  get_target('server').run("sh #{dest} setup", check_errors: true, verbose: true)
 end
 
 When(/^I clean up the git_pillar environment on the Salt master$/) do
   file = 'salt_git_pillar_setup.sh'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
+  dest = "/srv/#{file}"
   success = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection failed' unless success
 
   # Execute "salt_git_pillar_setup.sh clean" on the server
-  get_target('server').run("sh /tmp/#{file} clean", check_errors: true, verbose: true)
+  get_target('server').run("sh #{dest} clean", check_errors: true, verbose: true)
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
@@ -507,13 +507,13 @@ Then(/^the salt event log on server should contain no failures$/) do
   # upload salt event parser log
   file = 'salt_event_parser.py'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
+  dest = "/srv/#{file}"
   success = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection failed' unless success
 
   # print failures from salt event log
   # ignore the error if there is only the expected hoag-dummy package lock installation failure from min_salt_lock_packages.feature
-  output, _code = get_target('server').run("python3 /tmp/#{file}")
+  output, _code = get_target('server').run("python3 #{dest}")
   filtered_output =
     output
     .split(/(?=# Failure \d+)/)

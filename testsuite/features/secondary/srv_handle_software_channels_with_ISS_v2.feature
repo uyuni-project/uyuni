@@ -34,9 +34,9 @@ Feature: Export and import software channels with new ISS implementation
     And I should see a "CL-andromeda-dummy-6789" link
 
   Scenario: Export data with ISS v2
-    When I ensure folder "/tmp/export_iss_v2" doesn't exist on "server"
-    When I export software channels "clone-fake-rpm-suse-channel" with ISS v2 to "/tmp/export_iss_v2"
-    Then "/tmp/export_iss_v2" folder on server is ISS v2 export directory
+    When I ensure folder "/srv/export_iss_v2" doesn't exist on "server"
+    When I export software channels "clone-fake-rpm-suse-channel" with ISS v2 to "/srv/export_iss_v2"
+    Then "/srv/export_iss_v2" folder on server is ISS v2 export directory
 
   Scenario: Cleanup: remove cloned channels
     When I follow the left menu "Software > Manage > Channels"
@@ -47,7 +47,7 @@ Feature: Export and import software channels with new ISS implementation
     Then I should see a "Clone of Fake-RPM-SUSE-Channel" text
 
   Scenario: Import data with ISS v2
-    When I import data with ISS v2 from "/tmp/export_iss_v2"
+    When I import data with ISS v2 from "/srv/export_iss_v2"
 
   Scenario: Check that this channel was imported and has patches
     When I follow the left menu "Software > Manage > Channels"
@@ -68,4 +68,4 @@ Feature: Export and import software channels with new ISS implementation
     Then I should see a "Clone of Fake-RPM-SUSE-Channel" text
 
   Scenario: Cleanup: remove ISS v2 export folder
-    When I ensure folder "/tmp/export_iss_v2" doesn't exist on "server"
+    When I ensure folder "/srv/export_iss_v2" doesn't exist on "server"

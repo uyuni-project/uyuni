@@ -256,7 +256,7 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
 
   # normal log file
   cobbler_log_file = '/var/log/cobbler/cobbler.log'
-  remote_file = '/tmp/cobbler.copy'
+  remote_file = '/srv/cobbler.copy'
   local_file = '/tmp/cobbler.log'
   # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
   node.run("cp #{cobbler_log_file} #{remote_file}")
@@ -272,7 +272,7 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
 
   # debug log file
   cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
-  remote_file = '/tmp/cobbler_debug.copy'
+  remote_file = '/srv/cobbler_debug.copy'
   local_file = '/tmp/cobbler_debug.log'
   # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
   node.run("cp #{cobbler_log_file} #{remote_file}")
