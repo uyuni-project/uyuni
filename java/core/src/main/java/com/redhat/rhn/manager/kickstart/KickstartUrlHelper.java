@@ -370,4 +370,16 @@ public class KickstartUrlHelper {
                 data.getCobblerId());
         return "http://" + ConfigDefaults.get().getJavaHostname() + COBBLER_URL_BASE_PATH + prof.getName();
     }
+
+    /**
+     * Get the cobbler profile url
+     * @param profile the name of the profile
+     * @return the url
+     */
+    public static String getCobblerProfileUrl(Profile profile) {
+        if (profile == null) {
+            throw new IllegalArgumentException("Profile cannot be null");
+        }
+        return "http://" + ConfigDefaults.get().getJavaHostname() + COBBLER_URL_BASE_PATH + profile.getName();
+    }
 }

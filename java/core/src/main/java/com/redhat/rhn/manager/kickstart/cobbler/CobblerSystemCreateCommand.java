@@ -17,8 +17,8 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartData;
+import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -29,6 +29,11 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+
+import com.suse.manager.autoinstallation.KernelOptionsList;
+import com.suse.manager.autoinstallation.builder.AbstractKernelOptionsBuilder;
+import com.suse.manager.autoinstallation.builder.KernelOptionsBuilder;
+import com.suse.manager.autoinstallation.builder.KernelOptionsBuilderFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -379,30 +384,36 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     }
 
     private void processKernelOptions(Profile recProfile) {
-        if (recProfile != null && "suse".equals(recProfile.getDistro().getBreed()) && kernelOptions != null &&
-                kickstartHost != null && mediaPath != null) {
-            if (!kernelOptions.contains("install=")) {
-                kernelOptions = String.format("%s install=http://%s%s", kernelOptions, kickstartHost, mediaPath);
-            }
-
-            Map<String, Object> resKopts = recProfile.getResolvedKernelOptions();
-            boolean selfUpdateDisabled = resKopts.getOrDefault("self_update", "Enabled").equals("0");
-            if (!(selfUpdateDisabled || kernelOptions.contains("self_update=") || ksData == null)) {
-                Optional<Channel> installerUpdated = ksData.getTree().getChannel()
-                        .getAccessibleChildrenFor(user)
-                        .stream()
-                        .filter(Channel::isInstallerUpdates)
-                        .findFirst();
-                kernelOptions = installerUpdated.map(
-                        channel -> String.format(
-                                "%s self_update=http://%s/ks/dist/child/%s/%s",
-                                kernelOptions,
-                                kickstartHost,
-                                channel.getLabel(),
-                                ksData.getTree().getLabel()
-                        )).orElseGet(() -> kernelOptions + " self_update=0");
-            }
+        if (recProfile == null || kernelOptions == null || ksData == null) {
+            return;
         }
+        KickstartInstallType installType = ksData.getInstallType();
+        KernelOptionsBuilder builder = KernelOptionsBuilderFactory.getBuilder(installType);
+        if (builder instanceof AbstractKernelOptionsBuilder ab) {
+            ab.setServerFqdn(kickstartHost);
+            ab.setUser(user);
+        }
+
+        KernelOptionsList opts = new KernelOptionsList(kernelOptions);
+
+        // Media-path specific install= (SUSE), preserved exactly as legacy.
+        if (installType.isSUSE() && kickstartHost != null && mediaPath != null) {
+            opts.setOptionIfNotPresent("install", "http://" + kickstartHost + mediaPath);
+        }
+
+        // self_update handling delegated to builder selfUpdateOption,
+        // but respecting the profile's resolved self_update=0 opt-out.
+        Map<String, Object> resKopts = recProfile.getResolvedKernelOptions();
+        boolean selfUpdateDisabled = false;
+        if (resKopts != null) {
+            selfUpdateDisabled = "0".equals(
+                    String.valueOf(resKopts.getOrDefault("self_update", "Enabled")));
+        }
+        if (!selfUpdateDisabled) {
+            opts.addMissingOptions(builder.selfUpdateOption(ksData.getTree()));
+        }
+
+        kernelOptions = opts.toString();
     }
 
     private void processOptionalProperties(SystemRecord rec) {

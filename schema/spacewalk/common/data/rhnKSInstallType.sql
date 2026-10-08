@@ -58,6 +58,11 @@ insert into rhnKSInstallType (id, label, name)
 
 insert into rhnKSInstallType (id, label, name)
         values (sequence_nextval('rhn_ksinstalltype_id_seq'),
+                'sles16generic','SUSE Linux Enterprise 16'
+        );
+
+insert into rhnKSInstallType (id, label, name)
+        values (sequence_nextval('rhn_ksinstalltype_id_seq'),
                 'rhel_8','Red Hat Enterprise Linux 8'
         );
 
