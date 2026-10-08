@@ -61,8 +61,6 @@ $custom_download_endpoint = ENV.fetch('CUSTOM_DOWNLOAD_ENDPOINT', nil) if ENV['C
 $build_sources = ENV.fetch('BUILD_SOURCES', nil) if ENV['BUILD_SOURCES']
 $no_auth_registry = ENV.fetch('NO_AUTH_REGISTRY', nil) if ENV['NO_AUTH_REGISTRY']
 $auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
-$current_user = 'admin'
-$current_password = 'admin'
 $use_salt_bundle = ENV.fetch('USE_SALT_BUNDLE', true)
 $is_external_cluster = ENV.fetch('IS_EXTERNAL_CLUSTER', false) if ENV['IS_EXTERNAL_CLUSTER']
 $create_spacewalk_pv = ENV.fetch('CREATE_VAR_SPACEWALK_PV', true) if ENV['CREATE_VAR_SPACEWALK_PV']
@@ -91,7 +89,7 @@ $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_gh_validation = ENV['PROVIDER'].include? 'podman'
 $is_containerized_server = %w[k3s podman rke2].include? ENV.fetch('CONTAINER_RUNTIME', '')
 $is_rke2 = ENV.fetch('CONTAINER_RUNTIME', '').include? 'rke2'
-$is_transactional_server = transactional_system?('server', runs_in_container: false)
+$is_transactional_server = host_transactional?('server')
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 $beta_enabled = (ENV.fetch('BETA_ENABLED', 'False') == 'True')
@@ -120,6 +118,8 @@ def capybara_register_driver
         --disable-dev-shm-usage
         --ignore-certificate-errors
         --no-sandbox
+        --no-zygote
+        --disable-gpu
         --disable-notifications
         --window-size=2048,2048
         --js-flags=--max-old-space-size=2048
@@ -140,6 +140,19 @@ end
 # register the Playwright driver
 $capybara_driver = capybara_register_driver
 Capybara.default_driver = :playwright
+
+# When the watchdog kills the Playwright Node process, the gem's own teardown calls browser.close
+# through the dead connection, which crashes with NoMethodError (nil.value!). Silence it: there is
+# nothing left to close and the run should continue to the next scenario.
+module PlaywrightQuitGuard
+  # Quits the driver, ignoring the NoMethodError raised when the Playwright connection is already dead.
+  def quit
+    super
+  rescue NoMethodError
+    nil
+  end
+end
+Capybara::Playwright::Driver.prepend(PlaywrightQuitGuard)
 Capybara.javascript_driver = :playwright
 Capybara.default_normalize_ws = true
 Capybara.enable_aria_label = true
@@ -165,9 +178,23 @@ $code_coverage = CodeCoverage.new if $code_coverage_mode
 # Init Quality Intelligence Handler
 $quality_intelligence = QualityIntelligence.new if $quality_intelligence_mode
 
-# Define the current feature scope
+# Define the current feature scope. Also resets the active webUI session back to the
+# hub whenever the incoming scenario belongs to a different feature file than the
+# previous one. Scenarios within the same feature may intentionally carry over an
+# active peripheral session (e.g. log in on server2, then later scenarios in the same
+# feature keep acting on server2); crossing into a new feature always starts fresh from
+# the hub. Named sessions for other hosts (server2, server3, ...) are intentionally NOT
+# quit here - Capybara keeps them cached so a later scenario that switches back reuses
+# the still-logged-in browser instead of re-authenticating.
 Before do |scenario|
-  $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
+  current_feature_file = scenario.location.file
+  if $feature_scope_file && $feature_scope_file != current_feature_file
+    Capybara.session_name = :default
+    Capybara.app_host = "https://#{get_target('server').full_hostname}"
+    $current_ui_host = 'server'
+  end
+  $feature_scope_file = current_feature_file
+  $feature_scope = current_feature_file.split(%r{(\.feature|/)})[-2]
 end
 
 # Embed a screenshot after each failed scenario
@@ -256,7 +283,8 @@ def relog_and_visit_previous_url
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       previous_url = current_url
-      step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
+      user, password = Credentials.current
+      step %(I am authorized as "#{user}" with password "#{password}")
       visit previous_url
     end
   rescue Timeout::Error
@@ -324,6 +352,8 @@ AfterStep do
   # has_no_css? returns immediately when the spinner is absent (the common case) and otherwise polls
   # until it disappears, so this both replaces the old wait: 0 gate and adds ~no per-step overhead.
   log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 30)
+rescue NoMethodError
+  # Playwright connection gone (browser crashed or closed mid-scenario)
 end
 
 Before do
@@ -474,6 +504,14 @@ Before('@server3') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['server3']
 end
 
+Before('@peripheral1') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['peripheral1']
+end
+
+Before('@peripheral2') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['peripheral2']
+end
+
 Before('@server4') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['server4']
 end
@@ -487,17 +525,17 @@ Before('@run_if_proxy_not_transactional_or_sles15sp7_minion_or_monitoring_server
 end
 
 Before('@sle_minion') do
-  env_var_name = get_env_var_with_fallback('sle_minion', 'SLES15SP7_MINION')
+  env_var_name = get_env_var_with_fallback('sle_minion')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
 Before('@rhlike_minion') do
-  env_var_name = get_env_var_with_fallback('rhlike_minion', 'ROCKY8_MINION')
+  env_var_name = get_env_var_with_fallback('rhlike_minion')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
 Before('@deblike_minion') do
-  env_var_name = get_env_var_with_fallback('deblike_minion', 'UBUNTU2404_MINION')
+  env_var_name = get_env_var_with_fallback('deblike_minion')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
@@ -507,12 +545,12 @@ Before('@pxeboot_minion') do
 end
 
 Before('@sshminion') do
-  env_var_name = get_env_var_with_fallback('sshminion', 'SLES15SP7_MINION')
+  env_var_name = get_env_var_with_fallback('sshminion')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
 Before('@build_host') do
-  env_var_name = get_env_var_with_fallback('build_host', 'SLES15SP7_BUILDHOST')
+  env_var_name = get_env_var_with_fallback('build_host')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
@@ -996,14 +1034,24 @@ Before('@rke2') do
   skip_this_scenario unless $is_rke2
 end
 
-# skip tests if the server runs on a transactional base OS
-Before('@skip_if_transactional_server') do
-  skip_this_scenario if $is_transactional_server
+# skip tests if the tagged host runs on a transactional base OS.
+# Add the host to this tag list (and to host_transactional?'s ENV_VAR_BY_HOST) when a new
+# host needs this check. NOTE: cucumber-tag-expressions only splits tokens on whitespace/parens,
+# so tags must be joined with " or ", not commas (a comma-joined string parses as one giant
+# literal tag that never matches, silently turning the hook into a no-op).
+Before('@skip_if_transactional_server or @skip_if_transactional_server2 or @skip_if_transactional_server3 or ' \
+       '@skip_if_transactional_proxy or @skip_if_transactional_proxy2 or @skip_if_transactional_proxy3') do |scenario|
+  tags = scenario.source_tag_names.select { |t| t.start_with?('@skip_if_transactional_') }
+  skip_this_scenario if tags.any? { |t| host_transactional?(t.delete_prefix('@skip_if_transactional_')) }
 end
 
-# do tests only if the server runs on a transactional base OS
-Before('@transactional_server') do
-  skip_this_scenario unless $is_transactional_server
+# do tests only if the tagged host runs on a transactional base OS.
+# Add the host to this tag list when a new host needs this check. Same " or "-joining caveat
+# as above applies.
+Before('@transactional_server or @transactional_server2 or @transactional_server3 or ' \
+       '@transactional_proxy or @transactional_proxy2 or @transactional_proxy3') do |scenario|
+  tags = scenario.source_tag_names.grep(/^@transactional_(server|proxy)\d*$/)
+  skip_this_scenario unless tags.all? { |t| host_transactional?(t.delete_prefix('@transactional_')) }
 end
 
 # only test for excessive SCC accesses if SCC access is being logged

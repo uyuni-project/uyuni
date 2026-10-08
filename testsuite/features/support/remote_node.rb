@@ -1,6 +1,7 @@
 # Copyright (c) 2024-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+require 'securerandom'
 require 'timeout'
 require_relative 'network_utils'
 
@@ -20,22 +21,21 @@ class RemoteNode
     puts "Initializing a remote node for '#{@host}'."
     raise(NotImplementedError, "Host #{@host} is not defined as a valid host in the Test Framework.") unless ENV_VAR_BY_HOST.key? @host
 
-    unless ENV.key? ENV_VAR_BY_HOST[@host]
+    env_var = env_var_for_host(@host)
+    unless ENV.key? env_var
       warn "Host #{@host} is not defined as environment variable."
       return
     end
 
-    @target = ENV.fetch(ENV_VAR_BY_HOST[@host], nil).to_s.strip
+    @target = ENV.fetch(env_var, nil).to_s.strip
     clear_motd unless @host == 'localhost'
     out, _err, _code = ssh('echo $HOSTNAME', host: @target)
     @hostname = out.strip
     raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
 
     $named_nodes[host] = @hostname
-    uyuni_not_installed = false
-    if @host == 'server'
-      uyuni_not_installed = !ssh('which kubectl && kubectl get deployment uyuni -n ${SERVER_NAMESPACE:-uyuni}', host: @target).last.zero? && !ssh('podman container exists uyuni-server', host: @target).last.zero?
-
+    uyuni_not_installed = %w[SERVER SERVER2 SERVER3 SERVER4].include?(ENV_VAR_BY_HOST[@host]) && server_not_deployed?
+    if %w[SERVER SERVER2 SERVER3 SERVER4].include?(ENV_VAR_BY_HOST[@host])
       @has_mgrctl = ssh('which mgrctl', host: @target).last.zero? && !uyuni_not_installed
       @has_kubectl = ssh('which kubectl', host: @target).last.zero?
     end
@@ -265,7 +265,7 @@ class RemoteNode
     raise ScriptError, "Remote file #{remote_node_file} does not exist on #{@host}" unless file_exists?(remote_node_file)
 
     if @has_mgrctl
-      tmp_file = File.join('/tmp/', File.basename(remote_node_file))
+      tmp_file = File.join('/tmp/', "#{SecureRandom.hex(4)}-#{File.basename(remote_node_file)}")
       _out, code = run_local("mgrctl cp server:#{remote_node_file} #{tmp_file}", verbose: false)
       raise ScriptError, "Failed to extract #{remote_node_file} from container" unless code.zero?
 
@@ -363,6 +363,11 @@ class RemoteNode
   end
 
   private
+
+  # Returns true if the target runs neither a Kubernetes uyuni deployment nor the uyuni-server container.
+  def server_not_deployed?
+    !ssh('which kubectl && kubectl get deployment uyuni -n ${SERVER_NAMESPACE:-uyuni}', host: @target).last.zero? && !ssh('podman container exists uyuni-server', host: @target).last.zero?
+  end
 
   # Empties /etc/motd, or any output from run will contain the content of /etc/motd.
   # Container based nodes also run commands on their host, which keeps its own /etc/motd.
