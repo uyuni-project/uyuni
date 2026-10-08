@@ -326,7 +326,7 @@ class UyuniRoster:
                    SSCM.label='ssh-push-tunnel' AS tunnel,
                    COALESCE(PF.name, SP.hostname) AS proxy_hostname,
                    PI.ssh_port AS ssh_port,
-                   COALESCE(MF.name, SMI.minion_id) AS minion_fqdn
+                   COALESCE(MF.name, S.hostname) AS minion_fqdn
             FROM rhnServer AS S
             INNER JOIN suseServerContactMethod AS SSCM ON
                   (SSCM.id=S.contact_method_id)
