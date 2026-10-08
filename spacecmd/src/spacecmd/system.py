@@ -2287,11 +2287,7 @@ def do_system_addcustomvalue(self, args):
     key = args[0]
     value = args[1]
 
-    # use the systems listed in the SSM
-    if re.match("ssm", args[2], re.I):
-        systems = self.ssm.keys()
-    else:
-        systems = self.expand_systems(args[2:])
+    systems = self.expand_systems(args[2:])
 
     if not systems:
         logging.warning(_N("No systems selected"))

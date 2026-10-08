@@ -1118,19 +1118,25 @@ class TestSystem:
         )
 
     # pylint: disable-next=redefined-outer-name
-    def test_do_system_addcustomvalue_ssm_systems(self, shell):
+    def test_do_system_addcustomvalue_ssm_and_other_systems(self, shell):
         """
-        test do_system_addcustomvalue sets the value on the systems in the SSM when the systems are "ssm"
+        test do_system_addcustomvalue sets the value on the systems in the SSM and on the other given systems
         """
         shell.ssm = {"system-in-ssm": 1000010001}
-        shell.expand_systems = MagicMock(return_value=["system-in-ssm"])
+        shell.expand_systems = MagicMock(return_value=["system-in-ssm", "system-a"])
         shell.get_system_id = MagicMock(
             side_effect={"system-a": 1000010000, "system-in-ssm": 1000010001}.get
         )
 
-        spacecmd.system.do_system_addcustomvalue(shell, "owner alice ssm")
+        spacecmd.system.do_system_addcustomvalue(shell, "owner alice ssm system-a")
 
         assert_args_expect(
+            shell.expand_systems.call_args_list, [((["ssm", "system-a"],), {})]
+        )
+        assert_args_expect(
             shell.client.system.setCustomValues.call_args_list,
-            [((shell.session, 1000010001, {"owner": "alice"}), {})],
+            [
+                ((shell.session, 1000010001, {"owner": "alice"}), {}),
+                ((shell.session, 1000010000, {"owner": "alice"}), {}),
+            ],
         )
