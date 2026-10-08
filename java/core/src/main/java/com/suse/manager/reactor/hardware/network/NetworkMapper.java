@@ -96,8 +96,9 @@ public class NetworkMapper {
                     .map(SumaUtil.IPRoute::getSource)
                     .filter(addr -> !LOOPBACK_IPV6.equals(addr));
 
-            // Set hostname and FQDNs
-            server.setHostname(grains.getOptionalAsString(GRAIN_FQDN).orElse(null));
+            // Set hostname and FQDNs. Keep the existing hostname (e.g. the minion id fallback
+            // set at registration) if the minion does not report a fqdn grain.
+            grains.getOptionalAsString(GRAIN_FQDN).ifPresent(server::setHostname);
             setFqdns(server, fqdns);
 
             // Remove interfaces not present in Salt result by name
