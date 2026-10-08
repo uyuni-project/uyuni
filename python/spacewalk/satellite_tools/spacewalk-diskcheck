@@ -85,9 +85,27 @@ for DIR in "${DISKCHECKDIRS_ARR[@]}"; do
     fi
 
     USEDSPACE=$(df -PH "$DIR" | tail -1 | awk '{print $5}' | sed -e 's/%//')
-    if [ "$USEDSPACE" -gt "$DISKTHRESHOLD" ]; then
-        updateSeverity 3
+    AVAILMB=$(df -P -B1M "$DIR" | tail -1 | awk '{print $4}')
+
+    # *_FREE_MB, when set, has priority over the percentage threshold of the same level.
+    CRITICAL=0
+    ALERT=0
+    if [ -n "$DISKTHRESHOLD_FREE_MB" ]; then
+        [ "$AVAILMB" -lt "$DISKTHRESHOLD_FREE_MB" ] && CRITICAL=1
+    elif [ "$USEDSPACE" -gt "$DISKTHRESHOLD" ]; then
+        CRITICAL=1
+    fi
+    if [ -n "$DISKCHECKALERT_FREE_MB" ]; then
+        [ "$AVAILMB" -lt "$DISKCHECKALERT_FREE_MB" ] && ALERT=1
     elif [ "$USEDSPACE" -gt "$DISKCHECKALERT" ]; then
+        ALERT=1
+    fi
+
+    if [ "$CRITICAL" -eq 1 ]; then
+        echo "DISKCHECK: $DIR critical: ${USEDSPACE}% used, ${AVAILMB} MB available"
+        updateSeverity 3
+    elif [ "$ALERT" -eq 1 ]; then
+        echo "DISKCHECK: $DIR alert: ${USEDSPACE}% used, ${AVAILMB} MB available"
         updateSeverity 2
     fi
 done
