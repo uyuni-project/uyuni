@@ -1,0 +1,1 @@
+- Fix custom values set on the SSM when the key starts with ssm

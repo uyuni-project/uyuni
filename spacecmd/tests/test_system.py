@@ -2,6 +2,7 @@
 """
 Test suite for spacecmd.system module.
 """
+
 from datetime import datetime
 from unittest.mock import MagicMock, patch, mock_open, call
 
@@ -1075,4 +1076,61 @@ class TestSystem:
         assert (
             call("System 'system-a' needs to be rebooted after update")
             in m_print.call_args_list
+        )
+
+    # pylint: disable-next=redefined-outer-name
+    def test_do_system_addcustomvalue_key_starting_with_ssm(self, shell):
+        """
+        test do_system_addcustomvalue sets the value on the given systems, not on the SSM, when the key starts with "ssm"
+        """
+        shell.ssm = {"system-in-ssm": 1000010001}
+        shell.expand_systems = MagicMock(return_value=["system-a"])
+        shell.get_system_id = MagicMock(
+            side_effect={"system-a": 1000010000, "system-in-ssm": 1000010001}.get
+        )
+
+        spacecmd.system.do_system_addcustomvalue(shell, "ssm_owner alice system-a")
+
+        assert_args_expect(
+            shell.client.system.setCustomValues.call_args_list,
+            [((shell.session, 1000010000, {"ssm_owner": "alice"}), {})],
+        )
+
+    # pylint: disable-next=redefined-outer-name
+    def test_do_system_updatecustomvalue_key_starting_with_ssm(self, shell):
+        """
+        test do_system_updatecustomvalue sets the value on the given systems, not on the SSM, when the key starts with "ssm"
+        """
+        shell.ssm = {"system-in-ssm": 1000010001}
+        shell.expand_systems = MagicMock(return_value=["system-a"])
+        shell.get_system_id = MagicMock(
+            side_effect={"system-a": 1000010000, "system-in-ssm": 1000010001}.get
+        )
+        shell.do_system_addcustomvalue = (
+            lambda args: spacecmd.system.do_system_addcustomvalue(shell, args)
+        )
+
+        spacecmd.system.do_system_updatecustomvalue(shell, "SSM_owner bob system-a")
+
+        assert_args_expect(
+            shell.client.system.setCustomValues.call_args_list,
+            [((shell.session, 1000010000, {"SSM_owner": "bob"}), {})],
+        )
+
+    # pylint: disable-next=redefined-outer-name
+    def test_do_system_addcustomvalue_ssm_systems(self, shell):
+        """
+        test do_system_addcustomvalue sets the value on the systems in the SSM when the systems are "ssm"
+        """
+        shell.ssm = {"system-in-ssm": 1000010001}
+        shell.expand_systems = MagicMock(return_value=["system-in-ssm"])
+        shell.get_system_id = MagicMock(
+            side_effect={"system-a": 1000010000, "system-in-ssm": 1000010001}.get
+        )
+
+        spacecmd.system.do_system_addcustomvalue(shell, "owner alice ssm")
+
+        assert_args_expect(
+            shell.client.system.setCustomValues.call_args_list,
+            [((shell.session, 1000010001, {"owner": "alice"}), {})],
         )
