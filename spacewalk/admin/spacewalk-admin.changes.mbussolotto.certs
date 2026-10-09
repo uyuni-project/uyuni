@@ -1,2 +1,3 @@
+- Write salt-api TLS certificate to /etc/rhn/ca.
 - Do not report an error when the CA certificate is already in
   place in the Salt file root

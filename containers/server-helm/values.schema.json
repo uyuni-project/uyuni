@@ -839,6 +839,12 @@
       "required": [],
       "title": "services"
     },
+    "skipPreFlight": {
+      "default": "false",
+      "description": "Skip pre-flight validation checks (useful with helm template or --dry-run when the cluster cannot be queried).",
+      "title": "skipPreFlight",
+      "type": "boolean"
+    },
     "tag": {
       "default": "",
       "description": "The default tag to use for all the images, can be overridden By default the tag will be the appVersion of the Chart.",
@@ -921,9 +927,14 @@
       "description": "Configuration of persistent volume claims.",
       "properties": {
         "ca-certs": {
-          "$ref": "#/definitions/volumeConfig",
-          "description": "ca-certs volume configuration",
-          "required": []
+          "default": "null",
+          "description": "Deprecated and ignored: the ca-certs volume was replaced by the trust-anchors ConfigMap. Only kept so that upgrades with --reuse-values from older chart versions still pass validation.",
+          "required": [],
+          "title": "ca-certs",
+          "type": [
+            "object",
+            "null"
+          ]
         },
         "etc-apache2": {
           "$ref": "#/definitions/volumeConfig",
