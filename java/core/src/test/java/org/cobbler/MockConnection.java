@@ -22,14 +22,15 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -83,6 +84,8 @@ public class MockConnection extends CobblerConnection {
     private static final List<String> POWER_COMMANDS = new ArrayList<>();
 
     private static final Map<String, String> REMAP_KEYS = new HashMap<>();
+
+    private static final List<String> KERNEL_OPTIONS_KEYS = List.of("kernel_options", "kernel_options_post");
 
     static {
         REMAP_KEYS.put("kopts", "kernel_options");
@@ -259,28 +262,8 @@ public class MockConnection extends CobblerConnection {
                 if (args.length != 2) {
                     throw new RuntimeException("get_item_resolved_value needs exactly two arguments!");
                 }
-                // First argument is the item uuid and second one is the requested attribute
-                MockItem getItemResolveItem = null;
-                // Loop over all collection with find_by_criteria
-                List<List<MockItem>> collections = Arrays.asList(profiles, distros, systems, images);
-                for (List<MockItem> collection : collections) {
-                    List<MockItem> result = find(
-                            Map.ofEntries(new AbstractMap.SimpleEntry<>("uuid", (String) args[1])),
-                            collection
-                    );
-                    if (result.size() == 1) {
-                        getItemResolveItem = result.get(0);
-                        break;
-                    }
-                }
-                if (getItemResolveItem == null) {
-                    // Log a warning because in production this should not happen, however it is possible that the
-                    // Mock doesn't implement everything as desired.
-                    this.log.warn("Requested attribute \"{}\" for uuid \"{}\" not found!", args[1], args[0]);
-                    return null;
-                }
-                // Then get the attribute and return it
-                return getItemResolveItem.getDataMapResolved().get("uuid");
+                // First argument is the item uuid and second one the requested attribute
+                return getResolvedValue((String) args[0], (String) args[1]);
             case "sync":
                 return true;
             case "version":
@@ -301,6 +284,91 @@ public class MockConnection extends CobblerConnection {
             return item.getDataMapResolved();
         }
         return item.getDataMap();
+    }
+
+    private MockItem findByUid(String uid) {
+        for (List<MockItem> collection : Arrays.asList(profiles, distros, systems, images)) {
+            for (MockItem item : collection) {
+                if (uid.equals(item.getDataMap().get("uid"))) {
+                    return item;
+                }
+            }
+        }
+        return null;
+    }
+
+    private Object getResolvedValue(String uid, String key) {
+        MockItem item = findByUid(uid);
+        if (item == null) {
+            // Log a warning because in production this should not happen, however it is possible that the
+            // Mock doesn't implement everything as desired.
+            this.log.warn("Requested attribute \"{}\" for uuid \"{}\" not found!", key, uid);
+            return null;
+        }
+        if (KERNEL_OPTIONS_KEYS.contains(key)) {
+            return resolveKernelOptions(item, key, new HashMap<>());
+        }
+        return item.getDataMap().get(key);
+    }
+
+    /**
+     * Merges the kernel options of the item and its inheritance chain
+     * (system -> profile -> distro) the way cobbler resolves them: values
+     * of the lower objects win. String values are parsed like cobbler
+     * parses kernel options strings.
+     */
+    private Map<String, Object> resolveKernelOptions(MockItem item, String key, Map<String, Object> resolved) {
+        return resolveKernelOptions(item, key, resolved, new HashSet<>());
+    }
+
+    private Map<String, Object> resolveKernelOptions(MockItem item, String key, Map<String, Object> resolved,
+                                                     Set<MockItem> visited) {
+        if (!visited.add(item)) {
+            return resolved;
+        }
+        MockItem parent = parentOf(item);
+        if (parent != null) {
+            resolveKernelOptions(parent, key, resolved, visited);
+        }
+        resolved.putAll(asKernelOptionsMap(item.getDataMap().get(key)));
+        return resolved;
+    }
+
+    private MockItem parentOf(MockItem item) {
+        Object parentRef = item.getDataMap().get("profile");
+        if (parentRef == null) {
+            parentRef = item.getDataMap().get("distro");
+        }
+        if (parentRef == null) {
+            return null;
+        }
+        String parentName = parentRef.toString();
+        for (List<MockItem> collection : Arrays.asList(profiles, distros, systems, images)) {
+            MockItem parent = findByName(parentName, collection);
+            if (parent != null) {
+                return parent;
+            }
+        }
+        return null;
+    }
+
+    private Map<String, Object> asKernelOptionsMap(Object value) {
+        Map<String, Object> result = new HashMap<>();
+        if (value instanceof Map) {
+            result.putAll((Map<String, Object>) value);
+        }
+        else if (value instanceof String && !((String) value).isEmpty()) {
+            for (String token : ((String) value).trim().split("\\s+")) {
+                int eq = token.indexOf('=');
+                if (eq < 0) {
+                    result.put(token, "");
+                }
+                else {
+                    result.put(token.substring(0, eq), token.substring(eq + 1));
+                }
+            }
+        }
+        return result;
     }
 
     private String getItemHandle(String name, List<MockItem> collection) {

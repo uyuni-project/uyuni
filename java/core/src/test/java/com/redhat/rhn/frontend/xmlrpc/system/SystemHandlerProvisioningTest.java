@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.action.Action;
@@ -172,10 +173,13 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 assertEquals(" console=tty0", kad.getAppendString());
                 assertEquals(ConfigDefaults.get().getHostname(), kad.getKickstartHost());
 
-                // Cobbler kernel and post kernel options
+                // Cobbler kernel and post kernel options. The system record
+                // carries the session-tracked media URL as inst.repo= since
+                // the kernel options builders handle every OS class.
                 CobblerConnection con = CobblerXMLRPCHelper.getConnection(admin);
                 SystemRecord rec =  SystemRecord.lookupById(con, server.getCobblerId());
-                assertEquals(" console=tty0", rec.getKernelOptions().get());
+                assertTrue(String.valueOf(rec.getKernelOptions().get())
+                        .startsWith("console=tty0 inst.repo=http://localhost/ty/"));
                 assertEquals("console=tty1", rec.getKernelOptionsPost().get());
         }
 

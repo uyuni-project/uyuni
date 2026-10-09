@@ -22,11 +22,14 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
+import com.suse.manager.autoinstallation.KernelOptionsList;
+import com.suse.manager.autoinstallation.builder.KernelOptionsBuilder;
+import com.suse.manager.autoinstallation.builder.KernelOptionsHelper;
+import com.suse.manager.autoinstallation.installer.KernelOptionsBuilderFactory;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
@@ -36,7 +39,6 @@ import org.cobbler.SystemRecord;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -93,7 +95,7 @@ public class KickstartInitiateAction extends KickstartAction {
         KickstartableTree tree = KickstartFactory.lookupKickstartTreeByLabel(nameParts.get(0),
                 OrgFactory.lookupById(Long.valueOf(nameParts.get(1))));
         tree.createOrUpdateSaltFS();
-        String kOpts = buildKernelOptions(system, kickstartHost, autoinstall);
+        String kOpts = buildKernelOptions(system, tree, kickstartHost, autoinstall);
 
 
         Map<String, String> pillar = new HashMap<>();
@@ -106,79 +108,35 @@ public class KickstartInitiateAction extends KickstartAction {
 
 
 
-    private static String buildKernelOptions(SystemRecord sys, String host, boolean autoinstall) {
-        String breed = sys.getProfile().getDistro().getBreed();
-        Map<String, Object> kopts = sys.getResolvedKernelOptions();
+    /**
+     * Composes the kernel options for the boot line Uyuni writes itself: the
+     * cobbler-resolved options (distro + profile + system) adapted for the
+     * target installer plus the installer-selection option and the nopxe
+     * signaling URL.
+     *
+     * @param sys the system record to boot
+     * @param tree the distribution tree of the system's distro
+     * @param host the kickstart host
+     * @param autoinstall whether to append the info= (nopxe) URL
+     * @return the kernel options string for the reinstall boot entry
+     */
+    static String buildKernelOptions(SystemRecord sys, KickstartableTree tree, String host, boolean autoinstall) {
+        KernelOptionsList kopts = new KernelOptionsList(sys.getResolvedKernelOptions());
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Resolved kernel options for {}: {}", sys.getName(), convertOptionsMap(kopts));
+            LOG.debug("Resolved kernel options for {}: {}", sys.getName(), kopts);
         }
-        if (breed.equals("suse")) {
-            //SUSE is not using 'text'. Instead 'textmode' is used as kernel option.
-            if (kopts.containsKey("textmode")) {
-                kopts.remove("text");
-            }
-            else if (kopts.containsKey("text")) {
-                kopts.remove("text");
-                kopts.put("textmode", "1");
-            }
+        if ("suse".equals(sys.getProfile().getDistro().getBreed())) {
+            // SUSE is not using 'text'. Instead 'textmode' is used as kernel option.
+            KernelOptionsHelper.applySuseTextmode(kopts);
         }
         // no additional initrd parameter allowed
-        kopts.remove("initrd");
-        String kernelOptions = convertOptionsMap(kopts);
-        String autoinst = "http://" + host + "/cblr/svc/op/autoinstall/system/" + sys.getName();
-
-        if (StringUtils.isBlank(breed) || breed.equals("redhat")) {
-            if (sys.getProfile().getDistro().getOsVersion().equals("rhel6")) {
-                kernelOptions += " kssendmac ks=" + autoinst;
-            }
-            else {
-                kernelOptions += " inst.ks.sendmac ks=" + autoinst;
-            }
-        }
-        else if (breed.equals("suse")) {
-            if (sys.getProfile().getDistro().getOsVersion().startsWith("opensuse16")) {
-                kernelOptions += "inst.auto=" + autoinst;
-            }
-            else {
-                kernelOptions += "autoyast=" + autoinst;
-            }
-        }
-        else if (breed.equals("debian") || breed.equals("ubuntu")) {
-            kernelOptions += "auto-install/enable=true priority=critical netcfg/choose_interface=auto url=" + autoinst;
-        }
-
+        kopts.removeOption("initrd");
+        KernelOptionsBuilder builder = KernelOptionsBuilderFactory.getBuilder(tree.getInstallType(), host);
+        kopts.addMissingOptions(builder.systemOptions(sys));
         if (autoinstall) {
-            String infoUrl = "http://" + host + "/cblr/svc/op/nopxe/system/" + sys.getName();
-            kernelOptions += " info=" + infoUrl;
+            kopts.addOption("info", KernelOptionsHelper.cobblerSystemNopxeUrl(host, sys));
         }
-        return kernelOptions;
-    }
-
-
-
-    private static String convertOptionsMap(Map<String, Object> map) {
-        StringBuilder string = new StringBuilder();
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            String key = entry.getKey();
-            List<String> keyList;
-            try {
-                keyList = (List<String>)entry.getValue();
-            }
-            catch (ClassCastException e) {
-                keyList = new ArrayList<>();
-                keyList.add((String) entry.getValue());
-            }
-            string.append(key);
-            if (keyList.isEmpty()) {
-                string.append(" ");
-            }
-            else {
-                for (String value : keyList) {
-                    string.append("=").append(value).append(" ");
-                }
-            }
-        }
-        return string.toString();
+        return kopts.toString();
     }
 
 }
