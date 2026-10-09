@@ -9,7 +9,7 @@
 PRE_FILES  := $(shell find . -name \*.pre)
 POST_FILES := $(addsuffix .sql,$(basename $(PRE_FILES)))
 
-SANITY_CHECK_SCRIPT := "schema-source-sanity-check.py"
+SANITY_CHECK_SCRIPT := "schema-source-sanity-check"
 all : sanity-check $(POST_FILES) postgres upgrade
 
 upgrade:

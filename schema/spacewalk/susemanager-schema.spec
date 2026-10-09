@@ -62,7 +62,7 @@ Summary:        Utility used by any DB schema in %{productprettyname}
 Group:          Applications/Internet
 
 %description sanity
-Provides schema-source-sanity-check.py script for external usage.
+Provides schema-source-sanity-check script for external usage.
 
 %description utility
 Provides spacewalk-schema-upgrade and spacewalk-sql.
@@ -99,7 +99,7 @@ install -m 0644 update-messages.txt %{buildroot}%{_datadir}/susemanager/
 %fdupes %{buildroot}/%{rhnroot}
 %endif
 
-install -m 755 schema-source-sanity-check.py %{buildroot}%{_bindir}/schema-source-sanity-check.py
+install -m 755 schema-source-sanity-check %{buildroot}%{_bindir}/schema-source-sanity-check
 install -m 755 blend %{buildroot}%{_bindir}/blend
 
 %if 0%{?suse_version}
@@ -136,7 +136,7 @@ systemctl try-restart uyuni-check-database.service ||:
 %{_mandir}/man1/spacewalk-sql*
 
 %files sanity
-%attr(755,root,root) %{_bindir}/schema-source-sanity-check.py
+%attr(755,root,root) %{_bindir}/schema-source-sanity-check
 %attr(755,root,root) %{_bindir}/blend
 
 %changelog
