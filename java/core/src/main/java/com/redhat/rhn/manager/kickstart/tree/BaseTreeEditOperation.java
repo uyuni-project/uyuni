@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.kickstart.tree;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -27,6 +26,7 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.BasePersistOperation;
+import com.redhat.rhn.manager.kickstart.KickstartHostHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
@@ -36,8 +36,6 @@ import com.suse.manager.autoinstallation.installer.KernelOptionsBuilderFactory;
 import org.cobbler.Distro;
 import org.cobbler.XmlRpcException;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -215,27 +213,6 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
     }
 
     /**
-     * Resolve the FQDN of the installation server. Uses the server name set
-     * for this operation, falling back to the configured Java hostname when
-     * none was set (e.g. on the XML-RPC update path).
-     * @return the canonical server FQDN
-     */
-    protected String getServerFqdn() {
-        String host = this.serverName;
-        if (host == null || host.isEmpty()) {
-            host = ConfigDefaults.get().getJavaHostname();
-        }
-        try {
-            // Find the FQDN of the host
-            return InetAddress.getByName(host).getCanonicalHostName();
-        }
-        catch (UnknownHostException e) {
-            // Fall back to the local name in this case
-            return host;
-        }
-    }
-
-    /**
      * Merge the distro kernel options computed for this tree's install type
      * into the tree's kernel options. Already present (user-typed) options
      * win over the computed ones.
@@ -243,7 +220,8 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
     protected void applyDistroKernelOptions() {
         KernelOptionsList options = new KernelOptionsList(this.tree.getKernelOptions());
         options.addMissingOptions(KernelOptionsBuilderFactory
-                .getBuilder(this.tree.getInstallType(), getServerFqdn(), this.user)
+                .getBuilder(this.tree.getInstallType(),
+                        KickstartHostHelper.getServerFqdn(this.serverName), this.user)
                 .distroOptions(this.tree));
         this.tree.setKernelOptions(options.toString());
     }

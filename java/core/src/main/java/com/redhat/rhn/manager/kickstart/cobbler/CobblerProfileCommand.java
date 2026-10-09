@@ -24,7 +24,11 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.kickstart.KickstartHostHelper;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
+
+import com.suse.manager.autoinstallation.KernelOptionsList;
+import com.suse.manager.autoinstallation.installer.KernelOptionsBuilderFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,7 +79,11 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
             profile.setDistro(getDistroForKickstart());
         }
         if (kernelOptions != null) {
-            profile.setKernelOptions(Optional.of(kernelOptions));
+            KernelOptionsList options = new KernelOptionsList(kernelOptions);
+            options.addMissingOptions(KernelOptionsBuilderFactory
+                    .getBuilder(ksData.getInstallType(), KickstartHostHelper.getServerFqdn(null), user)
+                    .profileOptions(profile));
+            profile.setKernelOptions(Optional.of(options.toString()));
         }
         if (postKernelOptions != null) {
             profile.setKernelOptionsPost(Optional.of(postKernelOptions));

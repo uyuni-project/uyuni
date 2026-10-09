@@ -30,7 +30,9 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.CobblerConnection;
+import org.cobbler.CobblerObject;
 import org.cobbler.Distro;
+import org.cobbler.Profile;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -91,6 +93,118 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         ksdata.setLabel(newName);
         assertNull(pec.store());
         assertNotNull(ksdata.getCobblerObject(user).getName());
+    }
+
+    @Test
+    public void testProfileEditKernelOptions() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        pec.setKernelOptions("  opt1=val1   opt2  ");
+        assertNull(pec.store());
+
+        Profile prof = ksdata.getCobblerObject(user);
+        assertEquals("opt1=val1 opt2", prof.getKernelOptions().get());
+    }
+
+    @Test
+    public void testProfileEditKernelOptionsQuoting() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        pec.setKernelOptions("console=ttyS0 key=\"value with spaces\"");
+        assertNull(pec.store());
+
+        Profile prof = ksdata.getCobblerObject(user);
+        assertEquals("console=ttyS0 key=\"value with spaces\"",
+                prof.getKernelOptions().get());
+    }
+
+    @Test
+    public void testProfileEditKernelOptionsInheritRoundTrip() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        pec.setKernelOptions(CobblerObject.INHERIT_KEY);
+        assertNull(pec.store());
+
+        // cobbler (and its mock) interpret the literal inherit marker as
+        // "no explicit options"
+        Profile prof = ksdata.getCobblerObject(user);
+        assertTrue(prof.getKernelOptions().isEmpty());
+    }
+
+    @Test
+    public void testProfileEditKernelOptionsEmpty() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        pec.setKernelOptions("");
+        assertNull(pec.store());
+
+        Profile prof = ksdata.getCobblerObject(user);
+        assertTrue(prof.getKernelOptions().isPresent());
+        assertEquals("", prof.convertOptionsMap(prof.getKernelOptions().get()));
+    }
+
+    @Test
+    public void testProfileEditKernelOptionsIdempotent() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        pec.setKernelOptions("opt1=val1   opt2");
+        assertNull(pec.store());
+
+        CobblerProfileEditCommand pec2 = new CobblerProfileEditCommand(ksdata, user);
+        pec2.setKernelOptions("opt1=val1 opt2");
+        assertNull(pec2.store());
+
+        Profile prof = ksdata.getCobblerObject(user);
+        assertEquals("opt1=val1 opt2", prof.getKernelOptions().get());
+    }
+
+    @Test
+    public void testProfileEditPostKernelOptionsUntouched() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        pec.setKernelOptions("opt1=val1");
+        pec.setPostKernelOptions("  post=1   post2  ");
+        assertNull(pec.store());
+
+        Profile prof = ksdata.getCobblerObject(user);
+        assertEquals("opt1=val1", prof.getKernelOptions().get());
+        assertEquals("  post=1   post2  ", prof.getKernelOptionsPost().get());
+    }
+
+    @Test
+    public void testProfileEditWithoutKernelOptions() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        Profile prof = ksdata.getCobblerObject(user);
+        prof.setKernelOptions(Optional.of("keep=me"));
+        prof.save();
+
+        // automated paths (taskomatic sync et al.) never set kernel options
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        assertNull(pec.store());
+
+        prof = ksdata.getCobblerObject(user);
+        assertEquals("keep=me", prof.getKernelOptions().get());
     }
 
     @Test
