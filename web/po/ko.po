@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-02 11:31+0200\n"
+"POT-Creation-Date: 2026-10-09 12:18+0100\n"
 "PO-Revision-Date: 2026-08-18 06:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -62,7 +62,7 @@ msgstr "증명 실행 확인"
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:126
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:157
 #: ../html/src/manager/minion/details/support-data.tsx:145
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:274
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:112
 msgid "Schedule"
 msgstr "일정"
@@ -71,7 +71,7 @@ msgstr "일정"
 #: ../html/src/components/CoCoScansList.tsx:200
 #: ../html/src/components/package/PackageListActionScheduler.tsx:191
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:43
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:284
 msgid "Back to list"
 msgstr "목록으로 돌아가기"
 
@@ -161,6 +161,7 @@ msgstr "SCAP 스캔이  "
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:148
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:311
+#: ../html/src/manager/systems/details/snapshots.tsx:88
 msgid "scheduled."
 msgstr "예약되었습니다."
 
@@ -524,7 +525,7 @@ msgstr "N/A"
 msgid "Create {label}"
 msgstr "{label} 만들기"
 
-#: ../html/src/components/config-channels.tsx:38
+#: ../html/src/components/config-channels.tsx:39
 msgid "Configuration Channels"
 msgstr "구성 채널"
 
@@ -890,7 +891,7 @@ msgid "Sync"
 msgstr "동기화"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:134
-#: ../html/src/components/states-picker.tsx:501
+#: ../html/src/components/states-picker.tsx:522
 msgid "Channel Name"
 msgstr "채널 이름"
 
@@ -1002,7 +1003,7 @@ msgid "There are no ISSv1 slaves to migrate."
 msgstr "마이그레이션할 ISSv1 슬레이브가 없습니다."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:209
-#: ../html/src/components/states-picker.tsx:408
+#: ../html/src/components/states-picker.tsx:415
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
@@ -1437,8 +1438,8 @@ msgstr "다음이 변경됨:"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:302
 #: ../html/src/components/package/PackageListActionScheduler.tsx:182
-#: ../html/src/components/states-picker.tsx:410
-#: ../html/src/components/states-picker.tsx:612
+#: ../html/src/components/states-picker.tsx:417
+#: ../html/src/components/states-picker.tsx:633
 #: ../html/src/manager/admin/setup/products/products.tsx:1163
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:66
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:198
@@ -1875,7 +1876,7 @@ msgid "Policy assignment has been saved."
 msgstr "정책 할당이 저장되었습니다."
 
 #: ../html/src/components/policies-picker.tsx:94
-#: ../html/src/components/states-picker.tsx:197
+#: ../html/src/components/states-picker.tsx:200
 msgid "An error occurred on save."
 msgstr "저장하는 동안 오류가 발생했습니다."
 
@@ -1888,7 +1889,7 @@ msgid "Search in SCAP policies"
 msgstr "SCAP 정책에서 검색"
 
 #: ../html/src/components/policies-picker.tsx:165
-#: ../html/src/components/states-picker.tsx:470
+#: ../html/src/components/states-picker.tsx:491
 #: ../html/src/components/table/SearchField.tsx:66
 #: ../html/src/manager/header/search/search.tsx:80
 #: ../html/src/manager/header/search/search.tsx:89
@@ -1908,7 +1909,7 @@ msgid "Data Stream"
 msgstr "데이터 스트림"
 
 #: ../html/src/components/policies-picker.tsx:177
-#: ../html/src/components/states-picker.tsx:503
+#: ../html/src/components/states-picker.tsx:524
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:120
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:111
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:373
@@ -1930,11 +1931,12 @@ msgstr "데이터 스트림"
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:45
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:301
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:329
+#: ../html/src/manager/systems/details/snapshots.tsx:163
 msgid "Description"
 msgstr "설명"
 
 #: ../html/src/components/policies-picker.tsx:178
-#: ../html/src/components/states-picker.tsx:504
+#: ../html/src/components/states-picker.tsx:525
 msgid "Assign"
 msgstr "할당"
 
@@ -2095,101 +2097,108 @@ msgstr "구성 채널: {name}"
 msgid "Edit Configuration Channel"
 msgstr "구성 채널 편집"
 
-#: ../html/src/components/states-picker.tsx:109
+#: ../html/src/components/states-picker.tsx:111
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "저장되지 않은 변경 사항이 있습니다. 계속하시겠습니까?"
 
-#: ../html/src/components/states-picker.tsx:125
+#: ../html/src/components/states-picker.tsx:128
 msgid "State configuration must not be empty"
 msgstr "상태 구성은 비워둘 수 없습니다."
 
-#: ../html/src/components/states-picker.tsx:139
+#: ../html/src/components/states-picker.tsx:142
 msgid "Reboot state will be put last."
 msgstr "재부팅 상태는 마지막에 배치됩니다."
 
-#: ../html/src/components/states-picker.tsx:148
+#: ../html/src/components/states-picker.tsx:151
 msgid "'Reboot system' and 'Reboot system if needed' states cannot be used together."
 msgstr "'시스템 재부팅'과 '필요한 경우 시스템 재부팅' 상태는 함께 사용할 수 없습니다."
 
-#: ../html/src/components/states-picker.tsx:175
+#: ../html/src/components/states-picker.tsx:178
 msgid "State assignments have been saved."
 msgstr "상태 할당이 저장되었습니다."
 
-#: ../html/src/components/states-picker.tsx:341
+#: ../html/src/components/states-picker.tsx:344
 msgid "No states assigned. Use search to find and assign states."
 msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를 찾아 지정하십시오."
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:425
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:184
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:193
 msgid "Save Changes"
 msgstr "변경사항 저장"
 
-#: ../html/src/components/states-picker.tsx:438
+#: ../html/src/components/states-picker.tsx:445
 msgid "Reorder"
 msgstr "다시 정렬"
 
-#: ../html/src/components/states-picker.tsx:464
+#: ../html/src/components/states-picker.tsx:468
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:265
+#, fuzzy
+#| msgid "Registration date:"
+msgid "Use transactional update"
+msgstr "등록 날짜:"
+
+#: ../html/src/components/states-picker.tsx:485
 msgid "Search in states"
 msgstr "상태에서 검색"
 
-#: ../html/src/components/states-picker.tsx:464
+#: ../html/src/components/states-picker.tsx:485
 msgid "Search in configuration channels"
 msgstr "구성 채널에서 검색"
 
-#: ../html/src/components/states-picker.tsx:480
+#: ../html/src/components/states-picker.tsx:501
 msgid "Edit State Ranks"
 msgstr "상태 순위 편집"
 
-#: ../html/src/components/states-picker.tsx:480
+#: ../html/src/components/states-picker.tsx:501
 msgid "Edit Channel Ranks"
 msgstr "채널 순위 편집"
 
-#: ../html/src/components/states-picker.tsx:484
+#: ../html/src/components/states-picker.tsx:505
 msgid "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
 msgstr "상태를 드래그하여 순위를 편집하십시오. 순위 기준 내림차순으로 나열됩니다. 즉, 가장 낮은 순위가 먼저 적용됩니다."
 
-#: ../html/src/components/states-picker.tsx:487
+#: ../html/src/components/states-picker.tsx:508
 msgid "Edit the ranking of the configuration channels by dragging them. They are listed in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the bottom ones will be applied first."
 msgstr "구성 채널의 순위를 드래그하여 편집하십시오. 순위 기준 내림차순으로 나열됩니다. 특정 채널의 파일은 그보다 아래에 있는 채널의 동일한 경로 및 동일한 이름의 파일을 덮어씁니다. 즉, 가장 낮은 순위가 먼저 적용됩니다."
 
-#: ../html/src/components/states-picker.tsx:493
+#: ../html/src/components/states-picker.tsx:514
 msgid "There are no states assigned."
 msgstr "상태가 지정되지 않았습니다."
 
-#: ../html/src/components/states-picker.tsx:501
+#: ../html/src/components/states-picker.tsx:522
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:284
 msgid "State Name"
 msgstr "상태 이름"
 
-#: ../html/src/components/states-picker.tsx:502
+#: ../html/src/components/states-picker.tsx:523
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:297
 msgid "State Label"
 msgstr "상태 레이블"
 
-#: ../html/src/components/states-picker.tsx:502
+#: ../html/src/components/states-picker.tsx:523
 #: ../html/src/components/table/nested-data.example.tsx:56
 msgid "Channel Label"
 msgstr "채널 레이블"
 
-#: ../html/src/components/states-picker.tsx:565
+#: ../html/src/components/states-picker.tsx:586
 msgid "Select the systems to schedule for immediate state execution and confirm."
 msgstr "즉시 상태 실행을 예약할 시스템을 선택하고 확인합니다."
 
-#: ../html/src/components/states-picker.tsx:576
+#: ../html/src/components/states-picker.tsx:597
 msgid "This table is empty"
 msgstr "이 테이블은 비어있습니다."
 
-#: ../html/src/components/states-picker.tsx:583
-#: ../html/src/components/states-picker.tsx:624
+#: ../html/src/components/states-picker.tsx:604
+#: ../html/src/components/states-picker.tsx:645
 msgid "System Name"
 msgstr "시스템 이름"
 
-#: ../html/src/components/states-picker.tsx:603
+#: ../html/src/components/states-picker.tsx:624
 msgid "Execute States"
 msgstr "실행 상태"
 
-#: ../html/src/components/states-picker.tsx:608
+#: ../html/src/components/states-picker.tsx:629
 msgid "Select Sytems"
 msgstr "시스템 선택"
 
@@ -2980,6 +2989,7 @@ msgstr "SSH 포트"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:69
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:21
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:513
+#: ../html/src/manager/systems/details/snapshots.tsx:155
 msgid "User"
 msgstr "사용자"
 
@@ -4851,6 +4861,7 @@ msgstr "권장에 포함"
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
 #: ../html/src/manager/notifications/notifications-list.tsx:139
 #: ../html/src/manager/state/highstate-summary.tsx:90
+#: ../html/src/manager/systems/details/snapshots.tsx:147
 msgid "Type"
 msgstr "유형"
 
@@ -4901,7 +4912,7 @@ msgstr "책갈피를 사용한 경우 책갈피가 생성된 후 해당 페이�
 msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgstr "실수로 인해 이 페이지에 방문하게 되었다고 생각되는 경우, 수신한 방법에 대한 자세한 내용과 함께 문의해 주십시오. "
 
-#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
+#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
 msgid "Applying the config channels has been scheduled for each minion server in this group"
 msgstr "이 그룹의 각 minion 서버에 구성 채널 적용이 예약되었습니다."
 
@@ -4967,7 +4978,7 @@ msgstr "이미지 빌드가 "
 
 #: ../html/src/manager/images/image-build.tsx:219
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:273
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:29
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:50
 #: ../html/src/manager/systems/proxy.tsx:69
 #: ../html/src/manager/systems/proxy.tsx:73
@@ -5459,6 +5470,7 @@ msgid "Advisory"
 msgstr "자문"
 
 #: ../html/src/manager/images/image-view-patches.tsx:101
+#: ../html/src/manager/systems/details/snapshots.tsx:117
 msgid "Updated"
 msgstr "업데이트됨"
 
@@ -5817,12 +5829,12 @@ msgid "Refreshing the calendar will reschedule all affected actions."
 msgstr "달력을 새로 고치면 영향을 받는 모든 작업의 일정이 조정됩니다."
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:274
 msgid "Update "
 msgstr "업데이트 "
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:274
 msgid "Create "
 msgstr "만들기 "
 
@@ -6030,7 +6042,7 @@ msgid "Loading playbook contents.."
 msgstr "플레이북 컨텐츠를 로드하는 중..."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:145
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:242
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:258
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr "테스트 모드"
@@ -6170,7 +6182,7 @@ msgstr "교정 적용"
 msgid "OpenSCAP is not available on this system. Please install the package ''{package}'' to enable SCAP scanning."
 msgstr "이 시스템에서는 OpenSCAP을 사용할 수 없습니다. SCAP 스캔을 사용하려면 \"{package}\" 패키지를 설치하십시오."
 
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
 msgstr "구성 채널 적용이 "
 
@@ -6682,7 +6694,7 @@ msgstr "Websocket 연결이 종료되었습니다. 페이지를 새로 고친 �
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "서버에 연결하는 동안 오류가 발생했습니다. 페이지를 새로 고친 후 다시 시도하십시오."
 
-#: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:27
+#: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:29
 msgid "Applying the config channels has been scheduled for each minion server in this organization"
 msgstr "이 조직에서 각 minion 서버에 구성 채널 적용이 예약되었습니다."
 
@@ -6942,21 +6954,21 @@ msgstr "일정을 생성했습니다."
 msgid "Action scheduled on selected minions"
 msgstr "선택한 미니언에 예정된 작업"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:268
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:292
 msgid "Schedule Recurring Action"
 msgstr "반복 작업 예약"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:277
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:301
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:207
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:35
 msgid "Action Type"
 msgstr "작업 유형"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:300
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:324
 msgid "Configure states to execute"
 msgstr "실행할 상태 구성"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:314
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:339
 msgid "SCAP Policies"
 msgstr "SCAP 정책"
 
@@ -7000,11 +7012,11 @@ msgstr "Minion"
 msgid "Group"
 msgstr "그룹"
 
-#: ../html/src/manager/recurring/recurring-actions.tsx:160
+#: ../html/src/manager/recurring/recurring-actions.tsx:161
 msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr "작업을 삭제하는 동안 오류가 발생했습니다. Taskomatic이 실행 중인지 확인하십시오."
 
-#: ../html/src/manager/recurring/recurring-actions.tsx:175
+#: ../html/src/manager/recurring/recurring-actions.tsx:176
 msgid "The below times are displayed in the server time zone {timeZone}. The scheduled time will be the server time."
 msgstr "아래 시간은 서버 시간대 {timeZone}에 표시됩니다. 예약된 시간은 서버 시간이 됩니다."
 
@@ -7533,6 +7545,81 @@ msgstr "데이터베이스 마지막 동기화 시간 보고"
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
 msgid "Regenerate Reporting Database Password"
 msgstr "데이터베이스 비밀번호 보고 생성"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:57
+#: ../html/src/manager/systems/details/snapshots.tsx:60
+#, fuzzy
+#| msgid "Unable to perform action."
+msgid "Unable to load snapshot information."
+msgstr "작업을 수행할 수 없습니다."
+
+#: ../html/src/manager/systems/details/snapshots.tsx:87
+#, fuzzy
+#| msgid "Remediation has been "
+msgid "The action has been "
+msgstr "교정이  "
+
+#: ../html/src/manager/systems/details/snapshots.tsx:108
+#, fuzzy
+#| msgid "Refresh Data"
+msgid "Refresh Snapshots"
+msgstr "데이터 새로 고침"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:112
+msgid "Btrfs Snapshots"
+msgstr ""
+
+#: ../html/src/manager/systems/details/snapshots.tsx:125
+#, fuzzy
+#| msgid "No streams available"
+msgid "No snapshots available."
+msgstr "사용할 수 있는 스트림 없음"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:129
+msgid "#"
+msgstr ""
+
+#: ../html/src/manager/systems/details/snapshots.tsx:136
+#, fuzzy
+#| msgid "Inactive"
+msgid "active"
+msgstr "비활성"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:141
+msgid "default"
+msgstr ""
+
+#: ../html/src/manager/systems/details/snapshots.tsx:150
+msgid "Pre #"
+msgstr ""
+
+#: ../html/src/manager/systems/details/snapshots.tsx:154
+#, fuzzy
+#| msgid "Datetime"
+msgid "Date"
+msgstr "날짜/시간"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:158
+#, fuzzy
+#| msgid "Used by Schedule"
+msgid "Used Space"
+msgstr "일정에서 사용됨"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:162
+#, fuzzy
+#| msgid "Clear Menu"
+msgid "Cleanup"
+msgstr "메뉴 지우기"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:164
+#, fuzzy
+#| msgid "User"
+msgid "Userdata"
+msgstr "사용자"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:191
+msgid "Unable to schedule snapshot refresh."
+msgstr ""
 
 #: ../html/src/manager/systems/list-filter.tsx:4
 msgid "Manager Server"

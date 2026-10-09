@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-02 11:31+0200\n"
+"POT-Creation-Date: 2026-10-09 12:18+0100\n"
 "PO-Revision-Date: 2026-08-24 12:13+0000\n"
 "Last-Translator: Ricardo Mestre <ricardo.mestre@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/>\n"
@@ -64,7 +64,7 @@ msgstr "Confirmar Execução"
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:126
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:157
 #: ../html/src/manager/minion/details/support-data.tsx:145
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:274
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:112
 msgid "Schedule"
 msgstr "Agendar"
@@ -73,7 +73,7 @@ msgstr "Agendar"
 #: ../html/src/components/CoCoScansList.tsx:200
 #: ../html/src/components/package/PackageListActionScheduler.tsx:191
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:43
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:284
 msgid "Back to list"
 msgstr "Voltar à lista"
 
@@ -163,6 +163,7 @@ msgstr "A análise SCAP foi "
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:148
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:311
+#: ../html/src/manager/systems/details/snapshots.tsx:88
 msgid "scheduled."
 msgstr "agendada."
 
@@ -528,7 +529,7 @@ msgstr "N/D"
 msgid "Create {label}"
 msgstr "Criar {label}"
 
-#: ../html/src/components/config-channels.tsx:38
+#: ../html/src/components/config-channels.tsx:39
 msgid "Configuration Channels"
 msgstr "Canais de Configuração"
 
@@ -894,7 +895,7 @@ msgid "Sync"
 msgstr "Sincronizar"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:134
-#: ../html/src/components/states-picker.tsx:501
+#: ../html/src/components/states-picker.tsx:522
 msgid "Channel Name"
 msgstr "Nome do Canal"
 
@@ -1006,7 +1007,7 @@ msgid "There are no ISSv1 slaves to migrate."
 msgstr "Não existem slaves ISSv1 para migrar."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:209
-#: ../html/src/components/states-picker.tsx:408
+#: ../html/src/components/states-picker.tsx:415
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
@@ -1441,8 +1442,8 @@ msgstr "Está prestes a fazer as seguintes alterações:"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:302
 #: ../html/src/components/package/PackageListActionScheduler.tsx:182
-#: ../html/src/components/states-picker.tsx:410
-#: ../html/src/components/states-picker.tsx:612
+#: ../html/src/components/states-picker.tsx:417
+#: ../html/src/components/states-picker.tsx:633
 #: ../html/src/manager/admin/setup/products/products.tsx:1163
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:66
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:198
@@ -1875,7 +1876,7 @@ msgid "Policy assignment has been saved."
 msgstr "A atribuição de política foi guardada."
 
 #: ../html/src/components/policies-picker.tsx:94
-#: ../html/src/components/states-picker.tsx:197
+#: ../html/src/components/states-picker.tsx:200
 msgid "An error occurred on save."
 msgstr "Ocorreu um erro ao guardar."
 
@@ -1888,7 +1889,7 @@ msgid "Search in SCAP policies"
 msgstr "Pesquisar em políticas SCAP"
 
 #: ../html/src/components/policies-picker.tsx:165
-#: ../html/src/components/states-picker.tsx:470
+#: ../html/src/components/states-picker.tsx:491
 #: ../html/src/components/table/SearchField.tsx:66
 #: ../html/src/manager/header/search/search.tsx:80
 #: ../html/src/manager/header/search/search.tsx:89
@@ -1908,7 +1909,7 @@ msgid "Data Stream"
 msgstr "Fluxo de Dados"
 
 #: ../html/src/components/policies-picker.tsx:177
-#: ../html/src/components/states-picker.tsx:503
+#: ../html/src/components/states-picker.tsx:524
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:120
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:111
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:373
@@ -1930,11 +1931,12 @@ msgstr "Fluxo de Dados"
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:45
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:301
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:329
+#: ../html/src/manager/systems/details/snapshots.tsx:163
 msgid "Description"
 msgstr "Descrição"
 
 #: ../html/src/components/policies-picker.tsx:178
-#: ../html/src/components/states-picker.tsx:504
+#: ../html/src/components/states-picker.tsx:525
 msgid "Assign"
 msgstr "Atribuir"
 
@@ -2095,101 +2097,108 @@ msgstr "Canal de Configuração: {name}"
 msgid "Edit Configuration Channel"
 msgstr "Editar Canal de Configuração"
 
-#: ../html/src/components/states-picker.tsx:109
+#: ../html/src/components/states-picker.tsx:111
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "Existem alterações não guardadas. Quer prosseguir?"
 
-#: ../html/src/components/states-picker.tsx:125
+#: ../html/src/components/states-picker.tsx:128
 msgid "State configuration must not be empty"
 msgstr "A configuração de estado não pode estar vazia"
 
-#: ../html/src/components/states-picker.tsx:139
+#: ../html/src/components/states-picker.tsx:142
 msgid "Reboot state will be put last."
 msgstr "O estado de reinício será colocado por último."
 
-#: ../html/src/components/states-picker.tsx:148
+#: ../html/src/components/states-picker.tsx:151
 msgid "'Reboot system' and 'Reboot system if needed' states cannot be used together."
 msgstr "Os estados 'Reiniciar sistema' e 'Reiniciar sistema, se necessário' não podem ser utilizados em simultâneo."
 
-#: ../html/src/components/states-picker.tsx:175
+#: ../html/src/components/states-picker.tsx:178
 msgid "State assignments have been saved."
 msgstr "As atribuições de estado foram guardadas."
 
-#: ../html/src/components/states-picker.tsx:341
+#: ../html/src/components/states-picker.tsx:344
 msgid "No states assigned. Use search to find and assign states."
 msgstr "Nenhum estado atribuído. Use a pesquisa para encontrar e atribuir estados."
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:425
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:184
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:193
 msgid "Save Changes"
 msgstr "Guardar Alterações"
 
-#: ../html/src/components/states-picker.tsx:438
+#: ../html/src/components/states-picker.tsx:445
 msgid "Reorder"
 msgstr "Reordenar"
 
-#: ../html/src/components/states-picker.tsx:464
+#: ../html/src/components/states-picker.tsx:468
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:265
+#, fuzzy
+#| msgid "Registration date:"
+msgid "Use transactional update"
+msgstr "Data de registo:"
+
+#: ../html/src/components/states-picker.tsx:485
 msgid "Search in states"
 msgstr "Pesquisar em estados"
 
-#: ../html/src/components/states-picker.tsx:464
+#: ../html/src/components/states-picker.tsx:485
 msgid "Search in configuration channels"
 msgstr "Pesquisar em canais de configuração"
 
-#: ../html/src/components/states-picker.tsx:480
+#: ../html/src/components/states-picker.tsx:501
 msgid "Edit State Ranks"
 msgstr "Editar Classificações de Estado"
 
-#: ../html/src/components/states-picker.tsx:480
+#: ../html/src/components/states-picker.tsx:501
 msgid "Edit Channel Ranks"
 msgstr "Editar Classificações de Canais"
 
-#: ../html/src/components/states-picker.tsx:484
+#: ../html/src/components/states-picker.tsx:505
 msgid "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
 msgstr "Arraste os estados para reordenar. Estão listados da prioridade mais alta para a mais baixa. Os elementos com menor prioridade (mais em baixo) serão aplicados primeiro."
 
-#: ../html/src/components/states-picker.tsx:487
+#: ../html/src/components/states-picker.tsx:508
 msgid "Edit the ranking of the configuration channels by dragging them. They are listed in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the bottom ones will be applied first."
 msgstr "Arraste os canais de configuração para reordenar. Estão listados da prioridade mais alta para a mais baixa. Os ficheiros de um canal específico substituem ficheiros com o mesmo caminho e nome dos canais abaixo. Ou seja, os elementos no fim da lista são aplicados primeiro."
 
-#: ../html/src/components/states-picker.tsx:493
+#: ../html/src/components/states-picker.tsx:514
 msgid "There are no states assigned."
 msgstr "Não há estados atribuídos."
 
-#: ../html/src/components/states-picker.tsx:501
+#: ../html/src/components/states-picker.tsx:522
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:284
 msgid "State Name"
 msgstr "Nome Estado"
 
-#: ../html/src/components/states-picker.tsx:502
+#: ../html/src/components/states-picker.tsx:523
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:297
 msgid "State Label"
 msgstr "Etiqueta Estado"
 
-#: ../html/src/components/states-picker.tsx:502
+#: ../html/src/components/states-picker.tsx:523
 #: ../html/src/components/table/nested-data.example.tsx:56
 msgid "Channel Label"
 msgstr "Etiqueta do Canal"
 
-#: ../html/src/components/states-picker.tsx:565
+#: ../html/src/components/states-picker.tsx:586
 msgid "Select the systems to schedule for immediate state execution and confirm."
 msgstr "Selecione os sistemas a agendar para execução imediata de estado e confirme."
 
-#: ../html/src/components/states-picker.tsx:576
+#: ../html/src/components/states-picker.tsx:597
 msgid "This table is empty"
 msgstr "Esta tabela está vazia"
 
-#: ../html/src/components/states-picker.tsx:583
-#: ../html/src/components/states-picker.tsx:624
+#: ../html/src/components/states-picker.tsx:604
+#: ../html/src/components/states-picker.tsx:645
 msgid "System Name"
 msgstr "Nome Sistema"
 
-#: ../html/src/components/states-picker.tsx:603
+#: ../html/src/components/states-picker.tsx:624
 msgid "Execute States"
 msgstr "Executar Estados"
 
-#: ../html/src/components/states-picker.tsx:608
+#: ../html/src/components/states-picker.tsx:629
 msgid "Select Sytems"
 msgstr "Selecionar Sistemas"
 
@@ -2976,6 +2985,7 @@ msgstr "Porta SSH"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:69
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:21
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:513
+#: ../html/src/manager/systems/details/snapshots.tsx:155
 msgid "User"
 msgstr "Utilizador"
 
@@ -4857,6 +4867,7 @@ msgstr "incluir recomendados"
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
 #: ../html/src/manager/notifications/notifications-list.tsx:139
 #: ../html/src/manager/state/highstate-summary.tsx:90
+#: ../html/src/manager/systems/details/snapshots.tsx:147
 msgid "Type"
 msgstr "Tipo"
 
@@ -4907,7 +4918,7 @@ msgstr ""
 msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgstr "Se acha que chegou a esta página por erro, contacte-nos com detalhes de como recebeu "
 
-#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
+#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
 msgid "Applying the config channels has been scheduled for each minion server in this group"
 msgstr "A aplicação dos canais de configuração foi agendada para cada servidor minion neste grupo"
 
@@ -4973,7 +4984,7 @@ msgstr "O build da imagem foi "
 
 #: ../html/src/manager/images/image-build.tsx:219
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:273
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:29
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:50
 #: ../html/src/manager/systems/proxy.tsx:69
 #: ../html/src/manager/systems/proxy.tsx:73
@@ -5467,6 +5478,7 @@ msgid "Advisory"
 msgstr "Advisory"
 
 #: ../html/src/manager/images/image-view-patches.tsx:101
+#: ../html/src/manager/systems/details/snapshots.tsx:117
 msgid "Updated"
 msgstr "Atualizado"
 
@@ -5825,12 +5837,12 @@ msgid "Refreshing the calendar will reschedule all affected actions."
 msgstr "Atualizar o calendário irá reagendar todas as ações afetadas."
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:274
 msgid "Update "
 msgstr "Atualizar "
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:274
 msgid "Create "
 msgstr "Criar "
 
@@ -6038,7 +6050,7 @@ msgid "Loading playbook contents.."
 msgstr "A carregar conteúdos do playbook.."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:145
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:242
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:258
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr "Modo de teste"
@@ -6180,7 +6192,7 @@ msgstr "Aplicar Remediação"
 msgid "OpenSCAP is not available on this system. Please install the package ''{package}'' to enable SCAP scanning."
 msgstr "O OpenSCAP não está disponível neste sistema. Instale o pacote '{package}' para ativar a análise SCAP."
 
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
 msgstr "A aplicação dos canais de configuração foi "
 
@@ -6692,7 +6704,7 @@ msgstr "Ligação websocket fechada. Atualize a página para tentar novamente."
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "Erro ao conectar ao servidor. Atualize a página para tentar novamente."
 
-#: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:27
+#: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:29
 msgid "Applying the config channels has been scheduled for each minion server in this organization"
 msgstr "A aplicação dos canais de configuração foi agendada para cada servidor minion nesta organização"
 
@@ -6952,21 +6964,21 @@ msgstr "Agendamento criado com sucesso."
 msgid "Action scheduled on selected minions"
 msgstr "Ação agendada nos minions selecionados"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:268
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:292
 msgid "Schedule Recurring Action"
 msgstr "Agendar Ação Recorrente"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:277
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:301
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:207
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:35
 msgid "Action Type"
 msgstr "Tipo de Ação"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:300
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:324
 msgid "Configure states to execute"
 msgstr "Configurar estados a executar"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:314
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:339
 msgid "SCAP Policies"
 msgstr "Políticas SCAP"
 
@@ -7010,11 +7022,11 @@ msgstr "Minion"
 msgid "Group"
 msgstr "Grupo"
 
-#: ../html/src/manager/recurring/recurring-actions.tsx:160
+#: ../html/src/manager/recurring/recurring-actions.tsx:161
 msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr "Erro ao eliminar a ação. Verifique se o Taskomatic está em execução"
 
-#: ../html/src/manager/recurring/recurring-actions.tsx:175
+#: ../html/src/manager/recurring/recurring-actions.tsx:176
 msgid "The below times are displayed in the server time zone {timeZone}. The scheduled time will be the server time."
 msgstr "Os horários abaixo são apresentados no fuso horário do servidor {timeZone}. O horário agendado será o horário do servidor."
 
@@ -7543,6 +7555,81 @@ msgstr "Última Sincronização da Base de Dados de Relatórios"
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
 msgid "Regenerate Reporting Database Password"
 msgstr "Regenerar Palavra-passe da Base de Dados de Relatórios"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:57
+#: ../html/src/manager/systems/details/snapshots.tsx:60
+#, fuzzy
+#| msgid "Unable to perform action."
+msgid "Unable to load snapshot information."
+msgstr "Impossível realizar ação."
+
+#: ../html/src/manager/systems/details/snapshots.tsx:87
+#, fuzzy
+#| msgid "Remediation has been "
+msgid "The action has been "
+msgstr "A remediação foi "
+
+#: ../html/src/manager/systems/details/snapshots.tsx:108
+#, fuzzy
+#| msgid "Refresh Data"
+msgid "Refresh Snapshots"
+msgstr "Atualizar Dados"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:112
+msgid "Btrfs Snapshots"
+msgstr ""
+
+#: ../html/src/manager/systems/details/snapshots.tsx:125
+#, fuzzy
+#| msgid "No streams available"
+msgid "No snapshots available."
+msgstr "Nenhum stream disponível"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:129
+msgid "#"
+msgstr ""
+
+#: ../html/src/manager/systems/details/snapshots.tsx:136
+#, fuzzy
+#| msgid "Inactive"
+msgid "active"
+msgstr "Inativo"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:141
+msgid "default"
+msgstr ""
+
+#: ../html/src/manager/systems/details/snapshots.tsx:150
+msgid "Pre #"
+msgstr ""
+
+#: ../html/src/manager/systems/details/snapshots.tsx:154
+#, fuzzy
+#| msgid "Datetime"
+msgid "Date"
+msgstr "Data e hora"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:158
+#, fuzzy
+#| msgid "Used by Schedule"
+msgid "Used Space"
+msgstr "Usado por Agendamento"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:162
+#, fuzzy
+#| msgid "Clear Menu"
+msgid "Cleanup"
+msgstr "Limpar Menu"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:164
+#, fuzzy
+#| msgid "User"
+msgid "Userdata"
+msgstr "Utilizador"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:191
+msgid "Unable to schedule snapshot refresh."
+msgstr ""
 
 #: ../html/src/manager/systems/list-filter.tsx:4
 msgid "Manager Server"
