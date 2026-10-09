@@ -87,6 +87,15 @@ public class RhelKernelOptionsBuilderTest extends MockObjectTestCase {
     }
 
     /**
+     * Media options are inst.repo= pointing at the session-tracked media URL.
+     */
+    @Test
+    public void testMediaOptions() {
+        assertEquals("inst.repo=http://" + FQDN + "/ty/token1",
+                builder.mediaOptions("http://" + FQDN + "/ty/token1").toString());
+    }
+
+    /**
      * System options are inst.ks.sendmac plus inst.ks= pointing at the Cobbler
      * system autoinstall URL.
      */

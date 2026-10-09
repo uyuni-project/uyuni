@@ -142,6 +142,15 @@ public class AutoYastKernelOptionsBuilderTest extends MockObjectTestCase {
     }
 
     /**
+     * Media options are install= pointing at the session-tracked media URL.
+     */
+    @Test
+    public void testMediaOptions() {
+        assertEquals("install=http://" + FQDN + "/ty/token1",
+                builder.mediaOptions("http://" + FQDN + "/ty/token1").toString());
+    }
+
+    /**
      * System options are autoyast= pointing at the Cobbler system
      * autoinstall URL.
      */

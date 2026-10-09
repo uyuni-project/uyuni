@@ -70,6 +70,18 @@ public class AutoYastKernelOptionsBuilder extends AbstractKernelOptionsBuilder {
     /**
      * {@inheritDoc}
      *
+     * install= pointing at the session-tracked media URL.
+     */
+    @Override
+    public KernelOptionsList mediaOptions(String mediaUrl) {
+        KernelOptionsList options = new KernelOptionsList();
+        options.setOptionIfNotPresent("install", mediaUrl);
+        return options;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * autoyast= pointing at the Cobbler system autoinstall URL.
      */
     @Override

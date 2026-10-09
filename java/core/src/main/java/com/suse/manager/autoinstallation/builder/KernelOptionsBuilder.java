@@ -55,6 +55,18 @@ public interface KernelOptionsBuilder {
     KernelOptionsList profileOptions(Profile profile);
 
     /**
+     * Installation-source override pointing at the session-tracked media
+     * URL built by the caller as http://&lt;kickstartHost&gt;&lt;mediaPath&gt;.
+     * The option key is OS-class specific: install= (AutoYaST),
+     * inst.repo= (RHEL-like), inst.install_url= (Agama product-default
+     * override).
+     *
+     * @param mediaUrl the session-tracked media URL
+     * @return the computed installation-source override option
+     */
+    KernelOptionsList mediaOptions(String mediaUrl);
+
+    /**
      * Per-system options including the installer-selection option
      * (ks=, autoyast= or inst.auto=). Only for boot lines Uyuni composes
      * entirely itself (initiate path); never written to Cobbler records.

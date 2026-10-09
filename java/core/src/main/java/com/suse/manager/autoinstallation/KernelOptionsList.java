@@ -310,6 +310,23 @@ public class KernelOptionsList {
     }
 
     /**
+     * Returns the first value of the option with the given key.
+     * @param key The option name to lookup.
+     * @return the first value of the option or null if the option is not
+     *         present (or present as a flag).
+     */
+    public String getValue(String key) {
+        if (key != null && !key.isEmpty()) {
+            for (Map.Entry<String, String> stringStringEntry : optionsList) {
+                if (key.equals(stringStringEntry.getKey())) {
+                    return stringStringEntry.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns true if there is no option set
      * @return true if option list it empty
      */

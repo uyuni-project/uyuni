@@ -133,6 +133,16 @@ public class AgamaKernelOptionsBuilderTest extends MockObjectTestCase {
     }
 
     /**
+     * Media options are inst.install_url= pointing at the session-tracked
+     * media URL, overriding the product's default installation_url.
+     */
+    @Test
+    public void testMediaOptions() {
+        assertEquals("inst.install_url=http://" + FQDN + "/ty/token1",
+                builder.mediaOptions("http://" + FQDN + "/ty/token1").toString());
+    }
+
+    /**
      * System options are inst.auto= pointing at the Cobbler system
      * autoinstall URL.
      */

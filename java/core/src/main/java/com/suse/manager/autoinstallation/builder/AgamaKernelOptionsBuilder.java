@@ -73,6 +73,19 @@ public class AgamaKernelOptionsBuilder extends AbstractKernelOptionsBuilder {
     /**
      * {@inheritDoc}
      *
+     * inst.install_url= pointing at the session-tracked media URL,
+     * overriding the product's default installation_url.
+     */
+    @Override
+    public KernelOptionsList mediaOptions(String mediaUrl) {
+        KernelOptionsList options = new KernelOptionsList();
+        options.setOptionIfNotPresent("inst.install_url", mediaUrl);
+        return options;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * inst.auto= pointing at the Cobbler system autoinstall URL.
      */
     @Override

@@ -66,6 +66,18 @@ public class RhelKernelOptionsBuilder extends AbstractKernelOptionsBuilder {
     /**
      * {@inheritDoc}
      *
+     * inst.repo= pointing at the session-tracked media URL.
+     */
+    @Override
+    public KernelOptionsList mediaOptions(String mediaUrl) {
+        KernelOptionsList options = new KernelOptionsList();
+        options.setOptionIfNotPresent("inst.repo", mediaUrl);
+        return options;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * inst.ks= pointing at the Cobbler system autoinstall URL plus
      * inst.ks.sendmac.
      */
