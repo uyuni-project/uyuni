@@ -10,13 +10,8 @@ Feature: Install RKE2 server on a transactional system
   Scenario: Reboot the server to activate everything before starting
     When I reboot the "server" host through SSH, waiting until it comes back
 
-  Scenario: Check the RKE2 configuration
-    Then the environment variable "RKE2_VERSION" is set on "server"
-    And the environment variable "RKE2_INSTALL_METHOD" is set on "server"
-    And file "/etc/rancher/rke2/config.yaml" should exist on "server"
-
   Scenario: Install RKE2
-    When I run "set -o pipefail; curl -sfL https://get.rke2.io | sudo INSTALL_RKE2_VERSION=$RKE2_VERSION INSTALL_RKE2_METHOD=$RKE2_INSTALL_METHOD sh -" on "server"
+    When I install RKE2 on "server"
 
   @skip_if_transactional_server
   Scenario: Install selinux package
@@ -34,6 +29,6 @@ Feature: Install RKE2 server on a transactional system
     And service "rke2-server" is active on "server"
 
   Scenario: Create symlinks for RKE2 tools
-    When I run "ln -sf /var/lib/rancher/rke2/bin/kubectl /usr/local/bin/kubectl" on "server"
-    And I run "ln -sf /var/lib/rancher/rke2/bin/crictl /usr/local/bin/crictl" on "server"
-    And I run "ln -sf /var/lib/rancher/rke2/bin/ctr /usr/local/bin/ctr" on "server"
+    When I create a ln between "/var/lib/rancher/rke2/bin/kubectl" and "/usr/local/bin/kubectl" on "server" with parameters "-sf"
+    And I create a ln between "/var/lib/rancher/rke2/bin/crictl" and "/usr/local/bin/crictl" on "server" with parameters "-sf"
+    And I create a ln between "/var/lib/rancher/rke2/bin/ctr" and "/usr/local/bin/ctr" on "server" with parameters "-sf"

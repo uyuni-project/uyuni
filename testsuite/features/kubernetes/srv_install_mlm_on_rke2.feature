@@ -5,20 +5,10 @@
 @no_user_creation
 Feature: Install MLM on RKE2
 
-  Scenario: Check the RKE2 configuration
-    Then the environment variable "PYTHON_HELM_CHART_PATH" is set on "server"
-    And the environment variable "HELM_CHART_DIRECTORY" is set on "server"
-    And the environment variable "HELM_CHART_URL" is set on "server"
-    And the environment variable "HELM_CHART_NAME" is set on "server"
-    And the environment variable "SELF_SIGNED_PATH" is set on "server"
-    And the environment variable "VALUES_YAML_PATH" is set on "server"
-    And the environment variable "DEVEL_FLAG" is set on "server"
-    And file "/etc/rancher/rke2/config.yaml" should exist on "server"
-
   Scenario: Update OCI app version
-    When I run "python3 $PYTHON_HELM_CHART_PATH -o $HELM_CHART_URL/$HELM_CHART_NAME --chart-file $SELF_SIGNED_PATH/Chart.yaml $DEVEL_FLAG" on "server"
+    When I update the OCI Helm chart app version on "server"
 
   @install_mlm_on_rke2
   Scenario: Install Uyuni
-    And I run "cd $SELF_SIGNED_PATH && helm dependencies build" on "server"
-    And I run "helm upgrade --install uyuni $SELF_SIGNED_PATH -f $VALUES_YAML_PATH -n $SERVER_NAMESPACE" on "server"
+    When I build the Helm chart dependencies on "server"
+    And I install the MLM server on RKE2
