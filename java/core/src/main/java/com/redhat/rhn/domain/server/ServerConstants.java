@@ -15,6 +15,7 @@
  */
 package com.redhat.rhn.domain.server;
 
+import java.util.Set;
 
 /**
  * ServerConstants
@@ -47,8 +48,20 @@ public class ServerConstants {
     public static final String OS_FAMILY_DEBIAN = "Debian";
     public static final String OS_FAMILY_REDHAT = "RedHat";
 
+    static final Set<String> TRANSACTIONAL_OS_NAMES = Set.of(SLEMICRO, SLMICRO, LEAPMICRO, OPENSUSEMICROOS);
+
     private ServerConstants() {
 
+    }
+
+    /**
+     * Return <code>true</code> if the given OS name is assumed to be transactional.
+     *
+     * @param osIn the operating system
+     * @return <code>true</code> if the operating system name is classified as transactional
+     */
+    static boolean isTransactionalByOsName(String osIn) {
+        return osIn != null && TRANSACTIONAL_OS_NAMES.contains(osIn);
     }
 
     /**

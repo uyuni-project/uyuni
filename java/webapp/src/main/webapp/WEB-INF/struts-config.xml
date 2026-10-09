@@ -1114,6 +1114,7 @@
         <form-property name="script_body" type="java.lang.String" />
         <form-property name="lbl" type="java.lang.String" />
         <form-property name="timeout" type="java.lang.Long" />
+        <form-property name="use_transactional_update" type="java.lang.Boolean" initial="false" />
         <form-property name="submitted" type="java.lang.Boolean" />
         <form-property name="no_scrub" type="java.lang.String" initial="script_body" />
         <!-- fields needed by datePicker -->

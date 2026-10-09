@@ -945,6 +945,30 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(serverIn, servers.get(0));
     }
 
+    @Test
+    public void testSetWithMinionHydratesTransactionalMode() {
+        MinionServer minionIn = MinionServerFactoryTest.createTestMinionServer(user);
+        minionIn.setTransactionalMode(TransactionalMode.TRANSACTIONAL);
+        ServerFactory.save(minionIn);
+
+        Long minionId = minionIn.getId();
+        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        set.addElement(minionId, null);
+        RhnSetManager.store(set);
+
+        TestUtils.flushAndEvict(minionIn);
+
+        List<Server> servers = ServerFactory.listSystemsInSsm(user);
+        assertEquals(1, servers.size());
+
+        Server hydrated = servers.get(0);
+        assertEquals(minionId, hydrated.getId());
+
+        MinionServer hydratedMinion = hydrated.asMinionServer()
+                .orElseThrow(() -> new AssertionError("SSM query did not hydrate the minion subtype"));
+        assertEquals(TransactionalMode.TRANSACTIONAL, hydratedMinion.getTransactionalMode());
+    }
+
     private ServerSnapshot generateSnapshot(Server server2) {
         ServerSnapshot snap = new ServerSnapshot();
         snap.setServer(server2);

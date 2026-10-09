@@ -14,6 +14,7 @@ grains_update:
     - args:
       - kernelrelease
       - master
+      - transactional
 
 kernel_live_version:
   module.run:

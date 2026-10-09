@@ -56,6 +56,7 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
+import com.redhat.rhn.domain.server.TransactionalMode;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -742,6 +743,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     // no base/required channels - e.g. we need an SCC sync
                     assertNull(minion.getBaseChannel());
                     assertTrue(minion.getChannels().isEmpty());
+                    // this system info carries no "transactional" grain: no observation is recorded
+                    assertEquals(TransactionalMode.UNKNOWN, minion.getTransactionalMode());
                 }, DEFAULT_CONTACT_METHOD);
     }
 
@@ -754,7 +757,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(null, null)));
+                    will(returnValue(getSystemInfo(null, null, null, Map.of("transactional", true))));
                     List<ProductInfo> pil = new ArrayList<>();
                     ProductInfo pi = new ProductInfo(
                                 product.getName(),
@@ -776,6 +779,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(baseChannelX8664, minion.getBaseChannel());
                     assertFalse(minion.getChannels().isEmpty());
                     assertTrue(minion.getChannels().size() > 1);
+
+                    // the transactional grain reported at registration time must be stored
+                    assertEquals(TransactionalMode.TRANSACTIONAL, minion.getTransactionalMode());
+                    assertEquals(TransactionalMode.TRANSACTIONAL,
+                            TestUtils.reload(minion).getTransactionalMode());
 
                     // Check if the state assignment file is generated
                     assertTrue(tmpSaltRoot.resolve("custom")

@@ -1,0 +1,2 @@
+ALTER TABLE suseMinionInfo
+    ADD COLUMN IF NOT EXISTS transactional_mode VARCHAR NOT NULL DEFAULT 'UNKNOWN';

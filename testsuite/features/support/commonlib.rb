@@ -51,13 +51,29 @@ def uyuni_not_installed?
   ENV['UYUNI_NOT_INSTALLED'] == 'true'
 end
 
-# Determines the product type (Uyuni or SUSE Manager) based on installed patterns, raises error if undetermined.
+# Determines the product type (Uyuni or SUSE Manager), caching it in a file so that parallel runs against
+# the same server do not each open an SSH connection to detect it.
 #
 # @return [String, nil] The product name, or nil when UYUNI_NOT_INSTALLED is set.
 def product
   return $product unless $product.nil?
   return if uyuni_not_installed?
 
+  cache_file = "/tmp/product_#{get_target('server').full_hostname}"
+  cached = File.read(cache_file).strip if File.exist?(cache_file)
+  return $product = cached if ['Uyuni', 'SUSE Manager'].include?(cached)
+
+  $product = detect_product
+  # Write to a temp file and rename, so a concurrent process never reads a partial file
+  File.write("#{cache_file}.#{Process.pid}", $product)
+  File.rename("#{cache_file}.#{Process.pid}", cache_file)
+  $product
+end
+
+# Determines the product type (Uyuni or SUSE Manager) based on installed patterns, raises error if undetermined.
+#
+# @return [String] The product name.
+def detect_product
   patterns = { 'patterns-uyuni_server' => 'Uyuni', 'patterns-suma_server' => 'SUSE Manager' }
   server = get_target('server')
 
@@ -66,14 +82,14 @@ def product
     pod = get_pod_name('server', 'server')
     patterns.each do |pattern, name|
       _out, code = server.run_local("kubectl exec -n uyuni #{pod} -- rpm -q #{pattern}", check_errors: false)
-      return $product = name if code.zero?
+      return name if code.zero?
     end
   end
 
   # Check on the host or using traditional containerization (mgrctl)
   patterns.each do |pattern, name|
     _out, code = server.run("rpm -q #{pattern}", check_errors: false)
-    return $product = name if code.zero?
+    return name if code.zero?
   end
 
   raise NotImplementedError, 'Could not determine product'
@@ -1008,7 +1024,7 @@ def channel_is_synced?(channel)
   repo_path = "/var/cache/rhn/repodata/#{channel}"
   server = get_target('server')
   # Using a temporary dump file to avoid timeout with huge dumpsolv output
-  tmp_file = "/tmp/#{channel}_solv_dump"
+  tmp_file = "/srv/#{channel}_solv_dump"
 
   _, new_file_check_code = server.run("test -f #{repo_path}/solv.new", check_errors: false)
   if new_file_check_code.zero?

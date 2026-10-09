@@ -26,6 +26,7 @@ CREATE TABLE suseMinionInfo
     reboot_required_after TIMESTAMPTZ,
     uname                 VARCHAR,
     container_runtime     VARCHAR,
+    transactional_mode    VARCHAR NOT NULL DEFAULT 'UNKNOWN',
     created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
     modified  TIMESTAMPTZ
