@@ -2,6 +2,7 @@ import { type ReactNode, Component } from "react";
 
 import { AsyncButton, Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
+import { IconTag } from "components/icontag";
 import { LargeTextAttachment } from "components/large-text-attachment";
 import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels";
@@ -20,7 +21,6 @@ import {
   MigrationResultCode,
   MigrationVersion,
 } from "./types";
-import { IconTag } from "components/icontag";
 
 type Props = {
   title: string;

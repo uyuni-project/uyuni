@@ -8,6 +8,7 @@ import { FromNow } from "components/datetime";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
+import { IconTag } from "components/icontag";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { PopUp } from "components/popup";
@@ -24,7 +25,6 @@ import { ImageViewOverview } from "./image-view-overview";
 import { ImageViewPackages } from "./image-view-packages";
 import { ImageViewPatches } from "./image-view-patches";
 import { ImageViewRuntime } from "./image-view-runtime";
-import { IconTag } from "components/icontag";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
@@ -486,14 +486,7 @@ export class ImageViewList extends Component<ImageViewListProps, ImageViewListSt
     if (!row.patches || row.installedPackages === 0) {
       icon = <IconTag icon="fa-question-circle" size="lg" title={t("No information")} />;
     } else if (row.patches.critical > 0) {
-      icon = (
-        <IconTag
-          icon="fa-exclamation-circle"
-          size="lg"
-          status="danger"
-          title={t("Critical updates available")}
-        />
-      );
+      icon = <IconTag icon="fa-exclamation-circle" size="lg" status="danger" title={t("Critical updates available")} />;
     } else if (row.patches.noncritical > 0) {
       icon = (
         <IconTag
@@ -505,22 +498,10 @@ export class ImageViewList extends Component<ImageViewListProps, ImageViewListSt
       );
     } else if (row.packages > 0) {
       icon = (
-        <IconTag
-          icon="fa-exclamation-triangle"
-          size="lg"
-          status="warning"
-          title={t("Package updates available")}
-        />
+        <IconTag icon="fa-exclamation-triangle" size="lg" status="warning" title={t("Package updates available")} />
       );
     } else {
-      icon = (
-        <IconTag
-          icon="fa-check-circle"
-          size="lg"
-          status="success"
-          title={t("Image is up to date")}
-        />
-      );
+      icon = <IconTag icon="fa-check-circle" size="lg" status="success" title={t("Image is up to date")} />;
     }
 
     return icon;
@@ -531,13 +512,9 @@ export class ImageViewList extends Component<ImageViewListProps, ImageViewListSt
     // A failed inspect leaves the image unusable just like a failed build, so it takes
     // precedence over the build status here.
     if (row.inspectStatusId === 3) {
-      icon = (
-        <IconTag icon="fa-times-circle-o" size="lg" status="danger" title={t("Inspect failed")} />
-      );
+      icon = <IconTag icon="fa-times-circle-o" size="lg" status="danger" title={t("Inspect failed")} />;
     } else if (row.external) {
-      icon = (
-        <IconTag icon="fa fa-minus-circle" size="lg" status="muted" title={t("Built externally")} />
-      );
+      icon = <IconTag icon="fa fa-minus-circle" size="lg" status="muted" title={t("Built externally")} />;
     } else if (row.statusId === 0) {
       icon = <IconTag icon="fa fa-clock-o" size="lg" status="muted" title={t("Queued")} />;
     } else if (row.statusId === 1) {
@@ -545,9 +522,7 @@ export class ImageViewList extends Component<ImageViewListProps, ImageViewListSt
     } else if (row.statusId === 2) {
       icon = <IconTag icon="fa fa-check-circle" size="lg" status="success" title={t("Built")} />;
     } else if (row.statusId === 3) {
-      icon = (
-        <IconTag icon="fa-times-circle-o" size="lg" status="danger" title={t("Build failed")} />
-      );
+      icon = <IconTag icon="fa-times-circle-o" size="lg" status="danger" title={t("Build failed")} />;
     } else {
       icon = <IconTag icon="fa-question-circle" size="lg" status="muted" title={t("Unknown")} />;
     }
@@ -557,13 +532,7 @@ export class ImageViewList extends Component<ImageViewListProps, ImageViewListSt
 
   renderRuntimeIcon = (row) => {
     if (!this.props.gotRuntimeInfo) {
-      return (
-        <IconTag
-          icon="fa-circle-o-notch fa-spin"
-          size="lg"
-          title={t("Waiting for update ...")}
-        />
-      );
+      return <IconTag icon="fa-circle-o-notch fa-spin" size="lg" title={t("Waiting for update ...")} />;
     }
 
     let icon = <span>-</span>;
@@ -580,12 +549,7 @@ export class ImageViewList extends Component<ImageViewListProps, ImageViewListSt
       icon = <IconTag icon="fa-question-circle" size="lg" title={t("No information")} />;
     } else if (row.runtimeStatus === 3) {
       icon = (
-        <IconTag
-          icon="fa-exclamation-triangle"
-          size="lg"
-          status="warning"
-          title={t("Outdated instances found")}
-        />
+        <IconTag icon="fa-exclamation-triangle" size="lg" status="warning" title={t("Outdated instances found")} />
       );
     }
 
@@ -621,13 +585,7 @@ export class ImageViewList extends Component<ImageViewListProps, ImageViewListSt
 
   renderInstances = (row) => {
     if (!this.props.gotRuntimeInfo) {
-      return (
-        <IconTag
-          icon="fa-circle-o-notch fa-spin"
-          size="lg"
-          title={t("Waiting for update ...")}
-        />
-      );
+      return <IconTag icon="fa-circle-o-notch fa-spin" size="lg" title={t("Waiting for update ...")} />;
     }
 
     let totalCount = 0;

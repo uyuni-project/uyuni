@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { LinkButton } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
@@ -13,7 +14,6 @@ import { Table } from "components/table/Table";
 
 import { localizedMoment } from "utils";
 import Network from "utils/network";
-import { IconTag } from "components/icontag";
 
 const ENDPOINTS = {
   SCAN_HISTORY: "/rhn/manager/api/audit/scap/policy",

@@ -1,4 +1,5 @@
 import { IconTag } from "components/icontag";
+
 import styles from "./build-version.module.scss";
 
 type Props = {

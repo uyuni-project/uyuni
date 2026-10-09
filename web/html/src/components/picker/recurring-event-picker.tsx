@@ -2,13 +2,13 @@ import { Component } from "react";
 
 import { Combobox, ComboboxItem } from "components/combobox";
 import { DateTimePicker } from "components/datetime";
+import { IconTag } from "components/icontag";
 import { Form } from "components/input/form/Form";
 import { Text } from "components/input/text/Text";
 
 import { localizedMoment } from "utils";
 
 import styles from "./recurring-event-picker.module.scss";
-import { IconTag } from "components/icontag";
 
 export type RecurringType = "hourly" | "daily" | "weekly" | "monthly" | "cron";
 export type CronTimes = {

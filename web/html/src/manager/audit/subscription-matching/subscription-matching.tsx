@@ -2,6 +2,7 @@ import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { LinkButton } from "components/buttons";
 import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { TabContainer } from "components/tab-container";
@@ -16,8 +17,6 @@ import { Pins } from "./subscription-matching-pins";
 import { Subscriptions } from "./subscription-matching-subscriptions";
 import { UnmatchedProducts } from "./subscription-matching-unmatched-products";
 import { WarningIcon } from "./subscription-matching-util";
-import { IconTag } from "components/icontag";
-import { LinkButton } from "components/buttons";
 
 type SubscriptionMatchingProps = {
   refreshInterval: number;
@@ -88,7 +87,7 @@ class SubscriptionMatching extends Component<SubscriptionMatchingProps, Subscrip
           title={t("Subscription Matching")}
           icon="spacewalk-icon-subscription-counting"
           helpUrl="reference/audit/audit-subscription-matching.html"
-          button={ 
+          button={
             <div className="pull-right">
               <LinkButton
                 icon="spacewalk-icon-virtual-host-manager"

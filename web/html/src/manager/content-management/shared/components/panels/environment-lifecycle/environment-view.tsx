@@ -2,10 +2,11 @@ import { memo } from "react";
 
 import _isEmpty from "lodash/isEmpty";
 
+import { IconTag } from "components/icontag";
+
 import { ProjectEnvironmentType, ProjectHistoryEntry } from "../../../type";
 import BuildVersion from "../build/build-version";
 import { getVersionMessageByNumber } from "../properties/properties.utils";
-import { IconTag } from "components/icontag";
 
 type Props = {
   environment: ProjectEnvironmentType;

@@ -7,13 +7,13 @@ import { FromNow } from "components/datetime";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
+import { IconTag } from "components/icontag";
 import { DateTime as InputDateTime } from "components/input/datetime/DateTime";
 import { Form } from "components/input/form/Form";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { PopUp } from "components/popup";
 
 import { localizedMoment } from "utils";
-import { IconTag } from "components/icontag";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/view.jade
 declare global {

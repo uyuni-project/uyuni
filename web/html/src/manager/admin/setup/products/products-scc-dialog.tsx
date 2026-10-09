@@ -1,13 +1,13 @@
 import { Component } from "react";
 
 import { Button } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { Messages, MessageType } from "components/messages/messages";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import styles from "./products-scc-dialog.module.scss";
-import { IconTag } from "components/icontag";
 
 const messageMap = {
   // Nothing for now

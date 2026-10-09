@@ -1,7 +1,8 @@
 import { ClearIndicatorProps } from "react-select";
 
-import styles from "./ClearIndicator.module.scss";
 import { IconTag } from "components/icontag";
+
+import styles from "./ClearIndicator.module.scss";
 
 export const ClearIndicator = (props: ClearIndicatorProps) => {
   const {

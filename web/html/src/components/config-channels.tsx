@@ -1,9 +1,9 @@
 import { Component } from "react";
 
+import { IconTag } from "components/icontag";
 import { StatesPicker } from "components/states-picker";
 
 import { Messages, MessageType } from "./messages/messages";
-import { IconTag } from "components/icontag";
 
 type ConfigChannelsProps = {
   matchUrl: (filter?: string) => any;

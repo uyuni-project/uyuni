@@ -1,8 +1,9 @@
 import { Component } from "react";
 
+import { IconTag } from "components/icontag";
+
 import { Utils } from "../../utils/functions";
 import { ElementDefinition } from "./FormulaComponentGenerator";
-import { IconTag } from "components/icontag";
 
 const generatePassword = Utils.generatePassword;
 

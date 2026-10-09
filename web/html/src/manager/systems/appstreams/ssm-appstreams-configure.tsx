@@ -5,10 +5,10 @@ import { AppStreamsChangesConfirm } from "manager/appstreams/changes-confirm-app
 import { getStreamName } from "manager/appstreams/utils";
 
 import { ActionChain } from "components/action-schedule";
+import { IconTag } from "components/icontag";
 import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 
 import { DISABLE, NO_CHANGE, SSMAppStreamsList } from "./ssm-appstreams-configure-list";
-import { IconTag } from "components/icontag";
 
 export type Props = { channelAppStreams: ChannelAppStream };
 

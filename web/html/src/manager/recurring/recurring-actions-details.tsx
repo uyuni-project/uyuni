@@ -5,6 +5,7 @@ import _sortBy from "lodash/sortBy";
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
+import { IconTag } from "components/icontag";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { TopPanel } from "components/panels/TopPanel";
@@ -17,7 +18,6 @@ import Network from "utils/network";
 
 import { DisplayHighstate } from "../state/display-highstate";
 import { isReadOnly, targetNameLink, targetTypeToString } from "./recurring-actions-utils";
-import { IconTag } from "components/icontag";
 
 function channelIcon(channel) {
   let iconClass, iconTitle;
@@ -300,9 +300,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
                 headerClass="text-center"
                 header={t("Description")}
                 columnKey="description"
-                cell={(row) => (
-                  <IconTag icon="fa-info-circle" size="lg" title={row.description} />
-                )}
+                cell={(row) => <IconTag icon="fa-info-circle" size="lg" title={row.description} />}
               />
             </Table>
           </div>
@@ -329,11 +327,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
                 header={t("Description")}
                 columnKey="description"
                 cell={(row) => (
-                  <IconTag
-                    icon="fa-info-circle"
-                    size="lg"
-                    title={row.description || t("No description")}
-                  />
+                  <IconTag icon="fa-info-circle" size="lg" title={row.description || t("No description")} />
                 )}
               />
             </Table>

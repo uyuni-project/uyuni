@@ -4,6 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { LinkButton, SubmitButton } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
@@ -15,7 +16,6 @@ import { TopPanel } from "components/panels/TopPanel";
 import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
-import { IconTag } from "components/icontag";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/build.jade
 declare global {

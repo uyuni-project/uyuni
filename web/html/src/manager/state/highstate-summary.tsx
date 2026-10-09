@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { productName } from "core/user-preferences";
 
 import { AsyncButton } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
-import { IconTag } from "components/icontag";
 
 export type StateSource = {
   id?: number;

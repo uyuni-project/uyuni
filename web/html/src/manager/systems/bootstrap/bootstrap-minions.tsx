@@ -5,11 +5,11 @@ import { productName } from "core/user-preferences";
 
 import { AsyncButton, Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
+import { IconTag } from "components/icontag";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
-import { IconTag } from "components/icontag";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/minion/bootstrap.jade
 declare global {

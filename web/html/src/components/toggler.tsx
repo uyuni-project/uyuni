@@ -1,6 +1,7 @@
 import { type ReactNode, Component } from "react";
 
 import { DEPRECATED_onClick } from "components/utils";
+
 import { IconTag } from "./icontag";
 
 type Props = {

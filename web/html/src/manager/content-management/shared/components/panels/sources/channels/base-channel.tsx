@@ -2,6 +2,7 @@ import type { FC, ReactElement } from "react";
 
 import { ChannelTreeType } from "core/channels/type/channels.type";
 
+import { IconTag } from "components/icontag";
 import { Highlight } from "components/table/Highlight";
 import { DEPRECATED_onClick } from "components/utils";
 
@@ -10,7 +11,6 @@ import styles from "./channels-selection.module.scss";
 import ChildChannel from "./child-channel";
 import EmptyChild from "./empty-child";
 import RecommendedToggle from "./recommended-toggle";
-import { IconTag } from "components/icontag";
 
 type Props = {
   /** The base channel with all its children */

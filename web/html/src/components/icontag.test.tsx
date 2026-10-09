@@ -6,19 +6,15 @@ import { IconTag } from "./icontag";
 const renderIcon = (ui: React.ReactElement) => render(ui).container.querySelector("i") as HTMLElement;
 
 describe("IconTag", () => {
-  test("resolves a semantic type to its font awesome classes", () => {
-    expect(renderIcon(<IconTag type="system-unknown" />).className).toEqual("fa fa-question-circle icon-size-lg");
-  });
-
-  test("resolves a semantic type backed by the spacewalk icon font", () => {
-    expect(renderIcon(<IconTag type="errata-enhance" />).className).toEqual(
-      "fa icon-size-lg spacewalk-icon-enhancement"
-    );
+  test("resolves a semantic type to its icon class", () => {
+    expect(renderIcon(<IconTag type="system-unknown" />).className).toEqual("fa fa-question-circle");
+    // Spacewalk icons carry no `fa-` prefix, but still need the shared `fa` base class
+    expect(renderIcon(<IconTag type="errata-enhance" />).className).toEqual("fa spacewalk-icon-enhancement");
   });
 
   test("adds the base fa class without duplicating it", () => {
     expect(renderIcon(<IconTag icon="fa-flask" />).className).toEqual("fa fa-flask");
-    expect(renderIcon(<IconTag icon="fa-question-circle icon-size-lg" />).className).toEqual(
+    expect(renderIcon(<IconTag icon="fa fa-question-circle icon-size-lg" />).className).toEqual(
       "fa fa-question-circle icon-size-lg"
     );
   });
@@ -34,8 +30,8 @@ describe("IconTag", () => {
   });
 
   test("does not repeat a class the semantic type already resolves to", () => {
-    expect(renderIcon(<IconTag type="system-unknown" className="icon-size-lg mt-1" />).className).toEqual(
-      "fa fa-question-circle icon-size-lg mt-1"
+    expect(renderIcon(<IconTag type="system-unknown" className="fa-question-circle mt-1" />).className).toEqual(
+      "fa fa-question-circle mt-1"
     );
   });
 
@@ -67,27 +63,23 @@ describe("IconTag", () => {
     );
   });
 
-  test("does not repeat a size or status the icon already resolves to", () => {
-    expect(renderIcon(<IconTag type="system-unknown" size="lg" />).className).toEqual(
+  test("does not repeat a size or status className already spells out", () => {
+    expect(renderIcon(<IconTag type="system-unknown" className="icon-size-lg" size="lg" />).className).toEqual(
       "fa fa-question-circle icon-size-lg"
     );
-    expect(renderIcon(<IconTag type="system-warn" status="warning" />).className).toEqual(
-      "fa fa-exclamation-triangle icon-size-lg text-warning"
+    expect(renderIcon(<IconTag type="system-warn" className="text-warning" status="warning" />).className).toEqual(
+      "fa fa-exclamation-triangle text-warning"
     );
   });
 
-  test("keeps both classes when size or status disagrees with the semantic type", () => {
-    // The later class wins in the stylesheet, so the prop overrides what the type resolves to
-    expect(renderIcon(<IconTag type="system-unknown" size="sm" />).className).toEqual(
+  test("keeps both classes when size or status disagrees with className", () => {
+    // The later class wins in the stylesheet, so the prop overrides what className asks for
+    expect(renderIcon(<IconTag type="system-unknown" className="icon-size-lg" size="sm" />).className).toEqual(
       "fa fa-question-circle icon-size-lg icon-size-sm"
     );
-    expect(renderIcon(<IconTag type="item-disabled" status="danger" />).className).toEqual(
+    expect(renderIcon(<IconTag type="item-disabled" className="text-muted" status="danger" />).className).toEqual(
       "fa fa-circle-o text-muted text-danger"
     );
-  });
-
-  test("renders no size or status class when neither prop is given", () => {
-    expect(renderIcon(<IconTag icon="fa-flask" />).className).toEqual("fa fa-flask");
   });
 
   test("sets the id when one is given", () => {
@@ -101,8 +93,27 @@ describe("IconTag", () => {
     expect(renderIcon(<IconTag icon="fa-flask" />).getAttribute("aria-hidden")).toEqual("true");
   });
 
-  test("exposes the icon to assistive technology when aria-hidden is false", () => {
-    expect(renderIcon(<IconTag icon="fa-flask" aria-hidden={false} />).getAttribute("aria-hidden")).toEqual("false");
+  test("exposes the icon to assistive technology when ariaHidden is false", () => {
+    expect(renderIcon(<IconTag icon="fa-flask" ariaHidden={false} />).getAttribute("aria-hidden")).toEqual("false");
+  });
+
+  test("names the icon for assistive technology when an ariaLabel is given", () => {
+    expect(renderIcon(<IconTag icon="fa-flask" ariaLabel="Experimental" />).getAttribute("aria-label")).toEqual(
+      "Experimental"
+    );
+    expect(renderIcon(<IconTag icon="fa-flask" />).hasAttribute("aria-label")).toBe(false);
+  });
+
+  test("keeps a labelled icon hidden until the caller also unsets ariaHidden", () => {
+    // An aria-label is never announced on a hidden element, so a meaningful icon needs both props
+    expect(renderIcon(<IconTag icon="fa-flask" ariaLabel="Experimental" />).getAttribute("aria-hidden")).toEqual(
+      "true"
+    );
+
+    const labelled = renderIcon(<IconTag icon="fa-flask" ariaLabel="Experimental" ariaHidden={false} />);
+
+    expect(labelled.getAttribute("aria-label")).toEqual("Experimental");
+    expect(labelled.getAttribute("aria-hidden")).toEqual("false");
   });
 
   test("renders the tooltip attributes when a title is given", () => {
@@ -156,7 +167,7 @@ describe("IconTag", () => {
   test("keeps a tooltip icon hidden from assistive technology unless the caller says otherwise", () => {
     expect(renderIcon(<IconTag icon="fa-flask" title="Experimental" />).getAttribute("aria-hidden")).toEqual("true");
     expect(
-      renderIcon(<IconTag icon="fa-flask" title="Experimental" aria-hidden={false} />).getAttribute("aria-hidden")
+      renderIcon(<IconTag icon="fa-flask" title="Experimental" ariaHidden={false} />).getAttribute("aria-hidden")
     ).toEqual("false");
   });
 

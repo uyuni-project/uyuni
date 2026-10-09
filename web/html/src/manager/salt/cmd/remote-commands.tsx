@@ -3,9 +3,9 @@ import { type ReactNode, Component } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { TopPanel } from "components/panels/TopPanel";
 import { DEPRECATED_onClick } from "components/utils";
-import { IconTag } from "components/icontag";
 
 type MinionResultViewProps = {
   id?: any;

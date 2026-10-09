@@ -2,13 +2,13 @@ import { type ChangeEvent, Component } from "react";
 
 import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
 
+import { IconTag } from "components/icontag";
 import { ChannelAnchorLink } from "components/links";
 import { Toggler } from "components/toggler";
 import { DEPRECATED_onClick } from "components/utils";
 import { Loading } from "components/utils/loading/Loading";
 
 import { Channel } from "./activation-key-channels-api";
-import { IconTag } from "components/icontag";
 
 type ChildChannelsProps = {
   channels: Channel[];

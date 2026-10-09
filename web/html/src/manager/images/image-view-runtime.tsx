@@ -2,8 +2,8 @@ import { Component } from "react";
 
 import { productName } from "core/user-preferences";
 
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { IconTag } from "components/icontag";
+import { BootstrapPanel } from "components/panels/BootstrapPanel";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/view.jade
 declare global {

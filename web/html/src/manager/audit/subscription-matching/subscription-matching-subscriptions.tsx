@@ -1,5 +1,6 @@
 import { type ReactNode, Component } from "react";
 
+import { IconTag } from "components/icontag";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
@@ -9,7 +10,6 @@ import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { CsvLink, humanReadablePolicy, ToolTip, WarningIcon } from "./subscription-matching-util";
-import { IconTag } from "components/icontag";
 
 type SubscriptionsProps = {
   subscriptions: any[];

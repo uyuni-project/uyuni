@@ -1,9 +1,9 @@
 import { type ReactNode, Component, useState } from "react";
 
+import { IconTag } from "components/icontag";
 import { DEPRECATED_onClick } from "components/utils";
 
 import HighstateSummary from "./highstate-summary";
-import { IconTag } from "components/icontag";
 
 function MinionHighstateSingle({ minion }: { minion: { id: number; name: string } }) {
   return (

@@ -4,10 +4,10 @@ import { forwardRef, useRef, useState } from "react";
 
 import ReactDatePicker from "react-datepicker";
 
+import { IconTag } from "components/icontag";
 import { DEPRECATED_onClick } from "components/utils";
 
 import { localizedMoment, parseTimeString } from "utils";
-import { IconTag } from "components/icontag";
 
 // Turn this on to view internal state under the picker in the UI
 const SHOW_DEBUG_VALUES = false;

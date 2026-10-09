@@ -1,9 +1,9 @@
 import { StoryRow, StorySection, StripedStorySection } from "manager/storybook/layout";
 
 import { Button } from "components/buttons";
+import { IconTag } from "components/icontag";
 
 import { ActionStatus } from "../action/ActionStatus";
-import { IconTag } from "components/icontag";
 
 export default () => {
   return (
@@ -145,11 +145,8 @@ export default () => {
         </StoryRow>
       </StripedStorySection>
       <StorySection>
-        &lt;IconTag
-          icon="fa-info-circle"
-          size="lg"
-          tooltipWide
-          title={`Required channels:\n SLE-Module-Basesystem15-SP5 - aarch64\n SLE-Product-SLES15-SP5 - aarch64`}
+        &lt;IconTag icon="fa-info-circle" size="lg" tooltipWide title=
+        {`Required channels:\n SLE-Module-Basesystem15-SP5 - aarch64\n SLE-Product-SLES15-SP5 - aarch64`}
         /&gt;
       </StorySection>
     </div>

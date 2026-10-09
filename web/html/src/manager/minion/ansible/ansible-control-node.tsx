@@ -2,6 +2,7 @@ import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { IconTag } from "components/icontag";
 import { Messages, Utils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import { DEPRECATED_onClick } from "components/utils";
@@ -12,7 +13,6 @@ import Network from "utils/network";
 import { AnsiblePath, createNewAnsiblePath } from "./ansible-path-type";
 import EditAnsiblePath from "./edit-ansible-path";
 import NewAnsiblePath from "./new-ansible-path";
-import { IconTag } from "components/icontag";
 
 type PropsType = {
   minionServerId: number;

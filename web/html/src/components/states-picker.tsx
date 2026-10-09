@@ -18,11 +18,11 @@ import { Utils } from "utils/functions";
 import Network from "../utils/network";
 import { AsyncButton } from "./buttons";
 import { TextField } from "./fields";
+import { IconTag } from "./icontag";
 import { Messages, MessageType, Utils as MessagesUtils } from "./messages/messages";
 import { RankingTable } from "./ranking-table";
 import { SaltStatePopup } from "./salt-state-popup";
 import { Table } from "./table/Table";
-import { IconTag } from "./icontag";
 
 function channelKey(channel) {
   return channel.label;

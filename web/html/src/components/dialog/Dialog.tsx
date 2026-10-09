@@ -1,6 +1,7 @@
-import { IconTag } from "components/icontag";
 import type { ReactNode } from "react";
 import ReactModal from "react-modal";
+
+import { IconTag } from "components/icontag";
 
 export type DialogProps = {
   /** whether the dialog should be shown or hidden */

@@ -3,6 +3,8 @@ import { type MouseEvent, type ReactNode, Component } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 import { isUyuni } from "core/user-preferences";
 
+import { Button } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { MessagesContainer } from "components/toastr/toastr";
 import { DEPRECATED_onClick } from "components/utils";
 
@@ -11,8 +13,6 @@ import { flatten } from "utils/jsx";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import styles from "./menu.module.scss";
-import { IconTag } from "components/icontag";
-import { Button } from "components/buttons";
 
 type LinkProps = {
   url: string;
@@ -231,7 +231,12 @@ class Nav extends Component {
           />
           <span className={"input-right-icon " + (isSearchActive ? "clear" : "")}>
             {isSearchActive ? (
-              <Button icon="fa-times-circle-o icon-size-lg" className="btn-tertiary" handler={this.closeAll} title={t("Clear Menu")} />
+              <Button
+                icon="fa-times-circle-o icon-size-lg"
+                className="btn-tertiary"
+                handler={this.closeAll}
+                title={t("Clear Menu")}
+              />
             ) : (
               <IconTag icon="fa-search" className="mt-3 me-3" title={t("Filter menu")} />
             )}
@@ -279,7 +284,8 @@ class Breadcrumb extends Component {
         url="/"
         label={
           <span>
-            SUSE <IconTag icon="fa-registered" />Multi-Linux Manager
+            SUSE <IconTag icon="fa-registered" />
+            Multi-Linux Manager
           </span>
         }
         target=""

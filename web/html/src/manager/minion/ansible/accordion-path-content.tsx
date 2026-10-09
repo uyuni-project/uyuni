@@ -2,13 +2,13 @@ import { Component } from "react";
 
 import { AceEditor } from "components/ace-editor";
 import { Button } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { Messages, Utils } from "components/messages/messages";
 import { Loading } from "components/utils/loading/Loading";
 
 import Network from "utils/network";
 
 import { AnsiblePath } from "./ansible-path-type";
-import { IconTag } from "components/icontag";
 
 type PropsType = {
   path: AnsiblePath;

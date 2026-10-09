@@ -5,6 +5,7 @@ import { ChannelTreeType } from "core/channels/type/channels.type";
 import { ActionChain } from "components/action-schedule";
 import { LinkButton } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
+import { IconTag } from "components/icontag";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels";
 import {
@@ -24,7 +25,6 @@ import { MessagesContainer } from "components/toastr";
 
 import { stringToReact } from "utils";
 import Network from "utils/network";
-import { IconTag } from "components/icontag";
 
 enum MigrationStep {
   TargetSelection,

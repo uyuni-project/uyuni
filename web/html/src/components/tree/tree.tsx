@@ -1,10 +1,10 @@
 import { type ChangeEvent, type ReactNode, useState } from "react";
 
 import { CustomDiv } from "components/custom-objects";
+import { IconTag } from "components/icontag";
 import { DEPRECATED_onClick } from "components/utils";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
-import { IconTag } from "components/icontag";
 
 export type TreeItem = {
   id: string;
@@ -98,10 +98,7 @@ export const Tree = (props: Props) => {
           )}
           <CustomDiv className="col" width="2" um="em">
             {children.length > 0 && (
-              <span
-                {...DEPRECATED_onClick(() => handleVisibleSublist(item.id))}
-                className="pointer product-hover"
-              >
+              <span {...DEPRECATED_onClick(() => handleVisibleSublist(item.id))} className="pointer product-hover">
                 <IconTag icon={openSubListIconClass} size="lg" />
               </span>
             )}

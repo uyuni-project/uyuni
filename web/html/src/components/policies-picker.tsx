@@ -3,11 +3,12 @@ import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 import _partition from "lodash/partition";
 import _sortBy from "lodash/sortBy";
 
+import { IconTag } from "components/icontag";
+
 import Network from "../utils/network";
 import { AsyncButton } from "./buttons";
 import { TextField } from "./fields";
 import { Messages, MessageType, Utils as MessagesUtils } from "./messages/messages";
-import { IconTag } from "components/icontag";
 
 interface Policy {
   id: number;

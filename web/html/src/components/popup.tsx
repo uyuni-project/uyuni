@@ -1,4 +1,5 @@
 import { type ReactNode, Component } from "react";
+
 import { IconTag } from "./icontag";
 type Props = {
   /** The id of the html div tag */

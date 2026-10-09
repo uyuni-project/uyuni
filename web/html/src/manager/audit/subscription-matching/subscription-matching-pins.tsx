@@ -3,6 +3,7 @@ import { Component } from "react";
 import isNil from "lodash/isNil";
 
 import { ModalButton } from "components/dialog/ModalButton";
+import { IconTag } from "components/icontag";
 import { PopUp } from "components/popup";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -14,7 +15,6 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { humanReadablePolicy, SystemLabel, ToolTip, WarningIcon } from "./subscription-matching-util";
-import { IconTag } from "components/icontag";
 
 type PinsProps = {
   pinnedMatches: any[];

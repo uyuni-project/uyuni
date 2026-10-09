@@ -2,8 +2,8 @@ import { type ReactNode, Component } from "react";
 
 import { AceEditor } from "./ace-editor";
 import { LinkButton } from "./buttons";
-import { PopUp } from "./popup";
 import { IconTag } from "./icontag";
+import { PopUp } from "./popup";
 
 function channelIcon(channel) {
   let iconClass, iconTitle;

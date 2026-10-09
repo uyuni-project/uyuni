@@ -1,5 +1,6 @@
-import { IconTag } from "components/icontag";
 import { type ReactNode } from "react";
+
+import { IconTag } from "components/icontag";
 
 type Props = {
   headingLevel?: keyof JSX.IntrinsicElements;

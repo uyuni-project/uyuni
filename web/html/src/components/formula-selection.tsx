@@ -1,5 +1,6 @@
 import { type ReactNode, Component } from "react";
 
+import { IconTag } from "components/icontag";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { MessagesContainer, showErrorToastr, showInfoToastr, showWarningToastr } from "components/toastr/toastr";
 
@@ -9,7 +10,6 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { AsyncButton, Button } from "../components/buttons";
 import Network from "../utils/network";
 import { MessageType } from "./messages/messages";
-import { IconTag } from "components/icontag";
 const capitalize = Utils.capitalize;
 
 type Props = {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
@@ -8,7 +9,6 @@ import { Utils } from "utils/functions";
 import Network from "utils/network";
 
 import { type PermissionType, AccessModeByPermissionType } from "./access-mode";
-import { IconTag } from "components/icontag";
 
 type Props = {
   state: any;

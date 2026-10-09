@@ -1,12 +1,12 @@
 import { Component } from "react";
 
 import { FromNow } from "components/datetime";
+import { IconTag } from "components/icontag";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
-import { IconTag } from "components/icontag";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/view.jade
 declare global {

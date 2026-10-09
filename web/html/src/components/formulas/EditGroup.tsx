@@ -5,6 +5,7 @@ import { type ReactNode, Component } from "react";
 import { productName } from "core/user-preferences";
 
 import { SectionState } from "components/FormulaForm";
+import { IconTag } from "components/icontag";
 import { Highlight } from "components/table/Highlight";
 import { DEPRECATED_onClick } from "components/utils";
 import HelpIcon from "components/utils/HelpIcon";
@@ -18,7 +19,6 @@ import {
   isFiltered,
 } from "./FormulaComponentGenerator";
 import SectionToggle from "./SectionToggle";
-import { IconTag } from "components/icontag";
 
 const EditGroupSubtype = Formulas.EditGroupSubtype;
 const getEditGroupSubtype = Formulas.getEditGroupSubtype;
@@ -309,7 +309,6 @@ class RemoveButton extends Component<RemoveButtonProps> {
       >
         <IconTag icon="fa-minus" /> Remove
       </button>
-
     );
   }
 }

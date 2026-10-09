@@ -2,12 +2,12 @@ import type { FC, ReactElement } from "react";
 
 import { ChildChannelType } from "core/channels/type/channels.type";
 
+import { IconTag } from "components/icontag";
 import { ChannelAnchorLink } from "components/links";
 import { Highlight } from "components/table/Highlight";
 
 import { ChannelDependencyData, ChannelProcessor } from "./channel-processor";
 import styles from "./channels-selection.module.scss";
-import { IconTag } from "components/icontag";
 
 type Props = {
   /** The child channel */

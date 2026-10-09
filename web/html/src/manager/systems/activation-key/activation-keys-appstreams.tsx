@@ -4,12 +4,12 @@ import { AppStreamActions } from "manager/appstreams/actions-appstreams";
 import { AppStreamPanel } from "manager/appstreams/panel-appstream";
 import { handleModuleEnableDisable, numberOfChanges } from "manager/appstreams/utils";
 
+import { IconTag } from "components/icontag";
 import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 
 import Network from "utils/network";
 
 import { ChannelAppStream } from "../../appstreams/appstreams.type";
-import { IconTag } from "components/icontag";
 
 declare global {
   interface Window {

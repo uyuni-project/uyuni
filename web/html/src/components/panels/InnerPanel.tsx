@@ -1,8 +1,8 @@
 import { type ReactNode, Children } from "react";
 
+import { IconTag } from "components/icontag";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { cloneReactElement, HelpLink } from "components/utils";
-import { IconTag } from "components/icontag";
 
 type Props = {
   title: string;

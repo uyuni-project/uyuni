@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
-import { HelpLink } from "components/utils/HelpLink";
 import { IconTag } from "components/icontag";
+import { HelpLink } from "components/utils/HelpLink";
 
 type Props = {
   helpUrl?: string;

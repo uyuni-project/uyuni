@@ -1,9 +1,9 @@
 import { Component, PureComponent } from "react";
 
+import { IconTag } from "components/icontag";
 import { DEPRECATED_onClick } from "components/utils";
 
 import { localizedMoment } from "utils";
-import { IconTag } from "components/icontag";
 
 // These aren't the actual proper types, just what I've inferred from code usage below
 type Instance = JQuery & Date;
@@ -351,7 +351,8 @@ export class DEPRECATED_DateTimePicker extends Component<DateTimePickerProps, Da
             {...DEPRECATED_onClick(this.toggleDatepicker)}
             key="calendar"
           >
-            &nbsp;<IconTag icon="fa-calendar" />
+            &nbsp;
+            <IconTag icon="fa-calendar" />
           </span>,
           <DatePicker
             id={datePickerId}
@@ -371,7 +372,8 @@ export class DEPRECATED_DateTimePicker extends Component<DateTimePickerProps, Da
             {...DEPRECATED_onClick(this.toggleDatepicker)}
             key="clock"
           >
-            &nbsp;<IconTag icon="fa-clock-o" />
+            &nbsp;
+            <IconTag icon="fa-clock-o" />
           </span>,
           <TimePicker
             id={timePickerId}

@@ -1,11 +1,11 @@
 import { Component } from "react";
 
 import { fromNow } from "components/datetime/FromNow";
+import { IconTag } from "components/icontag";
 
 import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
-import { IconTag } from "components/icontag";
 
 type MatcherRunPanelProps = {
   initialLatestStart?: moment.Moment | null;

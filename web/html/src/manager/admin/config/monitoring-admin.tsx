@@ -71,7 +71,7 @@ const ExporterIcon = (props: {
       props.message === "restart" || props.message === "enable" || props.message === "disable"
         ? "item-enabled-pending"
         : "item-enabled";
-      iconStatus = "success"
+    iconStatus = "success";
     if (props.message) {
       tooltip = t("Enabled") + ". " + messageMap[props.name + "_msg_" + props.message];
     } else {
@@ -82,7 +82,7 @@ const ExporterIcon = (props: {
       props.message === "restart" || props.message === "enable" || props.message === "disable"
         ? "item-error-pending"
         : "item-error";
-      iconStatus = "danger"
+    iconStatus = "danger";
     if (props.message) {
       tooltip = t("Disabled") + ". " + messageMap[props.name + "_msg_" + props.message];
     } else {
@@ -90,7 +90,7 @@ const ExporterIcon = (props: {
     }
   } else {
     type = "item-disabled";
-    iconStatus = "muted"
+    iconStatus = "muted";
     tooltip = null;
   }
   return <Icon type={type} status={iconStatus} size="lg" title={tooltip} />;

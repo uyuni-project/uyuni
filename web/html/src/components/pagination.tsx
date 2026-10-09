@@ -3,6 +3,7 @@ import { type ReactNode, useEffect, useRef } from "react";
 import { Button, DropdownButton } from "components/buttons";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { IconTag } from "./icontag";
 type PaginationBlockProps = {
   currentPage: number;

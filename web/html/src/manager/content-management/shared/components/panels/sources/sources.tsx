@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
 
+import { IconTag } from "components/icontag";
 import { DEPRECATED_Select } from "components/input";
 import CreatorPanel from "components/panels/CreatorPanel";
 import { Panel } from "components/panels/Panel";
@@ -14,7 +15,6 @@ import { ProjectMessageType, ProjectSoftwareSourceType } from "../../../type";
 import getRenderedMessages from "../../messages/messages";
 import ChannelsSelection from "./channels/channels-selection";
 import styles from "./sources.module.scss";
-import { IconTag } from "components/icontag";
 
 type SourcesProps = {
   projectId: string;

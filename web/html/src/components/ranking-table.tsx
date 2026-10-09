@@ -3,6 +3,7 @@ import { Component } from "react";
 import _cloneDeep from "lodash/cloneDeep";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { IconTag } from "./icontag";
 
 type Instance = JQuery;

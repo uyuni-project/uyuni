@@ -1,10 +1,10 @@
 import { isUyuni } from "core/user-preferences";
 
 import withPageWrapper from "components/general/with-page-wrapper";
+import { IconTag } from "components/icontag";
 
 import SusemanagerThemeLogin from "./susemanager/login";
 import UyuniThemeLogin from "./uyuni/login";
-import { IconTag } from "components/icontag";
 
 type Theme = "uyuni" | "suse-light" | "suse-dark";
 

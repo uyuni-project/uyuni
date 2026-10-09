@@ -2,6 +2,7 @@ import { type ReactNode, Component } from "react";
 
 import { AsyncButton, LinkButton } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
+import { IconTag } from "components/icontag";
 import { DEPRECATED_Select, Form } from "components/input";
 import { Messages as MessageContainer, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
@@ -15,7 +16,6 @@ import Network from "utils/network";
 
 import { NotificationComparators } from "./comparators";
 import { Notification, NotificationType, Severity } from "./types";
-import { IconTag } from "components/icontag";
 
 // Defines the type of data displayed in the table
 enum DataType {

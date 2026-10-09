@@ -8,6 +8,7 @@ import { AsyncButton, Button } from "components/buttons";
 import { CustomDiv } from "components/custom-objects";
 import { DangerDialog } from "components/dialog/DangerDialog";
 import { Dialog } from "components/dialog/Dialog";
+import { IconTag } from "components/icontag";
 import { DEPRECATED_Select, Form } from "components/input";
 import { ChannelLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
@@ -26,7 +27,6 @@ import { getProductSelectionState } from "./product-check/product-selection.util
 import { ProductCheck } from "./product-check/ProductCheck";
 import { isProductRequestCancellation, searchCriteriaInExtension } from "./products.utils";
 import { SCCDialog } from "./products-scc-dialog";
-import { IconTag } from "components/icontag";
 
 declare global {
   interface Window {
@@ -918,7 +918,7 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
           {...DEPRECATED_onClick(() => this.props.bypassProps.handleVisibleSublist(currentItem.identifier))}
           className="pointer product-hover"
         >
-          <IconTag icon={openSubListIconClass} size="lg"/>
+          <IconTag icon={openSubListIconClass} size="lg" />
         </span>
       );
     }

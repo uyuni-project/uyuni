@@ -1,5 +1,6 @@
-import { IconTag } from "components/icontag";
 import { type HTMLProps, type ReactNode, Component } from "react";
+
+import { IconTag } from "components/icontag";
 /**
  * Various HTML button components.
  * @module buttons
