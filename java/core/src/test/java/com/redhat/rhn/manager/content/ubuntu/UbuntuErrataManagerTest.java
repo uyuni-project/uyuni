@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.domain.product.Tuple3;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -151,6 +153,67 @@ class UbuntuErrataManagerTest {
 
         assertTrue(info.getDescription().length() > 4000);
         assertEquals(4000, entry.getDescription().length());
+    }
+
+    @Test
+    void canParsePackagesFromErrata() throws Exception {
+        URL testFile = TestUtils.findTestData("vorbis.json");
+        String json = Files.readString(Path.of(testFile.toURI()), StandardCharsets.UTF_8);
+        UbuntuErrataInfo info = UbuntuErrataManager.GSON.fromJson(json, UbuntuErrataInfo.class);
+
+        Set<String> packageNames = Set.of("libvorbis0a", "libvorbisfile3", "libvorbisenc2", "libvorbis-dev");
+        Entry entry = assertDoesNotThrow(() -> extractProcessedEntry("3604-1", info, packageNames));
+
+        // Check that the packages and the architectures are converted correctly into tuples
+        assertEquals(
+            Set.of(
+                // Trusty
+                new Tuple3<>("libvorbis0a", "1.3.2-1.3ubuntu1.2",
+                    List.of("amd64", "ppc64el", "powerpc", "i386", "armhf", "arm64")),
+                new Tuple3<>("libvorbisfile3", "1.3.2-1.3ubuntu1.2",
+                    List.of("amd64", "ppc64el", "powerpc", "i386", "armhf", "arm64")),
+                new Tuple3<>("libvorbisenc2", "1.3.2-1.3ubuntu1.2",
+                    List.of("amd64", "ppc64el", "powerpc", "i386", "armhf", "arm64")),
+                new Tuple3<>("libvorbis-dev", "1.3.2-1.3ubuntu1.2",
+                    List.of("amd64", "ppc64el", "powerpc", "i386", "armhf", "arm64")),
+
+                // Artful
+                new Tuple3<>("libvorbis0a", "1.3.5-4ubuntu0.2",
+                    List.of("amd64", "s390x", "ppc64el", "i386", "armhf", "arm64")),
+
+                // Xenial
+                new Tuple3<>("libvorbis0a", "1.3.5-3ubuntu0.2",
+                    List.of("amd64", "ppc64el", "s390x", "powerpc", "i386", "armhf", "arm64")),
+                new Tuple3<>("libvorbisfile3", "1.3.5-3ubuntu0.2",
+                    List.of("amd64", "ppc64el", "s390x", "powerpc", "i386", "armhf", "arm64")),
+                new Tuple3<>("libvorbisenc2", "1.3.5-3ubuntu0.2",
+                    List.of("amd64", "ppc64el", "s390x", "powerpc", "i386", "armhf", "arm64")),
+                new Tuple3<>("libvorbis-dev", "1.3.5-3ubuntu0.2",
+                    List.of("amd64", "ppc64el", "s390x", "powerpc", "i386", "armhf", "arm64"))
+
+            ),
+            new HashSet<>(entry.getPackages())
+        );
+    }
+
+    @Test
+    void usesBinariesFieldWhenAllBinariesIsNotPresent() throws Exception {
+        URL testFile = TestUtils.findTestData("missing-allbinaries.json");
+        String json = Files.readString(Path.of(testFile.toURI()), StandardCharsets.UTF_8);
+        UbuntuErrataInfo info = UbuntuErrataManager.GSON.fromJson(json, UbuntuErrataInfo.class);
+
+        Set<String> packageNames = Set.of("libvorbis0a", "libvorbisfile3", "libvorbisenc2", "libvorbis-dev");
+        Entry entry = assertDoesNotThrow(() -> extractProcessedEntry("3604-1", info, packageNames));
+
+        // Check that the packages are taken from the binaries field
+        assertEquals(
+            List.of(
+                // Artful
+                new Tuple3<>("libvorbis0a", "1.3.5-4ubuntu0.2",
+                    List.of("amd64", "s390x", "ppc64el", "i386", "armhf", "arm64"))
+            ),
+            entry.getPackages()
+        );
     }
 
     private static Entry extractProcessedEntry(String errataId, UbuntuErrataInfo info, Set<String> packageNames) {

@@ -11,7 +11,9 @@
 package com.redhat.rhn.manager.content.ubuntu;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Release {
     private Map<String, Urls> archs;
@@ -33,5 +35,22 @@ public class Release {
 
     public Map<String, Urls> getArchs() {
         return Objects.requireNonNullElseGet(archs, () -> Map.of());
+    }
+
+    /**
+     * Retrieves a map of packages associated with this release. The key is the package name meanwhile
+     * the value is the corresponding version.
+     *
+     * @return the package name -> version map for all the packages associated with this release.
+     */
+    public Map<String, String> getPackageMap() {
+        Map<String, ? extends BasePackageInfo> packageMap = getAllbinaries();
+        if (packageMap.isEmpty()) {
+            packageMap = getBinaries();
+        }
+
+        return packageMap.entrySet().stream()
+                .map(entry -> Map.entry(entry.getKey(), entry.getValue().getVersion()))
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 }

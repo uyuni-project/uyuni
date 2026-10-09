@@ -14,12 +14,19 @@
  */
 package com.redhat.rhn.manager.content.ubuntu;
 
-import java.util.Optional;
+/**
+ * Basic package data share between the fields {@code binaries} (which is of type {@link PackageInfo}) and
+ * {@code allbinaries} (which is of type {@link Binary})
+ */
+abstract class BasePackageInfo {
+    protected String pocket;
+    protected String version;
 
-public class Binary extends BasePackageInfo {
-    private Optional<String> source = Optional.empty();
+    public String getPocket() {
+        return pocket;
+    }
 
-    public Optional<String> getSource() {
-        return source;
+    public String getVersion() {
+        return version;
     }
 }

@@ -1,0 +1,187 @@
+{
+  "description" : "Richard Zhu discovered that libvorbis incorrectly handled certain sound\nfiles. An attacker could use this to cause libvorbis to crash, resulting in\na denial or service, or possibly execute arbitrary code.\n",
+  "releases" : {
+    "artful" : {
+      "sources" : {
+        "libvorbis" : {
+          "version" : "1.3.5-4ubuntu0.2",
+          "description" : "The Vorbis General Audio Compression Codec"
+        }
+      },
+      "binaries" : {
+        "libvorbis0a" : {
+          "version" : "1.3.5-4ubuntu0.2"
+        }
+      },
+      "archs" : {
+        "amd64" : {
+          "urls" : {
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbis-dev_1.3.5-4ubuntu0.2_amd64.deb" : {
+              "size" : 322316,
+              "md5" : "b2c01ab2228732eb6f97e5a8d6afdb15"
+            },
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbisenc2_1.3.5-4ubuntu0.2_amd64.deb" : {
+              "size" : 70578,
+              "md5" : "61762e3afbadfcfef82711f16a321249"
+            },
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbis0a_1.3.5-4ubuntu0.2_amd64.deb" : {
+              "size" : 86472,
+              "md5" : "ac5b244af41caa80e06a4f3df45fc341"
+            },
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbis-dbg_1.3.5-4ubuntu0.2_amd64.deb" : {
+              "size" : 223278,
+              "md5" : "40b67afb54a2f49cf242b8cdac68e9b3"
+            },
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbisfile3_1.3.5-4ubuntu0.2_amd64.deb" : {
+              "size" : 15908,
+              "md5" : "bb6c0b2b78210daf35e9b0db6e3da910"
+            }
+          }
+        },
+        "source" : {
+          "urls" : {
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbis_1.3.5-4ubuntu0.2.dsc" : {
+              "size" : 2466,
+              "md5" : "d1f81eb451ae17a5b341d04faafa97fd"
+            },
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbis_1.3.5.orig.tar.gz" : {
+              "size" : 1638779,
+              "md5" : "7220e089f3be3412a2317d6fde9e3944"
+            },
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbis_1.3.5-4ubuntu0.2.debian.tar.xz" : {
+              "size" : 12424,
+              "md5" : "af0d7020e8ffb95fa22e2ef1d9ee5a49"
+            }
+          }
+        },
+        "s390x" : {
+          "urls" : {
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbisfile3_1.3.5-4ubuntu0.2_s390x.deb" : {
+              "size" : 15312,
+              "md5" : "9c9a4548947a8aac994244e31aab85b5"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbis0a_1.3.5-4ubuntu0.2_s390x.deb" : {
+              "size" : 85278,
+              "md5" : "d2309aa7ed6f9ee3f25a820bc433e31f"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbis-dbg_1.3.5-4ubuntu0.2_s390x.deb" : {
+              "size" : 230580,
+              "md5" : "a9932b61b56e3f3675d05845cd9ad595"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbis-dev_1.3.5-4ubuntu0.2_s390x.deb" : {
+              "size" : 319260,
+              "md5" : "0c3717465ab222f0bceb98c1dea2a9a9"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbisenc2_1.3.5-4ubuntu0.2_s390x.deb" : {
+              "size" : 70726,
+              "md5" : "a9a7b5fb62d3ea9051fad628d4219658"
+            }
+          }
+        },
+        "ppc64el" : {
+          "urls" : {
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbis-dev_1.3.5-4ubuntu0.2_ppc64el.deb" : {
+              "size" : 357304,
+              "md5" : "151206307289a55758bb01eae3d518f9"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbisenc2_1.3.5-4ubuntu0.2_ppc64el.deb" : {
+              "size" : 78456,
+              "md5" : "e1b7f7535d71f28c1241882273ca8444"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbis0a_1.3.5-4ubuntu0.2_ppc64el.deb" : {
+              "size" : 111464,
+              "md5" : "84c3c05697e99198d413c9b8fdb2ab7a"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbis-dbg_1.3.5-4ubuntu0.2_ppc64el.deb" : {
+              "size" : 266932,
+              "md5" : "f66a1ed4de014550c14ccbaf0b373d79"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbisfile3_1.3.5-4ubuntu0.2_ppc64el.deb" : {
+              "size" : 18182,
+              "md5" : "b3c5b3411a47e2b7dd9e03a8322fc0aa"
+            }
+          }
+        },
+        "i386" : {
+          "urls" : {
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbis-dev_1.3.5-4ubuntu0.2_i386.deb" : {
+              "size" : 324384,
+              "md5" : "237d4c8d7199751ca865728876005f73"
+            },
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbisfile3_1.3.5-4ubuntu0.2_i386.deb" : {
+              "size" : 18572,
+              "md5" : "ed94678831ceb82c97e3789611bf3a96"
+            },
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbisenc2_1.3.5-4ubuntu0.2_i386.deb" : {
+              "size" : 64358,
+              "md5" : "d162bc04db983ef12968011a7433aba8"
+            },
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbis0a_1.3.5-4ubuntu0.2_i386.deb" : {
+              "size" : 84540,
+              "md5" : "ca8b22f7163e85f69e10f02bcf257397"
+            },
+            "http://security.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbis-dbg_1.3.5-4ubuntu0.2_i386.deb" : {
+              "size" : 207854,
+              "md5" : "5bd57fb86fee056e7ce751a13f46a081"
+            }
+          }
+        },
+        "armhf" : {
+          "urls" : {
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbisenc2_1.3.5-4ubuntu0.2_armhf.deb" : {
+              "size" : 64504,
+              "md5" : "1ad8eb250cae63a57a4889b74787155e"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbisfile3_1.3.5-4ubuntu0.2_armhf.deb" : {
+              "size" : 15108,
+              "md5" : "f18ac78762ed63b8a60df2cab9e00250"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbis-dbg_1.3.5-4ubuntu0.2_armhf.deb" : {
+              "size" : 219438,
+              "md5" : "d1bb4e83b392f38ec6eb5f16171158d9"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbis-dev_1.3.5-4ubuntu0.2_armhf.deb" : {
+              "size" : 309430,
+              "md5" : "b80ca428dfb1cb89f60a2f4089a259e4"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbis0a_1.3.5-4ubuntu0.2_armhf.deb" : {
+              "size" : 75628,
+              "md5" : "913e872efc229dc8aacfb7be3a84f697"
+            }
+          }
+        },
+        "arm64" : {
+          "urls" : {
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbis0a_1.3.5-4ubuntu0.2_arm64.deb" : {
+              "size" : 74504,
+              "md5" : "16aa066bdcd8d5dd29baa7a169ff4455"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbis-dbg_1.3.5-4ubuntu0.2_arm64.deb" : {
+              "size" : 227018,
+              "md5" : "7b108c971e8361e1674841548e82f583"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbisfile3_1.3.5-4ubuntu0.2_arm64.deb" : {
+              "size" : 13794,
+              "md5" : "8d028284e1f1dc1a46b19f0c63ad3729"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbisenc2_1.3.5-4ubuntu0.2_arm64.deb" : {
+              "size" : 69854,
+              "md5" : "8701a4302f4cafa494958c5ee946655b"
+            },
+            "http://ports.ubuntu.com/pool/main/libv/libvorbis/libvorbis-dev_1.3.5-4ubuntu0.2_arm64.deb" : {
+              "size" : 307146,
+              "md5" : "2c8715968bc048ea1f05b038e68d3378"
+            }
+          }
+        }
+      }
+    }
+  },
+  "title" : "libvorbis vulnerability",
+  "timestamp" : 1.521717338176857E9,
+  "summary" : "libvorbis vulnerability",
+  "action" : "After a standard system upgrade you need to restart any applications that\nuse libvorbis, such as Totem and gtkpod, to effect the necessary changes.\n",
+  "cves" : [ "CVE-2018-5146" ],
+  "id" : "3604-1",
+  "isummary" : "libvorbis could be made to crash or run programs as your login if it\nopened a specially crafted file.\n"
+}

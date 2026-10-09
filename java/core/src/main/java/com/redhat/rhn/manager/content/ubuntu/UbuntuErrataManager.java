@@ -185,12 +185,12 @@ public class UbuntuErrataManager {
 
             List<Tuple3<String, String, List<String>>> packageData = ubuntuErrataInfo.getReleases().entrySet().stream()
                     .flatMap(release ->
-                            release.getValue().getBinaries().entrySet().stream().flatMap(binary -> {
+                            release.getValue().getPackageMap().entrySet().stream().flatMap(binary -> {
                                 String name = binary.getKey();
                                 if (!packageNames.contains(name)) {
                                     return Stream.empty();
                                 }
-                                String version = binary.getValue().getVersion();
+                                String version = binary.getValue();
 
                                 List<String> archs = release.getValue().getArchs()
                                         .entrySet()
