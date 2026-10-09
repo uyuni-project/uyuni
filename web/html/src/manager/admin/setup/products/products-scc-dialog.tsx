@@ -190,12 +190,12 @@ class SCCDialog extends Component<Props, SCCDialogState> {
           ) : this.hasRun() ? (
             this.state.steps.every((s) => s.success) ? (
               <span>
-                <IconTag icon="fa-check" className="text-success" />
+                <IconTag icon="fa-check" status="success" />
                 {t("Completed")}
               </span>
             ) : (
               <div>
-                <IconTag icon="fa-exclamation-triangle" className="text-warning" />
+                <IconTag icon="fa-exclamation-triangle" status="warning" />
                 {t("Operation not successful: Empty reply from the server")}(
                 <a href="/rhn/admin/Catalina.do">{t("Details")}</a>)
               </div>

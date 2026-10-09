@@ -465,7 +465,6 @@ class RecurringEventPicker extends Component<RecurringEventPickerProps, Recurrin
               icon="fa-info-circle"
               size="lg"
               title={t("Days are limited to 28 to have a recurring schedule available for all the months")}
-              data-bs-toggle="tooltip"
             />
           </div>
         </div>

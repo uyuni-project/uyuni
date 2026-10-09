@@ -203,7 +203,7 @@ const PinStatus = (props) => {
   if (props.status === "satisfied") {
     return (
       <span>
-        <IconTag icon="fa-check" className="text-success" />
+        <IconTag icon="fa-check" status="success" />
         {t("satisfied")}
       </span>
     );
@@ -305,7 +305,7 @@ class AddPinPopUp extends Component<AddPinPopUpProps> {
                   onClick={() => this.onSystemSelected(s.id)}
                   content={
                     <span>
-                      {t("Select")} <IconTag icon="fa fa-arrow-right" className="fa-right" />
+                      {t("Select")} <IconTag icon="fa-arrow-right" className="fa-right" />
                     </span>
                   }
                 />

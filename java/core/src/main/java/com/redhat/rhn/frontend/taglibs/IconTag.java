@@ -111,7 +111,7 @@ public class IconTag extends TagSupport {
         icons.put("header-sitemap", "fa fa-sitemap");
         icons.put("header-snapshot", "fa fa-camera");
         icons.put("header-snapshot-rollback", "fa spacewalk-icon-snapshot-rollback");
-        icons.put("header-subscriptions-big", "fa fa-list-alt");
+        icons.put("header-subscriptions-big", "fa fa-list-alt icon-size-2xl");
         icons.put("header-symlink", "fa spacewalk-icon-listicon-cfg-symlink");
         icons.put("header-system", "fa fa-desktop");
         icons.put("header-system-groups", "fa spacewalk-icon-system-groups");

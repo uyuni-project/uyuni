@@ -33,7 +33,11 @@ class Toggler extends Component<Props> {
     }
     return (
       <span {...DEPRECATED_onClick(() => this.handleClick())} className={classes}>
-        <IconTag icon={this.props.value ? "fa-toggle-on text-success" : "fa-toggle-off"} className="v-middle" />
+        <IconTag
+          icon={this.props.value ? "fa-toggle-on" : "fa-toggle-off"}
+          status={this.props.value ? "success" : undefined}
+          className="v-middle"
+        />
         &nbsp;
         <span className="v-middle">{this.props.text}</span>
       </span>

@@ -20,19 +20,20 @@ import { DisplayHighstate } from "../state/display-highstate";
 import { isReadOnly, targetNameLink, targetTypeToString } from "./recurring-actions-utils";
 
 function channelIcon(channel) {
-  let iconClass, iconTitle;
+  let iconClass, iconTitle, iconStyle;
   if (channel.type === "state") {
     iconClass = "spacewalk-icon-salt-add";
     iconTitle = t("State Configuration Channel");
   } else if (channel.type === "internal_state") {
-    iconClass = "spacewalk-icon-salt-add border border-black";
+    iconClass = "spacewalk-icon-salt-add";
     iconTitle = t("Internal State");
+    iconStyle = "border border-black";
   } else {
     iconClass = "spacewalk-icon-software-channels";
     iconTitle = t("Normal Configuration Channel");
   }
 
-  return <IconTag icon={iconClass} title={iconTitle} />;
+  return <IconTag icon={iconClass} title={iconTitle} className={iconStyle} />;
 }
 
 export enum RecurringActionType {

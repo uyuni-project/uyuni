@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
 
 import "font-awesome/css/font-awesome.css";
+// The app gets this one from a <link> in the JSP layout, served from the copied `dist/fonts` output.
+// Storybook has no JSP shell, so without this import every `spacewalk-icon-*` renders blank.
+import "branding/fonts/font-spacewalk/css/spacewalk-font.css";
 import "manager/polyfills";
 
 import type { Decorator, Preview } from "@storybook/react-webpack5";
