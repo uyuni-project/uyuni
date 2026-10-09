@@ -11598,6 +11598,17 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="snapshots.refresh_list" xml:space="preserve">
+        <source>Refresh Snapshots</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.formulas" xml:space="preserve">
+        <source>Apply formulas assigned to the target system</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
