@@ -10,13 +10,8 @@ Feature: Install RKE2 proxy on a transactional system
   Scenario: Reboot the proxy to activate everything before starting
     When I reboot the "proxy" host through SSH, waiting until it comes back
 
-  Scenario: Check the RKE2 configuration
-    Then the environment variable "RKE2_VERSION" is set on "proxy"
-    And the environment variable "RKE2_INSTALL_METHOD" is set on "proxy"
-    And file "/etc/rancher/rke2/config.yaml" should exist on "proxy"
-
   Scenario: Install RKE2
-    When I run "set -o pipefail; curl -sfL https://get.rke2.io | sudo INSTALL_RKE2_VERSION=$RKE2_VERSION INSTALL_RKE2_METHOD=$RKE2_INSTALL_METHOD sh -" on "proxy"
+    When I install RKE2 on "proxy"
 
   @skip_if_transactional_server
   Scenario: Install selinux package
@@ -34,7 +29,6 @@ Feature: Install RKE2 proxy on a transactional system
     And service "rke2-server" is active on "proxy"
 
   Scenario: Create symlinks for RKE2 tools
-    When I run "ln -sf /var/lib/rancher/rke2/bin/kubectl /usr/local/bin/kubectl" on "proxy"
-    And I run "ln -sf /var/lib/rancher/rke2/bin/crictl /usr/local/bin/crictl" on "proxy"
-    And I run "ln -sf /var/lib/rancher/rke2/bin/ctr /usr/local/bin/ctr" on "proxy"
-
+    When I create a ln between "/var/lib/rancher/rke2/bin/kubectl" and "/usr/local/bin/kubectl" on "proxy" with parameters "-sf"
+    And I create a ln between "/var/lib/rancher/rke2/bin/crictl" and "/usr/local/bin/crictl" on "proxy" with parameters "-sf"
+    And I create a ln between "/var/lib/rancher/rke2/bin/ctr" and "/usr/local/bin/ctr" on "proxy" with parameters "-sf"

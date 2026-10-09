@@ -863,6 +863,11 @@ When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node.run(cmd)
 end
 
+When(/^I install RKE2 on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run('set -o pipefail; curl -sfL https://get.rke2.io | sudo INSTALL_RKE2_VERSION=$RKE2_VERSION INSTALL_RKE2_METHOD=$RKE2_INSTALL_METHOD sh -')
+end
+
 When(/^I run "([^"]*)" on "([^"]*)" outside the container$/) do |cmd, host|
   node = get_target(host)
   node.run(cmd, runs_in_container: false)
@@ -894,6 +899,11 @@ When(/^I wait at most (\d+) seconds until file "([^"]*)" exists on "([^"]*)"$/) 
 
     sleep(1)
   end
+end
+
+When(/^I create a ln between "([^"]*)" and "([^"]*)" on "([^"]*)"(?: with parameters "([^"]*)")?$/) do |first_file, second_file, host, entry_parameter|
+  node = get_target(host)
+  node.run("ln #{entry_parameter} #{first_file} #{second_file}")
 end
 
 When(/^I wait until file "(.*)" exists on server$/) do |file|

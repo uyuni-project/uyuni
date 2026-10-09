@@ -6,6 +6,7 @@
 
 ## Install MLM server on RKE2 BEGIN ##
 
+- features/kubernetes/srv_rke2_mlm_configuration.feature
 - features/kubernetes/srv_rke2_install_mlm_dependencies.feature
 - features/kubernetes/srv_install_mlm_on_rke2.feature
 - features/kubernetes/srv_rke2_check_installation.feature
