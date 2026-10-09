@@ -1,4 +1,3 @@
-{{ include "uyuni.pvc" (dict "root" . "name" "ca-certs"            "volume" (index .Values.volumes "ca-certs")            "defaultSize" "10Mi"  "accessMode" "ReadWriteOnce") }}
 {{ include "uyuni.pvc" (dict "root" . "name" "etc-apache2"         "volume" (index .Values.volumes "etc-apache2")         "defaultSize" "1Mi"   "accessMode" "ReadWriteOnce") }}
 {{ include "uyuni.pvc" (dict "root" . "name" "etc-cobbler"         "volume" (index .Values.volumes "etc-cobbler")         "defaultSize" "1Mi"   "accessMode" "ReadWriteOnce") }}
 {{ include "uyuni.pvc" (dict "root" . "name" "etc-postfix"         "volume" (index .Values.volumes "etc-postfix")         "defaultSize" "1Mi"   "accessMode" "ReadWriteOnce") }}
