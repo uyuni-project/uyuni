@@ -56,7 +56,7 @@ function humanReadablePolicy(rawPolicy) {
 }
 
 const WarningIcon = (props) => (
-  <IconTag icon="fa-exclamation-triangle" className={"text-warning" + (props.iconOnRight ? " fa-right" : "")} />
+  <IconTag icon="fa-exclamation-triangle" status="warning" className={(props.iconOnRight ? " fa-right" : "")} />
 );
 
 export { ToolTip, CsvLink, SystemLabel, humanReadablePolicy, WarningIcon };

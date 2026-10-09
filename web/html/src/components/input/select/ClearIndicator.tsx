@@ -16,7 +16,7 @@ export const ClearIndicator = (props: ClearIndicatorProps) => {
       ref={ref}
       style={getStyles("clearIndicator", props)}
     >
-      <IconTag icon="fa-times" className={styles.icon} />
+      <IconTag icon="fa-times" className={styles.icon} ariaLabel={t("Clear")} ariaHidden={false} />
     </button>
   );
 };

@@ -284,8 +284,7 @@ class Breadcrumb extends Component {
         url="/"
         label={
           <span>
-            SUSE <IconTag icon="fa-registered" />
-            Multi-Linux Manager
+            SUSE <IconTag icon="fa-registered" />Multi-Linux Manager
           </span>
         }
         target=""

@@ -151,7 +151,7 @@ const QuantityCell = (props) => {
       <span>
         <strong>{content}</strong>
         &nbsp;
-        <IconTag icon="fa-exclamation-triangle" className="text-warning" />
+        <IconTag icon="fa-exclamation-triangle" status="warning" />
       </span>
     );
   }
