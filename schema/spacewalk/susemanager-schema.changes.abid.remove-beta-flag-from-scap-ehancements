@@ -1,0 +1,2 @@
+- Adjust RBAC endpoints for removed OpenSCAP scan scheduling API
+  methods and Struts pages
