@@ -29559,6 +29559,118 @@ given channel.</source>
         <source>Calculate CLM Differences</source>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="system.event.history.waitingForReboot" xml:space="preserve">
+          <source>Waiting for reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional" xml:space="preserve">
+          <source>Transactional progress:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.step.prerequisites" xml:space="preserve">
+          <source>Prerequisites</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.step.reboot" xml:space="preserve">
+          <source>System reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.step.execution" xml:space="preserve">
+          <source>Post-reboot step</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.step.apply" xml:space="preserve">
+          <source>Transactional update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.step.applyReboot" xml:space="preserve">
+          <source>System reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.step.finalization" xml:space="preserve">
+          <source>Action completion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.status.completed" xml:space="preserve">
+          <source>completed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.status.failed" xml:space="preserve">
+          <source>failed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.status.pending" xml:space="preserve">
+          <source>pending</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.status.notNeeded" xml:space="preserve">
+          <source>not needed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.status.scheduled" xml:space="preserve">
+          <source>queued</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.at" xml:space="preserve">
+          <source> at </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.prerequisiteResult" xml:space="preserve">
+          <source>Prerequisite result:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.use_transactional_update.label" xml:space="preserve">
+          <source>Use transactional update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/ssm/provisioning/RemoteCommand</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        </body>
   </file>
 </xliff>
