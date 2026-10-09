@@ -992,7 +992,7 @@ public class ConfigDefaults {
         boolean dbSslEnabled = true;
 
         // If the server with the remote reporting database is registered as a ISSv3 peripheral, the correct root
-        // certificate authority is available in /etc/pki/trust/anchors
+        // certificate authority is available in /etc/rhn/ca
         String sslRootCert = Optional.of(CertificateUtils.computeRootCaFileName("peripheral", host))
             .map(filename -> {
                 try {
