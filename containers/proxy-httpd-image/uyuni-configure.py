@@ -198,6 +198,10 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
         smlm_conf.write(file_content)
         smlm_conf.truncate()
 
+    aliases = ""
+    if "additional_fqdns" in config and config["additional_fqdns"]:
+        aliases = "ServerAlias " + " ".join(config["additional_fqdns"])
+
     with open("/etc/apache2/vhosts.d/ssl.conf", "w", encoding="utf-8") as file:
         file.write(f"""
 <IfDefine SSL>
@@ -206,6 +210,7 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
 
 	DocumentRoot "/srv/www/htdocs"
 	ServerName {config["proxy_fqdn"]}
+	{aliases}
 
 	ErrorLog /proc/self/fd/2
 	TransferLog /proc/self/fd/1

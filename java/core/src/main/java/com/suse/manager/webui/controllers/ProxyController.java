@@ -25,6 +25,8 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
@@ -43,7 +45,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import spark.ModelAndView;
@@ -99,6 +103,15 @@ public class ProxyController {
     public ModelAndView containerConfig(Request requestIn, Response responseIn, User userIn) {
         Map<String, Object> data = new HashMap<>();
         data.put("noSSL", !ConfigDefaults.get().isSsl());
+
+        List<Server> proxies = ServerFactory.lookupProxiesByOrg(userIn);
+
+        List<Map<String, Object>> parentOptions = new ArrayList<>();
+        parentOptions.add(ProxyListUtils.directConnectionEntry());
+        parentOptions.addAll(ProxyListUtils.proxyEntries(proxies));
+
+        data.put("parents", GSON.toJson(parentOptions));
+
         return new ModelAndView(data, "templates/proxy/container-config.jade");
     }
 
@@ -121,7 +134,8 @@ public class ProxyController {
             byte[] config = systemManager.createProxyContainerConfig(user, data.getProxyFqdn(),
                     data.getProxyPort(), data.getServerFqdn(), data.getMaxCache(), data.getEmail(),
                     data.getRootCA(), data.getIntermediateCAs(), data.getProxyCertPair(),
-                    data.getCaPair(), data.getCaPassword(), data.getCertData(), new SSLCertManager());
+                    data.getCaPair(), data.getCaPassword(), data.getCertData(), new SSLCertManager(),
+                    data.getAdditionalFqdns());
             String filename = data.getProxyFqdn().split("\\.")[0];
             request.session().attribute(filename + "-config.tar.gz", config);
 

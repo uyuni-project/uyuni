@@ -318,10 +318,11 @@ public abstract class AbstractMinionBootstrapper {
     protected Map<String, Object> createPillarData(User user, BootstrapParameters input,
                                                    String contactMethod) {
         Map<String, Object> pillarData = new HashMap<>();
-        String mgrServer = input.getProxyId()
-                .map(ServerFactory::lookupById)
-                .map(Server::getHostname)
-                .orElse(ConfigDefaults.get().getJavaHostname());
+        String mgrServer = input.getProxyFqdn()
+                .orElseGet(() -> input.getProxyId()
+                        .map(ServerFactory::lookupById)
+                        .map(Server::getHostname)
+                        .orElse(ConfigDefaults.get().getJavaHostname()));
 
         pillarData.put("mgr_server", mgrServer);
         if ("ssh-push-tunnel".equals(contactMethod)) {
