@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-09 12:18+0100\n"
-"PO-Revision-Date: 2026-10-03 14:13+0000\n"
+"PO-Revision-Date: 2026-10-09 19:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2026.10\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:425
 msgid "remaining"
@@ -2133,10 +2133,8 @@ msgstr "Preusporiadať"
 
 #: ../html/src/components/states-picker.tsx:468
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:265
-#, fuzzy
-#| msgid "Registration date:"
 msgid "Use transactional update"
-msgstr "Dátum registrácie:"
+msgstr "Použiť transakčnú aktualizáciu"
 
 #: ../html/src/components/states-picker.tsx:485
 msgid "Search in states"
@@ -7546,10 +7544,8 @@ msgid "Btrfs Snapshots"
 msgstr ""
 
 #: ../html/src/manager/systems/details/snapshots.tsx:125
-#, fuzzy
-#| msgid "No streams available"
 msgid "No snapshots available."
-msgstr "Nie sú k dispozícii žiadne prúdy"
+msgstr "Nie sú k dispozícii žiadne snímky."
 
 #: ../html/src/manager/systems/details/snapshots.tsx:129
 msgid "#"
