@@ -1318,6 +1318,13 @@
         </context-group>
         <target state="translated">Plán</target>
       </trans-unit>
-    </body>
+    <trans-unit id="Btrfs Snapshots" xml:space="preserve">
+        <source>Btrfs Snapshots</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/snapshots</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
