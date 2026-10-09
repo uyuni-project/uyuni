@@ -80,11 +80,11 @@
                         <bean:message key="details.jsp.description"/>
                     </label>
                     <div class="col-lg-6">
-                        <c:if test="${empty channel.description}">
+                        <c:if test="${empty channel_description}">
                             (none)
                         </c:if>
-                        <c:if test="${!empty channel.description}">
-                            <c:out value="${channel.description}" />
+                        <c:if test="${!empty channel_description}">
+                            <span class="text-pre-line"><c:out value="${channel_description}" /></span>
                         </c:if>
                     </div>
                 </div>

@@ -405,6 +405,95 @@ public class StringUtilTest  {
     }
 
     @Test
+    public void testProductDescriptionToPlainText() {
+        String input = """
+                <p> The SUSE Linux Enterprise Real Time aims to reduce the latency. </p> \
+                <p> Packages in this module are generally supported until a newer version is released. </p>""";
+
+        String expected = """
+                The SUSE Linux Enterprise Real Time aims to reduce the latency.
+
+                Packages in this module are generally supported until a newer version is released.""";
+        assertEquals(expected, StringUtil.htmlToPlainText(input));
+    }
+
+    @Test
+    public void testNonXhtmlToPlainText() {
+        assertEquals("hello\nworld", StringUtil.htmlToPlainText("hello<br>world"));
+        assertEquals("A B", StringUtil.htmlToPlainText("A&nbsp;B"));
+        assertEquals("hello world", StringUtil.htmlToPlainText("<p>hello <strong>world"));
+        assertEquals("plain link", StringUtil.htmlToPlainText("<p><a>plain link</a></p>"));
+        assertEquals("SUSE (https://www.suse.com)",
+                StringUtil.htmlToPlainText("<a href=\"https://www.suse.com\">SUSE</a>"));
+        assertEquals("https://www.suse.com",
+                StringUtil.htmlToPlainText("<a href=\"https://www.suse.com\">https://www.suse.com</a>"));
+        assertEquals("SUSE® Linux", StringUtil.htmlToPlainText("SUSE<sup>®</sup> Linux"));
+        assertEquals("foobar", StringUtil.htmlToPlainText("<b>foo</b>bar"));
+        assertEquals("(see docs (https://www.suse.com)).",
+                StringUtil.htmlToPlainText("(see <a href=\"https://www.suse.com\">docs</a>)."));
+    }
+
+    @Test
+    public void testStructuredHtmlToPlainText() {
+        String input = """
+                <p>First paragraph.</p><p>Second paragraph:</p>\
+                <ul><li>Item 1</li><li>Item 2</li></ul>""";
+        String expected = "First paragraph.\n\nSecond paragraph:\n\nItem 1\nItem 2";
+
+        assertEquals(expected, StringUtil.htmlToPlainText(input));
+    }
+
+    @Test
+    public void testLiteralAngleBracketsToPlainText() {
+        assertEquals("kernel < 5.0 only", StringUtil.htmlToPlainText("kernel < 5.0 only"));
+        assertEquals("Requires kernel < 5.0",
+                StringUtil.htmlToPlainText("<p>Requires kernel < 5.0</p>"));
+        assertEquals("Install <package-name> version 2",
+                StringUtil.htmlToPlainText("Install <package-name> version 2"));
+        assertEquals("Command: cat <input.txt >output.txt",
+                StringUtil.htmlToPlainText("Command: cat <input.txt >output.txt"));
+    }
+
+    @Test
+    public void testPlainTextLineBreaks() {
+        assertEquals("Line one\nLine two", StringUtil.htmlToPlainText("Line one\nLine two"));
+        assertEquals("Paragraph one\n\nParagraph two",
+                StringUtil.htmlToPlainText("Paragraph one\r\n\r\nParagraph two"));
+    }
+
+    @Test
+    public void testHtmlSourceLineBreaksAreCollapsed() {
+        String html = """
+                <p>
+                  The SUSE Linux Enterprise Real Time aims to reduce
+                  the latency of applications.
+                </p>""";
+        assertEquals("The SUSE Linux Enterprise Real Time aims to reduce the latency of applications.",
+                StringUtil.htmlToPlainText(html));
+        assertEquals("See docs (https://x) here",
+                StringUtil.htmlToPlainText("<p>See <a href=\"https://x\">\n  docs\n</a> here</p>"));
+    }
+
+    @Test
+    public void testTableRowsAndCellsAreSeparated() {
+        String html = "<table><tr><th>A</th><th>B</th></tr><tr><td>1</td><td>2</td></tr></table>";
+        assertEquals("A B\n1 2", StringUtil.htmlToPlainText(html));
+    }
+
+    @Test
+    public void testHtml5TagsToPlainText() {
+        assertEquals("First SLE\n\nSecond",
+                StringUtil.htmlToPlainText("<section>First <abbr>SLE</abbr></section><article>Second</article>"));
+        assertEquals("old new", StringUtil.htmlToPlainText("<del>old</del> <ins>new</ins>"));
+    }
+
+    @Test
+    public void testStyleAndScriptContentsAreIgnored() {
+        assertEquals("before after", StringUtil.htmlToPlainText(
+                "before <style>body { color: red; }</style><script>alert('x')</script> after"));
+    }
+
+    @Test
     public void testAddPath() {
         String expected = "/tmp/foo/bar.txt";
         assertEquals(expected, StringUtil.addPath("/tmp/foo", "bar.txt"));
