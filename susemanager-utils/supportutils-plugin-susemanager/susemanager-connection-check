@@ -1,0 +1,378 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2026 SUSE LLC
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+
+import glob
+import os
+import re
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+
+# default tomcat acceptCount value
+# these connections are on top of tomcat's maxThreads which can wait in TCP
+# queue without triggering error response. We can use them for apache static
+# content not going through tomcat without fear of overloading tomcat.
+ACCEPT_COUNT = 100
+
+
+def parse_value(line, key):
+    """Match a double quoted non-empty string, or an unquoted non-empty string.
+
+    Reject empty values or values without a closing double quote. This mirrors
+    the VALUE_REGEXP used by the original Perl script.
+    """
+    m = re.match(r'^\s*' + re.escape(key) + r'\s*=\s*"(.*?[\S].*?)"', line)
+    if m:
+        return m.group(1)
+    m = re.match(r'^\s*' + re.escape(key) + r'\s*=\s*([^\s"].*?)\s*$', line)
+    if m:
+        return m.group(1)
+    return None
+
+
+def run_query(command, is_reportdb):
+    env = os.environ.copy()
+    env['LANG'] = 'C'
+    sql_args = ['spacewalk-sql']
+    if is_reportdb:
+        sql_args.append('--reportdb')
+    sql_args.extend(['--select-mode', '-'])
+
+    try:
+        proc = subprocess.Popen(
+            sql_args,
+            env=env,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=sys.stderr,
+            text=True,
+        )
+        out_data, _ = proc.communicate(input=command + "\n")
+    except Exception:
+        return None
+
+    if proc.returncode != 0:
+        return None
+
+    out = None
+    seen_dashes = False
+    for line in out_data.splitlines():
+        if out is None and seen_dashes:
+            out = line
+            break
+        if '---' in line:
+            seen_dashes = True
+
+    if out is not None:
+        out = out.strip()
+        # psql prints '----' even if no rows were selected
+        if out == '(0 rows)':
+            out = None
+    return out
+
+
+def read_conf_int(path, pattern, default):
+    val = default
+    try:
+        with open(path, 'r', encoding='utf-8', errors='ignore') as f:
+            for line in f:
+                if re.match(r'^\s*#', line):
+                    continue
+                m = re.search(pattern, line)
+                if m:
+                    val = int(m.group(1))
+    except OSError:
+        pass
+    return val
+
+
+def get_apache_max_request_workers():
+    server_flags = ["-DSYSCONFIG"]
+    mpm = "prefork"  # default MPM
+
+    # Read APACHE_SERVER_FLAGS and APACHE_MPM
+    try:
+        with open('/etc/sysconfig/apache2', 'r', encoding='utf-8', errors='ignore') as f:
+            for line in f:
+                flags = parse_value(line, 'APACHE_SERVER_FLAGS')
+                if flags is not None:
+                    flags = flags.replace('"', '')
+                    for flag in flags.split():
+                        if not flag:
+                            continue
+                        if flag.startswith('-D'):
+                            server_flags.append(flag)
+                        else:
+                            server_flags.append('-D' + flag)
+                value = parse_value(line, 'APACHE_MPM')
+                if value is not None:
+                    mpm = value.replace('"', '')
+    except OSError:
+        pass
+
+    # Determine binary based on active MPM
+    apache_bin = "/usr/sbin/httpd"
+    if os.access("/usr/sbin/httpd-" + mpm, os.X_OK):
+        apache_bin = "/usr/sbin/httpd-" + mpm
+
+    mod_path = "/usr/lib64/apache2-" + mpm + "/mod_info.so"
+    if not os.path.exists(mod_path):
+        mod_path = "/usr/lib64/apache2/mod_info.so"
+
+    # Construct and execute the direct binary call
+    cmd = [apache_bin] + server_flags + [
+        '-C', 'Include /etc/apache2/sysconfig.d/loadmodule.conf',
+        '-C', 'Include /etc/apache2/sysconfig.d/global.conf',
+        '-f', '/etc/apache2/httpd.conf',
+        '-c', 'Include /etc/apache2/sysconfig.d/include.conf',
+        '-c', 'LoadModule info_module ' + mod_path,
+        '-D', 'DUMP_CONFIG',
+    ]
+
+    max_clients = 0
+    try:
+        proc = subprocess.Popen(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+        )
+        for line in proc.stdout:
+            m = re.match(r'^\s*(?:MaxRequestWorkers|MaxClients)\s+(\d+)', line, re.I)
+            if m:
+                max_clients = int(m.group(1))
+        proc.wait()
+    except OSError:
+        pass
+
+    # Fallback to static parsing if dynamic extraction failed
+    if max_clients == 0:
+        sys.stderr.write("WARN: Unable to check Apache variables, trying conf files directly\n")
+        try:
+            with open('/etc/apache2/server-tuning.conf', 'r', encoding='utf-8', errors='ignore') as f:
+                in_active_mpm_section = False
+                for line in f:
+                    if re.match(r'^\s*#', line):
+                        continue
+                    if re.search(r'<IfModule\s+' + re.escape(mpm) + r'\.c>', line):
+                        in_active_mpm_section = True
+                    elif re.search(r'</IfModule>', line):
+                        in_active_mpm_section = False
+                    if in_active_mpm_section:
+                        m = re.search(r'(?:MaxRequestWorkers|MaxClients)\s+(\d+)', line)
+                        if m:
+                            max_clients = int(m.group(1))
+        except OSError:
+            pass
+
+    if max_clients == 0:
+        sys.stderr.write("ERROR: Unable to determine Apache connection limits.\n")
+    return max_clients
+
+
+def parse_salt_worker_threads():
+    config_files = sorted(glob.glob("/etc/salt/master.d/*.conf"), reverse=True)
+    config_files.append("/etc/salt/master")
+
+    worker_threads = 0
+    for config in config_files:
+        try:
+            with open(config, 'r', encoding='utf-8', errors='ignore') as f:
+                for line in f:
+                    if re.match(r'^\s*#', line):
+                        continue
+                    m = re.search(r'worker_threads\s*:\s*(\d+)', line)
+                    if m:
+                        worker_threads = int(m.group(1))
+        except OSError:
+            continue
+        if worker_threads > 0:
+            break
+    return worker_threads
+
+
+def as_int(value):
+    try:
+        return int(str(value).strip())
+    except (TypeError, ValueError):
+        return 0
+
+
+def main():
+    apachemax = get_apache_max_request_workers()
+
+    tomcatmax = 0
+    try:
+        root = ET.parse('/etc/tomcat/server.xml').getroot()
+        for con in root.iter('Connector'):
+            if con.get('port') != "8009":
+                continue
+            max_threads = con.get('maxThreads')
+            if max_threads is None:
+                if 200 > tomcatmax:
+                    tomcatmax = 200
+            elif int(max_threads) > tomcatmax:
+                tomcatmax = int(max_threads)
+    except Exception:
+        pass
+
+    hardmax = tomcatmax + ACCEPT_COUNT
+
+    if apachemax < tomcatmax:
+        sys.stderr.write(f"ERROR: Apache allows fewer connections ({apachemax}) than "
+                         f"Tomcat does ({tomcatmax}). Please align the values.\n")
+    elif apachemax > hardmax:
+        sys.stderr.write(f"ERROR: Apache allows significantly more connections ({apachemax}) "
+                         f"than Tomcat ({tomcatmax}). Please align the values.\n")
+    else:
+        print(f"Apache connections: {apachemax}")
+        print(f"Tomcat connections: {tomcatmax}")
+
+    javamax = 0
+    reporting_javamax = 0
+    dbbackend = ""
+    saltsshthreads = 0
+    report_db_name = ""
+    db_host = ""
+    db_port = "5432"
+    report_db_host = ""
+    report_db_port = "5432"
+
+    try:
+        with open('/etc/rhn/rhn.conf', 'r', encoding='utf-8', errors='ignore') as f:
+            for line in f:
+                if re.match(r'^\s*#', line) or re.match(r'^\s*$', line):
+                    continue
+                m = re.search(r'hibernate.c3p0.max_size\s*=\s*(\d+)', line)
+                if m:
+                    javamax = int(m.group(1))
+                m = re.search(r'reporting.hibernate.c3p0.max_size\s*=\s*(\d+)', line)
+                if m:
+                    reporting_javamax = int(m.group(1))
+                m = re.search(r'db_backend\s*=\s*(\w+)', line)
+                if m:
+                    dbbackend = m.group(1)
+                m = re.search(r'taskomatic\.sshminion_action_executor\.parallel_threads\s*=\s*(\d+)', line)
+                if m:
+                    saltsshthreads = int(m.group(1))
+                m = re.search(r'report_db_name\s*=\s*(\w+)', line)
+                if m:
+                    report_db_name = m.group(1)
+                m = re.search(r'db_host\s*=\s*(\S+)', line)
+                if m:
+                    db_host = m.group(1)
+                m = re.search(r'db_port\s*=\s*(\d+)', line)
+                if m:
+                    db_port = m.group(1)
+                m = re.search(r'report_db_host\s*=\s*(\S+)', line)
+                if m:
+                    report_db_host = m.group(1)
+                m = re.search(r'report_db_port\s*=\s*(\d+)', line)
+                if m:
+                    report_db_port = m.group(1)
+    except OSError:
+        pass
+
+    if javamax == 0:
+        javamax = read_conf_int('/usr/share/rhn/config-defaults/rhn_hibernate.conf',
+                                r'hibernate.c3p0.max_size\s*=\s*(\d+)', 0)
+    if reporting_javamax == 0:
+        reporting_javamax = read_conf_int('/usr/share/rhn/config-defaults/rhn_reporting_hibernate.conf',
+                                          r'reporting.hibernate.c3p0.max_size\s*=\s*(\d+)', 0)
+    if saltsshthreads == 0:
+        saltsshthreads = read_conf_int('/usr/share/rhn/config-defaults/rhn_java.conf',
+                                       r'taskomatic\.sshminion_action_executor\.parallel_threads\s*=\s*(\d+)', 0)
+
+    # reposync computes subprocess count with min(os.cpu_count() * 2, 32)
+    cpucount = 0
+    try:
+        with open('/proc/cpuinfo', 'r', encoding='utf-8', errors='ignore') as f:
+            for line in f:
+                if line.startswith('processor'):
+                    cpucount += 1
+    except OSError:
+        pass
+    reposyncmax = min(cpucount * 2, 32)
+    print(f"Reposync connections: {reposyncmax}")
+
+    worker_threads = parse_salt_worker_threads()
+    print(f"Salt worker threads: {worker_threads}")
+
+    # add one for mgr_events.py and for uyuni roster module
+    # custom engines are not counted here as we don't know if they use (and
+    # potentially leak) DB connections
+    saltmax = worker_threads + saltsshthreads + 2
+
+    # java web ui, taskomatic uses c3p0 pooling
+    # search used a fixed number of connections (10)
+    # + every apache process can eat a connection
+    # + every salt worker (pillar rendering) + mgr_events.py engine + uyuni roster module
+    # + every reposync subprocess connects for insertions
+    # + buffer for local connections (including custom Salt code)
+    mindb = (2 * javamax) + apachemax + 10 + saltmax + reposyncmax + 30
+    min_report_db = (2 * reporting_javamax) + 10
+
+    dblimit = run_query("    show max_connections;\n", 0)
+
+    norm_db_host = db_host or "localhost"
+    if norm_db_host == "127.0.0.1":
+        norm_db_host = "localhost"
+    norm_report_db_host = report_db_host or "localhost"
+    if norm_report_db_host == "127.0.0.1":
+        norm_report_db_host = "localhost"
+
+    shared_db = 0
+    if report_db_name != "" and norm_db_host == norm_report_db_host and db_port == report_db_port:
+        shared_db = 1
+
+    if shared_db:
+        combined_min = mindb + min_report_db
+        if dblimit is None:
+            print("Unable to query the allowed DB connections.")
+            print(f"Minimal required DB connections: {mindb}")
+            print(f"Minimal required Report DB connections: {min_report_db}")
+        elif as_int(dblimit) < combined_min:
+            sys.stderr.write(f"ERROR: SUSE Multi-Linux Manager requires more connections "
+                             f"({combined_min}) than the database provides ({dblimit}). "
+                             f"Please align the values\n")
+        else:
+            print(f"Minimal required DB connections: {mindb}")
+            print(f"Minimal required Report DB connections: {min_report_db}")
+            print(f"Minimal required connections: {combined_min}\nAvailable DB connections: {dblimit}")
+    else:
+        if dblimit is None:
+            print("Unable to query the allowed DB connections.")
+            print(f"Minimal required DB connections: {mindb}")
+        elif as_int(dblimit) < mindb:
+            sys.stderr.write(f"ERROR: SUSE Multi-Linux Manager requires more connections "
+                             f"({mindb}) than the database provides ({dblimit}). "
+                             f"Please align the values\n")
+        else:
+            print(f"Minimal required DB connections: {mindb}\nAvailable DB connections: {dblimit}")
+
+        if report_db_name != "":
+            report_dblimit = run_query("    show max_connections;\n", 1)
+            if report_dblimit is None:
+                print("Unable to query the allowed Report DB connections.")
+                print(f"Minimal required Report DB connections: {min_report_db}")
+            elif as_int(report_dblimit) < min_report_db:
+                sys.stderr.write(f"ERROR: SUSE Multi-Linux Manager Report DB requires more connections "
+                                 f"({min_report_db}) than the database provides ({report_dblimit}). "
+                                 f"Please align the values\n")
+            else:
+                print(f"Minimal required Report DB connections: {min_report_db}\n"
+                      f"Available Report DB connections: {report_dblimit}")
+
+
+if __name__ == '__main__':
+    main()
