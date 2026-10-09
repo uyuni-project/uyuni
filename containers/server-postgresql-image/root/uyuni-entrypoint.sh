@@ -151,7 +151,9 @@ main() {
     fi
 
     # Check if disk space is critically low before starting up
-    if ! /usr/bin/diskcheck.sh; then
+    local disk_severity=0
+    /usr/bin/diskcheck.sh || disk_severity=$?
+    if [ "$disk_severity" -eq 3 ]; then
         log "Startup aborted due to disk space check failure."
         exit 1
     fi
