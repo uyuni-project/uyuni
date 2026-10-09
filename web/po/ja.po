@@ -7254,14 +7254,6 @@ msgstr "highstateの適用が <link>スケジュールされました</link>。"
 msgid "Apply Highstate"
 msgstr "highstate の適用"
 
-#: ../html/src/manager/storybook/storybook.tsx:49
-msgid "Development debugging page"
-msgstr "開発デバッグページ"
-
-#: ../html/src/manager/storybook/storybook.tsx:51
-msgid "This is a hidden page used by developers, if you found it by accident, good job!"
-msgstr "これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:33
 msgid "{productName} Default"
 msgstr "{productName} デフォルト"

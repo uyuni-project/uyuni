@@ -32,7 +32,6 @@ import Salt from "./salt";
 import ScheduleOptions from "./schedule-options";
 import Shared from "./shared";
 import Highstate from "./state";
-import Storybook from "./storybook";
 import Systems from "./systems";
 import ActivationKeys from "./systems/activation-key";
 
@@ -59,7 +58,6 @@ const pages = {
   ...ScheduleOptions,
   ...Shared,
   ...Systems,
-  ...Storybook,
 };
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {

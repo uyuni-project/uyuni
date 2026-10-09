@@ -150,7 +150,9 @@ export class TokenTable extends Component<Props, State> {
 
     return (
       <span className={isExpired ? "text-danger" : ""}>
-        {isExpired ? t("Yes, expired <expiration></expiration>") : t("No, expires <expiration></expiration>", param)}
+        {isExpired
+          ? t("Yes, expired <expiration></expiration>", param)
+          : t("No, expires <expiration></expiration>", param)}
       </span>
     );
   }

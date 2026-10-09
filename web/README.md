@@ -1,8 +1,8 @@
 # `spacewalk-web`
 
-The `web` subdirectory contains the modern web UI for Uyuni. It includes reusable components, stylesheets, assets such as fonts and images, translations, etc.  
+The `web` subdirectory contains the modern web UI for Uyuni. It includes reusable components, stylesheets, assets such as fonts and images, translations, etc.
 
-This directory builds into the package `spacewalk-web`.  
+This directory builds into the package `spacewalk-web`.
 
 ## Prerequisites
 
@@ -26,9 +26,9 @@ The frontend development proxy will serve all local Javascript files with hot re
 npm run proxy https://server.tf.local
 ```
 
-## Storybook and reusable components 
+## Storybook and reusable components
 
-The external Storybook exists to improve frontend development and review workflows without replacing the legacy in-app style guide. It gives new and actively changed React components a standalone place for interactive documentation, args/controls, local regression checks.
+Storybook provides a standalone place for interactive documentation, controls, and local regression checks for reusable React components.
 
 The Storybook for the current `master` branch is published at [https://www.uyuni-project.org/uyuni/storybook/](https://www.uyuni-project.org/uyuni/storybook/). GitHub Actions rebuilds and deploys it after every push to `master`.
 
@@ -40,7 +40,7 @@ Inside the web directory run:
 npm run storybook
 ```
 
-This starts Storybook at [http://localhost:6006](http://localhost:6006). It reuses the existing `.example.ts` and `.example.tsx` files as generated legacy stories and supports new `.stories.tsx` files with Storybook args and controls. While Storybook is running, newly added, removed, or renamed `.example.ts` / `.example.tsx` files are regenerated automatically.
+This starts Storybook at [http://localhost:6006](http://localhost:6006). Stories live next to their components in `.stories.tsx` files.
 
 To build a static Storybook locally:
 
@@ -50,38 +50,30 @@ npm run build-storybook
 
 The output is written to `storybook-static`.
 
-New or actively changed reusable components should get real `.stories.tsx` stories. Existing `.example.ts` and `.example.tsx` files are kept for compatibility and are wrapped automatically.
-
-## Legacy style guide of reusable components 
-
-We use a style guide to document reusable components. The guide can be accessed at [https://server.tf.local/rhn/manager/storybook](https://server.tf.local/rhn/manager/storybook) (replace `server.tf.local` with your server FQDN).
-
-The guide automatically loads all files matching `.example.ts` and `.example.tsx` on a full build. Reusable components live in `web/html/src/components`. Development of new reusable components should start with the guide first. You can use the development proxy described above for ease of development.  
-
-<img width="2076" alt="Screenshot of the style guide" src="./README-1.png" />
+Reusable components live in `web/html/src/components`. New or actively changed reusable components should include a `.stories.tsx` file. Use `Components` for generic UI building blocks, `Compositions` for combined or Uyuni-specific workflows, and `Deprecated` only for components with a documented replacement.
 
 ## Scripts
 
-The following scripts cover most day-to-day uses, see `package.json` for more:  
+The following scripts cover most day-to-day uses, see `package.json` for more:
 
- - Run lint with autofixer: `npm run lint`
- - Run unit tests: `npm run test`  
- - Run the Typescript checker: `npm run tsc`  
- - Build the web UI: `npm run build`  
- - Run lint, tests, Typescript checker, and build the application: `npm run all`  
- - Audit production dependencies: `npm run audit-production-dependencies`
- - Run a development proxy against a server: `npm run proxy https://server.tf.local`  
+- Run lint with autofixer: `npm run lint`
+- Run unit tests: `npm run test`
+- Run the Typescript checker: `npm run tsc`
+- Build the web UI: `npm run build`
+- Run lint, tests, Typescript checker, and build the application: `npm run all`
+- Audit production dependencies: `npm run audit-production-dependencies`
+- Run a development proxy against a server: `npm run proxy https://server.tf.local`
 
 ## Directory structure
 
-The `web` subdirectory consists of roughly the following main chunks:  
+The `web` subdirectory consists of roughly the following main chunks:
 
- - `web/po`: Translations.
- - `web/html/javascript`: Legacy scripts, most of them global. Over time we're slowly trying to sunset these piece by piece.  
- - `web/html/src/branding`: Branding assets, such as stylesheet sources, fonts, images etc.
- - `web/html/src/build`: Build tooling for the web UI.
- - `web/html/src/components`, `web/html/src/core`, `web/html/src/manager`, `web/html/src/utils`: Source code for the web UI.
- - `web/html/dist`: Output directory for the frontend build, do not check this directory in nor modify it directly, your changes will be overwritten by the next build.  
+- `web/po`: Translations.
+- `web/html/javascript`: Legacy scripts, most of them global. Over time we're slowly trying to sunset these piece by piece.
+- `web/html/src/branding`: Branding assets, such as stylesheet sources, fonts, images etc.
+- `web/html/src/build`: Build tooling for the web UI.
+- `web/html/src/components`, `web/html/src/core`, `web/html/src/manager`, `web/html/src/utils`: Source code for the web UI.
+- `web/html/dist`: Output directory for the frontend build, do not check this directory in nor modify it directly, your changes will be overwritten by the next build.
 
 ## Adding a new dependency
 
@@ -102,12 +94,12 @@ If you use VSCode for development, please install [the ESLint extension](https:/
 
 ### How to resolve `package-lock.json` conflicts
 
-`package-lock.json` is a generated file, you generally don't want to resolve conflicts manually. First, try running `npm install` and see if NPM can resolve the conflicts automatically.  
+`package-lock.json` is a generated file, you generally don't want to resolve conflicts manually. First, try running `npm install` and see if NPM can resolve the conflicts automatically.
 
-If this doesn't resolve all of the conflicts, you can try the following:  
+If this doesn't resolve all of the conflicts, you can try the following:
 
-* solve conflicts with theirs
-* run `npm install` again with the new dependencies you added
+- solve conflicts with theirs
+- run `npm install` again with the new dependencies you added
 
 ### Historical architecture notes
 
