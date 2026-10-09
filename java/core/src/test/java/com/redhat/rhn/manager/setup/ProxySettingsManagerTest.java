@@ -112,16 +112,13 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         configCommand.updateString(ConfigDefaults.HTTP_PROXY_PASSWORD, proxySettingsDto.getPassword());
 
         String[] cmdArgs = configCommand.getCommandArguments();
-        assertEquals(9, cmdArgs.length);
+        assertEquals(6, cmdArgs.length);
         assertEquals("/usr/bin/sudo", cmdArgs[0]);
         assertEquals("/usr/bin/rhn-config-satellite", cmdArgs[1]);
         assertTrue(cmdArgs[2].startsWith("--target="));
         assertEquals("--option=server.satellite.http_proxy=%s".formatted(TEST_HOSTNAME), cmdArgs[3]);
         assertEquals("--option=server.satellite.http_proxy_username=%s".formatted(TEST_USERNAME), cmdArgs[4]);
         assertEquals("--option=server.satellite.http_proxy_password=%s".formatted(TEST_PASSWD), cmdArgs[5]);
-        assertEquals("2>&1", cmdArgs[6]);
-        assertEquals(">", cmdArgs[7]);
-        assertEquals("/dev/null", cmdArgs[8]);
     }
 
     @Test
@@ -148,7 +145,7 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         configCommand.updateString(ConfigDefaults.HTTP_PROXY_PASSWORD, proxySettingsDto.getPassword());
 
         String[] cmdArgs = configCommand.getCommandArguments();
-        assertEquals(10, cmdArgs.length);
+        assertEquals(7, cmdArgs.length);
         assertEquals("/usr/bin/sudo", cmdArgs[0]);
         assertEquals("-E", cmdArgs[1]);
         assertEquals("/usr/bin/rhn-config-satellite", cmdArgs[2]);
@@ -156,9 +153,6 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         assertEquals("--option=server.satellite.http_proxy=%s".formatted(TEST_HOSTNAME), cmdArgs[4]);
         assertEquals("--option=server.satellite.http_proxy_username=%s".formatted(TEST_USERNAME), cmdArgs[5]);
         assertEquals("--option=server.satellite.http_proxy_password=PWD_PLACEHOLDER", cmdArgs[6]);
-        assertEquals("2>&1", cmdArgs[7]);
-        assertEquals(">", cmdArgs[8]);
-        assertEquals("/dev/null", cmdArgs[9]);
 
         assertEquals("UYUNICFG_PWD_PLACEHOLDER=%s".formatted(TEST_PASSWD), configCommand.getFirstEnvironmentVar());
     }
@@ -170,15 +164,12 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         configCommand.updateString(ConfigDefaults.HTTP_PROXY_USERNAME, proxySettingsDto.getUsername());
 
         String[] cmdArgs = configCommand.getCommandArguments();
-        assertEquals(8, cmdArgs.length);
+        assertEquals(5, cmdArgs.length);
         assertEquals("/usr/bin/sudo", cmdArgs[0]);
         assertEquals("/usr/bin/rhn-config-satellite", cmdArgs[1]);
         assertTrue(cmdArgs[2].startsWith("--target="));
         assertEquals("--option=server.satellite.http_proxy=", cmdArgs[3]);
         assertEquals("--option=server.satellite.http_proxy_username=%s".formatted(TEST_USERNAME), cmdArgs[4]);
-        assertEquals("2>&1", cmdArgs[5]);
-        assertEquals(">", cmdArgs[6]);
-        assertEquals("/dev/null", cmdArgs[7]);
     }
 
     @Test
@@ -187,15 +178,12 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         configCommand.updateString(ConfigDefaults.HTTP_PROXY_PASSWORD, proxySettingsDto.getPassword());
 
         String[] cmdArgs = configCommand.getCommandArguments();
-        assertEquals(8, cmdArgs.length);
+        assertEquals(5, cmdArgs.length);
         assertEquals("/usr/bin/sudo", cmdArgs[0]);
         assertEquals("-E", cmdArgs[1]);
         assertEquals("/usr/bin/rhn-config-satellite", cmdArgs[2]);
         assertTrue(cmdArgs[3].startsWith("--target="));
         assertEquals("--option=server.satellite.http_proxy_password=PWD_PLACEHOLDER", cmdArgs[4]);
-        assertEquals("2>&1", cmdArgs[5]);
-        assertEquals(">", cmdArgs[6]);
-        assertEquals("/dev/null", cmdArgs[7]);
 
         assertEquals("UYUNICFG_PWD_PLACEHOLDER=%s".formatted(TEST_PASSWD), configCommand.getFirstEnvironmentVar());
     }
@@ -208,15 +196,12 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         configCommand.updateString(ConfigDefaults.HTTP_PROXY_PASSWORD, proxySettingsDto.getPassword());
 
         String[] cmdArgs = configCommand.getCommandArguments();
-        assertEquals(8, cmdArgs.length);
+        assertEquals(5, cmdArgs.length);
         assertEquals("/usr/bin/sudo", cmdArgs[0]);
         assertEquals("-E", cmdArgs[1]);
         assertEquals("/usr/bin/rhn-config-satellite", cmdArgs[2]);
         assertTrue(cmdArgs[3].startsWith("--target="));
         assertEquals("--option=server.satellite.http_proxy_password=PWD_PLACEHOLDER", cmdArgs[4]);
-        assertEquals("2>&1", cmdArgs[5]);
-        assertEquals(">", cmdArgs[6]);
-        assertEquals("/dev/null", cmdArgs[7]);
 
         assertEquals("UYUNICFG_PWD_PLACEHOLDER=", configCommand.getFirstEnvironmentVar());
     }

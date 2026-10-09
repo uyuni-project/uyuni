@@ -94,9 +94,6 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
             somethingChanged = true;
         }
 
-        argList.add("2>&1");
-        argList.add(">");
-        argList.add("/dev/null");
         String[] returnStringArray = argList.toArray(new String[0]);
         if (logger.isDebugEnabled()) {
             logger.debug("getCommandArguments(String, Iterator) - end - return value={}", (Object) returnStringArray);

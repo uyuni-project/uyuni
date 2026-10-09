@@ -82,7 +82,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
                 optionMap, Collections.<String>emptyList());
 
         assertEquals("--option=test.null_config.config_sat_test=", cmdargs[4]);
-        assertEquals(9, cmdargs.length);
+        assertEquals(6, cmdargs.length);
         assertNull(cmd.storeConfiguration());
         assertTrue(cmd.getKeysToBeUpdated().isEmpty());
         // Test setting back to the original value
@@ -137,7 +137,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         assertEquals("--option=" + TEST_CONFIG_STRING + "=somevalue", cmdargs[3]);
         assertEquals("--remove=" + TEST_CONFIG_BOOLEAN, cmdargs[4]);
 
-        assertEquals(8, cmdargs.length);
+        assertEquals(5, cmdargs.length);
         assertNull(cmd.storeConfiguration());
         assertEquals(0, cmd.getKeysToBeUpdated().size());
     }
