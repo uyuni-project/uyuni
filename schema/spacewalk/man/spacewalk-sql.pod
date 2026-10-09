@@ -1,0 +1,89 @@
+=head1 NAME
+
+spacewalk-sql - utility for feeding SQL to Spacewalk's and Report database.
+
+=head1 SYNOPSIS
+
+    spacewalk-sql sql-file-to-use.sql
+    spacewalk-sql - < sql-file-to-use.sql
+    spacewalk-sql -i
+
+    spacewalk-sql --verbose sql-file-to-use.sql
+    spacewalk-sql --select-mode - < sql-file-to-use.sql
+    spacewalk-sql --verbose --select-mode sql-file-to-use.sql
+    spacewalk-sql --select-mode-direct sql-file-to-use.sql
+
+    spacewalk-sql --interactive
+
+=head1 OPTIONS
+
+=over 5
+
+=item --select-mode
+
+By default, no output is printed to standard output because
+B<spacewalk-sql> is primarily intended to feed DDL/DML to the
+database, not do queries. With this option, upon successful
+completion, the output will be printed to standard output. Note that
+it will be in the native format.
+
+=item --select-mode-direct
+
+Variant of B<--select-mode> when the output is printed out
+immediatelly, without waiting for successful result. This is useful
+when you want to log the output and be able to watch it while
+the command runs, for example with C<tail -f>.
+
+Note that only one of B<--select-mode> and B<--select-mode-direct>
+can be specified.
+
+=item -i | --interactive
+
+Start the interactive session.
+
+This option cannot be used together with the B<--select-mode*>
+options.
+
+=item --reportdb
+Use the report DB instead of the main spacewalk DB.
+
+=item --verbose
+
+If this option is used, the command which will be invoked including
+any parameter is printed to standard error output, prior to it
+execution. No quoting is done however, so it can only be used to get
+rough idea about what is being called.
+
+=back
+
+=head1 DESCRIPTION
+
+The B<spacewalk-sql> does the right thing for spacewalk databases.
+It fetches the database backend type and the connect information from
+Spacewalk config files, selects the correct command line tool, runs it
+and feeds it the SQL from file specified as parameter. If single
+hyphen sign (B<->) is used for the SQL file parameter, standard input
+is used. If the B<-i> option is used, interactive session is started.
+
+No output is printed upon successful operation unless B<--select-mode>.
+If any error is reported, the error message and all output generated
+is printed on the standard output.
+
+The exit value is the exit value of the B<psql> or B<sqlplus>.
+
+=head1 FILES
+
+=over 5
+
+=item F</etc/rhn/rhn.conf>
+
+File which holds connect information for the Spacewalk database backend.
+
+=back
+
+=head1 AUTHORS
+
+Jan Pazdziora
+
+Python conversion by Vladimir Nadvornik
+=cut

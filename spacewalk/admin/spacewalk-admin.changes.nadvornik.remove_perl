@@ -1,0 +1,2 @@
+- Convert rhn-config-satellite from Perl to Python
+- Remove obsolete rhn-deploy-ca-cert and rhn-install-ssl-cert

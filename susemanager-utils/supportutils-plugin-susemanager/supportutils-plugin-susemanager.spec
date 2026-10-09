@@ -28,7 +28,6 @@ URL:            https://github.com/uyuni-project/uyuni
 Source:         %{name}-%{version}.tar.gz
 Requires:       supportutils
 Requires:       susemanager
-Requires:       perl(XML::Simple)
 # We need to use packageand() to keep compatibility
 # with old RPM versions, like in SLE12
 Supplements:    packageand(spacewalk-common:supportutils)
@@ -51,7 +50,7 @@ install -d %{buildroot}%{_mandir}/man8
 install -d %{buildroot}/sbin
 install -d %{buildroot}%{_prefix}/lib/susemanager/bin/
 install -m 0544 supportconfig-sumalog %{buildroot}/sbin
-install -m 0544 susemanager-connection-check.pl %{buildroot}%{_prefix}/lib/susemanager/bin/susemanager-connection-check
+install -m 0544 susemanager-connection-check %{buildroot}%{_prefix}/lib/susemanager/bin/susemanager-connection-check
 install -m 0544 susemanager %{buildroot}%{_prefix}/lib/supportconfig/plugins
 install -m 0644 susemanager-plugin.8.gz %{buildroot}%{_mandir}/man8/susemanager-plugin.8.gz
 

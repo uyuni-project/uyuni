@@ -55,12 +55,6 @@ Requires:       spacewalk-backend-tools >= 2.2.27
 Requires(pre):  uyuni-base-common
 BuildArch:      noarch
 
-%if 0%{?suse_version}
-Requires:       perl = %{perl_version}
-%else
-Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
-%endif
-
 %description
 Utilities that may be run against a %{productprettyname} server
 

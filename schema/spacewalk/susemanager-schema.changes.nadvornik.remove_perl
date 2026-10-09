@@ -1,0 +1,2 @@
+- Convert spacewalk-schema-upgrade and spacewalk-sql from perl
+  to python
