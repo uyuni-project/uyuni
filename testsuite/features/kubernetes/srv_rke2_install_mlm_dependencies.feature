@@ -5,56 +5,34 @@
 @no_user_creation
 Feature: Install MLM dependencies on RKE2
 
-  Scenario: Check the RKE2 configuration
-    Then the environment variable "CERT_MANAGER_VERSION" is set on "server"
-    And the environment variable "CERT_MANAGER_NAMESPACE" is set on "server"
-    And the environment variable "TRAEFIK_FILE" is set on "server"
-    And the environment variable "LOCAL_PATH_PROVISIONER_PATH" is set on "server"
-    And the environment variable "LOCAL_PATH_PROVISIONER_STORAGE_CLASS" is set on "server"
-    And the environment variable "LOCAL_PATH_PROVISIONER_FILE" is set on "server"
-    And the environment variable "LOCAL_PATH_NAMESPACE" is set on "server"
-    And the environment variable "SERVER_NAMESPACE" is set on "server"
-    And the environment variable "SCC_SECRET_NAME" is set on "server"
-    And the environment variable "CC_USERNAME" is set on "server"
-    And the environment variable "CC_PASSWORD" is set on "server"
-    And file "/etc/rancher/rke2/config.yaml" should exist on "server"
-
   Scenario: Create server namespace
-    When I run "kubectl create namespace $SERVER_NAMESPACE --dry-run=client -o yaml | kubectl apply -f -" on "server"
+    When I create namespace "$SERVER_NAMESPACE" on "server"
 
 @create_spacewalk_pv
   Scenario: Create the spacewalk PV
-    When the environment variable "SPACEWALK_PV_FILE" is set on "server"
-    And I run "kubectl apply -f $SPACEWALK_PV_FILE" on "server"
+    When I create a persistent volume defined in"$SPACEWALK_PV_FILE" on "server"
 
 @create_pgsql_pv
   Scenario: Create the PostgreSQL PV
-    When the environment variable "PGSQL_PV_FILE" is set on "server"
-    And I run "kubectl apply -f $PGSQL_PV_FILE" on "server"
+    When I create a persistent volume defined in"$PGSQL_PV_FILE" on "server"
 
 @skip_if_external_cluster
   Scenario: Install Helm
-    When I run "set -o pipefail; curl -sfL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash" on "server"
+    When I install Helm on "server"
 
   Scenario: Install cert-manager and trust-manager
-    When I run "helm upgrade --install cert-manager oci://quay.io/jetstack/charts/cert-manager --version $CERT_MANAGER_VERSION --namespace $CERT_MANAGER_NAMESPACE --create-namespace --set crds.enabled=true --timeout 10m0s --wait" on "server"
-    Then I wait until "cert-manager" helm chart is deployed in namespace "cert-manager" on "server"
-    When I run "helm upgrade --install trust-manager oci://quay.io/jetstack/charts/trust-manager --namespace $CERT_MANAGER_NAMESPACE --wait" on "server"
-    Then I wait until "trust-manager" helm chart is deployed in namespace "cert-manager" on "server"
+    When I install and wait for cert-manager on "server"
+    And I install and wait for trust-manager on "server"
 
   ## Install Traefik
   Scenario: Install Traefik
-    When I apply the RKE2 YAML file "$TRAEFIK_FILE" on "server"
+    When I install Traefik on "server"
 
   @default_local_path_class
   Scenario: Apply local path provisioner
-    When I apply the RKE2 YAML file "$LOCAL_PATH_PROVISIONER_FILE" on "server"
-    And I set "$LOCAL_PATH_PROVISIONER_STORAGE_CLASS" storage class as default on "server"
-    And I run "mkdir -p $LOCAL_PATH_PROVISIONER_PATH" on "server"
-    And I run "restorecon -R -v $LOCAL_PATH_PROVISIONER_PATH" on "server"
-    And I run "kubectl delete pods --all -n $LOCAL_PATH_NAMESPACE" on "server"
+    When I configure the local path provisioner on "server"
 
   ## Set up secret with scc credentials
   @scc_credentials
   Scenario: Set up SCC credentials
-    When I run "kubectl create secret generic -n $SERVER_NAMESPACE --type 'kubernetes.io/basic-auth' --from-literal=username=$CC_USERNAME --from-literal=password=$CC_PASSWORD $SCC_SECRET_NAME  --dry-run=client -o yaml | kubectl apply -f -" on "server"
+    When I set up the Kubernetes SCC credentials on the server

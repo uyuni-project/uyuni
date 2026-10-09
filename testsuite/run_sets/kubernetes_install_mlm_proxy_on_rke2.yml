@@ -8,6 +8,7 @@
 
 # IDEMPOTENT
 
+- features/kubernetes/proxy_rke2_mlm_configuration.feature
 - features/kubernetes/proxy_rke2_install_mlm_dependencies.feature
 - features/kubernetes/proxy_rke2_set_up_proxy_certs.feature
 - features/kubernetes/proxy_rke2_install_mlm_proxy_on_rke2.feature

@@ -3,6 +3,99 @@
 
 require 'shellwords'
 
+When(/^I create namespace "([^"]*)" on "([^"]*)"$/) do |namespace, host|
+  get_target(host).run("kubectl create namespace #{namespace} --dry-run=client -o yaml | kubectl apply -f -")
+end
+
+When(/^I install Helm on "([^"]*)"$/) do |host|
+  get_target(host).run('set -o pipefail; curl -sfL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash')
+end
+
+When(/^I install and wait for cert-manager on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run('helm upgrade --install cert-manager oci://quay.io/jetstack/charts/cert-manager --version $CERT_MANAGER_VERSION --namespace $CERT_MANAGER_NAMESPACE --create-namespace --set crds.enabled=true --timeout 10m0s --wait', runs_in_container: false)
+  node.run_until_ok("helm status cert-manager --namespace $CERT_MANAGER_NAMESPACE | grep -q 'STATUS: deployed'", runs_in_container: false)
+end
+
+When(/^I install and wait for trust-manager on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run('helm upgrade --install trust-manager oci://quay.io/jetstack/charts/trust-manager --namespace $CERT_MANAGER_NAMESPACE --wait')
+  node.run_until_ok("helm status trust-manager --namespace $CERT_MANAGER_NAMESPACE | grep -q 'STATUS: deployed'", runs_in_container: false)
+end
+
+When(/^I install Traefik on "([^"]*)"$/) do |host|
+  _out, code = get_target(host).run_local('kubectl apply -f $TRAEFIK_FILE')
+  raise ScriptError, "Failed to apply TRAEFIK on #{host}" unless code.zero?
+end
+
+When(/^I create a persistent volume defined in"([^"]*)" on "([^"]*)"$/) do |filename, host|
+  _out, code = get_target(host).run_local("kubectl apply -f #{filename}")
+  raise ScriptError, "Failed to apply #{filename} on #{host}" unless code.zero?
+end
+
+When('I set up the Kubernetes SCC credentials on the server') do
+  get_target('server').run("kubectl create secret generic -n $SERVER_NAMESPACE --type 'kubernetes.io/basic-auth' --from-literal=username=$CC_USERNAME --from-literal=password=$CC_PASSWORD $SCC_SECRET_NAME  --dry-run=client -o yaml | kubectl apply -f -")
+end
+
+When(/^I create the Helm chart directory on "([^"]*)"$/) do |host|
+  get_target(host).run('mkdir -p $SELF_SIGNED_PATH')
+end
+
+When('I unpack the MLM proxy configuration for Helm') do
+  node = get_target('proxy')
+  node.run('cp -r /root/config.tar.gz $HELM_CHART_DIRECTORY')
+  node.run('tar -xf $HELM_CHART_DIRECTORY/config.tar.gz -C $HELM_CHART_DIRECTORY/')
+end
+
+When('I install the MLM proxy on RKE2') do
+  get_target('proxy').run('helm upgrade --install $PROXY_DEPLOY_NAME $SELF_SIGNED_PATH -f $VALUES_YAML_PATH -n $PROXY_NAMESPACE --set-file global.ssh=$HELM_CHART_DIRECTORY/ssh.yaml --set-file global.config=$HELM_CHART_DIRECTORY/config.yaml --set-file global.httpd=$HELM_CHART_DIRECTORY/httpd.yaml')
+end
+
+When(/^I apply the file "([^"]*)" with kubectl on "([^"]*)"$/) do |file, target|
+  get_target(target).run("kubectl apply -f #{file}", runs_in_container: false)
+end
+
+When(/^I export the proxy certificate secret from the RKE2 server to "([^"]*)"$/) do |file|
+  get_target('server').run("kubectl get secret -n $SERVER_NAMESPACE -o yaml $PROXY_NAME_CERT > #{Shellwords.escape(file)}", runs_in_container: false)
+end
+
+When(/^I import the proxy certificate secret from "([^"]*)" into the RKE2 proxy$/) do |file|
+  get_target('proxy').run("cat #{Shellwords.escape(file)} | sed -e 's/name: $PROXY_NAME_CERT/name: proxy-cert/' -e 's/namespace: $SERVER_NAMESPACE/namespace: $PROXY_NAMESPACE/' -e '/\\(uid\\)\\|\\(resourceVersion\\)\\|\\(creationTimestamp\\)\\|\\(cert-manager\\)/d' | kubectl apply -f -")
+end
+
+When(/^I generate the MLM proxy configuration archive on the RKE2 server at "([^"]*)"$/) do |archive_path|
+  node = get_target('server')
+  %w[ca.crt tls.crt tls.key].each do |filename|
+    node.run("kubectl get secret $PROXY_NAME_CERT -n $SERVER_NAMESPACE -o jsonpath='{.data.#{filename.sub('.', '\\.')}}' | base64 -d > /root/#{filename}", runs_in_container: false)
+    node.run("kubectl cp /root/#{filename} $SERVER_NAMESPACE/$(kubectl get pods -n $SERVER_NAMESPACE -l app.kubernetes.io/component=server -o jsonpath='{.items[0].metadata.name}'):/#{filename}", runs_in_container: false)
+  end
+  node.run('kubectl exec $(kubectl get pods -n $SERVER_NAMESPACE -l app.kubernetes.io/component=server -o jsonpath=\'{.items[0].metadata.name}\') -n $SERVER_NAMESPACE -- spacecmd -u admin -p admin proxy_container_config -- $PROXY_FQDN $SERVER_FQDN 2048 galaxy-noise@suse.com ca.crt tls.crt tls.key', runs_in_container: false)
+  node.run("kubectl cp $SERVER_NAMESPACE/$(kubectl get pods -n $SERVER_NAMESPACE -l app.kubernetes.io/component=server -o jsonpath='{.items[0].metadata.name}'):/config.tar.gz #{Shellwords.escape(archive_path)}", runs_in_container: false)
+end
+
+When(/^I export the Uyuni CA from the RKE2 server to "([^"]*)"$/) do |file|
+  get_target('server').run("kubectl get cm -n $SERVER_NAMESPACE uyuni-ca -o 'jsonpath={.data.ca\\.crt}' > #{Shellwords.escape(file)}", runs_in_container: false)
+end
+
+When(/^I import the Uyuni CA from "([^"]*)" into the RKE2 proxy$/) do |file|
+  get_target('proxy').run("kubectl create configmap uyuni-ca -n $PROXY_NAMESPACE --from-file=ca.crt=#{Shellwords.escape(file)} --dry-run=client -o yaml | kubectl apply -f -")
+end
+
+When(/^I update the OCI Helm chart app version on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run('python3 $PYTHON_HELM_CHART_PATH -o $HELM_CHART_URL/$HELM_CHART_NAME --chart-file $SELF_SIGNED_PATH/Chart.yaml $DEVEL_FLAG')
+end
+
+When(/^I build the Helm chart dependencies on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run('cd $SELF_SIGNED_PATH && helm dependencies build')
+end
+
+When('I install the MLM server on RKE2') do
+  node = get_target('server')
+  node.run('helm upgrade --install $SERVER_DEPLOY_NAME $SELF_SIGNED_PATH -f $VALUES_YAML_PATH -n $SERVER_NAMESPACE')
+end
+
 When('I configure the salt bundle pillar on the RKE2 server') do
   script = <<~SH
     set -e
@@ -56,10 +149,17 @@ When(/^I wait until "([^"]*)" helm chart is deployed in namespace "([^"]*)" on "
   node.run_until_ok("helm status #{chart} --namespace #{namespace} | grep -q 'STATUS: deployed'", runs_in_container: false)
 end
 
-When(/^I set "([^"]*)" storage class as default on "([^"]*)"$/) do |storage_class, target|
-  cmd = "kubectl patch storageclass #{storage_class} -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"true\"}}}'"
-  _out, code = get_target(target).run_local(cmd)
-  raise ScriptError, "Failed to set #{storage_class} as default storage class on #{target}" unless code.zero?
+When(/^I configure the local path provisioner on "([^"]*)"$/) do |target|
+  node = get_target(target)
+  _out, code = node.run_local('kubectl apply -f $LOCAL_PATH_PROVISIONER_FILE')
+  raise ScriptError, "Failed to apply LOCAL_PATH_PROVISIONER_FILE on #{target}" unless code.zero?
+
+  _out, code = node.run_local("kubectl patch storageclass $LOCAL_PATH_PROVISIONER_STORAGE_CLASS -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"true\"}}}'")
+  raise ScriptError, "Failed to set $LOCAL_PATH_PROVISIONER_STORAGE_CLASS as default storage class on #{target}" unless code.zero?
+
+  node.run('mkdir -p $LOCAL_PATH_PROVISIONER_PATH')
+  node.run('restorecon -R -v $LOCAL_PATH_PROVISIONER_PATH')
+  node.run('kubectl delete pods --all -n $LOCAL_PATH_NAMESPACE')
 end
 
 ### External CA setup and teardown steps
