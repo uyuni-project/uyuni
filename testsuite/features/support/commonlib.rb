@@ -610,9 +610,10 @@ def extract_logs_from_node(node, host)
     end
     node.run('journalctl > /var/log/messages', check_errors: false)
     node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
-    node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
+    tmp_dir = '/srv'
+    node.run("tar cfvJP #{tmp_dir}/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
     `mkdir logs` unless Dir.exist?('logs')
-    success = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
+    success = file_extract(node, "#{tmp_dir}/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
     raise ScriptError, 'Download log archive failed' unless success
   rescue Errno::ECONNRESET
     $stdout.puts "⚠️ WARN: Skipping log extraction for node #{host} due to connection reset."
