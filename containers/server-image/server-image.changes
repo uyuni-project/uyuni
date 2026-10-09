@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 09 15:49:54 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.4
+  * Create reduced SBOM filesize of containers
+
+-------------------------------------------------------------------
 Thu Oct 08 01:10:50 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.3
