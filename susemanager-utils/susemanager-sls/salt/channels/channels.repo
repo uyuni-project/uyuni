@@ -80,4 +80,38 @@ pkg_gpgcheck={{ args['pkg_gpgcheck'] }}
 type={{ args['type'] }}
 {%- endif %}
 
+{%- set minion_type_supports_pqc = False %}
+{%- if grains['os_family'] == 'Suse' %}
+{#- openSUSE LEAP 16 #}
+{%- if "leap" in grains['osfullname']|lower %}
+{%- if grains['osmajorrelease']|int >= 16 %}
+{%- set minion_type_supports_pqc = True %}
+{%- endif %}
+{%- endif %}
+{#- SLES 16 #}
+{%- if "sles" in grains['osfullname']|lower %}
+{%- if grains['osmajorrelease']|int >= 16 %}
+{%- set minion_type_supports_pqc = True %}
+{%- endif %}
+{%- endif %}
+{#- TUMBLEWEED #}
+{%- if "tumbleweed" in grains['oscodename']|lower %}
+{%- if grains['osmajorrelease']|int >= 20261000 %}
+{%- set minion_type_supports_pqc = True %}
+{%- endif %}
+{%- endif %}
+{%- endif %}
+
+{%- if salt['pillar.get']('mgr_pqc_metadata_signing_enabled', false) %}
+{%- if salt['file.file_exists']('/usr/lib/zypp/plugins/sigcheck/pqcverification') %}
+{%- if minion_type_supports_pqc %}
+repo_sigcheck_plugin=pqcverification
+{%- else %}
+# PQC signing enabled but not supported by this OS type
+{%- endif %}
+{%- else %}
+# PQC signing enabled but zypper PQC plugin not found
+{%- endif %}
+{%- endif %}
+
 {% endfor %}

@@ -22,6 +22,7 @@ import java.util.Optional;
 public class HubDetailsData extends IssServerDetailsData {
 
     private final String gpgKey;
+    private final String pqcCert;
 
     /**
      * Create an instance from the hub entity.
@@ -39,9 +40,14 @@ public class HubDetailsData extends IssServerDetailsData {
         );
 
         this.gpgKey = hub.getGpgKey();
+        this.pqcCert = hub.getPqcCert();
     }
 
     public String getGpgKey() {
         return gpgKey;
+    }
+
+    public String getPqcCert() {
+        return pqcCert;
     }
 }

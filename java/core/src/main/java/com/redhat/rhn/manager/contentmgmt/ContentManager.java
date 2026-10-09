@@ -1022,6 +1022,10 @@ public class ContentManager {
         target.setGPGKeyUrl(source.getGPGKeyUrl());
     }
 
+    private static void syncPqcKeyInfo(Channel source, Channel target) {
+        target.setPqcCheck(source.isPqcCheck());
+    }
+
     /**
      * Clone {@link Channel}s to given {@link ContentEnvironment}
      *
@@ -1095,6 +1099,8 @@ public class ContentManager {
 
         // Sync GPG key info to target in case it's updated since last build
         syncGpgKeyInfo(newSource, tgt);
+        // Sync PQC key info to target in case it's updated since last build
+        syncPqcKeyInfo(newSource, tgt);
         // Sync also the update tag. This should not change, but in case it does we have to promote it
         tgt.setUpdateTag(newSource.getUpdateTag());
 

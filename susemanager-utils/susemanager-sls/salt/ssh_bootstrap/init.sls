@@ -77,4 +77,5 @@ authorize_own_key:
 {% do repos_disabled.update({'skip': true}) %}
 
 {% include 'channels/gpg-keys.sls' %}
+{% include 'channels/pqc-keys.sls' %}
 {% include 'bootstrap/remove_traditional_stack.sls' %}

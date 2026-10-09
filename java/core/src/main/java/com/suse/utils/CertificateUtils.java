@@ -47,9 +47,16 @@ public final class CertificateUtils {
 
     private static final Path GPG_PUBKEY = Path.of("/srv/susemanager/salt/gpg/mgr-gpg-pub.key");
 
+    private static final Path PQC_PUB_CERT = Path.of("/srv/susemanager/salt/pqc/mgr-pqc-cert.pem");
+
     private static final Path CUSTOMER_GPG_DIR = Path.of("/var/spacewalk/gpg");
 
     private static final Path CUSTOMER_GPG_RING = CUSTOMER_GPG_DIR.resolve("customer-build-keys.gpg");
+
+    private static final Path PQC_CUSTOMER_DIR = Path.of("/var/spacewalk/pqkeys/");
+    private static final Path PQC_LIB_DIR = Path.of("/var/lib/spacewalk/pqkeys/");
+
+    private static final String PQC_HUB_CERT_FILENAME = "hub-mgr-pqc-cert.pem";
 
     private static final Path PUBRING_DIR = Path.of("/var/lib/spacewalk/gpgdir");
 
@@ -88,6 +95,15 @@ public final class CertificateUtils {
      */
     public static String loadGpgKey() throws IOException {
         return loadTextFile(GPG_PUBKEY);
+    }
+
+    /**
+     * Loads the local PQC certificate used for signing the metadata.
+     * @return a string representation of the PQC certificate
+     * @throws IOException when reading the data from file fails
+     */
+    public static String loadPqcCert() throws IOException {
+        return loadTextFile(PQC_PUB_CERT);
     }
 
     /**
@@ -253,41 +269,85 @@ public final class CertificateUtils {
     /**
      * Import the GPG Key in the keyring
      * @param gpgKey the gpg key (armored text)
-     * @throws IOException if something goes wrong
+     * @throws GpgKeyException if something goes wrong
      */
-    public static void importGpgKey(String gpgKey) throws IOException {
+    public static void importGpgKey(String gpgKey) throws GpgKeyException {
         if (StringUtils.isBlank(gpgKey)) {
             LOG.info("No GPG Key provided");
             return;
         }
         FileAttribute<Set<PosixFilePermission>> fileAttributes =
                 PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-r-----"));
-        Path gpgTempFile = Files.createTempFile("susemanager-gpg-", ".tmp", fileAttributes);
+        Path gpgTempFile;
         try {
+            gpgTempFile = Files.createTempFile("susemanager-gpg-", ".tmp", fileAttributes);
+        }
+        catch (IOException e) {
+            LOG.error("importGpgKey: Failed to create temp GPG file: {}", e.getMessage());
+            throw new GpgKeyException("Failed to create temp GPG file", e);
+        }
 
+        try {
             Files.writeString(gpgTempFile, gpgKey, StandardCharsets.UTF_8);
+
             if (!Files.exists(CUSTOMER_GPG_RING)) {
                 initializeGpgKeyring();
             }
-            String[] cmdAdd = {"gpg", "--homedir", CUSTOMER_GPG_DIR.toString(), "--no-default-keyring",
-                    "--import", "--import-options", "import-minimal",
-                    "--keyring", CUSTOMER_GPG_RING.toString(), gpgTempFile.toString()};
-            executeExtCmd(cmdAdd);
-            executeExtCmd(new String[]{"/usr/sbin/import-suma-build-keys"});
+            addToGpgKeyring(gpgTempFile);
+
+            runImportSumaBuildKeys();
+        }
+        catch (IOException eIn) {
+            LOG.error("importGpgKey: Error: {}", eIn.getMessage());
+            throw new GpgKeyException(eIn);
         }
         finally {
-            Files.deleteIfExists(gpgTempFile);
+            deleteFileIfExists(gpgTempFile);
         }
     }
 
-    private static void initializeGpgKeyring() {
+
+    private static void deleteFileIfExists(Path pathIn) {
+        try {
+            Files.deleteIfExists(pathIn);
+        }
+        catch (IOException e) {
+            LOG.error("Error deleting file '{}': {}", pathIn, e.getMessage(), e);
+        }
+    }
+
+    private static void initializeGpgKeyring() throws GpgKeyException {
         try {
             executeExtCmd(new String[]{"gpg", "--homedir", CUSTOMER_GPG_DIR.toString(), "--no-default-keyring",
                     "--keyring", CUSTOMER_GPG_RING.toString(), "--fingerprint"});
         }
         catch (RhnRuntimeException e) {
-            LOG.error("Failed to initialize the customer gpg keyring: {}", e.getMessage());
-            throw e;
+            LOG.error("Failed to initialize the customer GPG keyring: {}", e.getMessage());
+            throw new GpgKeyException("Failed to initialize the customer GPG keyring", e);
+        }
+    }
+
+    private static void addToGpgKeyring(Path pathIn) throws GpgKeyException {
+        String[] cmdAdd = {"gpg", "--homedir", CUSTOMER_GPG_DIR.toString(), "--no-default-keyring",
+                "--import", "--import-options", "import-minimal",
+                "--keyring", CUSTOMER_GPG_RING.toString(), pathIn.toString()};
+        try {
+            executeExtCmd(cmdAdd);
+        }
+        catch (RhnRuntimeException e) {
+            LOG.error("Failed to add {} into the customer GPG keyring: {}", pathIn, e.getMessage());
+            throw new GpgKeyException("Failed to add into the customer GPG keyring", e);
+        }
+    }
+
+    private static void runImportSumaBuildKeys() throws IOException {
+        try {
+            //takes care of copying all certificates in the right library directory
+            executeExtCmd(new String[]{"/usr/sbin/import-suma-build-keys"});
+        }
+        catch (RhnRuntimeException e) {
+            LOG.error("Error in import-suma-build-keys: {}", e.getMessage());
+            throw new IOException("Error in import-suma-build-keys", e);
         }
     }
 
@@ -450,5 +510,62 @@ public final class CertificateUtils {
         }
 
         return keys;
+    }
+
+    /**
+     * Import the hub PQC certificate as a customer PQC certificate
+     * @param pqcCert the PQC certificate
+     * @throws PqcKeyException if something goes wrong
+     */
+    public static void importHubPqcCert(String pqcCert) throws PqcKeyException {
+        importPqcCert(pqcCert, PQC_HUB_CERT_FILENAME);
+    }
+
+    /**
+     * Removes the hub PQC certificate as a customer PQC certificate
+     * @throws IOException if something goes wrong
+     */
+    public static void removeHubPqcCert() throws IOException {
+        Path pqcFilePath = PQC_CUSTOMER_DIR.resolve(PQC_HUB_CERT_FILENAME);
+        Files.deleteIfExists(pqcFilePath);
+
+        Path pqcLibFilePath = PQC_LIB_DIR.resolve(PQC_HUB_CERT_FILENAME);
+        Files.deleteIfExists(pqcLibFilePath);
+    }
+
+    /**
+     * Import a PQC certificate as a customer PQC certificate
+     * @param pqcCert the PQC certificate
+     * @param certFilename the certificate filename
+     * @throws PqcKeyException if something goes wrong
+     */
+    public static void importPqcCert(String pqcCert, String certFilename) throws PqcKeyException {
+        if (StringUtils.isBlank(pqcCert)) {
+            LOG.info("No PQC certificate provided");
+            return;
+        }
+
+        Path pqcFilePath = PQC_CUSTOMER_DIR.resolve(certFilename);
+        deleteFileIfExists(pqcFilePath);
+
+        FileAttribute<Set<PosixFilePermission>> fileAttributes =
+                PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-r-----"));
+        Path pqcFile;
+        try {
+            pqcFile = Files.createFile(pqcFilePath, fileAttributes);
+        }
+        catch (IOException e) {
+            LOG.error("importPqcCert: Failed to create PQC key file {} : {}", pqcFilePath, e.getMessage());
+            throw new PqcKeyException("Failed to create PQC key file", e);
+        }
+
+        try {
+            Files.writeString(pqcFile, pqcCert, StandardCharsets.UTF_8);
+            runImportSumaBuildKeys();
+        }
+        catch (IOException eIn) {
+            LOG.error("importPqcCert: Error: {}", eIn.getMessage());
+            throw new PqcKeyException(eIn);
+        }
     }
 }

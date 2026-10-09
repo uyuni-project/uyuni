@@ -70,6 +70,7 @@ public class UpdateChannelCommand extends CreateChannelCommand {
         gpgKeyId = channelIn.getGPGKeyId();
         gpgKeyFp = channelIn.getGPGKeyFp();
         gpgCheck = channelIn.isGPGCheck();
+        pqcCheck = channelIn.isPqcCheck();
         checksum = channelIn.getChecksumTypeLabel();
         maintainerName = channelIn.getMaintainerName();
         maintainerEmail = channelIn.getMaintainerEmail();
@@ -151,6 +152,7 @@ public class UpdateChannelCommand extends CreateChannelCommand {
         }
 
         c.setGPGCheck(gpgCheck);
+        c.setPqcCheck(pqcCheck);
 
         // need to save before calling stored proc below
         ChannelFactory.save(c);
