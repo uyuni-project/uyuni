@@ -1206,7 +1206,7 @@ public class TransactionalActionManagerTest {
         assertTrue(calls.entrySet().stream()
                 .anyMatch(entry -> "state.apply".equals(entry.getKey().getPayload().get("fun")) &&
                         entry.getValue().equals(List.of(regularMinion))));
-        Optional<LocalCall<?>> transactionalCall = calls.entrySet().stream()
+        var transactionalCall = calls.entrySet().stream()
                 .filter(entry -> entry.getValue().equals(List.of(transactionalMinion)))
                 .map(Map.Entry::getKey)
                 .findFirst();
@@ -1867,7 +1867,7 @@ public class TransactionalActionManagerTest {
                 .anyMatch(entry -> "state.apply".equals(entry.getKey().getPayload().get("fun")) &&
                         entry.getValue().equals(List.of(regularMinion))));
 
-        Optional<LocalCall<?>> transactionalCall = calls.entrySet().stream()
+        var transactionalCall = calls.entrySet().stream()
                 .filter(entry -> entry.getValue().equals(List.of(transactionalMinion)))
                 .map(Map.Entry::getKey)
                 .findFirst();
@@ -1899,7 +1899,7 @@ public class TransactionalActionManagerTest {
         assertTrue(calls.entrySet().stream()
                 .anyMatch(entry -> "state.apply".equals(entry.getKey().getPayload().get("fun")) &&
                         entry.getValue().equals(List.of(regularMinion))));
-        Optional<LocalCall<?>> transactionalCall = calls.entrySet().stream()
+        var transactionalCall = calls.entrySet().stream()
                 .filter(entry -> entry.getValue().equals(List.of(transactionalMinion)))
                 .map(Map.Entry::getKey)
                 .findFirst();
