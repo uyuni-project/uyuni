@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-09 12:18+0100\n"
-"PO-Revision-Date: 2026-08-24 12:13+0000\n"
+"PO-Revision-Date: 2026-10-09 15:13+0000\n"
 "Last-Translator: Ricardo Mestre <ricardo.mestre@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/>\n"
 "Language: pt\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:425
 msgid "remaining"
@@ -34,10 +34,8 @@ msgstr "O browser Internet Explorer não é compatível. Experimente usar o Fire
 #: ../html/src/manager/state/highstate.tsx:63
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:60
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:71
-#, fuzzy
-#| msgid "Action has been successfully added to the Action Chain "
 msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-msgstr "A ação foi adicionada com sucesso à Cadeia de Ações "
+msgstr "A ação foi adicionada com sucesso à cadeia de ações <link>\"{name}\"</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:85
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
@@ -99,7 +97,7 @@ msgstr "Fórmula guardada. Não é necessário aplicar o highstate para esta fó
 
 #: ../html/src/components/FormulaForm.tsx:136
 msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
-msgstr ""
+msgstr "Foram detetadas várias fórmulas de grupo. Só pode ser utilizada uma fórmula para \"{name}\" em cada sistema!"
 
 #: ../html/src/components/FormulaForm.tsx:167
 msgid "Please input required fields: {fields}"
@@ -275,7 +273,7 @@ msgstr "Atestações"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
 msgid "No attestation report available. Schedule an execution to create one."
-msgstr ""
+msgstr "Não existe nenhum relatório de atestação disponível. Agende uma execução para criar um."
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 msgid "Attestation"
@@ -489,10 +487,8 @@ msgid "Perform attestation during the boot process"
 msgstr "Executar atestação durante o arranque"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:301
-#, fuzzy
-#| msgid "Peform attestation on a schedule"
 msgid "Perform attestation on a schedule"
-msgstr "Executar atestação num calendário"
+msgstr "Efetuar a atestação agendada"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:312
 msgid "Select a schedule"
@@ -1798,6 +1794,10 @@ msgid ""
 "            other {<dropdown></dropdown> of # pages}\n"
 "        }"
 msgstr ""
+"{total, plural,\n"
+"            one {<dropdown></dropdown> de # página}\n"
+"            other {<dropdown></dropdown> de # páginas}\n"
+"        }"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
@@ -1865,7 +1865,7 @@ msgstr "Formato Quartz personalizado:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:491
 msgid "e.g. \"0 15 2 ? * 7\""
-msgstr ""
+msgstr "p. ex. \"0 15 2 ? * 7\""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:510
 msgid "Select a Schedule"
@@ -2133,10 +2133,8 @@ msgstr "Reordenar"
 
 #: ../html/src/components/states-picker.tsx:468
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:265
-#, fuzzy
-#| msgid "Registration date:"
 msgid "Use transactional update"
-msgstr "Data de registo:"
+msgstr "Utilizar a atualização transacional"
 
 #: ../html/src/components/states-picker.tsx:485
 msgid "Search in states"
@@ -2335,10 +2333,8 @@ msgid "Item id"
 msgstr "ID do item"
 
 #: ../html/src/components/table/search.example.tsx:50
-#, fuzzy
-#| msgid "System name"
 msgid "Item name"
-msgstr "Nome do sistema"
+msgstr "Nome do item"
 
 #: ../html/src/components/target-systems.tsx:26
 msgid "Target Systems"
@@ -2411,6 +2407,10 @@ msgid ""
 "            other {{fooCount} items}\n"
 "          }."
 msgstr ""
+"Utilize sempre as formas plurais para os números: {fooCount, plural,\n"
+"            one {apenas um item}\n"
+"            other {{fooCount} itens}\n"
+"          }."
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -2795,13 +2795,11 @@ msgstr "Detalhes do Hub"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
 msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
-msgstr ""
+msgstr "Não está configurado nenhum hub para este servidor. Atualize esta página depois de configurar este servidor como periférico, para ver os detalhes do hub."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
-msgstr "Este servidor está atualmente registado como periférico do hub {fqdn}. "
+msgstr "Este servidor está atualmente registado como periférico do hub {fqdn}. Esta página apresenta os detalhes do servidor hub."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2824,10 +2822,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - Detalhes do Periférico"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
-msgstr "O servidor {fqdn} está atualmente registado como periférico deste hub. "
+msgstr "O servidor {fqdn} está atualmente registado como periférico deste hub."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
 msgid "Peripherals Configuration"
@@ -3060,10 +3056,8 @@ msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Os canais selecionados foram agendados com sucesso para sincronização."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:319
-#, fuzzy
-#| msgid "The following product installations failed. Please check log files."
 msgid "The following channel installations for \"{product}\" failed. Please check log files."
-msgstr "As seguintes instalações de produtos falharam. Verifique os ficheiros de log."
+msgstr "Falharam as seguintes instalações de canais para \"{product}\". Consulte os ficheiros de registo."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:350
 msgid "A refresh of the product data is currently running in the background. Please try again later."
@@ -3398,20 +3392,16 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "Afetado, patches disponíveis em canais que não estão atribuídos"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-#, fuzzy
-#| msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
-msgstr "O cliente é afetado por uma vulnerabilidade e temos um patch para ela,"
+msgstr "O cliente está afetado por uma vulnerabilidade para a qual existe um patch, mas os canais que disponibilizam esse patch não estão atribuídos ao cliente."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr "Afetado, patches disponíveis num destino de Migração de Produto"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-#, fuzzy
-#| msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-msgstr "O cliente é afetado por uma vulnerabilidade e temos um patch para ela,"
+msgstr "O cliente está afetado por uma vulnerabilidade para a qual existe um patch, mas a sua aplicação requer a migração do produto para uma versão mais recente."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -3447,20 +3437,16 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "Afetado, patch não disponível nos canais relevantes"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-#, fuzzy
-#| msgid "The client is affected by a vulnerability for which a patch has not yet been released."
 msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
-msgstr "O cliente é afetado por uma vulnerabilidade para a qual ainda não foi lançado um patch."
+msgstr "O cliente está afetado por uma vulnerabilidade para a qual foi lançado um patch, mas este não se encontra nos canais relevantes."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
 msgstr "Afetado, patch parcial disponível em canal atribuído"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-#, fuzzy
-#| msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-msgstr "O cliente é afetado por uma vulnerabilidade e temos um patch para ela,"
+msgstr "O cliente está afetado por uma vulnerabilidade para a qual existe um patch, mas a sua aplicação apenas atualizará alguns dos pacotes vulneráveis."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -3481,7 +3467,7 @@ msgstr "Estado de patch desconhecido"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL audit not supported for this system's OS"
-msgstr ""
+msgstr "A auditoria OVAL não é suportada pelo sistema operativo deste sistema."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
@@ -4170,10 +4156,8 @@ msgid "Create a new filter"
 msgstr "Criar um novo filtro"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:185
-#, fuzzy
-#| msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
 msgid "This filter cannot be deleted because it is currently in use by one or more projects"
-msgstr "Este token de acesso não pode ser eliminado. Está atualmente a ser usado pelo periférico {fqdn}"
+msgstr "Não é possível eliminar este filtro porque está a ser utilizado por um ou mais projetos."
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:192
 msgid "Filter deleted successfully"
@@ -4184,16 +4168,12 @@ msgid "Bear in mind that all the associated projects need to be rebuilt after a 
 msgstr "Tenha em mente que todos os projetos associados precisam ser reconstruídos após uma atualização de filtro"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:91
-#, fuzzy
-#| msgid "Use a manual filter"
 msgid "Manual Filter"
-msgstr "Usar um filtro manual"
+msgstr "Filtro manual"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:96
-#, fuzzy
-#| msgid "Use a template"
 msgid "Use Template"
-msgstr "Usar um template"
+msgstr "Usar template"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:108
 msgid "Filter Name"
@@ -4714,10 +4694,8 @@ msgid "Create New Filter"
 msgstr "Criar Novo Filtro"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:32
-#, fuzzy
-#| msgid "Edit Filter {name}"
 msgid "Edit {name}"
-msgstr "Editar Filtro {name}"
+msgstr "Editar {name}"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:79
 msgid "Filters"
@@ -4897,26 +4875,20 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "A página que solicitou, {currentUrl}, não foi encontrada."
 
 #: ../html/src/manager/errors/not-found.tsx:10
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
-msgstr "Se digitou este endereço no seu navegador, verifique a ortografia e capitalização."
+msgstr "Se digitou este endereço no seu navegador, verifique a ortografia e capitalização. O endereço que está a copiar também poderá estar desatualizado."
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
-msgstr "Se seguiu um link, o link pode estar incorreto ou desatualizado. Clique no botão voltar no seu "
+msgstr "Se seguiu um link, o link pode estar incorreto ou desatualizado. Clique no botão voltar do navegador para tentar outro link ou utilize as barras de navegação superior ou lateral para encontrar a página que procura."
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
-msgstr ""
+msgstr "Se utilizou um marcador, a página poderá ter mudado de localização desde que o marcador foi criado. Utilize as barras de navegação superior ou lateral para encontrar a página que procura e, se encontrar o documento, atualize o marcador."
 
 #: ../html/src/manager/errors/not-found.tsx:30
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
-msgstr "Se acha que chegou a esta página por erro, contacte-nos com detalhes de como recebeu "
+msgstr "Se acha que chegou a esta página por erro, contacte-nos com detalhes de como recebeu esta mensagem."
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
 msgid "Applying the config channels has been scheduled for each minion server in this group"
@@ -5337,10 +5309,8 @@ msgstr "Editar armazenamento"
 
 #: ../html/src/manager/images/image-view-overview.tsx:469
 #: ../html/src/manager/images/image-view.tsx:801
-#, fuzzy
-#| msgid "Instance is outdated"
 msgid "Instance Details for \"{name}\""
-msgstr "A instância está desatualizada"
+msgstr "Detalhes da instância \"{name}\""
 
 #: ../html/src/manager/images/image-view-overview.tsx:524
 #: ../html/src/manager/images/image-view-overview.tsx:525
@@ -5531,20 +5501,16 @@ msgid "Images"
 msgstr "Imagens"
 
 #: ../html/src/manager/images/image-view.tsx:530
-#, fuzzy
-#| msgid "sync failed"
 msgid "Inspect failed"
-msgstr "sincronização falhou"
+msgstr "Inspeção falhou"
 
 #: ../html/src/manager/images/image-view.tsx:539
 msgid "Building"
 msgstr "A construir"
 
 #: ../html/src/manager/images/image-view.tsx:544
-#, fuzzy
-#| msgid " failed"
 msgid "Build failed"
-msgstr " falhado"
+msgstr "Build falhou"
 
 #: ../html/src/manager/images/image-view.tsx:547
 msgid "Unknown"
@@ -5806,7 +5772,7 @@ msgstr "Agendamento Atual"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:117
 msgid "Url \"{url}\" is invalid"
-msgstr ""
+msgstr "Url \"{url}\" é inválido"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:142
 msgid "Calendar data"
@@ -6077,10 +6043,8 @@ msgid "Save the current Playbook"
 msgstr "Guardar o Playbook atual"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
-#, fuzzy
-#| msgid "Playbook File Name"
 msgid "Playbook \"{name}\""
-msgstr "Nome do Ficheiro Playbook"
+msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:192
 msgid "Schedule Playbook Execution"
@@ -6569,7 +6533,7 @@ msgstr "Instalar Correções Temporárias do Programa (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
-msgstr ""
+msgstr "Os seguintes Program Temporary Fixes (PTFs) estão disponíveis para instalação neste sistema. Estes pacotes destinam-se apenas a resolver um problema específico em aberto. Siga as instruções do suporte ao cliente antes de prosseguir com a instalação."
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -6589,7 +6553,7 @@ msgstr "Remover Correções Temporárias do Programa (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
-msgstr ""
+msgstr "Os seguintes Program Temporary Fixes (PTFs) estão atualmente instalados neste sistema. Pode agendar a remoção destes PTFs selecionando-os e clicando em \"Remover PTF\" abaixo. Tenha em atenção que a remoção de qualquer PTF que não esteja obsoleto irá instalar as versões mais recentes dos pacotes incluídos nesse PTF."
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -7558,42 +7522,32 @@ msgstr "Regenerar Palavra-passe da Base de Dados de Relatórios"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:57
 #: ../html/src/manager/systems/details/snapshots.tsx:60
-#, fuzzy
-#| msgid "Unable to perform action."
 msgid "Unable to load snapshot information."
-msgstr "Impossível realizar ação."
+msgstr "Não foi possível carregar as informações do snapshot."
 
 #: ../html/src/manager/systems/details/snapshots.tsx:87
-#, fuzzy
-#| msgid "Remediation has been "
 msgid "The action has been "
-msgstr "A remediação foi "
+msgstr "A ação foi "
 
 #: ../html/src/manager/systems/details/snapshots.tsx:108
-#, fuzzy
-#| msgid "Refresh Data"
 msgid "Refresh Snapshots"
-msgstr "Atualizar Dados"
+msgstr "Atualizar Snapshots"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:112
 msgid "Btrfs Snapshots"
 msgstr ""
 
 #: ../html/src/manager/systems/details/snapshots.tsx:125
-#, fuzzy
-#| msgid "No streams available"
 msgid "No snapshots available."
-msgstr "Nenhum stream disponível"
+msgstr "Não existem snapshots disponíveis."
 
 #: ../html/src/manager/systems/details/snapshots.tsx:129
 msgid "#"
 msgstr ""
 
 #: ../html/src/manager/systems/details/snapshots.tsx:136
-#, fuzzy
-#| msgid "Inactive"
 msgid "active"
-msgstr "Inativo"
+msgstr "ativo"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:141
 msgid "default"
@@ -7604,32 +7558,24 @@ msgid "Pre #"
 msgstr ""
 
 #: ../html/src/manager/systems/details/snapshots.tsx:154
-#, fuzzy
-#| msgid "Datetime"
 msgid "Date"
-msgstr "Data e hora"
+msgstr "Data"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:158
-#, fuzzy
-#| msgid "Used by Schedule"
 msgid "Used Space"
-msgstr "Usado por Agendamento"
+msgstr "Espaço Usado"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:162
-#, fuzzy
-#| msgid "Clear Menu"
 msgid "Cleanup"
-msgstr "Limpar Menu"
+msgstr "Limpeza"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:164
-#, fuzzy
-#| msgid "User"
 msgid "Userdata"
-msgstr "Utilizador"
+msgstr "Dados do utilizador"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:191
 msgid "Unable to schedule snapshot refresh."
-msgstr ""
+msgstr "Não foi possível agendar a atualização do snapshot."
 
 #: ../html/src/manager/systems/list-filter.tsx:4
 msgid "Manager Server"
