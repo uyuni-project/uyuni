@@ -132,15 +132,13 @@ def _extract_rmt_server_info(netloc):
     ca_cert_path = f"/etc/pki/trust/anchors/registration_server_{server_ip_uds}.pem"
 
     if not Path(ca_cert_path).exists():
-        ca_cert_path = (
-            f"/usr/share/pki/trust/anchors/registration_server_{server_ip_uds}.pem"
-        )
+        ca_cert_path = f"/etc/rhn/ca/registration_server_{server_ip_uds}.pem"
 
         if not Path(ca_cert_path).exists():
             system_exit(
                 6,
                 [
-                    f"CA file for server {server_ip} not found (location '/etc/pki/trust/anchors/' or '/usr/share/pki/trust/anchors/')"
+                    f"CA file for server {server_ip} not found (location '/etc/pki/trust/anchors/' or '/etc/rhn/ca/')"
                 ],
             )
     with open(ca_cert_path, encoding="utf-8") as f:
