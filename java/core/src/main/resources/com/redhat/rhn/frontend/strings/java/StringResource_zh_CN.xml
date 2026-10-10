@@ -7823,12 +7823,12 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">无法对没有保存配置的系统进行电源管理。</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve" approved="yes">
         <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly available as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-adaptation">只能在安装了 "隔离代理" 的 @@PRODUCT_NAME@@ 服务器中使用这个功能，根据您使用的操作系统以及所需电源管理基础结构，需要的软件包可能为 "fence-agents"、"fence-agents-all" 或 "fence-agents-ipmilan"。请安装隔离代理。如果您的操作系统无法使用隔离代理，将不会支持电源管理功能。</target>
+        <target state="final">只能在安装了隔离代理的 @@PRODUCT_NAME@@ 服务器中使用此功能，根据您的操作系统和所需的电源管理基础架构，对应的软件包可能为 \"fence-agents\"、\"fence-agents-all\" 或 \"fence-agents-ipmilan\"。请安装隔离代理。如果您的操作系统没有可用的隔离代理，将不支持电源管理功能。</target>
       </trans-unit>
       <trans-unit approved="yes" id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
@@ -10598,9 +10598,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Calendar with id '{0}' does not exist</source>
         <target state="final">ID 为 "{0}" 的日历不存在</target>
       </trans-unit>
-      <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
+      <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve" approved="yes">
         <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
-        <target state="needs-adaptation">尝试取消日程安排 "{0}" 的受影响操作时出错</target>
+        <target state="final">尝试取消日程安排 '{0}' 的受影响操作时发生错误</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
@@ -12141,12 +12141,12 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>SLES 16 migration failed or result not found.{0}</source>
         <target state="final">SLES 16 迁移失败或未找到迁移结果。{0}</target>
       </trans-unit>
-      <trans-unit id="user.admin.access" xml:space="preserve">
+      <trans-unit id="user.admin.access" xml:space="preserve" approved="yes">
         <source>Admin Access</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">管理员访问权限</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z16.description" xml:space="preserve">
         <source>KVM on IBM z16 series</source>
@@ -12228,35 +12228,35 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>The host key document is not a valid PEM certificate.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve">
+      <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve" approved="yes">
         <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">日期格式无效。必须采取 ISO 8601 偏移格式（例如 2026‑06‑04T22:00:00Z）。</target>
+      </trans-unit>
       <trans-unit id="edit_address.jsp.country.select" xml:space="preserve">
         <source>-- Select Country --</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="system.entitle.added.peripheral_server" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.peripheral_server" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;Peripheral server&lt;/strong&gt; type has been applied.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">已应用&lt;strong&gt;外围服务器&lt;/strong&gt;类型。</target>
+      </trans-unit>
       <trans-unit id="snapshots.refresh_list" xml:space="preserve">
         <source>Refresh Snapshots</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.formulas" xml:space="preserve">
         <source>Apply formulas assigned to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
