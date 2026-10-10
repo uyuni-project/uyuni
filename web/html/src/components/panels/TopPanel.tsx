@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { IconTag } from "components/icontag";
 import { HelpLink } from "components/utils/HelpLink";
 
 type Props = {
@@ -18,7 +19,7 @@ export function TopPanel(props: Props) {
       <div className="spacewalk-toolbar-h1">
         {props.button}
         <h1>
-          {props.icon && <i className={`fa ${props.icon}`} />}
+          {props.icon && <IconTag icon={`${props.icon}`} />}
           {t(props.title)}
           &nbsp;
           {help}

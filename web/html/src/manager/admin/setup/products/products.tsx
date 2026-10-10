@@ -8,6 +8,7 @@ import { AsyncButton, Button } from "components/buttons";
 import { CustomDiv } from "components/custom-objects";
 import { DangerDialog } from "components/dialog/DangerDialog";
 import { Dialog } from "components/dialog/Dialog";
+import { IconTag } from "components/icontag";
 import { DEPRECATED_Select, Form } from "components/input";
 import { ChannelLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
@@ -845,7 +846,7 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
   };
 
   channelsStatusSync = (channelList, isRootProduct) => {
-    const iconSize = isRootProduct ? "fa-1-5x" : "";
+    const iconSize = isRootProduct ? "lg" : undefined;
     const wrapPrefix = isRootProduct ? null : "(";
     const wrapSuffix = isRootProduct ? null : ")";
     const testPrefix = isRootProduct ? "Product" : "Child products";
@@ -853,7 +854,7 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
       return (
         <span className="text-danger" title={t(testPrefix + " channels sync failed")}>
           {wrapPrefix}
-          <i className={"fa fa-exclamation-circle " + iconSize}></i>
+          <IconTag icon="fa-exclamation-circle" size={iconSize} />
           {wrapSuffix}
         </span>
       );
@@ -861,7 +862,7 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
       return (
         <span className="text-info" title={t(testPrefix + " channels sync in progress")}>
           {wrapPrefix}
-          <i className={"fa fa-spinner fa-spin " + iconSize}></i>
+          <IconTag icon="fa-spinner fa-spin" size={iconSize} />
           {wrapSuffix}
         </span>
       );
@@ -869,7 +870,7 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
       return (
         <span className="text-success" title={t(testPrefix + " channels synced")}>
           {wrapPrefix}
-          <i className={"fa fa-check-circle " + iconSize}></i>
+          <IconTag icon="fa-check-circle" size={iconSize} />
           {wrapSuffix}
         </span>
       );
@@ -913,10 +914,12 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
     if (this.getNestedData(currentItem).length > 0) {
       const openSubListIconClass = this.isSublistVisible() ? "fa-angle-down" : "fa-angle-right";
       showNestedDataIconContent = (
-        <i
-          className={"fa " + openSubListIconClass + " fa-1-5x pointer product-hover"}
+        <span
           {...DEPRECATED_onClick(() => this.props.bypassProps.handleVisibleSublist(currentItem.identifier))}
-        />
+          className="pointer product-hover"
+        >
+          <IconTag icon={openSubListIconClass} size="lg" />
+        </span>
       );
     }
 
@@ -1062,7 +1065,7 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
               onClick={() => this.props.bypassProps.showChannelsfor(currentItem)}
               title={t("Show product's channels")}
             >
-              <i className="fa fa-list" />
+              <IconTag icon="fa-list" />
             </button>
           </CustomDiv>
           <CustomDiv

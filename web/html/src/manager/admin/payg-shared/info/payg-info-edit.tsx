@@ -37,7 +37,7 @@ const PaygInfoEdit = (props: Props) => {
         panelLevel="2"
         title={"Information"}
         icon="fa-pencil"
-        customIconClass="fa-small"
+        customIconClass="icon-size-md"
         onCancel={() => cancelAction()}
         onSave={saveAction}
         onOpen={({ setItem, setErrors }) => {

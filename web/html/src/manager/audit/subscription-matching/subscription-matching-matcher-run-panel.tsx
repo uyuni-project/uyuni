@@ -1,6 +1,7 @@
 import { Component } from "react";
 
 import { fromNow } from "components/datetime/FromNow";
+import { IconTag } from "components/icontag";
 
 import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
@@ -156,7 +157,7 @@ class MatcherScheduleButton extends Component<MatcherScheduleButtonProps> {
 
     return (
       <button type="button" className={buttonClass} disabled={this.props.matcherRunning} onClick={this.onClick}>
-        <i className="fa fa-refresh"></i>
+        <IconTag icon="fa-refresh" />
         {t("Refresh matching data")}
       </button>
     );

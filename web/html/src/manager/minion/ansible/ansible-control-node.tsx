@@ -2,6 +2,7 @@ import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { IconTag } from "components/icontag";
 import { Messages, Utils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import { DEPRECATED_onClick } from "components/utils";
@@ -188,7 +189,7 @@ export class AnsibleControlNode extends Component<PropsType, StateType> {
                     <div className="d-block" key={p.id}>
                       <pre className="pointer" {...DEPRECATED_onClick(() => this.setState({ editPlaybookPath: p }))}>
                         {p.path}
-                        <i className="fa fa-edit pull-right" data-bs-toggle="tooltip" title="Edit" />
+                        <IconTag icon="fa-edit" className="pull-right" title="Edit" />
                       </pre>
                     </div>
                   )
@@ -221,7 +222,7 @@ export class AnsibleControlNode extends Component<PropsType, StateType> {
                     <div className="d-block" key={p.id}>
                       <pre className="pointer" {...DEPRECATED_onClick(() => this.setState({ editInventoryPath: p }))}>
                         {p.path}
-                        <i className="fa fa-edit pull-right" data-bs-toggle="tooltip" title="Edit" />
+                        <IconTag icon="fa-edit" className="pull-right" title="Edit" />
                       </pre>
                     </div>
                   )

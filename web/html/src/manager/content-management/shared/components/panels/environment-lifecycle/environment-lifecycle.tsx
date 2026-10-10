@@ -43,7 +43,7 @@ const EnvironmentLifecycle = (props: Props) => {
       panelLevel="2"
       disableEditing={!hasEditingPermissions}
       collapsible
-      customIconClass="fa-small"
+      customIconClass="icon-size-md"
       disableOperations={isLoading}
       onSave={({ item, closeDialog, setErrors }) =>
         onAction(mapAddEnvironmentRequest(item, props.environments, props.projectId), "create", props.projectId)

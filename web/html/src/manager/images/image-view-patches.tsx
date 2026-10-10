@@ -1,6 +1,7 @@
 import { Component } from "react";
 
 import { FromNow } from "components/datetime";
+import { IconTag } from "components/icontag";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
@@ -19,11 +20,11 @@ declare global {
 }
 
 const typeIcons = {
-  "Security Advisory": t("fa fa-shield fa-1-5x"),
-  "Bug Fix Advisory": t("fa fa-bug fa-1-5x"),
-  "Product Enhancement Advisory": t("fa spacewalk-icon-enhancement fa-1-5x"),
-  reboot_suggested: t("fa fa-refresh fa-1-5x"),
-  restart_suggested: t("fa fa-archive fa-1-5"),
+  "Security Advisory": t("fa-shield"),
+  "Bug Fix Advisory": t("fa-bug"),
+  "Product Enhancement Advisory": t("spacewalk-icon-enhancement"),
+  reboot_suggested: t("fa-refresh"),
+  restart_suggested: t("fa-archive"),
 };
 
 const typeTitles = {
@@ -54,10 +55,10 @@ class ImageViewPatches extends Component<ImageViewPatchesProps> {
   }
 
   renderType = (row) => {
-    const icon = [<i key={row.type} className={typeIcons[row.type]} title={typeTitles[row.type]} />];
+    const icon = [<IconTag key={row.type} icon={typeIcons[row.type]} size="lg" title={typeTitles[row.type]} />];
 
     for (const k of row.keywords) {
-      icon.push(<i key={k} className={typeIcons[k]} title={typeTitles[k]} />);
+      icon.push(<IconTag key={k} icon={typeIcons[k]} size="lg" title={typeTitles[k]} />);
     }
 
     return icon;

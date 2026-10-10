@@ -4,6 +4,7 @@ import "font-awesome/css/font-awesome.css";
 import "manager/polyfills";
 
 import type { Decorator, Preview } from "@storybook/react-webpack5";
+import * as bootstrapImport from "bootstrap";
 import suseDarkTheme from "branding/css/suse-dark.scss?lazy";
 import suseLightTheme from "branding/css/suse-light.scss?lazy";
 import uyuniTheme from "branding/css/uyuni.scss?lazy";
@@ -12,7 +13,10 @@ import jQueryImport from "jquery";
 import { t } from "core/intl";
 import Loggerhead from "core/log/loggerhead";
 
+import { initializeTooltips } from "components/tooltips";
+
 const jQuery = jQueryImport as unknown as JQueryStatic;
+const bootstrapBundle = bootstrapImport as unknown as typeof bootstrap;
 
 const themeNames = ["uyuni", "suse-light", "suse-dark"] as const;
 
@@ -95,6 +99,7 @@ type StorybookWindow = typeof window & {
 type StorybookGlobal = typeof globalThis & {
   t: typeof t;
   jQuery: JQueryStatic;
+  bootstrap: typeof bootstrap;
   Loggerhead: Loggerhead;
 };
 
@@ -117,6 +122,12 @@ storybookWindow.$ = jQuery;
 
 storybookGlobal.t = t;
 storybookGlobal.jQuery = jQuery;
+// The JSP layout loads the Bootstrap bundle as a plain script, so components reach it through the global
+storybookGlobal.bootstrap = bootstrapBundle;
+
+// Mirror `spaImportReactPage`: tooltip markup only becomes a Bootstrap tooltip once this runs.
+// It keeps watching the DOM, so stories rendered later are picked up too.
+initializeTooltips();
 
 const loggerHead = new Loggerhead("", (headers) => headers);
 loggerHead.info = console.info.bind(console, "[Loggerhead] INFO:");

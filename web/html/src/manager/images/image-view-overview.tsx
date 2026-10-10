@@ -7,6 +7,7 @@ import { FromNow } from "components/datetime";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
+import { IconTag } from "components/icontag";
 import { DateTime as InputDateTime } from "components/input/datetime/DateTime";
 import { Form } from "components/input/form/Form";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
@@ -48,7 +49,7 @@ function StatusIcon(props: StatusIconProps) {
   if (action?.status === 0) {
     return (
       <span>
-        <i className="fa fa-clock-o fa-1-5x" title={t("Queued")} />
+        <IconTag icon="fa-clock-o" size="lg" title={t("Queued")} />
         <a
           title={t("Go to event")}
           href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}
@@ -60,7 +61,7 @@ function StatusIcon(props: StatusIconProps) {
   } else if (action?.status === 1) {
     return (
       <span>
-        <i className="fa fa-exchange fa-1-5x text-info" title={t("In progress")} />
+        <IconTag icon="fa-exchange" size="lg" status="info" title={t("In progress")} />
         <a
           title={t("Go to event")}
           href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}
@@ -72,7 +73,7 @@ function StatusIcon(props: StatusIconProps) {
   } else if (action?.status === 2) {
     return (
       <span>
-        <i className="fa fa-check-circle fa-1-5x text-success" title={t("Successful")} />
+        <IconTag icon="fa-check-circle" size="lg" status="success" title={t("Successful")} />
         <a
           title={t("Go to event")}
           href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}
@@ -84,7 +85,7 @@ function StatusIcon(props: StatusIconProps) {
   } else if (action?.status === 3) {
     return (
       <span>
-        <i className="fa fa-times-circle-o fa-1-5x text-danger" title={t("Failed")} />
+        <IconTag icon="fa-times-circle-o" size="lg" status="danger" title={t("Failed")} />
         <a
           title={t("Go to event")}
           href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}
@@ -96,7 +97,7 @@ function StatusIcon(props: StatusIconProps) {
   } else {
     return (
       <span>
-        <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />
+        <IconTag icon="fa-question-circle" size="lg" title={t("No information")} />
         {t("No information")}
       </span>
     );
@@ -108,7 +109,7 @@ function BuildStatus(props) {
   if (props.data.external) {
     status = (
       <span>
-        <i className="fa fa-minus-circle fa-1-5x text-muted" title={t("Built externally")} />
+        <IconTag icon="fa-minus-circle" size="lg" status="muted" title={t("Built externally")} />
         {t("Built externally")}
       </span>
     );
@@ -200,7 +201,7 @@ class ImageInfo extends Component<ImageInfoProps, ImageInfoState> {
 
   renderInstances(data) {
     if (!this.props.gotRuntimeInfo) {
-      return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")} />;
+      return <IconTag icon="fa-circle-o-notch fa-spin" size="lg" title={t("Waiting for update ...")} />;
     }
 
     let totalCount = 0;
@@ -237,7 +238,7 @@ class ImageInfo extends Component<ImageInfoProps, ImageInfoState> {
     if (!this.props.gotRuntimeInfo) {
       return (
         <span>
-          <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")} />
+          <IconTag icon="fa-circle-o-notch fa-spin" size="lg" title={t("Waiting for update ...")} />
         </span>
       );
     }
@@ -246,24 +247,21 @@ class ImageInfo extends Component<ImageInfoProps, ImageInfoState> {
     if (data.runtimeStatus === 1) {
       elm = (
         <span>
-          <i
-            className="fa fa-check-circle fa-1-5x text-success"
-            title={t("All instances are consistent with {productName}", { productName })}
-          />
+          <IconTag icon="fa-check-circle" size="lg" status="success" />
           <a href={"#/runtime/" + data.id}>{t("All instances are consistent with {productName}", { productName })}</a>
         </span>
       );
     } else if (data.runtimeStatus === 2) {
       elm = (
         <span>
-          <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />
+          <IconTag icon="fa-question-circle" size="lg" />
           <a href={"#/runtime/" + data.id}>{t("No information")}</a>
         </span>
       );
     } else if (data.runtimeStatus === 3) {
       elm = (
         <span>
-          <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Outdated instances found")} />
+          <IconTag icon="fa-exclamation-triangle" size="lg" status="warning" />
           <a href={"#/runtime/" + data.id}>{t("Outdated instances found")}</a>
         </span>
       );
@@ -514,35 +512,35 @@ class ImageViewOverview extends Component<ImageViewOverviewProps> {
     if (!row.patches || row.installedPackages === 0) {
       status = (
         <span>
-          <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />
+          <IconTag icon="fa-question-circle" size="lg" />
           {t("No information")}{" "}
         </span>
       );
     } else if (row.patches.security > 0) {
       status = (
         <span>
-          <i className="fa fa-exclamation-circle fa-1-5x text-danger" title={t("Critical updates available")} />
+          <IconTag icon="fa-exclamation-circle" size="lg" status="danger" />
           {t("Critical updates available")}{" "}
         </span>
       );
     } else if (row.patches.bugs + row.patches.enhancement > 0) {
       status = (
         <span>
-          <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Non-critical updates available")} />
+          <IconTag icon="fa-exclamation-triangle" size="lg" status="warning" />
           {t("Non-critical updates available")}{" "}
         </span>
       );
     } else if (row.packages > 0) {
       status = (
         <span>
-          <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Package updates available")} />
+          <IconTag icon="fa-exclamation-triangle" size="lg" status="warning" />
           {t("Package updates available")}{" "}
         </span>
       );
     } else {
       status = (
         <span>
-          <i className="fa fa-check-circle fa-1-5x text-success" title={t("Image is up to date")} />
+          <IconTag icon="fa-check-circle" size="lg" status="success" />
           {t("Image is up to date")}{" "}
         </span>
       );

@@ -62,7 +62,7 @@ export function AllSystems(props: Props) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <IconTag type="header-help" />
+          <IconTag type="header-help" size="md" />
         </a>
 
         <div className="pull-right btn-group">

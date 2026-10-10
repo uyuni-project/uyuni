@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
@@ -187,7 +188,7 @@ const AccessGroupReview = (props: Props) => {
               return <span>-</span>;
             }
             const state = getCheckState(item, "view");
-            return state === "checked" ? <i className="fa fa-check"></i> : <span>X</span>;
+            return state === "checked" ? <IconTag icon="fa-check" /> : <span>X</span>;
           }}
           width="10%"
         />
@@ -202,7 +203,7 @@ const AccessGroupReview = (props: Props) => {
               return <span>-</span>;
             }
             const state = getCheckState(item, "modify");
-            return state === "checked" ? <i className="fa fa-check"></i> : <span>X</span>;
+            return state === "checked" ? <IconTag icon="fa-check" /> : <span>X</span>;
           }}
           width="10%"
         />

@@ -18,6 +18,7 @@ import { Utils } from "utils/functions";
 import Network from "../utils/network";
 import { AsyncButton } from "./buttons";
 import { TextField } from "./fields";
+import { IconTag } from "./icontag";
 import { Messages, MessageType, Utils as MessagesUtils } from "./messages/messages";
 import { RankingTable } from "./ranking-table";
 import { SaltStatePopup } from "./salt-state-popup";
@@ -30,18 +31,18 @@ function channelKey(channel) {
 function channelIcon(channel) {
   let iconClass, iconTitle, iconStyle;
   if (channel.type === "state") {
-    iconClass = "fa spacewalk-icon-salt-add";
+    iconClass = "spacewalk-icon-salt-add";
     iconTitle = t("State Configuration Channel");
   } else if (channel.type === "internal_state") {
-    iconClass = "fa spacewalk-icon-salt-add";
+    iconClass = "spacewalk-icon-salt-add";
     iconTitle = t("Internal State");
-    iconStyle = { border: "1px solid black" };
+    iconStyle = "border border-dark";
   } else {
     iconClass = "fa spacewalk-icon-software-channels";
     iconTitle = t("Normal Configuration Channel");
   }
 
-  return <i data-bs-toggle="tooltip" className={iconClass} title={iconTitle} style={iconStyle} />;
+  return <IconTag icon={iconClass} title={iconTitle} className={iconStyle} />;
 }
 
 type StatesPickerProps = {
@@ -317,7 +318,7 @@ class StatesPicker extends Component<StatesPickerProps, StatesPickerState> {
           </td>
           <td>{currentChannel.label}</td>
           <td>
-            <i data-bs-toggle="tooltip" className="fa fa-info-circle fa-1-5x" title={currentChannel.description} />
+            <IconTag icon="fa-info-circle" size="lg" title={currentChannel.description} />
           </td>
           <td>
             <div className="row">

@@ -5,6 +5,7 @@ import { productName } from "core/user-preferences";
 
 import { AsyncButton, Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
+import { IconTag } from "components/icontag";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
@@ -37,7 +38,7 @@ class ErrorDetailsDialog extends Component<ErrorDetailsDialogProps> {
     if (this.props.error) {
       title = (
         <span>
-          <i className="fa fa-list" /> {t("Error Details")}
+          <IconTag icon="fa-list" /> {t("Error Details")}
         </span>
       );
 
@@ -443,7 +444,7 @@ class BootstrapMinions extends Component<Props, State> {
               <div className="col-md-6">
                 <input name="privKeyFile" className="form-control" type="file" onChange={this.privKeyFileChanged} />
                 <div className="help-block">
-                  <i className="fa fa-exclamation-triangle" />
+                  <IconTag icon="fa-exclamation-triangle" />
                   {t(
                     "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
                   )}
@@ -522,7 +523,7 @@ class BootstrapMinions extends Component<Props, State> {
               />
               {this.state.manageWithSSH && (
                 <div className="help-block">
-                  <i className="fa fa-exclamation-triangle" />
+                  <IconTag icon="fa-exclamation-triangle" />
                   {t(
                     "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {productName}'s SSH key is deployed during the bootstrap procedure.",
                     { productName }

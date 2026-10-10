@@ -2,6 +2,7 @@ import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { LinkButton } from "components/buttons";
 import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { TabContainer } from "components/tab-container";
@@ -82,16 +83,20 @@ class SubscriptionMatching extends Component<SubscriptionMatchingProps, Subscrip
 
     return (
       <div>
-        <div className="spacewalk-toolbar">
-          <a href="/rhn/manager/vhms">
-            <i className="fa spacewalk-icon-virtual-host-manager"></i>
-            {t("Edit Virtual Host Managers")}
-          </a>
-        </div>
         <TopPanel
           title={t("Subscription Matching")}
           icon="spacewalk-icon-subscription-counting"
           helpUrl="reference/audit/audit-subscription-matching.html"
+          button={
+            <div className="pull-right">
+              <LinkButton
+                icon="spacewalk-icon-virtual-host-manager"
+                text={t("Edit Virtual Host Managers")}
+                className="btn-default"
+                href="/rhn/manager/vhms"
+              />
+            </div>
+          }
         />
         <ErrorMessage error={this.state.error} />
         <SubscriptionMatchingTabContainer data={data} onPinChanged={this.onPinChanged} />

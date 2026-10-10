@@ -1,5 +1,6 @@
 import { type ReactNode, Component } from "react";
 
+import { IconTag } from "components/icontag";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
@@ -150,7 +151,7 @@ const QuantityCell = (props) => {
       <span>
         <strong>{content}</strong>
         &nbsp;
-        <i className="fa fa-exclamation-triangle text-warning"></i>
+        <IconTag icon="fa-exclamation-triangle" status="warning" />
       </span>
     );
   }

@@ -3,6 +3,8 @@ import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 import _partition from "lodash/partition";
 import _sortBy from "lodash/sortBy";
 
+import { IconTag } from "components/icontag";
+
 import Network from "../utils/network";
 import { AsyncButton } from "./buttons";
 import { TextField } from "./fields";
@@ -114,18 +116,14 @@ export const PoliciesPicker = ({
         {searchResults.map((policy) => (
           <tr id={`${policy.id}-row`} key={policy.id}>
             <td>
-              <i className="fa spacewalk-icon-manage-configuration-files" title={t("SCAP Policy")} />
+              <IconTag icon="spacewalk-icon-manage-configuration-files" title={t("SCAP Policy")} />
               <a href={`/rhn/manager/audit/scap/policy/details/${policy.id}`} target="_blank" rel="noopener noreferrer">
                 {policy.policyName}
               </a>
             </td>
             <td>{policy.dataStreamName}</td>
             <td>
-              <i
-                data-bs-toggle="tooltip"
-                className="fa fa-info-circle fa-1-5x text-primary"
-                title={policy.description}
-              />
+              <IconTag icon="fa-info-circle" size="lg" title={policy.description} />
             </td>
             <td>
               <div className="row">

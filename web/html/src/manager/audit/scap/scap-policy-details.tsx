@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { LinkButton } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
@@ -185,7 +186,7 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
       <Panel headingLevel="h4" title={t("Scan History")} className="scap-scan-history-panel panel-default">
         {loading ? (
           <div className="text-center">
-            <i className="fa fa-spinner fa-spin fa-2x" />
+            <IconTag icon="fa-spinner fa-spin" size="xl" />
           </div>
         ) : scanHistory.length === 0 ? (
           <div className="alert alert-info">{t("No scans have been performed with this policy yet.")}</div>

@@ -1,147 +1,206 @@
-type Props = {
-  type: string;
+type IconSize = "sm" | "md" | "lg" | "xl" | "2xl";
+type IconStatus = "danger" | "warning" | "success" | "info" | "muted";
+
+type BaseProps = {
+  /** Any additional css classes for the icon, appended to the ones the icon itself resolves to */
   className?: string;
+  /** Add ID to icon */
+  id?: string;
+  /** Add Key attribute to icon */
+  key?: string;
+  /** Size of icon. */
+  size?: IconSize;
+  /** Add status color of the icon */
+  status?: IconStatus;
+  /** Tooltip text, also set as the `title` attribute */
   title?: string;
+  /** Tooltip placement, only has an effect together with `title` */
   tooltipPlacement?: "top" | "right" | "bottom" | "left";
+  /** Tooltip style, only has an effect together with `title` */
+  tooltipWide?: boolean;
+  /** Hides decorative icons from assistive technology by default. */
+  ariaHidden?: boolean;
+  /** Accessible name for meaningful icons exposed to assistive technology. */
+  ariaLabel?: string;
 };
 
+/** Pass either a semantic `type` from the map below, or raw Font Awesome classes through `icon`, never both */
+type Props = BaseProps &
+  (
+    | {
+        /** Semantic icon name, see the `icons` map below */
+        type: string;
+        icon?: never;
+      }
+    | {
+        /** Font Awesome classes, e.g. `"fa-question-circle"`. Use this when no `type` fits. */
+        icon: string;
+        type?: never;
+      }
+  );
+
 // See https://fontawesome.com/v4/icons/
+const icons = {
+  "action-failed": "fa-times-circle-o",
+  "action-ok": "fa-check-circle-o",
+  "action-pending": "fa-clock-o", //icon-size-lg
+  "action-running": "fa-exchange", //icon-size-lg
+  "errata-bugfix": "fa-bug", //icon-size-lg
+  "errata-enhance": "spacewalk-icon-enhancement", //icon-size-lg
+  "errata-security": "fa-shield", //icon-size-lg
+  "errata-reboot": "fa-refresh", //icon-size-lg
+  "errata-restart": "fa-archive", //icon-size-lg
+  "external-link": "fa-external-link",
+  "event-type-errata": "spacewalk-icon-patches",
+  "event-type-package": "spacewalk-icon-packages",
+  "event-type-preferences": "fa-cog",
+  "event-type-system": "fa-desktop",
+  "file-directory": "fa-folder-open-o",
+  "file-file": "fa-file-text-o",
+  "file-symlink": "spacewalk-icon-listicon-cfg-symlink",
+  "header-action": "fa-clock-o",
+  "header-activation-key": "fa-key",
+  "header-calendar": "fa-calendar",
+  "header-chain": "fa-chain",
+  "header-channel": "spacewalk-icon-software-channels",
+  "header-channel-configuration": "spacewalk-icon-software-channel-management",
+  "header-channel-mapping": "fa-retweet",
+  "header-chat": "fa-comment",
+  "header-clock": "fa-clock-o",
+  "header-config-system": "spacewalk-icon-config-system",
+  "header-configuration": "spacewalk-icon-manage-configuration-files",
+  "header-crash": "spacewalk-icon-bug-ex",
+  "header-errata": "spacewalk-icon-patches",
+  "header-errata-add": "spacewalk-icon-patch-install",
+  "header-errata-del": "spacewalk-icon-patch-remove",
+  "header-errata-set": "spacewalk-icon-patch-set",
+  "header-errata-set-add": "pacewalk-icon-patchset-install",
+  "header-event-history": "fa-suitcase",
+  "header-file": "fa-file-text-o",
+  "header-folder": "fa-folder-open-o",
+  "header-globe": "fa-globe",
+  "header-help": "fa-question-circle", //icon-size-md
+  "header-info": "fa-info-circle",
+  "header-kickstart": "fa-rocket",
+  "header-list": "fa-list",
+  "header-multiorg-big": "fa-sitemap",
+  "header-note": "spacewalk-icon-note-pin",
+  "header-organisation": "fa-group",
+  "header-package": "spacewalk-icon-packages",
+  "header-package-add": "spacewalk-icon-package-add",
+  "header-package-del": "spacewalk-icon-package-delete",
+  "header-package-extra": "spacewalk-icon-package-extra",
+  "header-package-upgrade": "spacewalk-icon-package-upgrade",
+  "header-power": "fa-power-off",
+  "header-preferences": "fa-cogs",
+  "header-proxy": "spacewalk-icon-proxy",
+  "header-refresh": "fa-refresh",
+  "header-reloading": "fa-refresh fa-spin",
+  "header-sandbox": "spacewalk-icon-sandbox",
+  "header-schedule": "spacewalk-icon-schedule",
+  "header-search": "fa-search",
+  "header-signout": "fa-sign-out",
+  "header-sitemap": "fa-sitemap",
+  "header-snapshot": "fa-camera",
+  "header-snapshot-rollback": "spacewalk-icon-snapshot-rollback",
+  "header-subscriptions-big": "fa-list-alt",
+  "header-symlink": "spacewalk-icon-listicon-cfg-symlink",
+  "header-system": "fa-desktop",
+  "header-system-groups": "spacewalk-icon-system-groups",
+  "header-system-physical": "fa-desktop",
+  "header-system-virt-guest": "spacewalk-icon-virtual-guest",
+  "header-system-virt-host": "spacewalk-icon-virtual-host",
+  "header-taskomatic": "fa-tachometer",
+  "header-user": "fa-user",
+  "header-users-big": "fa-group",
+  "header-mgr-server": "spacewalk-icon-suse-manager",
+  "item-add": "fa-plus",
+  "item-clone": "fa-files-o",
+  "item-del": "fa-trash-o",
+  "item-disabled": "fa-circle-o", //text-muted
+  "item-download": "fa-download",
+  "item-download-csv": "spacewalk-icon-download-csv",
+  "item-edit": "fa-edit",
+  "item-enabled": "fa-check", //text-success
+  "item-enabled-pending": "fa-hand-o-right", //text-success
+  "item-import": "fa-level-down",
+  "item-proxy-convert": "fa-arrow-up",
+  "item-search": "fa-eye",
+  "item-ssm-add": "fa-plus-circle",
+  "item-ssm-del": "fa-minus-circle",
+  "item-upload": "fa-upload",
+  "item-order": "fa-sort",
+  "item-error": "fa-times", //text-danger
+  "item-error-pending": "fa-hand-o-right", //text-danger
+  "nav-bullet": "fa-caret-right",
+  "nav-page-first": "fa-angle-double-left",
+  "nav-page-last": "fa-angle-double-right",
+  "nav-page-next": "fa-angle-right",
+  "nav-page-prev": "fa-angle-left",
+  "nav-right": "fa-arrow-right",
+  "nav-up": "fa-caret-up",
+  "repo-sync": "fa-refresh",
+  "repo-schedule-sync": "fa-calendar",
+  "scap-nochange": "fa-dot-circle-o", //icon-size-lg text-info
+  "setup-wizard-creds-edit": "fa-pencil",
+  "setup-wizard-creds-failed": "fa-times-circle-o", //text-danger
+  "setup-wizard-creds-make-primary": "fa-star-o", //text-starred"
+  "setup-wizard-creds-primary": "fa-star text-starred", //text-starred"
+  "setup-wizard-creds-subscriptions": "fa-th-list",
+  "setup-wizard-creds-verified": "fa-check-square", //text-success
+  "sort-down": "fa-arrow-circle-down",
+  "sort-up": "fa-arrow-circle-up",
+  spinner: "fa-spinner fa-spin",
+  "spacewalk-icon-salt": "spacewalk-icon-salt",
+  "system-state": "spacewalk-icon-salt-add",
+  "system-bare-metal-legend": "spacewalk-icon-bare-metal", //icon-size-lg
+  "system-bare-metal": "spacewalk-icon-bare-metal",
+  "system-crit": "fa-exclamation-circle", //icon-size-lg text-danger
+  "system-kickstarting": "fa-rocket", //icon-size-lg
+  "system-locked": "fa-lock", //icon-size-lg
+  "system-ok": "fa-check-circle", //icon-size-lg text-success
+  "system-physical": "fa-desktop", //icon-size-lg
+  "system-reboot": "fa-refresh", // none
+  "system-unentitled": "fa-times-circle", //icon-size-lg
+  "system-unknown": "fa-question-circle", //icon-size-lg
+  "system-virt-guest": "spacewalk-icon-virtual-guest", //icon-size-lg
+  "system-virt-host": "spacewalk-icon-virtual-host", //icon-size-lg
+  "system-warn": "fa-exclamation-triangle", //icon-size-lg text-warning
+  experimental: "fa-flask",
+};
+
 function IconTag(props: Props) {
-  const icons = {
-    "action-failed": "fa fa-times-circle-o fa-1-5x text-danger",
-    "action-ok": "fa fa-check-circle-o fa-1-5x text-success",
-    "action-pending": "fa fa-clock-o fa-1-5x",
-    "action-running": "fa fa-exchange fa-1-5x",
-    "errata-bugfix": "fa fa-bug fa-1-5x",
-    "errata-enhance": "fa fa-1-5x spacewalk-icon-enhancement",
-    "errata-security": "fa fa-shield fa-1-5x",
-    "errata-reboot": "fa fa-1-5x fa-refresh",
-    "errata-restart": "fa fa-1-5x fa-archive",
-    "external-link": "fa fa-external-link",
-    "event-type-errata": "fa spacewalk-icon-patches",
-    "event-type-package": "fa spacewalk-icon-packages",
-    "event-type-preferences": "fa fa-cog",
-    "event-type-system": "fa fa-desktop",
-    "file-directory": "fa fa-folder-open-o",
-    "file-file": "fa fa-file-text-o",
-    "file-symlink": "fa spacewalk-icon-listicon-cfg-symlink",
-    "header-action": "fa fa-clock-o",
-    "header-activation-key": "fa fa-key",
-    "header-calendar": "fa fa-calendar",
-    "header-chain": "fa fa-chain",
-    "header-channel": "fa spacewalk-icon-software-channels",
-    "header-channel-configuration": "fa spacewalk-icon-software-channel-management",
-    "header-channel-mapping": "fa fa-retweet",
-    "header-chat": "fa fa-comment text-primary",
-    "header-clock": "fa fa-clock-o",
-    "header-config-system": "fa spacewalk-icon-config-system",
-    "header-configuration": "fa spacewalk-icon-manage-configuration-files",
-    "header-crash": "fa spacewalk-icon-bug-ex",
-    "header-errata": "fa spacewalk-icon-patches",
-    "header-errata-add": "fa spacewalk-icon-patch-install",
-    "header-errata-del": "fa spacewalk-icon-patch-remove",
-    "header-errata-set": "fa spacewalk-icon-patch-set",
-    "header-errata-set-add": "fa pacewalk-icon-patchset-install",
-    "header-event-history": "fa fa-suitcase",
-    "header-file": "fa fa-file-text-o",
-    "header-folder": "fa fa-folder-open-o",
-    "header-globe": "fa fa-globe",
-    "header-help": "fa fa-question-circle spacewalk-help-link",
-    "header-info": "fa fa-info-circle",
-    "header-kickstart": "fa fa-rocket",
-    "header-list": "fa fa-list",
-    "header-multiorg-big": "fa fa-sitemap fa-3x",
-    "header-note": "fa spacewalk-icon-note-pin",
-    "header-organisation": "fa fa-group",
-    "header-package": "fa spacewalk-icon-packages",
-    "header-package-add": "fa spacewalk-icon-package-add",
-    "header-package-del": "fa spacewalk-icon-package-delete",
-    "header-package-extra": "fa spacewalk-icon-package-extra",
-    "header-package-upgrade": "fa spacewalk-icon-package-upgrade",
-    "header-power": "fa fa-power-off",
-    "header-preferences": "fa fa-cogs",
-    "header-proxy": "fa spacewalk-icon-proxy",
-    "header-refresh": "fa fa-refresh",
-    "header-reloading": "fa fa-refresh fa-spin",
-    "header-sandbox": "fa spacewalk-icon-sandbox",
-    "header-schedule": "fa spacewalk-icon-schedule",
-    "header-search": "fa fa-search",
-    "header-signout": "fa fa-sign-out",
-    "header-sitemap": "fa fa-sitemap",
-    "header-snapshot": "fa fa-camera",
-    "header-snapshot-rollback": "fa spacewalk-icon-snapshot-rollback",
-    "header-subscriptions-big": "fa fa-list-alt fa-3x",
-    "header-symlink": "fa spacewalk-icon-listicon-cfg-symlink",
-    "header-system": "fa fa-desktop",
-    "header-system-groups": "fa spacewalk-icon-system-groups",
-    "header-system-physical": "fa fa-desktop",
-    "header-system-virt-guest": "fa spacewalk-icon-virtual-guest",
-    "header-system-virt-host": "fa spacewalk-icon-virtual-host",
-    "header-taskomatic": "fa fa-tachometer",
-    "header-user": "fa fa-user",
-    "header-users-big": "fa fa-group fa-3x",
-    "item-add": "fa fa-plus",
-    "item-clone": "fa fa-files-o",
-    "item-del": "fa fa-trash-o",
-    "item-disabled": "fa fa-circle-o text-muted",
-    "item-download": "fa fa-download",
-    "item-download-csv": "fa spacewalk-icon-download-csv",
-    "item-edit": "fa fa-edit",
-    "item-enabled": "fa fa-check text-success",
-    "item-enabled-pending": "fa fa-hand-o-right text-success",
-    "item-import": "fa fa-level-down",
-    "item-proxy-convert": "fa fa-arrow-up",
-    "item-search": "fa fa-eye",
-    "item-ssm-add": "fa fa-plus-circle",
-    "item-ssm-del": "fa fa-minus-circle",
-    "item-upload": "fa fa-upload",
-    "item-order": "fa fa-sort",
-    "item-error": "fa fa-times text-danger",
-    "item-error-pending": "fa fa-hand-o-right text-danger",
-    "nav-bullet": "fa fa-caret-right",
-    "nav-page-first": "fa fa-angle-double-left",
-    "nav-page-last": "fa fa-angle-double-right",
-    "nav-page-next": "fa fa-angle-right",
-    "nav-page-prev": "fa fa-angle-left",
-    "nav-right": "fa fa-arrow-right",
-    "nav-up": "fa fa-caret-up",
-    "repo-sync": "fa fa-refresh",
-    "repo-schedule-sync": "fa fa-calendar",
-    "scap-nochange": "fa fa-dot-circle-o fa-1-5x text-info",
-    "setup-wizard-creds-edit": "fa fa-pencil",
-    "setup-wizard-creds-failed": "fa fa-times-circle-o text-danger",
-    "setup-wizard-creds-make-primary": "fa fa-star-o text-starred",
-    "setup-wizard-creds-primary": "fa fa-star text-starred",
-    "setup-wizard-creds-subscriptions": "fa fa-th-list",
-    "setup-wizard-creds-verified": "fa fa-check-square text-success",
-    "sort-down": "fa fa-arrow-circle-down",
-    "sort-up": "fa fa-arrow-circle-up",
-    spinner: "fa fa-spinner fa-spin",
-    "spacewalk-icon-salt": "fa spacewalk-icon-salt",
-    "system-state": "fa spacewalk-icon-salt-add",
-    "system-bare-metal-legend": "fa fa-1-5x spacewalk-icon-bare-metal",
-    "system-bare-metal": "fa spacewalk-icon-bare-metal",
-    "system-crit": "fa fa-exclamation-circle fa-1-5x text-danger",
-    "system-kickstarting": "fa fa-rocket fa-1-5x",
-    "system-locked": "fa fa-lock fa-1-5x",
-    "system-ok": "fa fa-check-circle fa-1-5x text-success",
-    "system-physical": "fa fa-desktop fa-1-5x",
-    "system-reboot": "fa fa-refresh",
-    "system-unentitled": "fa fa-times-circle fa-1-5x",
-    "system-unknown": "fa fa-question-circle fa-1-5x",
-    "system-virt-guest": "fa fa-1-5x spacewalk-icon-virtual-guest",
-    "system-virt-host": "fa fa-1-5x spacewalk-icon-virtual-host",
-    "system-warn": "fa fa-exclamation-triangle fa-1-5x text-warning",
-    experimental: "fa fa-flask",
-  };
+  // Hide decorative icons from assistive technology by default.
+  const ariaHidden = props.ariaHidden ?? true;
   const tooltipProps = props.title
     ? {
         "data-bs-toggle": "tooltip",
         "data-bs-placement": props.tooltipPlacement,
+        "data-bs-custom-class": props.tooltipWide ? "wide-tooltip" : undefined,
       }
     : {};
 
-  return <i className={icons[props.type] + " " + (props.className ?? "")} {...tooltipProps} title={props.title}></i>;
+  const sizeClass = props.size ? `icon-size-${props.size}` : undefined;
+  const statusClass = props.status ? `text-${props.status}` : undefined;
+  // Add the shared `fa` base class to Font Awesome and Spacewalk icons.
+  const classNames = ["fa", props.type ? icons[props.type] : props.icon, props.className, sizeClass, statusClass]
+    .filter(Boolean)
+    .join(" ")
+    .split(" ")
+    // Callers that do spell out `fa` themselves shouldn't end up with it twice
+    .filter((name, index, all) => name !== "" && all.indexOf(name) === index);
+
+  return (
+    <i
+      id={props.id}
+      key={props.key}
+      className={classNames.join(" ")}
+      {...tooltipProps}
+      title={props.title}
+      aria-label={props.ariaLabel}
+      aria-hidden={ariaHidden}
+    ></i>
+  );
 }
 
-export { IconTag };
+export { IconTag, icons };

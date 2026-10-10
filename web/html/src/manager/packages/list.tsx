@@ -92,7 +92,7 @@ export function PackageList(props: Props) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <IconTag type="header-help" />
+          <IconTag type="header-help" size="md" />
         </a>
       </h1>
 

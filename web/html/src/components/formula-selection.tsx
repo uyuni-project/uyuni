@@ -1,5 +1,6 @@
 import { type ReactNode, Component } from "react";
 
+import { IconTag } from "components/icontag";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { MessagesContainer, showErrorToastr, showInfoToastr, showWarningToastr } from "components/toastr/toastr";
 
@@ -108,9 +109,9 @@ class FormulaSelection extends Component<Props, State> {
   };
 
   getListIcon = (state) => {
-    if (!state) return "fa fa-lg fa-square-o";
-    else if (DEPRECATED_unsafeEquals(state, 1)) return "fa fa-lg fa-check-square-o";
-    else return "fa fa-lg fa-minus-square-o";
+    if (!state) return "fa-square-o";
+    else if (DEPRECATED_unsafeEquals(state, 1)) return "fa-check-square-o";
+    else return "fa-minus-square-o";
   };
 
   getListStyle = (state) => {
@@ -132,7 +133,7 @@ class FormulaSelection extends Component<Props, State> {
       list.push(
         <span key="groupless" className="list-group-item disabled">
           <strong>
-            <i className="fa fa-lg fa-square-o" />
+            <IconTag icon="fa-square-o" size="lg" />
             {t(" No group")}
           </strong>
         </span>
@@ -146,11 +147,11 @@ class FormulaSelection extends Component<Props, State> {
             title={formula.description}
             className={this.getListStyle(formula.selected)}
           >
-            <i className={this.getListIcon(formula.selected)} />
+            <IconTag icon={this.getListIcon(formula.selected)} size="lg" />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {capitalize(formula.name)}
             {formula.description ? (
-              <i id={"info_button_" + formula.name} className="fa fa-lg fa-info-circle pull-right" />
+              <IconTag id={"info_button_" + formula.name} icon="fa-info-circle" size="lg" className="pull-right" />
             ) : null}
             {this.getDescription(formula)}
           </button>
@@ -169,7 +170,7 @@ class FormulaSelection extends Component<Props, State> {
           className={this.getListStyle(group_state)}
         >
           <strong>
-            <i className={this.getListIcon(group_state)} />
+            <IconTag icon={this.getListIcon(group_state)} size="lg" />
             {" " + capitalize(group_name)}
           </strong>
         </button>
@@ -182,15 +183,16 @@ class FormulaSelection extends Component<Props, State> {
             key={formula.name}
             className={this.getListStyle(formula.selected)}
           >
-            <i className={this.getListIcon(formula.selected)} />
+            <IconTag icon={this.getListIcon(formula.selected)} size="lg" />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {capitalize(formula.name)}
             {formula.description ? (
-              <i
+              <IconTag
+                icon="fa-info-circle"
+                size="md"
                 id={"info_button_" + formula.name}
-                data-bs-toggle="tooltip"
                 title={formula.description}
-                className="fa fa-lg fa-info-circle pull-right"
+                className="pull-right"
               />
             ) : null}
             {this.getDescription(formula)}

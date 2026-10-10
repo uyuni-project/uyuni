@@ -1,5 +1,7 @@
 import { type ReactNode } from "react";
 
+import { IconTag } from "components/icontag";
+
 type Props = {
   headingLevel?: keyof JSX.IntrinsicElements;
   collapseId?: string | null | undefined;
@@ -19,7 +21,7 @@ export const Panel = (props: Props) => {
 
   const titleContent = props.title && (
     <>
-      {props.icon && <i className={`fa ${props.icon}`} />}
+      {props.icon && <IconTag icon={`${props.icon}`} />}
       {props.title}
     </>
   );

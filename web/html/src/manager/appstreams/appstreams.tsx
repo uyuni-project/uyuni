@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { ActionChain } from "components/action-schedule";
+import { IconTag } from "components/icontag";
 import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 
 import { ChannelAppStream } from "./appstreams.type";
@@ -114,7 +115,7 @@ const AppStreams = ({ channelsAppStreams }: Props) => {
     <>
       {scheduledMsg.length > 0 && <Messages items={scheduledMsg} />}
       <h2>
-        <i className={"fa spacewalk-icon-salt-add"} />
+        <IconTag icon="spacewalk-icon-salt-add" />
         {t("AppStreams")}
         &nbsp;
       </h2>

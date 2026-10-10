@@ -371,14 +371,9 @@ nav.navbar-pf {
     .input-right-icon {
       color: $aside-menu-search-clear;
       position: absolute;
-      top: 6px;
+      top: 3px;
       right: 2px;
-      font-size: 1.2em;
-      cursor: pointer;
       padding: 0;
-    }
-    .input-right-icon:hover {
-      color: $aside-menu-search-clear-hover;
     }
   }
   //Menu
@@ -713,7 +708,7 @@ i[class^="icon-"],
 i[class*=" icon-"],
 i[class*="spacewalk-icon"],
 i[class^="spacewalk-icon"] {
-  margin-right: 0.5em;
+  margin-right: 0.3em;
 }
 /* if the icon is inside a H tag the margin is a bit smaller*/
 h1,
@@ -737,10 +732,6 @@ i[class~="fa-right"] {
   margin-right: 0em;
 }
 
-// icon size smaller than the ones default by Font Awesome
-.fa-1-5x {
-  font-size: 1.3em;
-}
 .fa-1-5x.icon-border {
   border-width: 2px;
   -webkit-border-radius: 4px;
@@ -856,10 +847,6 @@ input[name="cveIdentifierId"]#cveIdentifierId {
 }
 .popover-content ul li {
   margin-top: 0.5em;
-}
-
-i.spacewalk-help-link {
-  font-size: 16px;
 }
 
 /* after pattern fly - fixes (more like workarounds) */

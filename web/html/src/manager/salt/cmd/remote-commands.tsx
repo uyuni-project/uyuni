@@ -3,6 +3,7 @@ import { type ReactNode, Component } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { TopPanel } from "components/panels/TopPanel";
 import { DEPRECATED_onClick } from "components/utils";
 
@@ -56,7 +57,7 @@ class MinionResultView extends Component<MinionResultViewProps, MinionResultView
               return (
                 <div className="pull-right">
                   <div className="badge">{t("timed out")}</div>
-                  <i className="fa fa-right fa-warning text-warning fa-1-5x"></i>
+                  <IconTag icon="fa-warning" status="warning" className="fa-right" size="lg" />
                 </div>
               );
             } else if (resultType === "matched") {
@@ -65,14 +66,14 @@ class MinionResultView extends Component<MinionResultViewProps, MinionResultView
               return (
                 <div className="pull-right">
                   <div className="badge">{this.state.open ? t("- hide error -") : t("- show error -")}</div>
-                  <i className="fa fa-right fa-warning text-danger fa-1-5x"></i>
+                  <IconTag icon="fa-warning" status="danger" className="fa-right" size="lg" />
                 </div>
               );
             } else if (resultType === "result") {
               return (
                 <div className="pull-right">
                   <div className="badge">{this.state.open ? t("- hide response -") : t("- show response -")}</div>
-                  <i className="fa fa-right fa-check-circle fa-1-5x"></i>
+                  <IconTag icon="fa-check-circle" status="success" className="fa-right" size="lg" />
                 </div>
               );
             }

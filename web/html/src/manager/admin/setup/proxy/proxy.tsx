@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { IconTag } from "components/icontag";
 import { Form, Password, Text } from "components/input";
 import { Panel } from "components/panels/Panel";
 
@@ -123,7 +124,7 @@ export default (props: Props) => {
         </div>
         <div className="col-sm-3 hidden-xs" id="wizard-faq">
           <div className="proxy-brand text-center">
-            SUSE<i className="fa fa-registered"></i> Multi-Linux Manager
+            SUSE <IconTag icon="fa fa-registered" />Multi-Linux Manager
           </div>
           <img src={img} alt={t("Illustration of a proxy server")} />
           <h4>{t("HTTP Proxy")}</h4>

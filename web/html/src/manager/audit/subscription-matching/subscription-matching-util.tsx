@@ -1,4 +1,5 @@
 import { LinkButton } from "components/buttons";
+import { IconTag } from "components/icontag";
 
 const ToolTip = (props) => <span title={props.title}>{props.content}</span>;
 
@@ -17,11 +18,11 @@ const CsvLink = (props) => (
 const SystemLabel = (props) => {
   let icon;
   if (props.type === "nonVirtual") {
-    icon = <i className="fa fa-desktop"></i>;
+    icon = <IconTag icon="fa-desktop" />;
   } else if (props.type === "virtualHost") {
-    icon = <i className="fa spacewalk-icon-virtual-host"></i>;
+    icon = <IconTag icon="spacewalk-icon-virtual-host" />;
   } else if (props.type === "virtualGuest") {
-    icon = <i className="fa spacewalk-icon-virtual-guest"></i>;
+    icon = <IconTag icon="spacewalk-icon-virtual-guest" />;
   } else {
     icon = null;
   }
@@ -55,7 +56,7 @@ function humanReadablePolicy(rawPolicy) {
 }
 
 const WarningIcon = (props) => (
-  <i className={"fa fa-exclamation-triangle text-warning" + (props.iconOnRight ? " fa-right" : "")}></i>
+  <IconTag icon="fa-exclamation-triangle" status="warning" className={(props.iconOnRight ? " fa-right" : "")} />
 );
 
 export { ToolTip, CsvLink, SystemLabel, humanReadablePolicy, WarningIcon };

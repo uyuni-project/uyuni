@@ -1,4 +1,6 @@
 import { type ReactNode, Component } from "react";
+
+import { IconTag } from "./icontag";
 type Props = {
   /** The id of the html div tag */
   id: string;
@@ -49,7 +51,7 @@ export class PopUp extends Component<Props> {
                 {closableModal && (
                   <button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">
-                      <i className="fa fa-close"></i>
+                      <IconTag icon="fa-close" />
                     </span>
                   </button>
                 )}

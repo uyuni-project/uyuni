@@ -3,6 +3,7 @@ import { Component } from "react";
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
+import { IconTag } from "components/icontag";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
@@ -46,7 +47,7 @@ class VirtualHostManagerList extends Component<Props, State> {
             header={t("Label")}
             cell={(row) => (
               <a data-senna-off href={"#/details/" + row.id}>
-                <i className="fa spacewalk-icon-virtual-host-manager" />
+                <IconTag icon="spacewalk-icon-virtual-host-manager" />
                 {row.label}
               </a>
             )}

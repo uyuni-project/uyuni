@@ -2,6 +2,7 @@ import { Component } from "react";
 
 import { AceEditor } from "components/ace-editor";
 import { Button } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { Messages, Utils } from "components/messages/messages";
 import { Loading } from "components/utils/loading/Loading";
 
@@ -203,7 +204,7 @@ class AccordionPathContent extends Component<PropsType, StateType> {
   render() {
     const header = (
       <button className="div-button panel-heading" onClick={() => this.onToggle()}>
-        <i className={this.state.isOpen || this.state.loading ? "fa fa-chevron-down" : "fa fa-chevron-right"} />
+        <IconTag icon={this.state.isOpen || this.state.loading ? "fa-chevron-down" : "fa-chevron-right"} />
         {this.props.path.path}
       </button>
     );

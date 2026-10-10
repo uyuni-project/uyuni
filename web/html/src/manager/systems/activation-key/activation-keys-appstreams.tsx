@@ -4,6 +4,7 @@ import { AppStreamActions } from "manager/appstreams/actions-appstreams";
 import { AppStreamPanel } from "manager/appstreams/panel-appstream";
 import { handleModuleEnableDisable, numberOfChanges } from "manager/appstreams/utils";
 
+import { IconTag } from "components/icontag";
 import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 
 import Network from "utils/network";
@@ -70,7 +71,7 @@ const AppStreams = (props: Props) => {
     <>
       {statusMessage.length > 0 && <Messages items={statusMessage} />}
       <h2>
-        <i className={"fa spacewalk-icon-salt-add"} />
+        <IconTag icon="spacewalk-icon-salt-add" />
         {t("AppStreams")}
       </h2>
       <AppStreamActions numberOfChanges={changes} onReset={handleReset} onSubmit={handleSubmit} />

@@ -42,20 +42,20 @@ public class IconTag extends TagSupport {
 
     static {
         icons = new HashMap<>();
-        icons.put("action-failed", "fa fa-times-circle-o fa-1-5x text-danger");
-        icons.put("action-ok", "fa fa-check-circle-o fa-1-5x text-success");
-        icons.put("action-pending", "fa fa-clock-o fa-1-5x");
-        icons.put("action-running", "fa fa-exchange fa-1-5x");
-        icons.put("errata-bugfix", "fa fa-bug fa-1-5x");
-        icons.put("errata-enhance", "fa fa-1-5x spacewalk-icon-enhancement");
-        icons.put("errata-reboot", "fa fa-1-5x fa-refresh");
-        icons.put("errata-restart", "fa fa-1-5x fa-archive");
-        icons.put("errata-security", "fa fa-shield fa-1-1-5x");
-        icons.put("errata-security-low", "fa fa-shield fa-1-1-5x errata-low");
-        icons.put("errata-security-moderate", "fa fa-shield fa-1-1-5x errata-moderate");
-        icons.put("errata-security-important", "fa fa-shield fa-1-1-5x errata-important");
-        icons.put("errata-security-critical", "fa fa-shield fa-1-1-5x errata-critical");
-        icons.put("errata-retracted", "fa fa-1-5x fa-times-circle errata-retracted");
+        icons.put("action-failed", "fa fa-times-circle-o icon-size-lg text-danger");
+        icons.put("action-ok", "fa fa-check-circle-o icon-size-lg text-success");
+        icons.put("action-pending", "fa fa-clock-o icon-size-lg");
+        icons.put("action-running", "fa fa-exchange icon-size-lg");
+        icons.put("errata-bugfix", "fa fa-bug icon-size-lg");
+        icons.put("errata-enhance", "fa icon-size-lg spacewalk-icon-enhancement");
+        icons.put("errata-reboot", "fa icon-size-lg fa-refresh");
+        icons.put("errata-restart", "fa icon-size-lg fa-archive");
+        icons.put("errata-security", "fa fa-shield");
+        icons.put("errata-security-low", "fa fa-shield errata-low");
+        icons.put("errata-security-moderate", "fa fa-shield errata-moderate");
+        icons.put("errata-security-important", "fa fa-shield errata-important");
+        icons.put("errata-security-critical", "fa fa-shield errata-critical");
+        icons.put("errata-retracted", "fa icon-size-lg fa-times-circle errata-retracted");
         icons.put("external-link", "fa fa-external-link");
         icons.put("event-type-errata", "fa spacewalk-icon-patches");
         icons.put("event-type-package", "fa spacewalk-icon-packages");
@@ -86,11 +86,11 @@ public class IconTag extends TagSupport {
         icons.put("header-file", "fa fa-file-text-o");
         icons.put("header-folder", "fa fa-folder-open-o");
         icons.put("header-globe", "fa fa-globe");
-        icons.put("header-help", "fa fa-question-circle spacewalk-help-link");
+        icons.put("header-help", "fa fa-question-circle icon-size-md");
         icons.put("header-info", "fa fa-info-circle");
         icons.put("header-kickstart", "fa fa-rocket");
         icons.put("header-list", "fa fa-list");
-        icons.put("header-multiorg-big", "fa fa-sitemap fa-3x");
+        icons.put("header-multiorg-big", "fa fa-sitemap icon-size-2xl");
         icons.put("header-note", "fa spacewalk-icon-note-pin");
         icons.put("header-organisation", "fa fa-group");
         icons.put("header-package", "fa spacewalk-icon-packages");
@@ -111,7 +111,7 @@ public class IconTag extends TagSupport {
         icons.put("header-sitemap", "fa fa-sitemap");
         icons.put("header-snapshot", "fa fa-camera");
         icons.put("header-snapshot-rollback", "fa spacewalk-icon-snapshot-rollback");
-        icons.put("header-subscriptions-big", "fa fa-list-alt fa-3x");
+        icons.put("header-subscriptions-big", "fa fa-list-alt icon-size-2xl");
         icons.put("header-symlink", "fa spacewalk-icon-listicon-cfg-symlink");
         icons.put("header-system", "fa fa-desktop");
         icons.put("header-system-groups", "fa spacewalk-icon-system-groups");
@@ -120,7 +120,7 @@ public class IconTag extends TagSupport {
         icons.put("header-system-virt-host", "fa spacewalk-icon-virtual-host");
         icons.put("header-taskomatic", "fa fa-tachometer");
         icons.put("header-user", "fa fa-user");
-        icons.put("header-users-big", "fa fa-group fa-3x");
+        icons.put("header-users-big", "fa fa-group icon-size-2xl");
         icons.put("item-add", "fa fa-plus");
         icons.put("item-clone", "fa fa-files-o");
         icons.put("item-del", "fa fa-trash-o");
@@ -146,7 +146,7 @@ public class IconTag extends TagSupport {
         icons.put("repo-sync", "fa fa-refresh");
         icons.put("repo-save", "fa fa-check");
         icons.put("repo-schedule-sync", "fa fa-calendar");
-        icons.put("scap-nochange", "fa fa-dot-circle-o fa-1-5x text-info");
+        icons.put("scap-nochange", "fa fa-dot-circle-o icon-size-lg text-info");
         icons.put("setup-wizard-creds-edit", "fa fa-pencil");
         icons.put("setup-wizard-creds-failed", "fa fa-times-circle-o text-danger");
         icons.put("setup-wizard-creds-make-primary", "fa fa-star-o text-starred");
@@ -157,19 +157,19 @@ public class IconTag extends TagSupport {
         icons.put("sort-up", "fa fa-arrow-circle-up");
         icons.put("spinner", "fa fa-spinner fa-spin");
         icons.put("system-state", "fa spacewalk-icon-salt-add");
-        icons.put("system-bare-metal-legend", "fa fa-1-5x spacewalk-icon-bare-metal");
+        icons.put("system-bare-metal-legend", "fa icon-size-lg spacewalk-icon-bare-metal");
         icons.put("system-bare-metal", "fa spacewalk-icon-bare-metal");
-        icons.put("system-crit", "fa fa-exclamation-circle fa-1-5x text-danger");
-        icons.put("system-kickstarting", "fa fa-rocket fa-1-5x");
-        icons.put("system-locked", "fa fa-lock fa-1-5x");
-        icons.put("system-ok", "fa fa-check-circle fa-1-5x text-success");
-        icons.put("system-physical", "fa fa-desktop fa-1-5x");
+        icons.put("system-crit", "fa fa-exclamation-circle icon-size-lg text-danger");
+        icons.put("system-kickstarting", "fa fa-rocket icon-size-lg");
+        icons.put("system-locked", "fa fa-lock icon-size-lg");
+        icons.put("system-ok", "fa fa-check-circle icon-size-lg text-success");
+        icons.put("system-physical", "fa fa-desktop icon-size-lg");
         icons.put("system-reboot", "fa fa-refresh");
-        icons.put("system-unentitled", "fa fa-times-circle fa-1-5x");
-        icons.put("system-unknown", "fa fa-question-circle fa-1-5x");
-        icons.put("system-virt-guest", "fa fa-1-5x spacewalk-icon-virtual-guest");
-        icons.put("system-virt-host", "fa fa-1-5x spacewalk-icon-virtual-host");
-        icons.put("system-warn", "fa fa-exclamation-triangle fa-1-5x text-warning");
+        icons.put("system-unentitled", "fa fa-times-circle icon-size-lg");
+        icons.put("system-unknown", "fa fa-question-circle icon-size-lg");
+        icons.put("system-virt-guest", "fa icon-size-lg spacewalk-icon-virtual-guest");
+        icons.put("system-virt-host", "fa icon-size-lg spacewalk-icon-virtual-host");
+        icons.put("system-warn", "fa fa-exclamation-triangle icon-size-lg text-warning");
         icons.put("item-close", "fa fa-times");
     }
 
