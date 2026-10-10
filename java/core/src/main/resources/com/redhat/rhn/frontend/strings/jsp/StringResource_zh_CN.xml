@@ -10169,21 +10169,21 @@ Please note that some manual configuration of these scripts may still be require
         <source>Default Distribution Channel Mappings cannot be deleted.</source>
         <target state="translated">无法删除默认分发通道映射。</target>
       </trans-unit>
-      <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
+      <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve" approved="yes">
         <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
-        <target state="needs-adaptation">分发通道映射定义为客户端根据注册的操作系统和体系结构所应用的默认基础通道。这些映射可以被覆盖，但无法删除。</target>
+        <target state="final">分发通道映射定义为客户端在注册时根据其操作系统和体系结构自动选用的默认基础通道。您可以覆盖这些映射，但无法将其删除。</target>
       </trans-unit>
-      <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
+      <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve" approved="yes">
         <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
-        <target state="needs-adaptation">在此处可以编辑组织特定的分发通道映射。默认分发通道映射无法编辑，只能在各个组织中将其覆盖。</target>
+        <target state="final">您可以在此处编辑组织专用的分发通道映射。默认分发通道映射不可编辑，仅可在各个组织内覆盖。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.summary" xml:space="preserve">
         <source>Organization specific Distribution Channel Mapping will be deleted. If it is currently overriding a default channel mapping, the default mapping becomes effective.</source>
         <target state="translated">组织特定的分发通道映射将被删除。如果它当前正在覆盖某个默认通道映射，则该默认映射将生效。</target>
       </trans-unit>
-      <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve">
+      <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve" approved="yes">
         <source>Default Distribution Channel Mappings cannot be deleted. They can only be overridden within every organization.</source>
-        <target state="needs-adaptation">无法删除默认分发通道映射。只能在各个组织中将其覆盖。</target>
+        <target state="final">默认分发通道映射不可删除，仅可在各个组织内覆盖。</target>
       </trans-unit>
       <trans-unit id="toolbar.create.distchannelmap" xml:space="preserve">
         <source>Create Distribution Channel Mapping</source>
@@ -29606,14 +29606,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="final">不要同步补丁。</target>
+        <target state="final">不同步补丁。</target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.manage.sync.nostrict-tt.jsp" xml:space="preserve">
         <source>Allows a channel to deviate from the repository, keeping packages that have been removed from the remote repository.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="final">允许通道与储存库存在偏差，保留远程储存库中已去除的软件包。</target>
+        <target state="final">允许通道与储存库不再保持同步，保留远程储存库中已去除的软件包。</target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.manage.sync.latestonly-tt.jsp" xml:space="preserve">
         <source>Synchronize the latest package version only.</source>
@@ -29627,14 +29627,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="final">此选项会准备一个可用于进行 Kickstart 自动安装的目录树。</target>
+        <target state="final">此选项可生成适用于 Kickstart 自动安装的目录树。</target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.manage.sync.fail-tt.jsp" xml:space="preserve">
         <source>Stop synchronizing if an error occurs.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="final">如果发生错误，则停止同步。</target>
+        <target state="final">发生错误即停止同步。</target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.jsp.sync.status.ready" xml:space="preserve">
         <source> Completed </source>
@@ -29792,158 +29792,159 @@ given channel.</source>
         <source> Disabled </source>
         <target state="final"> 已禁用 </target>
       </trans-unit>
-    <trans-unit id="exportcolumn.cveNames" xml:space="preserve">
-          <source>CVEs</source>
+      <trans-unit id="exportcolumn.cveNames" xml:space="preserve">
+        <source>CVEs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.delete.jsp.actkeysheader" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="channel.delete.jsp.actkeysheader" xml:space="preserve" approved="yes">
         <source>Activation Keys</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.delete.jsp.actkeysparagraph" xml:space="preserve">
+        <target state="final">激活密钥</target>
+      </trans-unit>
+      <trans-unit id="channel.delete.jsp.actkeysparagraph" xml:space="preserve" approved="yes">
         <source>Channel deletion will remove any Activation Key that has {0} as a base channel.
          </source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.delete.jsp.actkeysaffected" xml:space="preserve">
+        <target state="final">删除通道会去除所有将 {0} 用作基础通道的激活密钥。
+         </target>
+      </trans-unit>
+      <trans-unit id="channel.delete.jsp.actkeysaffected" xml:space="preserve" approved="yes">
         <source>Activation Keys Affected:</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.clm-diff-bunch" xml:space="preserve">
+        <target state="final">受影响的激活密钥：</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.clm-diff-bunch" xml:space="preserve" approved="yes">
         <source>Generates differences for CLM channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.clm-diff" xml:space="preserve">
+        <target state="final">为 CLM 通道生成差异</target>
+      </trans-unit>
+      <trans-unit id="task.status.clm-diff" xml:space="preserve" approved="yes">
         <source>Calculate CLM Differences</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">计算 CLM 差异</target>
+      </trans-unit>
       <trans-unit id="system.event.history.waitingForReboot" xml:space="preserve">
-          <source>Waiting for reboot</source>
+        <source>Waiting for reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional" xml:space="preserve">
-          <source>Transactional progress:</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional" xml:space="preserve">
+        <source>Transactional progress:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.step.prerequisites" xml:space="preserve">
-          <source>Prerequisites</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.prerequisites" xml:space="preserve">
+        <source>Prerequisites</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.step.reboot" xml:space="preserve">
-          <source>System reboot</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.reboot" xml:space="preserve">
+        <source>System reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.step.execution" xml:space="preserve">
-          <source>Post-reboot step</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.execution" xml:space="preserve">
+        <source>Post-reboot step</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.step.apply" xml:space="preserve">
-          <source>Transactional update</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.apply" xml:space="preserve">
+        <source>Transactional update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.step.applyReboot" xml:space="preserve">
-          <source>System reboot</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.applyReboot" xml:space="preserve">
+        <source>System reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.step.finalization" xml:space="preserve">
-          <source>Action completion</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.finalization" xml:space="preserve">
+        <source>Action completion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.status.completed" xml:space="preserve">
-          <source>completed</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.completed" xml:space="preserve">
+        <source>completed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.status.failed" xml:space="preserve">
-          <source>failed</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.failed" xml:space="preserve">
+        <source>failed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.status.pending" xml:space="preserve">
-          <source>pending</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.pending" xml:space="preserve">
+        <source>pending</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.status.notNeeded" xml:space="preserve">
-          <source>not needed</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.notNeeded" xml:space="preserve">
+        <source>not needed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.status.scheduled" xml:space="preserve">
-          <source>queued</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.scheduled" xml:space="preserve">
+        <source>queued</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.at" xml:space="preserve">
-          <source> at </source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.at" xml:space="preserve">
+        <source> at </source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.prerequisiteResult" xml:space="preserve">
-          <source>Prerequisite result:</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.prerequisiteResult" xml:space="preserve">
+        <source>Prerequisite result:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.operations.provisioning.remotecommand.form.use_transactional_update.label" xml:space="preserve">
-          <source>Use transactional update</source>
+      </trans-unit>
+      <trans-unit id="ssm.operations.provisioning.remotecommand.form.use_transactional_update.label" xml:space="preserve">
+        <source>Use transactional update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/ssm/provisioning/RemoteCommand</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        </body>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
