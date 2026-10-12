@@ -1961,7 +1961,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="userdetails.jsp.noemailaddress" xml:space="preserve">
         <source>Add Email Address</source>
-        <target state="needs-adaptation">Žiadna e-mailová adresa</target>
+        <target state="translated">Pridať e-mailovú adresu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
@@ -6971,14 +6971,14 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systems.groups.jsp.remove" xml:space="preserve">
         <source>Leave Groups</source>
-        <target state="needs-adaptation">Opustiť vybrané skupiny</target>
+        <target state="translated">Opustiť skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.add" xml:space="preserve">
         <source>Join Groups</source>
-        <target state="needs-adaptation">Pripojiť vybrané skupiny</target>
+        <target state="translated">Pripojiť skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -7139,7 +7139,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemgroup.details.editproperties" xml:space="preserve">
         <source>Edit System Group Properties</source>
-        <target state="needs-adaptation">Upraviť tieto vlastnosti</target>
+        <target state="translated">Upraviť vlastnosti systémovej skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -8040,7 +8040,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="installpkgs.jsp.installpackages" xml:space="preserve">
         <source>Install Packages</source>
-        <target state="needs-adaptation">Inštalovať vybrané balíky</target>
+        <target state="translated">Inštalovať balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
@@ -29411,294 +29411,290 @@ given channel.</source>
         <source>CA Certificates Update</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="system.event.actionId" xml:space="preserve">
-          <source>Action ID</source>
+      <trans-unit id="system.event.actionId" xml:space="preserve">
+        <source>Action ID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve">
         <source>Failed to lock selected packages. Can't lock multiple versions of the same package.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.disk-check-warning.name" xml:space="preserve">
         <source>Disk Check Warning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.disk-check-warning.description" xml:space="preserve">
         <source> Show disk space warning when running low.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-
-
- 
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.diskcheck-task-bunch" xml:space="preserve">
         <source>Schedule a disk check</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.clm-channel-diff" xml:space="preserve">
         <source>CLM Channel Comparison</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.diskcheck-task" xml:space="preserve">
         <source>Disk Check Actions</source>
-      <target state="new"/>
-  </trans-unit>
-
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.jsp.betafeatures" xml:space="preserve">
         <source> Enable beta features</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.jsp.betaheader" xml:space="preserve">
         <source>Beta Features</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.jsp.betadescription" xml:space="preserve">
         <source>Beta features are experimental and may not be fully tested. Enable this option to access new functionality that is still under development. Use with caution in production environments.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.audit.xccdfdetails.jsp.action" xml:space="preserve">
-          <source>Action</source>
+        <source>Action</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="spmigration.sles16.preflight.title" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.title" xml:space="preserve">
         <source>Before Migrating to SLES 16 — Please ensure</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.patch.title" xml:space="preserve">
         <source>System is fully up to date</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.diskspace.title" xml:space="preserve">
         <source>Sufficient disk space is available</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.ssh.title" xml:space="preserve">
         <source>Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.kvmguests.title" xml:space="preserve">
         <source>KVM guests are shut down (if applicable)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.network.title" xml:space="preserve">
         <source>Network configuration will be migrated from wicked to NetworkManager</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.selinux.title" xml:space="preserve">
         <source>AppArmor profiles will be migrated to SELinux</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="usercreate.prefix" xml:space="preserve">
         <source>Prefix</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="usercreate.firstName" xml:space="preserve">
         <source>First Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="usercreate.lastName" xml:space="preserve">
         <source>Last Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.jsp.repoautosync" xml:space="preserve">
         <source>Automatic Repository Synchronization</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.jsp.repoautosync.true" xml:space="preserve">
         <source> Enabled </source>
-      <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.jsp.repoautosync.false" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="channel.jsp.repoautosync.false" xml:space="preserve">
         <source> Disabled </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="exportcolumn.cveNames" xml:space="preserve">
-          <source>CVEs</source>
+        <source>CVEs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.delete.jsp.actkeysheader" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="channel.delete.jsp.actkeysheader" xml:space="preserve">
         <source>Activation Keys</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.delete.jsp.actkeysparagraph" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="channel.delete.jsp.actkeysparagraph" xml:space="preserve">
         <source>Channel deletion will remove any Activation Key that has {0} as a base channel.
          </source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.delete.jsp.actkeysaffected" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="channel.delete.jsp.actkeysaffected" xml:space="preserve">
         <source>Activation Keys Affected:</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.clm-diff-bunch" xml:space="preserve">
         <source>Generates differences for CLM channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.clm-diff" xml:space="preserve">
         <source>Calculate CLM Differences</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.event.history.waitingForReboot" xml:space="preserve">
-          <source>Waiting for reboot</source>
+        <source>Waiting for reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional" xml:space="preserve">
-          <source>Transactional progress:</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional" xml:space="preserve">
+        <source>Transactional progress:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.step.prerequisites" xml:space="preserve">
-          <source>Prerequisites</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.prerequisites" xml:space="preserve">
+        <source>Prerequisites</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.step.reboot" xml:space="preserve">
-          <source>System reboot</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.reboot" xml:space="preserve">
+        <source>System reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.step.execution" xml:space="preserve">
-          <source>Post-reboot step</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.execution" xml:space="preserve">
+        <source>Post-reboot step</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.step.apply" xml:space="preserve">
-          <source>Transactional update</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.apply" xml:space="preserve">
+        <source>Transactional update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.step.applyReboot" xml:space="preserve">
-          <source>System reboot</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.applyReboot" xml:space="preserve">
+        <source>System reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.step.finalization" xml:space="preserve">
-          <source>Action completion</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.finalization" xml:space="preserve">
+        <source>Action completion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.status.completed" xml:space="preserve">
-          <source>completed</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.completed" xml:space="preserve">
+        <source>completed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.status.failed" xml:space="preserve">
-          <source>failed</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.failed" xml:space="preserve">
+        <source>failed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.status.pending" xml:space="preserve">
-          <source>pending</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.pending" xml:space="preserve">
+        <source>pending</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.status.notNeeded" xml:space="preserve">
-          <source>not needed</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.notNeeded" xml:space="preserve">
+        <source>not needed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.status.scheduled" xml:space="preserve">
-          <source>queued</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.scheduled" xml:space="preserve">
+        <source>queued</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.at" xml:space="preserve">
-          <source> at </source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.at" xml:space="preserve">
+        <source> at </source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.transactional.prerequisiteResult" xml:space="preserve">
-          <source>Prerequisite result:</source>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.prerequisiteResult" xml:space="preserve">
+        <source>Prerequisite result:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.operations.provisioning.remotecommand.form.use_transactional_update.label" xml:space="preserve">
-          <source>Use transactional update</source>
+      </trans-unit>
+      <trans-unit id="ssm.operations.provisioning.remotecommand.form.use_transactional_update.label" xml:space="preserve">
+        <source>Use transactional update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/ssm/provisioning/RemoteCommand</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        </body>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
