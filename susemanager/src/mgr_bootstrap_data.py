@@ -809,6 +809,12 @@ DATA = {
         "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/1/bootstrap/",
     },
+    "SLES-NVI-16.1-aarch64": {
+        "PDID": [3495, 3247],
+        "BETAPDID": [3251],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/1/bootstrap/",
+    },
     "SUMA-43-PROXY-x86_64": {
         "PDID": [2299, 2384, 2379],
         "BETAPDID": [],
