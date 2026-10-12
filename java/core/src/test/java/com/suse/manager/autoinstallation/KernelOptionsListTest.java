@@ -13,6 +13,7 @@ package com.suse.manager.autoinstallation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -201,5 +202,44 @@ public class KernelOptionsListTest {
         assertTrue(list.hasOption("flag1"));
         assertTrue(list.hasOption("key1"));
         assertFalse(list.hasOption("unknown"));
+    }
+
+    /**
+     * Tests the two-argument hasOption: the option must exist and carry
+     * exactly the given value (flags do not match a value).
+     */
+    @Test
+    public void testHasOptionWithValue() {
+        KernelOptionsList list = new KernelOptionsList("key1=val1 flag1 key1=val2");
+        assertTrue(list.hasOption("key1", "val1"));
+        assertTrue(list.hasOption("key1", "val2"));
+        assertFalse(list.hasOption("key1", "other"));
+        assertFalse(list.hasOption("flag1", ""));
+        assertFalse(list.hasOption("unknown", "val1"));
+    }
+
+    /**
+     * Tests getValue: first value of the key, null for flags and unknown
+     * keys.
+     */
+    @Test
+    public void testGetValue() {
+        KernelOptionsList list = new KernelOptionsList("key1=val1 flag1 key1=val2");
+        assertEquals("val1", list.getValue("key1"));
+        assertNull(list.getValue("flag1"));
+        assertNull(list.getValue("unknown"));
+    }
+
+    /**
+     * Tests setFlagIfNotPresent: adds a flag only when the key is absent,
+     * an existing key=value is not touched.
+     */
+    @Test
+    public void testSetFlagIfNotPresent() {
+        KernelOptionsList list = new KernelOptionsList("key1=val1");
+        list.setFlagIfNotPresent("textmode");
+        assertEquals("key1=val1 textmode", list.toString());
+        list.setFlagIfNotPresent("key1");
+        assertEquals("key1=val1 textmode", list.toString());
     }
 }

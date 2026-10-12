@@ -25,6 +25,7 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -46,13 +47,23 @@ public class KickstartInitiateActionTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Removes everything the test created on cobbler (real or mocked) -
+     * mandatory per test: the fixtures reuse one fixed MAC address, which
+     * real cobbler rejects on the next system record.
+     */
+    @AfterEach
+    public void tearDown() {
+        KickstartTestUtils.cleanUpCobbler();
+    }
+
+    /**
      * SLES15: the resolved options are adapted for AutoYaST (textmode,
      * no initrd) and autoyast= plus info= are appended.
      */
     @Test
     public void testSles15KernelOptions() throws Exception {
         KickstartableTree tree = treeOfType("sles15generic");
-        SystemRecord system = cobblerSystem("suse", "sles15",
+        SystemRecord system = cobblerSystem("suse", "sles15generic",
                 "text console=ttyS0 initrd=extra", "ksdevice=eth0");
 
         String kopts = KickstartInitiateAction.buildKernelOptions(system, tree, HOST, true);
@@ -74,7 +85,7 @@ public class KickstartInitiateActionTest extends BaseTestCaseWithUser {
     @Test
     public void testSles16KernelOptions() throws Exception {
         KickstartableTree tree = treeOfType("opensuse16.1");
-        SystemRecord system = cobblerSystem("suse", "sles16",
+        SystemRecord system = cobblerSystem("suse", "sles15generic",
                 "text console=ttyS0", "ksdevice=eth0");
 
         String kopts = KickstartInitiateAction.buildKernelOptions(system, tree, HOST, true);
@@ -115,12 +126,65 @@ public class KickstartInitiateActionTest extends BaseTestCaseWithUser {
     @Test
     public void testNoInfoWithoutAutoinstall() throws Exception {
         KickstartableTree tree = treeOfType("sles15generic");
-        SystemRecord system = cobblerSystem("suse", "sles15",
+        SystemRecord system = cobblerSystem("suse", "sles15generic",
                 "console=ttyS0", "ksdevice=eth0");
 
         String kopts = KickstartInitiateAction.buildKernelOptions(system, tree, HOST, false);
 
         assertFalse(kopts.contains("info="));
+    }
+
+    /**
+     * Composing over already-composed options (the system record carries
+     * the media override and the installer selection from a previous
+     * composition) duplicates nothing.
+     */
+    @Test
+    public void testKernelOptionsIdempotent() throws Exception {
+        KickstartableTree tree = treeOfType("sles15generic");
+        SystemRecord system = cobblerSystem("suse", "sles15generic",
+                "console=ttyS0",
+                "ksdevice=eth0 install=http://" + HOST + "/ty/token1"
+                        + " autoyast=http://" + HOST + "/cblr/svc/op/autoinstall/system/"
+                        + SYSTEM_NAME);
+
+        String kopts = KickstartInitiateAction.buildKernelOptions(system, tree, HOST, true);
+
+        assertOptions(List.of(
+                "console=ttyS0",
+                "ksdevice=eth0",
+                "install=http://" + HOST + "/ty/token1",
+                "autoyast=http://" + HOST + "/cblr/svc/op/autoinstall/system/" + SYSTEM_NAME,
+                "info=http://" + HOST + "/cblr/svc/op/nopxe/system/" + SYSTEM_NAME), kopts);
+        assertEquals(1, kopts.split("autoyast=", -1).length - 1);
+        assertEquals(1, kopts.split("install=", -1).length - 1);
+    }
+
+    /**
+     * RHEL: a resolved text option survives untransformed (the textmode
+     * transform is suse-breed only). Cobbler resolves a bare flag to an
+     * empty value, which the mock renders as text= and real cobbler (blank
+     * values round-trip through its YAML storage) as text=~ - legacy parity
+     * in both cases.
+     */
+    @Test
+    public void testRhelTextSurvivesUntransformed() throws Exception {
+        KickstartableTree tree = treeOfType("rhel_7");
+        SystemRecord system = cobblerSystem("redhat", "rhel7",
+                "text console=ttyS0", "ksdevice=eth0");
+
+        String kopts = KickstartInitiateAction.buildKernelOptions(system, tree, HOST, true);
+
+        String expectedText = KickstartTestUtils.useRealCobbler() ? "text=~" : "text=";
+        assertOptions(List.of(
+                expectedText,
+                "console=ttyS0",
+                "ksdevice=eth0",
+                "install=http://" + HOST + "/ty/token1",
+                "inst.ks.sendmac",
+                "inst.ks=http://" + HOST + "/cblr/svc/op/autoinstall/system/" + SYSTEM_NAME,
+                "info=http://" + HOST + "/cblr/svc/op/nopxe/system/" + SYSTEM_NAME), kopts);
+        assertFalse(kopts.contains("textmode"));
     }
 
     private KickstartableTree treeOfType(String installTypeLabel) throws Exception {
@@ -134,16 +198,18 @@ public class KickstartInitiateActionTest extends BaseTestCaseWithUser {
         CobblerConnection con = CobblerXMLRPCHelper.getConnection("test");
         Distro distro = new Distro.Builder<String>()
                 .setName("tree1:1")
-                .setKernel("/tmp/kickstart/images/vmlinuz")
-                .setInitrd("/tmp/kickstart/images/initrd")
+                .setKernel("/tmp/kickstart/images/images/pxeboot/vmlinuz")
+                .setInitrd("/tmp/kickstart/images/images/pxeboot/initrd.img")
                 .setBreed(breed)
                 .setOsVersion(osVersion)
                 .setKernelOptions(Optional.of(distroOptions))
                 .build(con);
         Profile profile = Profile.create(con, "profile1", distro);
         profile.setKernelOptions(Optional.of(profileOptions));
+        profile.save();
         SystemRecord system = SystemRecord.create(con, SYSTEM_NAME, profile);
         system.setKernelOptions(Optional.of("install=http://" + HOST + "/ty/token1"));
+        system.save();
         return SystemRecord.lookupByName(con, SYSTEM_NAME);
     }
 

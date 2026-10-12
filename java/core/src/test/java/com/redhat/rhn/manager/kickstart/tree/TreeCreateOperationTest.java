@@ -17,11 +17,13 @@ package com.redhat.rhn.manager.kickstart.tree;
 
 import static com.redhat.rhn.testing.TestUtils.assertContains;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -71,6 +73,9 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
 
     @Test
     public void testPopulateKernelOptsForSles16() throws Exception {
+        // A cobbler without the Agama signature (PR #177) rejects
+        // opensuse16.1 distros - skip the SLE16 fixtures there.
+        assumeTrue(KickstartTestUtils.cobblerSupportsSles16());
         TreeCreateOperation cmd = new TreeCreateOperation(user);
         setTestTreeParams(cmd);
         cmd.setInstallType(KickstartFactory.
@@ -128,6 +133,9 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
      */
     @Test
     public void testKernelOptionsIdempotent() throws Exception {
+        // A cobbler without the Agama signature (PR #177) rejects
+        // opensuse16.1 distros - skip the SLE16 fixtures there.
+        assumeTrue(KickstartTestUtils.cobblerSupportsSles16());
         TreeCreateOperation cmd = new TreeCreateOperation(user);
         setTestTreeParams(cmd);
         cmd.setInstallType(KickstartFactory.

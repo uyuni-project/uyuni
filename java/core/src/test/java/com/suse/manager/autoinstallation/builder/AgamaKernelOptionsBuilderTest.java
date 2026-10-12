@@ -108,6 +108,19 @@ public class AgamaKernelOptionsBuilderTest extends MockObjectTestCase {
     }
 
     /**
+     * Children without the installer-updates flag are skipped.
+     */
+    @Test
+    public void testSelfUpdateOptionIgnoresOtherChildren() {
+        checking(new Expectations() {{
+            allowing(parentChannel).getAccessibleChildrenFor(user);
+            will(returnValue(List.of(child("child1", false), child("child2", true))));
+        }});
+        assertEquals("inst.self_update=http://" + FQDN + "/ks/dist/child/child2/tree1",
+                builder.selfUpdateOption(tree()).toString());
+    }
+
+    /**
      * Distro options are the Agama live root plus the installer self update
      * option, and no install= (the live system locates the media itself).
      */

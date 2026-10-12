@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 /**
@@ -34,6 +35,16 @@ public abstract class TreeOperationTestBase extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         KickstartTestUtils.setupTestConfiguration(user);
         createSuseTreeItems();
+    }
+
+    /**
+     * Removes everything the test created on cobbler (real or mocked) -
+     * mandatory per test: the fixtures reuse one fixed MAC address, which
+     * real cobbler rejects on the next system record.
+     */
+    @AfterEach
+    public void tearDown() {
+        KickstartTestUtils.cleanUpCobbler();
     }
 
     /**

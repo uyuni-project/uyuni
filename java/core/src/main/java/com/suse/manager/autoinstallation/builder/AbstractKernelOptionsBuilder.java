@@ -77,13 +77,25 @@ public abstract class AbstractKernelOptionsBuilder implements KernelOptionsBuild
             children = parent.getAccessibleChildrenFor(this.user).stream();
         }
         else {
-            children = ChannelFactory.listAllChildrenForChannel(parent).stream();
+            children = listAllChildren(parent);
         }
         return children.filter(Channel::isInstallerUpdates)
                 .findFirst()
                 .map(child -> HTTP_PREFIX + this.serverFqdn + DIST_CHILD_PATH +
                         child.getLabel() + "/" + tree.getLabel())
                 .orElse(SELF_UPDATE_DISABLED);
+    }
+
+    /**
+     * All children of a channel, regardless of the user (org-global lookup,
+     * used when no user context is available). Isolated into a hook so unit
+     * tests can stub the static factory call.
+     *
+     * @param parent the parent channel
+     * @return the child channels
+     */
+    protected Stream<Channel> listAllChildren(Channel parent) {
+        return ChannelFactory.listAllChildrenForChannel(parent).stream();
     }
 
     /**

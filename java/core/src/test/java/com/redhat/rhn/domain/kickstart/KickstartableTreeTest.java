@@ -212,7 +212,7 @@ public class KickstartableTreeTest extends KickstartBaseTest {
 
         Distro.Builder<String> builder = new Distro.Builder<>();
 
-        Distro d = builder.setName(k.getLabel())
+        Distro d = builder.setName(k.getCobblerDistroName())
                 .setKernel(k.getDefaultKernelPaths()[0])
                 .setInitrd(k.getDefaultInitrdPaths()[0])
                 .setKsmeta(Optional.empty())
@@ -223,7 +223,10 @@ public class KickstartableTreeTest extends KickstartBaseTest {
                 .setKernelOptionsPost(Optional.of(k.getKernelOptionsPost()))
                 .build(CobblerXMLRPCHelper.getConnection("test"));
 
-        Distro xend = builder.setKsmeta(Optional.empty())
+        Distro xend = builder.setName(k.getCobblerXenDistroName())
+                .setKernel(k.getKernelXenPath())
+                .setInitrd(k.getInitrdXenPath())
+                .setKsmeta(Optional.empty())
                 .build(CobblerXMLRPCHelper.getConnection("test"));
 
         k.setCobblerId(d.getUid());

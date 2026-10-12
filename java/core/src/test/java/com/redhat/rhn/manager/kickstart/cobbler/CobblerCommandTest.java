@@ -21,11 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.NetworkInterfaceTest;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -106,7 +104,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         assertNull(pec.store());
 
         Profile prof = ksdata.getCobblerObject(user);
-        assertEquals("opt1=val1 opt2", prof.getKernelOptions().get());
+        assertKoptsEqual(prof, prof.getKernelOptions(), "opt1=val1 opt2");
     }
 
     @Test
@@ -120,8 +118,8 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         assertNull(pec.store());
 
         Profile prof = ksdata.getCobblerObject(user);
-        assertEquals("console=ttyS0 key=\"value with spaces\"",
-                prof.getKernelOptions().get());
+        assertKoptsEqual(prof, prof.getKernelOptions(),
+                "console=ttyS0 key=\"value with spaces\"");
     }
 
     @Test
@@ -170,7 +168,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         assertNull(pec2.store());
 
         Profile prof = ksdata.getCobblerObject(user);
-        assertEquals("opt1=val1 opt2", prof.getKernelOptions().get());
+        assertKoptsEqual(prof, prof.getKernelOptions(), "opt1=val1 opt2");
     }
 
     @Test
@@ -185,8 +183,8 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         assertNull(pec.store());
 
         Profile prof = ksdata.getCobblerObject(user);
-        assertEquals("opt1=val1", prof.getKernelOptions().get());
-        assertEquals("  post=1   post2  ", prof.getKernelOptionsPost().get());
+        assertKoptsEqual(prof, prof.getKernelOptions(), "opt1=val1");
+        assertKoptsEqual(prof, prof.getKernelOptionsPost(), "  post=1   post2  ");
     }
 
     @Test
@@ -204,7 +202,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         assertNull(pec.store());
 
         prof = ksdata.getCobblerObject(user);
-        assertEquals("keep=me", prof.getKernelOptions().get());
+        assertKoptsEqual(prof, prof.getKernelOptions(), "keep=me");
     }
 
     @Test
@@ -253,7 +251,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     @Test
     public void testKernelOptionsBacksync() {
         // re-use the KS tree created in setUp
-        KickstartableTree tree = KickstartFactory.lookupKickstartTrees().get(0);
+        KickstartableTree tree = ksdata.getTree();
         String cobblerId = tree.getCobblerId();
         // make sure they have null kernel options and kernel options post
         tree.setKernelOptions(null);
@@ -318,9 +316,9 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
 
     @Test
     public void testLogin() {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-        user = TestUtils.reload(user);
+        // the login itself is what is under test; with the real cobbler the
+        // authentication module validates via the shim (accept-all), so no
+        // role setup is needed
         CobblerLoginCommand cmd = new CobblerLoginCommand();
         String cobblertoken = cmd.login(user.getLogin(), "password");
         assertNotNull(cobblertoken);

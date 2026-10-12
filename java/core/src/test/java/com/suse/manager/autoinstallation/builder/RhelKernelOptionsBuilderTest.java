@@ -11,11 +11,15 @@
 package com.suse.manager.autoinstallation.builder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.MockObjectTestCase;
+
+import com.suse.manager.autoinstallation.KernelOptionsList;
 
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
@@ -103,6 +107,21 @@ public class RhelKernelOptionsBuilderTest extends MockObjectTestCase {
     public void testSystemOptions() {
         assertEquals("inst.ks.sendmac inst.ks=http://" + FQDN + "/cblr/svc/op/autoinstall/system/system1",
                 builder.systemOptions(system()).toString());
+    }
+
+    /**
+     * User-typed options win over computed ones and re-merging the same
+     * computed options changes nothing.
+     */
+    @Test
+    public void testMergeIsUserWinsAndIdempotent() {
+        KernelOptionsList options = new KernelOptionsList("inst.repo=http://mymirror.example/repo");
+        options.addMissingOptions(builder.distroOptions(tree()));
+        String merged = options.toString();
+        assertTrue(merged.contains("inst.repo=http://mymirror.example/repo"));
+        assertFalse(merged.contains(FQDN + "/ks/dist"));
+        options.addMissingOptions(builder.distroOptions(tree()));
+        assertEquals(merged, options.toString());
     }
 
     /**
