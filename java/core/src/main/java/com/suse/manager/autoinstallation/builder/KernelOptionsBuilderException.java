@@ -25,13 +25,4 @@ public class KernelOptionsBuilderException extends RuntimeException {
     public KernelOptionsBuilderException(String messageIn) {
         super(messageIn);
     }
-
-    /**
-     * Constructor
-     * @param messageIn detail message
-     * @param causeIn the cause
-     */
-    public KernelOptionsBuilderException(String messageIn, Throwable causeIn) {
-        super(messageIn, causeIn);
-    }
 }
