@@ -1,0 +1,2 @@
+- Fix CLM promotion race by publishing alignment after commit
+  (bsc#1275315)
