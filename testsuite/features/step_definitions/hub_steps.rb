@@ -521,21 +521,48 @@ Then(/^channel sync from peripheral "([^"]*)" should fail with a repository acce
   end
 end
 
-# Passes once a repo-sync run was observed on the peripheral and has finished, failing at once on
-# a RepoMDError: a bare absence of errors would also pass when the sync never started.
-Then(/^channel sync from peripheral "([^"]*)" should succeed$/) do |host|
+# Tells whether a spacewalk-repo-sync process runs on the node. pgrep exits 1 when nothing matches;
+# any other failure (mgrctl or ssh error, missing pgrep) must not be mistaken for an idle node.
+def repo_sync_running?(node)
+  _output, code = node.run('pgrep -f "[s]pacewalk-repo-sync"', check_errors: false, exec_option: '--')
+  raise StandardError, "Could not check for running repo-sync processes (exit code #{code})" unless [0, 1].include?(code)
+
+  code.zero?
+end
+
+# Waits until the repo-sync processes of a scheduled synchronization are over: 3 consecutive idle polls,
+# since taskomatic starts one process per channel with short gaps in between. Idle polls only count once a
+# sync has been seen or the 2-minute grace period for taskomatic to pick up the schedule has passed.
+#
+# @param host [String] The node running the synchronization.
+# @param timeout [Integer] The maximum wait in seconds.
+# @param on_poll [Proc, nil] Called on each poll, e.g. to fail early.
+def wait_for_repo_syncs_to_finish(host, timeout, on_poll: nil)
   node = get_target(host)
-  start_time = taskomatic_check_start_time(host)
+  idle_polls = 0
   sync_seen = false
-  repeat_until_timeout(timeout: 600, message: "No channel sync was started and completed on #{host} since #{start_time}") do
-    raise StandardError, "RepoMDError present in taskomatic log on #{host} since #{start_time}" if recent_taskomatic_repomd_error?(node, start_time)
+  started_at = Time.now
+  repeat_until_timeout(timeout: timeout, message: "Channel syncs still running on #{host}") do
+    on_poll&.call(node)
+    running = repo_sync_running?(node)
+    sync_seen ||= running
+    idle_polls = running ? 0 : idle_polls + 1
+    break if idle_polls >= 3 && (sync_seen || Time.now - started_at >= 120)
 
-    _output, code = node.run('pgrep -f "[s]pacewalk-repo-sync"', check_errors: false, exec_option: '--')
-    sync_seen ||= code.zero?
-    break if sync_seen && code.nonzero?
-
-    sleep 2
+    sleep 5
   end
+end
+
+# Raises when taskomatic logged a RepoMDError on the host since the recorded start time.
+def raise_on_repomd_error(host, node)
+  start_time = taskomatic_check_start_time(host)
+  raise StandardError, "RepoMDError present in taskomatic log on #{host} since #{start_time}" if recent_taskomatic_repomd_error?(node, start_time)
+end
+
+# Fails on a RepoMDError during the sync, also when it shows up only after the sync ended.
+Then(/^channel sync from peripheral "([^"]*)" should succeed$/) do |host|
+  wait_for_repo_syncs_to_finish(host, 600, on_poll: ->(node) { raise_on_repomd_error(host, node) })
+  raise_on_repomd_error(host, get_target(host))
 end
 
 When(/^I initiate channel sync from peripheral "([^"]*)"$/) do |host|
@@ -543,7 +570,7 @@ When(/^I initiate channel sync from peripheral "([^"]*)"$/) do |host|
   start_time, _code = node.run("date '+%F %T'", check_errors: false, exec_option: '--')
   add_context("#{host}_taskomatic_check_start_time", start_time.strip)
   # Stay on the peripheral: the next step asserts the "scheduled" message shown on its page.
-  switch_to_server(host)
+  step %(I am authorized for the "Admin" section on "#{host}")
   visit('/rhn/manager/admin/hub/hub-details')
   step %(I should see a "Hub Details" text)
   step %(I should see "server" hostname)
@@ -648,22 +675,8 @@ end
 
 # Channel sync waiting
 
-# Waits until no repo-sync process has been seen on the host for 3 consecutive polls, since taskomatic
-# starts one spacewalk-repo-sync per channel with short gaps in between. Idle polls only count once a
-# sync has been seen or the 2-minute grace period for taskomatic to pick up the schedule has passed.
 When(/^I wait at most (\d+) seconds until all channel syncs have finished on "([^"]*)"$/) do |timeout, host|
-  node = get_target(host)
-  idle_polls = 0
-  sync_seen = false
-  started_at = Time.now
-  repeat_until_timeout(timeout: timeout.to_i, message: "Channel syncs still running on #{host}") do
-    _output, code = node.run('pgrep -f "[s]pacewalk-repo-sync"', check_errors: false, exec_option: '--')
-    sync_seen ||= code.zero?
-    idle_polls = code.zero? ? 0 : idle_polls + 1
-    break if idle_polls >= 3 && (sync_seen || Time.now - started_at >= 120)
-
-    sleep 10
-  end
+  wait_for_repo_syncs_to_finish(host, timeout.to_i)
 end
 
 When(/^I wait until the custom channel of proxy "([^"]*)" has been synced on (peripheral1|peripheral2)$/) do |proxy, host|
@@ -746,10 +759,6 @@ When(/^I transfer ISS v2 export from hub to "([^"]*)"$/) do |host|
   end
 end
 
-When(/^I import ISS v2 data from "([^"]*)" on "([^"]*)"$/) do |path, host|
-  get_target(host).run("echo admin | inter-server-sync import --importDir=#{path}", verbose: true)
-end
-
 # Hub reporting (C-01)
 
 # Peripheral admin sessions default to 25 items per page (the "core" phase only raises this
@@ -769,6 +778,7 @@ When(/^I schedule the reporting update task on "([^"]*)"$/) do |host|
   # "hub" is an alias of "server": both run the hub aggregation task in the current session.
   if ENV_VAR_BY_HOST[host] == 'SERVER'
     switch_to_server('server')
+    step 'I am authorized for the "Admin" section'
     steps %(
       When I follow the left menu "Admin > Task Schedules"
       And I follow "update-reporting-hub-default"
@@ -785,6 +795,17 @@ end
 Then(/^the hub reportdb should contain one row per peripheral$/) do
   count = reportdb_value('SELECT COUNT(DISTINCT mgm_id) FROM system;').to_i
   raise StandardError, "Expected at least 2 distinct mgm_id rows in hub reportdb, got #{count}" unless count >= 2
+end
+
+When(/^I remember the latest synced_date of the hub reportdb "([^"]*)" table$/) do |table|
+  add_context("reportdb_#{table}_synced_date", reportdb_value("SELECT MAX(synced_date) FROM #{table};"))
+  stored_context!("reportdb_#{table}_synced_date")
+end
+
+Then(/^the hub reportdb "([^"]*)" table should have a newer synced_date than remembered$/) do |table|
+  before = stored_context!("reportdb_#{table}_synced_date")
+  refreshed = reportdb_value("SELECT MAX(synced_date) > '#{before}' FROM #{table};")
+  raise StandardError, "synced_date in #{table} was not refreshed (still #{before})" unless refreshed == 't'
 end
 
 Then(/^the hub reportdb "([^"]*)" table should have a recent synced_date$/) do |table|

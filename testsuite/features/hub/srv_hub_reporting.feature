@@ -48,5 +48,6 @@ Feature: Hub reportdb aggregation from peripheral servers
     Then the hub reportdb "system" table should have a recent synced_date
 
   Scenario: Re-run hub reporting task and verify synced_date refreshes
-    When I schedule the reporting update task on "hub"
-    Then the hub reportdb "system" table should have a recent synced_date
+    When I remember the latest synced_date of the hub reportdb "system" table
+    And I schedule the reporting update task on "hub"
+    Then the hub reportdb "system" table should have a newer synced_date than remembered

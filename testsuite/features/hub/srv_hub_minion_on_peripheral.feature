@@ -14,10 +14,8 @@ Feature: Hub full topology - minion managed via peripheral server
   As an authorized user
   I want to register a peripheral, sync channels, and manage minions through the peripheral (plan B-01..B-04)
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section on "peripheral1"
-
   Scenario: Create activation key on peripheral1 peripheral with hub-synced channel
+    Given I am authorized for the "Admin" section on "peripheral1"
     When I create an activation key "1-hub-test-key" on "peripheral1" with channel "sle-product-sles15-sp7-pool-x86_64"
     And I follow the left menu "Systems > Activation Keys"
     Then I should see a "1-hub-test-key" text

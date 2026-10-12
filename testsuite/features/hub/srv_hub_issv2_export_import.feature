@@ -43,7 +43,7 @@ Feature: Hub ISSv2 CLI channel export and import
     Then "/var/spacewalk/iss-export-hub-test" folder on peripheral1 should be ISS v2 export directory
 
   Scenario: Import ISS v2 data on peripheral1
-    When I import ISS v2 data from "/var/spacewalk/iss-export-hub-test" on "peripheral1"
+    When I import data with ISS v2 from "/var/spacewalk/iss-export-hub-test" on peripheral1
     Then channel "iss-v2-test-channel" should exist on "peripheral1"
 
   Scenario: Cleanup: delete ISS v2 test channel from hub

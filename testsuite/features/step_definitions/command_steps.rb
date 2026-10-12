@@ -1470,10 +1470,10 @@ When(/^I export config channels "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channe
   get_target('server').run("inter-server-sync export --configChannels=#{channel} --outputDir=#{path}", verbose: true)
 end
 
-When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
+When(/^I import data with ISS v2 from "([^"]*)"(?: on (server|hub|server2|server3|peripheral1|peripheral2))?$/) do |path, host|
   # WORKAROUND for bsc#1249127
   # Remove "echo admin |" when the product issue is solved
-  get_target('server').run("echo admin | inter-server-sync import --importDir=#{path}", verbose: true)
+  get_target(host || 'server').run("echo admin | inter-server-sync import --importDir=#{path}", verbose: true)
 end
 
 Then(/^"(.*?)" folder on (server|hub|server2|server3|peripheral1|peripheral2) should be ISS v2 export directory$/) do |folder, host|

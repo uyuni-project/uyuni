@@ -14,10 +14,10 @@ build_number = ENV.fetch('BUILD_NUMBER', nil)
 result_folder = build_number.nil? ? 'results' : "results/#{build_number}"
 
 # Renders a generated Maintenance Update feature: fills the channel label and the host whose own
-# flavour decides the parent channel (and which must be defined, hence its extra tag).
+# flavour decides the parent channel (and which must be defined, hence its tag replaces the generic one).
 def render_mu_feature(source, destination, client, channel, host)
   content = File.read(source).gsub('<channel>', channel).gsub('<parent_host>', host)
-  content.sub!(/^@#{client}$/, "@#{client} @#{host}") unless host == client
+  content.sub!(/^@#{client}$/, "@#{host}") unless host == client
   File.write(destination, content)
 end
 
@@ -33,7 +33,8 @@ def proxy_mu_flavours
   flavours = {}
   hosts.each do |host|
     flavours[proxy_flavours([host]).first] ||= host
-  rescue StandardError => e
+  # RemoteNode raises a LoadError (a ScriptError) when the host cannot be reached through SSH
+  rescue StandardError, ScriptError => e
     warn "Skipping #{host} for the Maintenance Update channels: flavour detection failed (#{e.message})"
   end
   $proxy_mu_flavours = flavours
