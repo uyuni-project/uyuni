@@ -28,14 +28,6 @@ public class AgamaKernelOptionsBuilder extends AbstractKernelOptionsBuilder {
     /**
      * Constructor
      * @param serverFqdnIn the kickstart host
-     */
-    public AgamaKernelOptionsBuilder(String serverFqdnIn) {
-        this(serverFqdnIn, null);
-    }
-
-    /**
-     * Constructor
-     * @param serverFqdnIn the kickstart host
      * @param userIn optional user context scoping the installer-updates
      *               child channel lookup, null for org-global lookup
      */

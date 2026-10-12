@@ -19,12 +19,10 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.BasePersistOperation;
 import com.redhat.rhn.manager.kickstart.KickstartHostHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
@@ -50,8 +48,6 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
     private static final String INVALID_KERNEL = "kickstart.tree.invalidkernel";
     protected KickstartableTree tree;
     protected String serverName;
-    private static final String EMPTY_STRING = "";
-    public static final String KICKSTART_CAPABILITY = "rhn.kickstart.boot_image";
 
     /**
      * Constructor
@@ -205,14 +201,6 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
     }
 
     /**
-     * Get the local hostname of the installation server.
-     * @return the hostname
-     */
-    public String getServerName() {
-        return serverName;
-    }
-
-    /**
      * Merge the distro kernel options computed for this tree's install type
      * into the tree's kernel options. Already present (user-typed) options
      * win over the computed ones.
@@ -240,20 +228,6 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
      */
     public void setChannel(Channel channelIn) {
         this.tree.setChannel(channelIn);
-    }
-
-    /**
-     * Replace legacy package names with empty string for each PackageListItem
-     * in the provided list.
-     * @param packageListItems List of PackageListItems to be modified in place.
-     */
-    private void replaceLegacyPackageNames(List packageListItems) {
-        // munge the list of auto kickstarts
-        for (Object packageListItemIn : packageListItems) {
-            PackageListItem pli = (PackageListItem) packageListItemIn;
-            pli.setName(pli.getName().replaceFirst(
-                    KickstartData.LEGACY_KICKSTART_PACKAGE_NAME, EMPTY_STRING));
-        }
     }
 
     /**

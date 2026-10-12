@@ -101,7 +101,7 @@ public class KernelOptionsListTest {
         list.addOption("foo", "1");
         list.addOption("bar", "baz");
         list.addOption("foo", "2");
-        list.setOptionOrReplace("foo", "3");
+        list.setOption("foo", "3", true);
         assertEquals("foo=3 bar=baz", list.toString());
     }
 
@@ -116,26 +116,6 @@ public class KernelOptionsListTest {
         list.addOption("foo", "3");
         list.removeOption("foo");
         assertEquals("bar=2", list.toString());
-    }
-
-    /**
-     * Tests that applyOverrides replaces matched keys and appends all options from the overrides list.
-     */
-    @Test
-    public void testApplyOverrides() {
-        KernelOptionsList base = new KernelOptionsList();
-        base.addOption("foo", "1");
-        base.addOption("bar", "2");
-        base.addOption("console", "tty0");
-        base.addOption("console", "tty1");
-
-        KernelOptionsList overrides = new KernelOptionsList();
-        overrides.addOption("console", "ttyS0");
-        overrides.addOption("console", "tty0");
-        overrides.addOption("foo", "3");
-
-        base.applyOverrides(overrides);
-        assertEquals("bar=2 console=ttyS0 console=tty0 foo=3", base.toString());
     }
 
     /**

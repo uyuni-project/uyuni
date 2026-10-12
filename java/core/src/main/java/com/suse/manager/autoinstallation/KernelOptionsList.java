@@ -165,17 +165,6 @@ public class KernelOptionsList {
     }
 
     /**
-     * Sets an option. If the option already exists, it is replaced
-     *
-     * @param key The option key.
-     * @param value The option value.
-     * @return This instance for method chaining.
-     */
-    public KernelOptionsList setOptionOrReplace(String key, String value) {
-        return setOption(key, value, true);
-    }
-
-    /**
      * Removes all occurrences of a specified key.
      *
      * @param key The option key to remove.
@@ -184,24 +173,6 @@ public class KernelOptionsList {
     public KernelOptionsList removeOption(String key) {
         if (key != null && !key.isEmpty()) {
             optionsList.removeIf(stringStringEntry -> key.equals(stringStringEntry.getKey()));
-        }
-        return this;
-    }
-
-    /**
-     * Merges another KernelOptionsList into this one.
-     * Every option in the 'overrides' list will replace any existing occurrences
-     * of the same key in this list, and then the overrides are appended.
-     *
-     * @param overrides The KernelOptionsList containing override options.
-     * @return This instance for method chaining.
-     */
-    public KernelOptionsList applyOverrides(KernelOptionsList overrides) {
-        if (overrides != null) {
-            for (Map.Entry<String, String> entry : overrides.optionsList) {
-                this.removeOption(entry.getKey());
-            }
-            this.addOptions(overrides);
         }
         return this;
     }
@@ -324,14 +295,6 @@ public class KernelOptionsList {
             }
         }
         return null;
-    }
-
-    /**
-     * Returns true if there is no option set
-     * @return true if option list it empty
-     */
-    public boolean isEmpty() {
-        return optionsList.isEmpty();
     }
 
     /**
