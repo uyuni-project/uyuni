@@ -32,6 +32,7 @@
     <property name="tests.coverage.results.dir" value="test-results/coverage"/>
     <property name="tests.coverage.destfile" value="test-results/coverage/jacoco.exec"/>
     <property name="tests.configuration.path" value="${basedir}/buildconf/test"/>
+    <property name="tests.use.real.cobbler" value="false"/>
 
     <property name="root.dir" value="${basedir}/.."/>
     <property name="branding.dir" value="${basedir}/../branding"/>
@@ -479,6 +480,7 @@
                     <sysproperty key="java.awt.headless" value="true"/>
                     <sysproperty key="log4j.threshold" value="warn"/>
                     <sysproperty key="rhn.config.dir" value="${tests.configuration.path}"/>
+                    <sysproperty key="use.real.cobbler" value="${tests.use.real.cobbler}"/>
                     <jvmarg value="-ea"/>
                     <!-- <jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" /> -->
                     <jvmarg value="${jacocoagent}"/>
