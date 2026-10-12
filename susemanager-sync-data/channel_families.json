@@ -220,6 +220,10 @@
     "name" : "SUSE Linux Enterprise Server (Itanium)"
   },
   {
+    "label" : "SLES-NVI-ARM64",
+    "name" : "SUSE Linux Enterprise Server for NVIDIA (ARM64)"
+  },
+  {
     "label" : "SLES-PPC",
     "name" : "SUSE Linux Enterprise Server (PPC)"
   },
