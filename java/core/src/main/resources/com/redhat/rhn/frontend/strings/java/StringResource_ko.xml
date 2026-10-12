@@ -12231,31 +12231,31 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
         <target state="final">유효하지 않은 날짜 형식입니다. ISO 8601 오프셋 형식(예: 2026-06-04T22:00:00Z)을 따라야 합니다.</target>
       </trans-unit>
-    <trans-unit id="edit_address.jsp.country.select" xml:space="preserve">
+      <trans-unit id="edit_address.jsp.country.select" xml:space="preserve">
         <source>-- Select Country --</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.entitle.added.peripheral_server" xml:space="preserve">
         <source>&lt;strong&gt;Peripheral server&lt;/strong&gt; type has been applied.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">&lt;strong&gt;주변 서버&lt;/strong&gt; 유형이 적용되었습니다.</target>
+      </trans-unit>
       <trans-unit id="snapshots.refresh_list" xml:space="preserve">
         <source>Refresh Snapshots</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.formulas" xml:space="preserve">
         <source>Apply formulas assigned to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
