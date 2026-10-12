@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-09 12:18+0100\n"
-"PO-Revision-Date: 2026-10-09 19:13+0000\n"
+"PO-Revision-Date: 2026-10-12 17:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -7522,26 +7522,20 @@ msgstr "Znovu vygenerovať heslo databázy správ"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:57
 #: ../html/src/manager/systems/details/snapshots.tsx:60
-#, fuzzy
-#| msgid "Unable to perform action."
 msgid "Unable to load snapshot information."
-msgstr "Nie je možné vykonať akciu."
+msgstr "Nie je možné načítať informácie o snímke."
 
 #: ../html/src/manager/systems/details/snapshots.tsx:87
-#, fuzzy
-#| msgid "Remediation has been "
 msgid "The action has been "
-msgstr "Náprava bola "
+msgstr "Akcia bola "
 
 #: ../html/src/manager/systems/details/snapshots.tsx:108
-#, fuzzy
-#| msgid "Refresh Data"
 msgid "Refresh Snapshots"
-msgstr "Obnoviť údaje"
+msgstr "Obnoviť snímky"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:112
 msgid "Btrfs Snapshots"
-msgstr ""
+msgstr "Snímky Btrfs"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:125
 msgid "No snapshots available."
@@ -7549,49 +7543,39 @@ msgstr "Nie sú k dispozícii žiadne snímky."
 
 #: ../html/src/manager/systems/details/snapshots.tsx:129
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:136
-#, fuzzy
-#| msgid "Inactive"
 msgid "active"
-msgstr "Neaktívny"
+msgstr "aktívna"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:141
 msgid "default"
-msgstr ""
+msgstr "predvolená"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:150
 msgid "Pre #"
-msgstr ""
+msgstr "Pred #"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:154
-#, fuzzy
-#| msgid "Datetime"
 msgid "Date"
-msgstr "Dátum a čas"
+msgstr "Dátum"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:158
-#, fuzzy
-#| msgid "Used by Schedule"
 msgid "Used Space"
-msgstr "Použité podľa plánu"
+msgstr "Použité miesto"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:162
-#, fuzzy
-#| msgid "Clear Menu"
 msgid "Cleanup"
-msgstr "Ponuka Vymazať"
+msgstr "Vyčistenie"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:164
-#, fuzzy
-#| msgid "User"
 msgid "Userdata"
-msgstr "Používateľ"
+msgstr "Používateľské údaje"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:191
 msgid "Unable to schedule snapshot refresh."
-msgstr ""
+msgstr "Nie je možné naplánovať obnovu snímky."
 
 #: ../html/src/manager/systems/list-filter.tsx:4
 msgid "Manager Server"
