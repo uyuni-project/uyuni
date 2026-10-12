@@ -8,23 +8,6 @@
   h3 {
     display: inline-block;
   }
-
-  > .btn {
-    position: absolute;
-    right: 0;
-    top: 6px;
-    cursor: pointer;
-
-    &[disabled] {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
-    .fa-angle-down,
-    .fa-angle-up {
-      cursor: pointer;
-      font-weight: 600;
-    }
-  }
 }
 
 .formula-content h2 {

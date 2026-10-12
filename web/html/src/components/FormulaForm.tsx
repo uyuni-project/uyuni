@@ -102,7 +102,9 @@ class FormulaForm extends Component<Props, State> {
       e.returnValue = confirmationMessage;
       return confirmationMessage;
     });
+  }
 
+  componentDidMount() {
     this.init();
   }
 

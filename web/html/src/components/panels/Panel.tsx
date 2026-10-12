@@ -95,19 +95,17 @@ export const Panel = (props: Props) => {
                 <div
                   data-bs-toggle="collapse"
                   data-bs-target={`#${props.collapseId}-panel-closable`}
-                  className="accordion-toggle d-flex align-items-baseline"
-                  aria-expanded="false"
+                  className={`accordion-toggle d-flex align-items-baseline ${props.collapsClose ? "collapsed" : ""}`}
+                  aria-expanded={!props.collapsClose}
                   style={{ width: "80%" }}
                 >
                   <i
-                    className={`fa fa-chevron-down show-on-collapsed ${
-                      props.customIconClass ? props.customIconClass : ""
-                    }`}
+                    className={`fa fa-chevron-down show-on-collapsed ${props.customIconClass ?? ""}`}
+                    aria-hidden="true"
                   />
                   <i
-                    className={`fa fa-chevron-right hide-on-collapsed ${
-                      props.customIconClass ? props.customIconClass : ""
-                    }`}
+                    className={`fa fa-chevron-right hide-on-collapsed ${props.customIconClass ?? ""}`}
+                    aria-hidden="true"
                   />
                   {panelHeaderContent}
                 </div>

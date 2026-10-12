@@ -21,18 +21,18 @@ export function Highlight({ enabled = false, ...props }: HighlightProps) {
 
   if (!enabled || !high) {
     return (
-      <h4 key="hl" className={props.className}>
+      <span key="hl" className={props.className}>
         {text}
-      </h4>
+      </span>
     );
   }
 
   const pos = text.toLocaleLowerCase().indexOf(high.toLocaleLowerCase());
   if (pos < 0) {
     return (
-      <h4 key="hl" className={props.className}>
+      <span key="hl" className={props.className}>
         {text}
-      </h4>
+      </span>
     );
   }
 

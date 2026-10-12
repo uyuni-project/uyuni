@@ -134,11 +134,13 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
           this.props.setSectionsExpanded(SectionState.Mixed);
         }}
         header={
-          <Highlight
-            enabled={isFiltered(this.props.criteria)}
-            text={this.props.element.$name}
-            highlight={this.props.criteria}
-          />
+          <h4>
+            <Highlight
+              enabled={isFiltered(this.props.criteria)}
+              text={this.props.element.$name}
+              highlight={this.props.criteria}
+            />
+          </h4>
         }
       >
         <>
