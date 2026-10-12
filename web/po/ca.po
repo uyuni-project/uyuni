@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-09 12:18+0100\n"
-"PO-Revision-Date: 2026-10-02 15:13+0000\n"
+"PO-Revision-Date: 2026-10-12 11:13+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.10\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:425
 msgid "remaining"
@@ -2133,10 +2133,8 @@ msgstr "Reordena"
 
 #: ../html/src/components/states-picker.tsx:468
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:265
-#, fuzzy
-#| msgid "Registration date:"
 msgid "Use transactional update"
-msgstr "Data d'inscripció:"
+msgstr "Usa l'actualització transaccional"
 
 #: ../html/src/components/states-picker.tsx:485
 msgid "Search in states"
@@ -7524,78 +7522,60 @@ msgstr "Regenera la contrasenya de la base de dades d'informes"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:57
 #: ../html/src/manager/systems/details/snapshots.tsx:60
-#, fuzzy
-#| msgid "Unable to perform action."
 msgid "Unable to load snapshot information."
-msgstr "No s'ha pogut fer l'acció."
+msgstr "No s'ha pogut carregar la informació de la instantània."
 
 #: ../html/src/manager/systems/details/snapshots.tsx:87
-#, fuzzy
-#| msgid "Remediation has been "
 msgid "The action has been "
-msgstr "La correcció ha estat "
+msgstr "L'acció ha estat "
 
 #: ../html/src/manager/systems/details/snapshots.tsx:108
-#, fuzzy
-#| msgid "Refresh Data"
 msgid "Refresh Snapshots"
-msgstr "Actualitza les dades"
+msgstr "Actualitza les instantànies"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:112
 msgid "Btrfs Snapshots"
-msgstr ""
+msgstr "Instantànies de Btrfs"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:125
-#, fuzzy
-#| msgid "No streams available"
 msgid "No snapshots available."
-msgstr "No hi ha cap flux disponible"
+msgstr "No hi ha cap instantània disponible."
 
 #: ../html/src/manager/systems/details/snapshots.tsx:129
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:136
-#, fuzzy
-#| msgid "Inactive"
 msgid "active"
-msgstr "Inactiu"
+msgstr "activa"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:141
 msgid "default"
-msgstr ""
+msgstr "per defecte"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:150
 msgid "Pre #"
-msgstr ""
+msgstr "Prèvia #"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:154
-#, fuzzy
-#| msgid "Datetime"
 msgid "Date"
-msgstr "Data i hora"
+msgstr "Data"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:158
-#, fuzzy
-#| msgid "Used by Schedule"
 msgid "Used Space"
-msgstr "Utilitzat per planificació"
+msgstr "Espai usat"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:162
-#, fuzzy
-#| msgid "Clear Menu"
 msgid "Cleanup"
-msgstr "Neteja el menú"
+msgstr "Neteja"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:164
-#, fuzzy
-#| msgid "User"
 msgid "Userdata"
-msgstr "Usuari"
+msgstr "Dades de l'usuari"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:191
 msgid "Unable to schedule snapshot refresh."
-msgstr ""
+msgstr "No s'ha pogut programar l'actualització de la instantània."
 
 #: ../html/src/manager/systems/list-filter.tsx:4
 msgid "Manager Server"
