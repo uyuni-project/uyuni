@@ -12246,17 +12246,17 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         </context-group>
         <target state="translated">Bol použitý typ &lt;strong&gt;periférneho servera&lt;/strong&gt;.</target>
       </trans-unit>
-    <trans-unit id="snapshots.refresh_list" xml:space="preserve">
+      <trans-unit id="snapshots.refresh_list" xml:space="preserve">
         <source>Refresh Snapshots</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Obnoviť snímky</target>
+      </trans-unit>
       <trans-unit id="internal_state.formulas" xml:space="preserve">
         <source>Apply formulas assigned to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Použiť vzorce priradené k cieľovému systému</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
