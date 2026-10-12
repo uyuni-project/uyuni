@@ -1,0 +1,1 @@
+- Fix recursive loop in case of missing hdr attribute.
