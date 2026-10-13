@@ -1,0 +1,2 @@
+- Remove unused configuration defaults customer_service_email,
+  login_banner and base_port
