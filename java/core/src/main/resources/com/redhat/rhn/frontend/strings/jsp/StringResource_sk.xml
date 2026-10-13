@@ -8377,7 +8377,7 @@ mať viac prístup ku konfiguračným nástrojom @@PRODUCT_NAME@@ a nástrojom n
       </trans-unit>
       <trans-unit id="channel.edit.jsp.orgaccess.header" xml:space="preserve">
         <source>Trusted Organization Access to Channel Content</source>
-        <target/>
+        <target state="translated">Prístup dôveryhodných organizácií k obsahu kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/channels/OrgList</context>
         </context-group>
@@ -8387,21 +8387,24 @@ mať viac prístup ku konfiguračným nástrojom @@PRODUCT_NAME@@ a nástrojom n
           your organization has a trust. The organizations checked below will be
           granted access to view and consume the content in
           &lt;strong&gt;{0}&lt;/strong&gt; channel. Organizations that are not checked below will not have access to this software channel. You can modify an organization's access to this channel below.</source>
-        <target/>
+        <target state="translated">Nižšie uvedené organizácie sú organizácie, s ktorými
+          má vaša organizácia dôveru. Nižšie vybrané organizácie získajú
+          prístup k prezeraniu a využívaniu obsahu v kanáli
+          &lt;strong&gt;{0}&lt;/strong&gt;. Organizácie, ktoré nie sú nižšie zaškrtnuté, nebudú mať prístup k tomuto softvérovému kanálu. Nižšie môžete upraviť prístup organizácie k tomuto kanálu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/channels/OrgList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.header3" xml:space="preserve">
         <source>System Details</source>
-        <target/>
+        <target state="translated">Podrobnosti systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.created" xml:space="preserve">
         <source>Created</source>
-        <target/>
+        <target state="translated">Vytvorené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
