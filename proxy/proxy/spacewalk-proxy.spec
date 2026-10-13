@@ -142,8 +142,6 @@ mkdir -p %{buildroot}/%{_sysconfdir}/salt/
 install -m 0644 salt-broker/broker %{buildroot}/%{_sysconfdir}/salt/
 install -d -m 750 %{buildroot}/%{_sysconfdir}/salt/broker.d
 
-install -m 0755 mgr-proxy-ssh-push-init %{buildroot}/%{_sbindir}/mgr-proxy-ssh-push-init
-install -m 0755 mgr-proxy-ssh-force-cmd %{buildroot}/%{_sbindir}/mgr-proxy-ssh-force-cmd
 install -d -m 0755 %{buildroot}/%{_var}/lib/spacewalk
 
 %check
@@ -236,8 +234,6 @@ fi
 %attr(750,%{apache_user},root) %dir %{_var}/cache/rhn/proxy-auth
 %dir %{rhnroot}
 %dir %{rhnroot}/wsgi
-%{_sbindir}/mgr-proxy-ssh-push-init
-%{_sbindir}/mgr-proxy-ssh-force-cmd
 %attr(755,root,root) %dir %{_var}/lib/spacewalk
 %dir %{rhnroot}/wsgi/__pycache__/
 %{rhnroot}/wsgi/__pycache__/*
