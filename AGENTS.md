@@ -12,6 +12,18 @@ environment instructions as overrides to this file.
 This is a large, long-lived Uyuni/Spacewalk monorepo. Treat code, manifests,
 build files, and CI workflows in the target branch as authoritative.
 
+## Testsuite-only changes
+
+If every changed file is under `testsuite/`, work from
+[`testsuite/AGENTS.md`](testsuite/AGENTS.md) and its
+`CODING_STANDARDS.md`. Do not apply the subsystem sections below (frontend,
+Java, Python, schema, Salt, and their build and test commands) to testsuite
+work. The repository-wide sections still apply: Working practices, Generated
+and derived files, and CI, packaging, and deployment.
+
+For mixed changes, follow the section for each other subsystem touched, and
+`testsuite/AGENTS.md` for the files under `testsuite/`.
+
 ## Repository map
 
 - `java/`: core server, XML-RPC/API, business logic, and web application.
@@ -24,7 +36,7 @@ build files, and CI workflows in the target branch as authoritative.
 - `susemanager/`: SUSE Manager Python modules and utilities.
 - `susemanager-utils/susemanager-sls/`: Salt states and orchestration.
 - `schema/`: PostgreSQL schemas, stored procedures, and upgrade scripts.
-- `testsuite/`: Cucumber/Playwright acceptance and integration tests.
+- `testsuite/`: Cucumber/Playwright acceptance and integration tests. Governed by `testsuite/AGENTS.md`.
 - `containers/`: container image definitions and container build tooling.
 - `rel-eng/`: package metadata, versioning, OBS, and release tooling.
 - `.github/workflows/`: the current CI definitions.
@@ -176,17 +188,10 @@ The reportdb schema in schema/reportdb/ is structured the same way.
 
 ### Acceptance tests
 
-Acceptance tests live under `testsuite/` and use Ruby, Cucumber, Gherkin, and
-Playwright. Although the repository contains local-runner documentation, the
-suite depends on a large, specialized environment. Do not run acceptance tests
-locally as part of routine agent validation; rely on the repository's CI
-workflows for their execution.
-
-Feature files describe user-visible behavior and must not expose CSS selectors
-or implementation details. Group Ruby step definitions by domain, not by
-feature file; call Ruby helpers rather than invoking one Gherkin step from
-another. Use the suite's `log` helper instead of `puts`, and avoid global state
-between scenarios.
+The rules for `testsuite/` are in [`testsuite/AGENTS.md`](testsuite/AGENTS.md)
+and [`testsuite/CODING_STANDARDS.md`](testsuite/CODING_STANDARDS.md).
+Do not run acceptance tests locally as part of routine agent validation; rely
+on the repository's CI workflows for their execution.
 
 ## CI, packaging, and deployment
 
@@ -227,8 +232,6 @@ fragment beside the package changelog named
   deployed database must change.
 - **Salt:** preserve idempotency and platform/version guards. Test the narrowest
   applicable state or orchestration path.
-- **Acceptance tests:** reuse domain steps, keep scenarios deterministic, and
-  account for the suite's per-feature user and role context.
 - **Documentation:** update nearby documentation when commands, configuration,
   public behavior, or operational procedures change.
 
