@@ -35,7 +35,7 @@ Below, `<hub>`, `<peripheral1>`, `<monitoring>` etc. stand for the FQDN of the h
 - **ISSv2** — the `inter-server-sync` CLI export/import path (offline capable).
 - **Hub XMLRPC API** — the Go `hub-xmlrpc-api` gateway (`/hub/rpc/api`) with `hub`, `unicast`, `multicast` namespaces.
 
-**Automation status:** each test case has an **Automation** line — *automated* (all checks), *partial* (gaps listed), or *manual*.
+**Automation status:** each test case has an **Automation** line — *automated* (all checks), *partial* (gaps listed), *manual*, or *to do* (new test, not automated yet).
 
 ---
 
@@ -234,6 +234,32 @@ podman exec uyuni-server inter-server-sync import -d /var/spacewalk/iss-import-t
 
 ---
 
+## A-11 — Peripheral Channels Synced Before Hub Registration
+
+**Goal:** Verify repositories already synced on a standalone peripheral survive its registration to the hub, and record how the hub takes over their content.
+
+**Prerequisites:** peripheral1 is standalone (not registered to any hub) with no hub-synced channels yet.
+
+**Steps:**
+1. Peripheral1: synchronize the fake channels with its own reposync. Record a baseline: channel labels, package count per channel, and repository source URL per channel.
+2. Register peripheral1 as peripheral with administrator credentials (A-02).
+3. Peripheral1: compare channel labels, package counts and source URLs with the baseline.
+4. Hub: open peripheral1 → **Synchronized Channels**; check whether the pre-registration channels are listed and whether any label clashes with a channel the hub syncs.
+5. Hub: trigger a channel sync for peripheral1 (A-06 Method A) and wait for it to finish.
+6. Peripheral1: check that pre-registration channels are not duplicated and their packages still resolve.
+
+**Expected:**
+- Every channel present before registration is still present after it, with the same label and package count.
+- No duplicate entry for the same channel label on the peripheral or the hub.
+- The hub → peripheral sync from step 5 completes without errors.
+- Source URL after registration (kept, or switched to the hub) and label-clash handling: **record actual behavior**; this plan does not fix an expected value yet.
+
+**Cleanup:** unregister peripheral1 from the hub, then remove the channels synced in step 1.
+
+**Automation:** to do — not automated yet. Reuse `I add "peripheral1" as peripheral using administrator credentials` (`features/hub/srv_hub_channel_synchronization.feature`) and `I unregister "peripheral1" from hub` (`features/hub/srv_hub_peripheral_as_minion.feature`). Fake-channel sync: `features/reposync/srv_sync_fake_channels.feature`.
+
+---
+
 # FOCUS AREA B — Server + Peripheral + Proxy + Minion
 
 ## B-01 — Peripheral Host Managed as Hub Minion
@@ -303,6 +329,32 @@ podman exec uyuni-server inter-server-sync import -d /var/spacewalk/iss-import-t
 - Channel sync from the hub fails gracefully with a clear error/notification, and recovers automatically once the hub is back.
 
 **Automation:** partial — `features/hub/srv_hub_outage_resilience.feature` (must run last: it stops and starts hub services) covers sync failure and recovery. Not automated: minion operations while the hub is down.
+
+---
+
+## B-06 — Peripheral Bootstrapped as Hub Minion with the SUSE Multi-Linux Manager Server Product
+
+**Goal:** Verify the peripheral host can be bootstrapped as a hub minion using the SUSE Multi-Linux Manager Server product synced on the hub, and that registering it as peripheral afterwards keeps a single system entry.
+
+**Prerequisites:** B-01 ordering applies (minion before registration). Product name to confirm: it is not in `features/build_validation/reposync/srv_sync_all_products.feature` yet, so a product sync step has to be added for it.
+
+**Steps:**
+1. Hub: synchronize the SUSE Multi-Linux Manager Server product and wait for its channels to finish.
+2. Hub: create an activation key with the synced server product channels.
+3. Bootstrap peripheral1 as a Salt minion of the hub with that activation key (minion-before-registration, as in B-01).
+4. Hub: confirm peripheral1 is listed as a Salt Minion and is subscribed to the server product channels.
+5. Register peripheral1 as peripheral (A-02) and check there is exactly one entry for it in the hub system list.
+6. Run a remote command on peripheral1 from the hub.
+
+**Expected:**
+- Bootstrap completes; peripheral1 shows as a Salt Minion on the hub with the server product channels subscribed.
+- After registration: one system entry with the correct type (no duplicate, as in B-01).
+- The remote command succeeds after registration, so the minion link to the hub survives.
+- Any change in system type or entry count after registration: **record actual behavior**.
+
+**Cleanup:** delete peripheral1 from the hub system list, unregister it from the hub, and delete the activation key.
+
+**Automation:** to do — not automated yet. Start from `features/hub/srv_hub_peripheral_as_minion.feature` (B-01); the activation key steps are in `features/secondary/min_bootstrap_activation_key.feature`.
 
 ---
 
@@ -444,11 +496,11 @@ Also verify: cross-dashboard navigation links work (Hub Overview → `Fleet Secu
 1. **Peripheral registration matrix** — all three methods (admin user/password, existing token, token + root CA upload/paste) with positive and negative paths (wrong password, consumed/invalidated token, wrong FQDN, missing CA on cross-CA setup). → A-02/03/04
 2. **Access token lifecycle** — issue/consume/invalidate/reactivate/delete semantics and their effect on hub↔peripheral communication. → A-05
 3. **Hub XMLRPC API** — three authentication modes and the hub/unicast/multicast/pass-through namespaces against multiple peripherals. → A-07/08
-4. **ISSv3 channel synchronization** — vendor + custom channels via hub UI and peripheral UI; org mapping for custom channels; mirror credential regeneration; hub replacing SCC as content source. → A-06
+4. **ISSv3 channel synchronization** — vendor + custom channels via hub UI and peripheral UI; org mapping for custom channels; mirror credential regeneration; hub replacing SCC as content source; pre-registration peripheral channels. → A-06, A-11
 5. **ISSv2 CLI export/import** — offline path with version/org parity prerequisites; channel present on the peripheral post-import. → A-09
 
 **Server + Peripheral + Proxy + Minion focus (3):**
-6. **Peripheral-as-minion topology** — bootstrap ordering (minion before/after peripheral registration), Foreign vs minion system types, duplicate-entry behavior. → B-01
+6. **Peripheral-as-minion topology** — bootstrap ordering (minion before/after peripheral registration), Foreign vs minion system types, duplicate-entry behavior; minion bootstrap with the server product. → B-01, B-06
 7. **Full content chain** — proxy attached to a peripheral, minions bootstrapped directly and via proxy, package/patch/highstate operations using hub-synced channels only. → B-02/03/04
 8. **Deregistration & hub-outage resilience** — deregister from both sides with clean state, and peripheral/minion operations continuing while the hub is down. → A-10 / B-05
 
