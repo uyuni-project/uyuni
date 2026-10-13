@@ -210,6 +210,120 @@ class YumSrcTest(unittest.TestCase):
             1,
         )
 
+    def test_raw_list_packages_filters_dependencies_before_wrapping(self):
+        cs = self._make_dummy_cs()
+
+        class ChecksumMock:
+            def typestr(self):
+                return "sha256"
+
+            def hex(self):
+                return "deadbeef"
+
+        class SolvableMock:
+            def __init__(self, name, evr, nevra, arch):
+                self.name = name
+                self.evr = evr
+                self.nevra = nevra
+                self.arch = arch
+
+            # pylint: disable-next=unused-argument
+            def lookup_checksum(self, x):
+                return ChecksumMock()
+
+            def lookup_num(self, x):
+                return 123
+
+            def lookup_location(self):
+                return ["packages/{}.rpm".format(self.name)]
+
+            # pylint: disable-next=unused-argument
+            def lookup_deparray(self, keyname=None):
+                return ["dep"]
+
+            def __str__(self):
+                return self.nevra
+
+        pkg1 = SolvableMock(
+            "pkg1", "1.2.3-xx.0.foobar", "pkg1-1.2.3-xx.0.foobar.x86_64", "x86_64"
+        )
+        pkg2 = SolvableMock("pkg2", "3.2.1-1", "pkg2-3.2.1-1.x86_64", "x86_64")
+
+        # pylint: disable-next=protected-access
+        cs._get_solvable_packages = MagicMock(return_value=[pkg1, pkg2])
+        cs.solv_pool = Mock()
+        cs.solv_pool.whatprovides = Mock(return_value=[])
+
+        raw_packages = cs.raw_list_packages(filters=[("+", ["pkg1"])])
+
+        self.assertEqual(cs.num_packages, 2)
+        self.assertEqual(cs.num_excluded, 1)
+        self.assertEqual(len(raw_packages), 1)
+        self.assertIsInstance(raw_packages[0], yum_src.RawSolvablePackage)
+        self.assertEqual(raw_packages[0].name, "pkg1")
+        cs.solv_pool.whatprovides.assert_called_once_with("dep")
+
+    def test_raw_list_packages_filters_support_nevra_filter(self):
+        cs = self._make_dummy_cs()
+
+        class ChecksumMock:
+            def typestr(self):
+                return "sha256"
+
+            def hex(self):
+                return "feedface"
+
+        class SolvableMock:
+            def __init__(self, name, evr, nevra, arch):
+                self.name = name
+                self.evr = evr
+                self.nevra = nevra
+                self.arch = arch
+
+            # pylint: disable-next=unused-argument
+            def lookup_checksum(self, x):
+                return ChecksumMock()
+
+            def lookup_num(self, x):
+                return 321
+
+            def lookup_location(self):
+                return ["packages/{}.rpm".format(self.name)]
+
+            # pylint: disable-next=unused-argument
+            def lookup_deparray(self, keyname=None):
+                return []
+
+            def __str__(self):
+                return self.nevra
+
+        # pylint: disable-next=protected-access
+        cs._get_solvable_packages = MagicMock(
+            return_value=[
+                SolvableMock(
+                    "pkg1",
+                    "1.2.3-xx.0.foobar",
+                    "pkg1-1.2.3-xx.0.foobar.x86_64",
+                    "x86_64",
+                ),
+                SolvableMock(
+                    "pkg1",
+                    "1.2.4-xx.0.foobar",
+                    "pkg1-1.2.4-xx.0.foobar.x86_64",
+                    "x86_64",
+                ),
+            ]
+        )
+
+        cs.nevra_filter = True
+        raw_packages = cs.raw_list_packages(
+            filters=[("+", ["pkg1-1.2.3-xx.0.foobar.x86_64"])]
+        )
+
+        self.assertEqual(len(raw_packages), 1)
+        self.assertIsInstance(raw_packages[0], yum_src.RawSolvablePackage)
+        self.assertEqual(raw_packages[0].raw_name, "pkg1-1.2.3-xx.0.foobar.x86_64")
+
     @unittest.skip("temporarily disable old failing unit test file")
     def test_list_packages_with_pack(self):
 
