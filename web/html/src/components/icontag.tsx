@@ -74,7 +74,7 @@ const icons = {
   "header-errata-add": "spacewalk-icon-patch-install",
   "header-errata-del": "spacewalk-icon-patch-remove",
   "header-errata-set": "spacewalk-icon-patch-set",
-  "header-errata-set-add": "pacewalk-icon-patchset-install",
+  "header-errata-set-add": "spacewalk-icon-patchset-install",
   "header-event-history": "fa-suitcase",
   "header-file": "fa-file-text-o",
   "header-folder": "fa-folder-open-o",

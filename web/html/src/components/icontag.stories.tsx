@@ -42,7 +42,7 @@ const IconCatalog = (props: { types: string[] }) => (
     {props.types.map((type) => (
       <div key={type} style={{ display: "flex", alignItems: "baseline", gap: "8px", minWidth: 0 }}>
         <IconTag type={type} size="lg" />
-        <code style={{ overflowWrap: "anywhere" }}>{type}asas</code>
+        <code style={{ overflowWrap: "anywhere" }}>{type}</code>
       </div>
     ))}
   </div>
