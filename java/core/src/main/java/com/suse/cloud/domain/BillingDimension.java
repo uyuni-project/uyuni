@@ -17,7 +17,9 @@ public enum BillingDimension implements Labeled {
     MANAGED_SYSTEMS,
     MONITORING,
     MULTI_LINUX_SUPPORT,
-    MULTI_LINUX_SUPPORT_LTSS;
+    MULTI_LINUX_SUPPORT_LTSS,
+    MULTI_LINUX_SUPPORT_EMS,
+    MULTI_LINUX_SUPPORT_HA;
 
     public String getLabel() {
         return this.name().toLowerCase();

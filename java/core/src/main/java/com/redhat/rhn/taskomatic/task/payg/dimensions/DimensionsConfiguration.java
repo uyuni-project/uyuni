@@ -61,6 +61,16 @@ public class DimensionsConfiguration {
             BillingDimension.MULTI_LINUX_SUPPORT_LTSS, List.of(
                 new ChannelFamilyRule(RuleType.INCLUDE, RequirementType.ANY, false, false,
                         Set.of("RES-7-LTSS-X86"))
+            ),
+
+            BillingDimension.MULTI_LINUX_SUPPORT_EMS, List.of(
+                new ChannelFamilyRule(RuleType.INCLUDE, RequirementType.ANY, false, false,
+                        Set.of("RES-EMS"))
+            ),
+
+            BillingDimension.MULTI_LINUX_SUPPORT_HA, List.of(
+                new ChannelFamilyRule(RuleType.INCLUDE, RequirementType.ANY, false, false,
+                        Set.of("RES-HA"))
             )
         )
     );
