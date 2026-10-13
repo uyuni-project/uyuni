@@ -89,19 +89,45 @@
 #         type: "integer"
 #         description: "the port of the listener"
 # @schema
+# @schema
+# x-rancher-question:
+#   label: Image Repository
+#   group: Images
+#   order: 200
+#   required: true
+# @schema
 # repository -- The default repository with the path where to find all the images.
 repository: registry.opensuse.org/uyuni
 
+# @schema
+# x-rancher-question:
+#   label: Image Tag
+#   group: Images
+#   order: 210
+#   description: Default tag to use for all images. Leave empty to use the chart appVersion.
+# @schema
 # tag -- The default tag to use for all the images, can be overridden
 # By default the tag will be the appVersion of the Chart.
 tag:
 
 # @schema
 # enum: ["Always", "IfNotPresent", "Never"]
+# x-rancher-question:
+#   label: Image Pull Policy
+#   group: Images
+#   order: 220
 # @schema
 # pullPolicy -- Images pull policy. See: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
 pullPolicy: "IfNotPresent"
 
+# @schema
+# x-rancher-question:
+#   label: Registry Pull Secret
+#   group: Images
+#   order: 230
+#   type: secret
+#   description: "Name of the secret used to pull the images from a registry with authentication. Leave empty for no authentication. Once selected, it can only be cleared by editing the values YAML."
+# @schema
 # registrySecret -- name of secret to use to pull the images from the
 # registry with authentication. Leave empty for no authentication.
 # To create the secret, see:
@@ -116,10 +142,23 @@ global:
   # @default `nil`
   # @schema
   # required: true
+  # x-rancher-question:
+  #   label: Server FQDN
+  #   group: General
+  #   order: 100
+  #   type: string
+  #   required: true
+  #   description: Fully qualified domain name the server will answer as, e.g. uyuni.example.com. Changing this value later renames the server, handle with care.
   # @schema
   # global.fqdn -- Fully qualified name the server will answer as.
   fqdn: null
 
+# @schema
+# x-rancher-question:
+#   label: Time Zone
+#   group: General
+#   order: 120
+# @schema
 # timezone -- The time zone to set in the containers
 timezone: "Etc/UTC"
 
@@ -146,16 +185,45 @@ server:
   # server.tag -- Overrides the default tag in the tag property. Leave undefined to use the default
   tag: null
 
+  # @schema
+  # x-rancher-question:
+  #   label: Notification Email
+  #   group: General
+  #   order: 110
+  # @schema
   # server.email -- Email used for the notifications sent by the server.
   email: "admin@uyuni.lab.org"
 
+  # @schema
+  # x-rancher-question:
+  #   label: SCC Credentials Secret
+  #   group: General
+  #   order: 130
+  #   type: secret
+  #   description: Name of a basic-auth secret with the organization mirroring credentials to set up on the server. Leave empty for none. Once selected, it can only be cleared by editing the values YAML.
+  # @schema
   # server.sccSecret -- Name of a basic-auth secret with the organization mirroring credentials to set up on the server.
   sccSecret: ""
 
   # server.mirror -- Volume or host path to mount in the container as server.susemanager.fromdir value.
   mirror:
+    # @schema
+    # x-rancher-question:
+    #   label: Mirror Volume Claim
+    #   group: Storage
+    #   order: 770
+    #   type: pvc
+    #   description: Existing PVC to mount as the server.susemanager.fromdir mirror. Leave empty for none. Once selected, it can only be cleared by editing the values YAML.
+    # @schema
     # server.mirror.claimName -- Name of the PVC to use for the mirror volume.
     claimName: ""
+    # @schema
+    # x-rancher-question:
+    #   label: Mirror Host Path
+    #   group: Storage
+    #   order: 780
+    #   description: Path on the node to mount as the server.susemanager.fromdir mirror. Strongly discouraged as it ties the server to a node. Leave empty for none.
+    # @schema
     # server.mirror.hostPath -- Path on the node to mount as mirror.
     hostPath: ""
 
@@ -175,20 +243,45 @@ server:
 
   # @schema
   # type: "boolean"
-  # default: "false"
+  # x-rancher-question:
+  #   label: Super Privileged Server
+  #   group: Advanced
+  #   order: 800
+  #   description: May be needed on clusters with SELinux or AppArmor enforced. This is a big security risk.
+  #   show_subquestion_if: "false"
   # @schema
   # server.superPrivileged -- Set to true to run on a cluster with selinux or AppArmor enforced.
   superPrivileged: false
 
   # @schema
   # enum: ["debug", "info", "notice", "warning", "err", "crit", "alert", "emerg", ""]
+  # x-rancher-question:
+  #   label: Systemd Log Level
+  #   group: Advanced
+  #   order: 830
+  #   empty_option_label: Default
+  #   description: Value passed to the systemd log-level parameter. Empty keeps the default. Setting it adds a tty to the container.
   # @schema
   # server.systemdLogLevel -- Systemd log level to use for debugging
   systemdLogLevel: ""
 
+  # @schema
+  # x-rancher-question:
+  #   label: AppArmor Profile
+  #   order: 810
+  #   subquestion_of: server.superPrivileged
+  #   description: Name of an AppArmor profile to use for the server pod. It must show up in aa-status output.
+  # @schema
   # server.apparmorProfile -- Name of an AppArmor profile to use for the server pod.
   apparmorProfile: ""
 
+  # @schema
+  # x-rancher-question:
+  #   label: SELinux Type
+  #   order: 820
+  #   subquestion_of: server.superPrivileged
+  #   description: SELinux type to use for the server pod. Leave empty for the container runtime default.
+  # @schema
   # server.selinuxType -- Name of the SELinux type to use for the server pod.
   selinuxType: ""
 
@@ -222,6 +315,10 @@ services:
 
   # @schema
   # enum: ["ClusterIP", "NodePort", "LoadBalancer"]
+  # x-rancher-question:
+  #   label: Service Type
+  #   group: Services
+  #   order: 400
   # @schema
   # services.type -- type of all the externally-facing services. Can be overridden on each service.
   type: ClusterIP
@@ -235,6 +332,15 @@ services:
 
   # @schema
   # $ref: "#/definitions/serviceConfig"
+  # x-rancher-question:
+  #   variable: ports.pgsql
+  #   label: Report Database NodePort
+  #   group: Services
+  #   order: 430
+  #   description: NodePort exposing the report database PostgreSQL port (5432).
+  #   min: 30000
+  #   max: 32767
+  #   show_if: services.type=NodePort
   # @schema
   # services.reportdb -- Values setting up the reportdb service.
   reportdb:
@@ -247,6 +353,23 @@ services:
 
   # @schema
   # $ref: "#/definitions/serviceConfig"
+  # x-rancher-question:
+  #   - variable: ports.publish
+  #     label: Salt Publish NodePort
+  #     group: Services
+  #     order: 410
+  #     description: NodePort exposing the Salt publish port (4505).
+  #     min: 30000
+  #     max: 32767
+  #     show_if: services.type=NodePort
+  #   - variable: ports.request
+  #     label: Salt Request NodePort
+  #     group: Services
+  #     order: 420
+  #     description: NodePort exposing the Salt request port (4506).
+  #     min: 30000
+  #     max: 32767
+  #     show_if: services.type=NodePort
   # @schema
   # services.salt -- Values setting up the salt service.
   salt:
@@ -308,14 +431,20 @@ services:
 
 # @schema
 # type: "boolean"
-# default: "false"
+# x-rancher-question:
+#   label: Expose Java Debug Ports
+#   group: Advanced
+#   order: 840
 # @schema
 # exposeJavaDebug -- Expose ports 8001, 8002, and 8003 for Java debugging if true
 exposeJavaDebug: false
 
 # @schema
 # type: "boolean"
-# default: "true"
+# x-rancher-question:
+#   label: Expose Monitoring Endpoints
+#   group: Ingress
+#   order: 390
 # @schema
 # enableMonitoring -- Create the ingress or gateway routes for Prometheus exporters if true.
 enableMonitoring: true
@@ -324,11 +453,25 @@ enableMonitoring: true
 ingress:
   # @schema
   # enum: ["traefik", ""]
+  # x-rancher-question:
+  #   label: Ingress Type
+  #   group: Ingress
+  #   order: 370
+  #   empty_option_label: Custom ingress
+  #   show_if: gateway.enable=false
   # @schema
   # ingress.type -- Ingress that is used in the cluster.
   # Set to the empty string to use a custom ingress.
   type: "traefik"
 
+  # @schema
+  # x-rancher-question:
+  #   label: Ingress Class
+  #   group: Ingress
+  #   order: 380
+  #   show_if: gateway.enable=false
+  #   description: Ingress class name to use. Empty means the default one. On rke2 this is likely 'traefik', on K3s it is likely empty.
+  # @schema
   # ingress.class -- Specify the ingress class name to use.
   class: "traefik"
 
@@ -369,13 +512,29 @@ ingress:
 gateway:
   # @schema
   # type: "boolean"
-  # default: "false"
+  # x-rancher-question:
+  #   label: Use Gateway API
+  #   group: Ingress
+  #   order: 300
+  #   show_subquestion_if: true
   # @schema
   # gateway.enable -- If enabled, Gateway API 1.4 resources will be deployed instead of the ingress ones.
   # Note that TCPRoute is used and is still in alpha2 stage.
   enable: false
+  # @schema
+  # x-rancher-question:
+  #   label: Gateway Class
+  #   order: 310
+  #   subquestion_of: gateway.enable
+  # @schema
   # gateway.class -- Name of the gateway class to use. For rke2 with traefik, it is likely to be "traefik".
   class: ""
+  # @schema
+  # x-rancher-question:
+  #   label: Gateway Name
+  #   order: 320
+  #   subquestion_of: gateway.enable
+  # @schema
   # gateway.name -- Name of the Gateway to use. If left empty an uyuni-gateway will be created.
   name: ""
 
@@ -383,6 +542,17 @@ gateway:
   listeners:
     # @schema
     # $ref: "#/definitions/listener"
+    # x-rancher-question:
+    #   - variable: name
+    #     label: HTTP Listener Name
+    #     order: 330
+    #     subquestion_of: gateway.enable
+    #   - variable: port
+    #     label: HTTP Listener Port
+    #     order: 340
+    #     subquestion_of: gateway.enable
+    #     min: 1
+    #     max: 65535
     # @schema
     # gateway.listeners.http -- Configuration of the HTTP listener.
     # The default is adjusted for traefik on rke2
@@ -394,6 +564,17 @@ gateway:
 
     # @schema
     # $ref: "#/definitions/listener"
+    # x-rancher-question:
+    #   - variable: name
+    #     label: HTTPS Listener Name
+    #     order: 350
+    #     subquestion_of: gateway.enable
+    #   - variable: port
+    #     label: HTTPS Listener Port
+    #     order: 360
+    #     subquestion_of: gateway.enable
+    #     min: 1
+    #     max: 65535
     # @schema
     # gateway.listeners.https -- Configuration of the HTTPS listener.
     # The default is adjusted for traefik on rke2
@@ -421,14 +602,22 @@ tftp:
 
   # @schema
   # type: "boolean"
-  # default: "false"
+  # x-rancher-question:
+  #   label: Enable TFTP Server
+  #   group: Components
+  #   order: 500
+  #   description: Deploy the TFTP server to PXE boot systems.
+  #   show_subquestion_if: true
   # @schema
   # tftp.enable -- Define a TFTP server deployment with one replica if set to true
   enable: false
 
   # @schema
   # type: "boolean"
-  # default: "false"
+  # x-rancher-question:
+  #   label: Use Host Network
+  #   order: 510
+  #   subquestion_of: tftp.enable
   # @schema
   # tftp.hostNetwork -- Use the host network to bypass the Kubernetes network layers.
   # This may be needed if not using a LoadBalancer for the TFTP server.
@@ -477,7 +666,10 @@ hubAPI:
 
   # @schema
   # type: "boolean"
-  # default: "false"
+  # x-rancher-question:
+  #   label: Enable Hub XML-RPC API
+  #   group: Components
+  #   order: 520
   # @schema
   # hubAPI.enable -- Define a hub API deployment with one replica if set to true.
   enable: false
@@ -523,7 +715,14 @@ coco:
   tag: null
 
   # @schema
+  # type: "integer"
   # minimum: 0
+  # x-rancher-question:
+  #   label: Confidential Computing Attestation Replicas
+  #   group: Components
+  #   order: 540
+  #   min: 0
+  #   description: Number of replicas for the confidential computing attestation deployment. 0 disables it.
   # @schema
   # coco.replicas -- Number the confidential computing pods replicas
   replicas: 0
@@ -570,7 +769,11 @@ saline:
 
   # @schema
   # type: "boolean"
-  # default: "false"
+  # x-rancher-question:
+  #   label: Enable Saline
+  #   group: Components
+  #   order: 530
+  #   description: Deploy Saline to provide Salt master metrics.
   # @schema
   # saline.enable -- Define a saline deployment with one replica if set to true.
   enable: false
@@ -617,17 +820,52 @@ db:
 
   # @schema
   # type: "boolean"
-  # default: "false"
+  # x-rancher-question:
+  #   label: Deploy PostgreSQL
+  #   group: Database
+  #   order: 600
+  #   description: "Deploy the internal PostgreSQL instance. WARNING: setting this to false is not supported yet."
+  #   show_subquestion_if: true
   # @schema
   # db.enable -- Deploys the internal dababase if set to true. Setting to false is not supported yet.
   enable: true
 
+  # @schema
+  # x-rancher-question:
+  #   label: Pods CIDR
+  #   order: 610
+  #   subquestion_of: db.enable
+  #   description: Network IP range allowed to make plain text connections to the database, usually the cluster pods CIDR. The default matches rke2's pods CIDR; K3s also uses 10.42.0.0/16.
+  # @schema
   # db.podsCIDR -- Network IP range to allow plain text connections from, usually the cluster pods CIDR
   # The default has been adjusted with rke2's pods CIDR default.
   podsCIDR: 10.42.0.0/16
 
   # @schema
   # $ref: "#/definitions/dbConnectionConfig"
+  # x-rancher-question:
+  #   - variable: host
+  #     label: Internal Database Host
+  #     group: Database
+  #     order: 620
+  #     type: string
+  #     description: Host name of the internal database. It should be in the SANs of the database TLS certificate.
+  #     default: ""
+  #     show_if: db.enable=false
+  #   - variable: port
+  #     label: Internal Database Port
+  #     group: Database
+  #     order: 630
+  #     min: 1
+  #     max: 65535
+  #     show_if: db.enable=false
+  #   - variable: name
+  #     label: Internal Database Name
+  #     group: Database
+  #     order: 640
+  #     type: string
+  #     default: susemanager
+  #     show_if: db.enable=false
   # @schema
   # db.internal -- Configuration of the internal database connection
   internal:
@@ -650,6 +888,29 @@ db:
 
   # @schema
   # $ref: "#/definitions/dbConnectionConfig"
+  # x-rancher-question:
+  #   - variable: host
+  #     label: Report Database Host
+  #     group: Database
+  #     order: 650
+  #     type: string
+  #     description: Host name of the report database. It should be in the SANs of the database TLS certificate.
+  #     default: ""
+  #     show_if: db.enable=false
+  #   - variable: port
+  #     label: Report Database Port
+  #     group: Database
+  #     order: 660
+  #     min: 1
+  #     max: 65535
+  #     show_if: db.enable=false
+  #   - variable: name
+  #     label: Report Database Name
+  #     group: Database
+  #     order: 670
+  #     type: string
+  #     default: reportdb
+  #     show_if: db.enable=false
   # @schema
   # db.report -- Configuration of the report database connection
   report:
@@ -700,12 +961,26 @@ volumes:
   # @default `nil`
   # @schema
   # type: ["string", "null"]
+  # x-rancher-question:
+  #   label: Default Storage Class
+  #   group: Storage
+  #   order: 700
+  #   type: storageclass
+  #   description: Storage class used for all the volume claims. Leave empty to use the cluster default. Once selected, it can only be cleared by editing the values YAML.
   # @schema
   # volumes.storageClass -- Default storage class name to use for all claims.
   storageClass: null
 
   # @schema
   # $ref: "#/definitions/volumeConfig"
+  # x-rancher-question:
+  #   variable: size
+  #   label: Database Volume Size
+  #   group: Storage
+  #   order: 710
+  #   type: string
+  #   description: Size of the PostgreSQL data volume. Needs to be at least 50Gi on a fast storage.
+  #   show_if: db.enable=true
   # @schema
   # volumes.var-pgsql -- var-pgsql volume configuration
   var-pgsql:
@@ -724,6 +999,13 @@ volumes:
 
   # @schema
   # $ref: "#/definitions/volumeConfig"
+  # x-rancher-question:
+  #   variable: size
+  #   label: Packages Volume Size
+  #   group: Storage
+  #   order: 720
+  #   type: string
+  #   description: Size of the volume holding the synchronized packages. Depends on the distributions to manage.
   # @schema
   # volumes.var-spacewalk -- var-spacewalk volume configuration
   var-spacewalk:
@@ -742,6 +1024,12 @@ volumes:
 
   # @schema
   # $ref: "#/definitions/volumeConfig"
+  # x-rancher-question:
+  #   variable: size
+  #   label: Cache Volume Size
+  #   group: Storage
+  #   order: 740
+  #   type: string
   # @schema
   # volumes.var-cache -- var-cache volume configuration
   var-cache:
@@ -760,6 +1048,12 @@ volumes:
 
   # @schema
   # $ref: "#/definitions/volumeConfig"
+  # x-rancher-question:
+  #   variable: size
+  #   label: Logs Volume Size
+  #   group: Storage
+  #   order: 760
+  #   type: string
   # @schema
   # volumes.var-log -- var-log volume configuration
   var-log:
@@ -778,6 +1072,13 @@ volumes:
 
   # @schema
   # $ref: "#/definitions/volumeConfig"
+  # x-rancher-question:
+  #   variable: size
+  #   label: Web Volume Size
+  #   group: Storage
+  #   order: 730
+  #   type: string
+  #   description: Size of the volume with files published over HTTP, including unpacked auto-installation ISOs.
   # @schema
   # volumes.srv-www -- srv-www volume configuration
   srv-www:
@@ -1156,6 +1457,12 @@ volumes:
 
   # @schema
   # $ref: "#/definitions/volumeConfig"
+  # x-rancher-question:
+  #   variable: size
+  #   label: Search Index Volume Size
+  #   group: Storage
+  #   order: 750
+  #   type: string
   # @schema
   # volumes.var-search -- var-search volume configuration
   var-search:
