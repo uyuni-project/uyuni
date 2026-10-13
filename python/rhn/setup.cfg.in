@@ -3,6 +3,6 @@
 release = @RELEASE@
 packager = Red Hat, Inc. <http://bugzilla.redhat.com/bugzilla>
 requires = pyOpenSSL python
-doc-files = ChangeLog COPYING README TODO
+doc-files = ChangeLog COPYING README
 changelog = changelog.spec
 build-requires = python-devel
