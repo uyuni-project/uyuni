@@ -505,7 +505,7 @@ Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warni
 end
 
 When(/^I create the MU repositories for "([^"]*)"$/) do |client|
-  repo_list = $custom_repositories[client]
+  repo_list = custom_repositories_for(client)
   next if repo_list.nil?
 
   repo_list.each do |repo_name, repo_url|
@@ -524,9 +524,11 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
     if repository_exist? unique_repo_name
       log "The MU repository #{unique_repo_name} was already created, we will reuse it."
     else
-      content_type = deb_host?(client) ? 'deb' : 'yum'
-      node = get_target(client)
-      if node.os_family.include?('sl-micro') && node.os_version.include?('6')
+      # proxy_<flavour> keys are not hosts: the flavour carries the OS
+      proxy_repo = client.start_with?('proxy_')
+      content_type = !proxy_repo && deb_host?(client) ? 'deb' : 'yum'
+      node = get_target(client) unless proxy_repo
+      if proxy_repo ? client.start_with?('proxy_slmicro6') : node.os_family.include?('sl-micro') && node.os_version.include?('6')
         steps %(
           When I follow the left menu "Software > Manage > Repositories"
           And I follow "Create Repository"
@@ -555,7 +557,7 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
 end
 
 When(/^I select the MU repositories for "([^"]*)" from the list$/) do |client|
-  repo_list = $custom_repositories[client]
+  repo_list = custom_repositories_for(client)
   next if repo_list.nil?
 
   repo_list.each do |repo_name, repo_url|
