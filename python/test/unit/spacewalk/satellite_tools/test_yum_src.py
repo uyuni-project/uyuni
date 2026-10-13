@@ -231,11 +231,12 @@ class YumSrcTest(unittest.TestCase):
             def lookup_checksum(self, x):
                 return ChecksumMock()
 
+            # pylint: disable-next=unused-argument
             def lookup_num(self, x):
                 return 123
 
             def lookup_location(self):
-                return ["packages/{}.rpm".format(self.name)]
+                return [f"packages/{self.name}.rpm"]
 
             # pylint: disable-next=unused-argument
             def lookup_deparray(self, keyname=None):
@@ -284,11 +285,12 @@ class YumSrcTest(unittest.TestCase):
             def lookup_checksum(self, x):
                 return ChecksumMock()
 
+            # pylint: disable-next=unused-argument
             def lookup_num(self, x):
                 return 321
 
             def lookup_location(self):
-                return ["packages/{}.rpm".format(self.name)]
+                return [f"packages/{self.name}.rpm"]
 
             # pylint: disable-next=unused-argument
             def lookup_deparray(self, keyname=None):
