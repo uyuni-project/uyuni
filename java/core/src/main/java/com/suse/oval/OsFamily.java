@@ -96,13 +96,23 @@ public enum OsFamily {
         if (osName == null) {
             return Optional.empty();
         }
-        String normalizedInput = osName.toLowerCase().replaceAll("[\\s\\-_]", "");
+        String normalizedInput = normalizeOsName(osName);
         if (normalizedInput.equals("slmicro")) {
             return Optional.of(SUSE_LINUX_ENTERPRISE_MICRO);
         }
-        return Arrays.stream(values()).filter(osFamily -> {
-            String normalizedOs = osFamily.os.toLowerCase().replaceAll("[\\s\\-_]", "");
-            return normalizedOs.equals(normalizedInput);
-        }).findFirst();
+        return Arrays.stream(values())
+                .filter(osFamily -> normalizeOsName(osFamily.os).equals(normalizedInput))
+                .findFirst();
+    }
+
+    /**
+     * Normalizes an os name: lower case, only letters and digits, without a trailing "GNU/Linux".
+     * Salt minions report the osfullname grain as os name, which is "Debian GNU/Linux" on Debian.
+     *
+     * @param osName the os name to normalize
+     * @return the normalized os name
+     */
+    private static String normalizeOsName(String osName) {
+        return osName.toLowerCase().replaceAll("[^a-z0-9]", "").replaceFirst("gnulinux$", "");
     }
 }
