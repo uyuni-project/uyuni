@@ -24,7 +24,6 @@ Wed Oct 07 18:28:42 CEST 2026 - marina.latini@suse.com
     (bsc#1281412)
   * Ensure that server token relation is unique (bsc#1268744)
   * Add schema support for transactional system management
-  * Use the canonical Asia/Karachi timezone for Pakistan
 
 -------------------------------------------------------------------
 Wed Aug 05 16:53:44 CEST 2026 - antonio.garofalo@suse.com
