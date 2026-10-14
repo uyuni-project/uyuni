@@ -1259,7 +1259,7 @@ password={passwd}
 
         for filter_item in filters:
             sense, pkg_list = filter_item
-            regex = fnmatch.translate(pkg_list[0])
+            regex = "|".join(fnmatch.translate(p) for p in pkg_list)
             reobj = re.compile(regex)
             if sense == "+":
                 if exclude_only:
