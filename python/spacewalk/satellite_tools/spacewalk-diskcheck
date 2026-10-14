@@ -50,8 +50,24 @@ function parseConfiguration {
     # Split into a bash array for safe iteration.
     read -ra DISKCHECKDIRS_ARR <<< "$DISKCHECKDIRS"
 
+    validatePercentage DISKCHECKALERT 90
+    validatePercentage DISKTHRESHOLD 95
     validateFreeMB DISKTHRESHOLD_FREE_MB
     validateFreeMB DISKCHECKALERT_FREE_MB
+}
+
+# Reset the named variable to the default if it is not a percentage between 0 and 100,
+# and report the misconfiguration.
+function validatePercentage {
+    local name="$1"
+    local default="$2"
+    local value="${!name}"
+
+    if ! [[ "$value" =~ ^[0-9]{1,3}$ ]] || [ "$value" -gt 100 ]; then
+        echo "DISKCHECK: invalid $name value '$value', using the default ${default}%"
+        printf -v "$name" '%s' "$default"
+        updateSeverity 1
+    fi
 }
 
 # Unset the named variable if it is not a valid number of MB, so that the percentage

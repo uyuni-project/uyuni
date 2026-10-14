@@ -6,11 +6,25 @@
 # Exit with the severity: 0 OK, 1 misconfiguration, 2 alert, 3 critical.
 # *_FREE_MB, when set, has priority over the percentage threshold of the same level.
 
-ALERT=${DISKCHECKALERT:-90}
-THRESHOLD=${DISKTHRESHOLD:-95}
+DISKCHECKALERT=${DISKCHECKALERT:-90}
+DISKTHRESHOLD=${DISKTHRESHOLD:-95}
 PGDATA="${PGDATA:-/var/lib/pgsql/data}"
 
 SEVERITY=0
+
+# Reset the named variable to the default if it is not a percentage between 0 and 100,
+# and report the misconfiguration.
+validate_percentage() {
+    local name="$1"
+    local default="$2"
+    local value="${!name}"
+
+    if ! [[ "$value" =~ ^[0-9]{1,3}$ ]] || [ "$value" -gt 100 ]; then
+        echo "Invalid $name value '$value', using the default ${default}%."
+        printf -v "$name" '%s' "$default"
+        SEVERITY=1
+    fi
+}
 
 # Unset the named variable if it is not a valid number of MB, so that the percentage
 # threshold of the same level is used, and report the misconfiguration.
@@ -25,6 +39,8 @@ validate_free_mb() {
     fi
 }
 
+validate_percentage DISKCHECKALERT 90
+validate_percentage DISKTHRESHOLD 95
 validate_free_mb DISKCHECKALERT_FREE_MB
 validate_free_mb DISKTHRESHOLD_FREE_MB
 
@@ -33,12 +49,12 @@ read -r FREE_MB DISK_USAGE <<< "$(df --output=avail,pcent -B1M "$PGDATA" | tail 
 
 if [ -n "$DISKCHECKALERT_FREE_MB" ]; then
     [ "$FREE_MB" -lt "$DISKCHECKALERT_FREE_MB" ] && SEVERITY=2
-elif [ "$DISK_USAGE" -gt "$ALERT" ]; then
+elif [ "$DISK_USAGE" -gt "$DISKCHECKALERT" ]; then
     SEVERITY=2
 fi
 if [ -n "$DISKTHRESHOLD_FREE_MB" ]; then
     [ "$FREE_MB" -lt "$DISKTHRESHOLD_FREE_MB" ] && SEVERITY=3
-elif [ "$DISK_USAGE" -gt "$THRESHOLD" ]; then
+elif [ "$DISK_USAGE" -gt "$DISKTHRESHOLD" ]; then
     SEVERITY=3
 fi
 
