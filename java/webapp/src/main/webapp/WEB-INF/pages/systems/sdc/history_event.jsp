@@ -49,6 +49,18 @@
         </div>
       </div>
     </li>
+    <c:if test="${not empty requestScope.actionDescription}">
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-sm-2">
+            <strong><bean:message key="actions.jsp.action_description"/>:</strong>
+          </div>
+          <div class="col-sm-10">
+            <c:out value="${requestScope.actionDescription}"/>
+          </div>
+        </div>
+      </li>
+    </c:if>
     <c:if test="${requestScope.typePlaybook && not empty requestScope.inventory}">
       <li class="list-group-item">
         <div class="row">

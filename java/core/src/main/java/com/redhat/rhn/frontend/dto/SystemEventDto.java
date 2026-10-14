@@ -41,6 +41,7 @@ public class SystemEventDto extends BaseDto implements Serializable {
     protected String historyTypeName;
     private String historyStatus;
     private Long pendingRebootActionId;
+    private String actionDescription;
     protected static final Map<String, String> ACTIONTYPES;
     private boolean historyVisible;
 
@@ -220,6 +221,20 @@ public class SystemEventDto extends BaseDto implements Serializable {
      */
     public void setHistoryVisible(boolean historyVisibleIn) {
         this.historyVisible = historyVisibleIn;
+    }
+
+    /**
+     * @return the actionDescription
+     */
+    public String getActionDescription() {
+        return actionDescription;
+    }
+
+    /**
+     * @param actionDescriptionIn the actionDescription to set
+     */
+    public void setActionDescription(String actionDescriptionIn) {
+        this.actionDescription = actionDescriptionIn;
     }
 
     @Override
