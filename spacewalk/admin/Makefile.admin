@@ -29,9 +29,7 @@ SBIN_DEST   = $(PREFIX)/$(SBINDIR)
 CONF_DEST   = $(PREFIX)/$(CONFDIR)
 SYSTEMD_DEST = $(PREFIX)/$(SYSTEMDDIR)
 
-SCRIPTS = rhn-config-satellite.pl \
-               rhn-deploy-ca-cert.pl \
-               rhn-install-ssl-cert.pl \
+SCRIPTS = rhn-config-satellite \
 			   spacewalk-hostname-rename \
                salt-secrets-config.py
 

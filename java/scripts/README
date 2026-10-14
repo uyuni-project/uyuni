@@ -1,25 +1,22 @@
 SCRIPT - DESCRIPTION
 ---------------------
-bean-maker.pl - ???
-build405guides.sh - ???
+api/ - Python XML-RPC API test scripts
 build-jar-dir - builds jar directory for create-webapp-dir task
-cleantommy.sh - cleans out tomcat logs
-connwatch - watches connections and logs status to stdout
-create-api-test - creates python xmlrpc api testcase
-gen-eclipse.py - generates eclipse .classpath file (should be renamed)
-jarsearch.sh - searches a directory of jars for a specific class
-java-xliff-csv.pl -
-loadnouser.pl - multithreaded load test for rhn with NO user
-lwload.pl - multithreaded load test for rhn
-maketar.sh - creates a tarball of the rhn-java code for use in building
-             an rpm locally on your box
-refreshi18n.sh -  ???
-refreshRHNdocs.sh -  ???
-sat-scrub.pl - scrubs a satellite test db
+docker-checkstyle.sh - runs checkstyle in a container
+docker-testing-pgsql.sh - runs the tests against a PostgreSQL container
+maven/ - Maven migration helper files
+migrate-branding-to-mvn - helper to migrate branding to Maven
+migrate-spacewalk-java-to-mvn - helper to migrate spacewalk-java to Maven
+migrate-tests/ - helpers to migrate the test suite to Maven
+missingstrings.sh - lists translation strings that are missing
+mvn-migrate - helper for the Maven migration
+pack-i18n - packs translation files for translation
+publish-war - deploys the built webapp to a remote host
+refreshi18n.sh - refreshes the i18n string resources
 slocc.sh - counts lines of code, comments, and prints their ratios
-taskomatic -
-unnecessaryElse.pl - removes unnecessary else blocks from java files.
-unreadField.pl - removes unused private member varialbes from java files.
-unusedLocal.pl - removes unused local variables from java files.
-xmlrpctest.pl -
-zap-unused-imports.pl - removes unused imports
+spelling/ - spelling checker data
+taskomatic - TaskomaticDaemon start script
+taskomatic.service - systemd unit file for Taskomatic
+unittest.xml - Ant/JUnit configuration fragment for the unit tests
+unpack-i18n - unpacks translation files
+updateheader.py - adds or updates the license header on source files

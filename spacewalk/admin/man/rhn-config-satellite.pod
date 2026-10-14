@@ -1,0 +1,35 @@
+=pod
+
+=head1 NAME
+
+rhn-config-satellite - generate config files for Spacewalk/Uyuni server
+
+=head1 SYNOPSIS
+
+B<rhn-config-satellite> --target=<target_file> --option=<key,value> [ --option=<key,value> ...] [ --help ]
+
+=head1 DESCRIPTION
+
+This script will make sure that in F<target_file> are present configuration variables in format C<key=value>. If such key already exists there, it is removed and new variables are put at the end of the F<target_file>. Original file is preserved as F<target_file.CURRENT_TIME>
+
+This script is used internally by B<spacewalk-setup>(1)
+
+=head1 OPTIONS
+
+=over 5
+
+=item B<--option=<key,value>>
+
+Assigns a value to a given configuration key.
+
+=item B<--remove=<key>>
+
+Removes a given configuration key.
+
+=back
+
+=head1 SEE ALSO
+
+B<spacewalk-setup>(1)
+
+=cut

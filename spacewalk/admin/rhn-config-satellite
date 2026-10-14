@@ -1,0 +1,197 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2026 SUSE LLC
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+
+import sys
+import os
+import time
+import shutil
+import re
+import subprocess
+
+ALLOWED_TARGETS = [
+    "/etc/rhn/rhn.conf",
+    "/var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf",
+    "/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf",
+]
+
+
+def usage():
+    sys.stderr.write(
+        f"usage: {sys.argv[0]} --target=<target_file> --option=<key,value> "
+        "[ --option=<key,value> ] [ --remove=<key>] [ --help ]\n"
+    )
+    sys.exit(255)
+
+
+def get_apache_group():
+    try:
+        ret = subprocess.check_output(
+            'grep -hsoP "(?<=Group ).*" /etc/httpd/conf/*.conf /etc/apache2/*.conf',
+            shell=True,
+        )
+        group = ret.decode("utf-8").strip()
+        if group:
+            return group
+    except Exception:
+        pass
+    return None
+
+
+def parse_args(argv):
+    target = ''
+    options = []
+    removals = []
+    show_help = False
+    i = 0
+    while i < len(argv):
+        arg = argv[i]
+        if arg == '--help':
+            show_help = True
+        elif arg == '--target' or arg.startswith('--target='):
+            if '=' in arg:
+                target = arg.split('=', 1)[1]
+            else:
+                i += 1
+                target = argv[i] if i < len(argv) else ''
+        elif arg == '--option' or arg.startswith('--option='):
+            if '=' in arg:
+                options.append(arg.split('=', 1)[1])
+            else:
+                i += 1
+                options.append(argv[i] if i < len(argv) else '')
+        elif arg == '--remove' or arg.startswith('--remove='):
+            if '=' in arg:
+                removals.append(arg.split('=', 1)[1])
+            else:
+                i += 1
+                removals.append(argv[i] if i < len(argv) else '')
+        elif arg.startswith('-') and arg != '-':
+            sys.stderr.write(f"Unknown option: {arg.lstrip('-')}\n")
+            usage()
+        # Non-option arguments are ignored, matching the original Perl script:
+        # Getopt::Long leaves them in @ARGV and the script never validates
+        # @ARGV, so stray positional tokens are tolerated.
+        i += 1
+    return target, options, removals, show_help
+
+
+def main():
+    target, option_list, removals, show_help = parse_args(sys.argv[1:])
+
+    if show_help:
+        usage()
+    if not target or not (option_list or removals):
+        usage()
+
+    # my %options = map { split(/=/,$_, 2) } @options;
+    options = {}
+    for opt in option_list:
+        parts = opt.split('=', 1)
+        if len(parts) == 2:
+            options[parts[0]] = parts[1]
+        else:
+            options[parts[0]] = ''
+
+    tmpfile = f"{target}.bak.{os.getpid()}"
+
+    if target not in ALLOWED_TARGETS:
+        sys.stderr.write(
+            f"Cannot modify a file that is not a spacewalk config file: {target}\n"
+        )
+        sys.exit(255)
+
+    t = time.time()
+    micro = int((t - int(t)) * 1000000)
+    current_time = time.strftime("%Y-%m-%d_%H:%M:%S", time.gmtime(t)) + f".{micro:06d}"
+
+    lines = []
+    if os.path.exists(target):
+        try:
+            os.link(target, f"{target}.{current_time}")
+        except OSError as e:
+            sys.stderr.write(
+                f"Could not rename {target} to {target}.{current_time}: {e.strerror}\n"
+            )
+            sys.exit(255)
+        with open(target, "r", encoding="utf-8", errors="surrogateescape") as f:
+            lines = f.readlines()
+
+    if os.path.exists(tmpfile):
+        os.unlink(tmpfile)
+
+    os.umask(0o027)
+    with open(tmpfile, "w", encoding="utf-8", errors="surrogateescape"):
+        pass
+
+    if tmpfile.startswith("/etc/rhn/"):
+        # Chown for different potential apache group names (SUSE/RHEL)
+        apache_group = get_apache_group()
+        if apache_group:
+            try:
+                shutil.chown(tmpfile, user=0, group=apache_group)
+            except Exception:
+                pass
+
+    # Values matching ^[A-Z0-9_]+$ can be provided through UYUNICFG_<value>
+    for opt_name, val in list(options.items()):
+        if re.match(r"^[A-Z0-9_]+$", val):
+            env_key = f"UYUNICFG_{val}"
+            if env_key in os.environ:
+                options[opt_name] = os.environ[env_key]
+
+    out_lines = []
+    for line in lines:
+        removed = 0
+        if "[prompt]" in line or line.startswith("#"):
+            out_lines.append(line)
+            continue
+
+        for opt_name in list(options.keys()):
+            m = re.match(r"^(\S*)" + re.escape(opt_name) + r"( *)=( *)", line)
+            if m:
+                prefix = m.group(1) or ''
+                s1 = m.group(2) or ''
+                s2 = m.group(3) or ''
+                value = options[opt_name]
+                if value.endswith("\n"):
+                    value = value[:-1]
+                line = f"{prefix}{opt_name}{s1}={s2}{value}\n"
+                del options[opt_name]
+
+        for rem in removals:
+            if re.match(r"^(\S*)" + re.escape(rem) + r"( *)=( *)", line):
+                removed = 1
+                options.pop(rem, None)
+
+        if not removed:
+            out_lines.append(line)
+
+    # For the options that didn't exist in the file, append them to the end.
+    for opt_name, val in options.items():
+        sys.stdout.write(f"{opt_name}\n")
+        if val.endswith("\n"):
+            val = val[:-1]
+        out_lines.append("#option generated from rhn-config-satellite.pl\n")
+        out_lines.append(f"{opt_name}={val}\n\n")
+
+    with open(tmpfile, "w", encoding="utf-8", errors="surrogateescape") as tmp_f:
+        tmp_f.writelines(out_lines)
+
+    try:
+        os.rename(tmpfile, target)
+    except OSError as e:
+        sys.stderr.write(f"Could not rename {tmpfile} to {target}: {e.strerror}\n")
+        sys.exit(255)
+
+
+if __name__ == "__main__":
+    main()
