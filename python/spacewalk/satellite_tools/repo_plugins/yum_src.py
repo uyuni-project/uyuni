@@ -602,6 +602,7 @@ class ContentSource:
         client_key_file=None,
         channel_arch="",
         http_headers={},
+        pqc_insecure=False,
     ):
         """
         Plugin constructor.
@@ -615,6 +616,7 @@ class ContentSource:
             self.url = "file://%s" % url
         self.name = name
         self.insecure = insecure
+        self.pqc_insecure = pqc_insecure
         self.interactive = interactive
         self.org = org if org else "NULL"
         self.proxy_hostname = None
@@ -966,7 +968,16 @@ type=rpm-md
         # run that is not chrooted and only refreshes the metadata.
         # ULN repositories are not fetched through repo.urls, so they are not probed.
         pqc_repomd_digest = None
-        if not uln_repo and self._has_pqc_signature():
+        if self.pqc_insecure:
+            log(
+                2,
+                # pylint: disable-next=consider-using-f-string
+                "Repository '{}' is not flagged as PQC signed: skipping the '{}' "
+                "Zypper sigcheck plugin.".format(
+                    self.channel_label or self.reponame, PQC_SIGCHECK_PLUGIN
+                ),
+            )
+        elif not uln_repo and self._has_pqc_signature():
             pqc_repomd_digest = self._verify_pqc_signature(
                 repo_cfg.format(
                     reponame=self.channel_label or self.reponame,
