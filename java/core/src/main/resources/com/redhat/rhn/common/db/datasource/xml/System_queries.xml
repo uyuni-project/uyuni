@@ -1782,6 +1782,7 @@ select event_id as id,
        all_events.history_type_name,
        all_events.history_status,
        all_events.pending_reboot_action_id,
+       action_details.action_description as action_description,
        case when action_details.org_id != :oid then 0
          else 1 end as history_visible
   from (select SH.id event_id,
@@ -1844,6 +1845,7 @@ order by completed desc, picked_up desc, all_events.created desc, event_id desc
          all_events.history_type_name,
          all_events.history_status,
          all_events.pending_reboot_action_id,
+         action_details.action_description as action_description,
          case when action_details.org_id != :oid then 0 else 1 end as history_visible
     from (
               select SH.id event_id,
@@ -1910,6 +1912,7 @@ select count(action_id) as count
                 , A.prerequisite AS prereq_aid
                 , SP.status AS prereq_status_id
                 , A.name AS action_name
+                , A.action_description AS action_description
     FROM rhnServerAction SA
                 INNER JOIN rhnAction A ON SA.action_id = A.id
                 INNER JOIN rhnActionStatus AStat ON AStat.id = SA.status
@@ -1932,6 +1935,7 @@ ORDER BY scheduled_for DESC, prereq_aid NULLS FIRST
                 , A.prerequisite AS prereq_aid
                 , SP.status As prereq_status_id
                 , A.name AS action_name
+                , A.action_description AS action_description
     FROM rhnServerAction SA
                 INNER JOIN rhnAction A ON SA.action_id = A.id
                 INNER JOIN rhnActionStatus AStat ON AStat.id = SA.status
