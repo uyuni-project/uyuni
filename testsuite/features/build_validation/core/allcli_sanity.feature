@@ -109,20 +109,6 @@ Feature: Sanity checks
     And "sles160_sshminion" should communicate with the server using public interface
     And the clock from "sles160_sshminion" should be exact
 
-@slemicro52_minion
-  Scenario: The SLE Micro 5.2 minion is healthy
-    Then "slemicro52_minion" should have a FQDN
-    And reverse resolution should work for "slemicro52_minion"
-    And "slemicro52_minion" should communicate with the server using public interface
-    And the clock from "slemicro52_minion" should be exact
-
-@slemicro52_sshminion
-  Scenario: The SLE Micro 5.2 SSH minion is healthy
-    Then "slemicro52_sshminion" should have a FQDN
-    And reverse resolution should work for "slemicro52_sshminion"
-    And "slemicro52_sshminion" should communicate with the server using public interface
-    And the clock from "slemicro52_sshminion" should be exact
-
 @slemicro53_minion
   Scenario: The SLE Micro 5.3 minion is healthy
     Then "slemicro53_minion" should have a FQDN
@@ -459,20 +445,6 @@ Feature: Sanity checks
     And "ubuntu2404_sshminion" should communicate with the server using public interface
     And the clock from "ubuntu2404_sshminion" should be exact
 
-@debian12_minion
-  Scenario: The Debian 12 minion is healthy
-    Then "debian12_minion" should have a FQDN
-    And reverse resolution should work for "debian12_minion"
-    And "debian12_minion" should communicate with the server using public interface
-    And the clock from "debian12_minion" should be exact
-
-@debian12_sshminion
-  Scenario: The Debian 12 Salt SSH minion is healthy
-    Then "debian12_sshminion" should have a FQDN
-    And reverse resolution should work for "debian12_sshminion"
-    And "debian12_sshminion" should communicate with the server using public interface
-    And the clock from "debian12_sshminion" should be exact
-
 @debian13_minion
   Scenario: The Debian 13 minion is healthy
     Then "debian13_minion" should have a FQDN
@@ -500,20 +472,6 @@ Feature: Sanity checks
     And reverse resolution should work for "raspios13_sshminion"
     And "raspios13_sshminion" should communicate with the server using public interface
     And the clock from "raspios13_sshminion" should be exact
-
-@opensuse156arm_minion
-  Scenario: The openSUSE 15.6 ARM minion is healthy
-    Then "opensuse156arm_minion" should have a FQDN
-    And reverse resolution should work for "opensuse156arm_minion"
-    And "opensuse156arm_minion" should communicate with the server using public interface
-    And the clock from "opensuse156arm_minion" should be exact
-
-@opensuse156arm_sshminion
-  Scenario: The openSUSE 15.6 ARM SSH minion is healthy
-    Then "opensuse156arm_sshminion" should have a FQDN
-    And reverse resolution should work for "opensuse156arm_sshminion"
-    And "opensuse156arm_sshminion" should communicate with the server using public interface
-    And the clock from "opensuse156arm_sshminion" should be exact
 
 @opensuse160arm_minion
   Scenario: The openSUSE 16.0 ARM minion is healthy
