@@ -93,6 +93,7 @@ public class ChannelDetailsAction extends RhnAction {
         request.setAttribute("pack_size", ChannelFactory.getPackageCount(chan));
         request.setAttribute("globally", chan.isGloballySubscribable(user.getOrg()));
         request.setAttribute("channel", chan);
+        request.setAttribute("channel_description", ChannelDescriptionHelper.getDisplayDescription(chan));
         request.setAttribute("channel_last_modified", LocalizationService.
                     getInstance().formatCustomDate(chan.getLastModified()));
         //Check the status of the channel
