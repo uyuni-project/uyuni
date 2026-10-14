@@ -19,7 +19,9 @@ import com.redhat.rhn.domain.server.Server;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * This enum defines the operating system families for which we can retrieve OVAL data.
@@ -31,7 +33,7 @@ public enum OsFamily {
             oneOf("12", "15", "16")),
     SUSE_LINUX_ENTERPRISE_DESKTOP("SUSE Linux Enterprise Desktop", "SLED", "suse",
             oneOf("15")),
-    SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", "SLE Micro", "suse",
+    SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", aliases("SLE Micro", "SL Micro", "SL-Micro"), "suse",
             oneOf("5.2", "5.3", "5.4", "5.5", "6.0", "6.1", "6.2")),
     SUSE_LIBERTY_LINUX("SUSE Liberty Linux", "SLL", "SLL",
             oneOf("7", "8", "9", "10")),
@@ -42,19 +44,26 @@ public enum OsFamily {
     REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "Red Hat Enterprise Linux", "redhat",
             oneOf("7", "8", "9")),
     UBUNTU("Ubuntu", "ubuntu", "canonical", oneOf("20.04", "22.04", "24.04", "26.04")),
-    DEBIAN("Debian", "Debian", "debian", oneOf("11", "12", "13"));
+    // Salt minions report the osfullname grain as os name, which is "Debian GNU/Linux" on Debian
+    DEBIAN("Debian", aliases("Debian", "Debian GNU/Linux"), "debian", oneOf("11", "12", "13"));
 
     private final String vendor;
     private final String fullname;
     /**
-     * Should consist of the same values as {@link Server#getOs()}
+     * Normalized os names, should consist of the same values as {@link Server#getOs()}
      * */
-    private final String os;
+    private final Set<String> normalizedAliases;
     private final Pattern legalReleasePattern;
 
     OsFamily(String fullnameIn, String osIn, String vendorIn, String legalReleaseRegex) {
+        this(fullnameIn, aliases(osIn), vendorIn, legalReleaseRegex);
+    }
+
+    OsFamily(String fullnameIn, String[] osAliases, String vendorIn, String legalReleaseRegex) {
         this.fullname = fullnameIn;
-        this.os = osIn;
+        this.normalizedAliases = Arrays.stream(osAliases)
+                .map(OsFamily::normalize)
+                .collect(Collectors.toSet());
         this.vendor = vendorIn;
         legalReleasePattern = Pattern.compile(legalReleaseRegex);
     }
@@ -78,6 +87,10 @@ public enum OsFamily {
         return legalReleasePattern.matcher(release).matches();
     }
 
+    private static String[] aliases(String ... osNames) {
+        return osNames;
+    }
+
     private static String oneOf(String ... legalReleases) {
         return "(" + String.join("|", escapePeriods(legalReleases)) + ")";
     }
@@ -96,23 +109,13 @@ public enum OsFamily {
         if (osName == null) {
             return Optional.empty();
         }
-        String normalizedInput = normalizeOsName(osName);
-        if (normalizedInput.equals("slmicro")) {
-            return Optional.of(SUSE_LINUX_ENTERPRISE_MICRO);
-        }
+        String normalizedInput = normalize(osName);
         return Arrays.stream(values())
-                .filter(osFamily -> normalizeOsName(osFamily.os).equals(normalizedInput))
+                .filter(osFamily -> osFamily.normalizedAliases.contains(normalizedInput))
                 .findFirst();
     }
 
-    /**
-     * Normalizes an os name: lower case, only letters and digits, without a trailing "GNU/Linux".
-     * Salt minions report the osfullname grain as os name, which is "Debian GNU/Linux" on Debian.
-     *
-     * @param osName the os name to normalize
-     * @return the normalized os name
-     */
-    private static String normalizeOsName(String osName) {
-        return osName.toLowerCase().replaceAll("[^a-z0-9]", "").replaceFirst("gnulinux$", "");
+    private static String normalize(String osName) {
+        return osName.toLowerCase().replaceAll("[\\s\\-_]", "");
     }
 }
