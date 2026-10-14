@@ -81,7 +81,7 @@ const FiltersProject = (props: FiltersProps) => {
       className={messages.panelClass}
       panelLevel="2"
       collapsible
-      customIconClass="fa-small"
+      customIconClass="icon-size-md"
       disableEditing={!hasEditingPermissions}
       onCancel={() => cancelAction()}
       onOpen={({ setItem }) => setItem(props.selectedFilters.map((filter) => filter.id))}

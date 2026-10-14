@@ -1,5 +1,6 @@
 import { Component } from "react";
 
+import { IconTag } from "components/icontag";
 import { StatesPicker } from "components/states-picker";
 
 import { Messages, MessageType } from "./messages/messages";
@@ -35,7 +36,7 @@ class ConfigChannels extends Component<ConfigChannelsProps, ConfigChannelsState>
       <span>
         {messages}
         <h2>
-          <i className={"fa spacewalk-icon-salt-add"} />
+          <IconTag icon={"spacewalk-icon-salt-add"} />
           {t("Configuration Channels")}
           &nbsp;
         </h2>

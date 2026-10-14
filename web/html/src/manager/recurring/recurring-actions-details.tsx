@@ -5,6 +5,7 @@ import _sortBy from "lodash/sortBy";
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
+import { IconTag } from "components/icontag";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { TopPanel } from "components/panels/TopPanel";
@@ -21,18 +22,18 @@ import { isReadOnly, targetNameLink, targetTypeToString } from "./recurring-acti
 function channelIcon(channel) {
   let iconClass, iconTitle, iconStyle;
   if (channel.type === "state") {
-    iconClass = "fa spacewalk-icon-salt-add";
+    iconClass = "spacewalk-icon-salt-add";
     iconTitle = t("State Configuration Channel");
   } else if (channel.type === "internal_state") {
-    iconClass = "fa spacewalk-icon-salt-add";
+    iconClass = "spacewalk-icon-salt-add";
     iconTitle = t("Internal State");
-    iconStyle = { border: "1px solid black" };
+    iconStyle = "border border-black";
   } else {
-    iconClass = "fa spacewalk-icon-software-channels";
+    iconClass = "spacewalk-icon-software-channels";
     iconTitle = t("Normal Configuration Channel");
   }
 
-  return <i className={iconClass} data-bs-toggle="tooltip" title={iconTitle} style={iconStyle} />;
+  return <IconTag icon={iconClass} title={iconTitle} className={iconStyle} />;
 }
 
 export enum RecurringActionType {
@@ -300,9 +301,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
                 headerClass="text-center"
                 header={t("Description")}
                 columnKey="description"
-                cell={(row) => (
-                  <i className="fa fa-info-circle fa-1-5x" data-bs-toggle="tooltip" title={row.description} />
-                )}
+                cell={(row) => <IconTag icon="fa-info-circle" size="lg" title={row.description} />}
               />
             </Table>
           </div>
@@ -329,11 +328,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
                 header={t("Description")}
                 columnKey="description"
                 cell={(row) => (
-                  <i
-                    className="fa fa-info-circle fa-1-5x"
-                    data-bs-toggle="tooltip"
-                    title={row.description || t("No description")}
-                  />
+                  <IconTag icon="fa-info-circle" size="lg" title={row.description || t("No description")} />
                 )}
               />
             </Table>

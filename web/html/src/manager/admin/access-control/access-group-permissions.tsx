@@ -5,6 +5,7 @@ import debounce from "lodash/debounce";
 import type { AccessGroupState } from "manager/admin/access-control/access-group";
 
 import { Button } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { CheckInput, DEPRECATED_Check, Form } from "components/input";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -358,11 +359,7 @@ const AccessGroupPermissions = (props: Props) => {
             return (
               <b>
                 {row.name}
-                {row.isAPI ? (
-                  <i className={`fa fa-plug ${styles.apiIcon}`} data-bs-toggle="tooltip" title={t("API")} />
-                ) : (
-                  ""
-                )}
+                {row.isAPI ? <IconTag icon="fa-plug" className={styles.apiIcon} title={t("API")} /> : ""}
               </b>
             );
           }}

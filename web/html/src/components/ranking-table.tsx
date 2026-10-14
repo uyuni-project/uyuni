@@ -4,6 +4,8 @@ import _cloneDeep from "lodash/cloneDeep";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
+import { IconTag } from "./icontag";
+
 type Instance = JQuery;
 type Sortable = <T>(arg0: T, options?: any) => T extends string ? string[] : Instance;
 
@@ -21,13 +23,13 @@ function channelIcon(channel) {
   } else if (channel.type === "internal_state") {
     iconClass = "fa spacewalk-icon-salt-add";
     iconTitle = t("Internal State");
-    iconStyle = { border: "1px solid black" };
+    iconStyle = "border border-dark";
   } else {
     iconClass = "fa spacewalk-icon-software-channels";
     iconTitle = t("Normal Configuration Channel");
   }
 
-  return <i data-bs-toggle="tooltip" className={iconClass} title={iconTitle} style={iconStyle} />;
+  return <IconTag icon={iconClass} title={iconTitle} className={iconStyle} />;
 }
 
 type RankingTableProps = {
@@ -106,7 +108,7 @@ class RankingTable extends Component<RankingTableProps, RankingTableState> {
       const icon = channelIcon(i);
       return (
         <div className="list-group-item" key={i.label} data-id={i.label}>
-          <i className="fa fa-sort" />
+          <IconTag icon="fa-sort" />
           {icon}
           {i.name} ({i.label})
         </div>

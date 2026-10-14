@@ -5,6 +5,7 @@ import { ChannelTreeType } from "core/channels/type/channels.type";
 import { ActionChain } from "components/action-schedule";
 import { LinkButton } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
+import { IconTag } from "components/icontag";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels";
 import {
@@ -114,7 +115,7 @@ export const SSMProductMigration: FC<Props> = ({
   function renderProductDetails(system: MigrationSystemData): ReactNode {
     return (
       <LinkButton
-        icon="fa-1-5x fa-list"
+        icon="icon-size-lg fa-list"
         title={t("Show product details")}
         handler={() => setInstalledProductData(system)}
         disabled={system.installedProduct === null}
@@ -139,7 +140,7 @@ export const SSMProductMigration: FC<Props> = ({
 
     return (
       <span>
-        <i className={`fa fa-1-5x ${className}`} title={title}></i>
+        <IconTag icon={className} size="lg" title={title} />
         {system.reason ?? t("The products installed on this system can be migrated.")}
         {system.details !== null && (
           <LinkButton

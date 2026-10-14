@@ -5,6 +5,7 @@ import { AppStreamsChangesConfirm } from "manager/appstreams/changes-confirm-app
 import { getStreamName } from "manager/appstreams/utils";
 
 import { ActionChain } from "components/action-schedule";
+import { IconTag } from "components/icontag";
 import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 
 import { DISABLE, NO_CHANGE, SSMAppStreamsList } from "./ssm-appstreams-configure-list";
@@ -125,7 +126,7 @@ export const SSMAppStreamsConfigure: FC<Props> = ({ channelAppStreams }: Props):
     <>
       <Messages items={scheduledMsg} />
       <h2>
-        <i className={"fa spacewalk-icon-salt-add"} />
+        <IconTag icon="spacewalk-icon-salt-add" />
         {t("AppStreams")}
       </h2>
       {showContent()}

@@ -4,7 +4,7 @@ import { docsLocale, isUyuni, productName } from "core/user-preferences";
 
 import { AsyncButton, Button } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
-import { IconTag as Icon } from "components/icontag";
+import { IconTag as Icon, IconTag } from "components/icontag";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import { HelpLink } from "components/utils/HelpLink";
@@ -65,11 +65,13 @@ const ExporterIcon = (props: {
 }) => {
   let type;
   let tooltip;
+  let iconStatus;
   if (props.status === true) {
     type =
       props.message === "restart" || props.message === "enable" || props.message === "disable"
         ? "item-enabled-pending"
         : "item-enabled";
+    iconStatus = "success";
     if (props.message) {
       tooltip = t("Enabled") + ". " + messageMap[props.name + "_msg_" + props.message];
     } else {
@@ -80,6 +82,7 @@ const ExporterIcon = (props: {
       props.message === "restart" || props.message === "enable" || props.message === "disable"
         ? "item-error-pending"
         : "item-error";
+    iconStatus = "danger";
     if (props.message) {
       tooltip = t("Disabled") + ". " + messageMap[props.name + "_msg_" + props.message];
     } else {
@@ -87,9 +90,10 @@ const ExporterIcon = (props: {
     }
   } else {
     type = "item-disabled";
+    iconStatus = "muted";
     tooltip = null;
   }
-  return <Icon type={type} className="fa-1-5x" title={tooltip} />;
+  return <Icon type={type} status={iconStatus} size="lg" title={tooltip} />;
 };
 
 const ExporterItem = (props: { name: string; status: boolean; message: string | null | undefined }) => {
@@ -116,7 +120,7 @@ const ExportersList = (props: { exporters: Record<string, boolean>; messages: Re
 const ListPlaceholderItem = () => {
   return (
     <li className={styles.placeholder_item}>
-      <Icon type="item-disabled" className="fa-1-5x" />
+      <Icon type="item-disabled" size="lg" />
       <div className={styles.placeholder_separator} />
     </li>
   );
@@ -173,7 +177,7 @@ const ExportersMessages = (props: { messages: Record<string, string> }) => {
           .filter((key) => props.messages[key] !== "restart")
           .map((key) => (
             <li key={key}>
-              <Icon type="system-warn" className="fa-1-5x" />
+              <Icon type="system-warn" size="lg" />
               {messageMap[key + "_msg_" + props.messages[key]]}
             </li>
           ))}
@@ -320,7 +324,7 @@ const MonitoringAdmin = () => {
       <div className="spacewalk-toolbar-h1">
         <div className="spacewalk-toolbar"></div>
         <h1>
-          <i className="fa fa-info-circle"></i>
+          <IconTag icon="fa-info-circle" />
           {t("{productName} Configuration - Monitoring", {
             productName,
           })}
@@ -389,7 +393,7 @@ const MonitoringAdmin = () => {
                 )}
                 {restartNeeded ? (
                   <div>
-                    <Icon type="system-reboot" className="text-warning fa-1-5x" />
+                    <Icon type="system-reboot" size="lg" status="warning" />
                     <a href="/rhn/admin/config/Restart.do?">{t("Restarting")}</a>
                     {t(" Tomcat and Taskomatic is needed for the configuration changes to take effect.")}
                   </div>

@@ -51,7 +51,7 @@ const PaygSshDataEdit = (props: Props) => {
         panelLevel="2"
         title={t(title)}
         icon="fa-pencil"
-        customIconClass="fa-small"
+        customIconClass="icon-size-md"
         onCancel={() => cancelAction()}
         onSave={saveAction}
         onOpen={({ setItem, setErrors }) => {

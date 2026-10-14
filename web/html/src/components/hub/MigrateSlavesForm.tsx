@@ -2,6 +2,7 @@ import { type ReactNode, Component } from "react";
 
 import { AsyncButton, Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
+import { IconTag } from "components/icontag";
 import { LargeTextAttachment } from "components/large-text-attachment";
 import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels";
@@ -283,7 +284,7 @@ export class MigrateSlavesForm extends Component<Props, State> {
         <div className="row align-items-center">
           <div className="col-lg-4">
             <span className={`text-nowrap text-${tokenPresent ? "success" : "danger"}`}>
-              <i className={`fa ${tokenPresent ? "fa-check" : "fa-times"}`}></i>
+              <IconTag icon={`${tokenPresent ? "fa-check" : "fa-times"}`} />
               {tokenPresent ? `${row.accessToken?.substring(0, 10)}...` : t("Not defined")}
             </span>
           </div>
@@ -319,7 +320,7 @@ export class MigrateSlavesForm extends Component<Props, State> {
         <div className="row align-items-center">
           <div className="col-lg-3">
             <span className="text-nowrap">
-              <i className={`fa ${row.rootCA !== null ? "fa-check" : "fa-ban"}`}></i>
+              <IconTag icon={`${row.rootCA !== null ? "fa-check" : "fa-ban"}`} />
               {row.rootCA !== null ? t("Root CA available") : t("Not needed")}
             </span>
           </div>
@@ -376,7 +377,7 @@ export class MigrateSlavesForm extends Component<Props, State> {
     return (
       <li>
         <span>
-          <i className={iconClass} title={iconTitle}></i>
+          <IconTag icon={iconClass} title={iconTitle} />
           {message.message}
         </span>
       </li>

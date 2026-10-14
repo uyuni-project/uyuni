@@ -5,6 +5,7 @@ import { type ReactNode, Component } from "react";
 import { productName } from "core/user-preferences";
 
 import { SectionState } from "components/FormulaForm";
+import { IconTag } from "components/icontag";
 import { Highlight } from "components/table/Highlight";
 import { DEPRECATED_onClick } from "components/utils";
 import HelpIcon from "components/utils/HelpIcon";
@@ -306,7 +307,7 @@ class RemoveButton extends Component<RemoveButtonProps> {
         onClick={() => this.props.handleRemoveItem()}
         disabled={this.props.minItems >= this.props.currentLength}
       >
-        <i className="fa fa-minus" /> Remove
+        <IconTag icon="fa-minus" /> Remove
       </button>
     );
   }

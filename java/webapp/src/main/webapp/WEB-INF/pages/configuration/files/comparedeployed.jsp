@@ -33,26 +33,22 @@
     </rhn:column>
 
     <rhn:column header="comparedeployed.jsp.deployed">
-        <%-- The c:choose statement here creates the correct image with alt message
-             for the channel type we are dealing with. These are later used in a
-             bean:message tag. --%>
+        <%-- The c:choose statement here creates the correct icon for the channel
+             type we are dealing with. It is later used in a bean:message tag. --%>
         <c:choose>
           <c:when test="${current.configChannelType == 'normal'}">
-            <c:set var="image" scope="request" value="/img/rhn-listicon-channel.gif" />
-            <c:set var="imagealt" scope="request">
-              <bean:message key="config.common.globalAlt" />
+            <c:set var="image" scope="request">
+              <rhn:icon type="header-channel-configuration" title="config.common.globalAlt" />
             </c:set>
           </c:when>
           <c:when test="${current.configChannelType == 'local_override'}">
-            <c:set var="image" scope="request" value="/img/rhn-listicon-system.gif" />
-            <c:set var="imagealt" scope="request">
-              <bean:message key="config.common.localAlt" />
+            <c:set var="image" scope="request">
+              <rhn:icon type="header-system" title="config.common.localAlt" />
             </c:set>
           </c:when>
           <c:when test="${current.configChannelType == 'server_import'}">
-            <c:set var="image" scope="request" value="/img/rhn-listicon-sandbox.gif" />
-            <c:set var="imagealt" scope="request">
-              <bean:message key="config.common.sandboxAlt" />
+            <c:set var="image" scope="request">
+              <rhn:icon type="header-sandbox" title="config.common.sandboxAlt" />
             </c:set>
           </c:when>
         </c:choose>
@@ -66,7 +62,7 @@
                           arg0="/rhn/configuration/file/FileDetails.do?cfid=${current.configFileId}&amp;crid=${current.configRevisionId}"
                           arg1="${current.configRevision}"
                           arg2="/rhn/configuration/ChannelOverview.do?ccid=${current.configChannelId}"
-                          arg3="<img src=\"${image}\" alt=\"${imagealt}\" />"
+                          arg3="${image}"
                           arg4="${fn:escapeXml(current.configChannelName)}" />
           </c:when>
           <c:otherwise>

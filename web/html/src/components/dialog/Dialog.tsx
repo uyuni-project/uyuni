@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import ReactModal from "react-modal";
 
+import { IconTag } from "components/icontag";
+
 export type DialogProps = {
   /** whether the dialog should be shown or hidden */
   isOpen: boolean;
@@ -46,7 +48,7 @@ export function Dialog(props: DialogProps) {
             {closableModal && (
               <button type="button" className="close" aria-label="Close" onClick={() => props.onClose?.()}>
                 <span aria-hidden="true">
-                  <i className="fa fa-close"></i>
+                  <IconTag icon="fa-close" />
                 </span>
               </button>
             )}

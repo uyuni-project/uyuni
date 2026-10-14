@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { Button, LinkButton } from "./buttons";
+import { IconTag } from "./icontag";
 
 type Step = {
   title: string;
@@ -44,7 +45,7 @@ const StepsProgressBar = ({ steps, onCreate, onCancel }: StepsProgressBarProps) 
               key={step.title}
               className={`steps ${index < currentStep ? "completed" : index === currentStep ? "active" : ""}`}
             >
-              <div className="step-circle">{index < currentStep ? <i className="fa fa-check"> </i> : null}</div>
+              <div className="step-circle">{index < currentStep ? <IconTag icon="fa-check" /> : null}</div>
               <div className="step-title">{step.title}</div>
               <div className="step-line">
                 <span></span>

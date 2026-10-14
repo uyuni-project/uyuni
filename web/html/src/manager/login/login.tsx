@@ -1,6 +1,7 @@
 import { isUyuni } from "core/user-preferences";
 
 import withPageWrapper from "components/general/with-page-wrapper";
+import { IconTag } from "components/icontag";
 
 import SusemanagerThemeLogin from "./susemanager/login";
 import UyuniThemeLogin from "./uyuni/login";
@@ -13,7 +14,7 @@ const products = {
     headerTitle: (
       <>
         <span>SUSE</span>
-        <i className="fa fa-registered" /> <span>Multi-Linux Manager</span>
+        <IconTag icon="fa-registered" /> <span>Multi-Linux Manager</span>
       </>
     ),
     bodyTitle: (
