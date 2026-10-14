@@ -93,8 +93,8 @@ ENV_VAR_BY_HOST = {
   'debian13_sshminion' => 'DEBIAN13_SSHMINION',
   'raspios13_minion' => 'RASPIOS13_MINION',
   'raspios13_sshminion' => 'RASPIOS13_SSHMINION',
-  'opensuse160arm_minion' => 'OPENSUSE160ARM_MINION',
-  'opensuse160arm_sshminion' => 'OPENSUSE160ARM_SSHMINION',
+  'opensuse161arm_minion' => 'OPENSUSE161ARM_MINION',
+  'opensuse161arm_sshminion' => 'OPENSUSE161ARM_SSHMINION',
   'sles15sp5s390_minion' => 'SLES15SP5S390_MINION',
   'sles15sp5s390_sshminion' => 'SLES15SP5S390_SSHMINION',
   'salt_migration_minion' => 'SALT_MIGRATION_MINION'
@@ -276,8 +276,8 @@ PACKAGE_BY_CLIENT = {
   'debian13_sshminion' => 'bison',
   'raspios13_minion' => 'bison',
   'raspios13_sshminion' => 'bison',
-  'opensuse160arm_minion' => 'bison',
-  'opensuse160arm_sshminion' => 'bison',
+  'opensuse161arm_minion' => 'bison',
+  'opensuse161arm_sshminion' => 'bison',
   'sles15sp5s390_minion' => 'bison',
   'sles15sp5s390_sshminion' => 'bison',
   'salt_migration_minion' => 'bison'
@@ -372,8 +372,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'debian13_sshminion' => 'debian-13-pool for amd64',
     'raspios13_minion' => 'raspberrypios-13-pool for arm64',
     'raspios13_sshminion' => 'raspberrypios-13-pool for arm64',
-    'opensuse160arm_minion' => 'openSUSE-Leap-16.0 for aarch64',
-    'opensuse160arm_sshminion' => 'openSUSE-Leap-16.0 for aarch64',
+    'opensuse161arm_minion' => 'openSUSE-Leap-16.1 for aarch64',
+    'opensuse161arm_sshminion' => 'openSUSE-Leap-16.1 for aarch64',
     'sles15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
     'sles15sp5s390_sshminion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
     'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
@@ -447,8 +447,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'ubuntu2404_sshminion' => 'Ubuntu 24.04 LTS AMD64 Base for Uyuni',
     'ubuntu2604_minion' => 'Ubuntu 26.04 LTS AMD64 Base for Uyuni',
     'ubuntu2604_sshminion' => 'Ubuntu 26.04 LTS AMD64 Base for Uyuni',
-    'opensuse160arm_minion' => 'openSUSE Leap 16.0 (aarch64)',
-    'opensuse160arm_sshminion' => 'openSUSE Leap 16.0 (aarch64)',
+    'opensuse161arm_minion' => 'openSUSE Leap 16.1 (aarch64)',
+    'opensuse161arm_sshminion' => 'openSUSE Leap 16.1 (aarch64)',
     'sles15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
     'sles15sp5s390_sshminion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
     'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
@@ -505,7 +505,7 @@ LABEL_BY_BASE_CHANNEL = {
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-2204-amd64-main-amd64',
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-2404-amd64-main-amd64',
     'debian-13-pool for amd64' => 'debian-13-pool-amd64',
-    'openSUSE-Leap-16.0 for aarch64' => 'opensuse-leap-16.0-aarch64'
+    'openSUSE-Leap-16.1 for aarch64' => 'opensuse-leap-16.1-aarch64'
   },
   'Uyuni' => {
     'openSUSE Tumbleweed (x86_64)' => 'opensuse_tumbleweed-x86_64',
@@ -537,7 +537,7 @@ LABEL_BY_BASE_CHANNEL = {
     'Rocky Linux 9 (x86_64)' => 'rockylinux9-x86_64',
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-pool-amd64-uyuni',
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-pool-amd64-uyuni',
-    'openSUSE Leap 16.0 (aarch64)' => 'opensuse_leap16_0-aarch64'
+    'openSUSE Leap 16.1 (aarch64)' => 'opensuse_leap16_1-aarch64'
   }
 }.freeze
 
@@ -613,7 +613,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-24.04-amd64',
     'debian-13-pool for amd64' => 'debian13-amd64',
     'raspberrypios-13-pool for arm64' => 'raspberrypios13-arm4',
-    'openSUSE-Leap-16.0 for aarch64' => 'openSUSE-Leap-16.0-aarch64'
+    'openSUSE-Leap-16.1 for aarch64' => 'openSUSE-Leap-16.1-aarch64'
   },
   'Uyuni' => {
     'openSUSE Leap Micro 5.5 (x86_64)' => 'openSUSE-Leap-Micro-5.5-x86_64-uyuni',
@@ -646,7 +646,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-amd64-uyuni',
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-amd64-uyuni',
     'Raspberry Pi OS 13 pool for arm64 for Uyuni' => 'raspberrypios13-arm4-uyuni',
-    'openSUSE Leap 16.0 (aarch64)' => 'openSUSE-Leap-16.0-aarch64-uyuni'
+    'openSUSE Leap 16.1 (aarch64)' => 'openSUSE-Leap-16.1-aarch64-uyuni'
   }
 }.freeze
 
@@ -690,7 +690,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'ubuntu-2204-amd64-main for amd64' => nil,
     'ubuntu-2404-amd64-main for amd64' => nil,
     'debian-13-pool for amd64' => 'debian-13-pool-amd64',
-    'openSUSE-Leap-16.0 for aarch64' => nil
+    'openSUSE-Leap-16.1 for aarch64' => nil
   },
   'Uyuni' => {
     'openSUSE Leap Micro 5.5 (x86_64)' => 'opensuse_micro5_5-x86_64',
@@ -721,7 +721,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Rocky Linux 9 (x86_64)' => nil,
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => nil,
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => nil,
-    'openSUSE Leap 16.0 (aarch64)' => nil
+    'openSUSE Leap 16.1 (aarch64)' => nil
   }
 }.freeze
 
@@ -797,8 +797,8 @@ PKGARCH_BY_CLIENT = {
   'debian13_sshminion' => 'amd64',
   'raspios13_minion' => 'arm64',
   'raspios13_sshminion' => 'arm64',
-  'opensuse160arm_minion' => 'aarch64',
-  'opensuse160arm_sshminion' => 'aarch64',
+  'opensuse161arm_minion' => 'aarch64',
+  'opensuse161arm_sshminion' => 'aarch64',
   'sles15sp5s390_minion' => 's390x',
   'sles15sp5s390_sshminion' => 's390x'
 }.freeze
@@ -1103,10 +1103,10 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         managertools-el8-pool-x86_64
         managertools-el8-updates-x86_64
       ],
-    'leap16.0-aarch64' =>
+    'leap16.1-aarch64' =>
       %w[
-        opensuse-leap-16.0-aarch64
-        multi-linux-managertools-sle-16-aarch64-opensuse-16.0
+        opensuse-leap-16.1-aarch64
+        multi-linux-managertools-sle-16-aarch64-opensuse-16.1
       ],
     'tumbleweed-x86_64' =>
       %w[
@@ -1449,10 +1449,10 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         res-cb-8-updates-x86_64
         sll8-uyuni-client-x86_64
       ],
-    'leap16.0-aarch64' =>
+    'leap16.1-aarch64' =>
       %w[
-        opensuse-leap-16.0-aarch64
-        multi-linux-managertools-sle-16-aarch64-opensuse-16.0
+        opensuse-leap-16.1-aarch64
+        multi-linux-managertools-sle-16-aarch64-opensuse-16.1
       ],
     'leap-micro5.5-x86_64' => # CHECKED
       %w[
@@ -1690,11 +1690,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-ubuntu2204-updates-amd64' => 60,
   'managertools-ubuntu2404-updates-amd64' => 60,
   'managertools-ubuntu2604-updates-amd64' => 60,
-  'multi-linux-managertools-sle-16-aarch64-opensuse-16.0' => 60,
+  'multi-linux-managertools-sle-16-aarch64-opensuse-16.1' => 60,
   'multi-linux-managertools-sle-16-aarch64' => 60,
   'multi-linux-managertools-sle-16-x86_64' => 60,
-  'opensuse_leap16_0-aarch64' => 4500,
-  'opensuse-leap-16.0-aarch64' => 7200,
+  'opensuse_leap16_1-aarch64' => 4500,
+  'opensuse-leap-16.1-aarch64' => 7200,
   'opensuse_micro5_5-uyuni-client-devel-x86_64' => 120,
   'opensuse_micro5_5-uyuni-client-x86_64' => 120,
   'opensuse_micro5_5-x86_64' => 240,

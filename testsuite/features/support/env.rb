@@ -769,12 +769,12 @@ Before('@sles160_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles160_sshminion']
 end
 
-Before('@opensuse160arm_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse160arm_minion']
+Before('@opensuse161arm_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse161arm_minion']
 end
 
-Before('@opensuse160arm_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse160arm_sshminion']
+Before('@opensuse161arm_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse161arm_sshminion']
 end
 
 Before('@sles15sp5s390_minion') do
