@@ -49,6 +49,22 @@ function parseConfiguration {
 
     # Split into a bash array for safe iteration.
     read -ra DISKCHECKDIRS_ARR <<< "$DISKCHECKDIRS"
+
+    validateFreeMB DISKTHRESHOLD_FREE_MB
+    validateFreeMB DISKCHECKALERT_FREE_MB
+}
+
+# Unset the named variable if it is not a valid number of MB, so that the percentage
+# threshold of the same level is used, and report the misconfiguration.
+function validateFreeMB {
+    local name="$1"
+    local value="${!name}"
+
+    if [ -n "$value" ] && ! [[ "$value" =~ ^[0-9]{1,15}$ ]]; then
+        echo "DISKCHECK: invalid $name value '$value', using the percentage threshold"
+        unset "$name"
+        updateSeverity 1
+    fi
 }
 
 function ensureSpacewalkRunning {
