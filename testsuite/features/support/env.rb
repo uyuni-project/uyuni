@@ -705,14 +705,6 @@ Before('@ubuntu2604_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2604_sshminion']
 end
 
-Before('@debian12_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian12_minion']
-end
-
-Before('@debian12_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian12_sshminion']
-end
-
 Before('@debian13_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian13_minion']
 end
@@ -777,20 +769,12 @@ Before('@sles160_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles160_sshminion']
 end
 
-Before('@opensuse156arm_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse156arm_minion']
+Before('@opensuse161arm_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse161arm_minion']
 end
 
-Before('@opensuse156arm_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse156arm_sshminion']
-end
-
-Before('@opensuse160arm_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse160arm_minion']
-end
-
-Before('@opensuse160arm_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse160arm_sshminion']
+Before('@opensuse161arm_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse161arm_sshminion']
 end
 
 Before('@sles15sp5s390_minion') do
@@ -807,14 +791,6 @@ end
 
 Before('@slemicro') do |scenario|
   skip_this_scenario unless scenario.location.file.include? 'slemicro'
-end
-
-Before('@slemicro52_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro52_minion']
-end
-
-Before('@slemicro52_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro52_sshminion']
 end
 
 Before('@slemicro53_minion') do

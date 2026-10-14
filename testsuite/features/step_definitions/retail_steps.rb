@@ -337,7 +337,7 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   elsif host == 'sles15sp7_terminal'
     mac = $sles15sp7_terminal_mac
     mac = 'EE:EE:EE:00:00:07' if mac.nil?
-  elsif (host.include? 'deblike') || (host.include? 'debian12') || (host.include? 'ubuntu')
+  elsif (host.include? 'deblike') || (host.include? 'ubuntu')
     node = get_target(host)
     output, _code = node.run('ip link show dev ens4')
     mac = output.split("\n")[1].split[1]
