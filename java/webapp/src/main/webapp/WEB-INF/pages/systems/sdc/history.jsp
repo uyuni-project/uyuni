@@ -86,6 +86,9 @@
                         </c:otherwise>
                     </c:choose>
                 </rl:column>
+                <rl:column headerkey="actions.jsp.action_description">
+                    <c:out value="${current.actionDescription}" />
+                </rl:column>
                 <rl:column headerkey="system.event.history.time">
                     <rhn:formatDate value="${current.completed}"/>
                 </rl:column>
