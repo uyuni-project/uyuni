@@ -578,6 +578,21 @@ When(/^I initiate channel sync from peripheral "([^"]*)"$/) do |host|
   step %(I click on "Schedule" in "Confirm channels synchronization" modal)
 end
 
+When(/^I trigger channel sync to "([^"]*)" via the hub API$/) do |host|
+  result = api_client_for('server').sync_hub.sync_peripheral_channels(get_target(host).full_hostname)
+  raise StandardError, "Channel sync to #{host} was not scheduled, API returned #{result}" unless result == 1
+end
+
+When(/^I add channel "([^"]*)" to the sync list of "([^"]*)" via the hub API$/) do |channel, host|
+  result = api_client_for('server').sync_hub.add_channels_to_sync(get_target(host).full_hostname, [channel])
+  raise StandardError, "Channel #{channel} was not added to the sync list of #{host}, API returned #{result}" unless result == 1
+end
+
+Then(/^the hub API should list channel "([^"]*)" for sync to "([^"]*)"$/) do |channel, host|
+  channels = api_client_for('server').sync_hub.list_channels_to_sync(get_target(host).full_hostname)
+  raise StandardError, "Channel #{channel} not in the sync list of #{host}: #{channels}" unless channels.include?(channel)
+end
+
 Then(/^channel "([^"]*)" should exist on "([^"]*)"$/) do |channel, host|
   raise StandardError, "Channel #{channel} not found on #{host}" unless api_client_for(host).channel.channel_verified?(channel)
 end

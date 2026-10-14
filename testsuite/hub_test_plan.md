@@ -157,16 +157,16 @@ curl -sk https://<hub>/hub/rpc/api
 
 **Method A — Hub web UI:** Peripheral details → **Synchronized Channels → Edit Channels** → select product/custom channel → for custom channels select target organization → **Apply → Confirm**.
 **Method B — Peripheral web UI:** **Admin → Hub Configuration → Hub Details → Sync Channels → Schedule**.
-There is no `sync.hub.*` API for this in 5.2: sync is UI/event-driven under ISSv3.
+**Method C — sync.hub API (`/rpc/api`, admin session):** `sync.hub.addPeripheralChannelsToSync`, `sync.hub.listPeripheralChannelsToSync`, `sync.hub.syncPeripheralChannels`.
 
 **Expected:**
 - Channels created on the peripheral and mirrored on next repo sync; packages downloaded **from the hub**, not from SCC/original custom URL.
 - Custom channel lands in the selected peripheral organization; org dropdown only offered for channels not yet existing on the peripheral.
 - `N. of synced channels` / `N. of synced organizations` columns update on the hub.
 - **Regenerate Credentials** (mirror credentials) works and sync still succeeds afterwards.
-- Long repository URLs: `rhnContentSource.source_url` is `VARCHAR(2048)`; a longer URL must not cause an HTTP 500.
+- Long repository URLs (BUG-019, fixed by bsc#1259230): `rhnContentSource.source_url` is `VARCHAR(4096)`; a URL longer than 2048 characters must not cause an HTTP 500.
 
-**Automation:** partial — `features/hub/srv_hub_channel_synchronization.feature` covers Method A, cloned/vendor/custom channels, org mapping and credential regeneration. Not automated: synced channel/org counters, long `source_url`.
+**Automation:** partial — `features/hub/srv_hub_channel_synchronization.feature` covers Method A, Method B (trigger from Hub Details), Method C (sync.hub add, list and trigger, with a new channel synced to peripheral1 and verified), cloned/vendor/custom channels, org mapping and credential regeneration. Not automated: synced channel/org counters. Long `source_url`: no automated regression yet (no step creates a repo with an arbitrary URL length).
 
 ---
 
@@ -496,7 +496,7 @@ Also verify: cross-dashboard navigation links work (Hub Overview → `Fleet Secu
 1. **Peripheral registration matrix** — all three methods (admin user/password, existing token, token + root CA upload/paste) with positive and negative paths (wrong password, consumed/invalidated token, wrong FQDN, missing CA on cross-CA setup). → A-02/03/04
 2. **Access token lifecycle** — issue/consume/invalidate/reactivate/delete semantics and their effect on hub↔peripheral communication. → A-05
 3. **Hub XMLRPC API** — three authentication modes and the hub/unicast/multicast/pass-through namespaces against multiple peripherals. → A-07/08
-4. **ISSv3 channel synchronization** — vendor + custom channels via hub UI and peripheral UI; org mapping for custom channels; mirror credential regeneration; hub replacing SCC as content source; pre-registration peripheral channels. → A-06, A-11
+4. **ISSv3 channel synchronization** — vendor + custom channels via hub UI, peripheral UI and sync.hub API; org mapping for custom channels; mirror credential regeneration; hub replacing SCC as content source; pre-registration peripheral channels. → A-06, A-11
 5. **ISSv2 CLI export/import** — offline path with version/org parity prerequisites; channel present on the peripheral post-import. → A-09
 
 **Server + Peripheral + Proxy + Minion focus (3):**
