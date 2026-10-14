@@ -47,7 +47,7 @@ def help_proxy_container_config(self):
 
 parameters:
   PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.
-  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.
+  SERVER_FQDN the fully qualified domain name of the server to connect the proxy to.
   MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.
   EMAIL       the email of the proxy administrator
   CA          path to the root CA used to sign the proxy certificate in PEM format
@@ -56,9 +56,9 @@ parameters:
 
 options:
   -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'
-  -p, --ssh-port SSH port the proxy listens one. Default: 8022
+  -p, --ssh-port SSH port the proxy listens on. Default: 8022
   -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy
-            certicate in PEM format. May be provided multiple times.
+            certificate in PEM format. May be provided multiple times.
   --additional-fqdn  additional FQDN of the proxy. Can be provided multiple times.
 
 examples:
@@ -125,13 +125,13 @@ def help_proxy_container_config_nossl(self):
 
 parameters:
   PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.
-  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.
+  SERVER_FQDN the fully qualified domain name of the server to connect the proxy to.
   MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.
   EMAIL       the email of the proxy administrator
 
 options:
   -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'
-  -p, --ssh-port SSH port the proxy listens one. Default: 8022
+  -p, --ssh-port SSH port the proxy listens on. Default: 8022
   --additional-fqdn  additional FQDN of the proxy. Can be provided multiple times.
 
 examples:
@@ -185,13 +185,13 @@ def help_proxy_container_config_generate_cert(self):
 
 parameters:
   PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.
-  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.
+  SERVER_FQDN the fully qualified domain name of the server to connect the proxy to.
   MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.
   EMAIL       the email of the proxy administrator
 
 options:
   -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'
-  -p, --ssh-port SSH port the proxy listens one. Default: 8022
+  -p, --ssh-port SSH port the proxy listens on. Default: 8022
   --ca-cert path to the certificate of the CA to use to generate a new proxy certificate.
            Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.
   --ca-key path to the private key of the CA to use to generate a new proxy certificate.
