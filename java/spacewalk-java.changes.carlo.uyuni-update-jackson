@@ -1,0 +1,22 @@
+- Fixes the following CVEs for jackson library
+  * CVE-2026-68497: jackson-databind: Duration
+  XMLGregorianCalendar Unbounded Number Parse DoS
+  (bsc#1280125)
+  * CVE-2026-89407: jackson-core: ReDoS: quadratic
+  backtracking in NumberInput PATTERN_FLOAT via
+  looksLikeValidNumber (bsc#1282645)
+  * CVE-2026-89425: jackson-core:
+  UTF8DataInputJsonParser_reportInvalidToken() missing
+  maxErrorTokenLength limit, unbounded StringBuilder
+  growth (DoS) (bsc#1282505)
+  * CVE-2026-91777: jackson-databind: Quadratic
+  forward-reference completion (bsc#1282492)
+  * CVE-2026-91776: jackson-databind: Retains every
+  unknown raw type ID (bsc#1282491)
+  * CVE-2026-83557: jackson-databind: Comparable missing
+  from DefaultBaseTypeLimitingValidator's unsafe base
+  types (incomplete PolymorphicTypeValidator
+  denylist) (bsc#1278008)
+  * CVE-2026-19032: jackson-databind: Path
+  Deserialization Missing Scheme Allowlist for
+  FileSystemProvider Resolution (bsc#1277883)
