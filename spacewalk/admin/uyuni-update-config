@@ -11,6 +11,7 @@
 #
 #  pylint: disable=missing-module-docstring,invalid-name
 
+import filecmp
 import re
 import sys
 import os
@@ -177,11 +178,22 @@ def import_suma_gpg_keyring():
 
 
 def copy_ca():
+    ca = "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
+    salt_ca = "/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT"
+    # Nothing to copy if the CA is already in place: same file (podman secret,
+    # helm subPath) or same content
+    if (
+        os.path.exists(ca)
+        and os.path.exists(salt_ca)
+        and filecmp.cmp(ca, salt_ca, shallow=False)
+    ):
+        return
+
     result = subprocess.run(
         [
             "cp",
-            "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT",
-            "/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT",
+            ca,
+            salt_ca,
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
