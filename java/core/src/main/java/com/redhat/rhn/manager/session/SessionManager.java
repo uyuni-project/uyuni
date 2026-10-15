@@ -20,6 +20,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.HMAC;
 import com.redhat.rhn.common.util.TimeUtils;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.session.InvalidSessionIdException;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
@@ -63,8 +65,7 @@ public class SessionManager extends BaseManager {
      * @return the lifetime in seconds of the Session.
      */
     public static long lifetimeValue() {
-        return Long.parseLong(Config.get().getString(ConfigDefaults.
-                WEB_SESSION_DATABASE_LIFETIME));
+        return RhnConfigurationFactory.getSingleton().getLong(RhnConfiguration.KEYS.WEB_SESSION_DATABASE_LIFETIME);
     }
 
     /**

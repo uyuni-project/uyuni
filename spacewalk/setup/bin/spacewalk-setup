@@ -307,15 +307,24 @@ sub populate_initial_configs {
     }
 
   my %rhnopt = ();
-  if ($answers->{disconnected} || $opts->{disconnected}) {
-    $rhnopt{'disconnected'} = "1";
-  }
-  for my $key (qw/product_name web.version enable_nvrea web.subscribe_proxy_channel force_package_upload
-          web.l10n_resourcebundles web.default_mail_from/) {
+  for my $key (qw/product_name web.version web.l10n_resourcebundles/) {
     if (defined($answers->{$key})) {
       $rhnopt{$key} = $answers->{$key};
     }
   }
+
+  # values stored in the database use the key in upper case with dots replaced by underscores
+  my %db_config = ();
+  if ($answers->{disconnected} || $opts->{disconnected}) {
+    $db_config{'DISCONNECTED'} = "1";
+  }
+  for my $key (qw/enable_nvrea web.subscribe_proxy_channel force_package_upload web.default_mail_from/) {
+    if (defined($answers->{$key})) {
+      (my $db_key = uc($key)) =~ s/\./_/g;
+      $db_config{$db_key} = $answers->{$key};
+    }
+  }
+  Spacewalk::Setup::write_db_config(\%db_config, $answers);
 
   if ($answers->{'setup-scc'} && $answers->{'setup-scc'} =~ /^[Yy]/)
   {

@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.action.kickstart;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -252,7 +253,7 @@ public class PowerManagementAction extends RhnAction {
 
         if (types.isEmpty()) {
             strutsDelegate.addError(errors, "kickstart.powermanagement.jsp.no_types",
-                ConfigDefaults.POWER_MANAGEMENT_TYPES);
+                RhnConfiguration.KEYS.JAVA_POWER_MANAGEMENT_TYPES.name());
             strutsDelegate.saveMessages(request, errors);
         }
         return types;

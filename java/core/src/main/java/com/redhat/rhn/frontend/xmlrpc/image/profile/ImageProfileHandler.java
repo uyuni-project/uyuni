@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.image.profile;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -65,7 +65,8 @@ public class ImageProfileHandler extends BaseHandler {
     public List<String> listImageProfileTypes(User loggedInUser) {
         List<String> imageTypes = new ArrayList<>();
         imageTypes.add(ImageProfile.TYPE_DOCKERFILE);
-        if (Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
+        if (RhnConfigurationFactory.getSingleton()
+                .getBoolean(RhnConfiguration.KEYS.JAVA_KIWI_OS_IMAGE_BUILDING_ENABLED)) {
             imageTypes.add(ImageProfile.TYPE_KIWI);
         }
         return imageTypes;

@@ -2,3 +2,6 @@
   in the database when no value is set
 - Fix storing the default organization for externally authenticated
   users in the web UI
+- Read most configuration values, which are not needed to access
+  the database, from the database instead of the configuration
+  files

@@ -14,11 +14,12 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 import org.quartz.JobExecutionContext;
 
@@ -42,7 +43,8 @@ public class SandboxCleanup extends RhnJavaJob {
     @Override
     public void execute(JobExecutionContext arg0In) {
 
-        int sandboxLifetime = Config.get().getInt("sandbox_lifetime"); //in days
+        int sandboxLifetime = RhnConfigurationFactory.getSingleton()
+                .getInteger(RhnConfiguration.KEYS.JAVA_SANDBOX_LIFETIME); //in days
 
         Map<String, Object> params = new HashMap<>();
         params.put("window", sandboxLifetime);

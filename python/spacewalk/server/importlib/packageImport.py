@@ -33,6 +33,7 @@ from uyuni.common import rhn_pkg
 from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.server import taskomatic
 from spacewalk.server.rhnServer import server_packages
+from spacewalk.server.db_config import DB_CFG
 
 
 # pylint: disable-next=missing-class-docstring
@@ -93,8 +94,7 @@ class ChannelPackageSubscription(GenericPackageImport):
         self.backend.lookupChecksums(self.checksums)
 
         # Fix the package information up, and uniquify the packages too
-        with cfg_component("server") as CFG:
-            enable_nvrea = CFG.ENABLE_NVREA
+        enable_nvrea = DB_CFG.get_bool("ENABLE_NVREA")
         uniqdict = {}
         for package in self.batch:
             if package.ignored:

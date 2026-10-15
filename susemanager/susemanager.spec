@@ -113,6 +113,7 @@ Requires:       createrepo_c
 Requires:       python3-configobj
 Requires:       python3-uyuni-common-libs
 Requires:       spacewalk-backend >= 2.1.55.11
+Requires:       spacewalk-backend-server
 Requires:       spacewalk-backend-sql
 Requires:       spacewalk-common
 Requires:       susemanager-build-keys

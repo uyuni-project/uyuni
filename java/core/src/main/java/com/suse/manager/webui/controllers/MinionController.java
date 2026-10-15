@@ -18,14 +18,14 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndSer
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -211,7 +211,8 @@ public class MinionController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView cmd(Request request, Response response) {
-        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_REMOTE_COMMANDS_FROM_UI)) {
+        if (RhnConfigurationFactory.getSingleton()
+                .getBoolean(RhnConfiguration.KEYS.JAVA_DISABLE_REMOTE_COMMANDS_FROM_UI)) {
             throw new PermissionException("Remote command is disabled");
         }
         request.session().removeAttribute(MinionsAPI.SALT_CMD_RUN_TARGETS);

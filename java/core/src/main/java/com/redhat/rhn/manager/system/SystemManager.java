@@ -23,8 +23,6 @@ import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -239,7 +237,7 @@ public class SystemManager extends BaseManager {
      * @param reason The reason for the snapshotting.
      */
     public static void snapshotServers(Collection<Server> servers, String reason) {
-        if (!Config.get().getBoolean(ConfigDefaults.TAKE_SNAPSHOTS)) {
+        if (!RhnConfigurationFactory.getSingleton().getBoolean(RhnConfiguration.KEYS.ENABLE_SNAPSHOTS)) {
             return;
         }
         List<Long> serverIds = servers.stream().map(Server::getId).collect(Collectors.toList());
@@ -1241,7 +1239,7 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult<SystemGroupOverview> groupList(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries", "visible_to_user");
-        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_UPDATE_STATUS)) {
+        if (RhnConfigurationFactory.getSingleton().getBoolean(RhnConfiguration.KEYS.JAVA_DISABLE_UPDATE_STATUS)) {
             m.removeElaboratorByName("most_severe_errata");
         }
         Map<String, Object> params = new HashMap<>();
@@ -1251,7 +1249,7 @@ public class SystemManager extends BaseManager {
         elabParams.put("user_id", user.getId());
 
         DataResult<SystemGroupOverview> dr = makeDataResult(params, elabParams, pc, m);
-        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_UPDATE_STATUS)) {
+        if (RhnConfigurationFactory.getSingleton().getBoolean(RhnConfiguration.KEYS.JAVA_DISABLE_UPDATE_STATUS)) {
             dr.stream().forEach(x -> x.setDisabled(true));
         }
         return dr;
@@ -1271,7 +1269,7 @@ public class SystemManager extends BaseManager {
                     User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries",
                         "visible_to_user_and_counts");
-        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_UPDATE_STATUS)) {
+        if (RhnConfigurationFactory.getSingleton().getBoolean(RhnConfiguration.KEYS.JAVA_DISABLE_UPDATE_STATUS)) {
             m.removeElaboratorByName("most_severe_errata");
         }
         Map<String, Object> params = new HashMap<>();
@@ -1279,7 +1277,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> elabParams = new HashMap<>();
 
         DataResult<SystemGroupOverview> dr = makeDataResult(params, elabParams, pc, m);
-        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_UPDATE_STATUS)) {
+        if (RhnConfigurationFactory.getSingleton().getBoolean(RhnConfiguration.KEYS.JAVA_DISABLE_UPDATE_STATUS)) {
             dr.stream().forEach(x -> x.setDisabled(true));
         }
         return dr;
@@ -2050,7 +2048,7 @@ public class SystemManager extends BaseManager {
 
         // Unsubscribe only if we are configured to automatically re-subscribe again,
         // see the activateProxy() method
-        if (Config.get().getBoolean(ConfigDefaults.WEB_SUBSCRIBE_PROXY_CHANNEL)) {
+        if (RhnConfigurationFactory.getSingleton().getBoolean(RhnConfiguration.KEYS.WEB_SUBSCRIBE_PROXY_CHANNEL)) {
             Set<Channel> channels = server.getChannels();
             for (Channel c : channels) {
                 ChannelFamily cf = c.getChannelFamily();
@@ -2133,7 +2131,7 @@ public class SystemManager extends BaseManager {
         info.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(
                 null, version, "1", server.getPackageType()));
         server.setProxyInfo(info);
-        if (Config.get().getBoolean(ConfigDefaults.WEB_SUBSCRIBE_PROXY_CHANNEL)) {
+        if (RhnConfigurationFactory.getSingleton().getBoolean(RhnConfiguration.KEYS.WEB_SUBSCRIBE_PROXY_CHANNEL)) {
             Channel proxyChannel = ChannelManager.getProxyChannelByVersion(
                     version, server);
             if (proxyChannel != null) {

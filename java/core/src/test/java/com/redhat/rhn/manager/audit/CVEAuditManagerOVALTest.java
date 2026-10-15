@@ -30,9 +30,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -590,7 +590,8 @@ public class CVEAuditManagerOVALTest extends BaseTestCase {
         OvalRootType ovalRoot = OvalTestUtils.parse(TestUtils
                 .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
         String cveName = setTestCveName(ovalRoot);
-        Config.get().setString(ConfigDefaults.CVE_AUDIT_ENABLE_OVAL_METADATA, "true");
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.JAVA_CVE_AUDIT_ENABLE_OVAL_METADATA, "true");
         Cve cve = createTestCve(cveName);
         extractAndSaveVulnerablePackages(ovalRoot);
 
@@ -617,7 +618,8 @@ public class CVEAuditManagerOVALTest extends BaseTestCase {
         OvalRootType ovalRoot = OvalTestUtils.parse(TestUtils
                 .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
         String cveName = setTestCveName(ovalRoot);
-        Config.get().setString(ConfigDefaults.CVE_AUDIT_ENABLE_OVAL_METADATA, "false");
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.JAVA_CVE_AUDIT_ENABLE_OVAL_METADATA, "false");
         Cve cve = createTestCve(cveName);
         extractAndSaveVulnerablePackages(ovalRoot);
 
@@ -677,7 +679,8 @@ public class CVEAuditManagerOVALTest extends BaseTestCase {
         CVEAuditManager.insertRelevantServerChannels(relevantChannels);
         TestUtils.flushSession();
 
-        Config.get().setString(ConfigDefaults.CVE_AUDIT_ENABLE_OVAL_METADATA, "true");
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.JAVA_CVE_AUDIT_ENABLE_OVAL_METADATA, "true");
         List<CVEAuditServer> auditServers = CVEAuditManagerOVAL.listSystemsByPatchStatus(user, cve.getName(),
                 EnumSet.allOf(PatchStatus.class));
         CVEAuditServer auditServer = auditServers.stream().findAny().get();

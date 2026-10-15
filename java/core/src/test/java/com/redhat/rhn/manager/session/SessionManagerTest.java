@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.TimeUtils;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.session.InvalidSessionIdException;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
@@ -45,8 +45,8 @@ public class SessionManagerTest extends BaseTestCase {
     @Test
     public void testLifetimeValue() {
         long lifetime = SessionManager.lifetimeValue();
-        long duration = Long.parseLong(Config.get().getString(
-                ConfigDefaults.WEB_SESSION_DATABASE_LIFETIME));
+        long duration = Long.parseLong(RhnConfigurationFactory.getSingleton()
+                .getString(RhnConfiguration.KEYS.WEB_SESSION_DATABASE_LIFETIME));
         assertEquals(lifetime, duration);
     }
 

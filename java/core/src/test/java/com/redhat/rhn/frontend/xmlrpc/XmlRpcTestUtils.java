@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc;
 
-import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.session.SessionManager;
@@ -32,8 +33,8 @@ public class XmlRpcTestUtils {
     public static String getSessionKey(User user) {
         //Log in the user (handles authentication and active/disabled logic)
 
-        String lifetime = Config.get().getString("session_database_lifetime");
-        long duration = Long.parseLong(lifetime);
+        long duration = RhnConfigurationFactory.getSingleton()
+                .getLong(RhnConfiguration.KEYS.WEB_SESSION_DATABASE_LIFETIME);
 
         //Create a new session with the user
         WebSession session = SessionManager.makeSession(user.getId(), duration);

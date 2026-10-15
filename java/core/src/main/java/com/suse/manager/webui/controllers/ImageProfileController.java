@@ -19,9 +19,9 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -132,7 +132,8 @@ public class ImageProfileController {
     public static ModelAndView createView(Request req, Response res, User user) {
         List<String> imageTypesDataFromTheServer = new ArrayList<>();
         imageTypesDataFromTheServer.add("dockerfile");
-        if (Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
+        if (RhnConfigurationFactory.getSingleton()
+                .getBoolean(RhnConfiguration.KEYS.JAVA_KIWI_OS_IMAGE_BUILDING_ENABLED)) {
             imageTypesDataFromTheServer.add("kiwi");
         }
         Map<String, Object> data = new HashMap<>();
@@ -167,7 +168,8 @@ public class ImageProfileController {
 
         List<String> imageTypesDataFromTheServer = new ArrayList<>();
         imageTypesDataFromTheServer.add("dockerfile");
-        if (Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
+        if (RhnConfigurationFactory.getSingleton()
+                .getBoolean(RhnConfiguration.KEYS.JAVA_KIWI_OS_IMAGE_BUILDING_ENABLED)) {
             imageTypesDataFromTheServer.add("kiwi");
         }
 

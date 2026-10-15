@@ -25,7 +25,6 @@ import static java.util.stream.Collectors.toSet;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.Row;
@@ -51,6 +50,8 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.NoBaseChannelFoundException;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.dto.SystemGroupsDTO;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
@@ -5213,7 +5214,8 @@ public class SystemHandler extends BaseHandler {
             sids, String username, String groupname, Integer timeout, String script,
                                      Date earliestOccurrence, boolean useTransactionalUpdate) {
 
-        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_REMOTE_COMMANDS_FROM_UI)) {
+        if (RhnConfigurationFactory.getSingleton()
+                .getBoolean(RhnConfiguration.KEYS.JAVA_DISABLE_REMOTE_COMMANDS_FROM_UI)) {
             throw new PermissionCheckFailureException("Running remote scripts has been disabled");
         }
 
@@ -9469,7 +9471,7 @@ public class SystemHandler extends BaseHandler {
      */
     public Integer scheduleSupportDataUpload(User loggedInUser, Integer sid, String caseNumber, String parameter,
                                              String uploadGeo, Date earliestOccurrence) {
-        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD)) {
+        if (RhnConfigurationFactory.getSingleton().getBoolean(RhnConfiguration.KEYS.JAVA_DISABLE_SUPPORTDATA_UPLOAD)) {
             throw new UnsupportedOperationException("Disabled");
         }
         try {

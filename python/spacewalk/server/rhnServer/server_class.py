@@ -21,7 +21,6 @@ import sys
 
 from uyuni.common.usix import raise_with_tb
 from spacewalk.common import rhnFlags
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
@@ -32,6 +31,7 @@ from spacewalk.server import (
     rhnLib,
     rhnAction,
 )
+from spacewalk.server.db_config import DB_CFG
 from .search_notify import SearchNotify
 
 # Local Modules
@@ -214,7 +214,7 @@ class Server(ServerWrapper):
         # bz 442355
         # Leave custom base channels alone, don't alter any of the channel subscriptions
         if (
-            not CFG.RESET_BASE_CHANNEL
+            not DB_CFG.get_bool("RESET_BASE_CHANNEL")
             and old_base
             and rhnChannel.isCustomChannel(old_base["id"])
         ):

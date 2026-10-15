@@ -16,10 +16,10 @@ package com.redhat.rhn.frontend.action.satellite;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
@@ -31,14 +31,6 @@ import org.junit.jupiter.api.Test;
  * GeneralConfigActionTest
  */
 public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
-    private static final String TEST_CONFIG_BOOLEAN = ConfigDefaults.DISCONNECTED;
-
-    @Test
-    public void testTestValue() {
-
-        assertTrue(GeneralConfigAction.getAllowedConfigs().contains(TEST_CONFIG_BOOLEAN));
-    }
-
     @Test
     public void testNonSubmit() {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
@@ -72,15 +64,13 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
                 TestConfigureSatelliteCommand.class.getName());
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
 
-        boolean origValue = Config.get().getBoolean(TEST_CONFIG_BOOLEAN);
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        boolean origValue = factory.getBoolean(RhnConfiguration.KEYS.DISCONNECTED);
         boolean changedValue = !origValue;
 
-        addRequestParameter(
-                GeneralConfigAction.translateFormPropertyName(
-                        TEST_CONFIG_BOOLEAN), Boolean.toString(changedValue));
+        addRequestParameter("disconnected", Boolean.toString(changedValue));
         actionPerform();
-        assertEquals(origValue, Config.get().getBoolean(TEST_CONFIG_BOOLEAN));
-        Config.get().setBoolean(TEST_CONFIG_BOOLEAN, Boolean.toString(origValue));
+        assertEquals(origValue, factory.getBoolean(RhnConfiguration.KEYS.DISCONNECTED));
         testForwardName("failure");
 
         addRequestParameter(
@@ -94,6 +84,7 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
 
         assertEquals("testuser@redhat.com", Config.get().getString("traceback_mail"));
         assertEquals("testbox", Config.get().getString("java.hostname"));
+        assertEquals(changedValue, factory.getBoolean(RhnConfiguration.KEYS.DISCONNECTED));
 
         testActionHasMessages(new String[] {"config.restartrequired"});
     }

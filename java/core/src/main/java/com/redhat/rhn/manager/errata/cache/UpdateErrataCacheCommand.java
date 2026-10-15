@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.manager.errata.cache;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -56,8 +56,8 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
      * @param orgId Org whose errata cache needs updating.
      */
     public void updateErrataCache(Long orgId) {
-        int threshold = Config.get().getInt(
-                ConfigDefaults.ERRATA_CACHE_COMPUTE_THRESHOLD);
+        int threshold = RhnConfigurationFactory.getSingleton()
+                .getInteger(RhnConfiguration.KEYS.JAVA_ERRATA_CACHE_COMPUTE_THRESHOLD);
 
         Org org = OrgFactory.lookupById(orgId);
 

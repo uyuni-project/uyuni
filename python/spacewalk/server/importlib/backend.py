@@ -31,6 +31,7 @@ from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.satellite_tools import syncLib
 from spacewalk.server import rhnSQL, rhnChannel, taskomatic
+from spacewalk.server.db_config import DB_CFG
 from .importLib import (
     Diff,
     Package,
@@ -3154,11 +3155,10 @@ class Backend:
     def validate_pks(self):
         # If nevra is enabled use checksum as primary key
         tbs = self.tables["rhnPackage"]
-        with cfg_component("server") as cfg:
-            if not cfg.ENABLE_NVREA:
-                # remove checksum from a primary key if nevra is disabled.
-                if "checksum_id" in tbs.pk:
-                    tbs.pk.remove("checksum_id")
+        if not DB_CFG.get_bool("ENABLE_NVREA"):
+            # remove checksum from a primary key if nevra is disabled.
+            if "checksum_id" in tbs.pk:
+                tbs.pk.remove("checksum_id")
 
 
 # Returns a tuple for the hash's values

@@ -139,6 +139,16 @@ public class RhnConfigurationFactory extends HibernateFactory {
     /**
      * get the value of a configuration key, or the default value when no value is set
      * @param keyIn the key
+     * @return the double value or null when empty
+     */
+    public Double getDouble(RhnConfiguration.KEYS keyIn) {
+        String value = getString(keyIn);
+        return value == null ? null : Double.valueOf(value);
+    }
+
+    /**
+     * get the value of a configuration key, or the default value when no value is set
+     * @param keyIn the key
      * @return the boolean value, false when empty
      */
     public boolean getBoolean(RhnConfiguration.KEYS keyIn) {

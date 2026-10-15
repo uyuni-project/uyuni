@@ -72,6 +72,7 @@ from spacewalk.satellite_tools.syncLib import log
 # pylint: disable-next=unused-import
 from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.common.suseLib import get_proxy, URL as suseLibURL, get_content_type
+from spacewalk.server.db_config import DB_CFG
 from rhn.stringutils import sstr
 from urlgrabber.grabber import URLGrabError
 from urlgrabber.mirror import MirrorGroup
@@ -662,26 +663,21 @@ class ContentSource:
         self.gpgkey_autotrust = None
         self.groupsfile = None
 
-        # pylint: disable-next=redefined-outer-name,invalid-name
-        with cfg_component("server.satellite") as CFG:
-            # configure network connection
-            try:
-                # bytes per second
-                self.minrate = int(CFG.REPOSYNC_MINRATE)
-            except ValueError:
-                self.minrate = 1000
-            try:
-                # seconds
-                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
-            except ValueError:
-                self.timeout = 300
-            try:
-                # extended reposync nevra filter enable
-                # this will filter packages based on full nevra
-                # instead of package name only.
-                self.nevra_filter = bool(CFG.REPOSYNC_NEVRA_FILTER)
-            except (AttributeError, ValueError):
-                self.nevra_filter = False
+        # configure network connection
+        try:
+            # bytes per second
+            self.minrate = int(DB_CFG.REPOSYNC_MINRATE)
+        except ValueError:
+            self.minrate = 1000
+        try:
+            # seconds
+            self.timeout = int(DB_CFG.REPOSYNC_TIMEOUT)
+        except ValueError:
+            self.timeout = 300
+        # extended reposync nevra filter enable
+        # this will filter packages based on full nevra
+        # instead of package name only.
+        self.nevra_filter = DB_CFG.get_bool("REPOSYNC_NEVRA_FILTER")
 
     def _load_proxy_settings(self, url):
         # read the proxy configuration in /etc/rhn/rhn.conf

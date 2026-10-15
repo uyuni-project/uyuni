@@ -1,12 +1,11 @@
 # Copyright (c) 2018-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# This feature relies on having properly configured
-#   /etc/rhn/rhn.conf
-# file on your Uyuni server.
+# This feature relies on configuration values stored in the
+# database of your Uyuni server.
 #
 # For the scope of these tests, we configure it as follows:
-#   java.kiwi_os_image_building_enabled = true
+#   JAVA_KIWI_OS_IMAGE_BUILDING_ENABLED = true
 # which means "Enable Kiwi OS Image building"
 #
 # This feature can cause failures in the following features:

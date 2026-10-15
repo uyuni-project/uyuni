@@ -12,8 +12,8 @@ package com.suse.scc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
@@ -71,7 +71,8 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
     }
 
     private void setupSystems() throws Exception {
-        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, String.valueOf(batchSize));
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.REG_BATCH_SIZE, String.valueOf(batchSize));
 
         this.servers = new ArrayList<>();
         for (int i = 0; i < systemSize; i++) {

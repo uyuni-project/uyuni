@@ -25,12 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFactoryTest;
@@ -103,7 +103,8 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.JAVA_KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
         saltServiceMock = context.mock(SaltService.class);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(saltServiceMock), new SystemEntitler(saltServiceMock)

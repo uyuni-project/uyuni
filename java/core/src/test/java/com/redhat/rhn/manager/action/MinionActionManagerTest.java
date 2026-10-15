@@ -18,7 +18,6 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -27,6 +26,8 @@ import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -89,8 +90,6 @@ import java.util.Map;
  */
 public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
-    private static final String SALT_CONTENT_STAGING_WINDOW = "salt_content_staging_window";
-    private static final String SALT_CONTENT_STAGING_ADVANCE = "salt_content_staging_advance";
 
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
@@ -133,8 +132,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "48");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ZonedDateTime scheduledActionTime = now.plusHours(24);
@@ -183,8 +182,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "48");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ZonedDateTime scheduledActionTime = now.plusHours(76);
@@ -236,8 +235,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "1");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "48");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ZonedDateTime scheduledActionTime = now.plusHours(24);
@@ -287,8 +286,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "90");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "90");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "48");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ZonedDateTime scheduledActionTime = now.plusHours(24);
@@ -338,8 +337,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(false);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "48");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ZonedDateTime scheduledActionTime = now.plusHours(24);
@@ -392,8 +391,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         packageIds.add(pkg2.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "0.5");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "1");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "0.5");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "1");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ZonedDateTime scheduledActionTime = now.plusHours(1);
@@ -453,8 +452,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         serverIds.add(server1.getId());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "48");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ZonedDateTime scheduledActionTime = now.plusHours(24);
@@ -511,8 +510,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         serverIds.add(server1.getId());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "2");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "1");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "2");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "1");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ZonedDateTime scheduledActionTime = now.plusHours(24);
@@ -574,8 +573,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         serverIds.add(server1.getId());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "90");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "90");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "48");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ZonedDateTime scheduledActionTime = now.plusHours(24);
@@ -642,8 +641,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         serverIds.add(server1.getId());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "1");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "48");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ZonedDateTime scheduledActionTime = now.plusHours(24);
@@ -700,8 +699,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         serverIds.add(server1.getId());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(false);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "1");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "48");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ZonedDateTime scheduledActionTime = now.plusHours(24);
@@ -737,8 +736,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion2.setOrg(user.getOrg());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "48");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
@@ -790,8 +789,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion2.setOrg(user.getOrg());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "1");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "48");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
@@ -843,8 +842,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion2.setOrg(user.getOrg());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "1");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "48");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
@@ -896,8 +895,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion2.setOrg(user.getOrg());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "0");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "0");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "0");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "0");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
@@ -950,8 +949,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion2.setOrg(user.getOrg());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "0");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "1");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "0");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
@@ -1003,8 +1002,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion2.setOrg(user.getOrg());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "0");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "1");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "0");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "1");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
@@ -1056,8 +1055,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         s2.setOrg(s2.getOrg());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "0");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "1");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW, "0");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE, "1");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);

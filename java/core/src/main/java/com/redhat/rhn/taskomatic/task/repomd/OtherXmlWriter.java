@@ -17,9 +17,10 @@
  */
 package com.redhat.rhn.taskomatic.task.repomd;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.frontend.dto.PackageChangelogDto;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
@@ -122,7 +123,7 @@ public class OtherXmlWriter extends RepomdWriter {
         Long pkgId = pkgDto.getId();
         Collection<PackageChangelogDto> changelogEntries = TaskManager
                 .getPackageChangelogDtos(pkgId);
-        int limit = Config.get().getInt(ConfigDefaults.CHANGELOG_ENTRY_LIMIT, 0);
+        int limit = RhnConfigurationFactory.getSingleton().getInteger(RhnConfiguration.KEYS.JAVA_MAX_CHANGELOG_ENTRIES);
         int count = 0;
         for (PackageChangelogDto changelogEntry : changelogEntries) {
             String author = changelogEntry.getAuthor();

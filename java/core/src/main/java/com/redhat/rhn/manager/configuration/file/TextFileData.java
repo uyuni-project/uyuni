@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.configuration.file;
 
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.manager.configuration.ConfigurationValidation;
@@ -109,8 +110,9 @@ public class TextFileData extends ConfigFileData {
     protected void validateContents(ValidatorResult result, boolean onCreate) {
         String content = getContents();
         // Validate size
-        if (content != null && content.length() > MAX_FILE_SIZE) {
-            result.addError(new ValidatorError("error.configtoolarge", MAX_FILE_SIZE));
+        int maxFileSize = ConfigFile.getMaxFileSize();
+        if (content != null && content.length() > maxFileSize) {
+            result.addError(new ValidatorError("error.configtoolarge", maxFileSize));
         }
 
         // Validate contents (only if everything else has passed)

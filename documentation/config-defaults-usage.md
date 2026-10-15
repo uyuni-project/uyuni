@@ -30,7 +30,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn.conf | `debug` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn.conf | `traceback_mail` | [`python/spacewalk/common/rhnMail.py:29`](python/spacewalk/common/rhnMail.py#L29) |
 | rhn.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
-| rhn.conf | `enable_snapshots` | [`python/spacewalk/server/rhnServer/server_lib.py:269`](python/spacewalk/server/rhnServer/server_lib.py#L269) |
 | rhn.conf | `db_ssl_enabled` | [`python/spacewalk/server/rhnSQL/__init__.py:134`](python/spacewalk/server/rhnSQL/__init__.py#L134) |
 | rhn.conf | `db_sslrootcert` | [`python/spacewalk/server/rhnSQL/__init__.py:136`](python/spacewalk/server/rhnSQL/__init__.py#L136) |
 | rhn.conf | `documentroot` | [`spacewalk/certs-tools/rhn_bootstrap.py:77`](spacewalk/certs-tools/rhn_bootstrap.py#L77) |
@@ -52,7 +51,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn.conf | `report_db_ssl_enabled` | [`python/spacewalk/server/rhnSQL/__init__.py:121`](python/spacewalk/server/rhnSQL/__init__.py#L121) |
 | rhn.conf | `report_db_sslrootcert` | [`python/spacewalk/server/rhnSQL/__init__.py:123`](python/spacewalk/server/rhnSQL/__init__.py#L123) |
 | rhn.conf | `sign_metadata` | [`python/spacewalk/server/rhnChannel.py:757`](python/spacewalk/server/rhnChannel.py#L757) |
-| rhn.conf | `kickstart_packages` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:580`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L580) |
 | rhn_hibernate.conf | `hibernate.connection.driver_class` <sup>1</sup> | [`java/core/src/main/java/com/redhat/rhn/taskomatic/core/SchedulerKernel.java:83`](java/core/src/main/java/com/redhat/rhn/taskomatic/core/SchedulerKernel.java#L83) |
 | rhn_hibernate.conf | `hibernate.connection.driver_proto` <sup>1</sup> | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:950`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L950) |
 | rhn_hibernate.conf | `hibernate.connection.provider_class` <sup>1</sup> | [`java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java:34`](java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java#L34) |
@@ -77,18 +75,11 @@ reference is listed. Line numbers refer to the state of the
 | rhn_java.conf | `java.min_user_len` | [`java/webapp/src/main/webapp/WEB-INF/pages/admin/multiorg/orgcreate.jsp:57`](java/webapp/src/main/webapp/WEB-INF/pages/admin/multiorg/orgcreate.jsp#L57) |
 | rhn_java.conf | `java.development_environment` | [`java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java:171`](java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java#L171) |
 | rhn_java.conf | `java.apiversion` | [`java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/api/ApiHandler.java:90`](java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/api/ApiHandler.java#L90) |
-| rhn_java.conf | `java.sandbox_lifetime` | [`java/core/src/main/java/com/redhat/rhn/taskomatic/task/SandboxCleanup.java:45`](java/core/src/main/java/com/redhat/rhn/taskomatic/task/SandboxCleanup.java#L45) |
-| rhn_java.conf | `java.server.satellite.tiny_url_timeout` | [`java/core/src/main/java/com/redhat/rhn/domain/common/CommonFactory.java:133`](java/core/src/main/java/com/redhat/rhn/domain/common/CommonFactory.java#L133) |
-| rhn_java.conf | `java.errata_cache_compute_threshold` | [`java/core/src/main/java/com/redhat/rhn/manager/errata/cache/UpdateErrataCacheCommand.java:60`](java/core/src/main/java/com/redhat/rhn/manager/errata/cache/UpdateErrataCacheCommand.java#L60) |
 | rhn_java.conf | `java.l10n_debug` | [`java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java:302`](java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java#L302) |
 | rhn_java.conf | `java.l10n_debug_marker` | [`java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java:305`](java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java#L305) |
 | rhn_java.conf | `java.l10n_missingmessage_exceptions` | [`java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java:351`](java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java#L351) |
 | rhn_java.conf | `java.supported_locales` | [`java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java:136`](java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java#L136) |
 | rhn_java.conf | `java.excluded_countries` | [`java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java:570`](java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java#L570) |
-| rhn_java.conf | `java.taskomatic_cobbler_user` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:591`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L591) |
-| rhn_java.conf | `java.custom_header` | [`java/core/src/main/java/com/suse/manager/webui/controllers/login/LoginController.java:147`](java/core/src/main/java/com/suse/manager/webui/controllers/login/LoginController.java#L147) |
-| rhn_java.conf | `java.custom_footer` | [`java/core/src/main/java/com/suse/manager/webui/controllers/login/LoginController.java:148`](java/core/src/main/java/com/suse/manager/webui/controllers/login/LoginController.java#L148) |
-| rhn_java.conf | `java.legal_note` | [`java/core/src/main/java/com/suse/manager/webui/controllers/login/LoginController.java:149`](java/core/src/main/java/com/suse/manager/webui/controllers/login/LoginController.java#L149) |
 | rhn_java.conf | `java.sc_crit` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:507`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L507) |
 | rhn_java.conf | `java.sc_imp` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:515`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L515) |
 | rhn_java.conf | `java.sc_mod` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:523`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L523) |
@@ -97,18 +88,9 @@ reference is listed. Line numbers refer to the state of the
 | rhn_java.conf | `java.sc_enh` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:547`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L547) |
 | rhn_java.conf | `java.taskomatic_channel_repodata_workers` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1046`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1046) |
 | rhn_java.conf | `java.taskomatic_clmdiff_workers` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1050`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1050) |
-| rhn_java.conf | `java.cobbler_bootstrap.kernel` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:884`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L884) |
-| rhn_java.conf | `java.cobbler_bootstrap.initrd` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:892`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L892) |
-| rhn_java.conf | `java.cobbler_bootstrap.breed` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:908`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L908) |
-| rhn_java.conf | `java.cobbler_bootstrap.arch` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:916`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L916) |
-| rhn_java.conf | `java.cobbler_bootstrap.extra_kernel_options` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:924`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L924) |
-| rhn_java.conf | `java.power_management.types` | [`java/core/src/main/java/com/redhat/rhn/frontend/action/kickstart/PowerManagementAction.java:255`](java/core/src/main/java/com/redhat/rhn/frontend/action/kickstart/PowerManagementAction.java#L255) |
-| rhn_java.conf | `java.config_file_edit_size` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1133`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1133) |
 | rhn_java.conf | `java.vendor_name` | [`java/core/src/main/java/com/redhat/rhn/common/localization/XmlMessages.java:200`](java/core/src/main/java/com/redhat/rhn/common/localization/XmlMessages.java#L200) |
 | rhn_java.conf | `java.enterprise_linux_name` | [`java/core/src/main/java/com/redhat/rhn/common/localization/XmlMessages.java:203`](java/core/src/main/java/com/redhat/rhn/common/localization/XmlMessages.java#L203) |
 | rhn_java.conf | `java.vendor_service_name` | [`java/core/src/main/java/com/redhat/rhn/common/localization/XmlMessages.java:206`](java/core/src/main/java/com/redhat/rhn/common/localization/XmlMessages.java#L206) |
-| rhn_java.conf | `java.base_domain` | [`java/core/src/main/java/com/redhat/rhn/frontend/events/NewUserEvent.java:83`](java/core/src/main/java/com/redhat/rhn/frontend/events/NewUserEvent.java#L83) |
-| rhn_java.conf | `java.actions_display_limit` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1125`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1125) |
 | rhn_java.conf | `java.smtp_server` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:65`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L65) |
 | rhn_java.conf | `java.smtp_port` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:66`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L66) |
 | rhn_java.conf | `java.smtp_auth` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:67`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L67) |
@@ -117,29 +99,16 @@ reference is listed. Line numbers refer to the state of the
 | rhn_java.conf | `java.smtp_user` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:71`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L71) |
 | rhn_java.conf | `java.smtp_pass` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:72`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L72) |
 | rhn_java.conf | `java.smtp_tls_protocols` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:70`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L70) |
-| rhn_java.conf | `java.download_url_lifetime` | [`java/core/src/main/java/com/redhat/rhn/manager/download/DownloadManager.java:125`](java/core/src/main/java/com/redhat/rhn/manager/download/DownloadManager.java#L125) |
-| rhn_java.conf | `java.non_expirable_package_urls` | [`java/core/src/main/java/com/redhat/rhn/manager/download/DownloadManager.java:56`](java/core/src/main/java/com/redhat/rhn/manager/download/DownloadManager.java#L56) |
 | rhn_java.conf | `java.message_queue_thread_pool_size` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/MessageDispatcher.java:43`](java/core/src/main/java/com/redhat/rhn/common/messaging/MessageDispatcher.java#L43) |
 | rhn_java.conf | `java.unify_custom_channel_management` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1332`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1332) |
-| rhn_java.conf | `java.salt_content_staging_window` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1190`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1190) |
-| rhn_java.conf | `java.salt_content_staging_advance` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1199`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1199) |
-| rhn_java.conf | `java.salt_check_download_tokens` | [`java/core/src/main/java/com/suse/manager/webui/controllers/DownloadController.java:134`](java/core/src/main/java/com/suse/manager/webui/controllers/DownloadController.java#L134) |
 | rhn_java.conf | `java.salt_event_thread_pool_size` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1223`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1223) |
-| rhn_java.conf | `java.salt_presence_ping_timeout` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1148`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1148) |
-| rhn_java.conf | `java.salt_presence_ping_gather_job_timeout` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1156`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1156) |
-| rhn_java.conf | `java.salt_batch_size` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1163`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1163) |
-| rhn_java.conf | `java.salt_batch_delay` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1170`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1170) |
 | rhn_java.conf | `java.salt_events_per_commit` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1237`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1237) |
 | rhn_java.conf | `java.salt_event_notification_poll_interval_ms` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1245`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1245) |
 | rhn_java.conf | `java.salt_event_connection_watchdog_interval_seconds` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1254`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1254) |
 | rhn_java.conf | `prometheus_monitoring_enabled` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1178`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1178) |
 | rhn_java.conf | `java.salt_api_host` | [`java/core/src/main/java/com/suse/manager/webui/services/impl/SaltService.java:139`](java/core/src/main/java/com/suse/manager/webui/services/impl/SaltService.java#L139) |
 | rhn_java.conf | `java.salt_api_port` | [`java/core/src/main/java/com/suse/manager/webui/services/impl/SaltService.java:141`](java/core/src/main/java/com/suse/manager/webui/services/impl/SaltService.java#L141) |
-| rhn_java.conf | `java.kiwi_os_image_building_enabled` | [`java/core/src/main/java/com/redhat/rhn/domain/entitlement/OSImageBuildHostEntitlement.java:65`](java/core/src/main/java/com/redhat/rhn/domain/entitlement/OSImageBuildHostEntitlement.java#L65) |
-| rhn_java.conf | `java.notifications_lifetime` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1215`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1215) |
-| rhn_java.conf | `java.notifications_type_disabled` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1263`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1263) |
 | rhn_java.conf | `java.mgr_sync_max_connections` | [`java/core/src/main/java/com/redhat/rhn/common/util/http/HttpClientAdapter.java:199`](java/core/src/main/java/com/redhat/rhn/common/util/http/HttpClientAdapter.java#L199) |
-| rhn_java.conf | `java.max_changelog_entries` | [`java/core/src/main/java/com/redhat/rhn/taskomatic/task/repomd/OtherXmlWriter.java:125`](java/core/src/main/java/com/redhat/rhn/taskomatic/task/repomd/OtherXmlWriter.java#L125) |
 | rhn_java.conf | `java.product_tree_tag` | [`java/core/src/main/java/com/redhat/rhn/domain/cloudpayg/PaygProductFactory.java:180`](java/core/src/main/java/com/redhat/rhn/domain/cloudpayg/PaygProductFactory.java#L180) |
 | rhn_java.conf | `java.sso` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1271`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1271) |
 | rhn_java.conf | `java.http_connection_timeout` | [`java/core/src/main/java/com/redhat/rhn/common/util/http/HttpClientAdapter.java:431`](java/core/src/main/java/com/redhat/rhn/common/util/http/HttpClientAdapter.java#L431) |
@@ -149,13 +118,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_java.conf | `taskomatic.sshminion_action_executor.parallel_threads` <sup>2</sup> | [`java/core/src/main/java/com/redhat/rhn/taskomatic/task/RhnJob.java:49`](java/core/src/main/java/com/redhat/rhn/taskomatic/task/RhnJob.java#L49) |
 | rhn_java.conf | `java.min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:30`](spacewalk/admin/spacewalk-startup-helper#L30) |
 | rhn_java.conf | `java.min_report_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:43`](spacewalk/admin/spacewalk-startup-helper#L43) |
-| rhn_java.conf | `java.disable_update_status` | [`java/core/src/main/java/com/redhat/rhn/manager/system/SystemManager.java:1244`](java/core/src/main/java/com/redhat/rhn/manager/system/SystemManager.java#L1244) |
-| rhn_java.conf | `java.reboot_delay` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1357`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1357) |
-| rhn_java.conf | `java.disable_remote_commands_from_ui` | [`java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/system/SystemHandler.java:5216`](java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/system/SystemHandler.java#L5216) |
-| rhn_java.conf | `java.cve_audit.enable_oval_metadata` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1373`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1373) |
-| rhn_java.conf | `java.oval_definitions_bulk_size` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1380`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1380) |
-| rhn_java.conf | `java.disable_supportdata_upload` | [`java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/system/SystemHandler.java:9472`](java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/system/SystemHandler.java#L9472) |
-| rhn_java.conf | `java.errata_advisory_map_csv_download_url` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1389`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1389) |
 | rhn_java_sso.conf | `onelogin.saml2.strict` <sup>1</sup> | [`java/core/src/main/java/com/redhat/rhn/common/conf/sso/SSOConfig.java:60`](java/core/src/main/java/com/redhat/rhn/common/conf/sso/SSOConfig.java#L60) |
 | rhn_java_sso.conf | `onelogin.saml2.debug` <sup>1</sup> | [`java/core/src/main/java/com/redhat/rhn/common/conf/sso/SSOConfig.java:60`](java/core/src/main/java/com/redhat/rhn/common/conf/sso/SSOConfig.java#L60) |
 | rhn_java_sso.conf | `onelogin.saml2.sp.entityid` <sup>1</sup> | [`java/core/src/main/java/com/redhat/rhn/common/conf/sso/SSOConfig.java:60`](java/core/src/main/java/com/redhat/rhn/common/conf/sso/SSOConfig.java#L60) |
@@ -246,9 +208,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `buffer_size` | [`python/spacewalk/server/apacheRequest.py:330`](python/spacewalk/server/apacheRequest.py#L330) |
 | rhn_server.conf | `ca_chain` | [`python/spacewalk/satellite_tools/xmlWireSource.py:135`](python/spacewalk/satellite_tools/xmlWireSource.py#L135) |
-| rhn_server.conf | `enable_nvrea` | [`python/spacewalk/server/handlers/app/packages.py:386`](python/spacewalk/server/handlers/app/packages.py#L386) |
-| rhn_server.conf | `force_package_upload` | [`python/spacewalk/server/rhnPackageUpload.py:73`](python/spacewalk/server/rhnPackageUpload.py#L73) |
-| rhn_server.conf | `proxy_auth_timeout` | [`python/spacewalk/server/handlers/xmlrpc/proxy.py:176`](python/spacewalk/server/handlers/xmlrpc/proxy.py#L176) |
 | rhn_server.conf | `timeout` | [`python/spacewalk/common/suseLib.py:181`](python/spacewalk/common/suseLib.py#L181) |
 | rhn_server.conf | `debug` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `traceback_mail` | [`python/spacewalk/common/rhnMail.py:29`](python/spacewalk/common/rhnMail.py#L29) |
@@ -256,10 +215,8 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `min_user_len` | [`python/spacewalk/server/rhnUser.py:551`](python/spacewalk/server/rhnUser.py#L551) |
 | rhn_server.conf | `max_user_len` | [`python/spacewalk/server/rhnUser.py:555`](python/spacewalk/server/rhnUser.py#L555) |
 | rhn_server.conf | `max_email_len` | [`python/spacewalk/server/rhnUser.py:590`](python/spacewalk/server/rhnUser.py#L590) |
-| rhn_server.conf | `disallowed_suffixes` | [`python/spacewalk/server/rhnUser.py:722`](python/spacewalk/server/rhnUser.py#L722) |
 | rhn_server.conf | `nls_lang` | [`web/modules/rhn/RHN/DBI.pm:49`](web/modules/rhn/RHN/DBI.pm#L49) |
 | rhn_server.conf | `mount_point` | [`python/spacewalk/server/handlers/app/packages.py:579`](python/spacewalk/server/handlers/app/packages.py#L579) |
-| rhn_server.conf | `disallow_user_creation` | [`python/spacewalk/server/rhnUser.py:410`](python/spacewalk/server/rhnUser.py#L410) |
 | rhn_server.conf | `encrypted_passwords` | [`python/spacewalk/server/rhnUser.py:126`](python/spacewalk/server/rhnUser.py#L126) |
 | rhn_server.conf | `prepended_dir` | [`python/spacewalk/server/rhnPackage.py:136`](python/spacewalk/server/rhnPackage.py#L136) |
 | rhn_server.conf | `pam_auth_service` | [`python/spacewalk/server/rhnUser.py:94`](python/spacewalk/server/rhnUser.py#L94) |
@@ -269,15 +226,8 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `qos` | [`python/spacewalk/server/rhnHandler.py:48`](python/spacewalk/server/rhnHandler.py#L48) |
 | rhn_server.conf | `throttle` | [`python/spacewalk/server/rhnHandler.py:46`](python/spacewalk/server/rhnHandler.py#L46) |
 | rhn_server.conf | `satellite` | [`python/spacewalk/server/rhnRepository.py:322`](python/spacewalk/server/rhnRepository.py#L322) |
-| rhn_server.conf | `disconnected` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:710`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L710) |
-| rhn_server.conf | `session_lifetime` | [`python/spacewalk/server/rhnSession.py:50`](python/spacewalk/server/rhnSession.py#L50) |
 | rhn_server.conf | `secret_key` | [`python/spacewalk/server/apacheAuth.py:94`](python/spacewalk/server/apacheAuth.py#L94) |
-| rhn_server.conf | `reset_base_channel` | [`python/spacewalk/server/rhnServer/server_class.py:217`](python/spacewalk/server/rhnServer/server_class.py#L217) |
 | rhn_server.conf | `repomd_path_prefix` | [`python/spacewalk/server/rhnRepository.py:249`](python/spacewalk/server/rhnRepository.py#L249) |
-| rhn_server.conf | `use_taskomatic_repomd` | [`python/spacewalk/server/rhnRepository.py:284`](python/spacewalk/server/rhnRepository.py#L284) |
-| rhn_server.conf | `checksum_priority_list` | [`python/spacewalk/satellite_tools/xmlSource.py:641`](python/spacewalk/satellite_tools/xmlSource.py#L641) |
-| rhn_server.conf | `sync_to_temp` | [`python/spacewalk/satellite_tools/xmlWireSource.py:181`](python/spacewalk/satellite_tools/xmlWireSource.py#L181) |
-| rhn_server.conf | `sync_source_packages` | [`python/spacewalk/satellite_tools/reposync.py:3169`](python/spacewalk/satellite_tools/reposync.py#L3169) |
 | rhn_server_iss.conf | `sat_cert_generation` | [`python/spacewalk/satellite_tools/disk_dumper/dumper.py:709`](python/spacewalk/satellite_tools/disk_dumper/dumper.py#L709) |
 | rhn_server_iss.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server_satellite.conf | `log_file` | [`python/spacewalk/satellite_tools/updatePackages.py:43`](python/spacewalk/satellite_tools/updatePackages.py#L43) |
@@ -289,24 +239,11 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server_satellite.conf | `http_proxy_password` | [`python/spacewalk/common/suseLib.py:600`](python/spacewalk/common/suseLib.py#L600) |
 | rhn_server_satellite.conf | `no_proxy` | [`python/spacewalk/common/suseLib.py:641`](python/spacewalk/common/suseLib.py#L641) |
 | rhn_server_satellite.conf | `default_mail_from` | [`python/spacewalk/satellite_tools/reposync.py:157`](python/spacewalk/satellite_tools/reposync.py#L157) |
-| rhn_server_satellite.conf | `reposync_download_threads` | [`python/spacewalk/satellite_tools/download.py:368`](python/spacewalk/satellite_tools/download.py#L368) |
-| rhn_server_satellite.conf | `reposync_timeout` | [`python/spacewalk/satellite_tools/download.py:377`](python/spacewalk/satellite_tools/download.py#L377) |
-| rhn_server_satellite.conf | `reposync_minrate` | [`python/spacewalk/satellite_tools/download.py:386`](python/spacewalk/satellite_tools/download.py#L386) |
-| rhn_server_satellite.conf | `reposync_nevra_filter` | [`python/spacewalk/satellite_tools/repo_plugins/deb_src.py:449`](python/spacewalk/satellite_tools/repo_plugins/deb_src.py#L449) |
 | rhn_server_satellite.conf | `urlgrabber_logspec` | [`python/spacewalk/satellite_tools/repo_plugins/yum_src.py:1658`](python/spacewalk/satellite_tools/repo_plugins/yum_src.py#L1658) |
 | rhn_server_susemanager.conf | `scc_url` | [`java/core/src/main/java/com/suse/scc/SCCTaskManager.java:132`](java/core/src/main/java/com/suse/scc/SCCTaskManager.java#L132) |
-| rhn_server_susemanager.conf | `update_host_domain` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1323`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1323) |
-| rhn_server_susemanager.conf | `forward_registration` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1316`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1316) |
-| rhn_server_susemanager.conf | `reg_error_expire_time` | [`java/core/src/main/java/com/redhat/rhn/domain/scc/SCCCachingFactory.java:546`](java/core/src/main/java/com/redhat/rhn/domain/scc/SCCCachingFactory.java#L546) |
-| rhn_server_susemanager.conf | `reg_batch_size` | [`java/core/src/main/java/com/suse/scc/SCCSystemRegistrationManager.java:104`](java/core/src/main/java/com/suse/scc/SCCSystemRegistrationManager.java#L104) |
 | rhn_server_susemanager.conf | `fromdir` | [`java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java:893`](java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java#L893) |
 | rhn_server_susemanager.conf | `mirror` | [`java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java:1452`](java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java#L1452) |
-| rhn_server_susemanager.conf | `temp_token_lifetime` | [`java/core/src/main/java/com/redhat/rhn/domain/action/salt/build/ImageBuildAction.java:231`](java/core/src/main/java/com/redhat/rhn/domain/action/salt/build/ImageBuildAction.java#L231) |
-| rhn_server_susemanager.conf | `token_lifetime` | [`java/core/src/main/java/com/suse/manager/webui/utils/token/AbstractTokenBuilder.java:36`](java/core/src/main/java/com/suse/manager/webui/utils/token/AbstractTokenBuilder.java#L36) |
-| rhn_server_susemanager.conf | `token_refresh_auto_deploy` | [`java/core/src/main/java/com/redhat/rhn/taskomatic/task/TokenCleanup.java:74`](java/core/src/main/java/com/redhat/rhn/taskomatic/task/TokenCleanup.java#L74) |
-| rhn_server_susemanager.conf | `bootstrap_repo_flush` | [`susemanager/src/mgr-create-bootstrap-repo:411`](susemanager/src/mgr-create-bootstrap-repo#L411) |
 | rhn_server_susemanager.conf | `bootstrap_repo_datamodule` | [`susemanager/src/mgr-create-bootstrap-repo:431`](susemanager/src/mgr-create-bootstrap-repo#L431) |
-| rhn_server_susemanager.conf | `auto_generate_bootstrap_repo` | [`python/spacewalk/satellite_tools/reposync.py:936`](python/spacewalk/satellite_tools/reposync.py#L936) |
 | rhn_server_upload_package-push.conf | `log_file` | [`python/spacewalk/server/apacheUploadServer.py:47`](python/spacewalk/server/apacheUploadServer.py#L47) |
 | rhn_server_xmlrpc.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server_xmlrpc.conf | `cache_package_headers` | [`python/spacewalk/server/rhnRepository.py:390`](python/spacewalk/server/rhnRepository.py#L390) |
@@ -318,15 +255,12 @@ reference is listed. Line numbers refer to the state of the
 | rhn_taskomatic_daemon.conf | `TASKO_JAVA_OPTS` <sup>3</sup> | [`java/scripts/taskomatic:13`](java/scripts/taskomatic#L13) |
 | rhn_taskomatic_daemon.conf | `TASKO_INIT_MEMORY` <sup>3</sup> | [`java/scripts/taskomatic:13`](java/scripts/taskomatic#L13) |
 | rhn_taskomatic_daemon.conf | `TASKO_MAX_MEMORY` <sup>3</sup> | [`java/scripts/taskomatic:13`](java/scripts/taskomatic#L13) |
-| rhn_web.conf | `web.disallowed_mail_domains` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:55`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L55) |
 | rhn_web.conf | `web.encrypted_passwords` | [`java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java:266`](java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java#L266) |
 | rhn_web.conf | `web.max_user_len` | [`java/core/src/main/java/com/redhat/rhn/common/conf/UserDefaults.java:38`](java/core/src/main/java/com/redhat/rhn/common/conf/UserDefaults.java#L38) |
 | rhn_web.conf | `web.mount_point` | [`java/core/src/main/java/com/redhat/rhn/manager/errata/ErrataManager.java:159`](java/core/src/main/java/com/redhat/rhn/manager/errata/ErrataManager.java#L159) |
 | rhn_web.conf | `web.kickstart_mount_point` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:567`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L567) |
 | rhn_web.conf | `web.pam_auth_service` | [`java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java:463`](java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java#L463) |
-| rhn_web.conf | `web.restrict_mail_domains` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:56`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L56) |
 | rhn_web.conf | `web.satellite` | [`susemanager-utils/susemanager-sls/src/grains/mgr_server.py:41`](susemanager-utils/susemanager-sls/src/grains/mgr_server.py#L41) |
-| rhn_web.conf | `web.session_database_lifetime` | [`java/core/src/main/java/com/redhat/rhn/common/security/PermissionException.java:129`](java/core/src/main/java/com/redhat/rhn/common/security/PermissionException.java#L129) |
 | rhn_web.conf | `web.session_secret_1` | [`java/core/src/main/java/com/redhat/rhn/frontend/integration/IntegrationService.java:98`](java/core/src/main/java/com/redhat/rhn/frontend/integration/IntegrationService.java#L98) |
 | rhn_web.conf | `web.session_secret_2` | [`java/core/src/main/java/com/redhat/rhn/manager/session/SessionManager.java:142`](java/core/src/main/java/com/redhat/rhn/manager/session/SessionManager.java#L142) |
 | rhn_web.conf | `web.session_secret_3` | [`java/core/src/main/java/com/redhat/rhn/manager/session/SessionManager.java:146`](java/core/src/main/java/com/redhat/rhn/manager/session/SessionManager.java#L146) |
@@ -336,26 +270,19 @@ reference is listed. Line numbers refer to the state of the
 | rhn_web.conf | `web.session_swap_secret_3` | [`java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java:117`](java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java#L117) |
 | rhn_web.conf | `web.session_swap_secret_4` | [`java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java:119`](java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java#L119) |
 | rhn_web.conf | `web.traceback_mail` | [`java/core/src/main/java/com/redhat/rhn/frontend/events/TraceBackAction.java:51`](java/core/src/main/java/com/redhat/rhn/frontend/events/TraceBackAction.java#L51) |
-| rhn_web.conf | `web.config_delim_start` | [`java/core/src/main/java/com/redhat/rhn/frontend/action/configuration/ConfigFileForm.java:94`](java/core/src/main/java/com/redhat/rhn/frontend/action/configuration/ConfigFileForm.java#L94) |
-| rhn_web.conf | `web.config_delim_end` | [`java/core/src/main/java/com/redhat/rhn/frontend/action/configuration/ConfigFileForm.java:96`](java/core/src/main/java/com/redhat/rhn/frontend/action/configuration/ConfigFileForm.java#L96) |
 | rhn_web.conf | `web.version` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:829`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L829) |
 | rhn_web.conf | `web.version.uyuni` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:827`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L827) |
 | rhn_web.conf | `web.version.eol` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:839`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L839) |
 | rhn_web.conf | `web.buildtimestamp` | [`java/core/src/main/java/com/suse/manager/webui/utils/SparkApplicationHelper.java:523`](java/core/src/main/java/com/suse/manager/webui/utils/SparkApplicationHelper.java#L523) |
-| rhn_web.conf | `web.maximum_config_file_size` | [`java/core/src/main/java/com/redhat/rhn/domain/config/ConfigFile.java:141`](java/core/src/main/java/com/redhat/rhn/domain/config/ConfigFile.java#L141) |
-| rhn_web.conf | `web.default_mail_from` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:73`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L73) |
 | rhn_web.conf | `server.satellite.http_proxy` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1093`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1093) |
 | rhn_web.conf | `server.satellite.http_proxy_username` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1109`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1109) |
 | rhn_web.conf | `server.satellite.http_proxy_password` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1117`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1117) |
 | rhn_web.conf | `web.l10n_resourcebundles` | [`java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java:104`](java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java#L104) |
 | rhn_web.conf | `server.nls_lang` | [`web/modules/rhn/RHN/DBI.pm:49`](web/modules/rhn/RHN/DBI.pm#L49) |
-| rhn_web.conf | `web.subscribe_proxy_channel` | [`java/core/src/main/java/com/redhat/rhn/manager/system/SystemManager.java:2053`](java/core/src/main/java/com/redhat/rhn/manager/system/SystemManager.java#L2053) |
 | rhn_web.conf | `ssh_push_port_https` | [`java/core/src/main/java/com/suse/manager/webui/controllers/bootstrap/AbstractMinionBootstrapper.java:328`](java/core/src/main/java/com/suse/manager/webui/controllers/bootstrap/AbstractMinionBootstrapper.java#L328) |
 | rhn_web.conf | `ssh_push_sudo_user` | [`java/core/src/main/java/com/suse/manager/webui/services/impl/SaltSSHService.java:192`](java/core/src/main/java/com/suse/manager/webui/services/impl/SaltSSHService.java#L192) |
 | rhn_web.conf | `ssh_salt_pre_flight_script` | [`java/core/src/main/java/com/suse/manager/webui/services/impl/SaltSSHService.java:201`](java/core/src/main/java/com/suse/manager/webui/services/impl/SaltSSHService.java#L201) |
 | rhn_web.conf | `ssh_use_salt_thin` | [`java/core/src/main/java/com/suse/manager/webui/services/impl/SaltSSHService.java:210`](java/core/src/main/java/com/suse/manager/webui/services/impl/SaltSSHService.java#L210) |
-| rhn_web.conf | `web.spa.enable` | [`java/webapp/src/main/webapp/WEB-INF/decorators/layout_c.jsp:61`](java/webapp/src/main/webapp/WEB-INF/decorators/layout_c.jsp#L61) |
-| rhn_web.conf | `web.spa.timeout` | [`java/webapp/src/main/webapp/WEB-INF/decorators/layout_c.jsp:62`](java/webapp/src/main/webapp/WEB-INF/decorators/layout_c.jsp#L62) |
 | rhn_web.conf | `web.locale` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1280`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1280) |
 | rhn_web.conf | `web.docs_locale` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1289`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1289) |
 | rhn_web.conf | `web.themes` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1298`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1298) |
@@ -371,3 +298,103 @@ the individual keys.
 (`taskomatic.<namespace>.parallel_threads`).
 
 <sup>3</sup> Shell variable sourced and used by the daemon launcher script.
+
+## Keys moved into the database
+
+The following keys are no longer defined in the configuration defaults. They
+are stored in the `rhnConfiguration` table, where a `NULL` value means that
+the default value is used. Java reads them with `RhnConfigurationFactory`,
+Python with `spacewalk.server.db_config.DB_CFG`. `uyuni-update-config` moves
+values still set in `/etc/rhn/rhn.conf` into the database when the server
+starts.
+
+| Config file | Former key name | Database key |
+|---|---|---|
+| rhn.conf | `enable_snapshots` | `ENABLE_SNAPSHOTS` |
+| rhn.conf | `kickstart_packages` | `KICKSTART_PACKAGES` |
+| rhn_java.conf | `java.sandbox_lifetime` | `JAVA_SANDBOX_LIFETIME` |
+| rhn_java.conf | `java.server.satellite.tiny_url_timeout` | `JAVA_SERVER_SATELLITE_TINY_URL_TIMEOUT` |
+| rhn_java.conf | `java.errata_cache_compute_threshold` | `JAVA_ERRATA_CACHE_COMPUTE_THRESHOLD` |
+| rhn_java.conf | `java.taskomatic_cobbler_user` | `JAVA_TASKOMATIC_COBBLER_USER` |
+| rhn_java.conf | `java.custom_header` | `JAVA_CUSTOM_HEADER` |
+| rhn_java.conf | `java.custom_footer` | `JAVA_CUSTOM_FOOTER` |
+| rhn_java.conf | `java.legal_note` | `JAVA_LEGAL_NOTE` |
+| rhn_java.conf | `java.cobbler_bootstrap.kernel` | `JAVA_COBBLER_BOOTSTRAP_KERNEL` |
+| rhn_java.conf | `java.cobbler_bootstrap.initrd` | `JAVA_COBBLER_BOOTSTRAP_INITRD` |
+| rhn_java.conf | `java.cobbler_bootstrap.breed` | `JAVA_COBBLER_BOOTSTRAP_BREED` |
+| rhn_java.conf | `java.cobbler_bootstrap.arch` | `JAVA_COBBLER_BOOTSTRAP_ARCH` |
+| rhn_java.conf | `java.cobbler_bootstrap.extra_kernel_options` | `JAVA_COBBLER_BOOTSTRAP_EXTRA_KERNEL_OPTIONS` |
+| rhn_java.conf | `java.power_management.types` | `JAVA_POWER_MANAGEMENT_TYPES` |
+| rhn_java.conf | `java.config_file_edit_size` | `JAVA_CONFIG_FILE_EDIT_SIZE` |
+| rhn_java.conf | `java.base_domain` | `JAVA_BASE_DOMAIN` |
+| rhn_java.conf | `java.actions_display_limit` | `JAVA_ACTIONS_DISPLAY_LIMIT` |
+| rhn_java.conf | `java.download_url_lifetime` | `JAVA_DOWNLOAD_URL_LIFETIME` |
+| rhn_java.conf | `java.non_expirable_package_urls` | `JAVA_NON_EXPIRABLE_PACKAGE_URLS` |
+| rhn_java.conf | `java.salt_content_staging_window` | `JAVA_SALT_CONTENT_STAGING_WINDOW` |
+| rhn_java.conf | `java.salt_content_staging_advance` | `JAVA_SALT_CONTENT_STAGING_ADVANCE` |
+| rhn_java.conf | `java.salt_check_download_tokens` | `JAVA_SALT_CHECK_DOWNLOAD_TOKENS` |
+| rhn_java.conf | `java.salt_presence_ping_timeout` | `JAVA_SALT_PRESENCE_PING_TIMEOUT` |
+| rhn_java.conf | `java.salt_presence_ping_gather_job_timeout` | `JAVA_SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT` |
+| rhn_java.conf | `java.salt_batch_size` | `JAVA_SALT_BATCH_SIZE` |
+| rhn_java.conf | `java.salt_batch_delay` | `JAVA_SALT_BATCH_DELAY` |
+| rhn_java.conf | `java.kiwi_os_image_building_enabled` | `JAVA_KIWI_OS_IMAGE_BUILDING_ENABLED` |
+| rhn_java.conf | `java.notifications_lifetime` | `JAVA_NOTIFICATIONS_LIFETIME` |
+| rhn_java.conf | `java.notifications_type_disabled` | `JAVA_NOTIFICATIONS_TYPE_DISABLED` |
+| rhn_java.conf | `java.max_changelog_entries` | `JAVA_MAX_CHANGELOG_ENTRIES` |
+| rhn_java.conf | `java.disable_update_status` | `JAVA_DISABLE_UPDATE_STATUS` |
+| rhn_java.conf | `java.reboot_delay` | `JAVA_REBOOT_DELAY` |
+| rhn_java.conf | `java.disable_remote_commands_from_ui` | `JAVA_DISABLE_REMOTE_COMMANDS_FROM_UI` |
+| rhn_java.conf | `java.cve_audit.enable_oval_metadata` | `JAVA_CVE_AUDIT_ENABLE_OVAL_METADATA` |
+| rhn_java.conf | `java.oval_definitions_bulk_size` | `JAVA_OVAL_DEFINITIONS_BULK_SIZE` |
+| rhn_java.conf | `java.disable_supportdata_upload` | `JAVA_DISABLE_SUPPORTDATA_UPLOAD` |
+| rhn_java.conf | `java.errata_advisory_map_csv_download_url` | `JAVA_ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL` |
+| rhn_server.conf | `enable_nvrea` | `ENABLE_NVREA` |
+| rhn_server.conf | `force_package_upload` | `FORCE_PACKAGE_UPLOAD` |
+| rhn_server.conf | `proxy_auth_timeout` | `PROXY_AUTH_TIMEOUT` |
+| rhn_server.conf | `disallowed_suffixes` | `DISALLOWED_SUFFIXES` |
+| rhn_server.conf | `disallow_user_creation` | `DISALLOW_USER_CREATION` |
+| rhn_server.conf | `disconnected` | `DISCONNECTED` |
+| rhn_server.conf | `session_lifetime` | `SESSION_LIFETIME` |
+| rhn_server.conf | `reset_base_channel` | `RESET_BASE_CHANNEL` |
+| rhn_server.conf | `use_taskomatic_repomd` | `USE_TASKOMATIC_REPOMD` |
+| rhn_server.conf | `checksum_priority_list` | `CHECKSUM_PRIORITY_LIST` |
+| rhn_server.conf | `sync_to_temp` | `SYNC_TO_TEMP` |
+| rhn_server.conf | `sync_source_packages` | `SYNC_SOURCE_PACKAGES` |
+| rhn_server_satellite.conf | `reposync_download_threads` | `REPOSYNC_DOWNLOAD_THREADS` |
+| rhn_server_satellite.conf | `reposync_timeout` | `REPOSYNC_TIMEOUT` |
+| rhn_server_satellite.conf | `reposync_minrate` | `REPOSYNC_MINRATE` |
+| rhn_server_satellite.conf | `reposync_nevra_filter` | `REPOSYNC_NEVRA_FILTER` |
+| rhn_server_susemanager.conf | `update_host_domain` | `UPDATE_HOST_DOMAIN` |
+| rhn_server_susemanager.conf | `forward_registration` | `FORWARD_REGISTRATION` |
+| rhn_server_susemanager.conf | `reg_error_expire_time` | `REG_ERROR_EXPIRE_TIME` |
+| rhn_server_susemanager.conf | `reg_batch_size` | `REG_BATCH_SIZE` |
+| rhn_server_susemanager.conf | `temp_token_lifetime` | `TEMP_TOKEN_LIFETIME` |
+| rhn_server_susemanager.conf | `token_lifetime` | `TOKEN_LIFETIME` |
+| rhn_server_susemanager.conf | `token_refresh_auto_deploy` | `TOKEN_REFRESH_AUTO_DEPLOY` |
+| rhn_server_susemanager.conf | `bootstrap_repo_flush` | `BOOTSTRAP_REPO_FLUSH` |
+| rhn_server_susemanager.conf | `auto_generate_bootstrap_repo` | `AUTO_GENERATE_BOOTSTRAP_REPO` |
+| rhn_web.conf | `web.disallowed_mail_domains` | `WEB_DISALLOWED_MAIL_DOMAINS` |
+| rhn_web.conf | `web.restrict_mail_domains` | `WEB_RESTRICT_MAIL_DOMAINS` |
+| rhn_web.conf | `web.session_database_lifetime` | `WEB_SESSION_DATABASE_LIFETIME` |
+| rhn_web.conf | `web.config_delim_start` | `WEB_CONFIG_DELIM_START` |
+| rhn_web.conf | `web.config_delim_end` | `WEB_CONFIG_DELIM_END` |
+| rhn_web.conf | `web.maximum_config_file_size` | `WEB_MAXIMUM_CONFIG_FILE_SIZE` |
+| rhn_web.conf | `web.default_mail_from` | `WEB_DEFAULT_MAIL_FROM` |
+| rhn_web.conf | `web.subscribe_proxy_channel` | `WEB_SUBSCRIBE_PROXY_CHANNEL` |
+| rhn_web.conf | `web.spa.enable` | `WEB_SPA_ENABLE` |
+| rhn_web.conf | `web.spa.timeout` | `WEB_SPA_TIMEOUT` |
+
+The remaining keys stay in the configuration files because they are needed
+to access the database (`db_*`, `report_db_*`, Hibernate, search server
+connection), are sourced by shell scripts (`*_daemon.conf`, schema versions),
+are used by the proxy or the shared `common` code (`debug`, `log_file`,
+`traceback_mail`, ...), configure services when they start (thread pools,
+Salt API, HTTP client, SMTP, localization, Quartz, SSO), depend on the
+product build (`product_name`, versions, `product_tree_tag`, locales,
+themes), are secrets or file system paths, are read by tools without
+access to the database classes (Perl, Salt, search server, `spacewalk-report`
+for `java.sc_*`, `spacewalk-common-channels` for
+`java.unify_custom_channel_management`), are edited by scripts
+(`sign_metadata`, `fromdir`, `pam_auth_service`, `ssh_push_*`), or are shared
+between Java and Python under different names (`min_user_len`,
+`max_user_len`, `max_email_len`).

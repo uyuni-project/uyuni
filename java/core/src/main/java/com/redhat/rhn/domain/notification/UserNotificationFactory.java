@@ -138,7 +138,7 @@ public class UserNotificationFactory extends HibernateFactory {
         // save first the message to get the 'id' auto generated
         // because it is referenced by the UserNotification object
         NotificationMessage notificationMessage = singleton.saveObject(notificationMessageIn);
-        // We want to disable out the notifications defined on parameter: java.notifications_type_disabled
+        // We want to disable out the notifications defined on parameter: JAVA_NOTIFICATIONS_TYPE_DISABLED
         // They are still added to the SuseNotificationTable but not associated with any user
         if (!isNotificationTypeDisabled(notificationMessage)) {
             String[] receipients = users.stream()

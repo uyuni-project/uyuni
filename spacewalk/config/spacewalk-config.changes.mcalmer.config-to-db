@@ -1,0 +1,3 @@
+- Document that configuration values are stored in the database
+- Remove configuration values stored in the database from the
+  initial `rhn.conf`

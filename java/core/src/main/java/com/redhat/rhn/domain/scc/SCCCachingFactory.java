@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.domain.scc;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
@@ -543,7 +543,8 @@ import java.util.stream.Stream;
      */
     @SuppressWarnings("unchecked")
     public static List<SCCRegCacheItem> findSystemsToForwardRegistration() {
-        int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
+        int regErrorExpireTime = RhnConfigurationFactory.getSingleton()
+                .getInteger(RhnConfiguration.KEYS.REG_ERROR_EXPIRE_TIME);
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
@@ -566,7 +567,8 @@ import java.util.stream.Stream;
      * @return list of {@link SCCRegCacheItem}
      */
     public static List<SCCRegCacheItem> listDeregisterItems() {
-        int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
+        int regErrorExpireTime = RhnConfigurationFactory.getSingleton()
+                .getInteger(RhnConfiguration.KEYS.REG_ERROR_EXPIRE_TIME);
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
@@ -655,7 +657,8 @@ import java.util.stream.Stream;
      * @return a list of Virtualization Hosts which need to be sent to SCC
      */
     public static List<SCCVirtualizationHostJson> listVirtualizationHosts() {
-        int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
+        int regErrorExpireTime = RhnConfigurationFactory.getSingleton()
+                .getInteger(RhnConfiguration.KEYS.REG_ERROR_EXPIRE_TIME);
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 

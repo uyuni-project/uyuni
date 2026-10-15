@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -57,6 +56,8 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.PublicChannelFamily;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -249,12 +250,12 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testCreateSupportdataAction() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
-        Config.get().setBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD, "true");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_DISABLE_SUPPORTDATA_UPLOAD, "true");
 
         assertThrows(UnsupportedOperationException.class, () -> handler.scheduleSupportDataUpload(
                 admin, server.getId().intValue(), "012345", "-i LVM", "EU", TestUtils.getNow()));
 
-        Config.get().setBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD, "false");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_DISABLE_SUPPORTDATA_UPLOAD, "false");
 
         Integer aid = handler.scheduleSupportDataUpload(admin, server.getId().intValue(),
                 "012345", "-i LVM", "EU", TestUtils.getNow());

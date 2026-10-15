@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.manager.configuration.file;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigInfo;
@@ -57,14 +57,6 @@ public abstract class ConfigFileData {
 
     public static final String DEFAULT_CONFIG_DELIM_START = "{|";
     public static final String DEFAULT_CONFIG_DELIM_END = "|}";
-    public static final long MAX_FILE_SIZE = Config.get().
-                                    getInt(ConfigDefaults.CONFIG_REVISION_MAX_SIZE);
-    private static final String DEFAULT_MACRO_START = Config.get().
-                                            getString("web.config_delim_start",
-                                                            DEFAULT_CONFIG_DELIM_START);
-    private static final String DEFAULT_MACRO_END = Config.get().
-                                        getString("web.config_delim_end",
-                                                DEFAULT_CONFIG_DELIM_END);
     /**
      * Constructor for COnfigFIleData
      */
@@ -74,8 +66,9 @@ public abstract class ConfigFileData {
         setGroup("root");
         setSelinuxCtx("");
         setType(ConfigFileType.file());
-        setMacroStart(DEFAULT_MACRO_START);
-        setMacroEnd(DEFAULT_MACRO_END);
+        RhnConfigurationFactory dbConfig = RhnConfigurationFactory.getSingleton();
+        setMacroStart(dbConfig.getString(RhnConfiguration.KEYS.WEB_CONFIG_DELIM_START));
+        setMacroEnd(dbConfig.getString(RhnConfiguration.KEYS.WEB_CONFIG_DELIM_END));
     }
 
     /**

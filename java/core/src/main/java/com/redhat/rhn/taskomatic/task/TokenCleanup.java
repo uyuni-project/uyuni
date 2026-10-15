@@ -15,9 +15,9 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 
@@ -71,7 +71,7 @@ public class TokenCleanup extends RhnJavaJob {
             });
 
             List<String> changedMinionIds = changedMinions.map(MinionServer::getMinionId).collect(Collectors.toList());
-            if (Config.get().getBoolean(ConfigDefaults.TOKEN_REFRESH_AUTO_DEPLOY)) {
+            if (RhnConfigurationFactory.getSingleton().getBoolean(RhnConfiguration.KEYS.TOKEN_REFRESH_AUTO_DEPLOY)) {
                 SALT_API.deployChannels(changedMinionIds);
             }
             else {

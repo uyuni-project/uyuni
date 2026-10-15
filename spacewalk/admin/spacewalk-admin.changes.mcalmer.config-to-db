@@ -1,3 +1,5 @@
 - Store configuration values moved into the database only when they
   differ from the default value and commit them before removing
-  them from rhn.conf
+  them from `rhn.conf`
+- Move all configuration values stored in the database from
+  `rhn.conf` into the database

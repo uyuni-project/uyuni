@@ -7,7 +7,7 @@
     <bean:message key="footer.jsp.release" arg0="/docs/${rhn:getDocsLocale(pageContext)}/release-notes/release-notes-server.html" arg1="${rhn:getProductVersion()}" />
   </div>
   <%@ include file="/WEB-INF/pages/common/fragments/bugzilla.jspf" %>
-  <c:set var="custom_footer" scope="page" value="${rhn:getConfig('java.custom_footer')}" />
+  <c:set var="custom_footer" scope="page" value="${rhn:getDbConfig('JAVA_CUSTOM_FOOTER')}" />
   <c:if test="${! empty custom_footer}">
     <div><c:out value="${custom_footer}" escapeXml="false"/></div>
   </c:if>

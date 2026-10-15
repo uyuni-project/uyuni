@@ -47,6 +47,7 @@ from spacewalk.server.importlib.packageUpload import (
 )
 from spacewalk.server.importlib.userAuth import UserAuth
 from spacewalk.server.importlib.errataCache import schedule_errata_cache_update
+from spacewalk.server.db_config import DB_CFG
 
 # 12/22/05 wregglej 173287
 # I made a decent number of changes to this file to implement session authentication.
@@ -216,11 +217,9 @@ class Packages(RPC_Base):
             raise rhnFault(2)
         if rhnUser.is_user_disabled(username):
             # pylint: disable-next=undefined-variable
-            msg = _(
-                """
+            msg = _("""
                    %s Account has been deactivated on this server.
-                   Please contact your Org administrator for more help."""
-            )
+                   Please contact your Org administrator for more help.""")
             raise rhnFault(1, msg % username, explain=0)
         if rhnUser.is_user_read_only(user.username):
             raise rhnFault(702)
@@ -275,8 +274,7 @@ class Packages(RPC_Base):
     def _listMissingSourcePackages(self, authobj, channelList):
         authobj.authzChannels(channelList)
 
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             select distinct sr.name source_rpm
               from rhnChannel c
               join rhnChannelNewestPackage cnp
@@ -292,8 +290,7 @@ class Packages(RPC_Base):
                    )
              where c.label = :channel_label
                and ps.source_rpm_id is null
-        """
-        )
+        """)
         missing_packages = []
         for c in channelList:
             h.execute(channel_label=c)
@@ -383,7 +380,7 @@ class Packages(RPC_Base):
                 "orgid": org_id,
             }
 
-            if "checksum" in package and CFG.ENABLE_NVREA:
+            if "checksum" in package and DB_CFG.get_bool("ENABLE_NVREA"):
                 # pylint: disable-next=invalid-name
                 _checksum_sql_filter = """and c.checksum = :checksum
                                           and c.checksum_type = :checksum_type"""
@@ -553,7 +550,7 @@ class Packages(RPC_Base):
 
             # pylint: disable-next=invalid-name
             _checksum_sql_filter = ""
-            if "checksum" in pkg_info and CFG.ENABLE_NVREA:
+            if "checksum" in pkg_info and DB_CFG.get_bool("ENABLE_NVREA"):
                 # pylint: disable-next=invalid-name
                 _checksum_sql_filter = """and c.checksum = :checksum
                                           and c.checksum_type = :checksum_type"""

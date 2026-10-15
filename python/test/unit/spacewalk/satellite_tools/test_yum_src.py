@@ -57,8 +57,6 @@ class YumSrcTest(unittest.TestCase):
         yum_src.CFG = Mock()
         yum_src.CFG.MOUNT_POINT = ""
         yum_src.CFG.PREPENDED_DIR = ""
-        yum_src.CFG.REPOSYNC_MINRATE = 1000
-        yum_src.CFG.REPOSYNC_TIMEOUT = 300
         yum_src.fileutils.makedirs = Mock()
         yum_src.os.chmod = Mock()
         yum_src.os.makedirs = Mock()
@@ -312,9 +310,6 @@ class YumSrcTest(unittest.TestCase):
     def test_minrate_timeout_config(self):
         # pylint: disable-next=invalid-name
         CFG = Mock()
-        CFG.REPOSYNC_TIMEOUT = 42
-        CFG.REPOSYNC_MINRATE = 42
-        CFG.REPOSYNC_DOWNLOAD_THREADS = 42  # Throws ValueError if not defined
         CFG.MOUNT_POINT = ""
         CFG.PREPENDED_DIR = ""
         CFG.http_proxy = False
@@ -327,6 +322,9 @@ class YumSrcTest(unittest.TestCase):
             "spacewalk.satellite_tools.repo_plugins.yum_src.MirrorGroup",
             mirror_group_mock,
         ), patch("spacewalk.common.rhnConfig.CFG", CFG), patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.DB_CFG",
+            Mock(REPOSYNC_TIMEOUT=42, REPOSYNC_MINRATE=42),
+        ), patch(
             "spacewalk.satellite_tools.repo_plugins.yum_src.os.path.isfile",
             Mock(return_value=False),
         ):

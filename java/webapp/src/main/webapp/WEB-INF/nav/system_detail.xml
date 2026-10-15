@@ -7,7 +7,7 @@
       <rhn-tab-url>/rhn/systems/details/RebootSystem.do</rhn-tab-url>
     </rhn-tab>
     <rhn-tab name="Properties" url="/rhn/systems/details/Edit.do" acl="authorized_for(systems.details.overview, W)"/>
-    <rhn-tab name="Remote Command" acl="authorized_for(systems.details.remote_commands); system_feature(ftr_remote_command); not is(java.disable_remote_commands_from_ui)">
+    <rhn-tab name="Remote Command" acl="authorized_for(systems.details.remote_commands); system_feature(ftr_remote_command); not db_config_is(JAVA_DISABLE_REMOTE_COMMANDS_FROM_UI)">
       <rhn-tab-url>/rhn/systems/details/SystemRemoteCommand.do</rhn-tab-url>
     </rhn-tab>
     <rhn-tab name="Connection" url="/rhn/systems/details/Connection.do" acl="org_has_proxies(); authorized_for(systems.details.connection)"/>
@@ -29,7 +29,7 @@
     <rhn-tab name="Custom Info" acl="authorized_for(systems.details.custom_data); system_feature(ftr_custom_info)">
       <rhn-tab-url>/rhn/systems/details/ListCustomData.do</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Support" acl="authorized_for(systems.details.support); not is(java.disable_supportdata_upload)" url="/rhn/manager/systems/details/support">
+    <rhn-tab name="Support" acl="authorized_for(systems.details.support); not db_config_is(JAVA_DISABLE_SUPPORTDATA_UPLOAD)" url="/rhn/manager/systems/details/support">
       <rhn-tab-url>/rhn/manager/systems/details/support</rhn-tab-url>
     </rhn-tab>
   </rhn-tab>

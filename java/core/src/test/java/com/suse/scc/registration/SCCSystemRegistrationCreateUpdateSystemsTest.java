@@ -12,8 +12,8 @@ package com.suse.scc.registration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
@@ -66,7 +66,8 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
             throws URISyntaxException {
         final int systemSize = 101;
         final int batchSize = 50;
-        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, String.valueOf(batchSize));
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.REG_BATCH_SIZE, String.valueOf(batchSize));
 
         // setup
         final TestSCCWebClient sccWebClient = getDefaultTestSCCWebClient();
@@ -93,7 +94,8 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
     public void testSuccessSCCSystemRegistrationCreateUpdateSystemsWhenRestCallFail() {
         final int systemSize = 101;
         final int batchSize = 50;
-        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, String.valueOf(batchSize));
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.REG_BATCH_SIZE, String.valueOf(batchSize));
 
         // setup
         TestSCCWebClient sccWebClient = new TestSCCWebClient(null) {
@@ -131,7 +133,8 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
     public void testSuccessSCCSystemRegistrationCreateUpdateSystemsWhenRTE() {
         final int systemSize = 101;
         final int batchSize = 50;
-        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, String.valueOf(batchSize));
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.REG_BATCH_SIZE, String.valueOf(batchSize));
 
         // setup
         TestSCCWebClient sccWebClient = new TestSCCWebClient(null) {

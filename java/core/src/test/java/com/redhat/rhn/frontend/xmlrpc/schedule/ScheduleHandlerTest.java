@@ -18,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -28,6 +26,8 @@ import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.ActionedSystem;
@@ -257,7 +257,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         apiActions = handler.listAllArchivedActions(admin);
         assertTrue(apiActions.length > numActions);
 
-        Config.get().setString(ConfigDefaults.ACTIONS_DISPLAY_LIMIT, "1");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_ACTIONS_DISPLAY_LIMIT, "1");
         Object[] apiActionsLimitted = handler.listArchivedActions(admin);
 
         assertEquals(apiActionsLimitted.length, 1);
@@ -290,7 +290,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         apiActions = handler.listAllCompletedActions(admin);
         assertTrue(apiActions.length > numActions);
 
-        Config.get().setString(ConfigDefaults.ACTIONS_DISPLAY_LIMIT, "1");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.JAVA_ACTIONS_DISPLAY_LIMIT, "1");
         Object[] apiActionsLimitted = handler.listCompletedActions(admin);
 
         assertEquals(apiActionsLimitted.length, 1);

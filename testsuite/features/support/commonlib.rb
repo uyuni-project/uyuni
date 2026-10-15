@@ -673,6 +673,17 @@ def reportdb_server_query(query)
   "echo \"#{query}\" | spacewalk-sql --reportdb --select-mode -"
 end
 
+# Sets a configuration value stored in the rhnConfiguration table of a server.
+#
+# @param key [String] The configuration key.
+# @param value [String, nil] The value, nil to use the default value.
+# @param host [String] The server.
+def set_db_config_value(key, value, host: 'server')
+  sql_value = value.nil? ? 'NULL' : "'#{value}'"
+  query = "UPDATE rhnConfiguration SET value = #{sql_value} WHERE key = '#{key}';"
+  get_target(host).run("echo \"#{query}\" | spacewalk-sql --select-mode -")
+end
+
 # Runs a single-value query (no double quotes in it) against the reportdb of a server.
 #
 # @param query [String] The SQL query, returning one row with one column.

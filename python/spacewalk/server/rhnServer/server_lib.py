@@ -30,10 +30,10 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnException
 
 # pylint: disable-next=wrong-import-position
-from spacewalk.common.rhnConfig import CFG
 
 # pylint: disable-next=wrong-import-position
 from spacewalk.server import rhnSQL
+from spacewalk.server.db_config import DB_CFG
 
 # pylint: disable-next=wrong-import-position
 from rhn.stringutils import bstr
@@ -266,7 +266,7 @@ def join_rhn(org_id):
 
 
 def snapshot_server(server_id, reason):
-    if CFG.ENABLE_SNAPSHOTS:
+    if DB_CFG.get_bool("ENABLE_SNAPSHOTS"):
         return rhnSQL.Procedure("rhn_server.snapshot_server")(server_id, reason)
 
 
