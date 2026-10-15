@@ -655,6 +655,28 @@ sub backup_file {
     }
 }
 
+# Store configuration values in the rhnConfiguration table.
+# A value matching the default value is stored as NULL.
+sub write_db_config {
+        my $config = shift;
+        my $answers = shift;
+
+        return unless %{$config};
+
+        my $dbh = get_dbh($answers);
+        my $sth = $dbh->prepare(<<EOQ);
+UPDATE rhnConfiguration
+   SET value = CASE WHEN COALESCE(default_value, '') = ? THEN NULL ELSE ? END
+ WHERE key = ?
+EOQ
+        for my $key (sort keys %{$config}) {
+                $sth->execute($config->{$key}, $config->{$key}, $key);
+        }
+        $dbh->commit();
+        $sth->finish;
+        $dbh->disconnect();
+}
+
 # Write subset of $answers to /etc/rhn/rhn.conf.
 # Config written here is used only for database population
 # and config will be later on replaced by one generated from templates.
