@@ -57,7 +57,8 @@ public class RhnConfiguration extends BaseDomainHelper {
     @Column(name = "value", length = 512)
     private String value;
 
-    @Column(name = "default_value", length = 512)
+    // the default value is managed by schema migrations only
+    @Column(name = "default_value", length = 512, insertable = false, updatable = false)
     private String defaultValue;
 
     @Column(name = "created", nullable = false, updatable = false)
@@ -65,25 +66,6 @@ public class RhnConfiguration extends BaseDomainHelper {
 
     @Column(name = "modified", nullable = false)
     private Date modified;
-
-    // Constructors
-    public RhnConfiguration() {
-    }
-
-    /**
-     * Parameter constructor
-     * @param keyIn the key
-     * @param descriptionIn the description
-     * @param valueIn the value
-     * @param defaultValueIn the default value
-     */
-    public RhnConfiguration(KEYS keyIn, String descriptionIn, String valueIn,
-                            String defaultValueIn) {
-        key = keyIn;
-        description = descriptionIn;
-        value = valueIn;
-        defaultValue = defaultValueIn;
-    }
 
     public KEYS getKey() {
         return key;
@@ -113,8 +95,11 @@ public class RhnConfiguration extends BaseDomainHelper {
         return defaultValue;
     }
 
-    public void setDefaultValue(String defaultValueIn) {
-        defaultValue = defaultValueIn;
+    /**
+     * @return the value or the default value when no value is set
+     */
+    public String getEffectiveValue() {
+        return value != null ? value : defaultValue;
     }
 
 }
