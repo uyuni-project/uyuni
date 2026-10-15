@@ -76,57 +76,54 @@ def run_uyuni_configfiles_sync():
     return exitCode
 
 
+# rhn.conf keys which moved into the rhnConfiguration table
+DB_CONFIG_KEYS = {
+    "server.max_passwd_len": "PSW_CHECK_LENGTH_MAX",
+    "max_passwd_len": "PSW_CHECK_LENGTH_MAX",
+    "server.min_passwd_len": "PSW_CHECK_LENGTH_MIN",
+    "min_passwd_len": "PSW_CHECK_LENGTH_MIN",
+}
+
+
 def move_config_to_db():
     """
-    Move specific configuration values from /etc/rhn/rhn.conf into rhnConfigration table
+    Move configuration values from /etc/rhn/rhn.conf into the rhnConfiguration table
     """
     rhnSQL.initDB()
 
-    # pylint: disable-next=invalid-name
-    with cfg_component("server") as CFG:
-        if CFG.has_key("server.max_passwd_len"):
-            move_configuration(
-                "PSW_CHECK_LENGTH_MAX",
-                CFG.max_passwd_len,
-                oldkey="server.max_passwd_len",
-            )
-        elif CFG.has_key("max_passwd_len"):
-            move_configuration(
-                "PSW_CHECK_LENGTH_MAX", CFG.max_passwd_len, oldkey="max_passwd_len"
-            )
+    with open("/etc/rhn/rhn.conf", "r", encoding="utf8") as f:
+        lines = f.readlines()
 
-        if CFG.has_key("server.min_passwd_len"):
-            move_configuration(
-                "PSW_CHECK_LENGTH_MIN",
-                CFG.max_passwd_len,
-                oldkey="server.min_passwd_len",
-            )
-        elif CFG.has_key("min_passwd_len"):
-            move_configuration(
-                "PSW_CHECK_LENGTH_MIN", CFG.min_passwd_len, oldkey="min_passwd_len"
-            )
+    remaining = []
+    for line in lines:
+        match = re.match(r"^\s*([\w.]+)\s*=(.*)$", line)
+        key = DB_CONFIG_KEYS.get(match.group(1).lower()) if match else None
+        if not key or not move_configuration(key, match.group(2).strip()):
+            remaining.append(line)
+
+    if len(remaining) == len(lines):
+        return
+    rhnSQL.commit()
+    with open("/etc/rhn/rhn.conf", "w", encoding="utf8") as f:
+        f.writelines(remaining)
 
 
-def move_configuration(key, value, oldkey=None):
+def move_configuration(key, value):
+    """
+    Store the value in the database. A value matching the default value is stored as NULL.
+    """
     h = rhnSQL.prepare("""
-            UPDATE rhnConfiguration SET value = :val WHERE key = :key
+            UPDATE rhnConfiguration
+               SET value = CASE WHEN COALESCE(default_value, '') = :val THEN NULL ELSE :val END
+             WHERE key = :key
             """)
     rowcount = h.execute(val=value, key=key)
     if rowcount != 1:
         # update failed
         sys.stdout.write(f"Failed to move {key} into DB\n")
         sys.stdout.flush()
-        return
-    with open("/etc/rhn/rhn.conf", "r+", encoding="utf8") as f:
-        new_f = f.readlines()
-        f.seek(0)
-        for line in new_f:
-            if oldkey:
-                if not line.strip().startswith(oldkey):
-                    f.write(line)
-            elif not line.strip().startswith(key):
-                f.write(line)
-        f.truncate()
+        return False
+    return True
 
 
 def init_scc_login():
