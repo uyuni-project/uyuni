@@ -71,6 +71,16 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
     }
 
     @Test
+    public void testSetDefaultBooleanStoresNull() {
+        // the default value is '0'
+        factory.setValue(RhnConfiguration.KEYS.DISCONNECTED, false);
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.DISCONNECTED).getValue());
+
+        factory.setValue(RhnConfiguration.KEYS.DISCONNECTED, true);
+        assertTrue(factory.getBoolean(RhnConfiguration.KEYS.DISCONNECTED));
+    }
+
+    @Test
     public void testEmptyValue() {
         factory.resetToDefault(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID);
         assertNull(factory.getLong(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID));
