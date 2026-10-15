@@ -70,6 +70,19 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
         assertFalse(factory.getBoolean(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT));
     }
 
+    /*
+     * disable as long as we have no boolean value to test with
+    @Test
+    public void testSetDefaultBooleanStoresNull() {
+        // the default value is '0'
+        factory.setValue(RhnConfiguration.KEYS.DISCONNECTED, false);
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.DISCONNECTED).getValue());
+
+        factory.setValue(RhnConfiguration.KEYS.DISCONNECTED, true);
+        assertTrue(factory.getBoolean(RhnConfiguration.KEYS.DISCONNECTED));
+    }
+    */
+
     @Test
     public void testEmptyValue() {
         factory.resetToDefault(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID);
