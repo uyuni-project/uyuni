@@ -47,7 +47,7 @@ public class KickstartInitiateActionTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Removes everything the test created on cobbler (real or mocked) -
+     * Removes everything the test created on cobbler -
      * mandatory per test: the fixtures reuse one fixed MAC address, which
      * real cobbler rejects on the next system record.
      */
@@ -144,9 +144,9 @@ public class KickstartInitiateActionTest extends BaseTestCaseWithUser {
         KickstartableTree tree = treeOfType("sles15generic");
         SystemRecord system = cobblerSystem("suse", "sles15generic",
                 "console=ttyS0",
-                "ksdevice=eth0 install=http://" + HOST + "/ty/token1"
-                        + " autoyast=http://" + HOST + "/cblr/svc/op/autoinstall/system/"
-                        + SYSTEM_NAME);
+                "ksdevice=eth0 install=http://" + HOST + "/ty/token1" +
+                        " autoyast=http://" + HOST + "/cblr/svc/op/autoinstall/system/" +
+                        SYSTEM_NAME);
 
         String kopts = KickstartInitiateAction.buildKernelOptions(system, tree, HOST, true);
 
@@ -161,11 +161,8 @@ public class KickstartInitiateActionTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * RHEL: a resolved text option survives untransformed (the textmode
-     * transform is suse-breed only). Cobbler resolves a bare flag to an
-     * empty value, which the mock renders as text= and real cobbler (blank
-     * values round-trip through its YAML storage) as text=~ - legacy parity
-     * in both cases.
+     * RHEL: a resolved text option survives untransformed.
+     * Cobbler resolves a bare flag to an empty value.
      */
     @Test
     public void testRhelTextSurvivesUntransformed() throws Exception {

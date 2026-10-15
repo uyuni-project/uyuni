@@ -11,7 +11,8 @@
 
 package com.redhat.rhn.domain.kickstart;
 
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -31,20 +32,18 @@ import org.cobbler.SystemRecord;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.URI;
 import java.nio.file.Files;
 
 public class KickstartTestUtils {
 
     /**
-     * System property switching the cobbler-touching test suites from the
-     * mocked cobbler connection to a real one (started inside the test
-     * container via java/buildconf/test/cobbler/setup-cobbler-test.sh).
+     * System property switching the test suites from the mocked cobbler
+     * connection to a real one.
+     * Using real cobbler is very time consuming and thus are optional, however
+     * when touching cobbler integration, consider running at least once as
+     * cobbler mocks are not 100% up to date and even behavior is different.
      */
     public static final String USE_REAL_COBBLER_PROPERTY = "use.real.cobbler";
-
     protected KickstartTestUtils() {
         //empty
     }
@@ -72,8 +71,6 @@ public class KickstartTestUtils {
      * @throws Exception if anything goes wrong
      */
     public static void setupTestConfiguration(User u, boolean realCobbler) throws Exception {
-        Config.get().setString(CobblerXMLRPCHelper.class.getName(),
-                MockXMLRPCInvoker.class.getName());
         Config.get().setString(ConfigDefaults.KICKSTART_COBBLER_DIR,
                 "/tmp/kickstart/");
         Config.get().setString(ConfigDefaults.COBBLER_SNIPPETS_DIR,
@@ -86,28 +83,24 @@ public class KickstartTestUtils {
                 "/tmp/kickstart/kickstart_mount_point");
         TestUtils.createDirIfNotExists(new File("/tmp/kickstart/kickstart_mount_point"));
 
-        Config.get().setString(CobblerConnection.class.getName(),
-                MockConnection.class.getName());
-
         TestUtils.createDirIfNotExists(new File(ConfigDefaults.get()
                 .getKickstartConfigDir() + File.separator + KickstartData.WIZARD_DIR));
         TestUtils.createDirIfNotExists(new File(ConfigDefaults.get()
                 .getKickstartConfigDir() + File.separator + KickstartData.RAW_DIR));
         TestUtils.createDirIfNotExists(CobblerSnippet.getSpacewalkSnippetsDir());
 
-        KickstartableTreeTest.createKickstartTreeItems(u);
-
-        MockConnection.clear();
-
         if (realCobbler) {
-            assumeTrue(isCobblerReachable(),
-                    "Cobbler is not reachable, start it with "
-                            + "java/buildconf/test/cobbler/setup-cobbler-test.sh");
-            Config.get().setString(CobblerXMLRPCHelper.class.getName(),
-                    CobblerXMLRPCHelper.class.getName());
-            Config.get().setString(CobblerConnection.class.getName(),
-                    CobblerConnection.class.getName());
+            CobblerConnection con = CobblerXMLRPCHelper.getUncachedAutomatedConnection();
+            assertNotNull(con, "Cobbler is not reachable, disable real cobbler use at useRealCobbler()");
+            assertDoesNotThrow(() -> con.getVersion());
         }
+        else {
+            Config.get().setString(CobblerXMLRPCHelper.class.getName(), MockXMLRPCInvoker.class.getName());
+            Config.get().setString(CobblerConnection.class.getName(), MockConnection.class.getName());
+            MockConnection.clear();
+        }
+
+        KickstartableTreeTest.createKickstartTreeItems(u);
     }
 
     /**
@@ -162,17 +155,6 @@ public class KickstartTestUtils {
     }
 
     private static Boolean sles16Support;
-
-    private static boolean isCobblerReachable() {
-        URI uri = URI.create(ConfigDefaults.get().getCobblerServerUrl());
-        try (Socket socket = new Socket()) {
-            socket.connect(new InetSocketAddress(uri.getHost(), uri.getPort()), 3000);
-            return true;
-        }
-        catch (IOException e) {
-            return false;
-        }
-    }
 
     public static void createCobblerObjects(KickstartData k) {
         Distro d = Distro.lookupById(CobblerXMLRPCHelper.getConnection("test"),

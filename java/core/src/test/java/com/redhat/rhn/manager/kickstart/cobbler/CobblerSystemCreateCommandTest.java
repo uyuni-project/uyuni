@@ -24,10 +24,10 @@ import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestStatics;
@@ -46,8 +46,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -79,7 +77,7 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
         String profileId = createProfile(connection).get("uid").toString();
         KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
-        k.setCobblerId(profileId.toString());
+        k.setCobblerId(profileId);
         Server s = ServerFactoryTest.createTestServer(user, false);
 
         // Act
@@ -94,7 +92,7 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
         String profileId = createProfile(connection).get("uid").toString();
         KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
-        k.setCobblerId(profileId.toString());
+        k.setCobblerId(profileId);
         Server s = ServerFactoryTest.createTestServer(user, false);
 
         // Act
@@ -178,8 +176,8 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
                         List.of("install=http://" + KICKSTART_HOST + MEDIA_PATH,
                         "ksdevice=eth0",
                         "console=ttyS0",
-                        "self_update=http://" + KICKSTART_HOST + "/ks/dist/child/"
-                                + child.getLabel() + "/" + ksdata.getTree().getLabel()));
+                        "self_update=http://" + KICKSTART_HOST + "/ks/dist/child/" +
+                                child.getLabel() + "/" + ksdata.getTree().getLabel()));
     }
 
     /**
@@ -221,8 +219,8 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
         KernelOptionsList options = new KernelOptionsList(kernelOptionsOf(rec));
         Assertions.assertEquals("http://" + KICKSTART_HOST + MEDIA_PATH,
                 options.getValue("inst.install_url"));
-        Assertions.assertEquals("http://" + KICKSTART_HOST + "/ks/dist/child/"
-                        + firstInstallerUpdatesChild(ksdata) + "/" + ksdata.getTree().getLabel(),
+        Assertions.assertEquals("http://" + KICKSTART_HOST + "/ks/dist/child/" +
+                        firstInstallerUpdatesChild(ksdata) + "/" + ksdata.getTree().getLabel(),
                 options.getValue("inst.self_update"));
         Assertions.assertFalse(options.hasOption("self_update"));
         Assertions.assertFalse(options.hasOption("install"));
@@ -315,8 +313,8 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
         // Assert
         assertOptionTokens(rec,
                         List.of("inst.install_url=http://" + KICKSTART_HOST + MEDIA_PATH,
-                        "inst.self_update=http://" + KICKSTART_HOST + "/ks/dist/child/"
-                                + child.getLabel() + "/" + ksdata.getTree().getLabel(),
+                        "inst.self_update=http://" + KICKSTART_HOST + "/ks/dist/child/" +
+                                child.getLabel() + "/" + ksdata.getTree().getLabel(),
                         "ksdevice=eth0"));
     }
 

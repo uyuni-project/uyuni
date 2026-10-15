@@ -69,7 +69,7 @@ public class KickstartableTreeTest extends KickstartBaseTest {
         KickstartableTree tree = new KickstartableTree();
         tree.setChannel(ChannelTestUtils.createBaseChannel(u));
         tree.setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_7));
         tree.setBasePath(basePath.getAbsolutePath());
         tree.setOrg(u.getOrg());
         createKickstartTreeItems(tree);

@@ -38,7 +38,7 @@ public class KickstartFileDownloadCommandTest extends
         ksdata.getKickstartDefaults().getKstree().setChannel(c);
         KickstartDataTest.addKickstartPackagesToChannel(c);
         ksdata.getTree().setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_7));
 
         String fakeKey = "io89089sfd78r789y8989asf89asfd89we789789asfd";
         KickstartCommand keyCommand =

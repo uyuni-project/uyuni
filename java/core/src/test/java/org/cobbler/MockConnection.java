@@ -358,13 +358,13 @@ public class MockConnection extends CobblerConnection {
             result.putAll((Map<String, Object>) value);
         }
         else if (value instanceof String && !((String) value).isEmpty()) {
-            for (String token : ((String) value).trim().split("\\s+")) {
-                int eq = token.indexOf('=');
+            for (String t : ((String) value).trim().split("\\s+")) {
+                int eq = t.indexOf('=');
                 if (eq < 0) {
-                    result.put(token, "");
+                    result.put(t, "");
                 }
                 else {
-                    result.put(token.substring(0, eq), token.substring(eq + 1));
+                    result.put(t.substring(0, eq), t.substring(eq + 1));
                 }
             }
         }

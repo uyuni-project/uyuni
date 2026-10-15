@@ -124,8 +124,8 @@ public class KickstartHelperTest extends KickstartBaseTest {
         Channel tools = ChannelTestUtils.createChildChannel(user, base);
         ksdata.getTree().setChannel(base);
         ksdata.getTree().setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
-        assertTrue(ksdata.isRhel6());
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_7));
+        assertTrue(ksdata.isRhel7());
         assertFalse(helper.verifyKickstartChannel(ksdata, user));
 
         PackageManagerTest.addPackageToChannel("rhn-kickstart", tools);
