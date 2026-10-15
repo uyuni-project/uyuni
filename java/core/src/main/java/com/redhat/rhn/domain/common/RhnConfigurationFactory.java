@@ -90,7 +90,10 @@ public class RhnConfigurationFactory extends HibernateFactory {
     public void setValue(RhnConfiguration.KEYS keyIn, Object valueIn) {
         RhnConfiguration configuration = getConfiguration(keyIn);
         String newValue = valueIn == null ? null : String.valueOf(valueIn);
-        if (Objects.equals(newValue, configuration.getDefaultValue())) {
+        boolean isDefault = valueIn instanceof Boolean booleanValue ?
+                booleanValue == toBoolean(configuration.getDefaultValue()) :
+                Objects.equals(newValue, configuration.getDefaultValue());
+        if (isDefault) {
             newValue = null;
         }
         configuration.setValue(newValue);
