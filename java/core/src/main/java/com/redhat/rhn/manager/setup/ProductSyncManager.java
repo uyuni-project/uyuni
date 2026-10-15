@@ -210,6 +210,10 @@ public class ProductSyncManager {
                 channelsToSync.add(iuc.getLabel());
             }
 
+            // make sure new contents from ContentSyncManager::addChannel
+            // are commited before ScheduleRepoSyncEvent kicks in
+            HibernateFactory.commitTransaction();
+
             ScheduleRepoSyncEvent event = new ScheduleRepoSyncEvent(channelsToSync, user.getId());
             MessageQueue.publish(event);
         }

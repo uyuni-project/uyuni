@@ -1,0 +1,2 @@
+- Ensure product channels are committed to the database before
+  reposync is scheduled (bsc#1281388)
