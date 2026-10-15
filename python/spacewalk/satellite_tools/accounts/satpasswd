@@ -20,7 +20,7 @@
 import getpass
 import sys
 
-from spacewalk.server import db_config
+from spacewalk.server.db_config import DB_CFG
 from spacewalk.server import rhnSQL, rhnUser
 
 
@@ -80,7 +80,7 @@ if __name__ == "__main__":
         print("Empty password is not permitted.")
         sys.exit(1)
 
-    MIN_PASSWD_LEN = db_config.value("PSW_CHECK_LENGTH_MIN")
+    MIN_PASSWD_LEN = int(DB_CFG.PSW_CHECK_LENGTH_MIN)
     if len(passwordIn) < MIN_PASSWD_LEN:
         # pylint: disable-next=consider-using-f-string
         print(("User password should be at least %d characters long.") % MIN_PASSWD_LEN)

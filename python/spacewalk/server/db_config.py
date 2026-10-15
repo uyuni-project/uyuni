@@ -12,58 +12,97 @@
 # SPDX-License-Identifier: GPL-2.0-only
 #
 
-"""A module that reads values from the database"""
+"""A module that reads configuration values from the database"""
 
-
-from typing import Optional, Union
+from typing import List, Optional, Tuple, Union
+from spacewalk.common.rhnConfig import is_true
 from spacewalk.server import rhnSQL
 
+ConfigValue = Optional[Union[str, float, int]]
 
-def sanitize_value(key: str, val: str) -> Optional[Union[str, float, int]]:
+# keys whose values are never converted to numbers
+STRING_KEYS = ("PSW_CHECK_SPECIAL_CHARACTERS",)
+
+
+def sanitize_value(key: str, val: Optional[str]) -> ConfigValue:
     """
     attempt to convert a string value to the proper type
     """
-    convert_table = {
-        "PSW_CHECK_SPECIAL_CHARACTERS": str,
-    }
+    if val is None:
+        return None
     val = val.strip()
-
-    if key in convert_table:
-        try:
-            val = convert_table[key](val)
-        except ValueError:
-            pass
-    else:
-        try:
-            val = int(val)  # make int if can.
-        except ValueError:
-            try:
-                val = float(val)  # make float if can.
-            except ValueError:
-                pass
     if val == "":  # Empty strings treated as None
-        val = None
-    return val
+        return None
+
+    if key in STRING_KEYS:
+        return val
+    try:
+        return int(val)  # make int if can.
+    except ValueError:
+        try:
+            return float(val)  # make float if can.
+        except ValueError:
+            return val
 
 
-def value(key: str) -> Optional[Union[str, float, int]]:
+class DBConfig:
     """
-    Return the value of the given key. If the value is not defined, return the default value
-    When the key is not found, an AttributeError is raised
-    """
-    rhnSQL.initDB()
+    Read-only access to the configuration values stored in the rhnConfiguration table.
 
-    h = rhnSQL.prepare(
+    When a key has no value, the default value is returned.
+    Values are changed only by the Java code.
+
+    Values can be read like the file configuration: DB_CFG.SYSTEM_CHECKIN_THRESHOLD
+    When the key is not found, an AttributeError is raised.
+    """
+
+    def __getattr__(self, key: str) -> ConfigValue:
+        if key.startswith("_"):
+            raise AttributeError(key)
+        return self.get(key.upper())
+
+    def get(self, key: str) -> ConfigValue:
         """
-            SELECT value, default_value
-            FROM rhnConfiguration
-            WHERE key = :key
-            """
-    )
-    h.execute(key=key)
-    data = h.fetchone_dict()
-    if not data:
-        raise AttributeError(key)
+        Return the value of the given key or the default value when no value is set
+        """
+        return sanitize_value(key, self._raw_value(key))
 
-    result = data["value"] if data["value"] else data["default_value"]
-    return sanitize_value(key, result)
+    def get_default(self, key: str) -> ConfigValue:
+        """
+        Return the default value of the given key
+        """
+        return sanitize_value(key, self._fetch(key)[1])
+
+    def get_bool(self, key: str) -> bool:
+        """
+        Return the value of the given key as boolean
+        """
+        return is_true(self._raw_value(key))
+
+    def get_list(self, key: str) -> List[str]:
+        """
+        Return the comma separated value of the given key as list
+        """
+        raw = self._raw_value(key) or ""
+        return [v.strip() for v in raw.split(",") if v.strip()]
+
+    def _raw_value(self, key: str) -> Optional[str]:
+        value, default_value = self._fetch(key)
+        return value if value is not None else default_value
+
+    def _fetch(self, key: str) -> Tuple[Optional[str], Optional[str]]:
+        rhnSQL.initDB()
+
+        h = rhnSQL.prepare("""
+                SELECT value, default_value
+                FROM rhnConfiguration
+                WHERE key = :key
+                """)
+        h.execute(key=key)
+        data = h.fetchone_dict()
+        if not data:
+            raise AttributeError(key)
+        return data["value"], data["default_value"]
+
+
+DB_CFG = DBConfig()

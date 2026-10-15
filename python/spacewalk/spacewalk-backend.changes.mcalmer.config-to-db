@@ -1,0 +1,2 @@
+- Add DBConfig class for reading configuration values from the
+  database
