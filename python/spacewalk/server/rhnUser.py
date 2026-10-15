@@ -31,7 +31,7 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 
-from spacewalk.server import db_config
+from spacewalk.server.db_config import DB_CFG
 from spacewalk.server import rhnSQL
 from spacewalk.server import rhnSession
 
@@ -683,8 +683,8 @@ def validate_new_password(password):
     # regular expression
     if not password:
         raise rhnFault(12)
-    MIN_PASSWD_LEN = db_config.value("PSW_CHECK_LENGTH_MIN")
-    MAX_PASSWD_LEN = db_config.value("PSW_CHECK_LENGTH_MAX")
+    MIN_PASSWD_LEN = DB_CFG.PSW_CHECK_LENGTH_MIN
+    MAX_PASSWD_LEN = DB_CFG.PSW_CHECK_LENGTH_MAX
     if len(password) < MIN_PASSWD_LEN:
         raise rhnFault(
             14, _("password must be at least %d characters") % MIN_PASSWD_LEN
