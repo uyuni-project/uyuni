@@ -85,7 +85,7 @@ public class SystemsCollector implements MultiCollector {
                 "FROM rhnServerInfo " +
                 "WHERE checkin < CURRENT_TIMESTAMP - NUMTODSINTERVAL(:checkin_threshold, 'second')";
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue();
+        long threshold = factory.getLong(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD);
         long secondsInDay = 60L * 60 * 24;
         return HibernateFactory.getSession()
                 .createNativeQuery(selectCountQuery, Tuple.class)

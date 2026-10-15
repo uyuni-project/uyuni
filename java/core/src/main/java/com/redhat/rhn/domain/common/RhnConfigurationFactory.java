@@ -19,14 +19,18 @@ package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * SatConfigFactory
+ * Access to the configuration values stored in the rhnConfiguration table.
+ *
+ * Every key has a value and a default value. When the value is NULL, the default value is used.
+ * The default value can only be changed by schema migrations.
  */
 public class RhnConfigurationFactory extends HibernateFactory {
 
@@ -34,37 +38,7 @@ public class RhnConfigurationFactory extends HibernateFactory {
 
     private static final RhnConfigurationFactory SINGLETON = new RhnConfigurationFactory();
 
-    public static class ConfigurationValues<T> {
-        private T value;
-        private T defaultValue;
-
-        /**
-         * Configuration values helper class
-         *
-         * @param valueIn        the current value
-         * @param defaultValueIn the default value
-         */
-        public ConfigurationValues(T valueIn, T defaultValueIn) {
-            value = valueIn;
-            defaultValue = defaultValueIn;
-        }
-
-        public T getValue() {
-            return value;
-        }
-
-        public void setValue(T valueIn) {
-            value = valueIn;
-        }
-
-        public T getDefaultValue() {
-            return defaultValue;
-        }
-
-        public void setDefaultValue(T defaultValueIn) {
-            defaultValue = defaultValueIn;
-        }
-    }
+    private static final List<String> TRUE_VALUES = List.of("1", "y", "true", "yes", "on");
 
     /**
      * Configuration Factory default Constructor
@@ -97,90 +71,148 @@ public class RhnConfigurationFactory extends HibernateFactory {
      *
      * @param keyIn the key
      * @return the configuration
+     * @throws IllegalStateException when the key does not exist in the database
      */
     public RhnConfiguration getConfiguration(RhnConfiguration.KEYS keyIn) {
-        return getSession().find(RhnConfiguration.class, keyIn);
+        RhnConfiguration configuration = getSession().find(RhnConfiguration.class, keyIn);
+        if (configuration == null) {
+            throw new IllegalStateException("Configuration key not found in database: " + keyIn);
+        }
+        return configuration;
     }
 
     /**
-     * update the current configurations
+     * Set the value of a configuration key.
+     * Setting null, a blank value or the default value removes the value, so the default value is used.
      *
-     * @param config the configuration entity
+     * @param keyIn the key
+     * @param valueIn the value
      */
-    public void update(RhnConfiguration config) {
-        Session session = getSession();
-        session.persist(config);
+    public void setValue(RhnConfiguration.KEYS keyIn, Object valueIn) {
+        RhnConfiguration configuration = getConfiguration(keyIn);
+        String newValue = valueIn == null ? null : StringUtils.trimToNull(String.valueOf(valueIn));
+        if (Objects.equals(newValue, configuration.getDefaultValue())) {
+            newValue = null;
+        }
+        configuration.setValue(newValue);
+        getSession().persist(configuration);
     }
 
     /**
-     * perform a bulk update for a configuration list
+     * Reset a configuration key to use the default value
      *
-     * @param configs the configs
+     * @param keyIn the key
      */
-    public void bulkUpdate(List<RhnConfiguration> configs) {
-        configs.forEach(config -> updateConfigurationValue(config.getKey(), config.getValue()));
+    public void resetToDefault(RhnConfiguration.KEYS keyIn) {
+        setValue(keyIn, null);
     }
 
     /**
-     * set a configuration value by key
-     *
-     * @param keyIn the keys
-     * @param value the value
+     * get the value of a configuration key, or the default value when no value is set
+     * @param keyIn the key
+     * @return the string value or null when empty
      */
-    public void updateConfigurationValue(RhnConfiguration.KEYS keyIn, Object value) {
-        Session session = getSession();
-        RhnConfiguration entity = getConfiguration(keyIn);
-        entity.setValue(String.valueOf(value));
-        session.persist(entity);
+    public String getString(RhnConfiguration.KEYS keyIn) {
+        return StringUtils.trimToNull(getConfiguration(keyIn).getEffectiveValue());
     }
 
     /**
-     * get a configuration value by key
-     * @param keyIn the keys
-     * @return the string value
+     * get the value of a configuration key, or the default value when no value is set
+     * @param keyIn the key
+     * @return the integer value or null when empty
      */
-    public ConfigurationValues<String> getStringConfiguration(RhnConfiguration.KEYS keyIn) {
-        RhnConfiguration configuration = getConfiguration(keyIn);
-        return new ConfigurationValues<>(configuration.getValue(), configuration.getDefaultValue());
+    public Integer getInteger(RhnConfiguration.KEYS keyIn) {
+        return toInteger(getString(keyIn));
     }
 
     /**
-     * get a configuration value by key
-     * @param keyIn the keys
-     * @return the boolean value
+     * get the value of a configuration key, or the default value when no value is set
+     * @param keyIn the key
+     * @return the long value or null when empty
      */
-    public ConfigurationValues<Boolean> getBooleanConfiguration(RhnConfiguration.KEYS keyIn) {
-        RhnConfiguration configuration = getConfiguration(keyIn);
-        return new ConfigurationValues<>(
-                Boolean.parseBoolean(configuration.getValue()),
-                Boolean.parseBoolean(configuration.getDefaultValue())
-        );
+    public Long getLong(RhnConfiguration.KEYS keyIn) {
+        return toLong(getString(keyIn));
     }
 
     /**
-     * get a configuration value by key
-     * @param keyIn the keys
-     * @return the integer value
+     * get the value of a configuration key, or the default value when no value is set
+     * @param keyIn the key
+     * @return the boolean value, false when empty
      */
-    public ConfigurationValues<Integer> getIntegerConfiguration(RhnConfiguration.KEYS keyIn) {
-        RhnConfiguration configuration = getConfiguration(keyIn);
-        return new ConfigurationValues<>(
-                Integer.parseInt(configuration.getValue()),
-                Integer.parseInt(configuration.getDefaultValue())
-        );
+    public boolean getBoolean(RhnConfiguration.KEYS keyIn) {
+        return toBoolean(getString(keyIn));
     }
 
     /**
-     * get a configuration value by key
-     * @param keyIn the keys
-     * @return the long value
+     * get the value of a configuration key, or the default value when no value is set
+     * @param keyIn the key
+     * @return the comma separated value as list, empty when the value is empty
      */
-    public ConfigurationValues<Long> getLongConfiguration(RhnConfiguration.KEYS keyIn) {
-        RhnConfiguration configuration = getConfiguration(keyIn);
-        return new ConfigurationValues<>(
-                Long.parseLong(configuration.getValue()),
-                Long.parseLong(configuration.getDefaultValue())
-        );
+    public List<String> getList(RhnConfiguration.KEYS keyIn) {
+        return toList(getString(keyIn));
     }
 
+    /**
+     * get the default value of a configuration key
+     * @param keyIn the key
+     * @return the string value or null when empty
+     */
+    public String getDefaultString(RhnConfiguration.KEYS keyIn) {
+        return StringUtils.trimToNull(getConfiguration(keyIn).getDefaultValue());
+    }
+
+    /**
+     * get the default value of a configuration key
+     * @param keyIn the key
+     * @return the integer value or null when empty
+     */
+    public Integer getDefaultInteger(RhnConfiguration.KEYS keyIn) {
+        return toInteger(getDefaultString(keyIn));
+    }
+
+    /**
+     * get the default value of a configuration key
+     * @param keyIn the key
+     * @return the long value or null when empty
+     */
+    public Long getDefaultLong(RhnConfiguration.KEYS keyIn) {
+        return toLong(getDefaultString(keyIn));
+    }
+
+    /**
+     * get the default value of a configuration key
+     * @param keyIn the key
+     * @return the boolean value, false when empty
+     */
+    public boolean getDefaultBoolean(RhnConfiguration.KEYS keyIn) {
+        return toBoolean(getDefaultString(keyIn));
+    }
+
+    /**
+     * get the default value of a configuration key
+     * @param keyIn the key
+     * @return the comma separated value as list, empty when the value is empty
+     */
+    public List<String> getDefaultList(RhnConfiguration.KEYS keyIn) {
+        return toList(getDefaultString(keyIn));
+    }
+
+    private static Integer toInteger(String value) {
+        return value == null ? null : Integer.valueOf(value);
+    }
+
+    private static Long toLong(String value) {
+        return value == null ? null : Long.valueOf(value);
+    }
+
+    private static boolean toBoolean(String value) {
+        return value != null && TRUE_VALUES.contains(value.toLowerCase());
+    }
+
+    private static List<String> toList(String value) {
+        if (value == null) {
+            return List.of();
+        }
+        return Arrays.stream(value.split(",")).map(String::trim).filter(v -> !v.isEmpty()).toList();
+    }
 }
