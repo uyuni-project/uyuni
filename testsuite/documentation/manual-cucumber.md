@@ -128,8 +128,6 @@ ___Platform___ | ___Client Type___ | ___Priority___ | ___Automation<br>candidate
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sles15sp7_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **SLE 16.0** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sles160_minion.feature` | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sles160_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
-**SLE Micro 5.2** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro52_minion.feature` | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro52_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **SLE Micro 5.3** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro53_minion.feature` | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro53_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **SLE Micro 5.4** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro54_minion.feature` | [General client smoke tests](#generalclientsmoke)
@@ -170,20 +168,22 @@ ___Platform___ | ___Client Type___ | ___Priority___ | ___Automation<br>candidate
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/oracle10_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **Liberty Linux 9** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/liberty9_minion.feature` | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/liberty9_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
+**Liberty Linux 10** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/liberty10_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/liberty10_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **Amazon Linux 2023** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/amazon2023_minion.feature` | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/amazon2023_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
-**Debian 12** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/debian12_minion.feature` | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/debian12_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
+**Debian 13** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/debian13_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/debian13_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **Ubuntu 22.04** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2204_minion.feature` | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2204_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **Ubuntu 24.04** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2404_minion.feature` | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2404_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **Ubuntu 26.04** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2604_minion.feature` | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2604_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
-**openSUSE Leap 15.6 (aarch64)** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse156arm_minion.feature` | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse156arm_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
-**openSUSE Leap 16.0 (aarch64)** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse160arm_minion.feature` | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse160arm_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
+**openSUSE Leap 16.1 (aarch64)** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse161arm_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse161arm_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
+**Raspberry Pi OS 13** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/raspios13_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/raspios13_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **Salt migration** | Salt migration minion | high | yes - `testsuite/features/build_validation/init_clients/salt_migration_minion.feature` | [General client smoke tests](#generalclientsmoke)
 
 #### Sequence of test steps
@@ -833,9 +833,9 @@ It should list all clients on all peripheral servers.
 
 ### 7.10 Test SLE-Micro
 * Priority: medium
-* Automated: yes - Multiple versions automated: 5.2-5.5 in `testsuite/features/build_validation/init_clients/slemicro*.feature`, 6.0-6.2 in `testsuite/features/build_validation/init_clients/slmicro60_*.feature`, `testsuite/features/build_validation/init_clients/slmicro61_*.feature`, and `testsuite/features/build_validation/init_clients/slmicro62_*.feature`, and migration tests in `testsuite/features/build_validation/migration/migration_slemicro54_*.feature` and `testsuite/features/build_validation/migration/migration_slemicro55_*.feature`
+* Automated: yes - Multiple versions automated: 5.3-5.5 in `testsuite/features/build_validation/init_clients/slemicro*.feature`, 6.0-6.2 in `testsuite/features/build_validation/init_clients/slmicro60_*.feature`, `testsuite/features/build_validation/init_clients/slmicro61_*.feature`, and `testsuite/features/build_validation/init_clients/slmicro62_*.feature`, and migration tests in `testsuite/features/build_validation/migration/migration_slemicro54_*.feature` and `testsuite/features/build_validation/migration/migration_slemicro55_*.feature`
 * See [supported SLE Micro features](https://documentation.suse.com/multi-linux-manager/5.2/en/docs/client-configuration/supported-features-sle-micro.html) for feature availability
-1. Deploy a VM using the latest 5.2 [ISO](https://dist.suse.de/install/SLE-Micro-5.2-GM/SUSE-MicroOS-5.2-DVD-x86_64-GM-Media1.iso)
+1. Deploy a VM using the latest SLE Micro ISO
 1. Install requirement for bootstrapping:
     - `transactional-update pkg install salt-transactional-update`
     - reboot (A reboot is mandatory to add the changes into the snapshot)
