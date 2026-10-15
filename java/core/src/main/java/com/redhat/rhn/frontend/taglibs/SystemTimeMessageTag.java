@@ -77,7 +77,7 @@ public class SystemTimeMessageTag extends TagSupport {
         Long days = (((checkInAgo / 1000) / 60) / 60) / 24;
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         boolean awol = days.intValue() >
-                factory.getIntegerConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue();
+                factory.getInteger(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD);
 
         retval.append("<table border=\"0\" cellspacing=\"0\" cellpadding=\"6\">");
 
