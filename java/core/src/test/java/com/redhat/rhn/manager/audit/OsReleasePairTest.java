@@ -93,6 +93,33 @@ public class OsReleasePairTest {
     }
 
     @Test
+    public void testToOVALOsProductDebian() {
+        // Salt minions report the osfullname grain, "Debian GNU/Linux" on Debian
+        OsReleasePair debian13 = new OsReleasePair("Debian GNU/Linux", "13");
+        Optional<CVEAuditManagerOVAL.OVALOsProduct> productOpt = debian13.toOVALOsProduct();
+        assertTrue(productOpt.isPresent());
+        assertEquals(OsFamily.DEBIAN, productOpt.get().getOsFamily());
+        assertEquals("13", productOpt.get().getOsVersion());
+
+        OsReleasePair debian12 = new OsReleasePair("Debian", "12");
+        productOpt = debian12.toOVALOsProduct();
+        assertTrue(productOpt.isPresent());
+        assertEquals(OsFamily.DEBIAN, productOpt.get().getOsFamily());
+        assertEquals("12", productOpt.get().getOsVersion());
+
+        // Unsupported Debian release
+        OsReleasePair debian10 = new OsReleasePair("Debian GNU/Linux", "10");
+        assertFalse(debian10.toOVALOsProduct().isPresent());
+
+        // Ubuntu is not affected by the normalization
+        OsReleasePair ubuntu2404 = new OsReleasePair("Ubuntu", "24.04");
+        productOpt = ubuntu2404.toOVALOsProduct();
+        assertTrue(productOpt.isPresent());
+        assertEquals(OsFamily.UBUNTU, productOpt.get().getOsFamily());
+        assertEquals("24.04", productOpt.get().getOsVersion());
+    }
+
+    @Test
     public void testToOVALOsProductUnsupported() {
         OsReleasePair invalidOs = new OsReleasePair("Unknown OS", "1.0");
         assertFalse(invalidOs.toOVALOsProduct().isPresent());

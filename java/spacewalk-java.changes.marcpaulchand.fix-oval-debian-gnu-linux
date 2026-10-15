@@ -1,0 +1,2 @@
+- Fix the OVAL based CVE audit for Debian systems, whose OS name
+  reported by Salt is "Debian GNU/Linux"
