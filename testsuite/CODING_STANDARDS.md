@@ -1,6 +1,6 @@
 # Testsuite coding standards
 
-Read by the reviewer, not the implementer. Scope: `testsuite/` only.
+Read by the implementer before pushing and by the reviewer. Scope: `testsuite/` only.
 
 Mechanical rules live in tooling, not here: RuboCop (`testsuite/.rubocop.yml`, run `bundle exec rubocop <files>`) covers Ruby style, and `guidelines.md` and `pitfalls.md` in `documentation/` cover Gherkin naming and step conventions. This file holds the judgement calls reviewers keep raising. `#NNNN` is the uyuni PR where the point came up.
 
@@ -18,6 +18,14 @@ Mechanical rules live in tooling, not here: RuboCop (`testsuite/.rubocop.yml`, r
 - Scenario and step names match what the code does: proxy vs server, the resource actually touched (#12583).
 - A new parameter on a shared helper, such as `RemoteNode`, is documented in its doc comment. Remove one that the final design no longer needs (#12654).
 - Do not future-proof. Handle the repo, format or platform that exists today (#12324).
+- Feature files describe user-visible behaviour and must not expose CSS selectors or implementation details.
+- Group Ruby step definitions by domain, not by feature file. Call Ruby helpers rather than invoking one Gherkin step from another.
+- Keep scenarios deterministic. Account for the suite's per-feature user and role context.
+
+## Ruby code
+
+- Use the suite's `log` helper instead of `puts`.
+- Avoid global state between scenarios.
 
 ## Failures and error messages
 
