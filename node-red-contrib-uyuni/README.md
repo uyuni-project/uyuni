@@ -35,8 +35,10 @@ palette.
 
 **Broker.** Add a `uyuni-config` node with your broker's host and port. The
 broker requires authentication, so fill in the username and password too — use
-the `uyuni-subscriber` account, which is read-only and cannot publish. Enable
-TLS if your broker is configured for it.
+the `uyuni-subscriber` account, which is read-only and cannot publish. If your
+broker uses TLS, tick **Use TLS** and select a TLS configuration with the CA
+certificate that signed the broker's certificate, plus a client certificate and
+key if the broker requires them.
 
 **API.** Add a `uyuni-api-config` node with your server's XML-RPC endpoint
 (`https://<server>/rpc/api`) and a user that has permission for the actions you

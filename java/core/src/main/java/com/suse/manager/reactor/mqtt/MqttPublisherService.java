@@ -30,9 +30,11 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -46,6 +48,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+
+import javax.net.ssl.SSLSocketFactory;
 
 /**
  * Asynchronous MQTT Publisher Service for broadcasting Uyuni events.
@@ -80,6 +84,8 @@ public class MqttPublisherService {
     private final Gson gson;
     private final ExecutorService executorService;
     private final int qos;
+    private final SSLSocketFactory socketFactory;
+    private final boolean tlsMisconfigured;
 
     private MqttAsyncClient client;
     private boolean isConnecting = false;
@@ -123,7 +129,7 @@ public class MqttPublisherService {
 
     /**
      * Parameterized constructor.
-     * @param brokerUrlIn the MQTT broker URL (e.g. tcp://hostname:1883)
+     * @param brokerUrlIn the MQTT broker URL, e.g. tcp://hostname:1883, or ssl://hostname:8883 for TLS
      */
     public MqttPublisherService(String brokerUrlIn) {
         this.brokerUrl = brokerUrlIn;
@@ -163,6 +169,33 @@ public class MqttPublisherService {
             LOG.warn("Invalid QoS format. Defaulting to 1.");
         }
         this.qos = qosVal;
+
+        SSLSocketFactory factory = null;
+        boolean misconfigured = false;
+        String caFile = System.getProperty("uyuni.mqtt.tls.ca.file");
+        String keystoreFile = System.getProperty("uyuni.mqtt.tls.keystore.file");
+        if (MqttTlsSocketFactory.isTlsUrl(brokerUrlIn)) {
+            String keystorePassword = System.getProperty("uyuni.mqtt.tls.keystore.password",
+                    System.getenv("UYUNI_MQTT_TLS_KEYSTORE_PASSWORD"));
+            try {
+                factory = MqttTlsSocketFactory.build(caFile, keystoreFile,
+                        keystorePassword != null ? keystorePassword.toCharArray() : null);
+            }
+            catch (IOException | GeneralSecurityException e) {
+                // Never fall back to a plain connection: the administrator asked for TLS,
+                // and sending credentials and events unencrypted would be worse than not
+                // sending them at all.
+                LOG.error("MQTT TLS settings are invalid, events will not be published: {}",
+                        e.getMessage(), e);
+                misconfigured = true;
+            }
+        }
+        else if (caFile != null || keystoreFile != null) {
+            LOG.warn("MQTT TLS settings are ignored because the broker URL {} does not use ssl://",
+                    brokerUrlIn);
+        }
+        this.socketFactory = factory;
+        this.tlsMisconfigured = misconfigured;
 
         int queueLimit = 10000;
         try {
@@ -254,6 +287,23 @@ public class MqttPublisherService {
     }
 
     /**
+     * Whether TLS was requested but could not be set up from the configured files.
+     * Package private, for tests.
+     * @return true when the service will not connect because of invalid TLS settings
+     */
+    boolean isTlsMisconfigured() {
+        return tlsMisconfigured;
+    }
+
+    /**
+     * Whether the connection will be made over TLS. Package private, for tests.
+     * @return true when a TLS socket factory is in use
+     */
+    boolean usesTls() {
+        return socketFactory != null;
+    }
+
+    /**
      * Checks if a given topic is enabled for publishing.
      * @param topic the target topic string
      * @return true if the event is enabled (or no config filter is set), false otherwise
@@ -282,7 +332,7 @@ public class MqttPublisherService {
     // as soon as the connection was established.
     @SuppressWarnings("java:S2093")
     private synchronized void connectAsync() {
-        if (isConnecting || (client != null && client.isConnected())) {
+        if (tlsMisconfigured || isConnecting || (client != null && client.isConnected())) {
             return;
         }
 
@@ -299,6 +349,13 @@ public class MqttPublisherService {
                 options.setConnectionTimeout(CONNECTION_TIMEOUT_SECONDS);
                 options.setKeepAliveInterval(KEEP_ALIVE_INTERVAL_SECONDS);
 
+                if (socketFactory != null) {
+                    options.setSocketFactory(socketFactory);
+                    // Check that the certificate was issued for the host we dialled,
+                    // not just by a CA we trust.
+                    options.setHttpsHostnameVerificationEnabled(true);
+                }
+
                 if (username != null && !username.trim().isEmpty()) {
                     options.setUserName(username);
                     if (password != null) {
@@ -312,7 +369,7 @@ public class MqttPublisherService {
             }
             catch (MqttException e) {
                 LOG.error("Failed to connect to MQTT broker: {}",
-                        e.getMessage(), e);
+                        rootCauseMessage(e), e);
             }
             finally {
                 synchronized (MqttPublisherService.this) {
@@ -323,6 +380,21 @@ public class MqttPublisherService {
     }
 
     /**
+     * The message of the innermost cause. Paho reports TLS failures as a bare
+     * "MqttException"; the reason an administrator can act on, such as an untrusted
+     * CA or a host name the certificate was not issued for, is in the cause chain.
+     * @param e the exception
+     * @return the most specific message available
+     */
+    static String rootCauseMessage(Throwable e) {
+        Throwable root = e;
+        while (root.getCause() != null && root.getCause() != root) {
+            root = root.getCause();
+        }
+        return root.getMessage() != null ? root.getMessage() : root.toString();
+    }
+
+    /**
      * Publish an event payload to a topic asynchronously.
      * @param topic target MQTT topic
      * @param payload the structured Java object to serialize and send
@@ -330,6 +402,11 @@ public class MqttPublisherService {
     public void publish(final String topic, final Object payload) {
         if (!isEventEnabled(topic)) {
             LOG.debug("MQTT event publication skipped because it is not enabled: {}", topic);
+            return;
+        }
+        if (tlsMisconfigured) {
+            // Already reported at start-up; logging again for every event would flood the log.
+            LOG.debug("MQTT event publication skipped because the TLS settings are invalid: {}", topic);
             return;
         }
         executorService.submit(() -> {

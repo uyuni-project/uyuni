@@ -216,18 +216,37 @@ and `uyuni-api-config` nodes, where they are stored encrypted.
 | `uyuni.mqtt.qos` | `1` | MQTT QoS level (0, 1, or 2) |
 | `uyuni.mqtt.events.enabled` | _(all)_ | Comma-separated topic allowlist, for example `systems.registered,jobs.returned` |
 | `uyuni.mqtt.queue.limit` | `10000` | Bounded publish queue size |
+| `uyuni.mqtt.tls.ca.file` | _(JVM trust store)_ | PEM file with the CA certificates that sign the broker's certificate. Only used with `ssl://` URLs |
+| `uyuni.mqtt.tls.keystore.file` | _(none)_ | PKCS#12 keystore with a client certificate and key, for brokers that require one |
+| `uyuni.mqtt.tls.keystore.password` | _(none)_ | Password of that keystore |
 
 ---
 
 ## TLS
 
-TLS between the publisher and the broker is not implemented yet. The broker image
-ships a plain listener on 1883 only, and the Uyuni publisher has been tested with
-`tcp://` URLs. This is recorded as a future enhancement in the RFC.
+All three parts can talk TLS. Credentials and events then travel encrypted, and
+each client checks that it is talking to the real broker.
 
-Node-RED's `uyuni-config` node does expose a **Use TLS** option, which switches
-the connection to `mqtts://`. It is usable against a broker you have configured
-for TLS yourself, but the shipped broker image is not one.
+**Broker.** Mount a directory with `server.crt` and `server.key` at
+`/mosquitto/certs`, and publish port 8883. The broker then opens a TLS listener
+on 8883 next to the plain one on 1883. Set `MQTT_PLAIN_LISTENER=false` to close
+1883. To also require client certificates, add the signing CA as `ca.crt` and set
+`MQTT_REQUIRE_CLIENT_CERT=true`. The broker image README has the details.
+
+**Uyuni server.** Use an `ssl://` URL, and point the publisher at the CA:
+
+```
+-Duyuni.mqtt.broker.url=ssl://mosquitto:8883
+-Duyuni.mqtt.tls.ca.file=/etc/pki/trust/anchors/mqtt-ca.pem
+```
+
+The host name in the URL must match the broker certificate. If the broker
+requires client certificates, also set `uyuni.mqtt.tls.keystore.file` and the
+keystore password.
+
+**Node-RED.** In the `uyuni-config` node, tick **Use TLS**, set the port to 8883,
+and select a TLS configuration holding the CA certificate (and the client
+certificate and key, if the broker requires them).
 
 ---
 

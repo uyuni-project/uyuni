@@ -37,6 +37,20 @@ const uyuniEvents = proxyquire("../nodes/uyuni-events/uyuni-events.js", {
   }
 });
 
+// Stands in for Node-RED's core tls-config node, which is not loaded by the
+// test helper. Only addTLSOptions is used by the Uyuni nodes.
+function fakeTlsConfig(RED) {
+  function TlsConfigNode(config) {
+    RED.nodes.createNode(this, config);
+    this.addTLSOptions = function (opts) {
+      opts.ca = 'test-ca';
+      opts.cert = 'test-cert';
+      opts.rejectUnauthorized = true;
+    };
+  }
+  RED.nodes.registerType('tls-config', TlsConfigNode);
+}
+
 function flow(serverProps, nodeProps) {
   const server = { id: "c1", type: "uyuni-config", name: "broker", broker: "mosquitto", port: 1883 };
   Object.assign(server, serverProps || {});
@@ -74,6 +88,28 @@ describe('uyuni-events Node', function () {
   it('should connect over mqtts:// when TLS is enabled', function (done) {
     helper.load([uyuniEvents, uyuniConfig], flow({ usetls: true }), function () {
       connections[0].url.should.startWith("mqtts://");
+      done();
+    });
+  });
+
+  it('should apply the certificates from the selected TLS config', function (done) {
+    const nodes = flow({ usetls: true, port: 8883, tls: "t1" });
+    nodes.push({ id: "t1", type: "tls-config" });
+    helper.load([uyuniEvents, uyuniConfig, fakeTlsConfig], nodes, function () {
+      connections[0].url.should.equal("mqtts://mosquitto:8883");
+      connections[0].opts.should.have.property('ca', 'test-ca');
+      connections[0].opts.should.have.property('cert', 'test-cert');
+      connections[0].opts.should.have.property('rejectUnauthorized', true);
+      done();
+    });
+  });
+
+  it('should ignore the TLS config when TLS is turned off', function (done) {
+    const nodes = flow({ usetls: false, tls: "t1" });
+    nodes.push({ id: "t1", type: "tls-config" });
+    helper.load([uyuniEvents, uyuniConfig, fakeTlsConfig], nodes, function () {
+      connections[0].url.should.startWith("mqtt://");
+      connections[0].opts.should.not.have.property('ca');
       done();
     });
   });
