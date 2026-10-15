@@ -87,7 +87,7 @@ def split_host(hoststring):
     # Now parse hostport
     if hostport[0] == "[":
         # IPv6 with port
-        host, port = re.split(r"(?<=\\]):", hostport, maxsplit=1)
+        host, port = re.split(r"(?<=\]):", hostport, maxsplit=1)
         host = host.lstrip("[").rstrip("]")
     elif check_ipv6(hostport):
         # just IPv6
