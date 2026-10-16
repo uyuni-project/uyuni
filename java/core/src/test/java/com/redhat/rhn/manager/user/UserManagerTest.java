@@ -521,9 +521,9 @@ public class UserManagerTest extends BaseTestCase {
     @Test
     public void testGetTimeZoneId() {
         RhnTimeZone tz = UserManager.getTimeZone(UserManager
-                .getTimeZone("Indian/Maldives").getTimeZoneId());
-        assertEquals(UserManager.getTimeZone("Indian/Maldives"), tz);
-        assertEquals("Indian/Maldives", tz.getOlsonName());
+                .getTimeZone("Asia/Karachi").getTimeZoneId());
+        assertEquals(UserManager.getTimeZone("Asia/Karachi"), tz);
+        assertEquals("Asia/Karachi", tz.getOlsonName());
 
         RhnTimeZone tz2 = UserManager.getTimeZone(-23);
         assertNull(tz2);
