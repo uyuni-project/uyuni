@@ -35,6 +35,8 @@ import com.suse.matcher.json.SystemJson;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -75,6 +77,19 @@ public class SubscriptionMatchProcessor {
         else {
             return new MatcherUiData(latestStart, latestEnd);
         }
+    }
+
+    /**
+     * Retrieves the list of subscriptions that are relevant and can be shown to a user.
+     * @param output the output of a subscription-matcher execution
+     * @return the list of subscriptions relevant for a user
+     */
+    public List<Subscription> listEligibleSubscriptions(Optional<OutputJson> output) {
+        Collection<Subscription> subscriptions = output.map(this::subscriptions)
+            .orElse(Map.of())
+            .values();
+
+        return new ArrayList<>(subscriptions);
     }
 
     private String getType(SystemJson s) {
