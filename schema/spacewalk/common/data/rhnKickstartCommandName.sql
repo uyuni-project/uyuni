@@ -77,7 +77,7 @@ insert into rhnKickstartCommandName (id, name, uses_arguments, sort_order, requi
 values (sequence_nextval('rhn_kscommandname_id_seq'), 'timezone', 'Y', 27, 'Y');
 
 insert into rhnKickstartCommandName (id, name, uses_arguments, sort_order, required)
-values (sequence_nextval('rhn_kscommandname_id_seq'), 'auth', 'Y', 28, 'Y');
+values (sequence_nextval('rhn_kscommandname_id_seq'), 'auth', 'Y', 28, 'N');
 
 insert into rhnKickstartCommandName (id, name, uses_arguments, sort_order, required)
 values (sequence_nextval('rhn_kscommandname_id_seq'), 'reboot', 'N', 31, 'N');
