@@ -1,0 +1,3 @@
+- Fix reposync failure on modular packages by accepting both
+  str and bytes for the RPM DISTTAG tag (TypeError with the
+  Python 3.13 rpm bindings)
