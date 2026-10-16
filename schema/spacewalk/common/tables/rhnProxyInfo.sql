@@ -25,6 +25,8 @@ CREATE TABLE rhnProxyInfo
                           REFERENCES rhnPackageEVR (id),
     ssh_port      NUMERIC,
     ssh_public_key BYTEA,
+    salt_publish_port NUMERIC,
+    salt_request_port NUMERIC,
     created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
     modified            TIMESTAMPTZ
