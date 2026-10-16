@@ -1137,6 +1137,9 @@ def softwarechannel_check_existing(self, name, label):
 
 def help_softwarechannel_clone(self):
     print(_("softwarechannel_clone: Clone a software channel"))
+    print(_("""Patches already cloned in the organization are reused as they are, so
+changes to the original patches since then, are not included."""))
+    print("")
     print(_("""usage: softwarechannel_clone [options])
 
 options:
@@ -1241,6 +1244,9 @@ def help_softwarechannel_clonetree(self):
     print(
         _("softwarechannel_clonetree: Clone a software channel and its child channels")
     )
+    print(_("""Patches already cloned in the organization are reused as they are, so
+changes to the original patches since then, are not included."""))
+    print("")
     print(_("""usage: softwarechannel_clonetree [options])
              e.g    softwarechannel_clonetree foobasechannel -p "my_"
                     softwarechannel_clonetree foobasechannel -x "s/foo/bar"

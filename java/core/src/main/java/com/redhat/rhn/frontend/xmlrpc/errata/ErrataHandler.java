@@ -820,6 +820,8 @@ public class ErrataHandler extends BaseHandler {
      * It only links the packages if the destination channel already contains an older version of the
      * same package (same name and architecture). If the package is completely new to that channel,
      * it will not be linked and the resulting behaviour will be the same as a channel.software.mergeErrata call.
+     * Errata already cloned in the organization are reused as they are, so changes to the original erratum
+     * since then, such as a retraction, are not included. Use channel.software.syncErrata to update them.
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "channelLabel")
      * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
@@ -842,6 +844,7 @@ public class ErrataHandler extends BaseHandler {
      * @return 1 on success, exception thrown otherwise.
      *
      * @apidoc.doc Asynchronously clone a list of errata into the specified channel.
+     * Existing clones are reused as described in errata.clone.
      *
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "channelLabel")
@@ -953,6 +956,7 @@ public class ErrataHandler extends BaseHandler {
      *
      * @apidoc.doc Clones a list of errata into a specified cloned channel according the original erratas.
      * It always links the packages to the target channel by searching all related packages among all the parent clones.
+     * Existing clones are reused as described in errata.clone.
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "channelLabel")
      * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
@@ -979,6 +983,7 @@ public class ErrataHandler extends BaseHandler {
      * @apidoc.doc Asynchronously clones a list of errata into a specified cloned channel
      * according the original erratas.
      * It always links the packages to the target channel by searching all related packages among all the parent clones.
+     * Existing clones are reused as described in errata.clone.
      *
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "channelLabel")
