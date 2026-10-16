@@ -633,7 +633,8 @@ public class ConfigDefaults {
 
     /**
      * Returns the URL scheme used for the installation media URLs (install=, self_update=,
-     * inst.repo=) generated into the kernel options of autoinstallation distributions and systems.
+     * inst.repo=) generated into the kernel options of autoinstallation distributions and systems,
+     * and for the media (url) and repository (repo) URLs generated into kickstart profiles.
      * Should match the "autoinstall_scheme" setting of cobbler.
      * @return "http/https" if configured, "http" otherwise
      */
