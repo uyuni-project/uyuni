@@ -218,7 +218,11 @@ public abstract class PackageMetadata extends BaseDto implements Comparable<Pack
      * @return The package type.
      */
     public String getPackageType() {
-        return other.getPackageType();
+        if (other != null) {
+            return other.getPackageType();
+        }
+
+        return null;
     }
 
     /**
@@ -228,7 +232,11 @@ public abstract class PackageMetadata extends BaseDto implements Comparable<Pack
      * other PackageListItem are null, returns null.
      */
     public String getEpoch() {
-        return other.getEpoch();
+        if (other != null) {
+            return other.getEpoch();
+        }
+
+        return null;
     }
 
     /**
@@ -238,7 +246,11 @@ public abstract class PackageMetadata extends BaseDto implements Comparable<Pack
      * other PackageListItem are null, returns null.
      */
     public String getVersion() {
-        return other.getVersion();
+        if (other != null) {
+            return other.getVersion();
+        }
+
+        return null;
     }
 
     /**
@@ -248,7 +260,11 @@ public abstract class PackageMetadata extends BaseDto implements Comparable<Pack
      * other PackageListItem are null, returns null.
      */
     public String getRelease() {
-        return other.getRelease();
+        if (other != null) {
+            return other.getRelease();
+        }
+
+        return null;
     }
 
     /**
@@ -268,7 +284,11 @@ public abstract class PackageMetadata extends BaseDto implements Comparable<Pack
      * @return Returns target Nevra to be displayed on webui
      */
     public String getActionTargetNevra() {
-        return other.getNevra();
+        if (other != null) {
+            return other.getNevra();
+        }
+
+        return null;
     }
 
     /**
