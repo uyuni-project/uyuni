@@ -1,0 +1,2 @@
+- Remove unused disable_iss option from `rhn.conf` template and
+  man page
