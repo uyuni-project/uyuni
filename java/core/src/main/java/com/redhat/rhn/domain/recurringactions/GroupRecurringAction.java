@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import com.suse.manager.utils.MinionServerUtils;
 
@@ -50,7 +49,6 @@ import jakarta.persistence.Transient;
 public class GroupRecurringAction extends RecurringAction {
 
     private ServerGroup group;
-    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**
      * Standard constructor
@@ -92,7 +90,7 @@ public class GroupRecurringAction extends RecurringAction {
         }
         try {
             /* Check if user has permission to access the group */
-            SERVER_GROUP_MANAGER.lookup(group.getId(), user);
+            GlobalInstanceHolder.SERVER_GROUP_MANAGER.lookup(group.getId(), user);
         }
         catch (LookupException e) {
             return false;
