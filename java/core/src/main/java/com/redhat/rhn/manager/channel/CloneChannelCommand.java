@@ -69,6 +69,7 @@ public class CloneChannelCommand extends CreateChannelCommand {
         gpgKeyId = cloneFrom.getGPGKeyId();
         gpgKeyFp = cloneFrom.getGPGKeyFp();
         gpgCheck  = cloneFrom.isGPGCheck();
+        pqcCheck  = cloneFrom.isPqcCheck();
         archLabel = Optional.ofNullable(cloneFrom.getChannelArch()).map(ChannelArch::getLabel).orElse("");
         cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
     }
@@ -121,6 +122,7 @@ public class CloneChannelCommand extends CreateChannelCommand {
         c.setGPGKeyUrl(gpgKeyUrl);
         c.setGPGKeyFp(gpgKeyFp);
         c.setGPGCheck(gpgCheck);
+        c.setPqcCheck(pqcCheck);
         c.setAccess(access);
         c.setMaintainerName(maintainerName);
         c.setMaintainerEmail(maintainerEmail);

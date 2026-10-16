@@ -77,6 +77,14 @@
             </div>
             <div class="row">
                 <label class="col-lg-3 control-label">
+                    <bean:message key = "repos.jsp.create.pqcMetadataSigned"/>:
+                </label>
+                <div class="col-lg-6">
+                    <html:checkbox property="pqcMetadataSigned" />
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">
                     <bean:message key = "repos.jsp.ssl.ca"/>:
                 </label>
                 <div class="col-lg-6">

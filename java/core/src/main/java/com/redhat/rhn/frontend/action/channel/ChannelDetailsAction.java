@@ -69,6 +69,7 @@ public class ChannelDetailsAction extends RhnAction {
             String global = (String)form.get("global");
             chan.setGloballySubscribable("all".equals(global), user.getOrg());
             chan.setGPGCheck(BooleanUtils.isTrue((Boolean)form.get("gpg_check")));
+            chan.setPqcCheck(BooleanUtils.isTrue((Boolean)form.get("pqc_check")));
 
 
             createSuccessMessage(request, "message.channelupdated",
@@ -107,6 +108,8 @@ public class ChannelDetailsAction extends RhnAction {
         }
 
         request.setAttribute("gpg_check", chan.isGPGCheck());
+
+        request.setAttribute("pqc_check", chan.isPqcCheck());
 
         boolean hasAccess = (chan.getOrg() == null && user.isMemberOf(AccessGroupFactory.getChannelAdmin())) ||
                 UserManager.verifyChannelAdmin(user, chan);

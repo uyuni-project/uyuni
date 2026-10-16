@@ -27,6 +27,9 @@ CREATE TABLE suseSCCRepository
     signed         CHAR(1) DEFAULT ('N') NOT NULL
                            CONSTRAINT suse_sccrepo_sig_ck
                            CHECK (signed in ('Y', 'N')),
+    pqc_signed         CHAR(1) DEFAULT ('N') NOT NULL
+                           CONSTRAINT suse_sccrepo_pqcsig_ck
+                           CHECK (pqc_signed in ('Y', 'N')),
     installer_updates CHAR(1) DEFAULT ('N') NOT NULL
                            CONSTRAINT suse_sccrepo_instup_ck
                            CHECK (installer_updates in ('Y', 'N')),
