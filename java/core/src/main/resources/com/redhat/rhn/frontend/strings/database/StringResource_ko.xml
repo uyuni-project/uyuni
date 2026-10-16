@@ -333,7 +333,7 @@
         </context-group>
         <target state="final">(GMT+0530) 인도(캘커타)</target>
       </trans-unit>
-      <trans-unit approved="yes" id="Asia/Karachi" xml:space="preserve">
+      <trans-unit approved="yes" id="Indian/Maldives" xml:space="preserve">
         <source>(GMT+0500) Pakistan</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
