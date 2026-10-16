@@ -1,0 +1,2 @@
+- Stop writing the ineffective mine_enabled option to the Salt
+  minion configuration in the Cobbler registration snippets
