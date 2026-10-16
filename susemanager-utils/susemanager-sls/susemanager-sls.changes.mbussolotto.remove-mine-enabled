@@ -1,0 +1,1 @@
+- Remove the unused mgr_mine_config_clean_up Salt state
