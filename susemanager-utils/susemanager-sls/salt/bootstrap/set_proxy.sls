@@ -9,13 +9,33 @@
 
 {%- set pattern = '^master:.*' %}
 
-{% if salt['file.search'](conf_file, pattern) -%}
+{#- Check the minion can reach the new Salt master ports before switching to it #}
+{%- set mgr_server = pillar['mgr_server'] %}
+{%- set publish_port = salt['pillar.get']('mgr_salt_publish_port') or 4505 %}
+{%- set request_port = salt['pillar.get']('mgr_salt_request_port') or 4506 %}
+{%- set unreachable = [] %}
+{%- for port in [publish_port, request_port] %}
+{%-   if not salt['network.connect'](mgr_server, port, timeout=5).get('result') %}
+{%-     do unreachable.append(port) %}
+{%-   endif %}
+{%- endfor %}
+
+{% if unreachable -%}
+
+unreachable_salt_master:
+  test.configurable_test_state:
+    - changes: False
+    - result: False
+    - comment: "Can't change proxy. {{ mgr_server }} is not reachable on Salt port(s) {{ unreachable | join(', ') }}"
+
+{% elif salt['file.search'](conf_file, pattern) -%}
 
 {{ conf_file }}:
-  file.line:
-    - mode: replace
-    - match: "{{ pattern }}"
-    - content: "master: {{ pillar['mgr_server'] }}"
+  file.managed:
+    - source:
+      - salt://bootstrap/susemanager.conf
+    - template: jinja
+    - mode: 644
 
 restart:
   module.run:
