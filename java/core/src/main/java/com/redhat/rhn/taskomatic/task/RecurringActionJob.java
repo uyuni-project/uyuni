@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
@@ -83,6 +84,9 @@ public class RecurringActionJob extends RhnJavaJob {
     private void scheduleAction(JobExecutionContext context, RecurringAction action) {
         List<Long> minionIds = maintenanceManager.systemIdsMaintenanceMode(action.computeMinions());
 
+        if (action.getName() != null && !action.getName().isBlank()) {
+            Context.getCurrentContext().setActionDescription("Recurring Action: " + action.getName());
+        }
         try {
             RecurringActionType actionType = action.getRecurringActionType();
             if (actionType instanceof RecurringHighstate highstateType) {
@@ -155,6 +159,9 @@ public class RecurringActionJob extends RhnJavaJob {
         }
         catch (TaskomaticApiException e) {
             log.error("Error scheduling states application for recurring action {}", action, e);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
 
