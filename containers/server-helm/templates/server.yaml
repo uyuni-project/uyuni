@@ -31,6 +31,11 @@ spec:
         - name: MIRROR_PATH
           value: /mirror
 {{- end }}
+{{- $saltNodePort := eq (default .Values.services.type .Values.services.salt.type) "NodePort" }}
+        - name: MANAGER_SALT_PUBLISH_PORT
+          value: "{{ if $saltNodePort }}{{ .Values.services.salt.ports.publish }}{{ end }}"
+        - name: MANAGER_SALT_REQUEST_PORT
+          value: "{{ if $saltNodePort }}{{ .Values.services.salt.ports.request }}{{ end }}"
         - name: ADMIN_USER
           valueFrom:
             secretKeyRef:

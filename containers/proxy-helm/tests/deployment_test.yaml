@@ -199,3 +199,42 @@ tests:
     asserts:
       - failedTemplate:
           errorMessage: "The repository value is required!"
+  - it: should pass the Salt NodePorts to the httpd container
+    set:
+      global.config: |
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      services.salt.type: NodePort
+      services.salt.ports.publish: 31005
+      services.salt.ports.request: 31006
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "httpd")].env
+          content:
+            name: MANAGER_SALT_PUBLISH_PORT
+            value: "31005"
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "httpd")].env
+          content:
+            name: MANAGER_SALT_REQUEST_PORT
+            value: "31006"
+  - it: should report the Salt default ports without NodePort
+    set:
+      global.config: |
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "httpd")].env
+          content:
+            name: MANAGER_SALT_PUBLISH_PORT
+            value: ""
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "httpd")].env
+          content:
+            name: MANAGER_SALT_REQUEST_PORT
+            value: ""

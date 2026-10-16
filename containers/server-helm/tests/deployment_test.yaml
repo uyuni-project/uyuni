@@ -100,3 +100,36 @@ tests:
     asserts:
       - failedTemplate:
           errorMessage: "The repository value is required!"
+
+  - it: should pass the Salt NodePorts to the server container
+    set:
+      global.fqdn: uyuni.example.com
+      services.salt.type: NodePort
+      services.salt.ports.publish: 31005
+      services.salt.ports.request: 31006
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].env
+          content:
+            name: MANAGER_SALT_PUBLISH_PORT
+            value: "31005"
+      - contains:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].env
+          content:
+            name: MANAGER_SALT_REQUEST_PORT
+            value: "31006"
+
+  - it: should reset the Salt ports to the defaults without NodePort
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].env
+          content:
+            name: MANAGER_SALT_PUBLISH_PORT
+            value: ""
+      - contains:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].env
+          content:
+            name: MANAGER_SALT_REQUEST_PORT
+            value: ""
