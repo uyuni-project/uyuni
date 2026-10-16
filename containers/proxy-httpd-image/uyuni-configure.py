@@ -12,6 +12,7 @@ import ssl
 import sys
 import urllib.request
 import json
+import xmlrpc.client
 
 from pathlib import Path
 from typing import Tuple
@@ -58,18 +59,45 @@ def get_ips(fqdn: str) -> Tuple[str, str]:
     return (ipv4, ipv6)
 
 
+# Seconds to wait for the server to connect and to answer
+SERVER_TIMEOUT = 10
+
+
+class TimeoutSafeTransport(xmlrpc.client.SafeTransport):
+    """
+    XML-RPC transport with a finite connection and read timeout.
+    """
+
+    def __init__(self, timeout, context):
+        super().__init__(context=context)
+        self._timeout = timeout
+
+    def make_connection(self, host):
+        connection = super().make_connection(host)
+        connection.timeout = self._timeout
+        return connection
+
+
+def get_ssl_context():
+    """
+    Creates the SSL context to talk to the server.
+    """
+    # Disable the strict X509 validation flag (Python 3.13+)
+    ctx = ssl.create_default_context()
+    if hasattr(ssl, "VERIFY_X509_STRICT") and hasattr(ctx, "verify_flags"):
+        ctx.verify_flags &= ~ssl.VERIFY_X509_STRICT
+    return ctx
+
+
 def get_server_version(fqdn):
     """
     Queries the server version from the API.
     """
     url = f"https://{fqdn}/rhn/manager/api/api/systemVersion"
 
-    # Disable the strict X509 validation flag (Python 3.13+)
-    ctx = ssl.create_default_context()
-    if hasattr(ssl, "VERIFY_X509_STRICT") and hasattr(ctx, "verify_flags"):
-        ctx.verify_flags &= ~ssl.VERIFY_X509_STRICT
-
-    with urllib.request.urlopen(url, timeout=10, context=ctx) as response:
+    with urllib.request.urlopen(
+        url, timeout=SERVER_TIMEOUT, context=get_ssl_context()
+    ) as response:
         body = response.read().decode("utf-8")
         data = json.loads(body)
 
@@ -77,6 +105,34 @@ def get_server_version(fqdn):
             return data["result"]
         else:
             raise KeyError(f"JSON missing 'result' field. Keys: {list(data.keys())}")
+
+
+def report_salt_ports(fqdn):
+    """
+    Reports the Salt ports the proxy is exposed on to the server, if defined.
+
+    The MANAGER_SALT_PUBLISH_PORT and MANAGER_SALT_REQUEST_PORT environment variables
+    contain the exposed ports, for example the Kubernetes NodePorts. Empty values stand
+    for the Salt defaults. Without these variables nothing is reported.
+    """
+    publish_port = os.environ.get("MANAGER_SALT_PUBLISH_PORT")
+    request_port = os.environ.get("MANAGER_SALT_REQUEST_PORT")
+    if publish_port is None and request_port is None:
+        return
+
+    try:
+        with open("/etc/sysconfig/rhn/systemid", encoding="utf-8") as systemid:
+            client = xmlrpc.client.ServerProxy(
+                f"https://{fqdn}/rpc/api",
+                transport=TimeoutSafeTransport(SERVER_TIMEOUT, get_ssl_context()),
+            )
+            client.proxy.setSaltPorts(
+                systemid.read(), int(publish_port or 0), int(request_port or 0)
+            )
+    # pylint: disable-next=broad-exception-caught
+    except Exception as err:
+        # Older servers don't know this call: the proxy has to start anyway
+        logging.warning("Failed to report the proxy Salt ports to the server: %s", err)
 
 
 # read from files
@@ -146,6 +202,8 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
                 major_version,
             )
             sys.exit(1)
+
+    report_salt_ports(config["server"])
 
     # resolve needed IP addresses
     server_ipv4, server_ipv6 = get_ips(config["server"])

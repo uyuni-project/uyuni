@@ -64,6 +64,12 @@ spec:
         - name: httpd
           image: {{ include "uyuni.image" (dict "name" "proxy-httpd" "global" . "local" .Values.httpd) }}
           imagePullPolicy: "{{ .Values.pullPolicy }}"
+{{- $saltNodePort := eq (default .Values.services.type .Values.services.salt.type) "NodePort" }}
+          env:
+          - name: MANAGER_SALT_PUBLISH_PORT
+            value: "{{ if $saltNodePort }}{{ .Values.services.salt.ports.publish }}{{ end }}"
+          - name: MANAGER_SALT_REQUEST_PORT
+            value: "{{ if $saltNodePort }}{{ .Values.services.salt.ports.request }}{{ end }}"
           volumeMounts:
           - name: httpd-volume
             mountPath: /etc/uyuni/
