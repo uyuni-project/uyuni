@@ -103,6 +103,7 @@ type={{ args['type'] }}
 {%- endif %}
 
 {%- if salt['pillar.get']('mgr_pqc_metadata_signing_enabled', false) %}
+{%- if args['pqc_check'] == "1" %}
 {%- if salt['file.file_exists']('/usr/lib/zypp/plugins/sigcheck/pqcverification') %}
 {%- if minion_type_supports_pqc %}
 repo_sigcheck_plugin=pqcverification
@@ -111,6 +112,9 @@ repo_sigcheck_plugin=pqcverification
 {%- endif %}
 {%- else %}
 # PQC signing enabled but zypper PQC plugin not found
+{%- endif %}
+{%- else %}
+# PQC signing not enabled for this channel
 {%- endif %}
 {%- endif %}
 
