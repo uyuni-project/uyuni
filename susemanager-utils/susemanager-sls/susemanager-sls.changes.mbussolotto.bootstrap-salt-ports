@@ -1,0 +1,3 @@
+- Configure custom Salt publish and request ports on the minions
+- Check the new Salt master ports are reachable before changing
+  the proxy of a minion
