@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -647,6 +648,27 @@ public class ServerConfigHandler extends BaseHandler {
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Schedule highstate application for a given system with an action description.
+     *
+     * @param user The user
+     * @param sids Server IDs
+     * @param earliest Earliest occurrence
+     * @param test Run states in test-only mode
+     * @param actionDescription Comment / action description
+     * @return action id
+     */
+    public Long scheduleApplyConfigChannel(User user, List<Integer> sids, Date earliest, Boolean test,
+                                           String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleApplyConfigChannel(user, sids, earliest, test);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
 

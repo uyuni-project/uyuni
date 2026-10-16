@@ -100,6 +100,9 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     @Column
     private String name;
 
+    @Column(name = "action_description")
+    private String actionDescription;
+
     @Column(name = "earliest_action")
     private Date earliestAction;
 
@@ -176,6 +179,22 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Getter for actionDescription
+     * @return String to get
+    */
+    public String getActionDescription() {
+        return this.actionDescription;
+    }
+
+    /**
+     * Setter for actionDescription
+     * @param actionDescriptionIn to set
+    */
+    public void setActionDescription(String actionDescriptionIn) {
+        this.actionDescription = actionDescriptionIn;
     }
 
     /**

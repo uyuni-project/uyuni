@@ -14,14 +14,12 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * JSON representation of a server id with a list of states to be applied.
  */
-public class ServerApplyStatesJson {
+public class ServerApplyStatesJson extends ScheduledRequestJson {
 
     /** Server id */
     private long id;
@@ -30,9 +28,6 @@ public class ServerApplyStatesJson {
 
     /** List of states to be applied */
     private List<String> states;
-
-    /** The earliest execution date */
-    private Optional<LocalDateTime> earliest = Optional.empty();
 
     /** Execute through transactional-update on transactional systems */
     private boolean useTransactionalUpdate;
@@ -56,13 +51,6 @@ public class ServerApplyStatesJson {
      */
     public List<String> getStates() {
         return states;
-    }
-
-    /**
-     * @return the date of earliest execution
-     */
-    public Optional<LocalDateTime> getEarliest() {
-        return earliest;
     }
 
     /**

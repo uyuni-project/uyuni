@@ -104,6 +104,7 @@ public class SystemHistoryEventAction extends RhnAction {
         request.setAttribute("earliestaction", af.getEarliestDate());
         request.setAttribute("actionnotes", af.getDetails(server,
                 requestContext.getCurrentUser()));
+        request.setAttribute("actionDescription", action.getActionDescription());
         request.setAttribute("failed",
                 serverAction.isStatusFailed());
         request.setAttribute("pickedup",

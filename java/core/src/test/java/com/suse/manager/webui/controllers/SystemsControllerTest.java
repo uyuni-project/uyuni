@@ -30,8 +30,11 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.SparkTestUtils;
 
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.services.TestSaltApi;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,6 +44,7 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -228,6 +232,20 @@ public class SystemsControllerTest extends BaseControllerTestCase {
                 () -> assertTrue(model.containsKey("query")),
                 () -> assertEquals(String.format("\"%s\"", paramQ), model.get("query"))
         );
+    }
+
+    @Test
+    public void testSubscribeChannelsJsonDeserialization() {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+                .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+                .create();
+        String json = "{\"earliest\":\"2026-09-11T12:00:00\"," +
+                "\"actionDescription\":\"My description for schedule\",\"actionChain\":null}";
+        SubscribeChannelsJson parsed = gson.fromJson(json, SubscribeChannelsJson.class);
+        assertNotNull(parsed);
+        assertTrue(parsed.getActionDescription().isPresent());
+        assertEquals("My description for schedule", parsed.getActionDescription().get());
     }
 
 

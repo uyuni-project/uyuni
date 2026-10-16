@@ -33,6 +33,7 @@ public class Context {
     private Locale originalLocale;
     private String activeLocaleLabel;
     private TimeZone timezone;
+    private String actionDescription;
 
     private static final ThreadLocal<Context> CURRENT_CONTEXT = new ThreadLocal<>();
 
@@ -112,6 +113,22 @@ public class Context {
      */
     public void setTimezone(TimeZone timezoneIn) {
         this.timezone = timezoneIn;
+    }
+
+    /**
+     * Getter for actionDescription / scheduleReason
+     * @return String to get
+     */
+    public String getActionDescription() {
+        return this.actionDescription;
+    }
+
+    /**
+     * Setter for actionDescription / scheduleReason
+     * @param actionDescriptionIn to set
+     */
+    public void setActionDescription(String actionDescriptionIn) {
+        this.actionDescription = actionDescriptionIn;
     }
 
     /**

@@ -44,6 +44,7 @@ public class ScheduledAction extends BaseDto implements RowCallback {
     private static final String STATUS_FAILED = "Failed";
 
     private Long id;
+    private String actionDescription;
     private Long actionStatusId;
     private Long prerequisite;
     private boolean prerequisiteAllFailed;
@@ -117,6 +118,22 @@ public class ScheduledAction extends BaseDto implements RowCallback {
      */
     public String getSchedulerName() {
         return schedulerName;
+    }
+
+    /**
+     * Returns the comment / action description for the action.
+     * @return the comment / action description.
+     */
+    public String getActionDescription() {
+        return actionDescription;
+    }
+
+    /**
+     * Sets the comment / action description for the action.
+     * @param actionDescriptionIn the action description.
+     */
+    public void setActionDescription(String actionDescriptionIn) {
+        actionDescription = actionDescriptionIn;
     }
 
     /**

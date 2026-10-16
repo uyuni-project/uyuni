@@ -33,11 +33,11 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationUtils;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.AnsiblePathJson;
 import com.suse.manager.webui.utils.gson.AnsiblePlaybookExecutionJson;
 import com.suse.manager.webui.utils.gson.AnsiblePlaybookIdJson;
@@ -53,16 +53,11 @@ import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -310,7 +305,7 @@ public class AnsibleController {
                     params.isTestMode(),
                     params.isFlushCache(),
                     params.getExtraVars(),
-                    params.getEarliest().map(AnsibleController::getScheduleDate).orElse(new Date()),
+                    MinionActionUtils.getScheduleDate(params),
                     params.getActionChainLabel(),
                     user);
 
@@ -324,12 +319,6 @@ public class AnsibleController {
         catch (TaskomaticApiException e) {
             return result(res, error(LOCAL.getMessage("taskscheduler.down")), new TypeToken<>() { });
         }
-    }
-
-    private static Date getScheduleDate(LocalDateTime dateTime) {
-        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
-                .orElse(TimeZone.getDefault()).toZoneId();
-        return Date.from(dateTime.atZone(zoneId).toInstant());
     }
 
     /**

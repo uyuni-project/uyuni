@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
@@ -199,6 +200,33 @@ public class AnsibleHandler extends BaseHandler {
         }
         catch (IllegalArgumentException | ClassCastException e) {
             throw new InvalidParameterException("Invalid parameter", e);
+        }
+    }
+
+    /**
+     * Schedule a playbook execution with action description.
+     *
+     * @param loggedInUser the current user
+     * @param playbookPath the path to the playbook file
+     * @param inventoryPath the path to the inventory file
+     * @param controlNodeId the system ID of the control node
+     * @param earliestOccurrence earliest occurrence of the execution command
+     * @param actionChainLabel label of action chain to use
+     * @param testMode true if the playbook shall be executed in test mode
+     * @param ansibleArgs map of extra options
+     * @param actionDescription Comment / action description
+     * @return the execute playbook action id
+     */
+    public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath,
+            Integer controlNodeId, Date earliestOccurrence, String actionChainLabel, boolean testMode,
+            Map<String, Object> ansibleArgs, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return schedulePlaybook(loggedInUser, playbookPath, inventoryPath, controlNodeId,
+                    earliestOccurrence, actionChainLabel, testMode, ansibleArgs);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
 

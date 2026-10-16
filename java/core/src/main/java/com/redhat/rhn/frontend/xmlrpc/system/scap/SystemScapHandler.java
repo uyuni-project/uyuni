@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.audit.ScapPolicy;
 import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.frontend.dto.XccdfTestResultDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -218,6 +219,30 @@ public class SystemScapHandler extends BaseHandler {
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Run OpenSCAP XCCDF Evaluation on a given list of servers with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids The list of server ids
+     * @param xccdfPath The path to xccdf document
+     * @param oscapParams The additional params for oscap tool
+     * @param ovalFiles Optional OVAL files for oscap tool
+     * @param date The date of earliest occurrence
+     * @param actionDescription Comment / action description
+     * @return ID of the new scap action
+     */
+    public int scheduleXccdfScan(User loggedInUser, List<Integer> sids,
+             String xccdfPath, String oscapParams, String ovalFiles, Date date,
+             String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleXccdfScan(loggedInUser, sids, xccdfPath, oscapParams, ovalFiles, date);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
 
@@ -493,6 +518,52 @@ public class SystemScapHandler extends BaseHandler {
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Schedule SCAP scan with policy and action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids List of server IDs
+     * @param policyId SCAP policy ID
+     * @param date The date to schedule the action
+     * @param actionDescription Comment / action description
+     * @return ID of SCAP action created
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     */
+    public Long scheduleBetaXccdfScanWithPolicy(User loggedInUser, List<Integer> sids,
+                                                Integer policyId, Date date, String actionDescription)
+            throws TaskomaticApiException {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleBetaXccdfScanWithPolicy(loggedInUser, sids, policyId, date);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
+     * Schedule SCAP scan with custom parameters and action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids List of server IDs
+     * @param params Map of SCAP parameters
+     * @param date The date to schedule the action
+     * @param actionDescription Comment / action description
+     * @return ID of SCAP action created
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     */
+    public Long scheduleBetaXccdfScanCustom(User loggedInUser, List<Integer> sids,
+                                            Map<String, Object> params, Date date, String actionDescription)
+            throws TaskomaticApiException {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleBetaXccdfScanCustom(loggedInUser, sids, params, date);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
 

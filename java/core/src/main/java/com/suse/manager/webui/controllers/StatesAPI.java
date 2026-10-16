@@ -43,7 +43,6 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -64,6 +63,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.StateSourceService;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.SaltInclude;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPkgLatest;
@@ -95,19 +95,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.function.LongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -443,7 +439,7 @@ public class StatesAPI {
                     .orElse(null);
 
             Set<Action> actions = ActionChainManager.scheduleApplyStates(user, minionIds,
-                    Optional.of(json.isTest()), getScheduleDate(json), actionChain);
+                    Optional.of(json.isTest()), MinionActionUtils.getScheduleDate(json), actionChain);
 
             if (actionChain != null) {
                 return GSON.toJson(actionChain.getId());
@@ -487,7 +483,7 @@ public class StatesAPI {
                         return ActionManager.scheduleApplyStates(user,
                                 Arrays.asList(json.getTargetId()), json.getStates(),
                                 Optional.empty(),
-                                getScheduleDate(json),
+                                MinionActionUtils.getScheduleDate(json),
                                 Optional.empty(),
                                 false,
                                 false,
@@ -512,7 +508,7 @@ public class StatesAPI {
                         return ActionManager.scheduleApplyStates(user,
                                 minionServerIds, states,
                                 Optional.empty(),
-                                getScheduleDate(json),
+                                MinionActionUtils.getScheduleDate(json),
                                 Optional.empty(),
                                 false,
                                 false,
@@ -530,7 +526,7 @@ public class StatesAPI {
                         return ActionManager.scheduleApplyStates(user,
                                 minionServerIds, json.getStates(),
                                 Optional.empty(),
-                                getScheduleDate(json),
+                                MinionActionUtils.getScheduleDate(json),
                                 Optional.empty(),
                                 false,
                                 false,
@@ -546,23 +542,6 @@ public class StatesAPI {
             response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }
-    }
-
-    private Date getScheduleDate(ServerApplyStatesJson json) {
-        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
-                .orElse(TimeZone.getDefault()).toZoneId();
-        return Date.from(
-            json.getEarliest().map(t -> t.atZone(zoneId).toInstant())
-                .orElseGet(Instant::now)
-        );
-    }
-
-    private Date getScheduleDate(ServerApplyHighstateJson json) {
-        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
-                .orElse(TimeZone.getDefault()).toZoneId();
-        return Date.from(
-            json.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
-        );
     }
 
     private <R> R handleTarget(StateTargetType targetType, long targetId,

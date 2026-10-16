@@ -249,6 +249,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
     public void testExecuteCustomFormulasInternalStatePreservesTransactionalUpdate()
             throws UnsupportedEncodingException {
         String actionJsonString = "{" +
+                "'scheduleName': 'My Recurring Schedule'," +
                 "'memberIds': [" + minionServer.getId() + "]," +
                 "'details': {" +
                     "'states': [" +
@@ -274,6 +275,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
 
         assertEquals(List.of("formulas"), action.getDetails().getMods());
         assertFalse(action.getDetails().isUseTransactionalUpdate());
+        assertEquals("Recurring Action: My Recurring Schedule", action.getActionDescription());
     }
 
     @Test
