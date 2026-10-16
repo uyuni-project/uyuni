@@ -1,0 +1,3 @@
+- Add DISKCHECKALERT_FREE_MB and DISKTHRESHOLD_FREE_MB environment
+  variables to spacewalk-diskcheck to define the thresholds as
+  available space in MB instead of used percentage

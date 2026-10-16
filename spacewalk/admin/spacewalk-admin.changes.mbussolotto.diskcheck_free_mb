@@ -1,0 +1,2 @@
+- Pass the diskcheck environment variables to tomcat for the login
+  page disk space warning
