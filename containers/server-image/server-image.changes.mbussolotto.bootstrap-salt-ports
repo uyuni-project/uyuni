@@ -1,0 +1,3 @@
+- Set the Salt ports exposed by the server from the
+  MANAGER_SALT_PUBLISH_PORT and MANAGER_SALT_REQUEST_PORT
+  environment variables

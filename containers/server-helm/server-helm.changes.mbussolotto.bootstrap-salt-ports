@@ -1,0 +1,2 @@
+- Configure the server with the Salt NodePorts so the clients use
+  them
