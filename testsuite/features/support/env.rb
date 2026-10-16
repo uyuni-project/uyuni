@@ -345,6 +345,11 @@ After('@scope_cobbler') do |scenario|
   end
 end
 
+# Remove the files extracted from remote hosts to be attached in the browser
+After do
+  @attach_dirs&.each { |dir| FileUtils.rm_rf(dir) }
+end
+
 AfterStep do
   next unless capybara_session_created?
 
