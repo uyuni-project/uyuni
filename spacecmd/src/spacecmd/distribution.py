@@ -51,7 +51,7 @@ options:
   -n NAME
   -p path to tree
   -b base channel to associate with
-  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|generic_rpm|...]"""
+  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|opensuse16.1|suse|generic_rpm|...]"""
         )
     )
 
@@ -63,7 +63,7 @@ def do_distribution_create(self, args, update=False):
     arg_parser.add_argument("-b", "--base-channel")
     arg_parser.add_argument("-t", "--install-type")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     # fill in the name of the distribution when updating
     if update:
@@ -209,7 +209,7 @@ def do_distribution_delete(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_distribution_delete()
@@ -250,7 +250,7 @@ def do_distribution_details(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_distribution_details()
@@ -304,7 +304,7 @@ def do_distribution_rename(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_distribution_rename()
@@ -330,7 +330,7 @@ def help_distribution_update(self):
 options:
   -p path to tree
   -b base channel to associate with
-  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|generic_rpm|...]"""
+  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|opensuse16.1|suse|generic_rpm|...]"""
         )
     )
 

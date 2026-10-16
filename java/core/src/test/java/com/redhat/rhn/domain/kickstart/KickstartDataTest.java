@@ -617,7 +617,7 @@ public class KickstartDataTest extends KickstartBaseTest {
 
         KickstartData k = createKickstartWithChannel(user.getOrg());
         k.getTree().setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_7));
         assertTrue(k.isRhel6OrGreater());
 
         k.getTree().setInstallType(KickstartFactory.

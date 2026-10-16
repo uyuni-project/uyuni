@@ -688,7 +688,7 @@ public class ConfigDefaults {
     public int getDefaultVirtMemorySize(KickstartData data) {
         // RHEL 7 requires at least 1024 MB of ram to install
         // SLES 12 + Updates needs 1024 MB.
-        if (data.isRhel7OrGreater() || data.isSLES12OrGreater()) {
+        if (data.isRhel7OrGreater() || data.isSLES12OrGreater() || data.isSLES16OrGreater()) {
             return Config.get().getInt(VIRT_MEM, 1024);
         }
         return Config.get().getInt(VIRT_MEM, 512);
