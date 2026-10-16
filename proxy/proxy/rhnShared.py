@@ -184,10 +184,20 @@ class SharedHandler:
         log_debug(3, "HTTP proxy password:", "<password>")
         log_debug(3, "CA cert:", self.caChain)
 
-        try:
-            self.responseContext.getConnection().connect()
-        except socket.error as e:
-            log_error("Error opening connection", self.rhnParent, e)
+        last_error = None
+        for attempt in range(3):
+            if attempt > 0:
+                self.responseContext.setConnection(self._create_connection())
+            conn = self.responseContext.getConnection()
+            conn.connect_timeout = 10
+            try:
+                conn.connect()
+                last_error = None
+                break
+            except socket.error as e:
+                last_error = e
+        if last_error is not None:
+            log_error("Error opening connection", self.rhnParent, last_error)
             Traceback(mail=0)
             raise_with_tb(
                 rhnFault(
