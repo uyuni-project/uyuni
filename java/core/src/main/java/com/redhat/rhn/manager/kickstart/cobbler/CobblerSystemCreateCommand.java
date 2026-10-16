@@ -381,8 +381,10 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     private void processKernelOptions(Profile recProfile) {
         if (recProfile != null && "suse".equals(recProfile.getDistro().getBreed()) && kernelOptions != null &&
                 kickstartHost != null && mediaPath != null) {
+            String scheme = ConfigDefaults.get().getKickstartUrlScheme();
             if (!kernelOptions.contains("install=")) {
-                kernelOptions = String.format("%s install=http://%s%s", kernelOptions, kickstartHost, mediaPath);
+                kernelOptions = String.format("%s install=%s://%s%s", kernelOptions, scheme, kickstartHost,
+                        mediaPath);
             }
 
             Map<String, Object> resKopts = recProfile.getResolvedKernelOptions();
@@ -395,8 +397,9 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                         .findFirst();
                 kernelOptions = installerUpdated.map(
                         channel -> String.format(
-                                "%s self_update=http://%s/ks/dist/child/%s/%s",
+                                "%s self_update=%s://%s/ks/dist/child/%s/%s",
                                 kernelOptions,
+                                scheme,
                                 kickstartHost,
                                 channel.getLabel(),
                                 ksData.getTree().getLabel()

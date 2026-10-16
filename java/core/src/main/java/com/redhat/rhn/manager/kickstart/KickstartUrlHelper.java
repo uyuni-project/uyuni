@@ -84,7 +84,7 @@ public class KickstartUrlHelper {
         if (this.ksData != null) {
             this.ksTree = ksDataIn.getTree();
         }
-        this.protocol = "http://";
+        this.protocol = ConfigDefaults.get().getKickstartUrlScheme() + "://";
     }
 
     /**

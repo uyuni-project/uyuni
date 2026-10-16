@@ -146,6 +146,7 @@ public class ConfigDefaults {
     public static final String DEFAULT_PAGE_SIZE = "web.default_page_size";
 
     public static final String KICKSTART_COBBLER_DIR = "kickstart.cobbler.dir";
+    public static final String KICKSTART_URL_SCHEME = "java.kickstart_url_scheme";
     public static final String COBBLER_SNIPPETS_DIR = "cobbler.snippets.dir";
     private static final String DEFAULT_COBBLER_SNIPPET_DIR = "/var/lib/cobbler/snippets";
     private static final String COBBLER_NAME_SEPARATOR = "cobbler.name.separator";
@@ -628,6 +629,18 @@ public class ConfigDefaults {
      */
     public String getKickstartConfigDir() {
         return Config.get().getString(KICKSTART_COBBLER_DIR, "/var/lib/cobbler/templates/");
+    }
+
+    /**
+     * Returns the URL scheme used for the installation media URLs (install=, self_update=,
+     * inst.repo=) generated into the kernel options of autoinstallation distributions and systems,
+     * and for the media (url) and repository (repo) URLs generated into kickstart profiles.
+     * Should match the "autoinstall_scheme" setting of cobbler.
+     * @return "http/https" if configured, "http" otherwise
+     */
+    public String getKickstartUrlScheme() {
+        String scheme = Config.get().getString(KICKSTART_URL_SCHEME, "http");
+        return "https".equalsIgnoreCase(scheme.trim()) ? "https" : "http";
     }
 
     /**

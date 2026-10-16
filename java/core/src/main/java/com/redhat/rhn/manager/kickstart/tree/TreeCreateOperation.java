@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.tree;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -68,10 +69,11 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
         String kopts = this.tree.getKernelOptions();
         StringJoiner kOptsJoiner = new StringJoiner(" ");
         kOptsJoiner.add(kopts);
+        String baseUrl = ConfigDefaults.get().getKickstartUrlScheme() + "://" + getServerFqdn();
 
         if (this.tree.getInstallType().isSUSE()) {
             if (!kopts.contains("install=")) {
-                kOptsJoiner.add("install=http://" + getServerFqdn() + "/ks/dist/" + this.tree.getLabel());
+                kOptsJoiner.add("install=" + baseUrl + "/ks/dist/" + this.tree.getLabel());
             }
             // Configure URL for YaST self update or disable it
             if (!kopts.contains("self_update=")) {
@@ -81,7 +83,7 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
                         .filter(Channel::isInstallerUpdates)
                         .findFirst();
                 if (installerUpdates.isPresent()) {
-                    kOptsJoiner.add("self_update=http://" + getServerFqdn() + "/ks/dist/child/" +
+                    kOptsJoiner.add("self_update=" + baseUrl + "/ks/dist/child/" +
                             installerUpdates.get().getLabel() + "/" + this.tree.getLabel());
                 }
                 else {
@@ -90,7 +92,7 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
             }
         }
         else if (this.tree.getInstallType().isRhel8OrGreater() && !kopts.contains("inst.repo=")) {
-            kOptsJoiner.add("inst.repo=http://" + getServerFqdn() + "/ks/dist/" + this.tree.getLabel());
+            kOptsJoiner.add("inst.repo=" + baseUrl + "/ks/dist/" + this.tree.getLabel());
         }
 
         this.tree.setKernelOptions(kOptsJoiner.toString());
