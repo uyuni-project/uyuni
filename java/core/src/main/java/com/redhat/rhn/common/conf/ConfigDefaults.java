@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -319,6 +319,18 @@ public class ConfigDefaults {
      * Indicates the salt-api host to connect to (port)
      */
     public static final String SALT_API_PORT = "java.salt_api_port";
+
+    /**
+     * Salt publish port exposed by the server to the minions and proxies.
+     * Empty means the Salt default (4505).
+     */
+    public static final String SALT_PUBLISH_PORT = "java.salt_publish_port";
+
+    /**
+     * Salt request port exposed by the server to the minions and proxies.
+     * Empty means the Salt default (4506).
+     */
+    public static final String SALT_REQUEST_PORT = "java.salt_request_port";
 
     /**
      * If true, signing metadata is enabled, otherwise metadata will not be signed
@@ -1138,6 +1150,28 @@ public class ConfigDefaults {
      */
     public int getSaltSSHConnectTimeout() {
         return Config.get().getInt(SALT_SSH_CONNECT_TIMEOUT, 180);
+    }
+
+    /**
+     * @return the Salt publish port exposed by the server, empty for the Salt default
+     */
+    public Optional<Integer> getSaltPublishPort() {
+        return getOptionalPort(SALT_PUBLISH_PORT);
+    }
+
+    /**
+     * @return the Salt request port exposed by the server, empty for the Salt default
+     */
+    public Optional<Integer> getSaltRequestPort() {
+        return getOptionalPort(SALT_REQUEST_PORT);
+    }
+
+    private Optional<Integer> getOptionalPort(String key) {
+        String value = Config.get().getString(key);
+        if (StringUtils.isBlank(value)) {
+            return Optional.empty();
+        }
+        return Optional.of(Integer.valueOf(value.trim()));
     }
 
     /**
