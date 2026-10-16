@@ -18,7 +18,7 @@
 #
 
 import copy
-from datetime import datetime
+from datetime import datetime, timezone
 
 # pylint: disable-next=unused-import
 import string
@@ -78,6 +78,20 @@ sequences = {
     "suseProducts": "suse_products_id_seq",
     "suseSCCRepository": "suse_sccrepository_id_seq",
 }
+
+
+def _parse_change_log_time(value):
+    """Parse a package changelog timestamp.
+
+    Values produced by backendLib.gmtime() carry an explicit `` UTC`` suffix
+    and represent an absolute point in time, while the ones produced by
+    backendLib.localtime() are naive local time.
+    """
+    suffix = " UTC"
+    if value.endswith(suffix):
+        parsed = datetime.strptime(value[: -len(suffix)], "%Y-%m-%d %H:%M:%S")
+        return parsed.replace(tzinfo=timezone.utc)
+    return datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
 
 
 # pylint: disable-next=missing-class-docstring
@@ -195,9 +209,10 @@ class Backend:
                 ORDER BY ordering
               ON CONFLICT DO NOTHING
         """
+        sorted_keys = sorted(changelogHash.keys())
         values = [
-            (i, key[0], datetime.strptime(key[1], "%Y-%m-%d %H:%M:%S"), key[2])
-            for i, key in enumerate(sorted(changelogHash.keys()))
+            (i, key[0], _parse_change_log_time(key[1]), key[2])
+            for i, key in enumerate(sorted_keys)
         ]
         h = self.dbmodule.prepare(sql)
         h.execute_values(sql, values, fetch=False)
@@ -206,7 +221,7 @@ class Backend:
             WITH wanted (ordering, name, time, text) AS (
               VALUES %s
             )
-            SELECT wanted.name, wanted.time, wanted.text, rhnPackageChangeLogData.id
+            SELECT wanted.ordering, rhnPackageChangeLogData.id
               FROM wanted
               JOIN rhnPackageChangeLogData
                   ON rhnPackageChangeLogData.name = wanted.name
@@ -216,10 +231,8 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         changelogs = h.execute_values(sql, values)
 
-        for changelog in changelogs:
-            changelogHash[
-                (changelog[0], changelog[1].strftime("%Y-%m-%d %H:%M:%S"), changelog[2])
-            ] = changelog[3]
+        for ordering, changelog_id in changelogs:
+            changelogHash[sorted_keys[ordering]] = changelog_id
 
     # pylint: disable-next=invalid-name
     def processSuseProductFiles(self, prodfileHash):

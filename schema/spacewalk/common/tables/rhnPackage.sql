@@ -43,7 +43,7 @@ CREATE TABLE rhnPackage
     payload_size     NUMERIC,
     installed_size   NUMERIC,
     build_host       VARCHAR(256),
-    build_time       timestamp,
+    build_time       TIMESTAMPTZ,
     source_rpm_id    NUMERIC
                          CONSTRAINT rhn_package_srcrpmid_fk
                              REFERENCES rhnSourceRPM (id),
