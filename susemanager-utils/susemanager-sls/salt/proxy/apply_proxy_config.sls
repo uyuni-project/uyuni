@@ -34,6 +34,12 @@ mgrpxy_installed:
         server_version: "{{ pillar['server_version'] }}"
         email: {{ pillar['email'] }}
         replace_fqdns: {{ pillar['replace_fqdns'] }}
+        {%- if pillar.get('salt_publish_port') %}
+        salt_publish_port: {{ pillar['salt_publish_port']|int }}
+        {%- endif %}
+        {%- if pillar.get('salt_request_port') %}
+        salt_request_port: {{ pillar['salt_request_port']|int }}
+        {%- endif %}
 
 /etc/uyuni/proxy/httpd.yaml:
   file.managed:
