@@ -39,6 +39,8 @@ import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.manager.kickstart.KickstartDeleteCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 
+import com.suse.manager.reactor.mqtt.MqttEventHelper;
+import com.suse.manager.reactor.mqtt.event.OrgCreatedEvent;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import org.apache.logging.log4j.LogManager;
@@ -219,7 +221,9 @@ public class OrgFactory extends HibernateFactory {
     private Org saveInternal(Org org) {
         if (org.getId() == null) {
             // New org, gotta use the stored procedure.
-            return saveNewOrg(org);
+            Org savedOrg = saveNewOrg(org);
+            MqttEventHelper.publishAfterCommit(new OrgCreatedEvent(savedOrg.getId(), savedOrg.getName()));
+            return savedOrg;
         }
         return saveObject(org);
     }
