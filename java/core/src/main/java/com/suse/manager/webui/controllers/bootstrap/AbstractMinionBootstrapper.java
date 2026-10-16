@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016--2022 SUSE LLC
+ * Copyright (c) 2016--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -34,6 +34,7 @@ import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.utils.SaltPortsResolver;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.CommandExecutionException;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -318,12 +319,15 @@ public abstract class AbstractMinionBootstrapper {
     protected Map<String, Object> createPillarData(User user, BootstrapParameters input,
                                                    String contactMethod) {
         Map<String, Object> pillarData = new HashMap<>();
-        String mgrServer = input.getProxyId()
-                .map(ServerFactory::lookupById)
+        Optional<Server> proxy = input.getProxyId().map(ServerFactory::lookupById);
+        String mgrServer = proxy
                 .map(Server::getHostname)
                 .orElse(ConfigDefaults.get().getJavaHostname());
 
         pillarData.put("mgr_server", mgrServer);
+        if (!ContactMethodUtil.isSSHPushContactMethod(contactMethod)) {
+            pillarData.putAll(SaltPortsResolver.forMaster(proxy));
+        }
         if ("ssh-push-tunnel".equals(contactMethod)) {
             pillarData.put("mgr_server_https_port", Config.get().getInt("ssh_push_port_https"));
         }
