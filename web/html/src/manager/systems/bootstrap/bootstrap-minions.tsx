@@ -10,6 +10,8 @@ import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
 
+import { getProxyOptions, parseProxySelection, ProxyOptions, ProxyType } from "../proxy";
+
 // See java/core/src/main/resources/com/suse/manager/webui/templates/minion/bootstrap.jade
 declare global {
   interface Window {
@@ -125,7 +127,7 @@ class ErrorDetailsDialog extends Component<ErrorDetailsDialogProps> {
 }
 
 type Props = {
-  proxies: any[];
+  proxies: ProxyType[];
   availableActivationKeys: any[];
   ansibleInventoryId: number | null;
   targetHost: string | null;
@@ -151,7 +153,6 @@ type State = {
   manageWithSSH: boolean;
   errors: any[];
   proxy: string;
-  showProxyHostnameWarn: boolean;
   loading: boolean;
   privKeyLoading?: boolean;
   success?: any;
@@ -177,8 +178,7 @@ class BootstrapMinions extends Component<Props, State> {
       ignoreHostKeys: true,
       manageWithSSH: false,
       errors: [],
-      proxy: "",
-      showProxyHostnameWarn: false,
+      proxy: getProxyOptions(props.proxies)[0]?.value ?? "0",
       loading: false,
       errorDetails: null,
     };
@@ -263,16 +263,6 @@ class BootstrapMinions extends Component<Props, State> {
     });
   };
 
-  proxyChanged = (event) => {
-    const proxyId = parseInt(event.target.value, 10);
-    const proxy = this.props.proxies.find((p) => p.id === proxyId);
-    const showWarn = proxy && proxy.hostname.indexOf(".") < 0;
-    this.setState({
-      proxy: event.target.value,
-      showProxyHostnameWarn: showWarn,
-    });
-  };
-
   hasDetails = (error) => {
     return error.standardOutput || error.standardError || error.result;
   };
@@ -306,8 +296,12 @@ class BootstrapMinions extends Component<Props, State> {
     } else if (authMethod === AuthMethod.AnsiblePreauth) {
       formData["ansibleInventoryId"] = this.props.ansibleInventoryId;
     }
-    if (this.state.proxy) {
-      formData["proxy"] = this.state.proxy;
+    const { proxyId, proxyFqdn } = parseProxySelection(this.state.proxy);
+    if (proxyId) {
+      formData["proxy"] = proxyId;
+      if (proxyFqdn) {
+        formData["proxyFqdn"] = proxyFqdn;
+      }
     }
 
     const request = Network.post(
@@ -616,30 +610,11 @@ class BootstrapMinions extends Component<Props, State> {
           <div className="row">
             <label className="col-md-3 control-label">{t("Proxy")}:</label>
             <div className="col-md-6">
-              <select value={this.state.proxy} onChange={this.proxyChanged} className="form-control" name="proxies">
-                <option key="none" value="">
-                  {t("None")}
-                </option>
-                {this.props.proxies.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                    {p.path.reduce(
-                      (acc, val, idx) => acc + "\u2192 " + val + (idx === p.path.length - 1 ? "" : " "),
-                      ""
-                    )}
-                  </option>
-                ))}
-              </select>
-              <div>
-                <i
-                  style={this.state.showProxyHostnameWarn ? { display: "inline" } : { display: "none" }}
-                  className="fa fa-exclamation-triangle text-warning"
-                >
-                  {t(
-                    "The hostname of the proxy is not fully qualified. This may cause problems when accessing the channels."
-                  )}
-                </i>
-              </div>
+              <ProxyOptions
+                proxies={this.props.proxies}
+                value={this.state.proxy}
+                onChange={(proxy) => this.setState({ proxy })}
+              />
             </div>
           </div>
           <div className="row">

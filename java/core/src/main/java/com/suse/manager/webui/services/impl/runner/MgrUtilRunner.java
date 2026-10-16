@@ -167,6 +167,42 @@ public class MgrUtilRunner {
     }
 
     /**
+     * Result of renaming entries in the ~/.ssh/known_hosts file
+     */
+    public static class UpdateKnowHostResult {
+
+        @SerializedName("status")
+        private String status;
+
+        @SerializedName("comment")
+        private String comment;
+
+        /**
+         * Only needed for unit tests.
+         * @param statusIn status
+         * @param commentIn comment
+         */
+        public UpdateKnowHostResult(String statusIn, String commentIn) {
+            this.status = statusIn;
+            this.comment = commentIn;
+        }
+
+        /**
+         * @return status to get
+         */
+        public String getStatus() {
+            return status;
+        }
+
+        /**
+         * @return comment to get
+         */
+        public String getComment() {
+            return comment;
+        }
+    }
+
+    /**
      * Generate a ssh key pair.
      * @param path path where to generate the keys or null to return them
      * @param pubkeyCopy create a copy of the pubkey at this place. Set NULL when no copy should be created
@@ -177,6 +213,24 @@ public class MgrUtilRunner {
         args.put("path", path);
         args.put("pubkeycopy", pubkeyCopy);
         return new RunnerCall<>("mgrutil.ssh_keygen", Optional.of(args), new TypeToken<>() { });
+    }
+
+    /**
+     * Renames a hostname in a user's ~/.ssh/known_hosts file, preserving the pinned host keys.
+     * @param user the user for which to update the hostname
+     * @param oldHostname hostname to rename
+     * @param newHostname new hostname
+     * @param port port of the host
+     * @return the execution result
+     */
+    public static RunnerCall<UpdateKnowHostResult> updateSSHKnownHost(String user,
+            String oldHostname, String newHostname, int port) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("user", user);
+        args.put("old_hostname", oldHostname);
+        args.put("new_hostname", newHostname);
+        args.put("port", port);
+        return new RunnerCall<>("mgrutil.update_ssh_known_host", Optional.of(args), new TypeToken<>() { });
     }
 
     /**

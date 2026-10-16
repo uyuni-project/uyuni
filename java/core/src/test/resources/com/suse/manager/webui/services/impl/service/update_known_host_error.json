@@ -1,0 +1,8 @@
+{
+  "return": [
+    {
+      "status": "error",
+      "comment": "Renaming the known_hosts entries failed"
+    }
+  ]
+}

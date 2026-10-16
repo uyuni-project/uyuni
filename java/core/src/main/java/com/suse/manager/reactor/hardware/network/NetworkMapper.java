@@ -14,6 +14,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
@@ -95,8 +96,9 @@ public class NetworkMapper {
                     .map(SumaUtil.IPRoute::getSource)
                     .filter(addr -> !LOOPBACK_IPV6.equals(addr));
 
-            // Set hostname and FQDNs
-            server.setHostname(grains.getOptionalAsString(GRAIN_FQDN).orElse(null));
+            // Set hostname and FQDNs. Keep the existing hostname (e.g. the minion id fallback
+            // set at registration) if the minion does not report a fqdn grain.
+            grains.getOptionalAsString(GRAIN_FQDN).ifPresent(server::setHostname);
             setFqdns(server, fqdns);
 
             // Remove interfaces not present in Salt result by name
@@ -113,7 +115,7 @@ public class NetworkMapper {
             // Set primary FQDN to hostname if no primary FQDN is specified
             if (StringUtils.isNotBlank(server.getHostname()) && server.getFqdns().stream()
                    .noneMatch(ServerFQDN::isPrimary)) {
-                server.setPrimaryFQDNWithName(server.getHostname());
+                SystemManager.setPrimaryFqdn(server, server.getHostname());
             }
 
             return Optional.empty();
@@ -140,6 +142,13 @@ public class NetworkMapper {
                 .toList();
         serverFQDNs.retainAll(srvFqdnsObj);
         serverFQDNs.addAll(srvFqdnsObj);
+
+        if (serverFQDNs.stream().noneMatch(ServerFQDN::isPrimary)) {
+            String minionId = serverIn.getMinionId();
+            if (fqdns.contains(minionId)) {
+                SystemManager.setPrimaryFqdn(serverIn, minionId);
+            }
+        }
     }
 
     /**
@@ -167,7 +176,7 @@ public class NetworkMapper {
 
         // Update interface properties
         networkInterface.setHwaddr(saltInterface.getHWAddr());
-        networkInterface.setModule(netModules.get(name).orElse(null));
+        networkInterface.setModule(netModules.getOrDefault(name, Optional.empty()).orElse(null));
 
         // Persist to get ID for IP address syncing
         networkInterface = ServerFactory.saveNetworkInterface(networkInterface);
