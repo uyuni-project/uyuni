@@ -282,8 +282,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `checksum_priority_list` | [`python/spacewalk/satellite_tools/xmlSource.py:641`](python/spacewalk/satellite_tools/xmlSource.py#L641) |
 | rhn_server.conf | `sync_to_temp` | [`python/spacewalk/satellite_tools/xmlWireSource.py:181`](python/spacewalk/satellite_tools/xmlWireSource.py#L181) |
 | rhn_server.conf | `sync_source_packages` | [`python/spacewalk/satellite_tools/reposync.py:3169`](python/spacewalk/satellite_tools/reposync.py#L3169) |
-| rhn_server_iss.conf | `sat_cert_generation` | [`python/spacewalk/satellite_tools/disk_dumper/dumper.py:709`](python/spacewalk/satellite_tools/disk_dumper/dumper.py#L709) |
-| rhn_server_iss.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server_satellite.conf | `log_file` | [`python/spacewalk/satellite_tools/updatePackages.py:43`](python/spacewalk/satellite_tools/updatePackages.py#L43) |
 | rhn_server_satellite.conf | `mount_point` | [`python/spacewalk/satellite_tools/contentRemove.py:610`](python/spacewalk/satellite_tools/contentRemove.py#L610) |
 | rhn_server_satellite.conf | `rhn_parent` | [`python/spacewalk/satellite_tools/xmlWireSource.py:71`](python/spacewalk/satellite_tools/xmlWireSource.py#L71) |
