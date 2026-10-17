@@ -269,7 +269,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `qos` | [`python/spacewalk/server/rhnHandler.py:48`](python/spacewalk/server/rhnHandler.py#L48) |
 | rhn_server.conf | `throttle` | [`python/spacewalk/server/rhnHandler.py:46`](python/spacewalk/server/rhnHandler.py#L46) |
 | rhn_server.conf | `satellite` | [`python/spacewalk/server/rhnRepository.py:322`](python/spacewalk/server/rhnRepository.py#L322) |
-| rhn_server.conf | `disconnected` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:710`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L710) |
 | rhn_server.conf | `session_lifetime` | [`python/spacewalk/server/rhnSession.py:50`](python/spacewalk/server/rhnSession.py#L50) |
 | rhn_server.conf | `secret_key` | [`python/spacewalk/server/apacheAuth.py:94`](python/spacewalk/server/apacheAuth.py#L94) |
 | rhn_server.conf | `reset_base_channel` | [`python/spacewalk/server/rhnServer/server_class.py:217`](python/spacewalk/server/rhnServer/server_class.py#L217) |

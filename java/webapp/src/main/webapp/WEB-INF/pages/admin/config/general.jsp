@@ -90,16 +90,6 @@
                                        styleId="mount_point" />
                         </div>
                     </div>
-                    <div class="row hidden">
-                        <label class="col-lg-3 control-label" for="disconnected">
-                            <bean:message key="general.jsp.disconnected"/>
-                        </label>
-                        <div class="col-lg-6">
-                            <div class="checkbox">
-                                <html:checkbox property="disconnected" styleId="disconnected" />
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                             <html:submit styleClass="btn btn-primary">
