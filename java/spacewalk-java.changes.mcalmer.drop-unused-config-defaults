@@ -1,0 +1,4 @@
+- Remove unused configuration defaults customer_service_email,
+  login_banner and base_port
+- Remove ineffective Quartz option
+  `org.terracotta.quartz.skipUpdateCheck`

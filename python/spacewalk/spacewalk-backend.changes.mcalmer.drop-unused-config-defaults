@@ -1,0 +1,3 @@
+- Remove unused configuration defaults from `rhn_server.conf`,
+  `rhn_server_app.conf`, `rhn_server_iss.conf`,
+  `rhn_server_satellite.conf` and `rhn_server_xmlrpc.conf`

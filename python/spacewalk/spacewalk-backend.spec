@@ -432,7 +432,6 @@ fi
 %dir %{rhnroot}/upload_server/handlers
 %{rhnroot}/upload_server/handlers/__init__.py*
 %{rhnroot}/upload_server/handlers/package_push
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_upload.conf
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_upload_package-push.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-package-push-server
 
@@ -510,7 +509,6 @@ fi
 %exclude %{python3rhnroot}/satellite_tools/__pycache__/xmlSource.*
 %{python3rhnroot}/satellite_tools/disk_dumper/__pycache__/*
 %{python3rhnroot}/satellite_tools/repo_plugins/__pycache__/*
-%config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
 %{_mandir}/man8/rhn-charsets.8%{?ext_man}
 %{_mandir}/man8/rhn-schema-version.8%{?ext_man}
 %{_mandir}/man8/rhn-ssl-dbstore.8%{?ext_man}

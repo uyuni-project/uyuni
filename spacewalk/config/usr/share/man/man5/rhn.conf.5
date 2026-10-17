@@ -115,15 +115,6 @@ Valid values:
 1
 
 .TP
-.B "disconnected (boolean)"
-This parameter controls whether server is running in connected or disconnected mode.
-When running in disconnected mode, the RHN Entitlement Certificate is activated locally
-but not on remote RHN Servers.
-.IP
-.B Default:
-0
-
-.TP
 .B "enable_snapshots" (boolean)
 This parameter controls whether server is allowed to perform system snapshots.
 .IP
@@ -254,17 +245,6 @@ The ability of synchronize two Spacewalk/Red Hat Satellites servers
 is called Inter-Red Hat Satellite Sync (ISS)  which allows to synchronize channels
 from the master Red Hat Satellite to slave servers, simplifying the
 process of coordinating contents from one Spacewalk/Red Hat Satellite source to another or several others. Note: Several options that used to be available in rhn.conf are now only set by the Satellite Admin in the Admin -> ISS Configuration pages in the web interface. 
-
-.SS Master Spacewalk/Red Hat Satellite Servers
-
-.TP
-.B "disable_iss"
-If set to 1, then no slave will be able to sync from this server
-this option does not affect the ability to sync to this server from
-another spacewalk (or hosted).
-.IP
-.B Default:
-0
 
 .SH FILES
 .I /etc/rhn/rhn.conf

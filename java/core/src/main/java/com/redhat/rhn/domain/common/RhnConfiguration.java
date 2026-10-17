@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Red Hat, Inc.
+ * Copyright (c) 2024--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.common;
 
@@ -26,6 +22,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 
+/**
+ * Rhn Configuration Table
+ */
 @Entity
 @Table(name = "rhnConfiguration")
 public class RhnConfiguration extends BaseDomainHelper {
@@ -58,7 +57,8 @@ public class RhnConfiguration extends BaseDomainHelper {
     @Column(name = "value", length = 512)
     private String value;
 
-    @Column(name = "default_value", length = 512)
+    // the default value is managed by schema migrations only
+    @Column(name = "default_value", length = 512, insertable = false, updatable = false)
     private String defaultValue;
 
     @Column(name = "created", nullable = false, updatable = false)
@@ -66,28 +66,6 @@ public class RhnConfiguration extends BaseDomainHelper {
 
     @Column(name = "modified", nullable = false)
     private Date modified;
-
-    /**
-     * Rhn Configuration Table
-     */
-    // Constructors
-    public RhnConfiguration() {
-    }
-
-    /**
-     * Parameter constructor
-     * @param keyIn the key
-     * @param descriptionIn the description
-     * @param valueIn the value
-     * @param defaultValueIn the default value
-     */
-    public RhnConfiguration(KEYS keyIn, String descriptionIn, String valueIn,
-                            String defaultValueIn) {
-        key = keyIn;
-        description = descriptionIn;
-        value = valueIn;
-        defaultValue = defaultValueIn;
-    }
 
     public KEYS getKey() {
         return key;
@@ -117,8 +95,11 @@ public class RhnConfiguration extends BaseDomainHelper {
         return defaultValue;
     }
 
-    public void setDefaultValue(String defaultValueIn) {
-        defaultValue = defaultValueIn;
+    /**
+     * @return the value or the default value when no value is set
+     */
+    public String getEffectiveValue() {
+        return value != null ? value : defaultValue;
     }
 
 }

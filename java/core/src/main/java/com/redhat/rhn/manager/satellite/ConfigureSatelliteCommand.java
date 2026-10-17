@@ -144,17 +144,6 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
                     Config.get().getString(ConfigDefaults.MOUNT_POINT));
         }
 
-        if (keysToBeUpdated.contains(ConfigDefaults.DISCONNECTED) &&
-                !Config.get().getBoolean(ConfigDefaults.DISCONNECTED)) {
-            //if there isn't already a value set for the satellite parent (We don't want to
-            // overwrite a custom value.)
-            if (Config.get().getString(ConfigDefaults.SATELLITE_PARENT) == null ||
-                    Config.get().getString(ConfigDefaults.SATELLITE_PARENT).isEmpty()) {
-                this.updateString(ConfigDefaults.SATELLITE_PARENT,
-                        ConfigDefaults.DEFAULT_SAT_PARENT);
-            }
-        }
-
         ValidatorError[] retVal = executeStore();
         if (retVal != null) {
             return retVal;
