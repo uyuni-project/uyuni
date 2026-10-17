@@ -8,13 +8,13 @@ INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('EXTAUTH_KEEP_TEMPROLES', 'Keep temporary user roles granted due to the external authentication setup for subsequent logins using password.', null, 'false');
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('SYSTEM_CHECKIN_THRESHOLD', 'Number of days before reporting a system as inactive', null, '1');
+VALUES ('SYSTEM_CHECKIN_THRESHOLD', 'Number of days before reporting a system as inactive', 1, '1');
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('PSW_CHECK_LENGTH_MIN', 'Minimum number of characters in local user passwords', null, '4');
+VALUES ('PSW_CHECK_LENGTH_MIN', 'Minimum number of characters in local user passwords', 4, '4');
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('PSW_CHECK_LENGTH_MAX', 'Maximum number of characters in local user passwords', null, '32');
+VALUES ('PSW_CHECK_LENGTH_MAX', 'Maximum number of characters in local user passwords', 32, '32');
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('PSW_CHECK_LOWER_CHAR_FLAG', 'psw has to have at least one lower alpha character', null, 'false');
@@ -35,7 +35,7 @@ INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG', 'Password has to have no repeating characters', null, 'false');
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('PSW_CHECK_MAX_OCCURRENCE', 'Maximum number of valid occurrence of a character', null, '2');
+VALUES ('PSW_CHECK_MAX_OCCURRENCE', 'Maximum number of valid occurrence of a character', 3, '2');
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('PSW_CHECK_SPECIAL_CHARACTERS', 'List of special characters to check in a password', null, '!$%&()*+,./:;<=>?[]^_{|}~');

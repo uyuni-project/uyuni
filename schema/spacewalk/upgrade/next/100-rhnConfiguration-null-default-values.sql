@@ -10,6 +10,6 @@ UPDATE rhnConfiguration
    AND value IN ('0', '1');
 
 -- a NULL value means the default value is used
-UPDATE rhnConfiguration
-   SET value = NULL
- WHERE value = default_value;
+-- UPDATE rhnConfiguration
+--    SET value = NULL
+--  WHERE value = default_value;
