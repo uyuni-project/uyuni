@@ -432,7 +432,6 @@ fi
 %dir %{rhnroot}/upload_server/handlers
 %{rhnroot}/upload_server/handlers/__init__.py*
 %{rhnroot}/upload_server/handlers/package_push
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_upload.conf
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_upload_package-push.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-package-push-server
 
