@@ -316,20 +316,9 @@ class Repository(rhnRepository.Repository):
         log_debug(3, "check flag for X-RHN-REDIRECT  ::", skip_redirect)
 
         # get the redirect and local paths
-        remotepath, localpath = self.getAllPackagePaths(pkgFilename)
+        _, localpath = self.getAllPackagePaths(pkgFilename)
 
-        # check for redirect conditions and fail over checks
-        if (
-            redirect_capable
-            and not CFG.SATELLITE
-            and not skip_redirect
-            and remotepath is not None
-        ):
-            self.redirect_location = remotepath
-            # We've set self.redirect_location, we're done here
-            # we throw a redirectException in _getFile method.
-            return None
-            # Package cannot be served from the edge, we serve it ourselves
+        # UYUNI always set SATELLITE = 1 so redirect is always disabled
         return localpath
 
     # pylint: disable-next=arguments-renamed
