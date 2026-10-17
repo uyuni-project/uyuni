@@ -33,6 +33,7 @@ from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.server import rhnSQL
 from spacewalk.common import repo
+from spacewalk.server.db_config import DB_CFG
 
 try:
     #  python 2
@@ -433,22 +434,19 @@ class ContentSource:
             # configure network connection
             try:
                 # bytes per second
-                self.minrate = int(CFG.REPOSYNC_MINRATE)
+                self.minrate = int(DB_CFG.REPOSYNC_MINRATE)
             except ValueError:
                 self.minrate = 1000
             try:
                 # seconds
-                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
+                self.timeout = int(DB_CFG.REPOSYNC_TIMEOUT)
             except ValueError:
                 self.timeout = 300
 
-            try:
-                # extended reposync nevra filter enable
-                # this will filter packages based on full nevra
-                # instead of package name only.
-                self.nevra_filter = bool(CFG.REPOSYNC_NEVRA_FILTER)
-            except (AttributeError, ValueError):
-                self.nevra_filter = False
+            # extended reposync nevra filter enable
+            # this will filter packages based on full nevra
+            # instead of package name only.
+            self.nevra_filter = DB_CFG.get_bool("REPOSYNC_NEVRA_FILTER")
 
             # SUSE vendor repositories belongs to org = NULL
             # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"

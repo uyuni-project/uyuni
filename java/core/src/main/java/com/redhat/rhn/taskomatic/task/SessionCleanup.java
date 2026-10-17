@@ -14,9 +14,10 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 import org.quartz.JobExecutionContext;
 
@@ -40,11 +41,11 @@ public class SessionCleanup extends RhnJavaJob {
      */
     @Override
     public void execute(JobExecutionContext context) {
-        Config c = Config.get();
         Map<String, Object> inParams = new HashMap<>();
 
         //retrieves info from user preferences
-        long window = c.getInt("web.session_database_lifetime");
+        long window = RhnConfigurationFactory.getSingleton()
+                .getLong(RhnConfiguration.KEYS.WEB_SESSION_DATABASE_LIFETIME);
 
         long bound = (System.currentTimeMillis() / 1000) - (2 * window);
 

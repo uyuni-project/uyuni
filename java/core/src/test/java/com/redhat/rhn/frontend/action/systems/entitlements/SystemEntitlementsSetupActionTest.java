@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
@@ -69,7 +69,8 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
-        Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.JAVA_KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = context.mock(SaltService.class);
         systemEntitlementManager = new SystemEntitlementManager(

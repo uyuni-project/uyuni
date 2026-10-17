@@ -35,6 +35,7 @@ from uyuni.common.rhnLib import rfc822time, timestamp
 # local modules imports
 # pylint: disable-next=ungrouped-imports
 from spacewalk.server import rhnChannel, rhnPackage, taskomatic, rhnSQL
+from spacewalk.server.db_config import DB_CFG
 from .rhnServer import server_lib
 from .repomd import repository
 
@@ -279,11 +280,7 @@ class Repository(rhnRepository.Repository):
         # By default we're using taskomatic's repomd. But if the config
         # value is present and set to anything other than 1, we'll use the
         # old python code
-        use_taskomatic = True
-        try:
-            use_taskomatic = CFG.USE_TASKOMATIC_REPOMD == 1
-        except AttributeError:
-            pass
+        use_taskomatic = DB_CFG.get_bool("USE_TASKOMATIC_REPOMD")
 
         # pylint: disable-next=consider-using-f-string
         log_debug(4, "Using taskomatic for repomd generation: %s" % use_taskomatic)

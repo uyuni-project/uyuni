@@ -11,7 +11,8 @@
 package com.suse.manager.webui.utils.token;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
@@ -33,7 +34,8 @@ abstract class AbstractTokenBuilder<B extends AbstractTokenBuilder<B>> extends S
     private static final int NOT_BEFORE_MINUTES = 2;
 
     // Optional expiration date for the token (minutes in the future). Default is one year.
-    private long expirationTimeMinutesInTheFuture = Config.get().getLong(ConfigDefaults.TOKEN_LIFETIME, 525_600L);
+    private long expirationTimeMinutesInTheFuture = RhnConfigurationFactory.getSingleton()
+            .getLong(RhnConfiguration.KEYS.TOKEN_LIFETIME);
 
     // Number of minutes before the token becomes valid
     private long notBeforeMinutesInThePast = NOT_BEFORE_MINUTES;

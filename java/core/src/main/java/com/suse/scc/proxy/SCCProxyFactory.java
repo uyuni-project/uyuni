@@ -10,9 +10,9 @@
  */
 package com.suse.scc.proxy;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -116,7 +116,8 @@ public class SCCProxyFactory extends HibernateFactory {
      * @return return list of {@link SCCProxyRecord} with the given status
      */
     public List<SCCProxyRecord> lookupByStatusAndRetry(SccProxyStatus statusIn) {
-        int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
+        int regErrorExpireTime = RhnConfigurationFactory.getSingleton()
+                .getInteger(RhnConfiguration.KEYS.REG_ERROR_EXPIRE_TIME);
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 

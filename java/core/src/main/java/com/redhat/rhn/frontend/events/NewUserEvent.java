@@ -15,9 +15,10 @@
 
 package com.redhat.rhn.frontend.events;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 
@@ -77,11 +78,11 @@ public class NewUserEvent extends BaseEvent implements EventMessage  {
      */
     public String getUrl() {
         //create url for new user
-        Config c = Config.get();
+        String baseDomain = RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.JAVA_BASE_DOMAIN);
         StringBuilder url = new StringBuilder();
         url.append("https://");
-        if (c.getString("java.base_domain") != null) {
-            url.append(c.getString("java.base_domain"));
+        if (baseDomain != null) {
+            url.append(baseDomain);
         }
         else {
             url.append(domain);

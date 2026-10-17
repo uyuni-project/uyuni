@@ -16,6 +16,8 @@
 package com.redhat.rhn.common.conf;
 
 import com.redhat.rhn.common.validator.HostPortValidator;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
@@ -29,7 +31,6 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,17 +42,16 @@ public class ConfigDefaults {
 
     private static ConfigDefaults instance = new ConfigDefaults();
 
+    private static final RhnConfigurationFactory DB_CONFIG = RhnConfigurationFactory.getSingleton();
+
     public static final List<String> SPACEWALK = List.of("Spacewalk", "Uyuni");
     //
     // Names of the configuration parameters
     //
 
-    public static final String WEB_DEFAULT_MAIL_FROM = "web.default_mail_from";
     public static final String WEB_ENCRYPTED_PASSWORDS = "web.encrypted_passwords";
     public static final String WEB_L10N_RESOURCEBUNDLES = "web.l10n_resourcebundles";
     public static final String WEB_PAM_AUTH_SERVICE = "web.pam_auth_service";
-    public static final String WEB_SESSION_DATABASE_LIFETIME =
-            "web.session_database_lifetime";
 
     public static final String WEB_SESSION_SECRET_1 = "web.session_secret_1";
     public static final String WEB_SESSION_SECRET_2 = "web.session_secret_2";
@@ -75,31 +75,12 @@ public class ConfigDefaults {
     public static final String WEB_SMTP_WRITE_TIMEOUT = "java.smtp_write_timeout";
     public static final String WEB_SMTP_TLS_PROTOCOLS = "java.smtp_tls_protocols";
     public static final String JAVA_HTTP_CLIENT_TLS_PROTOCOLS = "java.http_client_tls_protocols";
-    public static final String WEB_DISABLE_UPDATE_STATUS = "java.disable_update_status";
-    public static final String WEB_DISABLE_REMOTE_COMMANDS_FROM_UI = "java.disable_remote_commands_from_ui";
-    public static final String WEB_DISABLE_SUPPORTDATA_UPLOAD = "java.disable_supportdata_upload";
-
-    public static final String ERRATA_CACHE_COMPUTE_THRESHOLD
-    = "errata_cache_compute_threshold";
-
-    public static final String DOWNLOAD_URL_LIFETIME = "java.download_url_lifetime";
-
-    public static final String NON_EXPIRABLE_PACKAGE_URLS =
-        "java.non_expirable_package_urls";
-
-    public static final String SATELLITE_PARENT = "server.satellite.rhn_parent";
 
     public static final String SERVER_HOSTNAME = "java.hostname";
 
     public static final String KICKSTART_HOST = "kickstart_host";
 
-    public static final String CONFIG_REVISION_MAX_SIZE = "web.maximum_config_file_size";
-
     public static final String WEB_EXCLUDED_COUNTRIES = "java.excluded_countries";
-
-    public static final String DISCONNECTED = "disconnected";
-
-    public static final String DEFAULT_SAT_PARENT = "satellite.rhn.redhat.com";
 
     public static final String PRODUCT_NAME = "web.product_name";
     public static final String VENDOR_NAME = "java.vendor_name";
@@ -109,21 +90,11 @@ public class ConfigDefaults {
     public static final String ENTERPRISE_LINUX_NAME = "java.enterprise_linux_name";
     public static final String VENDOR_SERVICE_NAME = "java.vendor_service_name";
 
-    private static final String COBBLER_AUTOMATED_USER = "java.taskomatic_cobbler_user";
-
     public static final String DOC_GETTING_STARTED_GUIDE = "docs.getting_started_guide";
     public static final String DOC_REFERENCE_GUIDE = "docs.reference_guide";
     public static final String DOC_BEST_PRACTICES_GUIDE = "docs.best_practices_guide";
     public static final String DOC_ADVANCED_TOPICS_GUIDE = "docs.advanced_topics_guide";
     public static final String DOC_RELEASE_NOTES = "docs.release_notes";
-
-    public static final String WEB_SUBSCRIBE_PROXY_CHANNEL = "web.subscribe_proxy_channel";
-
-    public static final String TAKE_SNAPSHOTS = "enable_snapshots";
-
-    public static final String ACTIONS_DISPLAY_LIMIT = "java.actions_display_limit";
-
-    public static final String CONFIG_FILE_EDIT_SIZE = "java.config_file_edit_size";
 
     /**
      * The default maximum size for config revisions,  (128 K)
@@ -133,11 +104,6 @@ public class ConfigDefaults {
     public static final String REPOMD_PATH_PREFIX = "taskomatic.repomd_path_prefix";
 
     public static final String REPOMD_CACHE_MOUNT_POINT = "repomd_cache_mount_point";
-
-    //Comma separated names of possible kickstart packages
-    private static final String POSSIBLE_KICKSTART_PACKAGE_NAMES = "salt";
-
-    private static final String KICKSTART_PACKAGE_NAMES = "kickstart_packages";
 
     public static final String MOUNT_POINT = "mount_point";
     public static final String KICKSTART_MOUNT_POINT = "kickstart_mount_point";
@@ -149,16 +115,8 @@ public class ConfigDefaults {
     public static final String COBBLER_SNIPPETS_DIR = "cobbler.snippets.dir";
     private static final String DEFAULT_COBBLER_SNIPPET_DIR = "/var/lib/cobbler/snippets";
     private static final String COBBLER_NAME_SEPARATOR = "cobbler.name.separator";
-    public static final String POWER_MANAGEMENT_TYPES = "java.power_management.types";
 
     private static final String CLONED_CHANNEL_AUTO_SELECTION = "java.cloned_channel_auto_selection";
-
-    private static final String COBBLER_BOOTSTRAP_KERNEL = "java.cobbler_bootstrap.kernel";
-    private static final String COBBLER_BOOTSTRAP_INITRD = "java.cobbler_bootstrap.initrd";
-    private static final String COBBLER_BOOTSTRAP_BREED = "java.cobbler_bootstrap.breed";
-    private static final String COBBLER_BOOTSTRAP_ARCH = "java.cobbler_bootstrap.arch";
-    private static final String COBBLER_BOOTSTRAP_EXTRA_KERNEL_OPTIONS =
-        "java.cobbler_bootstrap.extra_kernel_options";
 
     private static final String KVM_VIRT_PATH_DIR = "kickstart.virt_storage_path_kvm";
     private static final String XEN_VIRT_PATH_DIR = "kickstart.virt_storage_path_xen";
@@ -220,8 +178,6 @@ public class ConfigDefaults {
     private static final String SYSTEM_CURRENCY_BUG  = "java.sc_bug";
     private static final String SYSTEM_CURRENCY_ENH  = "java.sc_enh";
 
-    public static final String CHANGELOG_ENTRY_LIMIT = "java.max_changelog_entries";
-
     /**
      * Taskomatic defaults
      */
@@ -240,18 +196,10 @@ public class ConfigDefaults {
      * SUSE Manager defaults
      */
     public static final String SCC_URL = "server.susemanager.scc_url";
-    public static final String SCC_UPDATE_HOST_DOMAIN = "server.susemanager.update_host_domain";
-    public static final String FORWARD_REGISTRATION = "server.susemanager.forward_registration";
-    public static final String REG_ERROR_EXPIRE_TIME = "server.susemanager.reg_error_expire_time";
-    public static final String REG_BATCH_SIZE = "server.susemanager.reg_batch_size";
     public static final String SCC_BACKUP_SRV_USR = "server.susemanager.scc_backup_srv_usr";
     public static final String PRODUCT_TREE_TAG = "java.product_tree_tag";
 
     public static final String MESSAGE_QUEUE_THREAD_POOL_SIZE = "java.message_queue_thread_pool_size";
-
-    public static final String CVE_AUDIT_ENABLE_OVAL_METADATA = "java.cve_audit.enable_oval_metadata";
-
-    public static final String OVAL_DEFINITIONS_BULK_SIZE = "java.oval_definitions_bulk_size";
 
     /**
      * SCAP XCCDF profiles XSL transformation file path
@@ -265,50 +213,7 @@ public class ConfigDefaults {
     public static final String SCAP_XCCDF_RESUME_XSL = "scap.xccdf.resume.xsl";
     private static final String DEFAULT_SCAP_XCCDF_RESUME_XSL = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
-    /**
-     * Token lifetime in seconds
-     */
-    public static final String TEMP_TOKEN_LIFETIME = "server.susemanager.temp_token_lifetime";
-    public static final String TOKEN_LIFETIME = "server.susemanager.token_lifetime";
-    /**
-     * Controls if refreshed tokens get automatically deployed or not.
-     */
-    public static final String TOKEN_REFRESH_AUTO_DEPLOY = "server.susemanager.token_refresh_auto_deploy";
-
     public static final String SALT_SSH_CONNECT_TIMEOUT = "java.salt_ssh_connect_timeout";
-
-    /**
-     * Duration in hours of the time window for Salt minions to stage
-     * packages in advance of scheduled installations or upgrades
-     */
-    public static final String SALT_CONTENT_STAGING_WINDOW = "java.salt_content_staging_window";
-
-    /**
-     * Advance time, in hours, for the content staging window to open with
-     * respect to the scheduled installation/upgrade time
-     */
-    public static final String SALT_CONTENT_STAGING_ADVANCE = "java.salt_content_staging_advance";
-
-    /**
-     * If true, check via JWT tokens that files requested by a minion are actually accessible by that minion.
-     * Turning this flag to false disables the checks.
-     */
-    public static final String SALT_CHECK_DOWNLOAD_TOKENS = "java.salt_check_download_tokens";
-
-    /**
-     * If true, Kiwi OS Image building feature preview will be enabled
-     */
-    public static final String KIWI_OS_IMAGE_BUILDING_ENABLED = "java.kiwi_os_image_building_enabled";
-
-    /**
-     * Lifetime of notification messages in days
-     */
-    public static final String NOTIFICATIONS_LIFETIME = "java.notifications_lifetime";
-
-    /**
-     * Notifications types to disable
-     */
-    public static final String NOTIFICATIONS_TYPE_DISABLED = "java.notifications_type_disabled";
 
     /**
      * Indicates the salt-api host to connect to (host
@@ -329,32 +234,6 @@ public class ConfigDefaults {
      * Number of threads dedicated to processing Salt events.
      */
     public static final String SALT_EVENT_THREAD_POOL_SIZE = "java.salt_event_thread_pool_size";
-
-    /**
-     * Timeout in seconds of the presence ping performed in Salt Minions during salt batch calls
-     */
-    public static final String SALT_PRESENCE_PING_TIMEOUT = "java.salt_presence_ping_timeout";
-
-    /**
-     * Timeout in seconds for gathering the presence ping jobs performed in Salt Minions during salt batch calls
-     */
-    public static final String SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT = "java.salt_presence_ping_gather_job_timeout";
-
-    /**
-     * Upper limit to the number of minions that execute a single Action concurrently. Lowering this value
-     * prevents thundering-herd effects from Action execution but can decrease overall performance as the
-     * overall level of parallelization is reduced. This is translated to the `--batch-size` Salt option.
-     */
-    public static final String SALT_BATCH_SIZE = "java.salt_batch_size";
-
-    /**
-     * Delay, in seconds, before a new batch is scheduled. After the first batch is scheduled with a size up to
-     * java.salt_batch_size, subsequent batches will contain a smaller number of minions: the exact count will be
-     * equal to the number of minions completing before java.salt_batch_delay expires.
-     * Higher values will typically result in bigger batches with a lower CPU and I/O load on the Salt Master, while
-     * smaller values will typically result in smaller batches with higher CPU and I/O load on the Salt Master.
-     */
-    public static final String SALT_BATCH_DELAY = "java.salt_batch_delay";
 
     /**
      * Maximum number of events processed before COMMITTing to the database. Raising this to any value above 1 will
@@ -413,11 +292,6 @@ public class ConfigDefaults {
     public static final String UNIFY_CUSTOM_CHANNEL_MANAGEMENT = "java.unify_custom_channel_management";
 
     /**
-     * Specify the number of minutes to wait before performing a system reboot
-     * */
-    public static final String REBOOT_DELAY = "java.reboot_delay";
-
-    /**
      * Disable SSL redirection
      */
     public static final String NO_SSL = "server.no_ssl";
@@ -426,11 +300,6 @@ public class ConfigDefaults {
      * Specify if custom repositories for RHUI should be created with a different org than 1
      */
     public static final String RHUI_DEFAULT_ORG_ID = "java.rhui_default_org_id";
-
-    /**
-     * url to download advisory-map.csv, the map of errata patch id, announcement id and advisory URL
-     */
-    private static final String ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL = "java.errata_advisory_map_csv_download_url";
 
     /**
      * OpenID Connect authorization parameters
@@ -493,8 +362,6 @@ public class ConfigDefaults {
     public String getOidcUsernameClaim() {
         return Config.get().getString(OIDC_JWT_USERNAME_CLAIM, "preferred_username");
     }
-
-
 
     private ConfigDefaults() {
     }
@@ -577,8 +444,7 @@ public class ConfigDefaults {
      * @return the list of default kickstart packages names
      */
     public List<String> getKickstartPackageNames() {
-        List<String> packageNames = Config.get().getList(KICKSTART_PACKAGE_NAMES);
-        return packageNames.isEmpty() ?  Arrays.asList(POSSIBLE_KICKSTART_PACKAGE_NAMES.split(",")) : packageNames;
+        return DB_CONFIG.getList(RhnConfiguration.KEYS.KICKSTART_PACKAGES);
     }
 
     /**
@@ -588,7 +454,7 @@ public class ConfigDefaults {
      * @return String from our config
      */
     public String getCobblerAutomatedUser() {
-        return Config.get().getString(COBBLER_AUTOMATED_USER, "taskomatic_user");
+        return DB_CONFIG.getString(RhnConfiguration.KEYS.JAVA_TASKOMATIC_COBBLER_USER);
     }
 
     /**
@@ -671,7 +537,6 @@ public class ConfigDefaults {
         return Config.get().getString(VIRT_BRIDGE, "virbr0");
     }
 
-
     /**
      * Returns the default virt disk size in GBs
      * @return the virt disk size
@@ -707,7 +572,7 @@ public class ConfigDefaults {
      * @return boolean if this sat is disconnected or not
      */
     public boolean isDisconnected() {
-        return (Config.get().getBoolean(DISCONNECTED));
+        return DB_CONFIG.getBoolean(RhnConfiguration.KEYS.DISCONNECTED);
     }
 
     /**
@@ -783,7 +648,6 @@ public class ConfigDefaults {
     public String getKickstartTemplateHeader() {
         return Config.get().getString("kickstart.header", "#errorCatcher ListErrors");
     }
-
 
     /**
      * Returns the default network interface for a kickstart profile
@@ -873,7 +737,7 @@ public class ConfigDefaults {
      * @return the types
      */
     public String getCobblerPowerTypes() {
-        return Config.get().getString(POWER_MANAGEMENT_TYPES);
+        return DB_CONFIG.getString(RhnConfiguration.KEYS.JAVA_POWER_MANAGEMENT_TYPES);
     }
 
     /**
@@ -881,7 +745,7 @@ public class ConfigDefaults {
      * @return the path
      */
     public String getCobblerBootstrapKernel() {
-        return Config.get().getString(COBBLER_BOOTSTRAP_KERNEL);
+        return DB_CONFIG.getString(RhnConfiguration.KEYS.JAVA_COBBLER_BOOTSTRAP_KERNEL);
     }
 
     /**
@@ -889,7 +753,7 @@ public class ConfigDefaults {
      * @return the path
      */
     public String getCobblerBootstrapInitrd() {
-        return Config.get().getString(COBBLER_BOOTSTRAP_INITRD);
+        return DB_CONFIG.getString(RhnConfiguration.KEYS.JAVA_COBBLER_BOOTSTRAP_INITRD);
     }
 
     /**
@@ -905,7 +769,7 @@ public class ConfigDefaults {
      * @return the breed
      */
     public String getCobblerBootstrapBreed() {
-        return Config.get().getString(COBBLER_BOOTSTRAP_BREED);
+        return DB_CONFIG.getString(RhnConfiguration.KEYS.JAVA_COBBLER_BOOTSTRAP_BREED);
     }
 
     /**
@@ -913,7 +777,7 @@ public class ConfigDefaults {
      * @return the arch
      */
     public String getCobblerBootstrapArch() {
-        return Config.get().getString(COBBLER_BOOTSTRAP_ARCH);
+        return DB_CONFIG.getString(RhnConfiguration.KEYS.JAVA_COBBLER_BOOTSTRAP_ARCH);
     }
 
     /**
@@ -921,7 +785,7 @@ public class ConfigDefaults {
      * @return the options
      */
     public String getCobblerBootstrapExtraKernelOptions() {
-        return Config.get().getString(COBBLER_BOOTSTRAP_EXTRA_KERNEL_OPTIONS);
+        return DB_CONFIG.getString(RhnConfiguration.KEYS.JAVA_COBBLER_BOOTSTRAP_EXTRA_KERNEL_OPTIONS);
     }
 
     /**
@@ -1122,7 +986,7 @@ public class ConfigDefaults {
      * @return actions display limit
      */
     public int getActionsDisplayLimit() {
-        return Config.get().getInt(ACTIONS_DISPLAY_LIMIT, 10000);
+        return DB_CONFIG.getInteger(RhnConfiguration.KEYS.JAVA_ACTIONS_DISPLAY_LIMIT);
     }
 
     /**
@@ -1130,7 +994,7 @@ public class ConfigDefaults {
      * @return config file editable size (in KB)
      */
     public int getConfigFileEditSize() {
-        return Config.get().getInt(CONFIG_FILE_EDIT_SIZE, 32);
+        return DB_CONFIG.getInteger(RhnConfiguration.KEYS.JAVA_CONFIG_FILE_EDIT_SIZE);
     }
 
     /**
@@ -1145,7 +1009,7 @@ public class ConfigDefaults {
      * @return salt batch presence ping job timeout
      */
     public int getSaltPresencePingTimeout() {
-        return Config.get().getInt(SALT_PRESENCE_PING_TIMEOUT, 4);
+        return DB_CONFIG.getInteger(RhnConfiguration.KEYS.JAVA_SALT_PRESENCE_PING_TIMEOUT);
     }
 
     /**
@@ -1153,21 +1017,21 @@ public class ConfigDefaults {
      * @return salt presence ping job gather_job_timeout
      */
     public int getSaltPresencePingGatherJobTimeout() {
-        return Config.get().getInt(SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT, 1);
+        return DB_CONFIG.getInteger(RhnConfiguration.KEYS.JAVA_SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT);
     }
 
     /**
      * @return default batch size for salt jobs execution in batch mode
      */
     public int getSaltBatchSize() {
-        return Config.get().getInt(SALT_BATCH_SIZE, 200);
+        return DB_CONFIG.getInteger(RhnConfiguration.KEYS.JAVA_SALT_BATCH_SIZE);
     }
 
     /**
      * @return default batch delay for salt jobs execution in batch mode
      */
     public double getSaltBatchDelay() {
-        return Config.get().getFloat(SALT_BATCH_DELAY, 1);
+        return DB_CONFIG.getDouble(RhnConfiguration.KEYS.JAVA_SALT_BATCH_DELAY);
     }
 
     /**
@@ -1187,7 +1051,7 @@ public class ConfigDefaults {
      * @return the duration
      */
     public float getSaltContentStagingWindow() {
-        return Config.get().getFloat(SALT_CONTENT_STAGING_WINDOW, 8);
+        return DB_CONFIG.getDouble(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_WINDOW).floatValue();
     }
 
     /**
@@ -1196,7 +1060,7 @@ public class ConfigDefaults {
      * @return the advance time
      */
     public float getSaltContentStagingAdvance() {
-        return Config.get().getFloat(SALT_CONTENT_STAGING_ADVANCE, 8);
+        return DB_CONFIG.getDouble(RhnConfiguration.KEYS.JAVA_SALT_CONTENT_STAGING_ADVANCE).floatValue();
     }
 
     /**
@@ -1212,7 +1076,7 @@ public class ConfigDefaults {
      * @return notifications lifetime
      */
     public int getNotificationsLifetime() {
-        return Config.get().getInt(NOTIFICATIONS_LIFETIME, 30);
+        return DB_CONFIG.getInteger(RhnConfiguration.KEYS.JAVA_NOTIFICATIONS_LIFETIME);
     }
 
     /**
@@ -1254,13 +1118,12 @@ public class ConfigDefaults {
         return Config.get().getInt(SALT_EVENT_CONNECTION_WATCHDOG_INTERVAL_SECONDS, 5);
     }
 
-
     /**
      * Returns the notifications type disabled.
      * @return notifications type disabled
      */
     public List<String> getNotificationsTypeDisabled() {
-        return Config.get().getList(NOTIFICATIONS_TYPE_DISABLED);
+        return DB_CONFIG.getList(RhnConfiguration.KEYS.JAVA_NOTIFICATIONS_TYPE_DISABLED);
     }
 
     /**
@@ -1313,14 +1176,14 @@ public class ConfigDefaults {
      * @return true if registrations should be forwarded to SCC, otherwise false
      */
     public boolean isForwardRegistrationEnabled() {
-        return Config.get().getBoolean(FORWARD_REGISTRATION);
+        return DB_CONFIG.getBoolean(RhnConfiguration.KEYS.FORWARD_REGISTRATION);
     }
 
     /**
      * @return return the domain expected for the official update host
      */
     public String getOfficialUpdateHostDomain() {
-        return Config.get().getString(SCC_UPDATE_HOST_DOMAIN, ".suse.com");
+        return DB_CONFIG.getString(RhnConfiguration.KEYS.UPDATE_HOST_DOMAIN);
     }
 
     /**
@@ -1354,7 +1217,7 @@ public class ConfigDefaults {
      * @return the minutes to wait before a system reboot
      * */
     public int getRebootDelay() {
-        int rebootDelay = Config.get().getInt(REBOOT_DELAY, 3);
+        int rebootDelay = DB_CONFIG.getInteger(RhnConfiguration.KEYS.JAVA_REBOOT_DELAY);
         // A value of 0 would cause a direct shutdown which makes it impossible for salt to return
         // the result back, resulting in a failed action.
         if (rebootDelay < 1) {
@@ -1370,14 +1233,14 @@ public class ConfigDefaults {
      * @return {@code true} if OVAL usage is permitted and {@code false} otherwise.
      * */
     public boolean isOvalEnabledForCveAudit() {
-        return Config.get().getBoolean(CVE_AUDIT_ENABLE_OVAL_METADATA, false);
+        return DB_CONFIG.getBoolean(RhnConfiguration.KEYS.JAVA_CVE_AUDIT_ENABLE_OVAL_METADATA);
     }
 
     /**
      * @return the number of OVAL definitions to be parsed in bulk.
      */
     public int getOvalDefinitionsBulkSize() {
-        return Config.get().getInt(OVAL_DEFINITIONS_BULK_SIZE, 500);
+        return DB_CONFIG.getInteger(RhnConfiguration.KEYS.JAVA_OVAL_DEFINITIONS_BULK_SIZE);
     }
 
     /**
@@ -1386,8 +1249,7 @@ public class ConfigDefaults {
      * @return the url to download advisory-map.csv, the map of errata patch id, announcement id and advisory URL
      */
     public String getErrataAdvisoryMapCsvDownloadUrl() {
-        return Config.get().getString(ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL,
-                "https://ftp.suse.com/pub/projects/security/advisory-map.csv");
+        return DB_CONFIG.getString(RhnConfiguration.KEYS.JAVA_ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL);
     }
 
     /**

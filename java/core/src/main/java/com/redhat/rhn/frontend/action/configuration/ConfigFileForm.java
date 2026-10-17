@@ -14,11 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.configuration;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -91,12 +92,9 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
         set(ConfigFileForm.REV_FILETYPE, ConfigFileType.FILE);
         setBinary(false);
 
-        String macroStart = Config.get().getString("web.config_delim_start",
-                DEFAULT_CONFIG_DELIM_START);
-        String macroEnd = Config.get().getString("web.config_delim_end",
-                DEFAULT_CONFIG_DELIM_END);
-        set(ConfigFileForm.REV_MACROSTART, macroStart);
-        set(ConfigFileForm.REV_MACROEND, macroEnd);
+        RhnConfigurationFactory dbConfig = RhnConfigurationFactory.getSingleton();
+        set(ConfigFileForm.REV_MACROSTART, dbConfig.getString(RhnConfiguration.KEYS.WEB_CONFIG_DELIM_START));
+        set(ConfigFileForm.REV_MACROEND, dbConfig.getString(RhnConfiguration.KEYS.WEB_CONFIG_DELIM_END));
     }
 
 

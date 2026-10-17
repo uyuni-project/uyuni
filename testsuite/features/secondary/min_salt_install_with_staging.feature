@@ -1,13 +1,12 @@
 # Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# This feature relies on having properly configured
-#   /etc/rhn/rhn.conf
-# file on your Uyuni server.
+# This feature relies on configuration values stored in the
+# database of your Uyuni server.
 #
 # For the scope of these tests, we configure it as follows:
-#   java.salt_content_staging_window = 0.033 (2 minutes)
-#   java.salt_content_staging_advance = 0.05 (3 minutes)
+#   JAVA_SALT_CONTENT_STAGING_WINDOW = 0.033 (2 minutes)
+#   JAVA_SALT_CONTENT_STAGING_ADVANCE = 0.05 (3 minutes)
 # which means "beetwen 3 and 1 minutes before package installation or patching"
 
 @skip_if_github_validation

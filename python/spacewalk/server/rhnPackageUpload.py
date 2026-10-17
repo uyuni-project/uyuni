@@ -42,6 +42,7 @@ from spacewalk.server.rhnLib import (
     get_package_path_without_package_name,
 )
 from spacewalk.server.rhnServer import server_packages
+from spacewalk.server.db_config import DB_CFG
 
 
 # pylint: disable-next=dangerous-default-value
@@ -69,9 +70,8 @@ def _authenticate(authobj, channels, null_org, force):
         if force:
             raise rhnFault(4, "Cannot force push nullorg content", explain=0)
 
-    with cfg_component("server.satellite") as CFG:
-        if force and not CFG.FORCE_PACKAGE_UPLOAD:
-            raise rhnFault(55, "Package Upload Failed", explain=0)
+    if force and not DB_CFG.get_bool("FORCE_PACKAGE_UPLOAD"):
+        raise rhnFault(55, "Package Upload Failed", explain=0)
 
     authobj.authzOrg(params)
     if channels:
@@ -184,11 +184,9 @@ def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None
             raise_with_tb(rhnFault(50, "File error"), sys.exc_info()[2])
 
         # Remove any pending scheduled file deletion for this package
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             delete from rhnPackageFileDeleteQueue where path = :path
-        """
-        )
+        """)
         h.execute(path=relative_path)
 
     pkg = mpmSource.create_package(
@@ -284,16 +282,14 @@ def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None
         if os.path.exists(orig_path) and path_dict["path"]:
             return {}, 0
         elif not path_dict["path"]:
-            h_upd = rhnSQL.prepare(
-                """
+            h_upd = rhnSQL.prepare("""
             update rhnpackage
                set path = :path
             where checksum_id = (
                         select id from rhnChecksumView c
                                  where c.checksum = :csum
                                    and c.checksum_type = :ctype)
-            """
-            )
+            """)
             h_upd.execute(
                 path=relative_path, ctype=a_pkg.checksum_type, csum=a_pkg.checksum
             )
@@ -389,9 +385,9 @@ def load_package(package_stream):
     payload_stream.seek(0, 0)
     if header.packaging == "mpm" or header.packaging == "deb":
         header.header_start = header.header_end = 0
-        (header_start, header_end) = (0, 0)
+        header_start, header_end = (0, 0)
     else:
-        (header_start, header_end) = get_header_byte_range(payload_stream)
+        header_start, header_end = get_header_byte_range(payload_stream)
         payload_stream.seek(0, 0)
 
     return header, payload_stream, header_start, header_end

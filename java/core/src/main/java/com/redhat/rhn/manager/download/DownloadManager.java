@@ -18,6 +18,8 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageSource;
 import com.redhat.rhn.domain.user.User;
@@ -53,7 +55,8 @@ public class DownloadManager extends BaseManager {
 
         //If the package is on our list of non-expiring packages, then generate
         //   a non-expiring URL
-        List<String> packs = Config.get().getList(ConfigDefaults.NON_EXPIRABLE_PACKAGE_URLS);
+        List<String> packs = RhnConfigurationFactory.getSingleton()
+                .getList(RhnConfiguration.KEYS.JAVA_NON_EXPIRABLE_PACKAGE_URLS);
         if (packs != null && packs.contains(pack.getPackageName().getName())) {
             return getNonExpiringDownloadPath(pack.getId(), pack.getFile(), user,
                     DownloadManager.DOWNLOAD_TYPE_PACKAGE);
@@ -122,10 +125,10 @@ public class DownloadManager extends BaseManager {
     private static String getDownloadPath(Long fileId, String filename,
             User user, String type) {
         Long time = 0L;
-        if (Config.get().getInt(ConfigDefaults.DOWNLOAD_URL_LIFETIME) > 0) {
+        if (RhnConfigurationFactory.getSingleton().getInteger(RhnConfiguration.KEYS.JAVA_DOWNLOAD_URL_LIFETIME) > 0) {
             Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.MINUTE, Config.get().getInt(
-                    ConfigDefaults.DOWNLOAD_URL_LIFETIME));
+            cal.add(Calendar.MINUTE, RhnConfigurationFactory.getSingleton()
+                    .getInteger(RhnConfiguration.KEYS.JAVA_DOWNLOAD_URL_LIFETIME));
             time = cal.getTimeInMillis();
         }
 

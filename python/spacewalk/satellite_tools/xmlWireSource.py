@@ -40,6 +40,7 @@ from rhn import rpclib
 # pylint: disable-next=ungrouped-imports
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools import connection
+from spacewalk.server.db_config import DB_CFG
 
 
 class BaseWireSource:
@@ -178,7 +179,7 @@ class BaseWireSource:
             func = getattr(server, method)
             try:
                 stream = func(*params)
-                if CFG.SYNC_TO_TEMP:
+                if DB_CFG.get_bool("SYNC_TO_TEMP"):
                     # pylint: disable-next=import-outside-toplevel
                     import tempfile
 

@@ -31,7 +31,7 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 
-from spacewalk.server import db_config
+from spacewalk.server.db_config import DB_CFG
 from spacewalk.server import rhnSQL
 from spacewalk.server import rhnSession
 
@@ -407,7 +407,11 @@ def reserve_user(username, password):
 def __reserve_user_db(user, password):
     encrypted_password = CFG.encrypted_passwords
     log_debug(
-        3, user, CFG.disallow_user_creation, encrypted_password, CFG.pam_auth_service
+        3,
+        user,
+        DB_CFG.get_bool("DISALLOW_USER_CREATION"),
+        encrypted_password,
+        CFG.pam_auth_service,
     )
     user = str(user)
     h = rhnSQL.prepare("""
@@ -434,7 +438,7 @@ def __reserve_user_db(user, password):
         return -1
 
     # user doesn't exist.  now we fail, instead of reserving user.
-    if CFG.disallow_user_creation:
+    if DB_CFG.get_bool("DISALLOW_USER_CREATION"):
         raise rhnFault(2001)
     user, password = check_user_password(user, password)
 
@@ -683,8 +687,8 @@ def validate_new_password(password):
     # regular expression
     if not password:
         raise rhnFault(12)
-    MIN_PASSWD_LEN = db_config.value("PSW_CHECK_LENGTH_MIN")
-    MAX_PASSWD_LEN = db_config.value("PSW_CHECK_LENGTH_MAX")
+    MIN_PASSWD_LEN = DB_CFG.PSW_CHECK_LENGTH_MIN
+    MAX_PASSWD_LEN = DB_CFG.PSW_CHECK_LENGTH_MAX
     if len(password) < MIN_PASSWD_LEN:
         raise rhnFault(
             14, _("password must be at least %d characters") % MIN_PASSWD_LEN
@@ -719,9 +723,7 @@ def validate_new_username(username):
             _("username should be at least %d characters long") % CFG.MIN_NEW_USER_LEN,
         )
 
-    disallowed_suffixes = CFG.DISALLOWED_SUFFIXES or []
-    if not isinstance(disallowed_suffixes, type([])):
-        disallowed_suffixes = [disallowed_suffixes]
+    disallowed_suffixes = DB_CFG.get_list("DISALLOWED_SUFFIXES")
 
     log_debug(4, "Disallowed suffixes", disallowed_suffixes)
 

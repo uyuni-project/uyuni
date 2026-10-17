@@ -709,6 +709,11 @@
         <function-signature>java.lang.String getConfig(java.lang.String)</function-signature>
     </function>
     <function>
+        <name>getDbConfig</name>
+        <function-class>com.redhat.rhn.frontend.taglibs.RhnTagFunctions</function-class>
+        <function-signature>java.lang.String getDbConfig(java.lang.String)</function-signature>
+    </function>
+    <function>
         <name>getProductVersion</name>
         <function-class>com.redhat.rhn.frontend.taglibs.RhnTagFunctions</function-class>
         <function-signature>java.lang.String getProductVersion()</function-signature>

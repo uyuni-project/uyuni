@@ -16,13 +16,13 @@
 package com.redhat.rhn.frontend.xmlrpc.activationkey;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -279,7 +279,8 @@ public class ActivationKeyHandler extends BaseHandler {
         try {
             Token token = new DownloadTokenBuilder(minion.getOrg().getId())
                 .usingServerSecret()
-                .expiringAfterMinutes(Config.get().getInt(ConfigDefaults.TEMP_TOKEN_LIFETIME))
+                .expiringAfterMinutes(RhnConfigurationFactory.getSingleton()
+                        .getInteger(RhnConfiguration.KEYS.TEMP_TOKEN_LIFETIME))
                 .allowingOnlyChannels(key.getChannels().stream().map(Channel::getLabel).collect(Collectors.toSet()))
                 .build();
 

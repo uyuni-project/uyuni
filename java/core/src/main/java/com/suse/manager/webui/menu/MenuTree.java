@@ -293,7 +293,7 @@ public class MenuTree {
         return new MenuItem("Salt").withIcon("spacewalk-icon-salt")
                 .addChild(new MenuItem("Keys").withPrimaryUrl("/rhn/manager/systems/keys"))
                 .addChild(new MenuItem("Remote Commands").withPrimaryUrl("/rhn/manager/systems/cmd")
-                        .withVisibility(checkAcl(user, "not is(java.disable_remote_commands_from_ui)")))
+                        .withVisibility(checkAcl(user, "not db_config_is(JAVA_DISABLE_REMOTE_COMMANDS_FROM_UI)")))
                 .addChild(new MenuItem("Formula Catalog").withPrimaryUrl("/rhn/manager/formula-catalog")
                         .withVisibility(adminRoles.get("org")));
     }

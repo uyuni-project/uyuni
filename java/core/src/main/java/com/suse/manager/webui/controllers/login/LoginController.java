@@ -144,11 +144,11 @@ public class LoginController {
         model.put("schemaUpgradeRequired", Json.GSON.toJson(LoginHelper.isSchemaUpgradeRequired()));
         model.put("webVersion", ConfigDefaults.get().getProductVersion());
         model.put("productName", ConfigDefaults.get().getProductName());
-        model.put("customHeader", Config.get().getString("java.custom_header"));
-        model.put("customFooter", Config.get().getString("java.custom_footer"));
-        model.put("legalNote", Config.get().getString("java.legal_note"));
+        model.put("customHeader", conf.getString(RhnConfiguration.KEYS.JAVA_CUSTOM_HEADER));
+        model.put("customFooter", conf.getString(RhnConfiguration.KEYS.JAVA_CUSTOM_FOOTER));
+        model.put("legalNote", conf.getString(RhnConfiguration.KEYS.JAVA_LEGAL_NOTE));
         model.put("loginLength", Config.get().getString("max_user_len"));
-        model.put("passwordLength", conf.getLongConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX).getValue());
+        model.put("passwordLength", conf.getLong(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX));
         model.put("preferredLocale", ConfigDefaults.get().getDefaultLocale());
         model.put("docsLocale", ConfigDefaults.get().getDefaultDocsLocale());
         model.put("webTheme", ConfigDefaults.get().getDefaultWebTheme());

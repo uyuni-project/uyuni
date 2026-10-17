@@ -17,8 +17,8 @@ package com.redhat.rhn.domain.entitlement;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -43,7 +43,8 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
-        Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.JAVA_KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }
 
     @Override

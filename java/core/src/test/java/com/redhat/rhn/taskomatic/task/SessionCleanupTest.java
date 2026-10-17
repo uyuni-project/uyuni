@@ -17,7 +17,8 @@ package com.redhat.rhn.taskomatic.task;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.testing.BaseTestCase;
@@ -45,7 +46,6 @@ public class SessionCleanupTest extends BaseTestCase {
         s.setExpires((System.currentTimeMillis() / 1000) * -2);
         WebSessionFactory.save(s);
         assertNotNull(s.getId());
-        Config c = Config.get();
         s = TestUtils.saveAndFlush(s);
 
         /*
@@ -55,7 +55,8 @@ public class SessionCleanupTest extends BaseTestCase {
             a negative value, but one that ensures our test websession is selected
             and deleted.
          */
-        c.setString("session_database_lifetime", Long.toString(System.currentTimeMillis() / 1000));
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.WEB_SESSION_DATABASE_LIFETIME,
+                System.currentTimeMillis() / 1000);
 
         SessionCleanup sc = new SessionCleanup();
         sc.execute(null);

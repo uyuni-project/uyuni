@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <!-- header.jsp -->
 
-<c:set var="custom_header" scope="page" value="${rhn:getConfig('java.custom_header')}" />
+<c:set var="custom_header" scope="page" value="${rhn:getDbConfig('JAVA_CUSTOM_HEADER')}" />
 
 <div id="messages-container"></div>
 

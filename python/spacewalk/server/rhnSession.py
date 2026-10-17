@@ -23,6 +23,7 @@ import time
 import sys
 
 from spacewalk.common.rhnConfig import CFG
+from spacewalk.server.db_config import DB_CFG
 from uyuni.common.usix import raise_with_tb
 
 from . import rhnSQL
@@ -47,7 +48,7 @@ class Session:
     def generate(self, duration=None, web_user_id=None):
         # Grabs a session ID
         self.session_id = rhnSQL.Sequence("pxt_id_seq").next()
-        self.duration = int(duration or CFG.SESSION_LIFETIME)
+        self.duration = int(duration or DB_CFG.SESSION_LIFETIME)
         self.web_user_id(web_user_id)
         return self
 
@@ -111,13 +112,11 @@ class Session:
         if digest != self.digest():
             raise InvalidSessionError("Bad session checksum")
 
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             select web_user_id, expires, value
               from pxtSessions
              where id = :session_id
-        """
-        )
+        """)
         h.execute(session_id=self.session_id)
 
         row = h.fetchone_dict()
@@ -130,11 +129,9 @@ class Session:
                 return self
 
             # Old session - clean it up
-            h = rhnSQL.prepare(
-                """
+            h = rhnSQL.prepare("""
                     delete from pxtSessions where id = :session_id
-            """
-            )
+            """)
             h.execute(session_id=self.session_id)
             rhnSQL.commit()
 
@@ -143,12 +140,10 @@ class Session:
     def save(self):
         expires = int(time.time()) + self.duration
 
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
                 insert into PXTSessions (id, web_user_id, expires, value)
                 values (:id, :web_user_id, :expires, :value)
-        """
-        )
+        """)
         h.execute(
             id=self.session_id, web_user_id=self.uid, expires=expires, value="RHNAPP"
         )

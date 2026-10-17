@@ -16,8 +16,6 @@
 
 package com.redhat.rhn.domain.org;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
@@ -27,6 +25,8 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.iss.IssSlave;
@@ -504,7 +504,8 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
                 Entitlement ent = EntitlementManager.getByName(sgt.getLabel());
                 if (ent != null) {
                     if ((EntitlementManager.OSIMAGE_BUILD_HOST_ENTITLED.equals(ent.getLabel()) &&
-                            !Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) ||
+                            !RhnConfigurationFactory.getSingleton()
+                                    .getBoolean(RhnConfiguration.KEYS.JAVA_KIWI_OS_IMAGE_BUILDING_ENABLED)) ||
                             EntitlementManager.ANSIBLE_MANAGED_ENTITLED.equals(ent.getLabel())) {
                         continue;
                     }

@@ -76,7 +76,6 @@ spec:
         - name: MANAGER_DB_PORT
           value: "5432"
         - name: EXTERNALDB_PROVIDER
-        - name: ISS_PARENT
         - name: REPORT_DB_NAME
           value: reportdb
         - name: REPORT_DB_HOST

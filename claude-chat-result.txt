@@ -1,0 +1,62 @@
+All six steps are implemented and committed on drop-unused-config-defaults: one commit per step, plus a seventh follow-up commit. Nothing is pushed. The Java build and test compilation pass, and Checkstyle passes on the changed Java files. I could not run the JUnit tests (no PostgreSQL/podman here), the DB-dependent Python tests (test_reposync, test_yum_src: no rpm/solv), or the acceptance tests.
+
+What each step does
+1. Java access: RhnConfigurationFactory now has getters that fall back to the default when the value is NULL, plus default-value getters, setValue and resetToDefault. Usage is RhnConfigurationFactory.getSingleton().getInteger(KEYS.X). The default can't be changed from Java (the column is read-only in the entity). Setting a value equal to the default stores NULL; for true/false values this compares meaning, not text, so false against a default of 0 also stores NULL (that's the seventh commit).
+2. SQL: fresh installs only set the default and leave the value NULL. A migration in schema/spacewalk/upgrade/next/ sets values that equal their default to NULL, and switches the password-policy flags from 0/1 to 'false'/'true'.
+3. Python: DB_CFG in spacewalk.server.db_config reads values only. Usage is DB_CFG.KEY, get_bool, get_list, get_default.
+4. uyuni-update-config: stores NULL when the old value equals the default.
+5. Key migration: 73 keys moved into the database, named by your rule (e.g. java.salt_batch_size → JAVA_SALT_BATCH_SIZE). Each has its default inserted by a migration, is removed from the config-defaults files, and is read from the DB in Java, JSPs, ACLs and Python. uyuni-update-config moves any values still set in rhn.conf into the DB, under both the prefixed and bare key names. I also updated the testsuite steps, the man pages, and documentation/config-defaults-usage.md, which lists every moved key and why the rest stay.
+6. Setup: spacewalk-setup and the container setup now write their values for moved keys to the DB. The rhn.conf template no longer sets them.
+
+Keys I kept in files beyond your exclusions
+These are judgment calls; tell me if you want any of them moved:
+- Startup settings: thread pools, Salt API, HTTP client, SMTP, localization.
+- Build-dependent values: product name, versions, product_tree_tag, locales, themes.
+- Secrets and file paths.
+- Hibernate, Quartz and SSO settings, which are handed whole to libraries.
+- Keys read or edited by other tools: sign_metadata, ssh_push_*, java.sc_*, unify_custom_channel_management, fromdir, pam_auth_service.
+- min_user_len, max_user_len, max_email_len: Java and Python both read these, under different key names.
+
+Existing bugs I fixed along the way
+- uyuni-update-config never committed. The moved value was rolled back but still deleted from rhn.conf, so it was lost. It also migrated server.min_passwd_len using the max value.
+- ExtAuthenticationAction saved the default organisation into EXTAUTH_USE_ORGUNIT.
+- Reading EXTAUTH_DEFAULT_ORGID crashed when it had no value.
+
+Other changes you should know about
+- The "disconnected" checkbox and "enable SCC data forwarding" now write to the DB instead of rhn.conf. SCCDataForwardingConfigAction became unused and is deleted. With it went the legacy step that set an ISSv1 parent when switching to connected mode.
+- DISCONNECTED is no longer read anywhere except that settings page. It may be a candidate for removal.
+- susemanager-tools now requires spacewalk-backend-server, because mgr-create-bootstrap-repo uses DB_CFG.
+- On non-container installs, uyuni-update-config runs before the schema upgrade. On the first boot after upgrading, values still in rhn.conf are only moved on the next start. The container is not affected, because it upgrades the schema first.
+
+Main gap: apart from the few keys that already have UI or API pages (password policy, external auth, disconnected, SCC forwarding), there is no way to change the moved values except SQL. An admin API or UI for them is the obvious next step.
+
+The untracked java/handover_claude-step*.md and java/claude-chat.md files were left untouched.
+
+✻ Crunched for 41m 27s · done 5:15 PM
+
+❯ Write a description for a Pull Request into a local file which explains what you did.
+
+● Write(pr-description-config-to-db.md)
+Wrote 197 lines to pr-description-config-to-db.md
+# Move configuration values from the config files into the database
+
+## What does this PR change?
+
+Most configuration values are now stored in the `rhnConfiguration` database
+table instead of `/etc/rhn/rhn.conf` and the files in
+`/usr/share/rhn/config-defaults/`. This covers all keys used by the code that
+are not needed to access the database. These keys stay in the files:
+
+- keys sourced as shell variables
+… +187 lines
+
+I wrote the PR description to /home/aiuser/git/GALAXY/AI-WORKTREE/uyuni-private/pr-description-config-to-db.md. It sits in the repository root as an untracked file; I haven't committed it.
+
+It has these sections:
+- What changed: what each of the six step commits plus the follow-up does, with short Java and Python usage examples.
+- Keys: which keys moved and why the rest stay in the files.
+- Bugs fixed along the way: the four existing bugs (lost rhn.conf values in uyuni-update-config, the wrong min_passwd_len source, the wrong key in ExtAuthenticationAction, the crash on an empty EXTAUTH_DEFAULT_ORGID).
+- Upgrade notes: when existing rhn.conf overrides get moved, in the container versus on non-container installs.
+- Known gaps: most moved keys can only be changed with SQL for now, and DISCONNECTED is nearly unused.
+- Test coverage: what ran here (Maven build, Checkstyle, two Python test files), what didn't (JUnit, test_reposync/test_yum_src, acceptance tests), and one test_download.py test that also fails without this PR because of the local urlgrabber version.
+

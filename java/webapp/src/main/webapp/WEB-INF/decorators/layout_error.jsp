@@ -52,7 +52,7 @@
   </head>
   <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
   <body class="theme-${webTheme} new-theme" onload="<decorator:getProperty property="body.onload" />">
-    <c:set var="custom_header" scope="page" value="${rhn:getConfig('java.custom_header')}" />
+    <c:set var="custom_header" scope="page" value="${rhn:getDbConfig('JAVA_CUSTOM_HEADER')}" />
 
     <header class="navbar-pf navbar">
       <div class="header-content container-fluid">
@@ -110,7 +110,7 @@
             <div class="footer-release">
               <bean:message key="footer.jsp.release" arg0="/docs/${docsLocale}/release-notes/release-notes-server.html" arg1="${rhn:getProductVersion()}" />
             </div>
-            <c:set var="custom_footer" scope="page" value="${rhn:getConfig('java.custom_footer')}" />
+            <c:set var="custom_footer" scope="page" value="${rhn:getDbConfig('JAVA_CUSTOM_FOOTER')}" />
             <c:if test="${! empty custom_footer}">
               <div><c:out value="${custom_footer}" escapeXml="false"/></div>
             </c:if>
@@ -125,8 +125,8 @@
           </section>
         </div>
         <script type="text/javascript">
-          <c:if test="${rhn:getConfig('web.spa.enable')}">
-            <c:set var="spaTimeout" value="${rhn:getConfig('web.spa.timeout')}"/>
+          <c:if test="${rhn:getDbConfig('WEB_SPA_ENABLE')}">
+            <c:set var="spaTimeout" value="${rhn:getDbConfig('WEB_SPA_TIMEOUT')}"/>
             window.pageRenderers && window.pageRenderers.spaengine.init && window.pageRenderers.spaengine.init(${spaTimeout});
           </c:if>
         </script>

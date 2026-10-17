@@ -18,8 +18,8 @@ package com.redhat.rhn.domain.scc;
 import static org.jmock.AbstractExpectations.returnValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.testing.MockObjectTestCase;
@@ -55,7 +55,8 @@ public class SCCRepositoryCloudRmtAuthTest extends MockObjectTestCase {
     @Test
     public void canCombineUrlsCorrectlyRGS() {
 
-        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
         SCCRepositoryCloudRmtAuth repoAuth = createAuthFor(
                 "https://updates.scc-proxy.rgscc-dev.ranchergovernment.com/SUSE/Products/RES/8-CLIENT-TOOLS/" +
                         "x86_64/product/",
@@ -71,7 +72,7 @@ public class SCCRepositoryCloudRmtAuthTest extends MockObjectTestCase {
 
     @Test
     public void doesNotDuplicateFolderWhenPathIsRepeated() {
-        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".suse.com");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.UPDATE_HOST_DOMAIN, ".suse.com");
 
         SCCRepositoryCloudRmtAuth repoAuth = createAuthFor(
                 "https://updates.suse.com/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/",
@@ -87,7 +88,8 @@ public class SCCRepositoryCloudRmtAuthTest extends MockObjectTestCase {
     @Test
     public void doesNotDuplicateFolderWhenPathIsRepeatedRGS() {
 
-        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
         SCCRepositoryCloudRmtAuth repoAuth = createAuthFor(
                 "https://updates.scc-proxy.rgscc-dev.ranchergovernment.com/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/",
                 1L, "https://smt-ec2.susecloud.net/repo"

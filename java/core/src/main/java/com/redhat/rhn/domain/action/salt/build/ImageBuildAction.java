@@ -14,12 +14,12 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_CP_PUSH_ROOT_PA
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 import static java.util.stream.Collectors.toMap;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -228,7 +228,8 @@ public class ImageBuildAction extends Action {
         try {
             token = new DownloadTokenBuilder(minion.getOrg().getId())
                     .usingServerSecret()
-                    .expiringAfterMinutes(Config.get().getInt(ConfigDefaults.TEMP_TOKEN_LIFETIME))
+                    .expiringAfterMinutes(RhnConfigurationFactory.getSingleton()
+                            .getInteger(RhnConfiguration.KEYS.TEMP_TOKEN_LIFETIME))
                     .allowingOnlyChannels(Set.of(channelLabel))
                     .build()
                     .getSerializedForm();

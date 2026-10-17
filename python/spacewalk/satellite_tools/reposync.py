@@ -78,6 +78,7 @@ from spacewalk.satellite_tools.syncLib import (
     log2background,
 )
 from spacewalk.satellite_tools.appstreams import ModuleMdImporter, ModuleMdIndexingError
+from spacewalk.server.db_config import DB_CFG
 
 translation = gettext.translation("spacewalk-backend-server", fallback=True)
 _ = translation.gettext
@@ -931,11 +932,12 @@ class RepoSync(object):
             taskomatic.add_to_erratacache_queue(self.channel_label)
         self.update_date()
         rhnSQL.commit()
-        # pylint: disable-next=invalid-name
-        with cfg_component("server.susemanager") as CFG:
-            if CFG.AUTO_GENERATE_BOOTSTRAP_REPO and self.regenerate_bootstrap_repo:
-                log(0, "  Regenerating bootstrap repositories.")
-                subprocess.call(["/usr/sbin/mgr-create-bootstrap-repo", "--auto"])
+        if (
+            DB_CFG.get_bool("AUTO_GENERATE_BOOTSTRAP_REPO")
+            and self.regenerate_bootstrap_repo
+        ):
+            log(0, "  Regenerating bootstrap repositories.")
+            subprocess.call(["/usr/sbin/mgr-create-bootstrap-repo", "--auto"])
 
         # update the server overview with new package / errata stats
         self.update_servers()
@@ -3161,13 +3163,12 @@ class RepoSync(object):
                               and c.channel_arch_id = cpac.channel_arch_id
                               and cpac.package_arch_id = pa.id""")
         h.execute(channel_id=channel_id)
-        # pylint: disable-next=invalid-name
-        with cfg_component("server.susemanager") as CFG:
-            arches = [
-                k["label"]
-                for k in h.fetchall_dict()
-                if CFG.SYNC_SOURCE_PACKAGES or k["label"] not in ["src", "nosrc"]
-            ]
+        sync_source_packages = DB_CFG.get_bool("SYNC_SOURCE_PACKAGES")
+        arches = [
+            k["label"]
+            for k in h.fetchall_dict()
+            if sync_source_packages or k["label"] not in ["src", "nosrc"]
+        ]
         return arches
 
     @staticmethod

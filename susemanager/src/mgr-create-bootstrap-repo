@@ -19,6 +19,7 @@ from rhn import rhnLockfile
 from spacewalk.server import rhnSQL
 from spacewalk.common.rhnLog import initLOG, log_time, log_clean, log_debug
 from spacewalk.common.rhnConfig import cfg_component
+from spacewalk.server.db_config import DB_CFG
 
 # pylint: disable-next=unused-import
 from uyuni.common import usix, rhnLib
@@ -267,12 +268,8 @@ def log(msg, level=0):
 def create_bootstrap_failure_notification(label, messages: List[str]):
     """Create a CreateBoostrapRepoFailed notification over XMLRPC."""
     notification_type = "CreateBootstrapRepoFailed"
-    with cfg_component("java") as cfg:
-        if (
-            cfg.notifications_type_disabled
-            and notification_type in cfg.notifications_type_disabled.split(",")
-        ):
-            return None
+    if notification_type in DB_CFG.get_list("JAVA_NOTIFICATIONS_TYPE_DISABLED"):
+        return None
 
     message = "\n".join(messages)
     # see TaskoXmlRpcHandler.java for available methods
@@ -406,9 +403,7 @@ def cli():
         # pylint: disable-next=redefined-outer-name,invalid-name
         with cfg_component("server.susemanager") as CFG:
             initLOG(logfile, CFG.DEBUG or 1)
-    # pylint: disable-next=invalid-name
-    with cfg_component("server.susemanager") as CFG:
-        flush = CFG.BOOTSTRAP_REPO_FLUSH
+    flush = DB_CFG.get_bool("BOOTSTRAP_REPO_FLUSH")
     if options.flush:
         flush = options.flush
     if options.noflush:

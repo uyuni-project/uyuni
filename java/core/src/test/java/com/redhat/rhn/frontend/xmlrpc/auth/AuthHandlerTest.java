@@ -18,8 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.session.InvalidSessionIdException;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
@@ -49,7 +50,8 @@ public class AuthHandlerTest extends BaseTestCase {
     public void testLoginLogout() throws Exception {
         AuthHandler handler = new AuthHandler();
         User user = UserTestUtils.createUser(this);
-        long dbLifetime = Long.parseLong(Config.get().getString("session_database_lifetime"));
+        long dbLifetime = RhnConfigurationFactory.getSingleton()
+                .getLong(RhnConfiguration.KEYS.WEB_SESSION_DATABASE_LIFETIME);
         long currentTime = System.currentTimeMillis() / 1000;
 
         Integer invalidDuration = Integer.valueOf(String.valueOf(dbLifetime + 100));

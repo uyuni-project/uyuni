@@ -210,7 +210,6 @@ class RepoSyncTest(unittest.TestCase):
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
         CFG.PREPENDED_DIR = ""
-        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.urls = [
             {
@@ -255,7 +254,6 @@ class RepoSyncTest(unittest.TestCase):
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
         CFG.PREPENDED_DIR = ""
-        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.urls = [
             {
@@ -287,7 +285,6 @@ class RepoSyncTest(unittest.TestCase):
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
         CFG.PREPENDED_DIR = ""
-        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
         return CFG
 
     def _mock_repo_plugin(self, pkg_list) -> Mock:
@@ -344,7 +341,6 @@ class RepoSyncTest(unittest.TestCase):
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
         CFG.PREPENDED_DIR = ""
-        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         exception = self.reposync.ChannelTimeoutException("anony-error")
         rs.load_plugin = Mock(return_value=Mock(side_effect=exception))
@@ -363,7 +359,6 @@ class RepoSyncTest(unittest.TestCase):
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
         CFG.PREPENDED_DIR = ""
-        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.load_plugin = Mock(return_value=Mock(side_effect=TypeError))
         with patch("spacewalk.common.rhnConfig.CFG", CFG):
@@ -982,7 +977,6 @@ class SyncTest(unittest.TestCase):
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
         CFG.PREPENDED_DIR = ""
-        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         with patch("spacewalk.common.rhnConfig.CFG", CFG):
             repo_sync.sync()
@@ -1192,7 +1186,6 @@ class RunScriptTest(unittest.TestCase):
     def test_config_parameter_channel_as_list(self):
         self.repo_sync.CFG = Mock()
         self.repo_sync.CFG.DEBUG = 3
-        self.repo_sync.CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
         self.repo_sync.main()
         self.assertEqual(self.repo_sync.reposync.RepoSync.call_count, 2)
 
@@ -1211,7 +1204,6 @@ def test_channel_exceptions():
     CFG = Mock()
     CFG.MOUNT_POINT = "/tmp"
     CFG.PREPENDED_DIR = ""
-    CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
     _mock_rhnsql(
         repoSync,

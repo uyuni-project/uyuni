@@ -35,8 +35,8 @@ except ImportError:
 import pycurl
 from urlgrabber.grabber import URLGrabberOptions, PyCurlFileObject, URLGrabError
 from uyuni.common.checksum import getFileChecksum
-from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.satellite_tools.syncLib import log, log2
+from spacewalk.server.db_config import DB_CFG
 
 
 # pylint: disable-next=missing-class-docstring
@@ -141,9 +141,9 @@ class PyCurlFileObjectThread(PyCurlFileObject):
         self.parent = parent
         # Next 3 lines will not be required on having urlgrabber with proper fix
         # https://github.com/rpm-software-management/urlgrabber/pull/35
-        (url, parts) = opts.urlparser.parse(url, opts)
+        url, parts = opts.urlparser.parse(url, opts)
         # pylint: disable-next=unused-variable
-        (scheme, host, path, parm, query, frag) = parts
+        scheme, host, path, parm, query, frag = parts
         opts.find_proxy(url, scheme)
         super().__init__(url, filename, opts)
 
@@ -282,7 +282,7 @@ class DownloadThread(Thread):
             ## BEWARE: This hack is introduced in order to support SUSE SCC channels
             ## This also needs a patched urlgrabber AFAIK
             if "authtoken" in params and params["authtoken"]:
-                (scheme, netloc, path, query, _) = urlparse.urlsplit(
+                scheme, netloc, path, query, _ = urlparse.urlsplit(
                     params["urls"][self.mirror]
                 )
                 url = urlparse.urlunsplit(
@@ -362,35 +362,33 @@ class DownloadThread(Thread):
 class ThreadedDownloader:
     def __init__(self, retries=3, log_obj=None, force=False):
         self.queues = {}
-        # pylint: disable-next=invalid-name
-        with cfg_component("server.satellite") as CFG:
-            try:
-                self.threads = int(CFG.REPOSYNC_DOWNLOAD_THREADS)
-            except ValueError:
-                # pylint: disable-next=raise-missing-from
-                raise ValueError(
-                    # pylint: disable-next=consider-using-f-string
-                    "Number of threads expected, found: '%s'"
-                    % CFG.REPOSYNC_DOWNLOAD_THREADS
-                )
-            try:
-                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
-            except ValueError:
-                # pylint: disable-next=raise-missing-from
-                raise ValueError(
-                    # pylint: disable-next=consider-using-f-string
-                    "Timeout in seconds expected, found: '%s'"
-                    % CFG.REPOSYNC_TIMEOUT
-                )
-            try:
-                self.minrate = int(CFG.REPOSYNC_MINRATE)
-            except ValueError:
-                # pylint: disable-next=raise-missing-from
-                raise ValueError(
-                    # pylint: disable-next=consider-using-f-string
-                    "Minimal transfer rate in bytes pre second expected, found: '%s'"
-                    % CFG.REPOSYNC_MINRATE
-                )
+        try:
+            self.threads = int(DB_CFG.REPOSYNC_DOWNLOAD_THREADS)
+        except ValueError:
+            # pylint: disable-next=raise-missing-from
+            raise ValueError(
+                # pylint: disable-next=consider-using-f-string
+                "Number of threads expected, found: '%s'"
+                % DB_CFG.REPOSYNC_DOWNLOAD_THREADS
+            )
+        try:
+            self.timeout = int(DB_CFG.REPOSYNC_TIMEOUT)
+        except ValueError:
+            # pylint: disable-next=raise-missing-from
+            raise ValueError(
+                # pylint: disable-next=consider-using-f-string
+                "Timeout in seconds expected, found: '%s'"
+                % DB_CFG.REPOSYNC_TIMEOUT
+            )
+        try:
+            self.minrate = int(DB_CFG.REPOSYNC_MINRATE)
+        except ValueError:
+            # pylint: disable-next=raise-missing-from
+            raise ValueError(
+                # pylint: disable-next=consider-using-f-string
+                "Minimal transfer rate in bytes pre second expected, found: '%s'"
+                % DB_CFG.REPOSYNC_MINRATE
+            )
 
         if self.threads < 1:
             # pylint: disable-next=consider-using-f-string

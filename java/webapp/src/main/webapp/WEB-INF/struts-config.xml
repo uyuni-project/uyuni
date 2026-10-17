@@ -3418,7 +3418,7 @@
             type="com.redhat.rhn.frontend.action.systems.SystemRemoteCommandAction"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="acls"
-                      value="system_feature(ftr_remote_command); not is(java.disable_remote_commands_from_ui)"/>
+                      value="system_feature(ftr_remote_command); not db_config_is(JAVA_DISABLE_REMOTE_COMMANDS_FROM_UI)"/>
         <forward name="default"
                  path="/WEB-INF/pages/systems/system-remote-command.jsp" />
      </action>
@@ -7395,7 +7395,7 @@
             type="com.redhat.rhn.frontend.action.ssm.ProvisioningRemoteCommand"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="not is(java.disable_remote_commands_from_ui)"/>
+        <set-property property="acls" value="not db_config_is(JAVA_DISABLE_REMOTE_COMMANDS_FROM_UI)"/>
         <forward name="default"
                  path="/WEB-INF/pages/ssm/provisioning-remote-command.jsp"/>
     </action>

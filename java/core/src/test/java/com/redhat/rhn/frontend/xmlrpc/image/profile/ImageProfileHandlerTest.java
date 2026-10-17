@@ -24,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -59,7 +59,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
-        Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.JAVA_KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }
 
     @Test

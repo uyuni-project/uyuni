@@ -18,12 +18,15 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.HostPortValidator;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
@@ -36,7 +39,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.net.IDN;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -59,15 +61,9 @@ public class GeneralConfigAction extends BaseConfigAction {
         ConfigDefaults.HTTP_PROXY_USERNAME, ConfigDefaults.HTTP_PROXY_PASSWORD,
         ConfigDefaults.MOUNT_POINT};
 
-    private static final String[] BOOLEAN_CONFIG_ARRAY = { ConfigDefaults.DISCONNECTED };
+    private static final List<String> ALLOWED_CONFIGS = Arrays.asList(STRING_CONFIG_ARRAY);
 
-    private static final List<String> ALLOWED_CONFIGS = new LinkedList<>();
-    static {
-        ALLOWED_CONFIGS.addAll(Arrays.asList(STRING_CONFIG_ARRAY));
-        ALLOWED_CONFIGS.addAll(Arrays.asList(BOOLEAN_CONFIG_ARRAY));
-    }
-
-    private static final List<String> BOOLEAN_CONFIGS = Arrays.asList(BOOLEAN_CONFIG_ARRAY);
+    private static final String DISCONNECTED = "disconnected";
 
     /*
      * enable_ssl, disconnected, mount_point
@@ -109,18 +105,14 @@ public class GeneralConfigAction extends BaseConfigAction {
                 // struts attempts to 'beanify' the form propert values if you include
                 // dot notation in the names.
 
-                if (BOOLEAN_CONFIGS.contains(configKey)) {
-                    Boolean value = (Boolean) form.get(translateFormPropertyName(configKey));
-                    csc.updateBoolean(configKey, value);
+                String value = (String) form.get(translateFormPropertyName(configKey));
+                if (configKey.equals(ConfigDefaults.SERVER_HOSTNAME)) {
+                    value = IDN.toASCII(value);
                 }
-                else {
-                    String value = (String) form.get(translateFormPropertyName(configKey));
-                    if (configKey.equals(ConfigDefaults.SERVER_HOSTNAME)) {
-                        value = IDN.toASCII(value);
-                    }
-                    csc.updateString(configKey, value);
-                }
+                csc.updateString(configKey, value);
             }
+            RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.DISCONNECTED,
+                    BooleanUtils.isTrue((Boolean) form.get(DISCONNECTED)));
             ValidatorError[] verrors = csc.storeConfiguration();
             if (verrors != null) {
                 errors = RhnValidationHelper.validatorErrorToActionErrors(verrors);
@@ -133,28 +125,23 @@ public class GeneralConfigAction extends BaseConfigAction {
         }
         else {
             for (String configKey: ALLOWED_CONFIGS) {
+                String configValue = Config.get().getString(configKey);
+                form.set(translateFormPropertyName(configKey),
+                        configValue);
 
-                if (BOOLEAN_CONFIGS.contains(configKey)) {
-                    Boolean configValue = Config.get().getBoolean(configKey);
-                    form.set(translateFormPropertyName(configKey), configValue);
-                }
-                else {
-                    String configValue = Config.get().getString(configKey);
-                    form.set(translateFormPropertyName(configKey),
+                if (configKey.equals(ConfigDefaults.HTTP_PROXY_PASSWORD)) {
+                    form.set(
+                            translateFormPropertyName("server.satellite.http_proxy_password_confirm"),
                             configValue);
-
-                    if (configKey.equals(ConfigDefaults.HTTP_PROXY_PASSWORD)) {
-                        form.set(
-                                translateFormPropertyName("server.satellite.http_proxy_password_confirm"),
-                                configValue);
-                    }
-                    else if (configKey.equals(ConfigDefaults.SERVER_HOSTNAME)) {
-                        form.set(
-                                translateFormPropertyName(ConfigDefaults.SERVER_HOSTNAME),
-                                IDN.toUnicode(configValue));
-                    }
+                }
+                else if (configKey.equals(ConfigDefaults.SERVER_HOSTNAME)) {
+                    form.set(
+                            translateFormPropertyName(ConfigDefaults.SERVER_HOSTNAME),
+                            IDN.toUnicode(configValue));
                 }
             }
+            form.set(DISCONNECTED, RhnConfigurationFactory.getSingleton()
+                    .getBoolean(RhnConfiguration.KEYS.DISCONNECTED));
         }
         returnActionForward = mapping.findForward(RhnHelper.DEFAULT_FORWARD);
         if (logger.isDebugEnabled()) {

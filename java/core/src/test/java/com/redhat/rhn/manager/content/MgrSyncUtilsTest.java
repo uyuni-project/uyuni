@@ -19,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -63,7 +64,8 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
                 String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
         TestUtils.assertContains(opath.toString(), expected.toString());
 
-        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
         url = "https://updates.scc-proxy.rgscc-dev.ranchergovernment.com/SUSE/Updates/SLE-Module-Basesystem/" +
                 "15-SP3/x86_64/update/";
         opath = MgrSyncUtils.urlToFSPath(url, name);
@@ -84,7 +86,8 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
                 String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
         TestUtils.assertContains(opath.toString(), expected.toString());
 
-        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
+        RhnConfigurationFactory.getSingleton()
+                .setValue(RhnConfiguration.KEYS.UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
         url = "https://updates.scc-proxy.rgscc-dev.ranchergovernment.com/SUSE/Updates/SLE-Module-Basesystem/" +
                 "15-SP3/x86_64/update/?123456789abcde";
 

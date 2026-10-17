@@ -32,6 +32,7 @@ from spacewalk.common.rhnTranslate import _
 from spacewalk.server.rhnLib import computeSignature
 from spacewalk.server.rhnHandler import rhnHandler
 from spacewalk.server import rhnServer, rhnSQL, apacheAuth, rhnPackage, rhnChannel
+from spacewalk.server.db_config import DB_CFG
 
 # a class that provides additional authentication support for the
 # proxy functions
@@ -173,7 +174,7 @@ class Proxy(rhnProxyHandler):
         # pylint: disable-next=invalid-name
         rhnServerTime = str(time.time())
         # pylint: disable-next=invalid-name
-        expireOffset = str(CFG.PROXY_AUTH_TIMEOUT)
+        expireOffset = str(DB_CFG.PROXY_AUTH_TIMEOUT)
         signature = computeSignature(
             CFG.SECRET_KEY, self.server_id, self.user, rhnServerTime, expireOffset
         )

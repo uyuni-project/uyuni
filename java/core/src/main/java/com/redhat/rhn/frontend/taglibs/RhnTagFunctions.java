@@ -19,6 +19,8 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -76,6 +78,16 @@ public class RhnTagFunctions {
      */
     public static String getConfig(String confIn) {
         return Config.get().getString(confIn);
+    }
+
+    /**
+     * Fetch a configuration value stored in the database.
+     *
+     * @param keyIn the key of the configuration value
+     * @return the value or the default value when no value is set
+     */
+    public static String getDbConfig(String keyIn) {
+        return RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.valueOf(keyIn));
     }
 
     /**

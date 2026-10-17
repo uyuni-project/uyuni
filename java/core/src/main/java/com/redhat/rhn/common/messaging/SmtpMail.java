@@ -17,8 +17,9 @@ package com.redhat.rhn.common.messaging;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,8 +53,8 @@ public class SmtpMail implements Mail {
     private MimeMessage message;
     private static Logger log = LogManager.getLogger(SmtpMail.class);
 
-    private static String[] disallowedDomains = Config.get().getStringArray("web.disallowed_mail_domains");
-    private static String[] restrictedDomains = Config.get().getStringArray("web.restrict_mail_domains");
+    private final List<String> disallowedDomains;
+    private final List<String> restrictedDomains;
 
     /**
      * Create a mailer.
@@ -70,7 +71,10 @@ public class SmtpMail implements Mail {
         String smtpTlsProtocols = String.join(" ", c.getList(ConfigDefaults.WEB_SMTP_TLS_PROTOCOLS));
         String smtpUser = c.getString(ConfigDefaults.WEB_SMTP_USER);
         String smtpPass = c.getString(ConfigDefaults.WEB_SMTP_PASS);
-        String from = c.getString(ConfigDefaults.WEB_DEFAULT_MAIL_FROM, "root@localhost");
+        RhnConfigurationFactory dbConfig = RhnConfigurationFactory.getSingleton();
+        String from = dbConfig.getString(RhnConfiguration.KEYS.WEB_DEFAULT_MAIL_FROM);
+        disallowedDomains = dbConfig.getList(RhnConfiguration.KEYS.WEB_DISALLOWED_MAIL_DOMAINS);
+        restrictedDomains = dbConfig.getList(RhnConfiguration.KEYS.WEB_RESTRICT_MAIL_DOMAINS);
         int smtpTimeout = c.getInt(ConfigDefaults.WEB_SMTP_TIMEOUT, 5000);
         int smtpConnectionTimeout = c.getInt(ConfigDefaults.WEB_SMTP_CONNECTION_TIMEOUT, 5000);
         int smtpWriteTimeout = c.getInt(ConfigDefaults.WEB_SMTP_WRITE_TIMEOUT, 5000);
@@ -294,14 +298,12 @@ public class SmtpMail implements Mail {
             log.debug("Restricted domains: {}", StringUtils.join(restrictedDomains, " | "));
             log.debug("disallowedDomains domains: {}", StringUtils.join(disallowedDomains, " | "));
         }
-        if (restrictedDomains != null && restrictedDomains.length > 0 &&
-                ArrayUtils.lastIndexOf(restrictedDomains, domain) == -1) {
+        if (!restrictedDomains.isEmpty() && !restrictedDomains.contains(domain)) {
             log.warn("Address {} not in restricted domains list", addr.getAddress());
             retval = false;
         }
 
-        if (retval &&  disallowedDomains != null && disallowedDomains.length > 0 &&
-                ArrayUtils.lastIndexOf(disallowedDomains, domain) > -1) {
+        if (retval && disallowedDomains.contains(domain)) {
             log.warn("Address {} in disallowed domains list", addr.getAddress());
             retval = false;
         }

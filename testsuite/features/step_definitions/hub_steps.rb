@@ -1153,40 +1153,26 @@ end
 ### install`. Once the testsuite installs the server (see above), it must also
 ### apply the subset of that configuration the hub secondary features rely on.
 
-RHN_CONF_PATH = '/etc/rhn/rhn.conf'.freeze
-
 # Subset of rhn.sls / testsuite.sls settings the hub secondary features rely on.
-RHN_CONF_TESTSUITE_SETTINGS = {
-  'java.max_changelog_entries' => '3',
-  'java.salt_presence_ping_timeout' => '6',
-  'server.susemanager.forward_registration' => '0',
-  'server.satellite.reposync_download_threads' => '2',
-  'java.salt_content_staging_window' => '0.033',
-  'java.salt_content_staging_advance' => '0.05',
-  'java.kiwi_os_image_building_enabled' => 'true'
+# They are stored in the rhnConfiguration table of the database.
+DB_CONFIG_TESTSUITE_SETTINGS = {
+  'JAVA_MAX_CHANGELOG_ENTRIES' => '3',
+  'JAVA_SALT_PRESENCE_PING_TIMEOUT' => '6',
+  'FORWARD_REGISTRATION' => '0',
+  'REPOSYNC_DOWNLOAD_THREADS' => '2',
+  'JAVA_SALT_CONTENT_STAGING_WINDOW' => '0.033',
+  'JAVA_SALT_CONTENT_STAGING_ADVANCE' => '0.05',
+  'JAVA_KIWI_OS_IMAGE_BUILDING_ENABLED' => 'true'
 }.freeze
 
 When(/^I apply the testsuite configuration on the peripheral server "([^"]*)"$/) do |peripheral|
   # Refresh: the node was cached before `mgradm install`, so it doesn't know about mgrctl yet
   node = get_target(peripheral, refresh: true)
 
-  # rhn.conf: idempotent key/value upsert, one sed/append per key rather than a blind append,
-  # so re-running this step (or running it against an already-configured server) is a no-op.
-  changed = false
-  RHN_CONF_TESTSUITE_SETTINGS.each do |key, value|
-    # get_variable_from_conf_file returns nil (not "") when the key is absent - String#strip!
-    # returns nil when there is nothing to strip, which is the case for empty sed output.
-    current = get_variable_from_conf_file(peripheral, RHN_CONF_PATH, key)
-    next if current == value
-
-    if current.nil?
-      node.run("echo '#{key} = #{value}' >> #{RHN_CONF_PATH}")
-    else
-      node.run("sed -i 's/^#{key} = .*/#{key} = #{value}/' #{RHN_CONF_PATH}")
-    end
-    changed = true
+  # The configuration values are read from the database when they are used, no restart is needed.
+  DB_CONFIG_TESTSUITE_SETTINGS.each do |key, value|
+    set_db_config_value(key, value, host: peripheral)
   end
-  node.run('systemctl restart tomcat taskomatic') if changed
 
   # mgr-sync autologin, mirroring the ~/.mgr-sync convention already used against "server"
   # elsewhere in the testsuite (see command_steps.rb).

@@ -27,6 +27,8 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -163,6 +165,19 @@ public class Access extends BaseHandler {
             throw new IllegalArgumentException("Invalid number of parameters.");
         }
         return Config.get().getBoolean(params[0]);
+    }
+
+    /**
+     * Returns true if the configuration value stored in the database for the key in the param is true.
+     * @param ctx Context Map to pass in
+     * @param params Parameters to use to fetch from Context
+     * @return true if access is granted, false otherwise
+     */
+    public boolean aclDbConfigIs(Map<String, Object> ctx, String[] params) {
+        if (params == null || params.length < 1) {
+            throw new IllegalArgumentException("Invalid number of parameters.");
+        }
+        return RhnConfigurationFactory.getSingleton().getBoolean(RhnConfiguration.KEYS.valueOf(params[0]));
     }
 
     /**

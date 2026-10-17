@@ -15,7 +15,6 @@
  */
 package com.redhat.rhn.domain.common;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 
@@ -124,13 +123,13 @@ public class CommonFactory extends HibernateFactory {
         }
 
         TinyUrl url = new TinyUrl();
-        Config c = new Config();
         url.setUrl(urlIn);
         url.setEnabled(true);
         url.setToken(token);
         Calendar pcal = Calendar.getInstance();
         pcal.setTime(expires);
-        pcal.add(Calendar.HOUR, c.getInt("java.server.satellite.tiny_url_timeout", 4));
+        pcal.add(Calendar.HOUR, RhnConfigurationFactory.getSingleton()
+                .getInteger(RhnConfiguration.KEYS.JAVA_SERVER_SATELLITE_TINY_URL_TIMEOUT));
         url.setExpires(new Date(pcal.getTimeInMillis()));
         return url;
     }

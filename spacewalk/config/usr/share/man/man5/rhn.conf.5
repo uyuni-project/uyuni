@@ -20,6 +20,13 @@ Spacewalk/Red Hat Satellite includes dozens other options in \fB/usr/share/rhn/c
 but \fB*** JUST CHANGE THOSE PARAMETERS IF YOU REALLY KNOW WHAT ARE YOU DOING! *** \fR
 
 .P
+Many settings which are not needed to access the database are stored in the
+\fBrhnConfiguration\fR database table. Values of those settings found in /etc/rhn/rhn.conf
+are moved into the database when the server starts. The name of a setting in the database is the name in the configuration
+defaults with dots replaced by underscores in upper case, for example
+\fBjava.salt_batch_size\fR becomes \fBJAVA_SALT_BATCH_SIZE\fR.
+
+.P
 The most important tunables parameters in \fB/etc/rhn/rhn.conf\fR are listed below:
 
 .TP
@@ -115,48 +122,6 @@ Valid values:
 1
 
 .TP
-.B "disconnected (boolean)"
-This parameter controls whether server is running in connected or disconnected mode.
-When running in disconnected mode, the RHN Entitlement Certificate is activated locally
-but not on remote RHN Servers.
-.IP
-.B Default:
-0
-
-.TP
-.B "enable_snapshots" (boolean)
-This parameter controls whether server is allowed to perform system snapshots.
-.IP
-.B Default:
-1
-
-.TP
-.B "enable_nvrea" (boolean)
-This parameter controls whether server will allow package uploads for same NVREA
-(Name, Version, Release, Epoch, Arch) but different vendors.
-.RS
-.IP \(bu 3
-Spacewalk Server
-.RS
-.IP \(bu 3
-\fBDefault:\fR 1
-.RE
-.IP \(bu 3
-Red Hat Satellite Server
-.RS
-.IP \(bu 3
-\fBDefault:\fR 0
-.RE
-.RE
-
-.TP
-.B "web.maximum_config_file_size" (bytes)
-This parameter controls which is the maximum allowed size for configuration files.
-.IP
-.B Default:
-32768
-
-.TP
 .B "java.taskomatic_channel_repodata_workers" (integer)
 This parameter controls how many repodata workers should generate repodata information concurrently.
 If the number of repodata workers running on the system are bigger than defined on
@@ -186,20 +151,6 @@ Size of the thread pool used for the message queue.
 .IP
 .B Default:
 5
-
-.TP
-.B "salt_presence_ping_timeout" (integer)
-SUSE Manager presence timeout for Salt minions (main timeout, in seconds).
-.IP
-.B Default:
-4
-
-.TP
-.B "salt_presence_ping_gather_job_timeout" (integer)
-SUSE Manager presence timeout for Salt minions (gather job timeout, in seconds).
-.IP
-.B Default:
-1
 
 .TP
 .B "package_import_skip_changelog" (boolean)
@@ -254,17 +205,6 @@ The ability of synchronize two Spacewalk/Red Hat Satellites servers
 is called Inter-Red Hat Satellite Sync (ISS)  which allows to synchronize channels
 from the master Red Hat Satellite to slave servers, simplifying the
 process of coordinating contents from one Spacewalk/Red Hat Satellite source to another or several others. Note: Several options that used to be available in rhn.conf are now only set by the Satellite Admin in the Admin -> ISS Configuration pages in the web interface. 
-
-.SS Master Spacewalk/Red Hat Satellite Servers
-
-.TP
-.B "disable_iss"
-If set to 1, then no slave will be able to sync from this server
-this option does not affect the ability to sync to this server from
-another spacewalk (or hosted).
-.IP
-.B Default:
-0
 
 .SH FILES
 .I /etc/rhn/rhn.conf

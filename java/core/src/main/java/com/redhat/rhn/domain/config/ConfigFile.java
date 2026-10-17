@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.domain.config;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -138,8 +138,8 @@ public class ConfigFile extends BaseDomainHelper {
      * @return config file size in bytes
      */
     public static int getMaxFileSize() {
-        int maxSize = Config.get().getInt(ConfigDefaults.CONFIG_REVISION_MAX_SIZE,
-                                          ConfigDefaults.DEFAULT_CONFIG_REVISION_MAX_SIZE);
+        int maxSize = RhnConfigurationFactory.getSingleton()
+                .getInteger(RhnConfiguration.KEYS.WEB_MAXIMUM_CONFIG_FILE_SIZE);
         if (maxSize > 0x100000) {
             ConfigFile.log.warn("SUSE Multi-Linux Manager does not support config files upload bigger" +
                     " than 1MB. Please refer to the documentation for more details.");

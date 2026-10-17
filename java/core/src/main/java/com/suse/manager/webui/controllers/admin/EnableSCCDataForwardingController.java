@@ -20,11 +20,10 @@ import static spark.Spark.get;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.satellite.SCCDataForwardingConfigAction;
-import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,8 +39,6 @@ import spark.template.jade.JadeTemplateEngine;
 public class EnableSCCDataForwardingController {
 
     private EnableSCCDataForwardingController() { }
-
-    private static final SCCDataForwardingConfigAction CONFIG_ACTION = new SCCDataForwardingConfigAction();
 
     /**
      * Initializes the routes.
@@ -70,17 +67,7 @@ public class EnableSCCDataForwardingController {
             message = LocalizationService.getInstance().getMessage("scc-data-forwarding.not-changed");
         }
         else {
-            ConfigureSatelliteCommand csc = CONFIG_ACTION.getCommand(user);
-            csc.updateBoolean(ConfigDefaults.FORWARD_REGISTRATION, Boolean.TRUE);
-            ValidatorError[] verrors = csc.storeConfiguration();
-            if (verrors != null && verrors.length > 0) {
-                StringBuilder errorMsg = new StringBuilder();
-                errorMsg.append("The following errors happened when enabling SCC data forwarding:\n");
-                for (var error: verrors) {
-                    errorMsg.append(error.getLocalizedMessage());
-                }
-                message = errorMsg.toString();
-            }
+            RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.FORWARD_REGISTRATION, true);
         }
 
         Map<String, Object> data = new HashMap<>();
