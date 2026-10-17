@@ -29,7 +29,7 @@ except ImportError:
 from .string_buffer import StringBuffer
 from spacewalk.common import rhnCache, rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG, cfg_component
+from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL
 from spacewalk.satellite_tools import constants
@@ -706,7 +706,7 @@ class SatelliteDumper(exportLib.SatelliteDumper):
         """Overriding with our own version"""
         attributes = exportLib.SatelliteDumper.set_attributes(self)
         attributes["version"] = constants.PROTOCOL_VERSION
-        attributes["generation"] = CFG.SAT_CERT_GENERATION
+        attributes["generation"] = 2
         return attributes
 
 
