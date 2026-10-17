@@ -111,12 +111,11 @@ sub parse_options {
             "answer-file=s",
             "db-only",
             "scc",
-            "disconnected"
                    );
 
   my $usage = loc("usage: %s %s\n",
                   $0,
-                  "[ --help ] [ --answer-file=<filename> ] [ --skip-initial-configuration ] [ --skip-fqdn-test ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [--scc] [--disconnected]" );
+                  "[ --help ] [ --answer-file=<filename> ] [ --skip-initial-configuration ] [ --skip-fqdn-test ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [--scc]" );
 
   # Terminate if any errors were encountered parsing the command line args:
   my %opts;

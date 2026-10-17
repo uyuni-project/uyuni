@@ -102,8 +102,6 @@ public class ConfigDefaults {
 
     public static final String WEB_EXCLUDED_COUNTRIES = "java.excluded_countries";
 
-    public static final String DISCONNECTED = "disconnected";
-
     public static final String DEFAULT_SAT_PARENT = "satellite.rhn.redhat.com";
 
     public static final String PRODUCT_NAME = "web.product_name";
@@ -710,14 +708,6 @@ public class ConfigDefaults {
      */
     public int getDefaultVirtCpus() {
         return Config.get().getInt(VIRT_CPU, 1);
-    }
-
-    /**
-     * Check if this Sat is disconnected or not
-     * @return boolean if this sat is disconnected or not
-     */
-    public boolean isDisconnected() {
-        return (Config.get().getBoolean(DISCONNECTED));
     }
 
     /**

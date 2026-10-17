@@ -38,6 +38,7 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.net.IDN;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -61,18 +62,15 @@ public class GeneralConfigAction extends BaseConfigAction {
         ConfigDefaults.HTTP_PROXY_USERNAME, ConfigDefaults.HTTP_PROXY_PASSWORD,
         ConfigDefaults.MOUNT_POINT};
 
-    private static final String[] BOOLEAN_CONFIG_ARRAY = { ConfigDefaults.DISCONNECTED };
-
     private static final List<String> ALLOWED_CONFIGS = new LinkedList<>();
     static {
         ALLOWED_CONFIGS.addAll(Arrays.asList(STRING_CONFIG_ARRAY));
-        ALLOWED_CONFIGS.addAll(Arrays.asList(BOOLEAN_CONFIG_ARRAY));
     }
 
-    private static final List<String> BOOLEAN_CONFIGS = Arrays.asList(BOOLEAN_CONFIG_ARRAY);
+    private static final List<String> BOOLEAN_CONFIGS = Collections.emptyList();
 
     /*
-     * enable_ssl, disconnected, mount_point
+     * enable_ssl, mount_point
      */
 
     /** {@inheritDoc} */
@@ -198,7 +196,7 @@ public class GeneralConfigAction extends BaseConfigAction {
      * This function checks if the user entered a valid e-mail, hostname,
      * and if the password and password confirmation fields match. Any
      * errors found are returned.
-     * @param DynaActionForm to validate
+     * @param form to validate
      * @return errors that were found in the submitted form
      */
     private ActionErrors validateForm(DynaActionForm form) {
@@ -208,7 +206,7 @@ public class GeneralConfigAction extends BaseConfigAction {
         String proxy = (String) form.get(
                 translateFormPropertyName(ConfigDefaults.HTTP_PROXY));
         HostPortValidator validator = HostPortValidator.getInstance();
-        if (!(proxy.equals("") || validator.isValid(proxy))) {
+        if (!(proxy.isEmpty() || validator.isValid(proxy))) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("error.proxy_invalid"));
         }
