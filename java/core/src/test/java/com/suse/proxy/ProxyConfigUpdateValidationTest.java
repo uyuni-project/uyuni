@@ -97,9 +97,6 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 "parentFQDN is required",
                 "proxyPort is required",
                 "maxSquidCacheSize is required",
-                "rootCA is required",
-                "proxyCertificate is required",
-                "proxyKey is required",
                 "sourceMode is required"
         };
 
@@ -211,16 +208,10 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
 
     /**
      * Test a scenario when keeping existing certificates and using rpm source mode.
-     * However, existing proxy config certificates are have no content.
+     * Since certificates are optional, a proxy can keep having no existing certificates.
      */
     @Test
-    public void testFailWhenKeepCertsButNoExistingCertificates() {
-        final String[] expectedErrorMessages = {
-                "rootCA not found on current proxy configuration",
-                "proxyCertificate not found on current proxy configuration",
-                "proxyKey not found on current proxy configuration",
-        };
-
+    public void testSuccessWhenKeepCertsAndNoExistingCertificates() {
         ProxyConfigUpdateJson request = getBaseRequestWithRpm()
                 .keepCerts(null, null, null, null)
                 .build();
@@ -232,7 +223,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
 
         //
         new ProxyConfigUpdateValidation().handle(proxyConfigUpdateContext);
-        assertExpectedErrors(expectedErrorMessages, proxyConfigUpdateContext);
+        assertFalse(proxyConfigUpdateContext.getErrorReport().hasErrors());
     }
 
 
