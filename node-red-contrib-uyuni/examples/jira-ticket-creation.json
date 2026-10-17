@@ -1,0 +1,94 @@
+[
+  {
+    "id": "flow_jira_ticket",
+    "type": "tab",
+    "label": "Uyuni Job Failure Jira Ticket Creation",
+    "disabled": false,
+    "info": "Listens for failed Salt jobs or state applications on Uyuni and automatically creates an incident ticket in Jira via REST API."
+  },
+  {
+    "id": "mqtt_conf_1",
+    "type": "uyuni-config",
+    "broker": "mosquitto",
+    "port": "1883",
+    "topicPrefix": "uyuni/+"
+  },
+  {
+    "id": "evt_job_return",
+    "type": "uyuni-events",
+    "z": "flow_jira_ticket",
+    "name": "Listen Job Returns",
+    "server": "mqtt_conf_1",
+    "eventCategory": "jobs/returned",
+    "x": 140,
+    "y": 140,
+    "wires": [["filter_job_failure"]]
+  },
+  {
+    "id": "filter_job_failure",
+    "type": "switch",
+    "z": "flow_jira_ticket",
+    "name": "Filter Failed Jobs",
+    "property": "payload.success",
+    "propertyType": "msg",
+    "rules": [
+      { "t": "false" }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 350,
+    "y": 140,
+    "wires": [["fmt_jira_payload"]]
+  },
+  {
+    "id": "fmt_jira_payload",
+    "type": "function",
+    "z": "flow_jira_ticket",
+    "name": "Format Jira Issue JSON",
+    "func": "const minionId = msg.payload.minionId || 'Unknown System';\nconst jid = msg.payload.jid || 'Unknown JID';\nconst fun = msg.payload.fun || 'Salt Action';\n\nmsg.headers = {\n    'Content-Type': 'application/json',\n    'Accept': 'application/json'\n};\n\nmsg.payload = {\n    fields: {\n        project: { key: 'OPS' },\n        summary: `[Uyuni Alert] Salt Job Failed on ${minionId}`,\n        description: `Uyuni Salt job execution failed.\\n\\nMinion: ${minionId}\\nJID: ${jid}\\nFunction: ${fun}\\nRetcode: ${msg.payload.retcode}`,\n        issuetype: { name: 'Bug' }\n    }\n};\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 580,
+    "y": 140,
+    "wires": [["http_jira_post"]]
+  },
+  {
+    "id": "http_jira_post",
+    "type": "http request",
+    "z": "flow_jira_ticket",
+    "name": "POST /rest/api/2/issue",
+    "method": "POST",
+    "ret": "obj",
+    "paytoqs": "ignore",
+    "url": "https://your-domain.atlassian.net/rest/api/2/issue",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "basic",
+    "senderr": false,
+    "headers": [],
+    "x": 820,
+    "y": 140,
+    "wires": [["dbg_jira_res"]]
+  },
+  {
+    "id": "dbg_jira_res",
+    "type": "debug",
+    "z": "flow_jira_ticket",
+    "name": "Jira Ticket Response",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 1040,
+    "y": 140,
+    "wires": []
+  }
+]
