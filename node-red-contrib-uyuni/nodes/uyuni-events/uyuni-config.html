@@ -18,6 +18,7 @@ SPDX-License-Identifier: GPL-2.0-only
       clientId: { value: '' },
       topicPrefix: { value: 'uyuni/+' },
       usetls: { value: false },
+      tls: { type: 'tls-config', required: false },
     },
     credentials: {
       username: { type: 'text' },
@@ -25,6 +26,13 @@ SPDX-License-Identifier: GPL-2.0-only
     },
     label: function () {
       return this.name || `${this.broker}:${this.port}`;
+    },
+    oneditprepare: function () {
+      const toggleTls = function () {
+        $('#node-config-row-tls').toggle($('#node-config-input-usetls').is(':checked'));
+      };
+      $('#node-config-input-usetls').on('change', toggleTls);
+      toggleTls();
     },
   });
 </script>
@@ -58,6 +66,10 @@ SPDX-License-Identifier: GPL-2.0-only
     <label for="node-config-input-usetls"><i class="fa fa-shield"></i> Use TLS</label>
     <input type="checkbox" id="node-config-input-usetls" style="width:auto; vertical-align:top;" />
   </div>
+  <div class="form-row" id="node-config-row-tls">
+    <label for="node-config-input-tls"><i class="fa fa-lock"></i> TLS Config</label>
+    <input type="text" id="node-config-input-tls" />
+  </div>
 </script>
 
 <script type="text/html" data-help-name="uyuni-config">
@@ -79,6 +91,11 @@ SPDX-License-Identifier: GPL-2.0-only
     <code>uyuni-subscriber</code> account, which can read events but not publish them.</dd>
     <dt>Use TLS <span class="property-type">boolean</span></dt>
     <dd>Connect with <code>mqtts</code> instead of <code>mqtt</code>.</dd>
+    <dt>TLS Config <span class="property-type">tls-config</span></dt>
+    <dd>Optional. A standard Node-RED TLS configuration with the CA certificate
+    that signed the broker's certificate, and a client certificate and key if the
+    broker requires one. Without it, the broker's certificate is checked against
+    the system's trusted CAs.</dd>
   </dl>
 
   <h3>Details</h3>
