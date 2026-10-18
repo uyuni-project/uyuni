@@ -92,8 +92,6 @@ public class ConfigDefaults {
     public static final String NON_EXPIRABLE_PACKAGE_URLS =
         "java.non_expirable_package_urls";
 
-    public static final String SATELLITE_PARENT = "server.satellite.rhn_parent";
-
     public static final String SERVER_HOSTNAME = "java.hostname";
 
     public static final String KICKSTART_HOST = "kickstart_host";

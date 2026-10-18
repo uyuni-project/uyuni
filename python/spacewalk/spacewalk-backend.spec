@@ -471,7 +471,6 @@ fi
 %{python3rhnroot}/satellite_tools/syncCache.py*
 %{python3rhnroot}/satellite_tools/sync_handlers.py*
 %{python3rhnroot}/satellite_tools/rhn_ssl_dbstore.py*
-%{python3rhnroot}/satellite_tools/xmlWireSource.py*
 %{python3rhnroot}/satellite_tools/updatePackages.py*
 %{python3rhnroot}/satellite_tools/reposync.py*
 %{python3rhnroot}/satellite_tools/constants.py*
@@ -528,7 +527,6 @@ fi
 %{python3rhnroot}/satellite_tools/__init__.py*
 %{python3rhnroot}/satellite_tools/geniso.py*
 # A bunch of modules shared with satellite-tools
-%{python3rhnroot}/satellite_tools/connection.py*
 %{python3rhnroot}/satellite_tools/diskImportLib.py*
 %{python3rhnroot}/satellite_tools/syncLib.py*
 %{python3rhnroot}/satellite_tools/xmlDiskSource.py*
