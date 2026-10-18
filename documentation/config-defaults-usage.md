@@ -15,8 +15,8 @@ reference is listed. Line numbers refer to the state of the
   then the namespaced key; a lookup without one (`foo`) also falls back to
   `web.foo` and `server.foo`. When the code uses a `ConfigDefaults`
   constant, the reference points to where that constant is read.
-- **Python** (`spacewalk.common.rhnConfig`): `initCFG("server.xmlrpc")` merges
-  `rhn.conf`, `rhn_server.conf` and `rhn_server_xmlrpc.conf`, so keys are read
+- **Python** (`spacewalk.common.rhnConfig`): `initCFG("server.app")` merges
+  `rhn.conf`, `rhn_server.conf` and `rhn_server_app.conf`, so keys are read
   as plain attributes (`CFG.LOG_FILE`). Keys like `log_file` and `debug` that
   appear in several files are read by the same line, which picks up whichever
   component is active.
@@ -250,6 +250,7 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `force_package_upload` | [`python/spacewalk/server/rhnPackageUpload.py:73`](python/spacewalk/server/rhnPackageUpload.py#L73) |
 | rhn_server.conf | `proxy_auth_timeout` | [`python/spacewalk/server/handlers/xmlrpc/proxy.py:176`](python/spacewalk/server/handlers/xmlrpc/proxy.py#L176) |
 | rhn_server.conf | `timeout` | [`python/spacewalk/common/suseLib.py:181`](python/spacewalk/common/suseLib.py#L181) |
+| rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
 | rhn_server.conf | `debug` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `traceback_mail` | [`python/spacewalk/common/rhnMail.py:29`](python/spacewalk/common/rhnMail.py#L29) |
 | rhn_server.conf | `quiet_mail` | [`python/spacewalk/common/rhnTB.py:133`](python/spacewalk/common/rhnTB.py#L133) |
@@ -304,9 +305,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server_susemanager.conf | `bootstrap_repo_datamodule` | [`susemanager/src/mgr-create-bootstrap-repo:431`](susemanager/src/mgr-create-bootstrap-repo#L431) |
 | rhn_server_susemanager.conf | `auto_generate_bootstrap_repo` | [`python/spacewalk/satellite_tools/reposync.py:936`](python/spacewalk/satellite_tools/reposync.py#L936) |
 | rhn_server_upload_package-push.conf | `log_file` | [`python/spacewalk/server/apacheUploadServer.py:47`](python/spacewalk/server/apacheUploadServer.py#L47) |
-| rhn_server_xmlrpc.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
-| rhn_server_xmlrpc.conf | `cache_package_headers` | [`python/spacewalk/server/rhnRepository.py:390`](python/spacewalk/server/rhnRepository.py#L390) |
-| rhn_server_xmlrpc.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
 | rhn_taskomatic_daemon.conf | `TASKO_LIBRARY_PATH` <sup>3</sup> | [`java/scripts/taskomatic:17`](java/scripts/taskomatic#L17) |
 | rhn_taskomatic_daemon.conf | `TASKO_RHN_CLASSPATH` <sup>3</sup> | [`java/scripts/taskomatic:14`](java/scripts/taskomatic#L14) |
 | rhn_taskomatic_daemon.conf | `TASKO_RHN_JARS` <sup>3</sup> | [`java/scripts/taskomatic:14`](java/scripts/taskomatic#L14) |

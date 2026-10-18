@@ -1,2 +1,2 @@
-[rhn-conf/rhn_server_xmlrpc.conf]
+[rhn-conf/rhn_server.conf]
 min_schema_version=5.2.9

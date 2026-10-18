@@ -19,7 +19,7 @@ from spacewalk.common.rhnConfig import initCFG
 from spacewalk.server.xmlrpc import queue
 
 initLOG("stderr", 4)
-initCFG("server.xmlrpc")
+initCFG("server")
 rhnSQL.initDB("rhnuser/rhnuser@webdev")
 
 q = queue.Queue()

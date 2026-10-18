@@ -408,9 +408,6 @@ fi
 %license LICENSE
 %dir %{rhnroot}/server/handlers/xmlrpc
 %{rhnroot}/server/handlers/xmlrpc/*
-# config files
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_xmlrpc.conf
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xmlrpc
 %dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers
 
