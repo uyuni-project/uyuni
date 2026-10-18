@@ -39,7 +39,7 @@ def test_server_search(use_key=0):
 
 
 if __name__ == "__main__":
-    initCFG("server.xmlrpc")
+    initCFG("server")
     rhnSQL.initDB("rhnuser/rhnuser@webdev")
 
     # pylint: disable-next=using-constant-test
