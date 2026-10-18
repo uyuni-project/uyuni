@@ -422,7 +422,7 @@ class ContentSource:
 
         # read the proxy configuration in /etc/rhn/rhn.conf
         # pylint: disable-next=invalid-name
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
             self.authtoken = None
 
@@ -657,7 +657,7 @@ class ContentSource:
             self.repo.proxy, self.repo.proxy_username, self.repo.proxy_password
         )
         # pylint: disable-next=invalid-name
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
 
     @staticmethod

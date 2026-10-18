@@ -69,7 +69,7 @@ def _authenticate(authobj, channels, null_org, force):
         if force:
             raise rhnFault(4, "Cannot force push nullorg content", explain=0)
 
-    with cfg_component("server.satellite") as CFG:
+    with cfg_component("server") as CFG:
         if force and not CFG.FORCE_PACKAGE_UPLOAD:
             raise rhnFault(55, "Package Upload Failed", explain=0)
 
@@ -123,7 +123,7 @@ def relative_path_from_nevra(
         is_source = 0
     log_debug(4, nevra, is_source)
 
-    with cfg_component("server.satellite") as CFG:
+    with cfg_component("server") as CFG:
         prepend = CFG.PREPENDED_DIR
 
     return get_package_path(
@@ -145,7 +145,7 @@ def relative_path_from_nevra_without_package_name(
     nevra, org_id, checksum_type, checksum
 ):
     log_debug(4, nevra, "no package name")
-    with cfg_component("server.satellite") as CFG:
+    with cfg_component("server") as CFG:
         prepend = CFG.PREPENDED_DIR
     return get_package_path_without_package_name(
         nevra, org_id, prepend, checksum_type, checksum
@@ -156,7 +156,7 @@ def relative_path_from_nevra_without_package_name(
 def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None):
     """Uploads a package"""
 
-    with cfg_component("server.satellite") as CFG:
+    with cfg_component("server") as CFG:
         basedir = CFG.MOUNT_POINT
 
     if relative_path:
@@ -184,11 +184,9 @@ def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None
             raise_with_tb(rhnFault(50, "File error"), sys.exc_info()[2])
 
         # Remove any pending scheduled file deletion for this package
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             delete from rhnPackageFileDeleteQueue where path = :path
-        """
-        )
+        """)
         h.execute(path=relative_path)
 
     pkg = mpmSource.create_package(
@@ -228,7 +226,7 @@ def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None
         )
         pdict = package.toDict()
         orig_path = package["path"]
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             orig_path = os.path.join(CFG.MOUNT_POINT, orig_path)
         log_debug(4, "Original package", orig_path)
 
@@ -252,7 +250,7 @@ def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None
         # file to file system
         # case4:no file exists on FS and no path in db .then we write both.
         orig_path = package["path"]
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             orig_path = os.path.join(CFG.MOUNT_POINT, orig_path)
         log_debug(3, "Original package", orig_path)
 
@@ -284,16 +282,14 @@ def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None
         if os.path.exists(orig_path) and path_dict["path"]:
             return {}, 0
         elif not path_dict["path"]:
-            h_upd = rhnSQL.prepare(
-                """
+            h_upd = rhnSQL.prepare("""
             update rhnpackage
                set path = :path
             where checksum_id = (
                         select id from rhnChecksumView c
                                  where c.checksum = :csum
                                    and c.checksum_type = :ctype)
-            """
-            )
+            """)
             h_upd.execute(
                 path=relative_path, ctype=a_pkg.checksum_type, csum=a_pkg.checksum
             )
@@ -343,7 +339,7 @@ def save_uploaded_package(
     a_pkg = rhn_pkg.package_from_stream(stream, packaging=packaging)
     a_pkg.read_header()
 
-    with cfg_component("server.satellite") as CFG:
+    with cfg_component("server") as CFG:
         temp_dir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org_id, "stage")
     if not os.path.isdir(temp_dir):
         os.makedirs(temp_dir)
@@ -389,9 +385,9 @@ def load_package(package_stream):
     payload_stream.seek(0, 0)
     if header.packaging == "mpm" or header.packaging == "deb":
         header.header_start = header.header_end = 0
-        (header_start, header_end) = (0, 0)
+        header_start, header_end = (0, 0)
     else:
-        (header_start, header_end) = get_header_byte_range(payload_stream)
+        header_start, header_end = get_header_byte_range(payload_stream)
         payload_stream.seek(0, 0)
 
     return header, payload_stream, header_start, header_end

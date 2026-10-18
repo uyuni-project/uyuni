@@ -309,6 +309,8 @@ sub populate_initial_configs {
       $rhnopt{$key} = $answers->{$key};
     }
   }
+  # default_mail_from is a global key used by all components
+  $rhnopt{'default_mail_from'} = delete $rhnopt{'web.default_mail_from'} if exists $rhnopt{'web.default_mail_from'};
 
   if ($answers->{'setup-scc'} && $answers->{'setup-scc'} =~ /^[Yy]/)
   {

@@ -54,14 +54,13 @@ java.excluded_countries = CU,IR,IQ,KP,SD,SY
 mount_point = /var/spacewalk
 kickstart_mount_point = /var/spacewalk
 repomd_cache_mount_point = /var/cache
-web.mount_point = /pub/
 
 # Mail settings
 web.disallowed_mail_domains =
 web.restrict_mail_domains =
 traceback_mail = galaxy-noise@suse.de
 web.traceback_mail = galaxy-noise@suse.de
-web.default_mail_from = SUSE Manager JUnit testsuite <junit-susemanager@suse.de>
+default_mail_from = SUSE Manager JUnit testsuite <junit-susemanager@suse.de>
 # this mailer class sends no mail while testing
 web.mailer_class = com.redhat.rhn.testing.NoOpMail
 

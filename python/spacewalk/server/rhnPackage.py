@@ -115,7 +115,7 @@ def check_package_file(rel_path, logpkg, raisepkg):
     if rel_path is None:
         log_error("Package path null for package id", logpkg)
         raise rhnFault(17, _("Invalid RPM package %s requested") % raisepkg)
-    with cfg_component("server.satellite") as CFG:
+    with cfg_component("server") as CFG:
         filePath = f"{CFG.MOUNT_POINT}/{rel_path}"
     if not os.access(filePath, os.R_OK):
         # Package not found on the filesystem
@@ -132,7 +132,7 @@ def unlink_package_file(path):
         # pylint: disable-next=consider-using-f-string
         log_debug(1, "Error unlinking %s;" % path)
     dirname = os.path.dirname(path)
-    with cfg_component("server.satellite") as CFG:
+    with cfg_component("server") as CFG:
         base_dirs = (CFG.MOUNT_POINT + "/" + CFG.PREPENDED_DIR, CFG.MOUNT_POINT)
     while dirname not in base_dirs:
         try:

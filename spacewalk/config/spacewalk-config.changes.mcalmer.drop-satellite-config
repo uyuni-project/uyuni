@@ -1,0 +1,3 @@
+- Set `server.reposync_nevra_filter` instead of
+  `server.satellite.reposync_nevra_filter` in the `rhn.conf`
+  template

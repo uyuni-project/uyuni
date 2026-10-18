@@ -39,7 +39,7 @@ from uyuni.common.checksum import getFileChecksum
 # pylint: disable-next=ungrouped-imports
 from spacewalk.server.importlib import mpmSource
 
-initCFG("server.satellite")
+initCFG("server")
 initLOG(CFG.LOG_FILE, CFG.DEBUG)
 
 OPTIONS = None

@@ -51,7 +51,7 @@ public class ConfigDefaults {
     // Names of the configuration parameters
     //
 
-    public static final String WEB_DEFAULT_MAIL_FROM = "web.default_mail_from";
+    public static final String DEFAULT_MAIL_FROM = "default_mail_from";
     public static final String WEB_ENCRYPTED_PASSWORDS = "web.encrypted_passwords";
     public static final String WEB_L10N_RESOURCEBUNDLES = "web.l10n_resourcebundles";
     public static final String WEB_PAM_AUTH_SERVICE = "web.pam_auth_service";

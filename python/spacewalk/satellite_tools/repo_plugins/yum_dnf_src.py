@@ -50,7 +50,6 @@ from spacewalk.satellite_tools.repo_plugins.yum_src import (
 # pylint: disable-next=unused-import
 from urllib.parse import urlparse, urlsplit, urlunparse
 
-
 YUMSRC_CONF = "/etc/rhn/spacewalk-repo-sync/yum.conf"
 
 
@@ -143,10 +142,10 @@ class ContentSource(zypper_ContentSource):
         # read the proxy configuration
         # /etc/rhn/rhn.conf has more priority than yum.conf
         # pylint: disable-next=invalid-name
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             # keep authtokens for mirroring
             # pylint: disable-next=invalid-name,unused-variable
-            (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
+            _scheme, _netloc, _path, query, _fragid = urlsplit(url)
             if query:
                 self.authtoken = query
 
@@ -217,11 +216,11 @@ class ContentSource(zypper_ContentSource):
         repo.mirrorlist = self.url
         repo.baseurl = [self.url]
         # pylint: disable-next=invalid-name
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, "stage")
         if not os.path.isdir(pkgdir):
             # pylint: disable-next=invalid-name
-            with cfg_component("server.satellite") as CFG:
+            with cfg_component("server") as CFG:
                 fileutils.makedirs(pkgdir, user=CFG.httpd_user, group=CFG.httpd_group)
         repo.pkgdir = pkgdir
         repo.sslcacert = ca_cert_file
