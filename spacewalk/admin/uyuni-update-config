@@ -85,6 +85,10 @@ DB_CONFIG_KEYS = {
     "max_passwd_len": "PSW_CHECK_LENGTH_MAX",
     "server.min_passwd_len": "PSW_CHECK_LENGTH_MIN",
     "min_passwd_len": "PSW_CHECK_LENGTH_MIN",
+    "server.satellite.http_proxy": "HTTP_PROXY",
+    "server.satellite.http_proxy_username": "HTTP_PROXY_USERNAME",
+    "server.satellite.http_proxy_password": "HTTP_PROXY_PASSWORD",
+    "server.satellite.no_proxy": "NO_PROXY",
 }
 
 
@@ -280,13 +284,18 @@ def change_hostname():
 
 
 def main():
+    if sys.argv[1:] == ["--move-config-to-db"]:
+        # called by spacewalk-startup-helper after the schema upgrade, which
+        # creates the rhnConfiguration rows of newly moved keys
+        move_config_to_db()
+        return 0
+
     init_dirs_and_perms()
     check_and_configure_fips()
     exitCode = run_uyuni_configfiles_sync()
     init_scc_login()
     import_suma_gpg_keyring()
     copy_ca()
-    move_config_to_db()
     change_billing_data_service()
     remove_product_name_overwrite()
 

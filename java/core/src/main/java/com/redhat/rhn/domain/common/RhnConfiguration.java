@@ -47,7 +47,11 @@ public class RhnConfiguration extends BaseDomainHelper {
         PSW_CHECK_SPECIAL_CHAR_FLAG,
         PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG,
         PSW_CHECK_MAX_OCCURRENCE,
-        PSW_CHECK_SPECIAL_CHARACTERS;
+        PSW_CHECK_SPECIAL_CHARACTERS,
+        HTTP_PROXY,
+        HTTP_PROXY_USERNAME,
+        HTTP_PROXY_PASSWORD,
+        NO_PROXY;
     }
 
     @Id

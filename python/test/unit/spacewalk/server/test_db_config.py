@@ -1,5 +1,17 @@
 #!/usr/bin/python3
 #  pylint: disable=missing-module-docstring,invalid-name
+#
+# Copyright (c) 2026 SUSE LLC
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 from contextlib import contextmanager
 from unittest.mock import MagicMock, patch
 
@@ -42,9 +54,17 @@ def test_get_default():
         assert DBConfig().get_default("SOME_KEY") == 4
 
 
-def test_string_keys_are_not_converted():
+@pytest.mark.parametrize(
+    "key",
+    [
+        "PSW_CHECK_SPECIAL_CHARACTERS",
+        "HTTP_PROXY_USERNAME",
+        "HTTP_PROXY_PASSWORD",
+    ],
+)
+def test_string_keys_are_not_converted(key):
     with db_row({"value": None, "default_value": "123"}):
-        assert DBConfig().get("PSW_CHECK_SPECIAL_CHARACTERS") == "123"
+        assert DBConfig().get(key) == "123"
 
 
 @pytest.mark.parametrize(

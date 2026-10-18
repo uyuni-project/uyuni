@@ -16,11 +16,8 @@
  */
 package com.redhat.rhn.manager.setup;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.satellite.ProxySettingsConfigureSatelliteCommand;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,35 +36,29 @@ public final class ProxySettingsManager {
      * @return proxy settings
      */
     public static ProxySettingsDto getProxySettings() {
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         ProxySettingsDto settings = new ProxySettingsDto();
-        settings.setHostname(Config.get().getString(ConfigDefaults.HTTP_PROXY));
-        settings.setUsername(Config.get().getString(ConfigDefaults.HTTP_PROXY_USERNAME));
+        settings.setHostname(factory.getString(RhnConfiguration.KEYS.HTTP_PROXY));
+        settings.setUsername(factory.getString(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME));
         return settings;
     }
 
     /**
-     * Store the proxy settings in the Spacewalk configuration
+     * Store the proxy settings in the database
      * @param settings DTO with the settings
-     * @param userIn current logged in user
      * @param request the HTTP request
-     * @return a list of validation errors
      */
-    public static ValidatorError[] storeProxySettings(ProxySettingsDto settings,
-            User userIn, HttpServletRequest request) {
-
+    public static void storeProxySettings(ProxySettingsDto settings, HttpServletRequest request) {
         sanitizeInput(settings);
 
-        ProxySettingsConfigureSatelliteCommand configCommand = new ProxySettingsConfigureSatelliteCommand(userIn);
-        configCommand.updateString(ConfigDefaults.HTTP_PROXY, settings.getHostname());
-        configCommand.updateString(ConfigDefaults.HTTP_PROXY_USERNAME, settings.getUsername());
-        configCommand.updateString(ConfigDefaults.HTTP_PROXY_PASSWORD, settings.getPassword());
-        ValidatorError[] ret = configCommand.storeConfiguration();
-        if (ret == null) {
-            // Settings have changed, remove the cached subscriptions as proxy settings
-            // might not be valid anymore
-            SetupWizardSessionCache.clearAllSubscriptions(request);
-        }
-        return ret;
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY, settings.getHostname());
+        factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME, settings.getUsername());
+        factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD, settings.getPassword());
+
+        // Settings have changed, remove the cached subscriptions as proxy settings
+        // might not be valid anymore
+        SetupWizardSessionCache.clearAllSubscriptions(request);
     }
 
     /**

@@ -34,6 +34,7 @@ from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
 
 try:
     from spacewalk.server import rhnSQL
+    from spacewalk.server.db_config import DB_CFG
 except ImportError:
     log_debug(2, "Loading suseLib without rhnSQL")
 
@@ -299,17 +300,16 @@ def get_proxy(url=None):
     Returns None if no proxy URL/credentials could be read.
 
     If the url parameter is provided, a check against no_proxy will be made.
-    (server.satellite.no_proxy)
     In case this connection should not use a proxy, the values returned
     are None for url, username and password.
 
     Order of lookup (https_proxy is always preferred over http_proxy):
-    1. rhn.conf (server.satellite.http_proxy)
+    1. rhn config of the proxy (proxy.http_proxy) or database of the server (HTTP_PROXY)
     2. .curlrc (--proxy, --proxy-user)
 
     """
     proxyurl, username, password = (
-        _get_proxy_from_rhn_conf() or _get_proxy_from_yast() or (None, None, None)
+        _get_proxy_from_config() or _get_proxy_from_yast() or (None, None, None)
     )
     if not url or (url and _useProxyFor(url)):
         return (proxyurl, username, password)
@@ -579,35 +579,43 @@ def _get_proxy_from_yast():
     return (proxy_url, username, password)
 
 
-def _get_proxy_from_rhn_conf():
-    """Return a tuple of (url, user, pass) proxy information from rhn config
+def _proxy_settings_in_db():
+    """Return True if the proxy settings are stored in the database.
+
+    The proxy has no database and reads the settings from its rhn config.
+    The server stores the settings in the database.
+    """
+    return not (CFG.getComponent().startswith("proxy") and CFG.has_key("http_proxy"))
+
+
+def _get_proxy_from_config():
+    """Return a tuple of (url, user, pass) proxy information from the
+    rhn config of the proxy or the database of the server
 
     Returns None instead of a tuple if there was no proxy url. user,
     pass can be None.
 
     """
-    comp = CFG.getComponent()
-    if not CFG.has_key("http_proxy"):
-        initCFG("server.satellite")
-    result = None
-    if CFG.http_proxy:
-        # CFG.http_proxy format is <hostname>[:<port>] in 1.7
-        url = f"http://{CFG.http_proxy}"
+    if _proxy_settings_in_db():
+        proxy = DB_CFG.HTTP_PROXY
+        username = DB_CFG.HTTP_PROXY_USERNAME
+        password = DB_CFG.HTTP_PROXY_PASSWORD
+    else:
+        proxy = CFG.http_proxy
+        username = CFG.http_proxy_username
         # CFG.http_proxy_password can be a list in case of legitimate
         # commas "," are part of the password. If so, we need to
         # rebuilt the original password.
-        result = (
-            url,
-            CFG.http_proxy_username,
-            (
-                CFG.http_proxy_password
-                if not isinstance(CFG.http_proxy_password, list)
-                else ",".join(CFG.http_proxy_password)
-            ),
+        password = (
+            CFG.http_proxy_password
+            if not isinstance(CFG.http_proxy_password, list)
+            else ",".join(CFG.http_proxy_password)
         )
-    initCFG(comp)
+    if proxy:
+        # the proxy format is <hostname>[:<port>]
+        return (f"http://{proxy}", username, password)
     log_debug(2, "Could not read proxy URL from rhn config.")
-    return result
+    return None
 
 
 # pylint complains because this method has too many return statements.
@@ -617,10 +625,10 @@ def _get_proxy_from_rhn_conf():
 def _useProxyFor(url):
     """Return True if a proxy should be used for given url, otherwise False.
 
-    This function uses server.satellite.no_proxy variable to check for
+    This function uses the no_proxy setting to check for
     hosts or domains which should not be connected via a proxy.
 
-    server.satellite.no_proxy is a comma seperated list.
+    no_proxy is a comma seperated list.
     Either an exact match, or the previous character
     is a '.', so host is within the same domain.
     A leading '.' in the pattern is ignored.
@@ -635,21 +643,19 @@ def _useProxyFor(url):
     hostname = u.hostname.lower()
     if hostname in ["localhost", "127.0.0.1", "::1"]:
         return False
-    comp = CFG.getComponent()
-    if not CFG.has_key("no_proxy"):
-        initCFG("server.satellite")
-    if not CFG.has_key("no_proxy"):
-        initCFG(comp)
+    if _proxy_settings_in_db():
+        noproxy = DB_CFG.get_list("NO_PROXY")
+    elif CFG.has_key("no_proxy"):
+        noproxy = CFG.no_proxy
+    else:
         return True
-    noproxy = CFG.no_proxy
-    initCFG(comp)
     if not noproxy:
         return True
     if not isinstance(noproxy, list):
-        if noproxy == "*":
-            # just an asterisk disables all.
-            return False
         noproxy = [noproxy]
+    if noproxy == ["*"]:
+        # just an asterisk disables all.
+        return False
 
     # No proxy: Either an exact match, or the previous character
     # is a '.', so host is within the same domain.

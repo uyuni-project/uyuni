@@ -20,6 +20,15 @@ perform_db_schema_upgrade() {
     fi
 }
 
+move_config_to_db() {
+    /usr/sbin/uyuni-update-config --move-config-to-db
+
+    if [ $? -ne 0 ]; then
+        echo "Moving configuration values into the database failed. Please check the logs."
+        exit 1
+    fi
+}
+
 perform_report_db_schema_upgrade() {
     if [ $REPORTDB_EXISTS == 'y' ]; then
         /usr/bin/spacewalk-schema-upgrade -y --reportdb
@@ -135,6 +144,7 @@ check_database() {
         fi
     fi
     perform_db_schema_upgrade
+    move_config_to_db
     perform_report_db_schema_upgrade
     check_schema_version
     exit 0

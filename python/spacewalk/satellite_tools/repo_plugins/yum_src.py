@@ -74,6 +74,7 @@ from spacewalk.satellite_tools.syncLib import log
 # pylint: disable-next=unused-import
 from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.common.suseLib import get_proxy, URL as suseLibURL, get_content_type
+from spacewalk.server.db_config import DB_CFG
 from rhn.stringutils import sstr
 from urlgrabber.grabber import URLGrabError
 from urlgrabber.mirror import MirrorGroup
@@ -686,42 +687,37 @@ class ContentSource:
                 self.nevra_filter = False
 
     def _load_proxy_settings(self, url):
-        # read the proxy configuration in /etc/rhn/rhn.conf
-        # pylint: disable-next=redefined-outer-name,invalid-name
-        with cfg_component("server.satellite") as CFG:
-            # Get the global HTTP Proxy settings from DB or per-repo
-            # settings on /etc/rhn/spacewalk-repo-sync/zypper.conf
-            if CFG.http_proxy:
-                self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(url)
-                self.proxy_hostname = self.proxy_url
-            elif os.path.isfile(REPOSYNC_ZYPPER_CONF):
-                zypper_cfg = configparser.ConfigParser()
-                # pylint: disable-next=unspecified-encoding
-                zypper_cfg.read_file(open(REPOSYNC_ZYPPER_CONF))
-                section_name = None
+        # Get the global HTTP Proxy settings from DB or per-repo
+        # settings on /etc/rhn/spacewalk-repo-sync/zypper.conf
+        if DB_CFG.HTTP_PROXY:
+            self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(url)
+            self.proxy_hostname = self.proxy_url
+        elif os.path.isfile(REPOSYNC_ZYPPER_CONF):
+            zypper_cfg = configparser.ConfigParser()
+            # pylint: disable-next=unspecified-encoding
+            zypper_cfg.read_file(open(REPOSYNC_ZYPPER_CONF))
+            section_name = None
 
-                if zypper_cfg.has_section(self.name):
-                    section_name = self.name
+            if zypper_cfg.has_section(self.name):
+                section_name = self.name
+            # pylint: disable-next=undefined-variable
+            elif zypper_cfg.has_section(channel_label):
                 # pylint: disable-next=undefined-variable
-                elif zypper_cfg.has_section(channel_label):
-                    # pylint: disable-next=undefined-variable
-                    section_name = channel_label
-                elif zypper_cfg.has_section("main"):
-                    section_name = "main"
+                section_name = channel_label
+            elif zypper_cfg.has_section("main"):
+                section_name = "main"
 
-                if section_name:
-                    if zypper_cfg.has_option(section_name, option="proxy"):
-                        self.proxy_hostname = zypper_cfg.get(
-                            section_name, option="proxy"
-                        )
-                        # pylint: disable-next=consider-using-f-string
-                        self.proxy_url = "http://%s" % self.proxy_hostname
+            if section_name:
+                if zypper_cfg.has_option(section_name, option="proxy"):
+                    self.proxy_hostname = zypper_cfg.get(section_name, option="proxy")
+                    # pylint: disable-next=consider-using-f-string
+                    self.proxy_url = "http://%s" % self.proxy_hostname
 
-                    if zypper_cfg.has_option(section_name, "proxy_username"):
-                        self.proxy_user = zypper_cfg.get(section_name, "proxy_username")
+                if zypper_cfg.has_option(section_name, "proxy_username"):
+                    self.proxy_user = zypper_cfg.get(section_name, "proxy_username")
 
-                    if zypper_cfg.has_option(section_name, "proxy_password"):
-                        self.proxy_pass = zypper_cfg.get(section_name, "proxy_password")
+                if zypper_cfg.has_option(section_name, "proxy_password"):
+                    self.proxy_pass = zypper_cfg.get(section_name, "proxy_password")
 
     def _get_mirror_list(self, repo, url):
         returnlist = []

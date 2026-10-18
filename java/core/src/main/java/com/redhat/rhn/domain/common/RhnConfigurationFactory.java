@@ -93,7 +93,7 @@ public class RhnConfigurationFactory extends HibernateFactory {
         String newValue = valueIn == null ? null : StringUtils.trimToNull(String.valueOf(valueIn));
         boolean isDefault = valueIn instanceof Boolean booleanValue ?
                 booleanValue == toBoolean(configuration.getDefaultValue()) :
-                Objects.equals(newValue, configuration.getDefaultValue());
+                newValue == null || newValue.equals(StringUtils.trimToNull(configuration.getDefaultValue()));
         if (isDefault) {
             newValue = null;
         }
