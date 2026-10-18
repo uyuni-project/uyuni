@@ -143,9 +143,9 @@ class PyCurlFileObjectThread(PyCurlFileObject):
         self.parent = parent
         # Next 3 lines will not be required on having urlgrabber with proper fix
         # https://github.com/rpm-software-management/urlgrabber/pull/35
-        (url, parts) = opts.urlparser.parse(url, opts)
+        url, parts = opts.urlparser.parse(url, opts)
         # pylint: disable-next=unused-variable
-        (scheme, host, path, parm, query, frag) = parts
+        scheme, host, path, parm, query, frag = parts
         opts.find_proxy(url, scheme)
         super().__init__(url, filename, opts)
 
@@ -284,7 +284,7 @@ class DownloadThread(Thread):
             ## BEWARE: This hack is introduced in order to support SUSE SCC channels
             ## This also needs a patched urlgrabber AFAIK
             if "authtoken" in params and params["authtoken"]:
-                (scheme, netloc, path, query, _) = urlparse.urlsplit(
+                scheme, netloc, path, query, _ = urlparse.urlsplit(
                     params["urls"][self.mirror]
                 )
                 url = urlparse.urlunsplit(
@@ -365,7 +365,7 @@ class ThreadedDownloader:
     def __init__(self, retries=3, log_obj=None, force=False):
         self.queues = {}
         # pylint: disable-next=invalid-name
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             try:
                 self.threads = int(CFG.REPOSYNC_DOWNLOAD_THREADS)
             except ValueError:

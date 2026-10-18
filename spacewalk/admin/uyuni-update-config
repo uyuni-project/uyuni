@@ -115,6 +115,42 @@ def move_config_to_db():
         f.writelines(remaining)
 
 
+# rhn.conf keys which got a new name
+RENAMED_CONFIG_KEYS = {
+    # moved from rhn_server_satellite.conf to rhn_server.conf
+    "server.satellite.mount_point": "server.mount_point",
+    "server.satellite.sync_cache_dir": "server.sync_cache_dir",
+    "server.satellite.reposync_download_threads": "server.reposync_download_threads",
+    "server.satellite.reposync_timeout": "server.reposync_timeout",
+    "server.satellite.reposync_minrate": "server.reposync_minrate",
+    "server.satellite.reposync_nevra_filter": "server.reposync_nevra_filter",
+    "server.satellite.urlgrabber_logspec": "server.urlgrabber_logspec",
+    # global keys used by all components
+    "web.default_mail_from": "default_mail_from",
+}
+
+
+def rename_config_keys():
+    """
+    Rename keys in /etc/rhn/rhn.conf which got a new name
+    """
+    with open("/etc/rhn/rhn.conf", "r", encoding="utf8") as f:
+        lines = f.readlines()
+
+    renamed = []
+    for line in lines:
+        match = re.match(r"^(\s*)([\w.]+)(\s*=.*)$", line, re.DOTALL)
+        new_key = RENAMED_CONFIG_KEYS.get(match.group(2).lower()) if match else None
+        if new_key:
+            line = match.group(1) + new_key + match.group(3)
+        renamed.append(line)
+
+    if renamed == lines:
+        return
+    with open("/etc/rhn/rhn.conf", "w", encoding="utf8") as f:
+        f.writelines(renamed)
+
+
 def move_configuration(key, value):
     """
     Store the value in the database. A value matching the default value is stored as NULL.
@@ -296,6 +332,7 @@ def main():
     init_scc_login()
     import_suma_gpg_keyring()
     copy_ca()
+    rename_config_keys()
     change_billing_data_service()
     remove_product_name_overwrite()
 

@@ -317,7 +317,7 @@ class ZypperRepo:
         self.baseurl = [url]
         self.basecachedir = os.path.join(CACHE_DIR, org)
         # pylint: disable-next=redefined-outer-name,invalid-name
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             self.pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org, "stage")
         self.urls = self.baseurl
         # Make sure baseurl ends with / and urljoin will work correctly
@@ -666,7 +666,7 @@ class ContentSource:
         self.groupsfile = None
 
         # pylint: disable-next=redefined-outer-name,invalid-name
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             # configure network connection
             try:
                 # bytes per second
@@ -1652,7 +1652,7 @@ password={passwd}
             self.proxy_url, self.proxy_user, self.proxy_pass
         )
         # pylint: disable-next=redefined-outer-name,invalid-name
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
 
     def get_file(self, path, local_base=None):

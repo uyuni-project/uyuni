@@ -264,10 +264,6 @@ if [ ! -e %{rhnconf}/rhn.conf ]; then
     exit 0
 fi
 
-if test -f %{_localstatedir}/log/rhn/rhn_server_satellite.log; then
-    chown -f %{apache_user}:%{apache_group} %{_localstatedir}/log/rhn/rhn_server_satellite.log
-fi
-
 %files
 %{!?_licensedir:%global license %doc}
 %license LICENSE
@@ -440,7 +436,6 @@ fi
 %{!?_licensedir:%global license %doc}
 %license LICENSE
 %doc README.ULN
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
 %attr(600,root,root) %config(noreplace) %{rhnconf}/signing.conf
 %attr(755,root,root) %{_bindir}/rhn-charsets

@@ -1,0 +1,3 @@
+- Move the keys of `rhn_server_satellite.conf` into
+  `rhn_server.conf` and remove `rhn_server_satellite.conf`
+  and its log file `rhn_server_satellite.log`

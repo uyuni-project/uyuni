@@ -183,8 +183,8 @@ scc-pass = ${SCC_PASS}
     if [ -z "${MANAGER_MAIL_FROM}" ]; then
         MANAGER_MAIL_FROM="${PRODUCT_NAME} (${UYUNI_HOSTNAME}) <root@${UYUNI_HOSTNAME}>"
     fi
-    if ! grep "^web.default_mail_from" /etc/rhn/rhn.conf > /dev/null; then
-        echo "web.default_mail_from = ${MANAGER_MAIL_FROM}" >> /etc/rhn/rhn.conf
+    if ! grep -E "^(web\.)?default_mail_from" /etc/rhn/rhn.conf > /dev/null; then
+        echo "default_mail_from = ${MANAGER_MAIL_FROM}" >> /etc/rhn/rhn.conf
     fi
 
     # The CA needs to be added to the database for Kickstart use.

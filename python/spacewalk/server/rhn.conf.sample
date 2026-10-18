@@ -31,21 +31,16 @@
 # Common (global to all components) settings
 #
 #debug = 5
+#mount_point = /var/spacewalk
+#default_mail_from = Uyuni <dev-null@localhost>
 traceback_mail = user0@example.com, user1@example.com
 #quiet_mail = 15 # can set in other components... no need to change though.
 
 #
 # server
 #
-#server.mount_point = /pub
 #server.disallow_user_creation = 0
 #server.log_file = /var/log/rhn/rhn_server.log
-
-#
-# server.satellite
-#
-#server.satellite.log_file = /var/log/rhn/rhn_server_satellite.log
-#server.satellite.encrypted_passwords = 0
 
 #
 # server.app
@@ -86,14 +81,11 @@ web.rhnproc_port =   #FIXME
 # server            - all components that are of base component type "server"
 #                     will inherit these settings.
 #
-# server.satellite  - settings for the satellite component of the RHN Server.
-#                     E.g. server.satellite.traceback_mail = jill@company.com
-#                     (all error message for all server.satellite components
-#                     now are sent to Jill, whereas non-server.satellite
+# server.app        - settings for the app component of the RHN Server.
+#                     E.g. server.app.traceback_mail = jill@company.com
+#                     (all error message for all server.app components
+#                     now are sent to Jill, whereas non-server.app
 #                     component error messages are still sent to Bob and Mary).
-#
-# server.app
-#                   - settings for the app components of the RHN Server.
 #
 # web               - XXX: web stuff
 

@@ -555,7 +555,7 @@ class PackageImport(ChannelPackageSubscription):
             object.id = object.first_package.id
 
     def _import_signatures(self):
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             mount_point = CFG.MOUNT_POINT
         for package in self.batch:
             # skip missing files and mpm packages

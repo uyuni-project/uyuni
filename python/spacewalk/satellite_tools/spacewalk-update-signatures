@@ -30,7 +30,7 @@ from spacewalk.server import rhnSQL
 from spacewalk.server.rhnServer import server_packages
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 
-initCFG('server.satellite')
+initCFG('server')
 initLOG(CFG.LOG_FILE, CFG.DEBUG)
 
 OPTIONS = None
