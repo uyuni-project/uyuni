@@ -134,6 +134,31 @@ cd java
 make -f Makefile.docker
 ```
 
+This pulls the test database image, writes the git-ignored
+`java/buildconf/test/rhn.conf` from `rhn.conf.postgresql-example`, and runs
+the database container in the foreground with PostgreSQL published on
+localhost:5432. Keep it running in a separate terminal while tests run.
+
+When the agent runs in a sandbox (for example a podman-based sandbox), it
+usually cannot start containers, and `localhost` inside the sandbox is not
+the host. Ask the user to start the database on the host, outside the
+sandbox:
+
+```bash
+cd java
+make -f Makefile.docker confighost podmanrun
+```
+
+`confighost` writes `rhn.conf` with `db_host` and `report_db_host` set to
+`host.containers.internal`, so tests inside the sandbox reach the database on
+the host. If the user already started the database on the host (for example
+with plain `make -f Makefile.docker`), regenerate only the configuration
+from the repository root:
+
+```bash
+make -C java -f Makefile.docker confighost
+```
+
 Then run the owning module and test class, for example from the repository
 root:
 
@@ -158,6 +183,18 @@ Run the repository's containerized lint wrapper from the root:
 ./python/linting/lint.sh <path>
 ./python/linting/lint.sh -a
 ```
+
+`lint.sh` runs Black and Pylint in the CI container image by default. In a
+sandbox that cannot run containers but provides `black` and `pylint`, add
+`-l` to use the local binaries:
+
+```bash
+./python/linting/lint.sh -l <path>
+./python/linting/lint.sh -l -a
+```
+
+Local tool versions can differ from the CI image; CI's result is
+authoritative.
 
 Python code follows Black and the repository Pylint configuration. Keep tests
 isolated with mocks and temporary paths; do not make unit tests depend on a
@@ -217,7 +254,13 @@ on the repository's CI workflows for their execution.
 For package changelogs, follow the existing package-specific pattern. Add a
 fragment beside the package changelog named
 `<package>.changes.<author>.<topic>` rather than editing the consolidated
-`<package>.changes` file directly.
+`<package>.changes` file directly. In changelog entries:
+
+- Keep every line at 67 characters or less, including the leading `- `
+  and the two-space indent of continuation lines.
+- Wrap configuration keys and file names that contain a dot in backticks
+  or quotes (for example `server.satellite.rhn_parent` or `rhn.conf`), so
+  that only a dot ending a sentence stays unquoted.
 
 ## Change-specific expectations
 
