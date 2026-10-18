@@ -16,6 +16,8 @@
 package com.redhat.rhn.common.conf;
 
 import com.redhat.rhn.common.validator.HostPortValidator;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
@@ -232,9 +234,6 @@ public class ConfigDefaults {
     /**
      * HTTP proxy defaults
      */
-    public static final String HTTP_PROXY = "server.satellite.http_proxy";
-    public static final String HTTP_PROXY_USERNAME = "server.satellite.http_proxy_username";
-    public static final String HTTP_PROXY_PASSWORD = "server.satellite.http_proxy_password";
     private static final int DEFAULT_HTTP_PROXY_PORT = 80;
 
     /**
@@ -1088,7 +1087,7 @@ public class ConfigDefaults {
      * @return the proxy hostname:port string
      */
     private String getProxyString() {
-        String result = Config.get().getString(HTTP_PROXY);
+        String result = RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.HTTP_PROXY);
         if (StringUtils.isEmpty(result)) {
             return null;
         }
@@ -1104,7 +1103,7 @@ public class ConfigDefaults {
      * @return the proxy username
      */
     public String getProxyUsername() {
-        return Config.get().getString(HTTP_PROXY_USERNAME);
+        return RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME);
     }
 
     /**
@@ -1112,7 +1111,15 @@ public class ConfigDefaults {
      * @return the proxy password
      */
     public String getProxyPassword() {
-        return Config.get().getString(HTTP_PROXY_PASSWORD);
+        return RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD);
+    }
+
+    /**
+     * Gets the comma separated list of hosts and domains which are connected without proxy.
+     * @return the no proxy list
+     */
+    public String getNoProxy() {
+        return RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.NO_PROXY);
     }
 
     /**

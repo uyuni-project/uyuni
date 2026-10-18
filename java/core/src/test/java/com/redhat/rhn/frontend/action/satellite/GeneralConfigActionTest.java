@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
@@ -69,11 +71,20 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(
                 GeneralConfigAction.translateFormPropertyName("java.hostname"),
                 "testbox");
+        addRequestParameter(
+                GeneralConfigAction.translateFormPropertyName("server.satellite.http_proxy"),
+                "proxy.example.com:3128");
+        addRequestParameter(
+                GeneralConfigAction.translateFormPropertyName("server.satellite.http_proxy_username"),
+                "proxyuser");
 
         actionPerform();
 
         assertEquals("testuser@redhat.com", Config.get().getString("traceback_mail"));
         assertEquals("testbox", Config.get().getString("java.hostname"));
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        assertEquals("proxy.example.com:3128", factory.getString(RhnConfiguration.KEYS.HTTP_PROXY));
+        assertEquals("proxyuser", factory.getString(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME));
 
         testActionHasMessages(new String[] {"config.restartrequired"});
     }

@@ -75,10 +75,6 @@ public class HttpClientAdapter {
     /** The Constant REQUEST_URI. */
     private static final String REQUEST_URI = "request_uri";
 
-    /**
-     * Configuration key for the proxy skip list.
-     */
-    public static final String NO_PROXY = "server.satellite.no_proxy";
     public static final String MAX_CONNCECTIONS = "java.mgr_sync_max_connections";
     public static final String HTTP_CONNECTION_TIMEOUT = "java.http_connection_timeout";
     public static final String HTTP_SOCKET_TIMEOUT = "java.http_socket_timeout";
@@ -188,7 +184,7 @@ public class HttpClientAdapter {
         }
 
         // Read proxy exceptions from the "no_proxy" config option
-        String noProxy = Config.get().getString(NO_PROXY);
+        String noProxy = ConfigDefaults.get().getNoProxy();
         if (!StringUtils.isBlank(noProxy)) {
             for (String domain : noProxy.split(",")) {
                 noProxyDomains.add(domain.toLowerCase().trim());
@@ -250,7 +246,7 @@ public class HttpClientAdapter {
     /**
      * Custom ProxyRoutePlanner that routes the request to a proxy
      * or to a direct route depending on the setting
-     * {@code server.satellite.no_proxy} and the calling class passing a
+     * {@code NO_PROXY} and the calling class passing a
      * {@code ignoreNoProxy} flag.
      */
     class CustomProxyRoutePlanner extends DefaultProxyRoutePlanner {

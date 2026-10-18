@@ -281,10 +281,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server_satellite.conf | `mount_point` | [`python/spacewalk/satellite_tools/contentRemove.py:610`](python/spacewalk/satellite_tools/contentRemove.py#L610) |
 | rhn_server_satellite.conf | `rhn_parent` | [`python/spacewalk/satellite_tools/xmlWireSource.py:71`](python/spacewalk/satellite_tools/xmlWireSource.py#L71) |
 | rhn_server_satellite.conf | `sync_cache_dir` | [`python/spacewalk/satellite_tools/syncCache.py:39`](python/spacewalk/satellite_tools/syncCache.py#L39) |
-| rhn_server_satellite.conf | `http_proxy` | [`python/spacewalk/satellite_tools/repo_plugins/yum_src.py:692`](python/spacewalk/satellite_tools/repo_plugins/yum_src.py#L692) |
-| rhn_server_satellite.conf | `http_proxy_username` | [`python/spacewalk/common/suseLib.py:598`](python/spacewalk/common/suseLib.py#L598) |
-| rhn_server_satellite.conf | `http_proxy_password` | [`python/spacewalk/common/suseLib.py:600`](python/spacewalk/common/suseLib.py#L600) |
-| rhn_server_satellite.conf | `no_proxy` | [`python/spacewalk/common/suseLib.py:641`](python/spacewalk/common/suseLib.py#L641) |
 | rhn_server_satellite.conf | `default_mail_from` | [`python/spacewalk/satellite_tools/reposync.py:157`](python/spacewalk/satellite_tools/reposync.py#L157) |
 | rhn_server_satellite.conf | `reposync_download_threads` | [`python/spacewalk/satellite_tools/download.py:368`](python/spacewalk/satellite_tools/download.py#L368) |
 | rhn_server_satellite.conf | `reposync_timeout` | [`python/spacewalk/satellite_tools/download.py:377`](python/spacewalk/satellite_tools/download.py#L377) |
@@ -338,9 +334,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_web.conf | `web.buildtimestamp` | [`java/core/src/main/java/com/suse/manager/webui/utils/SparkApplicationHelper.java:523`](java/core/src/main/java/com/suse/manager/webui/utils/SparkApplicationHelper.java#L523) |
 | rhn_web.conf | `web.maximum_config_file_size` | [`java/core/src/main/java/com/redhat/rhn/domain/config/ConfigFile.java:141`](java/core/src/main/java/com/redhat/rhn/domain/config/ConfigFile.java#L141) |
 | rhn_web.conf | `web.default_mail_from` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:73`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L73) |
-| rhn_web.conf | `server.satellite.http_proxy` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1093`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1093) |
-| rhn_web.conf | `server.satellite.http_proxy_username` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1109`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1109) |
-| rhn_web.conf | `server.satellite.http_proxy_password` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1117`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1117) |
 | rhn_web.conf | `web.l10n_resourcebundles` | [`java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java:104`](java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java#L104) |
 | rhn_web.conf | `server.nls_lang` | [`web/modules/rhn/RHN/DBI.pm:49`](web/modules/rhn/RHN/DBI.pm#L49) |
 | rhn_web.conf | `web.subscribe_proxy_channel` | [`java/core/src/main/java/com/redhat/rhn/manager/system/SystemManager.java:2053`](java/core/src/main/java/com/redhat/rhn/manager/system/SystemManager.java#L2053) |

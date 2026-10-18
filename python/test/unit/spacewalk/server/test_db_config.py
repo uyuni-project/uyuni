@@ -42,9 +42,17 @@ def test_get_default():
         assert DBConfig().get_default("SOME_KEY") == 4
 
 
-def test_string_keys_are_not_converted():
+@pytest.mark.parametrize(
+    "key",
+    [
+        "PSW_CHECK_SPECIAL_CHARACTERS",
+        "HTTP_PROXY_USERNAME",
+        "HTTP_PROXY_PASSWORD",
+    ],
+)
+def test_string_keys_are_not_converted(key):
     with db_row({"value": None, "default_value": "123"}):
-        assert DBConfig().get("PSW_CHECK_SPECIAL_CHARACTERS") == "123"
+        assert DBConfig().get(key) == "123"
 
 
 @pytest.mark.parametrize(

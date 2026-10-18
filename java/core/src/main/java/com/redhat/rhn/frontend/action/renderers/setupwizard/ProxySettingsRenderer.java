@@ -14,9 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
-import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.manager.setup.SetupWizardSessionCache;
@@ -46,22 +43,11 @@ public class ProxySettingsRenderer {
             return settings;
         }
 
-        // Find the current user
-        RequestContext rhnContext = new RequestContext(request);
-        User webUser = rhnContext.getCurrentUser();
-
         if (log.isDebugEnabled()) {
             log.debug("Saving proxy settings: {}", settings);
         }
 
-        // OLDTODO: Handle errors
-        ValidatorError[] errors =
-                ProxySettingsManager.storeProxySettings(settings, webUser, request);
-        if (errors != null) {
-            for (ValidatorError error : errors) {
-                log.error("error: {}", error);
-            }
-        }
+        ProxySettingsManager.storeProxySettings(settings, request);
         return settings;
     }
 

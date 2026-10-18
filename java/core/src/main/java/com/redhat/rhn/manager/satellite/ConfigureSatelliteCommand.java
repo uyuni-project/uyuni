@@ -63,11 +63,6 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      */
     public String[] getCommandArguments(String configFilePath,
                                         Map<String, String> optionMap, List<String> removals) {
-        return getCommandArguments(false, configFilePath, optionMap, removals);
-    }
-
-    protected String[] getCommandArguments(boolean hasEnvironmentVariables, String configFilePath,
-                                           Map<String, String> optionMap, List<String> removals) {
         boolean somethingChanged = false;
 
         if (logger.isDebugEnabled()) {
@@ -77,9 +72,6 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
 
         List<String> argList = new LinkedList<>();
         argList.add("/usr/bin/sudo");
-        if (hasEnvironmentVariables) {
-            argList.add("-E");
-        }
         argList.add("/usr/bin/rhn-config-satellite.pl");
         argList.add("--target=" + configFilePath);
         for (Map.Entry<String, String> entry : optionMap.entrySet()) {
@@ -213,14 +205,9 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      * @param newValue to set
      */
     public void updateString(String configKey, String newValue) {
-        String newValueToLog = newValue;
-        if (configKey.equals(ConfigDefaults.HTTP_PROXY_PASSWORD)) {
-            newValueToLog = "*****";
-        }
-
         if (logger.isDebugEnabled()) {
             logger.debug("updateString(String configKey={}, String newValue={}) - start",
-                    configKey, newValueToLog);
+                    configKey, newValue);
         }
 
         if (Config.get().getString(configKey) == null ||

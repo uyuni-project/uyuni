@@ -19,7 +19,13 @@ from spacewalk.server import rhnSQL
 ConfigValue = Optional[Union[str, float, int]]
 
 # keys whose values are never converted to numbers
-STRING_KEYS = ("PSW_CHECK_SPECIAL_CHARACTERS",)
+STRING_KEYS = (
+    "PSW_CHECK_SPECIAL_CHARACTERS",
+    "HTTP_PROXY",
+    "HTTP_PROXY_USERNAME",
+    "HTTP_PROXY_PASSWORD",
+    "NO_PROXY",
+)
 
 
 def sanitize_value(key: str, val: Optional[str]) -> ConfigValue:

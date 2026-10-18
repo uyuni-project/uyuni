@@ -84,6 +84,16 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
     */
 
     @Test
+    public void testSetEmptyValueStoresNull() {
+        factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY, "proxy.example.com:3128");
+        assertEquals("proxy.example.com:3128", factory.getString(RhnConfiguration.KEYS.HTTP_PROXY));
+
+        factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY, "");
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY).getValue());
+        assertNull(factory.getString(RhnConfiguration.KEYS.HTTP_PROXY));
+    }
+
+    @Test
     public void testEmptyValue() {
         factory.resetToDefault(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID);
         assertNull(factory.getLong(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID));

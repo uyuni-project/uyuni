@@ -82,6 +82,10 @@ DB_CONFIG_KEYS = {
     "max_passwd_len": "PSW_CHECK_LENGTH_MAX",
     "server.min_passwd_len": "PSW_CHECK_LENGTH_MIN",
     "min_passwd_len": "PSW_CHECK_LENGTH_MIN",
+    "server.satellite.http_proxy": "HTTP_PROXY",
+    "server.satellite.http_proxy_username": "HTTP_PROXY_USERNAME",
+    "server.satellite.http_proxy_password": "HTTP_PROXY_PASSWORD",
+    "server.satellite.no_proxy": "NO_PROXY",
 }
 
 

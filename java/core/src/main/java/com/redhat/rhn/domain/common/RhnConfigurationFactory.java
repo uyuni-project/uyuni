@@ -83,6 +83,7 @@ public class RhnConfigurationFactory extends HibernateFactory {
     /**
      * Set the value of a configuration key.
      * Setting null or the default value removes the value, so the default value is used.
+     * An empty value matches a default value of null.
      *
      * @param keyIn the key
      * @param valueIn the value
@@ -92,7 +93,8 @@ public class RhnConfigurationFactory extends HibernateFactory {
         String newValue = valueIn == null ? null : String.valueOf(valueIn);
         boolean isDefault = valueIn instanceof Boolean booleanValue ?
                 booleanValue == toBoolean(configuration.getDefaultValue()) :
-                Objects.equals(newValue, configuration.getDefaultValue());
+                Objects.equals(Objects.toString(newValue, ""),
+                        Objects.toString(configuration.getDefaultValue(), ""));
         if (isDefault) {
             newValue = null;
         }

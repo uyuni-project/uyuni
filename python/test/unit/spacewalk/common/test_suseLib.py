@@ -131,6 +131,47 @@ class SuseLibTest(unittest.TestCase):
             (HTTP_PROXY, PROXY_USER, "password,with,commas"), suseLib.get_proxy()
         )
 
+    @unittest.mock.patch("spacewalk.common.suseLib.DB_CFG", create=True)
+    @unittest.mock.patch("spacewalk.common.suseLib.CFG")
+    def test_get_proxy_from_db(self, mocked_CFG, mocked_DB_CFG):
+        mocked_CFG.has_key.return_value = False
+        mocked_DB_CFG.HTTP_PROXY = PROXY_ADDR
+        mocked_DB_CFG.HTTP_PROXY_USERNAME = PROXY_USER
+        mocked_DB_CFG.HTTP_PROXY_PASSWORD = "password,with,commas"
+
+        self.assertEqual(
+            (HTTP_PROXY, PROXY_USER, "password,with,commas"), suseLib.get_proxy()
+        )
+
+    @unittest.mock.patch("spacewalk.common.suseLib.DB_CFG", create=True)
+    @unittest.mock.patch("spacewalk.common.suseLib.CFG")
+    def test_get_proxy_from_db_no_proxy(self, mocked_CFG, mocked_DB_CFG):
+        mocked_CFG.has_key.return_value = False
+        mocked_DB_CFG.HTTP_PROXY = PROXY_ADDR
+        mocked_DB_CFG.HTTP_PROXY_USERNAME = None
+        mocked_DB_CFG.HTTP_PROXY_PASSWORD = None
+        mocked_DB_CFG.get_list.return_value = ["example.com", ".example.org"]
+
+        self.assertEqual(
+            (None, None, None), suseLib.get_proxy("https://www.example.com/repo")
+        )
+        self.assertEqual(
+            (None, None, None), suseLib.get_proxy("https://example.org/repo")
+        )
+        self.assertEqual(
+            (HTTP_PROXY, None, None), suseLib.get_proxy("https://example.net/repo")
+        )
+        mocked_DB_CFG.get_list.assert_called_with("NO_PROXY")
+
+    @unittest.mock.patch("spacewalk.common.suseLib.DB_CFG", create=True)
+    @unittest.mock.patch("spacewalk.common.suseLib.CFG")
+    def test_no_proxy_asterisk_from_db(self, mocked_CFG, mocked_DB_CFG):
+        mocked_CFG.has_key.return_value = False
+        mocked_DB_CFG.get_list.return_value = ["*"]
+
+        # pylint: disable-next=protected-access
+        self.assertFalse(suseLib._useProxyFor("https://example.net/repo"))
+
     def test_URL_getURL_with_stipPw(self):
         self.assertEqual(
             suseLib.URL("https://example.org/path/to/repo").getURL(stripPw=True),
