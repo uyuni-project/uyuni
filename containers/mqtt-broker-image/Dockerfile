@@ -19,7 +19,7 @@ COPY --chmod=600 acl.conf /mosquitto/config/acl.conf
 COPY --chmod=555 uyuni-configure.sh /usr/bin/uyuni-configure.sh
 
 # Permissions
-RUN mkdir -p /mosquitto/data && \
+RUN mkdir -p /mosquitto/data /mosquitto/config/conf.d /mosquitto/certs && \
     chown -R 1883:1883 /mosquitto
 
 # LABELs
@@ -43,7 +43,7 @@ LABEL org.opensuse.reference="${REFERENCE_PREFIX}/mqtt-broker:${PRODUCT_VERSION}
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 USER 1883
-EXPOSE 1883
+EXPOSE 1883 8883
 
 VOLUME "/mosquitto/data"
 

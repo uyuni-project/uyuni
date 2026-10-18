@@ -14,8 +14,10 @@ module.exports = function (RED) {
     this.clientId = config.clientId || `nodered-uyuni-${Math.random().toString(16).slice(2, 8)}`;
     this.topicPrefix = config.topicPrefix || 'uyuni/+';
 
-    // TLS settings (for production)
+    // TLS settings (for production). Certificates come from a standard
+    // Node-RED tls-config node, so they are managed like any other TLS client's.
     this.usetls = config.usetls || false;
+    this.tls = config.tls || '';
 
     // Credentials (username/password injected via RED.nodes.credentials)
     this.username = this.credentials?.username || '';

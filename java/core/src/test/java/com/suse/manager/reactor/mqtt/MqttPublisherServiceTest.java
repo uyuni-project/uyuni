@@ -21,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.nio.file.Path;
 
 /**
  * Unit test for {@link MqttPublisherService} configuration handling.
@@ -31,6 +34,7 @@ import org.junit.jupiter.api.Test;
 public class MqttPublisherServiceTest {
 
     private static final String BROKER = "tcp://dummy-broker:1883";
+    private static final String TLS_BROKER = "ssl://dummy-broker:8883";
 
     @AfterEach
     public void tearDown() {
@@ -39,6 +43,9 @@ public class MqttPublisherServiceTest {
         System.clearProperty("uyuni.mqtt.broker.password");
         System.clearProperty("uyuni.mqtt.qos");
         System.clearProperty("uyuni.mqtt.queue.limit");
+        System.clearProperty("uyuni.mqtt.tls.ca.file");
+        System.clearProperty("uyuni.mqtt.tls.keystore.file");
+        System.clearProperty("uyuni.mqtt.tls.keystore.password");
         MqttPublisherService.setInstance(null);
     }
 
@@ -174,10 +181,82 @@ public class MqttPublisherServiceTest {
     /**
      * Publisher that never touches the network.
      */
+    /**
+     * A plain tcp:// URL connects without TLS.
+     */
+    @Test
+    public void testPlainUrlDoesNotUseTls() {
+        TestPublisher service = new TestPublisher();
+        assertFalse(service.usesTls());
+        assertFalse(service.isTlsMisconfigured());
+    }
+
+    /**
+     * An ssl:// URL uses TLS, trusting the JVM default CAs when no CA file is set.
+     */
+    @Test
+    public void testSslUrlUsesTls() {
+        TestPublisher service = new TestPublisher(TLS_BROKER);
+        assertTrue(service.usesTls());
+        assertFalse(service.isTlsMisconfigured());
+    }
+
+    /**
+     * A custom CA and a client certificate are picked up from the system properties.
+     * @param tempDir where the test certificate and keystore are generated
+     * @throws Exception if keytool fails
+     */
+    @Test
+    public void testSslUrlWithCaAndClientCertificate(@TempDir Path tempDir) throws Exception {
+        MqttTlsTestFiles files = MqttTlsTestFiles.create(tempDir);
+        System.setProperty("uyuni.mqtt.tls.ca.file", files.getCaFile());
+        System.setProperty("uyuni.mqtt.tls.keystore.file", files.getKeystoreFile());
+        System.setProperty("uyuni.mqtt.tls.keystore.password", MqttTlsTestFiles.KEYSTORE_PASSWORD);
+        TestPublisher service = new TestPublisher(TLS_BROKER);
+        assertTrue(service.usesTls());
+        assertFalse(service.isTlsMisconfigured());
+    }
+
+    /**
+     * Broken TLS settings stop publishing instead of falling back to a plain connection.
+     */
+    @Test
+    public void testInvalidTlsSettingsDisablePublishing() {
+        System.setProperty("uyuni.mqtt.tls.ca.file", "/nonexistent/mqtt-ca.pem");
+        TestPublisher service = new TestPublisher(TLS_BROKER);
+        assertTrue(service.isTlsMisconfigured());
+        assertFalse(service.usesTls());
+    }
+
+    /**
+     * TLS files configured next to a tcp:// URL are ignored, not treated as an error.
+     */
+    @Test
+    public void testTlsSettingsIgnoredForPlainUrl() {
+        System.setProperty("uyuni.mqtt.tls.ca.file", "/nonexistent/mqtt-ca.pem");
+        TestPublisher service = new TestPublisher();
+        assertFalse(service.usesTls());
+        assertFalse(service.isTlsMisconfigured());
+    }
+
+    /**
+     * Connection errors report the innermost cause, where the TLS reason is.
+     */
+    @Test
+    public void testRootCauseMessage() {
+        Exception tls = new Exception("wrapper", new IllegalStateException("No subject alternative names matching"));
+        assertEquals("No subject alternative names matching", MqttPublisherService.rootCauseMessage(tls));
+        assertEquals("plain", MqttPublisherService.rootCauseMessage(new Exception("plain")));
+    }
+
     private static class TestPublisher extends MqttPublisherService {
 
         TestPublisher() {
-            super(BROKER);
+            this(BROKER);
+        }
+
+        TestPublisher(String brokerUrl) {
+            super(brokerUrl);
         }
 
         @Override

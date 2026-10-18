@@ -56,9 +56,18 @@ JAVA_OPTS="$JAVA_OPTS -Duyuni.mqtt.enabled=true -Duyuni.mqtt.broker.url=tcp://mo
 | `uyuni.mqtt.qos` | `1` | MQTT QoS level (0, 1, or 2) |
 | `uyuni.mqtt.events.enabled` | _(all)_ | Comma-separated event filter |
 | `uyuni.mqtt.queue.limit` | `10000` | Bounded publish queue size |
+| `uyuni.mqtt.tls.ca.file` | _(JVM trust store)_ | PEM file with the CA certificates that sign the broker's certificate. Only used with `ssl://` URLs |
+| `uyuni.mqtt.tls.keystore.file` | _(none)_ | PKCS#12 keystore with a client certificate and key, for brokers that require one |
+| `uyuni.mqtt.tls.keystore.password` | _(none)_ | Password of that keystore |
 
 The username and password may also be supplied as the environment variables
-`UYUNI_MQTT_BROKER_USERNAME` and `UYUNI_MQTT_BROKER_PASSWORD`.
+`UYUNI_MQTT_BROKER_USERNAME` and `UYUNI_MQTT_BROKER_PASSWORD`, and the keystore
+password as `UYUNI_MQTT_TLS_KEYSTORE_PASSWORD`.
+
+TLS is used when the broker URL starts with `ssl://`. The broker's certificate
+must be issued for the host name in the URL and signed by a trusted CA. If the
+TLS files cannot be read, the publisher logs an error and does not connect at
+all, rather than falling back to an unencrypted connection.
 
 The client ID is generated per instance (`uyuni-publisher-<random>`) and is not
 configurable, so two servers sharing a broker cannot collide.

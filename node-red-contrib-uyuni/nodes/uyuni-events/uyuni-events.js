@@ -41,6 +41,17 @@ module.exports = function (RED) {
       mqttOpts.password = node.server.password;
     }
 
+    if (node.server.usetls && node.server.tls) {
+      const tlsNode = RED.nodes.getNode(node.server.tls);
+      if (tlsNode) {
+        // Adds the CA, client certificate and key, and whether to verify the
+        // broker's certificate, as configured in the TLS node.
+        tlsNode.addTLSOptions(mqttOpts);
+      } else {
+        node.warn('The TLS configuration selected for this broker no longer exists');
+      }
+    }
+
     const protocol = node.server.usetls ? 'mqtts' : 'mqtt';
     const brokerUrl = `${protocol}://${node.server.broker}:${node.server.port}`;
 
