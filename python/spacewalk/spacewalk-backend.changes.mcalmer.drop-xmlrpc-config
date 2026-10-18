@@ -1,0 +1,2 @@
+- Remove the obsolete `getPackageHeader` GET request and the
+  `cache_package_headers` configuration option
