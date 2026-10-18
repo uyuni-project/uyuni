@@ -59,7 +59,7 @@ For pylint, Uyuni uses Google's [pylintrc](https://google.github.io/styleguide/p
 Use the provided script to run `pylint` and `black` over a set of files:
 
 ```
-linting/lint.sh python/spacewalk/satellite_tools/xmlWireSource.py python/spacewalk/satellite_tools/download.py
+linting/lint.sh python/spacewalk/satellite_tools/reposync.py python/spacewalk/satellite_tools/download.py
 ```
 
 You can also pass the `-a` flag to lint modified (but not committed) files:

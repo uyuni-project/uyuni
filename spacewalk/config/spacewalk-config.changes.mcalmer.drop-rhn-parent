@@ -1,0 +1,1 @@
+- Remove `server.satellite.rhn_parent` from the `rhn.conf` man page

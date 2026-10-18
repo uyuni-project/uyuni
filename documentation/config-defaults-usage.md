@@ -251,7 +251,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server_app.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `buffer_size` | [`python/spacewalk/server/apacheRequest.py:330`](python/spacewalk/server/apacheRequest.py#L330) |
-| rhn_server.conf | `ca_chain` | [`python/spacewalk/satellite_tools/xmlWireSource.py:135`](python/spacewalk/satellite_tools/xmlWireSource.py#L135) |
 | rhn_server.conf | `enable_nvrea` | [`python/spacewalk/server/handlers/app/packages.py:386`](python/spacewalk/server/handlers/app/packages.py#L386) |
 | rhn_server.conf | `force_package_upload` | [`python/spacewalk/server/rhnPackageUpload.py:73`](python/spacewalk/server/rhnPackageUpload.py#L73) |
 | rhn_server.conf | `proxy_auth_timeout` | [`python/spacewalk/server/handlers/xmlrpc/proxy.py:176`](python/spacewalk/server/handlers/xmlrpc/proxy.py#L176) |
@@ -281,11 +280,9 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `repomd_path_prefix` | [`python/spacewalk/server/rhnRepository.py:249`](python/spacewalk/server/rhnRepository.py#L249) |
 | rhn_server.conf | `use_taskomatic_repomd` | [`python/spacewalk/server/rhnRepository.py:284`](python/spacewalk/server/rhnRepository.py#L284) |
 | rhn_server.conf | `checksum_priority_list` | [`python/spacewalk/satellite_tools/xmlSource.py:641`](python/spacewalk/satellite_tools/xmlSource.py#L641) |
-| rhn_server.conf | `sync_to_temp` | [`python/spacewalk/satellite_tools/xmlWireSource.py:181`](python/spacewalk/satellite_tools/xmlWireSource.py#L181) |
 | rhn_server.conf | `sync_source_packages` | [`python/spacewalk/satellite_tools/reposync.py:3169`](python/spacewalk/satellite_tools/reposync.py#L3169) |
 | rhn_server_satellite.conf | `log_file` | [`python/spacewalk/satellite_tools/updatePackages.py:43`](python/spacewalk/satellite_tools/updatePackages.py#L43) |
 | rhn_server_satellite.conf | `mount_point` | [`python/spacewalk/satellite_tools/contentRemove.py:610`](python/spacewalk/satellite_tools/contentRemove.py#L610) |
-| rhn_server_satellite.conf | `rhn_parent` | [`python/spacewalk/satellite_tools/xmlWireSource.py:71`](python/spacewalk/satellite_tools/xmlWireSource.py#L71) |
 | rhn_server_satellite.conf | `sync_cache_dir` | [`python/spacewalk/satellite_tools/syncCache.py:39`](python/spacewalk/satellite_tools/syncCache.py#L39) |
 | rhn_server_satellite.conf | `default_mail_from` | [`python/spacewalk/satellite_tools/reposync.py:157`](python/spacewalk/satellite_tools/reposync.py#L157) |
 | rhn_server_satellite.conf | `reposync_download_threads` | [`python/spacewalk/satellite_tools/download.py:368`](python/spacewalk/satellite_tools/download.py#L368) |
