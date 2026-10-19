@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE oval_definitions SYSTEM "file:///definitely-not-existing-uyuni-test.dtd">
+<oval_definitions
+    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5 file:///definitely-not-existing-uyuni-test.xsd">
+    <definitions>
+        <definition id="oval:test:def:external-refs" version="1" class="vulnerability">
+            <metadata>
+                <title>External references must not be resolved</title>
+            </metadata>
+        </definition>
+    </definitions>
+    <tests/>
+    <objects/>
+    <states/>
+</oval_definitions>

@@ -24,7 +24,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jdom.JDOMException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -255,8 +254,7 @@ public class OvalServlet extends HttpServlet {
         }
     }
 
-    private String aggregateOvalFiles(List<File> files)
-            throws JDOMException, IOException {
+    private String aggregateOvalFiles(List<File> files) throws IOException {
         OvalFileAggregator aggregator = new OvalFileAggregator();
         String retval = null;
         for (File f : files) {
