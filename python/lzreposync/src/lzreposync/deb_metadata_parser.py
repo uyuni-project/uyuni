@@ -15,7 +15,7 @@ class BadParserException(Exception):
 
 
 def parse_deb_packages_metadata(
-    packages_file, translation_file, repository_base_url, cache_dir
+    packages_file, translation_file, repository_base_url, cache_dir, skip_import=False
 ):
     """
     :packages_file: accepted formats: TextIOWrapper (uncompressed file object)
@@ -40,6 +40,31 @@ def parse_deb_packages_metadata(
                 description_md5
             )
         )
+
+        if skip_import:
+            for field, checksum_type in (
+                ("SHA256", "sha256"),
+                ("SHA1", "sha1"),
+                ("MD5sum", "md5"),
+            ):
+                if deb_pkg_header[field]:
+                    checksum = deb_pkg_header[field]
+                    break
+            else:
+                raise ValueError("DEB package has no supported checksum")
+
+            metadata = {
+                "header": deb_pkg_header,
+                "package_size": int(deb_pkg_header["Size"]),
+                "checksum_type": checksum_type,
+                "checksum": checksum,
+                "header_start": None,
+                "header_end": None,
+                "remote_path": deb_pkg_header["remote_path"],
+                }
+            yield metadata
+            continue
+
         # pylint: disable=W0703,W0706
         try:
             deb_package = mpmSource.create_package(

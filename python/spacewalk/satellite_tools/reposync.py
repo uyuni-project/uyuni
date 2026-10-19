@@ -69,7 +69,7 @@ from spacewalk.satellite_tools.download import (
     TextLogger,
 )
 from spacewalk.satellite_tools.repo_plugins import CACHE_DIR
-from spacewalk.satellite_tools.repo_plugins import yum_src
+from spacewalk.satellite_tools.repo_plugins import yum_src, deb_src
 from spacewalk.server import taskomatic, rhnPackageUpload
 from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 from spacewalk.satellite_tools.syncLib import (
@@ -1392,7 +1392,7 @@ class RepoSync(object):
         packages = []
 
         if self.metadata_only and isinstance(plug.repo, (yum_src.ZypperRepo)):
-            # Download the repository filelists.xml file.
+            # Download the repository filelists.xml file. Only required for RPM. DEB should work as is.
             plug.get_filelists()
             # Get package metadata from filelist file so we can assign it to apkg later
             packages_metadata = {metadata["checksum"]:metadata for metadata in parse_rpm_packages_metadata(plug._retrieve_md_path("primary"),
@@ -1400,6 +1400,11 @@ class RepoSync(object):
                             plug.repo.baseurl[0],
                             CACHE_DIR,
                             skip_import=True)}
+        elif self.metadata_only and isinstance(plug.repo, deb_src.DebRepo):
+            packages_metadata = {
+                metadata["checksum"]: metadata
+                for metadata in plug.repo.get_packages_metadata(skip_import=True)
+            }
         try:
             packages = plug.list_packages(filters, self.latest)
         except repo.GeneralRepoException as exc:
@@ -1503,7 +1508,7 @@ class RepoSync(object):
                     to_link = False
 
                 # TODO: This is for lazy sync only. Not sure of metadata_only impact on other unknown scenario
-                if self.metadata_only and isinstance(plug.repo, (yum_src.ZypperRepo)):
+                if self.metadata_only:
                     pack_metadata = packages_metadata[pack.checksum]
                     pack.a_pkg = RPM_Package()
                     pack.a_pkg.header = pack_metadata["header"]

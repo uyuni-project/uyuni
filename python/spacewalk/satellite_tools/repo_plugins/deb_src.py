@@ -401,7 +401,7 @@ class DebRepo:
                 to_return.append(package)
         return to_return
 
-    def get_packages_metadata(self):
+    def get_packages_metadata(self, skip_import=False):
         packages_file = self.download_packages_file()
         translation_file = self.download_translation_file()
         if not packages_file:
@@ -412,7 +412,7 @@ class DebRepo:
             self.base_url[0] if isinstance(self.base_url, list) else self.base_url
         )
         packages = parse_deb_packages_metadata(
-            packages_file, translation_file, base_url, self.basecachedir
+            packages_file, translation_file, base_url, self.basecachedir, skip_import=skip_import,
         )
         yield from packages
         packages_file.close()  # TODO optimize
