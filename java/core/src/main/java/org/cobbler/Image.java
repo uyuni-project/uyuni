@@ -227,8 +227,10 @@ public class Image extends CobblerObject {
     @Override
     protected void reload() {
         Image newImage = lookupById(client, getId());
-        dataMap = newImage.dataMap;
-        dataMapResolved = newImage.dataMapResolved;
+        if (newImage != null) {
+            dataMap = newImage.dataMap;
+            dataMapResolved = newImage.dataMapResolved;
+        }
     }
 
     /**
