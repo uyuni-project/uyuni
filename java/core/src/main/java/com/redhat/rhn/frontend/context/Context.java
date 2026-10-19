@@ -123,11 +123,17 @@ public class Context {
         return this.actionDescription;
     }
 
+    public static final int MAX_ACTION_DESCRIPTION_LENGTH = 1000;
+
     /**
      * Setter for actionDescription / scheduleReason
      * @param actionDescriptionIn to set
      */
     public void setActionDescription(String actionDescriptionIn) {
+        if (actionDescriptionIn != null && actionDescriptionIn.length() > MAX_ACTION_DESCRIPTION_LENGTH) {
+            throw new IllegalArgumentException("Action description cannot exceed " +
+                    MAX_ACTION_DESCRIPTION_LENGTH + " characters.");
+        }
         this.actionDescription = actionDescriptionIn;
     }
 
