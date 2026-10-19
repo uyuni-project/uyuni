@@ -33,8 +33,11 @@
                            bound="false"
                            headerkey="actions.jsp.action_description"
                            sortattr="actionDescription"
+                           styleclass="action-description-col"
                            >
-                        <c:out value="${current.actionDescription}" />
+                        <div class="action-description-wrapper">
+                            <c:out value="${current.actionDescription}" />
+                        </div>
                 </rl:column>
 
                 <rl:column sortable="false"

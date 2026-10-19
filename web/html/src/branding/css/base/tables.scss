@@ -126,3 +126,19 @@ th button.btn-link {
 .vertical-middle td {
   vertical-align: middle !important;
 }
+
+.action-description-col {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.action-description-wrapper {
+  max-width: 350px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}

@@ -55,7 +55,7 @@
           <div class="col-sm-2">
             <strong><bean:message key="actions.jsp.action_description"/>:</strong>
           </div>
-          <div class="col-sm-10">
+          <div class="col-sm-10 action-description-col">
             <c:out value="${requestScope.actionDescription}"/>
           </div>
         </div>
