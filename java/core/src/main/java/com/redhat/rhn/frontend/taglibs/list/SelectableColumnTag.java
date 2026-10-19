@@ -139,15 +139,15 @@ public class SelectableColumnTag extends TagSupport {
         listName = parent.getUniqueName();
         int retval = Tag.SKIP_BODY;
         setupRhnSet();
-        if (command.equals(ListCommand.ENUMERATE)) {
+        if ((null != command) && command.equals(ListCommand.ENUMERATE)) {
             parent.addColumn();
             retval = Tag.EVAL_PAGE;
         }
-        else if (command.equals(ListCommand.COL_HEADER)) {
+        else if ((null != command) && command.equals(ListCommand.COL_HEADER)) {
             renderHeader(parent);
             retval = Tag.EVAL_PAGE;
         }
-        else if (command.equals(ListCommand.RENDER)) {
+        else if ((null != command) && command.equals(ListCommand.RENDER)) {
             renderCheckbox();
         }
         return retval;
@@ -160,7 +160,7 @@ public class SelectableColumnTag extends TagSupport {
     public int doEndTag() throws JspException {
         ListCommand command = ListTagUtil.
                                             getCurrentCommand(this, pageContext);
-        if (command.equals(ListCommand.RENDER)) {
+        if ((null != command) && command.equals(ListCommand.RENDER)) {
             ListTagUtil.write(pageContext, "</td>");
         }
         release();
