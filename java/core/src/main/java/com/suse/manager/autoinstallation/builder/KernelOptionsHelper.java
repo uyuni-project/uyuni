@@ -12,6 +12,8 @@
  */
 package com.suse.manager.autoinstallation.builder;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import com.suse.manager.autoinstallation.KernelOptionsList;
 
 import org.cobbler.SystemRecord;
@@ -22,7 +24,6 @@ import org.cobbler.SystemRecord;
  */
 public final class KernelOptionsHelper {
 
-    private static final String HTTP_PREFIX = "http://";
     private static final String NOPXE_SYSTEM_PATH = "/cblr/svc/op/nopxe/system/";
 
     private KernelOptionsHelper() {
@@ -50,12 +51,22 @@ public final class KernelOptionsHelper {
      *
      * @param serverFqdn the kickstart host
      * @param system the system record to signal
-     * @return http://&lt;fqdn&gt;/cblr/svc/op/nopxe/system/&lt;systemName&gt;
+     * @return &lt;scheme&gt;://&lt;fqdn&gt;/cblr/svc/op/nopxe/system/&lt;systemName&gt;
      */
     public static String cobblerSystemNopxeUrl(String serverFqdn, SystemRecord system) {
         if (system == null) {
             throw new KernelOptionsBuilderException("system must not be null");
         }
-        return HTTP_PREFIX + serverFqdn + NOPXE_SYSTEM_PATH + system.getName();
+        return urlPrefix() + serverFqdn + NOPXE_SYSTEM_PATH + system.getName();
+    }
+
+    /**
+     * Prefix of the URLs generated into kernel options, using the configured
+     * kickstart URL scheme.
+     *
+     * @return &lt;scheme&gt;://
+     */
+    static String urlPrefix() {
+        return ConfigDefaults.get().getKickstartUrlScheme() + "://";
     }
 }

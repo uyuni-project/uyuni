@@ -388,10 +388,11 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                 mediaPath == null || ksData == null) {
             return;
         }
+        String scheme = ConfigDefaults.get().getKickstartUrlScheme() + "://";
         KernelOptionsList options = new KernelOptionsList(kernelOptions);
         KernelOptionsBuilder builder = KernelOptionsBuilderFactory
                 .getBuilder(ksData.getInstallType(), kickstartHost, user);
-        options.addMissingOptions(builder.mediaOptions("http://" + kickstartHost + mediaPath));
+        options.addMissingOptions(builder.mediaOptions(scheme + kickstartHost + mediaPath));
         KernelOptionsList resolved = new KernelOptionsList(recProfile.getResolvedKernelOptions());
         if (!(resolved.hasOption("self_update", "0") || resolved.hasOption("inst.self_update", "0"))) {
             options.addMissingOptions(builder.selfUpdateOption(ksData.getTree()));

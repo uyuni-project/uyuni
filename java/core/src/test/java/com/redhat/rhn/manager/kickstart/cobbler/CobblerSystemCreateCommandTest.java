@@ -19,6 +19,8 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -67,9 +69,11 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
      * Removes everything the test created on cobbler (real or mocked) -
      * mandatory per test: the fixtures reuse one fixed MAC address, which
      * real cobbler rejects on the next system record.
+     * Also restores the default kickstart URL scheme.
      */
     @AfterEach
     public void tearDown() {
+        Config.get().remove(ConfigDefaults.KICKSTART_URL_SCHEME);
         KickstartTestUtils.cleanUpCobbler();
     }
 
@@ -180,6 +184,24 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
                         "console=ttyS0",
                         "self_update=http://" + KICKSTART_HOST + "/ks/dist/child/" +
                                 child.getLabel() + "/" + ksdata.getTree().getLabel()));
+    }
+
+    /**
+     * SLES15: the install= and self_update= parameters use https
+     * protocol when configured by the user.
+     */
+    @Test
+    public void testSles15SystemKernelOptionsHttps() throws Exception {
+        Config.get().setString(ConfigDefaults.KICKSTART_URL_SCHEME, "https");
+        KickstartData ksdata = ksDataOfType("sles15generic");
+        Channel child = addInstallerUpdatesChild(ksdata);
+
+        SystemRecord rec = storedSystemRecord(ksdata, "ksdevice=eth0");
+
+        assertOptionTokens(rec, List.of("install=https://" + KICKSTART_HOST + MEDIA_PATH,
+            "ksdevice=eth0",
+            "self_update=https://" + KICKSTART_HOST + "/ks/dist/child/" +
+                    child.getLabel() + "/" + ksdata.getTree().getLabel()));
     }
 
     /**

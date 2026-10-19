@@ -17,12 +17,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.testing.MockObjectTestCase;
 
 import com.suse.manager.autoinstallation.KernelOptionsList;
 
 import org.cobbler.SystemRecord;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,6 +42,14 @@ public class KernelOptionsHelperTest extends MockObjectTestCase {
     @BeforeEach
     public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+    }
+
+    /**
+     * Restores the default kickstart URL scheme.
+     */
+    @AfterEach
+    public void tearDown() {
+        Config.get().remove(ConfigDefaults.KICKSTART_URL_SCHEME);
     }
 
     /**
@@ -83,6 +94,20 @@ public class KernelOptionsHelperTest extends MockObjectTestCase {
             allowing(system).getName(); will(returnValue("system1"));
         }});
         assertEquals("http://" + FQDN + "/cblr/svc/op/nopxe/system/system1",
+                KernelOptionsHelper.cobblerSystemNopxeUrl(FQDN, system));
+    }
+
+    /**
+     * The nopxe URL uses the configured https scheme.
+     */
+    @Test
+    public void testCobblerSystemNopxeUrlHttps() {
+        Config.get().setString(ConfigDefaults.KICKSTART_URL_SCHEME, "https");
+        SystemRecord system = mock(SystemRecord.class, "system");
+        checking(new org.jmock.Expectations() {{
+            allowing(system).getName(); will(returnValue("system1"));
+        }});
+        assertEquals("https://" + FQDN + "/cblr/svc/op/nopxe/system/system1",
                 KernelOptionsHelper.cobblerSystemNopxeUrl(FQDN, system));
     }
 

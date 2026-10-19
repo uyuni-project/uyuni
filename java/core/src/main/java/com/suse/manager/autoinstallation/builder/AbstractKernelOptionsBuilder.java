@@ -30,7 +30,6 @@ import java.util.stream.Stream;
  */
 public abstract class AbstractKernelOptionsBuilder implements KernelOptionsBuilder {
 
-    private static final String HTTP_PREFIX = "http://";
     private static final String DIST_PATH = "/ks/dist/";
     private static final String DIST_CHILD_PATH = "/ks/dist/child/";
     private static final String AUTOINSTALL_SYSTEM_PATH = "/cblr/svc/op/autoinstall/system/";
@@ -83,7 +82,7 @@ public abstract class AbstractKernelOptionsBuilder implements KernelOptionsBuild
         }
         return children.filter(Channel::isInstallerUpdates)
                 .findFirst()
-                .map(child -> HTTP_PREFIX + this.serverFqdn + DIST_CHILD_PATH +
+                .map(child -> KernelOptionsHelper.urlPrefix() + this.serverFqdn + DIST_CHILD_PATH +
                         child.getLabel() + "/" + tree.getLabel())
                 .orElse(SELF_UPDATE_DISABLED);
     }
@@ -103,19 +102,20 @@ public abstract class AbstractKernelOptionsBuilder implements KernelOptionsBuild
     /**
      * URL of the distribution tree.
      * @param tree the distribution tree
-     * @return http://&lt;fqdn&gt;/ks/dist/&lt;treeLabel&gt;
+     * @return &lt;scheme&gt;://&lt;fqdn&gt;/ks/dist/&lt;treeLabel&gt;
      */
     protected String distTreeUrl(KickstartableTree tree) {
-        return HTTP_PREFIX + this.serverFqdn + DIST_PATH + require(tree, "tree").getLabel();
+        return KernelOptionsHelper.urlPrefix() + this.serverFqdn + DIST_PATH + require(tree, "tree").getLabel();
     }
 
     /**
      * Cobbler autoinstall service URL of a system record.
      * @param system the system record
-     * @return http://&lt;fqdn&gt;/cblr/svc/op/autoinstall/system/&lt;systemName&gt;
+     * @return &lt;scheme&gt;://&lt;fqdn&gt;/cblr/svc/op/autoinstall/system/&lt;systemName&gt;
      */
     protected String cobblerSystemAutoinstallUrl(SystemRecord system) {
-        return HTTP_PREFIX + this.serverFqdn + AUTOINSTALL_SYSTEM_PATH + require(system, "system").getName();
+        return KernelOptionsHelper.urlPrefix() + this.serverFqdn + AUTOINSTALL_SYSTEM_PATH +
+                require(system, "system").getName();
     }
 
     /**
