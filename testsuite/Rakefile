@@ -86,7 +86,8 @@ namespace :cucumber do
     cucumber_task.enhance do |t, args|
       begin
         run_action.call(t, args)
-      rescue RuntimeError => e
+      # The forked cucumber runner signals failure with `exit` (SystemExit), not RuntimeError
+      rescue RuntimeError, SystemExit => e
         cucumber_error = e
       end
     end
