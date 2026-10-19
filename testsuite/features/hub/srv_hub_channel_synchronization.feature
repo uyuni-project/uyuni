@@ -54,7 +54,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
    Scenario: Wait for cloned channel to appear on peripheral1
      When I wait until the channel "clone-fake-rpm-suse-channel" has been synced on peripheral1
      Then channel "clone-fake-rpm-suse-channel" should exist on "peripheral1"
-     When I wait until the channel "clone-fake-rpm-suse-channel" has been synced
+     When I wait until the channel "clone-fake-rpm-suse-channel" has been synced on peripheral1
 
    Scenario: Verify cloned channel on peripheral1 has expected packages
      Then channel "clone-fake-rpm-suse-channel" on "peripheral1" should have "4" packages
@@ -97,9 +97,8 @@ Feature: Hub ISSv3 channel synchronization to peripheral
   # drop-down only offers a real choice for a custom channel that does not yet exist
   # on the peripheral. Once synced, a channel's organization stays unchanged.
   Scenario: Configure custom channel sync to peripheral1 with organization mapping
-    When I configure hub to sync channel "Test Hub Custom Channel" to "peripheral1"
-    And I select target organization "Test Default Organization" for channel "Test Hub Custom Channel" on "peripheral1"
-    Then I should see a "Channel configuration updated" text
+    When I configure hub to sync channel "Test Hub Custom Channel" to "peripheral1" with target organization "Test Default Organization"
+    Then I should see a "Channels synced correctly to peripheral!" text
 
   Scenario: Trigger sync for custom channel and verify it arrives on peripheral1
     When I initiate channel sync from peripheral "peripheral1"
@@ -120,7 +119,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     When I create the following channels:
       | LABEL                | NAME                 | SUMMARY              | ARCH           | PARENT |
       | test-hub-api-channel | Test Hub API Channel | Test Hub API Channel | channel-x86_64 |        |
-    And I add channel "test-hub-api-channel" to the sync list of "peripheral1" via the hub API
+    And I add channel "test-hub-api-channel" to the sync list of "peripheral1" for organization "Test Default Organization" via the hub API
     Then the hub API should list channel "test-hub-api-channel" for sync to "peripheral1"
     When I trigger channel sync to "peripheral1" via the hub API
     And I wait until the channel "test-hub-api-channel" has been synced on peripheral1
@@ -128,8 +127,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
 
   Scenario: Cleanup: remove synced channels from peripheral1
     When I remove synced channels from "peripheral1"
-    And I wait until I see "Channel configuration updated" text
-    Then I should see a "Updated" text
+    Then I should see a "Channels synced correctly to peripheral!" text
 
   Scenario: Cleanup: delete custom channel from hub
     When I follow the left menu "Software > Manage > Channels"

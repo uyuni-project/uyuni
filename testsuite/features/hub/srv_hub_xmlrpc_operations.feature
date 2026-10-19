@@ -35,7 +35,7 @@ Feature: Hub XMLRPC API operations
 
   Scenario: Execute unicast system list for one peripheral via Hub API
     When I call unicast.system.list_systems for "peripheral1" via XMLRPC
-    Then unicast response should contain systems
+    Then unicast response should match the system list of "peripheral1"
 
   Scenario: Call system.list_systems on hub's own XMLRPC endpoint as pass-through
     When I call system.list_systems on hub's own XMLRPC endpoint
@@ -47,10 +47,11 @@ Feature: Hub XMLRPC API operations
     And I call multicast.system.list_systems via XMLRPC
     Then multicast response should have successful responses
 
-  Scenario: Verify multicast response contains systems from peripheral
-    Then multicast response should contain systems from "peripheral1"
+  Scenario: Verify multicast response for peripheral matches its own system list
+    Then multicast response for "peripheral1" should match its own system list
 
   Scenario: Verify sle_minion is not listed on the hub directly
+    Given "sle_minion" is registered on "peripheral1"
     Then I should not see "sle_minion" registered on hub
 
   Scenario: Logout from Hub XMLRPC API

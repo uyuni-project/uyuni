@@ -117,9 +117,18 @@ def hub_server_id_of(host)
   api_client_for('server').system.retrieve_server_id(get_system_name(host))
 end
 
+# The gateway reuses the hub credentials on every peripheral, so the per-feature user, which only
+# exists on the hub, cannot be used: the peripheral login fails and the forwarded call has no session.
+HUB_GATEWAY_CREDENTIALS = %w[admin admin].freeze
+
+# Returns the ids of the systems a server lists, sorted to compare responses from different calls.
+def system_ids(systems)
+  systems.to_a.map { |system| system['id'] }.sort
+end
+
 Given(/^I am connected to the hub XMLRPC API$/) do
   api = NamespaceHub.new(get_target('server').full_hostname)
-  response = api.login_with_autoconnect(*Credentials.for('server'))
+  response = api.login_with_autoconnect(*HUB_GATEWAY_CREDENTIALS)
   raise StandardError, 'Hub login failed' if response['SessionKey'].nil?
 
   add_context('hub_api', api)
@@ -147,12 +156,20 @@ Then(/^multicast response should have successful responses$/) do
   log "Multicast successful responses: #{response['Successful']['Responses'].length}"
 end
 
-Then(/^multicast response should contain systems from "([^"]*)"$/) do |host|
-  successful = get_context('hub_multicast_response')&.fetch('Successful', nil) || {}
+# Responses are paired by position with ServerIds. A peripheral without minions lists no systems,
+# so the response is compared with the peripheral's own list instead of being required to be non-empty.
+Then(/^multicast response for "([^"]*)" should match its own system list$/) do |host|
+  response = get_context('hub_multicast_response')
+  raise StandardError, 'No multicast response; run "I call multicast.system.list_systems via XMLRPC" first' if response.nil?
+
+  successful = response.fetch('Successful')
   server_id = hub_server_id_of(host)
-  index = successful.fetch('ServerIds', []).index(server_id)
-  raise StandardError, "#{host} (server ID #{server_id}) has no successful multicast response: #{successful}" if index.nil?
-  raise StandardError, "Multicast response for #{host} contains no systems" if successful.fetch('Responses', [])[index].to_a.empty?
+  index = successful.fetch('ServerIds').index(server_id)
+  raise StandardError, "#{host} (server ID #{server_id}) has no successful multicast response, failed ones: #{response['Failed']}" if index.nil?
+
+  expected_ids = system_ids(api_client_for(host).system.list_systems)
+  actual_ids = system_ids(successful.fetch('Responses')[index])
+  raise StandardError, "Multicast listed systems #{actual_ids} for #{host}, expected #{expected_ids}" unless actual_ids == expected_ids
 end
 
 When(/^I logout from hub XMLRPC API$/) do
@@ -161,7 +178,7 @@ end
 
 When(/^I login to hub XMLRPC API with (standard|auth relay) mode$/) do |mode|
   method = mode == 'standard' ? 'hub.login' : 'hub.loginWithAuthRelayMode'
-  session_key = NamespaceHub.new(get_target('server').full_hostname).login(method, *Credentials.for('server'))
+  session_key = NamespaceHub.new(get_target('server').full_hostname).login(method, *HUB_GATEWAY_CREDENTIALS)
   raise StandardError, "#{method} returned no session key" if session_key.to_s.empty?
 
   add_context("hub_#{mode}_session", session_key)
@@ -181,9 +198,13 @@ When(/^I call unicast\.system\.list_systems for "([^"]*)" via XMLRPC$/) do |host
   add_context('hub_unicast_response', hub_api.unicast_system_list(server_id))
 end
 
-Then(/^unicast response should contain systems$/) do
+# A peripheral without minions lists no systems, so the response is compared with the peripheral's own list.
+Then(/^unicast response should match the system list of "([^"]*)"$/) do |host|
   response = get_context('hub_unicast_response')
-  raise StandardError, "Unicast response contains no systems: #{response.inspect}" unless response.is_a?(Array) && !response.empty?
+  raise StandardError, "Unicast response is not a system list: #{response.inspect}" unless response.is_a?(Array)
+
+  expected_ids = system_ids(api_client_for(host).system.list_systems)
+  raise StandardError, "Unicast listed systems #{system_ids(response)} for #{host}, expected #{expected_ids}" unless system_ids(response) == expected_ids
 
   log "Unicast returned #{response.length} system(s)"
 end
@@ -442,13 +463,23 @@ When(/^I regenerate mirror credentials for peripheral "([^"]*)"$/) do |host|
   fqdn = get_target(host).full_hostname
   follow_hub_menu('Peripherals Configuration')
   step %(I follow "#{fqdn}")
-  step %(I click on "Regenerate Credentials")
-  step %(I click on "Confirm")
+  step %(I click on "Regenerate credentials")
   raise StandardError, 'Credentials regeneration did not confirm' unless
     page.has_content?(/regenerated/i, wait: DEFAULT_TIMEOUT)
 end
 
-When(/^I configure hub to sync channel "([^"]*)" to "([^"]*)"$/) do |channel, host|
+# Chooses the peripheral organization of a checked channel row. The org select only renders
+# for a checked row, so this must run before the changes are applied.
+def select_target_organization(org, channel)
+  # The org select's data-testid is keyed by the channel's internal numeric ID
+  # (e.g. "org-select-125"), which isn't known ahead of time -- scope the lookup
+  # to the table row matching the channel name instead.
+  row_xpath = "//tr[contains(., '#{channel}')]"
+  find(:xpath, "#{row_xpath}//div[contains(@class, 'org-select') and contains(@class, '__control')]").click
+  find(:xpath, "//div[contains(@class, 'org-select') and contains(@class, '__option') and contains(., '#{org}')]", match: :first).click
+end
+
+When(/^I configure hub to sync channel "([^"]*)" to "([^"]*)"(?: with target organization "([^"]*)")?$/) do |channel, host, org|
   fqdn = get_target(host).full_hostname
   follow_hub_menu('Peripherals Configuration')
   step %(I follow "#{fqdn}")
@@ -459,6 +490,7 @@ When(/^I configure hub to sync channel "([^"]*)" to "([^"]*)"$/) do |channel, ho
   expand_icon_xpath = '//tr[contains(@class, "parent-row")]//i[contains(@class, "expand-icon")]'
   find(:xpath, expand_icon_xpath).click if has_xpath?(expand_icon_xpath, wait: 1)
   changed = set_channel_checkbox_state("//tr[contains(., '#{channel}')]//input[@type='checkbox']", true)
+  select_target_organization(org, channel) if org
   click_apply_channels_button if changed
 end
 
@@ -493,15 +525,6 @@ end
 
 When(/^I configure hub to sync the custom channel of "((?!proxy)[^"]*)" to "([^"]*)"$/) do |client, host|
   step %(I configure hub to sync channel "Custom Channel for #{client}" to "#{host}")
-end
-
-When(/^I select target organization "([^"]*)" for channel "([^"]*)" on "([^"]*)"$/) do |org, channel, _host|
-  # The org select's data-testid is keyed by the channel's internal numeric ID
-  # (e.g. "org-select-125"), which isn't known ahead of time -- scope the lookup
-  # to the table row matching the channel name instead.
-  row_xpath = "//tr[contains(., '#{channel}')]"
-  find(:xpath, "#{row_xpath}//div[contains(@class, 'org-select') and contains(@class, '__control')]").click
-  find(:xpath, "//div[contains(@class, 'org-select') and contains(@class, '__option') and contains(., '#{org}')]", match: :first).click
 end
 
 # Returns the start time recorded by "I initiate channel sync from peripheral", failing when it is
@@ -583,8 +606,10 @@ When(/^I trigger channel sync to "([^"]*)" via the hub API$/) do |host|
   raise StandardError, "Channel sync to #{host} was not scheduled, API returned #{result}" unless result == 1
 end
 
-When(/^I add channel "([^"]*)" to the sync list of "([^"]*)" via the hub API$/) do |channel, host|
-  result = api_client_for('server').sync_hub.add_channels_to_sync(get_target(host).full_hostname, [channel])
+When(/^I add channel "([^"]*)" to the sync list of "([^"]*)" for organization "([^"]*)" via the hub API$/) do |channel, host, org_name|
+  peripheral_api = api_client_for(host)
+  org_id = peripheral_api.call('org.getDetails', sessionKey: peripheral_api.token, name: org_name)['id']
+  result = api_client_for('server').sync_hub.add_channels_to_sync(get_target(host).full_hostname, [channel], org_id)
   raise StandardError, "Channel #{channel} was not added to the sync list of #{host}, API returned #{result}" unless result == 1
 end
 
@@ -611,9 +636,11 @@ When(/^I remove synced channels from "([^"]*)"$/) do |host|
   follow_hub_menu('Peripherals Configuration')
   step %(I follow "#{fqdn}")
   step %(I follow "Edit channels")
-  checked_boxes = all('input[type="checkbox"]:checked')
-  checked_boxes.each { |box| box.set(false) }
-  click_apply_channels_button unless checked_boxes.empty?
+  checked_css = 'input[type="checkbox"]:checked'
+  checked_count = all(checked_css).size
+  # The table re-renders after each change: resolve the next checked box again instead of keeping handles
+  checked_count.times { find(checked_css, match: :first).click }
+  click_apply_channels_button unless checked_count.zero?
 end
 
 # Confirms hub-side peripheral deregistration, tolerating the "Error deregistering server"
@@ -871,6 +898,11 @@ Then(/^I should see "([^"]*)" registered on "([^"]*)"$/) do |minion_host, server
   raise StandardError, "#{minion_host} not found on #{server_host}" if systems_registered_as(minion_host, on: server_host).empty?
 end
 
+# The minion is registered on the hub directly unless a scenario bootstrapped it behind the peripheral.
+Given(/^"([^"]*)" is registered on "([^"]*)"$/) do |minion_host, server_host|
+  skip_this_scenario if systems_registered_as(minion_host, on: server_host).empty?
+end
+
 Then(/^I should not see "([^"]*)" registered on hub$/) do |minion_host|
   raise StandardError, "#{minion_host} unexpectedly found on hub" unless systems_registered_as(minion_host, on: 'server').empty?
 end
@@ -900,7 +932,7 @@ When(/^I deregister from hub on "([^"]*)"$/) do |host|
   using_server(host) do
     visit('/rhn/manager/admin/hub/hub-details')
     step %(I click on "Deregister")
-    step %(I click on "Confirm")
+    confirm_hub_deregistration(get_target('server').full_hostname)
   end
 end
 
@@ -916,6 +948,8 @@ Then(/^I should not see "([^"]*)" in peripherals list on hub$/) do |host|
   fqdn = get_target(host).full_hostname
   using_server('server') do
     visit('/rhn/manager/admin/hub/peripherals')
+    # Without the table header the absence check would pass on a page that has not rendered yet
+    raise StandardError, 'Peripherals list did not load' unless page.has_content?('Peripheral FQDN', wait: DEFAULT_TIMEOUT)
     raise StandardError, "#{fqdn} still appears in hub peripherals list after peripheral-side deregistration" if
       page.has_content?(fqdn, wait: 10)
   end
