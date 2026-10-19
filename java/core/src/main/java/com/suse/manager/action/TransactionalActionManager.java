@@ -311,8 +311,8 @@ public class TransactionalActionManager {
      * @param queue optional queue flag
      * @param test optional test flag
      * @param minionSummaries target minions
-     * @param useTransactionalUpdate whether transactional minions should execute the states through
-     * transactional-update
+     * @param useTransactionalUpdate whether transactional minions should also execute through
+     * transactional-update the states that are not known internal transactional states
      * @param actionId id of the action these calls are being prepared for, used to freeze the
      * per-minion {@link FormulaTransactionalPlan#postTransactionalFormulas()} for the highstate transactional path
      */
@@ -374,11 +374,16 @@ public class TransactionalActionManager {
             return;
         }
 
+        addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
+
+        List<String> transactionalStates = useTransactionalUpdate ?
+                replaceFormulasState(states) :
+                getTransactionalPhaseStates(states);
+
         if (states.contains("formulas")) {
-            addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
             addTransactionalFormulaCalls(
                     calls,
-                    useTransactionalUpdate ? replaceFormulasState(states) : List.of("formulas_transactional"),
+                    transactionalStates,
                     pillar,
                     queue,
                     test,
@@ -388,15 +393,10 @@ public class TransactionalActionManager {
             return;
         }
 
-        if (useTransactionalUpdate) {
-            addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
-            addCall(calls, TransactionalUpdateCalls.apply(states, pillar, queue, test),
-                    minionsByTransactionalUpdate.get(true));
-            return;
-        }
-
-        addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
-        addCall(calls, withDirectCallExecutor(stateApply), minionsByTransactionalUpdate.get(true));
+        LocalCall<Map<String, State.ApplyResult>> transactionalCall = transactionalStates.isEmpty() ?
+                withDirectCallExecutor(stateApply) :
+                TransactionalUpdateCalls.apply(transactionalStates, pillar, queue, test);
+        addCall(calls, transactionalCall, minionsByTransactionalUpdate.get(true));
     }
 
     static void addTransactionalHighstateCalls(
@@ -589,7 +589,7 @@ public class TransactionalActionManager {
             return TransactionalResult.success("Transactional states applied. No changes reported.");
         }
 
-        Optional<Long> refreshActionId = scheduleSnapshotRefresh(action, minionServerId);
+        Optional<Long> refreshActionId = snapshotRefreshScheduler.apply(action, minionServerId);
         if (refreshActionId.isEmpty()) {
             history.recordSnapshotRefreshFailed();
             return TransactionalResult.failed("Transactional states applied. Unable to schedule snapshot refresh.");
@@ -620,8 +620,7 @@ public class TransactionalActionManager {
 
     private static boolean shouldPreserveApplyStatesContinuationDetails(Action action) {
         return action instanceof ApplyStatesAction applyStatesAction &&
-                applyStatesAction.getDetails() != null &&
-                (isHighstate(applyStatesAction) || applyStatesAction.getDetails().getMods().contains("formulas"));
+                applyStatesAction.getDetails() != null;
     }
 
     private static List<String> getPostTransactionalStates(Action action, List<String> postTransactionalFormulas) {
@@ -632,9 +631,12 @@ public class TransactionalActionManager {
         }
         if (action instanceof ApplyStatesAction applyStatesAction &&
                 applyStatesAction.getDetails() != null &&
-                !applyStatesAction.getDetails().isUseTransactionalUpdate() &&
-                applyStatesAction.getDetails().getMods().contains("formulas")) {
-            return expandFormulasState(applyStatesAction.getDetails().getMods(), postTransactionalFormulas);
+                !applyStatesAction.getDetails().isUseTransactionalUpdate()) {
+            List<String> mods = applyStatesAction.getDetails().getMods();
+            // Without a transactional phase the action runs live from the start and has no continuation.
+            if (!getTransactionalPhaseStates(mods).isEmpty()) {
+                return getLivePhaseStates(mods, postTransactionalFormulas);
+            }
         }
         List<String> states = getAfterRebootState(action)
                 .map(List::of)
@@ -970,15 +972,43 @@ public class TransactionalActionManager {
         return states.size() == 1 ? getTransactionalStateToApply(states.get(0)) : Optional.empty();
     }
 
-    private static List<String> replaceFormulasState(List<String> states) {
+    /**
+     * Select the states to apply through transactional-update.
+     *
+     * <p>Prerequisite states are not resolved here: their continuation is driven by the action type, which an
+     * apply states action does not provide.</p>
+     *
+     * @param states states requested by the action
+     * @return states of the transactional phase, in the requested order
+     */
+    private static List<String> getTransactionalPhaseStates(List<String> states) {
         return states.stream()
+                .filter(state -> "formulas".equals(state) || TRANSACTIONAL_STATES.contains(state))
                 .map(state -> "formulas".equals(state) ? "formulas_transactional" : state)
                 .toList();
     }
 
-    private static List<String> expandFormulasState(List<String> states, List<String> postTransactionalFormulas) {
+    /**
+     * Select the states to apply live once the transactional snapshot is active.
+     *
+     * @param states states requested by the action
+     * @param postTransactionalFormulas formulas frozen for the live phase
+     * @return states of the live phase, in the requested order
+     */
+    private static List<String> getLivePhaseStates(List<String> states, List<String> postTransactionalFormulas) {
         return states.stream()
-                .flatMap(state -> "formulas".equals(state) ? postTransactionalFormulas.stream() : Stream.of(state))
+                .flatMap(state -> {
+                    if ("formulas".equals(state)) {
+                        return postTransactionalFormulas.stream();
+                    }
+                    return TRANSACTIONAL_STATES.contains(state) ? Stream.empty() : Stream.of(state);
+                })
+                .toList();
+    }
+
+    private static List<String> replaceFormulasState(List<String> states) {
+        return states.stream()
+                .map(state -> "formulas".equals(state) ? "formulas_transactional" : state)
                 .toList();
     }
 
