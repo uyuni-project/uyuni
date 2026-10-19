@@ -87,6 +87,13 @@ public final class MqttEventHelper {
      * @param service the publisher service to use, may be null
      */
     public static void publishAfterCommit(MqttEvent event, MqttPublisherService service) {
+        if (service == null) {
+            // MQTT is off, which is the default. Return before touching the Hibernate
+            // session, so that creating users or orgs behaves exactly as without MQTT.
+            LOG.debug("MqttPublisherService is not initialized. Event skipped.");
+            return;
+        }
+
         Transaction transaction;
         try {
             if (!HibernateFactory.inTransaction()) {

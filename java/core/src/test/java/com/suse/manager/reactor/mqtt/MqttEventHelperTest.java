@@ -145,6 +145,19 @@ public class MqttEventHelperTest {
         assertNull(testService.lastPayload);
     }
 
+    /**
+     * With MQTT disabled, publishing after commit is a no-op and does not fail.
+     */
+    @Test
+    public void testPublishAfterCommitWhenServiceNotInitialized() {
+        MqttPublisherService.setInstance(null);
+
+        MqttEventHelper.publishAfterCommit(new OrgCreatedEvent(1L, "Test Org"));
+
+        assertNull(testService.lastTopic);
+        assertNull(testService.lastPayload);
+    }
+
     @Test
     public void testEventFiltering() {
         System.setProperty("uyuni.mqtt.events.enabled", "orgs.created,users/created");
