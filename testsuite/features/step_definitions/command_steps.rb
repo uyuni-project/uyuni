@@ -579,6 +579,15 @@ Then(/^the taskomatic logs should not contain errors$/) do
   end
 end
 
+Then(/^the logs messages should not contain SELinux denials$/) do
+  output, error, code = get_target('server').run('ausearch -m AVC,USER_AVC | audit2why', runs_in_container: false, check_errors: false)
+  no_matches = code == 1 && output.empty? && error.strip == '<no matches>'
+  unless no_matches
+    raise ScriptError, "SELinux audit query failed on server host (status #{code}):\n#{output}#{error}" unless code.zero? && error.empty?
+    raise ScriptError, "SELinux errors on server host:\n#{output}" unless output.empty?
+  end
+end
+
 Then(/^the log messages should not contain out of memory errors$/) do
   output, code = get_target('server').run('grep -i "Out of memory: Killed process" /var/log/messages', check_errors: false)
   raise ScriptError, "Out of memory errors in /var/log/messages:\n#{output}" if code.zero?
