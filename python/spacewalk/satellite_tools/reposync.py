@@ -1871,6 +1871,22 @@ class RepoSync(object):
                                     raise exc
             pack.clear_header()
 
+        analyze_tables = {
+            "rhnPackage",
+            "rhnPackageFile",
+            "rhnPackageCapability",
+        }
+        with cfg_component("server.susemanager") as cfg:
+            analyze_batch = cfg.get("ANALYZE_TABLES_AFTER_BATCH")
+            if not isinstance(analyze_batch, list):
+                analyze_batch = [analyze_batch]
+            analyze_tables.update(
+                [x for x in analyze_batch if x.startswith(("rhn", "suse"))]
+            )
+        if analyze_tables:
+            rhnSQL.execute(" ".join(f"ANALYZE {x};" for x in analyze_tables))
+            rhnSQL.commit()
+
         rhnSQL.closeDB()
         log(
             0,
