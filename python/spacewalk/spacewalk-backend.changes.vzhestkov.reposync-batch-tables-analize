@@ -1,0 +1,4 @@
+- Run ANALIZE TABLE after each batch in reposync
+  for rhnPackage, rhnPackageFile rhnPackageCapability tables.
+  The list of the tables can be extended with
+  server.susemanager.analize_tables_after_batch in rhn.conf
