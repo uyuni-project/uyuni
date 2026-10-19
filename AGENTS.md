@@ -171,6 +171,14 @@ Run the repository's containerized lint wrapper from the root:
 ./python/linting/lint.sh -a
 ```
 
+When running in a sandbox and the sandbox provide black and pylint, lint-local.sh
+can be used:
+
+```bash
+./python/linting/lint-local.sh <path>
+./python/linting/lint-local.sh -a
+```
+
 Python code follows Black and the repository Pylint configuration. Keep tests
 isolated with mocks and temporary paths; do not make unit tests depend on a
 developer's machine configuration.
