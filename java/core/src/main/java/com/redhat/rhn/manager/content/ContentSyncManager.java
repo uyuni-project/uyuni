@@ -244,6 +244,9 @@ public class ContentSyncManager {
                 new Tuple2<>(2792L, 2932L), // SLES-15.7-None.s390x => SLES-16.0-None.s390x
                 new Tuple2<>(2791L, 2933L), // SLES-15.7-None.ppc64le => SLES-16.0-None.ppc64le
                 new Tuple2<>(2790L, 2931L), // SLES-15.7-None.aarch64 => SLES-16.0-None.aarch64
+                // SLES-for-SAP 15 SP7 => SLES-for-SAP 16.0 upgrade paths
+                new Tuple2<>(2795L, 2985L), // SLES_SAP-15.7-None.x86_64 => SLES_SAP-16.0-None.x86_64
+                new Tuple2<>(2794L, 2986L), // SLES_SAP-15.7-None.ppc64le => SLES_SAP-16.0-None.ppc64le
                 // define client tools 15 to 16 as migration possibility
                 new Tuple2<>(3052L, 3247L), // mlm-client-tools-15.aarch64 => mlm-client-tools-16.aarch64
                 new Tuple2<>(3053L, 3249L), // mlm-client-tools-15.ppc64le => mlm-client-tools-16.ppc64le
