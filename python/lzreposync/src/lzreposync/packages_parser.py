@@ -31,7 +31,7 @@ class LzDebHeader:
         del self.hdr[name]
 
     def __getattr__(self, name):
-        return getattr(self.hdr, name)
+        return getattr(object.__getattribute__(self, "hdr"), name)
 
     def __len__(self):
         return len(self.hdr)
