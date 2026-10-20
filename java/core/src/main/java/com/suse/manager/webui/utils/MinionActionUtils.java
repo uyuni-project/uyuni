@@ -59,6 +59,7 @@ import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipalLookupService;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -302,7 +303,8 @@ public class MinionActionUtils {
     public static Date getScheduleDate(Optional<LocalDateTime> earliest) {
         ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
                 .orElse(TimeZone.getDefault()).toZoneId();
-        return Date.from(earliest.orElseGet(LocalDateTime::now).atZone(zoneId).toInstant());
+        return Date.from(earliest.map(t -> t.atZone(zoneId).toInstant())
+                                 .orElseGet(Instant::now));
     }
 
     /**
@@ -313,7 +315,7 @@ public class MinionActionUtils {
      */
     public static Date getScheduleDate(ScheduledRequestJson request) {
         if (request != null) {
-            return getScheduleDate(request.getEarliest(), request.getActionDescription());
+            return getScheduleDate(request.getEarliest(), request.getActionDescription().orElse(null));
         }
         return getScheduleDate(Optional.empty());
     }
@@ -322,14 +324,14 @@ public class MinionActionUtils {
      * Compute the schedule date and register action description in Context
      *
      * @param earliest the earliest date of execution
-     * @param actionDescription the optional action description
+     * @param actionDescription the action description string, may be <code>null</code>
      * @return the date to run the action
      */
-    public static Date getScheduleDate(Optional<LocalDateTime> earliest, Optional<String> actionDescription) {
-        actionDescription.ifPresent(desc -> {
-            LOG.debug("Setting actionDescription in Context: {}", desc);
-            Context.getCurrentContext().setActionDescription(desc);
-        });
+    public static Date getScheduleDate(Optional<LocalDateTime> earliest, String actionDescription) {
+        if (actionDescription != null && !actionDescription.isBlank()) {
+            LOG.debug("Setting actionDescription in Context: {}", actionDescription);
+            Context.getCurrentContext().setActionDescription(actionDescription);
+        }
         return getScheduleDate(earliest);
     }
 

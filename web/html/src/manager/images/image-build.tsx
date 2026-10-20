@@ -50,6 +50,7 @@ type State = {
     profileId?: number;
     buildHostId?: number;
     actionChain?: any;
+    actionDescription?: string;
   };
   profile: any;
   profiles: any[];
@@ -418,6 +419,7 @@ class BuildImage extends Component<Props, State> {
             <ActionSchedule
               earliest={this.state.model.earliest}
               actionChains={window.actionChains}
+              actionDescription={this.state.model.actionDescription ?? ""}
               actionType="image.build"
               onActionChainChanged={this.onActionChainChanged}
               onDateTimeChanged={this.onDateTimeChanged}

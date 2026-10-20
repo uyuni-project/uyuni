@@ -25,6 +25,7 @@ export type ActionChain = {
 type ActionScheduleProps = {
   earliest: moment.Moment;
   actionChains?: ActionChain[];
+  actionDescription: string;
   onDateTimeChanged: (value: moment.Moment) => void;
   onActionChainChanged?: (actionChain: ActionChain | null) => void;
   onActionDescriptionChanged: (actionDescription: string) => void;
@@ -324,6 +325,7 @@ class ActionSchedule extends Component<ActionScheduleProps, ActionScheduleState>
             id="schedule-action-description"
             placeholder={t("e.g. Ticket #12345")}
             maxLength={1000}
+            value={this.props.actionDescription}
             onChange={this.onActionDescriptionChanged}
           />
         </div>

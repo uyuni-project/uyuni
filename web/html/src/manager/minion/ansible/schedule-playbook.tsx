@@ -198,6 +198,7 @@ export default function SchedulePlaybook({
                 <ActionSchedule
                   earliest={datetime}
                   actionChains={window.actionChains}
+                  actionDescription={actionDescription}
                   onDateTimeChanged={setDatetime}
                   onActionChainChanged={setActionChain}
                   onActionDescriptionChanged={setActionDescription}

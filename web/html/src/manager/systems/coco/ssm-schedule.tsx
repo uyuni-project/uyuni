@@ -103,6 +103,7 @@ class CoCoSSMSchedule extends Component<Props, State> {
           <ActionSchedule
             earliest={this.state.earliest}
             actionChains={this.props.actionChains}
+            actionDescription={this.state.actionDescription ?? ""}
             onActionChainChanged={this.onActionChainChanged}
             onDateTimeChanged={this.onDateTimeChanged}
             onActionDescriptionChanged={(desc) => this.setState({ actionDescription: desc })}

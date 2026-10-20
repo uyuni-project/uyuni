@@ -64,6 +64,7 @@ export class PackageListActionScheduler extends Component<Props, State> {
     this.setState({
       confirmAction: false,
       messages: [],
+      actionDescription: "",
     });
   };
 
@@ -233,6 +234,7 @@ export class PackageListActionScheduler extends Component<Props, State> {
         <ActionSchedule
           earliest={this.state.earliest}
           actionChains={this.props.actionChains}
+          actionDescription={this.state.actionDescription ?? ""}
           onActionChainChanged={this.onActionChainChanged}
           onDateTimeChanged={this.onDateTimeChanged}
           onActionDescriptionChanged={(actionDescription) => this.setState({ actionDescription })}

@@ -342,6 +342,7 @@ export const ScheduleScapScanForm = ({
           <div className="panel-body">
             <ActionSchedule
               earliest={earliest}
+              actionDescription={actionDescription}
               onDateTimeChanged={setEarliest}
               onActionDescriptionChanged={setActionDescription}
               systemIds={minions?.map((m) => m.id)}

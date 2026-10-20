@@ -101,6 +101,7 @@ export const MigrationConfirmScheduleForm: FC<Props> = ({
           <ActionSchedule
             earliest={selectedEarliest}
             actionChains={actionChains}
+            actionDescription={actionDescription}
             onActionChainChanged={(actionChain) => setSelectedActionChain(actionChain ? actionChain : undefined)}
             onDateTimeChanged={setSelectedEarliest}
             onActionDescriptionChanged={setActionDescription}

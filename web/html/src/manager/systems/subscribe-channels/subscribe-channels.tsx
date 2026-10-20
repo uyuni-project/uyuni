@@ -727,6 +727,7 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
           <ActionSchedule
             actionChains={actionChains}
             earliest={this.state.earliest}
+            actionDescription={this.state.actionDescription ?? ""}
             onActionChainChanged={this.onActionChainChanged}
             onDateTimeChanged={this.onDateTimeChanged}
             onActionDescriptionChanged={(desc) => this.setState({ actionDescription: desc })}

@@ -20,6 +20,7 @@ describe("ActionSchedule", () => {
         earliest={localizedMoment()}
         systemIds={[1000]}
         actionType="state.apply"
+        actionDescription=""
         onDateTimeChanged={onDateTimeChanged}
         onActionDescriptionChanged={jest.fn()}
       />
@@ -61,6 +62,7 @@ describe("ActionSchedule", () => {
     const { findByText } = render(
       <ActionSchedule
         earliest={localizedMoment()}
+        actionDescription=""
         onDateTimeChanged={jest.fn()}
         onActionDescriptionChanged={onActionDescriptionChanged}
       />
