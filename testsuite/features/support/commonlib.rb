@@ -161,6 +161,8 @@ def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, r
     last_result = nil
     # When we run the code coverage tracking tool together with our server, its performance decreases.
     timeout *= 2 if $code_coverage_mode
+    # Do not wait past the whole-run deadline: the run has to fail by itself, with its report, before it is killed
+    timeout = [run_time_left, 1].max.clamp(..timeout) if defined?(RUN_HARD_LIMIT) && RUN_HARD_LIMIT.positive?
     Timeout.timeout(timeout) do
       # HACK: Timeout.timeout might not raise Timeout::Error depending on the yielded code block
       # Pitfalls with this method have been long known according to the following articles:

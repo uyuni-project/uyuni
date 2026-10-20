@@ -40,6 +40,21 @@ def proxy_mu_flavours
   $proxy_mu_flavours = flavours
 end
 
+# Whole-run deadline in seconds (RUN_HARD_LIMIT, see env.rb) of the run sets that the Jenkins pipeline limits
+# with a wall-clock timeout (susemanager-ci, runCucumberRakeTarget wallSeconds), keyed by run set name.
+# Each value is the pipeline wall minus the time terracumber-cli needs before cucumber starts (up to ~100s)
+# and some slack. The proxy and monitoring server run sets have no wall in the pipeline.
+RUN_HARD_LIMIT_BY_RUN_SET = {
+  # wall 600s
+  /\Abuild_validation_add_maintenance_update_repositories_(?!proxy\z|monitoring_server\z)/ => 400,
+  # wall 320s
+  /\Abuild_validation_create_bootstrap_repository_(?!proxy\z|monitoring_server\z)/ => 200,
+  # wall 7200s
+  /\Abuild_validation_smoke_tests_/ => 6900,
+  # wall 3000s
+  /\Abuild_validation_retail_configure_proxy\z/ => 2800
+}.freeze
+
 namespace :cucumber do
   # Define the timestamp before the loop starts.
   timestamp = Time.now.strftime('%Y%m%d%H%M%S')
@@ -107,6 +122,18 @@ namespace :cucumber do
         ENV['SCENARIO_HARD_LIMIT'] ||= '5400'
       end
       Rake::Task[task_name].enhance([watchdog_task])
+    end
+    # The Jenkins pipeline kills some runs after a fixed wall-clock time, counted from the start of
+    # terracumber-cli, and a killed run writes no report at all. Make those runs end by themselves before:
+    # the deadline is counted from the start of this process, which terracumber-cli reaches after up to
+    # ~100s, and leaves time to write the report before the wall.
+    run_hard_limit = RUN_HARD_LIMIT_BY_RUN_SET.find { |pattern, _limit| filename.to_s.match?(pattern) }&.last
+    if run_hard_limit
+      run_deadline_task = :"#{filename}_set_run_deadline"
+      task run_deadline_task do
+        ENV['RUN_HARD_LIMIT'] ||= run_hard_limit.to_s
+      end
+      Rake::Task[task_name].enhance([run_deadline_task])
     end
     # This block executes when the task runs and uses the exact same `html_results` path.
     # This file is used to expose the cucumber html report in Jenkins
