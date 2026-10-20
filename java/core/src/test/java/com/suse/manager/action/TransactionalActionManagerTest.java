@@ -2682,6 +2682,119 @@ public class TransactionalActionManagerTest {
         assertEquals(0, resumptions.get());
     }
 
+    @Test
+    public void testDryRunWithProposedChangesCompletesWithoutSnapshotRefresh() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+        ApplyStatesAction action = applyStatesAction(List.of(ApplyStatesEventMessage.PACKAGES), false);
+        action.getDetails().setTest(true);
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                proposedChangesResult(),
+                false,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertFalse(result.isFailed());
+        assertEquals(0, snapshotRefreshes.get());
+        assertEquals(0, resumptions.get());
+        assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+        assertFalse(history.isWaitingForReboot());
+        assertNull(history.getSnapshotRefreshActionId());
+    }
+
+    @Test
+    public void testDryRunOfMixedStatesResumesTheLivePhasePreservingTestAndPillar() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        MinionSummary minion = transactionalMinion(1L, "transactional");
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        List<Long> resumedActions = new ArrayList<>();
+        ApplyStatesAction action = applyStatesAction(List.of(ApplyStatesEventMessage.PACKAGES, "custom"), false);
+        action.getDetails().setTest(true);
+        action.getDetails().setPillarsMap(Optional.of(Map.of("example", "value")));
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                proposedChangesResult(),
+                false,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumedActions.add(actionId));
+
+        assertFalse(result.isFailed());
+        assertEquals(0, snapshotRefreshes.get());
+        assertEquals(List.of(history.getActionId()), resumedActions);
+        assertFalse(history.isWaitingForReboot());
+
+        LocalCall<?> continuationCall = callForMinion(
+                TransactionalActionManager.getAfterRebootSaltCalls(action, List.of(minion),
+                        ignored -> List.of()).orElseThrow(),
+                minion);
+        Map<?, ?> kwargs = (Map<?, ?>) continuationCall.getPayload().get("kwarg");
+        assertEquals(List.of("custom"), kwargs.get("mods"));
+        assertEquals(true, kwargs.get("test"));
+        assertEquals(Map.of("example", "value"), kwargs.get("pillar"));
+    }
+
+    @Test
+    public void testFailedDryRunDoesNotResumeTheLivePhase() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+        ApplyStatesAction action = applyStatesAction(List.of(ApplyStatesEventMessage.PACKAGES, "custom"), false);
+        action.getDetails().setTest(true);
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("[\"Rendering SLS 'base:packages' failed: Jinja error\"]"),
+                true,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertTrue(result.isFailed());
+        assertEquals(0, snapshotRefreshes.get());
+        assertEquals(0, resumptions.get());
+        assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
+    }
+
+    private static JsonElement proposedChangesResult() {
+        return stateResult("""
+                {
+                  "pkg_|-packages_|-jq_|-installed": {
+                    "result": null,
+                    "comment": "The following packages would be installed/updated: jq",
+                    "changes": {"jq": {"new": "1.6", "old": ""}}
+                  },
+                  "file_|-packages_|-/etc/zypp_|-managed": {
+                    "result": true,
+                    "comment": "The file /etc/zypp is in the correct state",
+                    "changes": {}
+                  }
+                }
+                """);
+    }
+
     private static FormulaTransactionalPlan emptyFormulaPlan() {
         return new FormulaTransactionalPlan(List.of(), List.of(), List.of(), List.of());
     }

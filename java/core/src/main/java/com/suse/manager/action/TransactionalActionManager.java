@@ -531,6 +531,59 @@ public class TransactionalActionManager {
     }
 
     /**
+     * Reconsider the failure classification of a transactional result that is a valid dry-run preview.
+     *
+     * @param action action the result belongs to
+     * @param jsonResult Salt state result
+     * @param success success flag reported by Salt
+     * @param retcode return code reported by Salt
+     * @param failed failure classification of the result
+     * @return false when the reported failure is a valid preview, the given classification otherwise
+     */
+    public static boolean adjustFailureForPreview(Action action, JsonElement jsonResult,
+                                                  boolean success, long retcode, boolean failed) {
+        return failed && !(success && retcode == 0 && isSuccessfulPreview(action, jsonResult));
+    }
+
+    /**
+     * Check whether a transactional result is a successful dry-run preview.
+     *
+     * <p>A state that would change the system reports an explicit <code>null</code> result, which is
+     * indistinguishable from <code>false</code> once deserialized into the primitive boolean of
+     * {@link State.ApplyResult}. Only a result map whose entries all report an explicit <code>null</code> or
+     * <code>true</code> is a valid preview: a missing result, a rendering error or any other content keeps the
+     * reported failure.</p>
+     *
+     * @param action action the result belongs to
+     * @param jsonResult Salt state result
+     * @return true when the result is a valid preview of an action scheduled in test mode
+     */
+    private static boolean isSuccessfulPreview(Action action, JsonElement jsonResult) {
+        if (!(action instanceof ApplyStatesAction applyStatesAction) ||
+                applyStatesAction.getDetails() == null ||
+                !applyStatesAction.getDetails().isTest() ||
+                jsonResult == null ||
+                !jsonResult.isJsonObject()) {
+            return false;
+        }
+
+        for (var stateResult : jsonResult.getAsJsonObject().entrySet()) {
+            if (!stateResult.getValue().isJsonObject()) {
+                return false;
+            }
+            JsonElement result = stateResult.getValue().getAsJsonObject().get("result");
+            if (result == null) {
+                return false;
+            }
+            if (!result.isJsonNull() &&
+                    !(result.isJsonPrimitive() && result.getAsJsonPrimitive().isBoolean() && result.getAsBoolean())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Handle a transactional Salt result.
      *
      * @param minionServerId minion server id
@@ -565,7 +618,11 @@ public class TransactionalActionManager {
         String formattedResult = formatResult(jsonResult);
         String prerequisiteResult = hasPostTransactionalState ? formattedResult : null;
         Optional<Map<String, State.ApplyResult>> stateResults = parseStateResults(jsonResult);
-        boolean hasChanges = stateResults.map(TransactionalActionManager::hasChanges).orElse(false);
+        // Changes proposed by a dry-run are not applied, so they must not trigger the snapshot reconciliation
+        // nor put the action on hold waiting for a reboot.
+        boolean preview = action instanceof ApplyStatesAction applyStatesAction &&
+                applyStatesAction.getDetails().isTest();
+        boolean hasChanges = !preview && stateResults.map(TransactionalActionManager::hasChanges).orElse(false);
         if (failed) {
             history.recordTransactionalApplyFailed(prerequisiteResult);
             if (hasChanges) {
@@ -588,7 +645,9 @@ public class TransactionalActionManager {
             if (hasPostTransactionalState) {
                 resumePublisher.accept(actionId, minionServerId);
             }
-            return TransactionalResult.success("Transactional states applied. No changes reported.");
+            return TransactionalResult.success(preview ?
+                    "Transactional states previewed. No changes applied." :
+                    "Transactional states applied. No changes reported.");
         }
 
         Optional<Long> refreshActionId = snapshotRefreshScheduler.apply(action, minionServerId);

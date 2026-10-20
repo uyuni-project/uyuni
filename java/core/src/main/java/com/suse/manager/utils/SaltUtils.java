@@ -489,8 +489,14 @@ public class SaltUtils {
             applyStatesAction.storeApplyStatesResult(serverAction, jsonResult, retcode);
         }
 
+        boolean failed = actionFailed(function, jsonResult, success, retcode);
+        if (transactionalResult) {
+            failed = TransactionalActionManager.adjustFailureForPreview(
+                    action, jsonResult, success, retcode, failed);
+        }
+
         // Determine the final status of the action
-        if (actionFailed(function, jsonResult, success, retcode)) {
+        if (failed) {
             LOG.debug("Status of action {} being set to Failed.", action.getId());
             serverAction.setCompletionTime(completionTime);
             serverAction.setStatusFailed();
