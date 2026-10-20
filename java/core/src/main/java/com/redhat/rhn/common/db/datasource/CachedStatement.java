@@ -791,7 +791,7 @@ public class CachedStatement implements Serializable {
             String getName = StringUtil.beanify("get " + columnName.toLowerCase());
 
             boolean isList = false;
-            Method[] methods = obj.getClass().getMethods();
+            Method[] methods = MethodUtil.getPublicMethods(obj.getClass());
             /*
              * Now loop through the methods and find the set method for this
              * column then decide if it takes a collection Note: This action
