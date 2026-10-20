@@ -483,6 +483,43 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
+    public void testFailedTransactionalRenderResultPreservesErrorsWithoutSchedulingFollowUp() {
+        ApplyStatesAction action = new ApplyStatesAction();
+        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
+        details.setMods(List.of());
+        action.setDetails(details);
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+        JsonElement renderErrors = stateResult("""
+                ["Rendering SLS 'base:formulas_transactional' failed: Jinja error: \
+                Formulas do not support transactional systems: vsftpd."]
+                """);
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                renderErrors,
+                true,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertTrue(result.isFailed());
+        assertEquals(renderErrors, stateResult(result.getMessage()));
+        assertEquals(renderErrors, stateResult(history.getPrerequisiteResult()));
+        assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getAfterRebootStatus());
+        assertEquals(0, snapshotRefreshes.get());
+        assertEquals(0, resumptions.get());
+    }
+
+    @Test
     public void testFailedTransactionalResultWithoutChangesDoesNotScheduleSnapshotRefresh() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
         AtomicInteger snapshotRefreshes = new AtomicInteger();

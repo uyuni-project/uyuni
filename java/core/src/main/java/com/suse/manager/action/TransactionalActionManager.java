@@ -887,6 +887,10 @@ public class TransactionalActionManager {
     }
 
     private static boolean hasChanges(JsonElement jsonResult) {
+        if (jsonResult == null || !jsonResult.isJsonObject()) {
+            return false;
+        }
+
         Map<String, State.ApplyResult> results = Json.GSON.fromJson(
                 jsonResult,
                 new TypeToken<Map<String, State.ApplyResult>>() { }.getType());
