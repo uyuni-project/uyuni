@@ -39,6 +39,7 @@ import com.suse.salt.netapi.calls.modules.State;
 import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.logging.log4j.LogManager;
@@ -563,7 +564,8 @@ public class TransactionalActionManager {
         boolean hasPostTransactionalState = action != null && hasPostTransactionalState(action, history);
         String formattedResult = formatResult(jsonResult);
         String prerequisiteResult = hasPostTransactionalState ? formattedResult : null;
-        boolean hasChanges = hasChanges(jsonResult);
+        Optional<Map<String, State.ApplyResult>> stateResults = parseStateResults(jsonResult);
+        boolean hasChanges = stateResults.map(TransactionalActionManager::hasChanges).orElse(false);
         if (failed) {
             history.recordTransactionalApplyFailed(prerequisiteResult);
             if (hasChanges) {
@@ -599,7 +601,46 @@ public class TransactionalActionManager {
     }
 
     private static String formatResult(JsonElement jsonResult) {
-        return jsonResult == null || jsonResult.isJsonNull() ? null : Json.PRETTY_GSON.toJson(jsonResult);
+        if (jsonResult == null || jsonResult.isJsonNull()) {
+            return null;
+        }
+        return getRenderErrors(jsonResult).orElseGet(() -> Json.PRETTY_GSON.toJson(jsonResult));
+    }
+
+    private static Optional<Map<String, State.ApplyResult>> parseStateResults(JsonElement jsonResult) {
+        // Rendering errors are returned as a list of messages instead of a map of state results.
+        if (jsonResult == null || !jsonResult.isJsonObject()) {
+            return Optional.empty();
+        }
+        try {
+            return Optional.ofNullable(
+                    Json.GSON.fromJson(jsonResult, new TypeToken<Map<String, State.ApplyResult>>() { }.getType()));
+        }
+        catch (JsonSyntaxException e) {
+            LOG.warn("Unable to decode the transactional result as state results: {}", jsonResult, e);
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Get rendering error messages from the JSON result.
+     *
+     * @param jsonResult result returned by the minion
+     * @return the reported messages, empty when the result is not a list of messages
+     */
+    private static Optional<String> getRenderErrors(JsonElement jsonResult) {
+        if (!jsonResult.isJsonArray()) {
+            return Optional.empty();
+        }
+
+        List<String> messages = new ArrayList<>();
+        for (JsonElement element : jsonResult.getAsJsonArray()) {
+            if (!element.isJsonPrimitive() || !element.getAsJsonPrimitive().isString()) {
+                return Optional.empty();
+            }
+            messages.add(element.getAsString());
+        }
+        return messages.isEmpty() ? Optional.empty() : Optional.of(String.join("\n", messages));
     }
 
     private static boolean isHighstate(Action action) {
@@ -888,12 +929,8 @@ public class TransactionalActionManager {
                 .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
     }
 
-    private static boolean hasChanges(JsonElement jsonResult) {
-        Map<String, State.ApplyResult> results = Json.GSON.fromJson(
-                jsonResult,
-                new TypeToken<Map<String, State.ApplyResult>>() { }.getType());
-
-        return results != null && results.values().stream()
+    private static boolean hasChanges(Map<String, State.ApplyResult> results) {
+        return results.values().stream()
                 .map(State.ApplyResult::getChanges)
                 .anyMatch(changes -> changes != null &&
                         (!changes.isJsonObject() || !changes.getAsJsonObject().entrySet().isEmpty()));

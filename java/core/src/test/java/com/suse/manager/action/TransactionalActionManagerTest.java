@@ -2558,6 +2558,61 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
+    public void testRenderErrorResultReportsTheReportedReason() {
+        ApplyStatesAction action = highstateAction();
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("""
+                        [
+                          "Jinja error: Formulas do not support transactional systems: vsftpd."
+                        ]
+                        """),
+                true,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertTrue(result.isFailed());
+        assertEquals("Jinja error: Formulas do not support transactional systems: vsftpd.", result.getMessage());
+        assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
+        assertEquals(0, snapshotRefreshes.get());
+        assertEquals(0, resumptions.get());
+        assertEquals(Optional.of(result.getMessage()), TransactionalActionManager.getPrerequisiteResult(history));
+    }
+
+    @Test
+    public void testUnexpectedResultShapeDoesNotPreventReportingTheFailure() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                new Action(),
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("\"Minion did not return. [No response]\""),
+                true,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> { });
+
+        assertTrue(result.isFailed());
+        assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
+        assertEquals(0, snapshotRefreshes.get());
+    }
+
+    @Test
     public void testFormulaKeepsLivePhaseWhenItsNameMatchesAnInternalState() {
         Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
         MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
@@ -2589,6 +2644,42 @@ public class TransactionalActionManagerTest {
                 ignored -> persistedFormulas.get(transactionalMinion)).orElseThrow(), transactionalMinion);
         assertEquals(List.of(ApplyStatesEventMessage.PACKAGES),
                 ((Map<?, ?>) continuationCall.getPayload().get("kwarg")).get("mods"));
+    }
+
+    @Test
+    public void testFailedResultWithChangesStillRequestsSnapshotRefresh() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                highstateAction(),
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("""
+                        {
+                          "pkg_|-installed_|-jq_|-installed": {
+                            "result": true,
+                            "changes": {"jq": {"new": "1.6", "old": ""}}
+                          },
+                          "service_|-broken_|-broken_|-running": {
+                            "result": false,
+                            "changes": {}
+                          }
+                        }
+                        """),
+                true,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertTrue(result.isFailed());
+        assertEquals(1, snapshotRefreshes.get());
+        assertEquals(20L, history.getSnapshotRefreshActionId());
+        assertEquals(0, resumptions.get());
     }
 
     private static FormulaTransactionalPlan emptyFormulaPlan() {
