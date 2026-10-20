@@ -14,8 +14,11 @@
 {%- set publish_port = (salt['pillar.get']('mgr_salt_publish_port') or 4505)|int %}
 {%- set request_port = (salt['pillar.get']('mgr_salt_request_port') or 4506)|int %}
 {%- set unreachable = [] %}
+{#- network.connect only tries the first address of the master: accept a port reachable on IPv4 or IPv6 #}
 {%- for port in [publish_port, request_port] %}
-{%-   if not salt['network.connect'](mgr_server, port, timeout=5).get('result') %}
+{%-   set reachable = salt['network.connect'](mgr_server, port, timeout=5, family='ipv4').get('result')
+                     or salt['network.connect'](mgr_server, port, timeout=5, family='ipv6').get('result') %}
+{%-   if not reachable %}
 {%-     do unreachable.append(port) %}
 {%-   endif %}
 {%- endfor %}
