@@ -1,0 +1,3 @@
+- Preserve Salt render errors for failed transactional highstates
+  instead of reporting an unexpected error
+  (gh#uyuni-project/uyuni#12756)
