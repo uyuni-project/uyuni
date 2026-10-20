@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Tests for the mgrutil runner.
 """
@@ -84,8 +88,13 @@ def test_update_ssh_known_host_renames_entries(tmp_path):
             "|1|hashedvalue= ssh-ed25519 AAAA hashed-key\n",
             "unrelated.example.com ssh-ed25519 AAAA unrelated-key\n",
         ]
-    # the file is replaced atomically, no leftover temporary file
-    assert os.listdir(os.path.join(home_dir, ".ssh")) == ["known_hosts"]
+    # the file is replaced atomically, no leftover temporary file; the
+    # flock-based lock file stays on purpose, as removing it after unlocking
+    # could let concurrent processes lock and modify on different inodes
+    assert sorted(os.listdir(os.path.join(home_dir, ".ssh"))) == [
+        "known_hosts",
+        "known_hosts.lock",
+    ]
 
 
 def test_update_ssh_known_host_no_match(tmp_path):

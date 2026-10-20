@@ -165,6 +165,11 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             }
 
             Optional<ServerPath> currentParentPath = server.getFirstServerPath();
+            if (server instanceof MinionServer && currentParentPath.isEmpty() && !isMainServer) {
+                throw new RhnRuntimeException("The proxy " + proxyName +
+                        " is already registered and connected directly to the server, but the requested parent is " +
+                        parentFqdn + ".");
+            }
             if (currentParentPath.isPresent()) {
                 Server currentParentProxy = currentParentPath.get().getId().getProxyServer();
                 boolean isMatch = currentParentProxy.getHostname().equals(parentFqdn) ||
@@ -174,6 +179,16 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
                             " is already registered and connected via " +
                             currentParentProxy.getHostname() + ", but the requested parent is " + parentFqdn + ".");
                 }
+            }
+
+            // A single match is only the same proxy when it already owns the requested proxy
+            // FQDN. Otherwise one of the requested FQDNs belongs to an existing system that
+            // must not be taken over by a new proxy.
+            boolean isSameSystem = proxyName.equalsIgnoreCase(server.getHostname()) ||
+                    server.getFqdns().stream().anyMatch(fqdn -> fqdn.getName().equalsIgnoreCase(proxyName));
+            if (!isSameSystem) {
+                throw raiseAndLog(this, "One or more of the requested FQDNs is already " +
+                        "registered on another system. Conflicting Server ID: " + server.getId()).get();
             }
 
             // The SSH key is going to change remove it from the known hosts
@@ -188,19 +203,26 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             info.setSshPort(port);
             info.setSshPublicKey(sshPublicKey.getBytes());
 
-            // For a foreign proxy, clear existing FQDNs before adding the newly specified ones.
+            systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.PROXY);
+
             // For standard Salt minion proxies (represented by MinionServer), we do not delete
             // anything here because FQDNs are managed primarily by NetworkMapper during grains sync.
+            // Note: Hibernate has problem with unique(name, server_id) constraint together
+            // with clear() and addAll(), so this code touches only the changed entries
             if (!(server instanceof MinionServer)) {
-                server.getFqdns().clear();
+                List<ServerFQDN> obsoleteFqdns = server.getFqdns().stream()
+                        .filter(fqdn -> !fqdns.contains(fqdn.getName()))
+                        .toList();
+                obsoleteFqdns.forEach(fqdn -> server.getFqdns().remove(fqdn));
             }
 
-            // Add the FQDNs as some may not be already known
+            // Add only the FQDNs that are not known yet, some may already exist
+            Set<String> existingFqdns = server.getFqdns().stream()
+                    .map(ServerFQDN::getName)
+                    .collect(Collectors.toSet());
             server.getFqdns().addAll(fqdns.stream()
-                    .filter(fqdn -> !fqdn.contains("*"))
+                    .filter(fqdn -> !fqdn.contains("*") && !existingFqdns.contains(fqdn))
                     .map(fqdn -> new ServerFQDN(server, fqdn)).collect(Collectors.toList()));
-
-            systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.PROXY);
 
             setParentPath(server, parentProxy, parentFqdn);
 
@@ -259,6 +281,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
     private void setParentPath(Server server, Optional<Server> parentProxy, String parentFqdn) {
         server.getServerPaths().clear();
         parentProxy.ifPresent(parent ->
+
                 server.getServerPaths().addAll(ServerFactory.createServerPaths(server, parent, parentFqdn)));
     }
 

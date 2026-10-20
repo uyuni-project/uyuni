@@ -89,7 +89,9 @@ public class ProxyControllerTest extends BaseControllerTestCase {
                     with(equal(new SSLCertPair("CA CERT", "CA KEY"))), with(equal("secret")),
                     with(equal(new SSLCertData("pxy.acme.lab", List.of("cname1", "cname2"), "DE", "Bavaria", "Nurnberg",
                             "SUSE", "SUSE Unit", "roadrunner@acme.lab"))),
-                    with(any(SSLCertManager.class)), with(equal(List.of("cname1", "cname2"))));
+                    // The additional FQDNs passed to the manager come from the explicit "additionalFQDNs" request
+                    // field, not from the certificate cnames; distinct values assert that separation.
+                    with(any(SSLCertManager.class)), with(equal(List.of("add1.acme.lab", "add2.acme.lab"))));
             will(returnValue(data));
         }});
 

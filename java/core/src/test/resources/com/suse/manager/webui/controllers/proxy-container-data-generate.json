@@ -8,6 +8,7 @@
   "caKey": "CA KEY",
   "caPassword": "secret",
   "cnames": ["cname1", "cname2"],
+  "additionalFQDNs": ["add1.acme.lab", "add2.acme.lab"],
   "country": "DE",
   "state": "Bavaria",
   "city": "Nurnberg",
