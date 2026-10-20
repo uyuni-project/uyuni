@@ -570,6 +570,7 @@ type SummaryPageProps = {
   allowedChanges: SsmAllowedChildChannelsDto[];
   finalChanges: ChannelChangeDto[];
   footer: ReactNode;
+  actionDescription: string;
   onChangeEarliest: (earliest: moment.Moment) => void;
   onChangeActionChain: (actionChain: ActionChain | null | undefined) => void;
   onChangeActionDescription: (actionDescription: string) => void;
@@ -717,6 +718,7 @@ class SummaryPage extends Component<SummaryPageProps, SummaryPageState> {
         <ActionSchedule
           earliest={this.state.earliest}
           actionChains={window.actionChains}
+          actionDescription={this.props.actionDescription}
           onActionChainChanged={this.onActionChainChanged}
           onDateTimeChanged={this.onDateTimeChanged}
           onActionDescriptionChanged={this.props.onChangeActionDescription}
@@ -1127,6 +1129,7 @@ class SsmChannelPage extends Component<SsmChannelProps, SsmChannelState> {
         <SummaryPage
           allowedChanges={this.state.allowedChanges}
           finalChanges={this.state.finalChanges}
+          actionDescription={this.state.actionDescription ?? ""}
           onChangeEarliest={this.onChangeEarliest}
           onChangeActionChain={this.onChangeActionChain}
           onChangeActionDescription={this.onChangeActionDescription}

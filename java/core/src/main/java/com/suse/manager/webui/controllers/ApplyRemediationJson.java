@@ -15,10 +15,12 @@
 
 package com.suse.manager.webui.controllers;
 
+import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
+
 /**
  * JSON DTO for Apply Remediation requests.
  */
-public class ApplyRemediationJson {
+public class ApplyRemediationJson extends ScheduledRequestJson {
 
     private Long serverId;
     private String ruleIdentifier;

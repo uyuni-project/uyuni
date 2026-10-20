@@ -488,6 +488,7 @@ class RuleResultDetail extends Component<object, StateType> {
               <div className="panel-body">
                 <ActionSchedule
                   earliest={this.state.earliest}
+                  actionDescription={this.state.actionDescription ?? ""}
                   onDateTimeChanged={this.onDateTimeChanged}
                   onActionDescriptionChanged={this.onActionDescriptionChanged}
                   systemIds={window.minions?.map((m) => m.id)}

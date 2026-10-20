@@ -30,7 +30,7 @@ public record MigrationScheduleRequest(
     boolean allowVendorChange,
     Optional<LocalDateTime> earliest,
     Optional<String> actionChain,
-    Optional<String> actionDescription
+    String actionDescription
 ) {
 
     /**

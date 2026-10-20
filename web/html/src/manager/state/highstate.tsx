@@ -163,6 +163,7 @@ class Highstate extends Component<HighstateProps, HighstateState> {
             <ActionSchedule
               earliest={this.state.earliest}
               actionChains={window.actionChains}
+              actionDescription={this.state.actionDescription ?? ""}
               onActionChainChanged={this.onActionChainChanged}
               onDateTimeChanged={this.onDateTimeChanged}
               onActionDescriptionChanged={(desc) => this.setState({ actionDescription: desc })}

@@ -98,6 +98,7 @@ export const AppStreamsChangesConfirm = ({
           <ActionSchedule
             earliest={earliest}
             actionChains={window.actionChains}
+            actionDescription={actionDescription}
             onActionChainChanged={(ac) => setActionChain(ac)}
             onDateTimeChanged={(date) => setEarliest(date)}
             onActionDescriptionChanged={(desc) => setActionDescription(desc)}
