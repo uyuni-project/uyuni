@@ -25,6 +25,7 @@ Feature: Very first settings
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  @long_running
   Scenario: Wait for refresh of list of products to finish
     When I wait until mgr-sync refresh is finished
 
