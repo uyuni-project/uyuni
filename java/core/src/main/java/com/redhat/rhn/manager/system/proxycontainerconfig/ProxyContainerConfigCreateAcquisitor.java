@@ -163,6 +163,11 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             }
 
             Optional<ServerPath> currentParentPath = server.getFirstServerPath();
+            if (server instanceof MinionServer && currentParentPath.isEmpty() && !isMainServer) {
+                throw new RhnRuntimeException("The proxy " + proxyName +
+                        " is already registered and connected directly to the server, but the requested parent is " +
+                        parentFqdn + ".");
+            }
             if (currentParentPath.isPresent()) {
                 Server currentParentProxy = currentParentPath.get().getId().getProxyServer();
                 boolean isMatch = currentParentProxy.getHostname().equals(parentFqdn) ||

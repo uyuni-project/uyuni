@@ -51,6 +51,7 @@ import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Opt;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -318,13 +319,8 @@ public abstract class AbstractMinionBootstrapper {
     protected Map<String, Object> createPillarData(User user, BootstrapParameters input,
                                                    String contactMethod) {
         Map<String, Object> pillarData = new HashMap<>();
-        String mgrServer = input.getProxyFqdn()
-                .orElseGet(() -> input.getProxyId()
-                        .map(ServerFactory::lookupById)
-                        .map(Server::getHostname)
-                        .orElse(ConfigDefaults.get().getJavaHostname()));
-
-        pillarData.put("mgr_server", mgrServer);
+        pillarData.put("mgr_server", SaltSSHService.getMinionRepoHostname(
+                input.getProxyFqdn(), input.getProxyId()));
         if ("ssh-push-tunnel".equals(contactMethod)) {
             pillarData.put("mgr_server_https_port", Config.get().getInt("ssh_push_port_https"));
         }
@@ -390,6 +386,11 @@ public abstract class AbstractMinionBootstrapper {
             return Collections.singletonList(reactivationKeyError.get());
         }
 
+        Optional<String> proxyError = validateProxyParams(params);
+        if (proxyError.isPresent()) {
+            return Collections.singletonList(proxyError.get());
+        }
+
         if (saltApi.keyExists(params.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
             return Collections.singletonList("A salt key for this" +
                     " host (" + params.getHost() +
@@ -405,6 +406,38 @@ public abstract class AbstractMinionBootstrapper {
                         m.getName() + "' with minion id " + params.getHost() +
                         " seems to already exist,  please check!"))
                 .orElseGet(Collections::emptyList);
+    }
+
+    /**
+     * Checks whether the given proxy FQDN matches the selected proxy. When both a proxy id
+     * and a proxy FQDN are given, the FQDN must be a name of the referenced proxy or, for
+     * direct connections (proxy id 0), of the Uyuni server itself - otherwise the
+     * bootstrapped minion would be pointed to an unrelated system.
+     *
+     * @param params the bootstrap parameters
+     * @return Optional with an error message or empty if validation succeeds
+     */
+    private Optional<String> validateProxyParams(BootstrapParameters params) {
+        Optional<String> proxyFqdn = params.getProxyFqdn().filter(StringUtils::isNotBlank);
+        if (proxyFqdn.isEmpty() || params.getProxyId().isEmpty()) {
+            // FQDN without id is validated by the callers providing it, nothing to pair here
+            return Optional.empty();
+        }
+
+        if (params.getProxyId().get() == 0) {
+            // direct connection: only the Uyuni server's own name is allowed
+            return proxyFqdn.get().equalsIgnoreCase(ConfigDefaults.get().getJavaHostname()) ?
+                    Optional.empty() :
+                    Optional.of("Only the Uyuni server FQDN is allowed for a direct connection, " +
+                            "but got: " + proxyFqdn.get());
+        }
+
+        Server proxy = ServerFactory.lookupById(params.getProxyId().get());
+        boolean isNameOfProxy = proxy != null &&
+                (proxyFqdn.get().equalsIgnoreCase(proxy.getHostname()) ||
+                        proxy.getFqdns().stream().anyMatch(f -> f.getName().equalsIgnoreCase(proxyFqdn.get())));
+        return isNameOfProxy ? Optional.empty() :
+                Optional.of("The proxy FQDN does not match the selected proxy: " + proxyFqdn.get());
     }
 
     /**

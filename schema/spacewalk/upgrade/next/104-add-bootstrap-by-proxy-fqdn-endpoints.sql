@@ -25,3 +25,13 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     WHERE ns.namespace = 'api.system.bootstrap_with_private_ssh_key_by_proxy_fqdn' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/system/bootstrapWithPrivateSshKeyByProxyFqdn' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
+
+-- Grant the new namespaces to all access groups, like the existing bootstrap APIs
+INSERT INTO access.accessGroupNamespace
+    SELECT ag.id, ns.id
+    FROM access.accessGroup ag, access.namespace ns
+    WHERE ns.namespace IN (
+        'api.system.bootstrap_by_proxy_fqdn',
+        'api.system.bootstrap_with_private_ssh_key_by_proxy_fqdn'
+    )
+    ON CONFLICT DO NOTHING;

@@ -279,9 +279,10 @@ public class SaltSSHService {
                             minionOpts(mid, contactMethodLabel),
                             Optional.ofNullable(getSaltSSHPreflightScriptPath()),
                             Optional.of(Arrays.asList(
-                                    proxyPath.isEmpty() ?
-                                            ConfigDefaults.get().getJavaHostname() :
-                                            proxyPath.get(proxyPath.size() - 1).split(":")[0],
+                                    minion.getRepoHostname()
+                                            .orElseGet(() -> proxyPath.isEmpty() ?
+                                                    ConfigDefaults.get().getJavaHostname() :
+                                                    proxyPath.get(proxyPath.size() - 1).split(":")[0]),
                                     ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethodLabel) ?
                                             getSshPushRemotePort() : SSL_PORT,
                                     getSSHUseSaltThin() ? 1 : 0
@@ -437,6 +438,24 @@ public class SaltSSHService {
         return hostnamePath;
     }
 
+    /**
+     * Return the hostname a minion uses to reach its (proxy) master: the selected proxy
+     * FQDN, the proxy's registered hostname or the Uyuni server itself. Unlike the primary
+     * FQDNs used for the SSH hops from the server, this name must be resolvable from the
+     * minion itself, e.g. when downloading the Salt bundle in the preflight.
+     *
+     * @param proxyFqdn the selected proxy FQDN, empty when not specified
+     * @param proxyId the id of the proxy, empty for a direct connection
+     * @return the hostname
+     */
+    public static String getMinionRepoHostname(Optional<String> proxyFqdn, Optional<Long> proxyId) {
+        return proxyFqdn.filter(StringUtils::isNotBlank)
+                .orElseGet(() -> proxyId
+                        .map(ServerFactory::lookupById)
+                        .map(Server::getHostname)
+                        .orElse(ConfigDefaults.get().getJavaHostname()));
+    }
+
     private static List<ServerPath> sortServerPaths(Set<ServerPath> serverPaths) {
         if (CollectionUtils.isEmpty(serverPaths)) {
             return new ArrayList<>();
@@ -573,9 +592,7 @@ public class SaltSSHService {
                     minionOpts(parameters.getHost(), contactMethod),
                     Optional.ofNullable(getSaltSSHPreflightScriptPath()),
                     Optional.of(Arrays.asList(
-                            bootstrapProxyPath.isEmpty() ?
-                                    ConfigDefaults.get().getJavaHostname() :
-                                    bootstrapProxyPath.get(bootstrapProxyPath.size() - 1).split(":")[0],
+                            getMinionRepoHostname(parameters.getProxyFqdn(), parameters.getProxyId()),
                             ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethod) ?
                                     getSshPushRemotePort() : SSL_PORT,
                             getSSHUseSaltThin() ? 1 : 0,

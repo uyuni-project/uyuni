@@ -22,7 +22,7 @@ spec:
   ingressClassName: {{ .Values.ingress.class }}
   {{- end }}
   rules:
-  - host: {{ $config.proxy_fqdn }}
+  - host: {{ $config.proxy_fqdn | quote }}
     http:
       paths:
       - backend:
@@ -34,7 +34,7 @@ spec:
         pathType: Prefix
   {{- if hasKey $config "additional_fqdns" }}
   {{- range $config.additional_fqdns }}
-  - host: {{ . }}
+  - host: {{ . | quote }}
     http:
       paths:
       - backend:
@@ -48,10 +48,10 @@ spec:
   {{- end }}
   tls:
   - hosts:
-    - {{ $config.proxy_fqdn }}
+    - {{ $config.proxy_fqdn | quote }}
     {{- if hasKey $config "additional_fqdns" }}
     {{- range $config.additional_fqdns }}
-    - {{ . }}
+    - {{ . | quote }}
     {{- end }}
     {{- end }}
     secretName: proxy-cert

@@ -2194,7 +2194,8 @@ public class ActionManager extends BaseManager {
      * @param loggedInUser The current user
      * @param sysids       A list of systems ids
      * @param proxyId      Id of the proxy or 0 for direct connection to SUMA server
-     * @param proxyFqdn    Optional specific FQDN of the proxy to use
+     * @param proxyFqdn    Optional specific FQDN of the proxy to use. It must be a name of
+     *                     the authorized proxy, or of the SUMA server itself when proxyId is 0
      * @return Returns a list of scheduled action ids
      *
      */
@@ -2227,6 +2228,19 @@ public class ActionManager extends BaseManager {
         }
         Optional<Long> proxyIdOpt = proxy.map(Server::getId);
         boolean hasProxyFqdn = proxyFqdn != null && !proxyFqdn.isEmpty();
+        if (hasProxyFqdn) {
+            // The FQDN is used for the connection paths and handed to the minions as
+            // mgr_server, so it must be a name of the authorized proxy or, for direct
+            // connections, of the Uyuni server itself.
+            boolean isAuthorized = proxy
+                    .map(p -> proxyFqdn.equalsIgnoreCase(p.getHostname()) ||
+                            p.getFqdns().stream().anyMatch(f -> f.getName().equalsIgnoreCase(proxyFqdn)))
+                    .orElseGet(() -> proxyFqdn.equalsIgnoreCase(ConfigDefaults.get().getJavaHostname()));
+            if (!isAuthorized) {
+                throw new UnsupportedOperationException(
+                        "The FQDN does not belong to the selected proxy: " + proxyFqdn);
+            }
+        }
 
         List<Long> sshIds = minions.stream()
                 .filter(minion -> ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))

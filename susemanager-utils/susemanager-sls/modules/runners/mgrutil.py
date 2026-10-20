@@ -5,6 +5,8 @@
 """A collection of utility runner functions for Uyuni."""
 
 from subprocess import Popen, PIPE
+from contextlib import contextmanager
+import fcntl
 import logging
 import stat
 import grp
@@ -116,8 +118,31 @@ def remove_ssh_known_host(user, hostname, port):
     config_path = os.path.join(os.path.expanduser(f"~{user}"), ".ssh", "known_hosts")
     if not os.path.exists(config_path):
         config_path = None
-    # pylint: disable-next=undefined-variable
-    return __salt__["salt.cmd"]("ssh.rm_known_host", user, hostname, config_path, port)
+        # pylint: disable-next=undefined-variable
+        return __salt__["salt.cmd"]("ssh.rm_known_host", user, hostname, config_path, port)
+    # serialize against concurrent known_hosts modifications
+    with _known_hosts_lock(user):
+        # pylint: disable-next=undefined-variable
+        return __salt__["salt.cmd"]("ssh.rm_known_host", user, hostname, config_path, port)
+
+
+@contextmanager
+def _known_hosts_lock(user):
+    """Serialize known_hosts read/modify/write cycles across salt worker processes.
+
+    os.replace only makes the final rename atomic: concurrent runner invocations
+    (e.g. minion registrations or primary FQDN changes) could otherwise read the
+    same original file and overwrite each other's renames, leaving host keys
+    pinned under outdated names.
+    """
+    lock_path = os.path.join(os.path.expanduser(f"~{user}"), ".ssh", "known_hosts.lock")
+    # pylint: disable-next=unspecified-encoding
+    with open(lock_path, "w") as lock_file:
+        fcntl.flock(lock_file, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(lock_file, fcntl.LOCK_UN)
 
 
 def update_ssh_known_host(user, old_hostname, new_hostname, port):
@@ -129,6 +154,10 @@ def update_ssh_known_host(user, old_hostname, new_hostname, port):
     pinned under the old name would not match the new one anymore.
 
     Entries stored in the hashed format cannot be renamed and are left untouched.
+
+    The complete read-through-replacement cycle is serialized with an interprocess
+    lock, as concurrent invocations (e.g. parallel minion registrations) would
+    otherwise overwrite each other's renames.
     """
     config_path = os.path.join(os.path.expanduser(f"~{user}"), ".ssh", "known_hosts")
     if not os.path.exists(config_path):
@@ -139,40 +168,52 @@ def update_ssh_known_host(user, old_hostname, new_hostname, port):
     renamed = 0
     updated_lines = []
     try:
-        # pylint: disable-next=unspecified-encoding
-        with open(config_path) as known_hosts:
-            for line in known_hosts:
-                if line.startswith("|1|"):
-                    # hashed entry, cannot be renamed
-                    updated_lines.append(line)
-                    continue
-                host_field, separator, rest = line.partition(" ")
-                if not host_field:
-                    updated_lines.append(line)
-                    continue
-                names = host_field.split(",")
-                new_names = []
-                changed = False
-                for name in names:
-                    if name == old_hostname:
-                        new_names.append(new_hostname)
-                        changed = True
-                    elif name == f"[{old_hostname}]:{port}":
-                        new_names.append(f"[{new_hostname}]:{port}")
-                        changed = True
-                    else:
-                        new_names.append(name)
-                if changed:
-                    renamed += 1
-                    updated_lines.append(",".join(new_names) + separator + rest)
-                else:
-                    updated_lines.append(line)
-        if renamed:
-            tmp_path = config_path + ".tmp"
+        with _known_hosts_lock(user):
             # pylint: disable-next=unspecified-encoding
-            with open(tmp_path, "w") as tmp_file:
-                tmp_file.writelines(updated_lines)
-            os.replace(tmp_path, config_path)
+            with open(config_path) as known_hosts:
+                for line in known_hosts:
+                    if line.startswith("|1|"):
+                        # hashed entry, cannot be renamed
+                        updated_lines.append(line)
+                        continue
+                    host_field, separator, rest = line.partition(" ")
+                    if not host_field:
+                        updated_lines.append(line)
+                        continue
+                    names = host_field.split(",")
+                    new_names = []
+                    changed = False
+                    for name in names:
+                        if name == old_hostname:
+                            new_names.append(new_hostname)
+                            changed = True
+                        elif name == f"[{old_hostname}]:{port}":
+                            new_names.append(f"[{new_hostname}]:{port}")
+                            changed = True
+                        else:
+                            new_names.append(name)
+                    if changed:
+                        renamed += 1
+                        updated_lines.append(",".join(new_names) + separator + rest)
+                    else:
+                        updated_lines.append(line)
+            if renamed:
+                # a unique temporary file in the same directory keeps os.replace atomic
+                # while concurrent invocations cannot collide on a shared name
+                fd, tmp_path = tempfile.mkstemp(
+                    dir=os.path.dirname(config_path), prefix=".known_hosts-", suffix=".tmp")
+                try:
+                    with os.fdopen(fd, "w") as tmp_file:
+                        tmp_file.writelines(updated_lines)
+                    # preserve the original file permissions
+                    os.chmod(tmp_path, stat.S_IMODE(os.stat(config_path).st_mode))
+                    os.replace(tmp_path, config_path)
+                except OSError:
+                    try:
+                        os.unlink(tmp_path)
+                    except OSError:
+                        pass
+                    raise
         return {
             "status": "success",
             "comment": f"Renamed {renamed} known_hosts entries from {old_hostname} to {new_hostname}",

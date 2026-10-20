@@ -23,8 +23,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.cloud.TestCloudPaygManagerBuilder;
@@ -197,6 +201,45 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         BootstrapParameters params = bootstrapper.createBootstrapParams(input);
         BootstrapResult bootstrap = bootstrapper.bootstrap(params, user, getDefaultContactMethod());
         assertTrue(bootstrap.isSuccess());
+    }
+
+    /**
+     * Tests that the bootstrap fails when both a proxy id and a proxy FQDN are given and
+     * the FQDN does not belong to the selected proxy.
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testBootstrapFailsWhenProxyFqdnDoesNotMatchProxy() throws Exception {
+        Server proxy = ServerFactoryTest.createTestProxyServer(user, true);
+        proxy.addFqdn("parent-" + TestUtils.randomString() + ".example.com");
+        ServerFactory.save(proxy);
+
+        BootstrapParameters params = new BootstrapParameters("myhost", Optional.of(6022), "myuser",
+                Optional.of("mypassword"), Collections.emptyList(), Optional.empty(), true,
+                Optional.of(proxy.getId()));
+        params.setProxyFqdn(of("unrelated.example.com"));
+
+        BootstrapResult bootstrap = bootstrapper.bootstrap(params, user, getDefaultContactMethod());
+        assertFalse(bootstrap.isSuccess());
+        assertTrue(bootstrap.getMessages().stream()
+                .anyMatch(m -> m.contains("does not match the selected proxy")));
+    }
+
+    /**
+     * Tests that the bootstrap fails when a direct connection (proxy id 0) is combined with
+     * an FQDN other than the Uyuni server's own one.
+     */
+    @Test
+    public void testBootstrapFailsWhenProxyFqdnDoesNotMatchServer() {
+        BootstrapParameters params = new BootstrapParameters("myhost", Optional.of(6022), "myuser",
+                Optional.of("mypassword"), Collections.emptyList(), Optional.empty(), true,
+                Optional.of(0L));
+        params.setProxyFqdn(of("unrelated.example.com"));
+
+        BootstrapResult bootstrap = bootstrapper.bootstrap(params, user, getDefaultContactMethod());
+        assertFalse(bootstrap.isSuccess());
+        assertTrue(bootstrap.getMessages().stream()
+                .anyMatch(m -> m.contains("direct connection")));
     }
 
     /**

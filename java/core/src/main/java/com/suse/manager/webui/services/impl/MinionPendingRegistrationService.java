@@ -42,13 +42,14 @@ public class MinionPendingRegistrationService {
         private final List<String> proxyPath;
         private final Integer sshPushPort;
         private final String proxyFqdn;
+        private final String repoHostname;
 
         /**
          * @param creatorIn user who accepted the key or bootstrapped the system
          * @param contactMethodIn the contact method
          */
         public PendingMinion(User creatorIn, String contactMethodIn) {
-            this(creatorIn, contactMethodIn, Collections.emptyList(), null, null);
+            this(creatorIn, contactMethodIn, Collections.emptyList(), null, null, null);
         }
 
         /**
@@ -58,7 +59,7 @@ public class MinionPendingRegistrationService {
          * @param portIn the ssh port
          */
         public PendingMinion(User creatorIn, String contactMethodIn, List<String> proxyPathIn, Integer portIn) {
-            this(creatorIn, contactMethodIn, proxyPathIn, portIn, null);
+            this(creatorIn, contactMethodIn, proxyPathIn, portIn, null, null);
         }
 
         /**
@@ -67,14 +68,19 @@ public class MinionPendingRegistrationService {
          * @param proxyPathIn the proxy path
          * @param portIn the ssh port
          * @param proxyFqdnIn the proxy custom FQDN
+         * @param repoHostnameIn the hostname the minion uses to reach its (proxy) master,
+         *        e.g. to download the Salt bundle in the preflight - unlike the primary
+         *        FQDNs used for the SSH hops from the server, it must be resolvable from
+         *        the minion itself
          */
         public PendingMinion(User creatorIn, String contactMethodIn,
-                List<String> proxyPathIn, Integer portIn, String proxyFqdnIn) {
+                List<String> proxyPathIn, Integer portIn, String proxyFqdnIn, String repoHostnameIn) {
             this.contactMethod = contactMethodIn;
             this.creator = creatorIn;
             this.proxyPath = proxyPathIn;
             this.sshPushPort = portIn;
             this.proxyFqdn = proxyFqdnIn;
+            this.repoHostname = repoHostnameIn;
         }
 
         /**
@@ -110,6 +116,14 @@ public class MinionPendingRegistrationService {
          */
         public Optional<String> getProxyFqdn() {
             return Optional.ofNullable(proxyFqdn);
+        }
+
+        /**
+         * @return an optional wrapping the hostname the minion uses to reach its (proxy)
+         * master, or empty if not set.
+         */
+        public Optional<String> getRepoHostname() {
+            return Optional.ofNullable(repoHostname);
         }
     }
 
@@ -153,10 +167,13 @@ public class MinionPendingRegistrationService {
      * @param proxyPath list of proxies hostnames in the order they connect through
      * @param sshPort the ssh port for ssh only minions
      * @param proxyFqdn the proxy custom FQDN
+     * @param repoHostnameIn the hostname the minion uses to reach its (proxy) master,
+     *        e.g. to download the Salt bundle in the preflight
      */
     public static void addMinion(User creator, String minionId, String contactMethod, List<String> proxyPath,
-                                 Integer sshPort, String proxyFqdn) {
-        minionIds.put(minionId, new PendingMinion(creator, contactMethod, proxyPath, sshPort, proxyFqdn));
+                                 Integer sshPort, String proxyFqdn, String repoHostnameIn) {
+        minionIds.put(minionId, new PendingMinion(creator, contactMethod, proxyPath, sshPort,
+                proxyFqdn, repoHostnameIn));
     }
 
     /**

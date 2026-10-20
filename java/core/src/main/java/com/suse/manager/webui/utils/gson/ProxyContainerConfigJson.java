@@ -182,9 +182,6 @@ public class ProxyContainerConfigJson {
         if (additionalFqdns != null && !additionalFqdns.isEmpty()) {
             return additionalFqdns;
         }
-        if (CREATE_SSL.equals(sslMode) && cnames != null) {
-            return cnames;
-        }
         return List.of();
     }
 }

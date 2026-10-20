@@ -32,7 +32,7 @@ __virtualname__ = "uyuni"
 
 log = logging.getLogger(__name__)
 
-Proxy = namedtuple("Proxy", ["hostname", "port"])
+Proxy = namedtuple("Proxy", ["hostname", "port", "repo_hostname"])
 
 JAVA_HOSTNAME = "localhost"
 PROXY_SSH_PUSH_USER = "mgrsshtunnel"
@@ -234,7 +234,7 @@ class UyuniRoster:
                 {
                     "ssh_pre_flight": self.ssh_pre_flight_script,
                     "ssh_pre_flight_args": [
-                        proxies[-1].hostname if proxies else self.java_hostname,
+                        proxies[-1].repo_hostname if proxies else self.java_hostname,
                         self.ssh_push_port_https if tunnel else SSL_PORT,
                         1 if self.ssh_use_salt_thin else 0,
                     ],
@@ -325,6 +325,7 @@ class UyuniRoster:
                    SMI.ssh_push_port AS ssh_push_port,
                    SSCM.label='ssh-push-tunnel' AS tunnel,
                    COALESCE(PF.name, SP.hostname) AS proxy_hostname,
+                   COALESCE(SP.hostname, PF.name) AS repo_hostname,
                    PI.ssh_port AS ssh_port,
                    COALESCE(MF.name, S.hostname) AS minion_fqdn
             FROM rhnServer AS S
@@ -363,7 +364,7 @@ class UyuniRoster:
             if row is None:
                 break
             if row.proxy_hostname:
-                proxies.append(Proxy(row.proxy_hostname, row.ssh_port))
+                proxies.append(Proxy(row.proxy_hostname, row.ssh_port, row.repo_hostname))
             prow = row
             row = h.fetchone()
 
