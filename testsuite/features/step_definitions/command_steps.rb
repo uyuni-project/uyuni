@@ -2010,6 +2010,20 @@ When(/^I (upgrade|install) "([^"]*)" on "([^"]*)" using the API(?: from (server|
   wait_action_complete(last_event['id'], mgr_server: mgr_server)
 end
 
+When(/^I upgrade all packages on "([^"]*)" using the API, waiting at most (\d+) seconds$/) do |host, timeout|
+  system_name = get_system_name(host)
+  last_event_before_action = get_last_events(host).first
+  # '*' must be quoted, otherwise the shell on the server expands it
+  next unless trigger_upgrade(system_name, "'*'", allow_up_to_date: true)
+
+  last_event = last_event_before_action
+  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for the new event to be created') do
+    last_event = get_last_events(host).first
+    break if last_event['id'] > last_event_before_action['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
+  end
+  wait_action_complete(last_event['id'], timeout: timeout.to_i)
+end
+
 When(/^I remove "([^"]*)" on "([^"]*)" using the API$/) do |package, host|
   system_name = get_system_name(host)
   last_event_before_action = get_last_events(host).first
