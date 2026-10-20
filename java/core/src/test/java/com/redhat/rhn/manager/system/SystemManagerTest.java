@@ -134,12 +134,14 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.metrics.SystemsCollector;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
+import com.suse.manager.utils.SaltPortsResolver;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.TestSaltApi;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
@@ -2058,6 +2060,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(ConfigDefaults.get().getProductVersion(), configYaml.get("server_version"));
         assertEquals(proxyName, configYaml.get("proxy_fqdn"));
         assertEquals(rootCA, configYaml.get("ca_crt"));
+        assertFalse(configYaml.containsKey("salt_publish_port"));
+        assertFalse(configYaml.containsKey("salt_request_port"));
 
         Map<String, Map<String, Object>> httpdRootYaml = new Yaml().load(content.get("httpd.yaml"));
         Map<String, Object> httpdYaml = httpdRootYaml.get("httpd");
@@ -2070,6 +2074,68 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(sshPushKey, sshYaml.get("server_ssh_push"));
         assertEquals(sshPushPubKey, sshYaml.get("server_ssh_push_pub"));
         assertEquals(sshPubKey, sshYaml.get("server_ssh_key_pub"));
+    }
+
+    @Test
+    public void testSetProxySaltPorts() throws Exception {
+        Server proxy = ServerFactoryTest.createTestProxyServer(user, false);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.getServerPaths().addAll(ServerFactory.createServerPaths(minion, proxy, "proxy.example.com"));
+        TestUtils.flushSession();
+
+        SystemManager.setProxySaltPorts(proxy, 30005, null);
+        assertEquals(30005, proxy.getProxyInfo().getSaltPublishPort());
+        assertNull(proxy.getProxyInfo().getSaltRequestPort());
+        // The minions connected to the proxy get the new ports
+        assertEquals(30005, getGeneralPillar(minion).get(SaltPortsResolver.PILLAR_PUBLISH_PORT));
+
+        // Back to the Salt defaults
+        SystemManager.setProxySaltPorts(proxy, null, null);
+        assertNull(proxy.getProxyInfo().getSaltPublishPort());
+        assertFalse(getGeneralPillar(minion).containsKey(SaltPortsResolver.PILLAR_PUBLISH_PORT));
+    }
+
+    private Map<String, Object> getGeneralPillar(MinionServer minion) {
+        return minion.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY).orElseThrow().getPillar();
+    }
+
+    @Test
+    public void testCreateProxyContainerConfigParentSaltPorts() throws InstantiationException, IOException {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        String proxyName = "pxy.mgr.lab";
+        String serverName = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
+        String rootCA = "Dummy Root CA";
+        String cert = "Dummy cert";
+        String key = "Dummy key";
+        SSLCertManager certManager = mock(SSLCertManager.class);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
+            will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult("key", "pubKey"))));
+            allowing(saltServiceMock).generateSSHKey(with(aNull(String.class)), with(aNull(String.class)));
+            will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult("pushKey", "pushPubKey"))));
+            allowing(saltServiceMock).checkSSLCert(with(equal(rootCA)), with(equal(new SSLCertPair(cert, key))),
+                    with(any(List.class)));
+            will(returnValue("apache cert"));
+            allowing(certManager).getNamesFromSslCert(cert);
+            will(returnValue(Set.of(proxyName)));
+        }});
+
+        Config.get().setString(ConfigDefaults.SALT_REQUEST_PORT, "30106");
+        byte[] config;
+        try {
+            config = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, 4096L,
+                    "admin@mgr.lab", rootCA, List.of(), new SSLCertPair(cert, key), null, null, null, certManager);
+        }
+        finally {
+            Config.get().remove(ConfigDefaults.SALT_REQUEST_PORT);
+        }
+        // The parent server Salt ports are given to the proxy salt-broker
+        Map<String, Object> configYaml = new Yaml().load(readTarData(config).get("config.yaml"));
+        assertFalse(configYaml.containsKey("salt_publish_port"));
+        assertEquals(30106, configYaml.get("salt_request_port"));
     }
 
     @Test

@@ -3146,3 +3146,10 @@ INSERT INTO access.namespace (namespace, access_mode, description) VALUES
     ('audit.scap.management', 'W', 'Create, edit, or delete SCAP content, tailoring files, and policies'),
     ('audit.scap.execution', 'R', 'View SCAP scan results and remediation scripts'),
     ('audit.scap.execution', 'W', 'Schedule SCAP scans and apply remediations');
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.proxy.get_salt_ports', 'R', 'Get the Salt ports the clients reach the given proxy or the server on')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.proxy.set_salt_ports', 'W', 'Set the Salt ports the proxy identified by the given client certificate is exposed on')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;

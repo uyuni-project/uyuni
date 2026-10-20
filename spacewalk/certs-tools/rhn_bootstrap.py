@@ -31,6 +31,7 @@ import glob
 import socket
 import shutil
 import operator
+import xmlrpc.client
 
 try:
     import urllib.parse as urlparse
@@ -209,11 +210,23 @@ def parseHttpProxyString(httpProxy):
 
 
 # pylint: disable-next=invalid-name
-def getSaltPorts():
-    """Salt ports the clients reach the server on, from rhn.conf
+def getSaltPorts(hostname):
+    """Salt ports the clients reach the server or the proxy named hostname on
 
+    The server knows the ports reported by the proxies and its own ones.
+    If it can't be asked, fall back to the ports of the server from rhn.conf.
     Returns a (publish, request) tuple, with empty strings for the Salt defaults.
     """
+    ports = {
+        "mgr_salt_publish_port": CFG.get("salt_publish_port"),
+        "mgr_salt_request_port": CFG.get("salt_request_port"),
+    }
+    try:
+        client = xmlrpc.client.ServerProxy("http://localhost/rpc/api")
+        ports = client.proxy.getSaltPorts(hostname)
+    # pylint: disable-next=broad-exception-caught
+    except Exception as e:
+        sys.stderr.write(f"WARNING: cannot get the Salt ports of {hostname}: {e}\n")
 
     def to_script_value(port, default):
         if port in (None, "") or int(port) == default:
@@ -221,8 +234,8 @@ def getSaltPorts():
         return str(int(port))
 
     return (
-        to_script_value(CFG.get("salt_publish_port"), 4505),
-        to_script_value(CFG.get("salt_request_port"), 4506),
+        to_script_value(ports.get("mgr_salt_publish_port"), 4505),
+        to_script_value(ports.get("mgr_salt_request_port"), 4506),
     )
 
 
@@ -563,7 +576,9 @@ ERROR: the value of --overrides and --script cannot be the same!
     if not options.http_proxy_username:
         options.http_proxy_password = ""
 
-    options.salt_publish_port, options.salt_request_port = getSaltPorts()
+    options.salt_publish_port, options.salt_request_port = getSaltPorts(
+        options.hostname
+    )
 
     # forcing numeric values
     for opt in ["force_bundle", "no_bundle", "no_gpg", "verbose"]:
