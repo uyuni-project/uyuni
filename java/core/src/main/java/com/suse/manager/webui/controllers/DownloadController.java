@@ -415,6 +415,15 @@ public class DownloadController {
             halt(HttpStatus.SC_NOT_FOUND, String.format("%s not found in %s", basename, channel));
         }
 
+	String remotePath = pkg.getRemotePath();
+	// Redirect package downloads from local to the remote_path value.
+	// Remove the -deb condition to not limit this feature to Debian urls
+        if (pkgInfo.getArch().endsWith("-deb") &&
+                StringUtils.isNotBlank(remotePath)) {
+            response.redirect(remotePath, HttpStatus.SC_MOVED_TEMPORARILY);
+            return "";
+        }
+
         File file = new File(mountPoint, pkg.getPath()).getAbsoluteFile();
 
         return downloadFile(request, response, file);

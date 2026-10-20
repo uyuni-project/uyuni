@@ -1,2 +1,3 @@
 - Allow "metadata only" package import via UI
 + Added setting to repository configuration details screen
+- Redirect download URLs for Debian packages only existing as metadata
