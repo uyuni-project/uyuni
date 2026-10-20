@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009--2014 Red Hat, Inc.
- * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -26,9 +26,13 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.client.ClientCertificate;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.Server;
@@ -38,6 +42,8 @@ import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.ProxyNotActivatedException;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.MockObjectTestCase;
@@ -69,6 +75,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @ExtendWith(SaltTestCaseExtension.class)
@@ -156,6 +163,53 @@ public class ProxyHandlerTest extends MockObjectTestCase {
         ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager, proxyConfigUpdateFacade);
         int rc = ph.deactivateProxy(cert.toString());
         assertEquals(1, rc);
+    }
+
+    @Test
+    public void testSetSaltPorts() throws Exception {
+        User user = UserTestUtils.createUser();
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server proxy = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_PROXY);
+        ClientCertificate cert = SystemManager.createClientCertificate(proxy);
+        cert.validate(proxy.getSecret());
+
+        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager, proxyConfigUpdateFacade);
+        assertEquals(1, ph.setSaltPorts(cert.toString(), 30005, 0));
+        assertEquals(30005, proxy.getProxyInfo().getSaltPublishPort());
+        assertNull(proxy.getProxyInfo().getSaltRequestPort());
+
+        assertThrows(InvalidParameterException.class, () -> ph.setSaltPorts(cert.toString(), 70000, 0));
+
+        Server notProxy = ServerFactoryTest.createTestServer(user, true);
+        ClientCertificate notProxyCert = SystemManager.createClientCertificate(notProxy);
+        notProxyCert.validate(notProxy.getSecret());
+        assertThrows(ProxyNotActivatedException.class, () -> ph.setSaltPorts(notProxyCert.toString(), 0, 0));
+    }
+
+    @Test
+    public void testGetSaltPorts() throws Exception {
+        User user = UserTestUtils.createUser();
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server proxy = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_PROXY);
+        proxy.setHostname("proxy.example.com");
+        proxy.getProxyInfo().setSaltPublishPort(30005);
+        ServerFactory.save(proxy);
+
+        Config.get().setString(ConfigDefaults.SALT_REQUEST_PORT, "30106");
+        try {
+            ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager, proxyConfigUpdateFacade);
+            // The proxy ports, without the ones of the server
+            assertEquals(Map.of("mgr_salt_publish_port", 30005), ph.getSaltPorts("proxy.example.com"));
+            // Any other host gets the ports of the server
+            assertEquals(Map.of("mgr_salt_request_port", 30106), ph.getSaltPorts("server.example.com"));
+        }
+        finally {
+            Config.get().remove(ConfigDefaults.SALT_REQUEST_PORT);
+        }
     }
 
     @Test

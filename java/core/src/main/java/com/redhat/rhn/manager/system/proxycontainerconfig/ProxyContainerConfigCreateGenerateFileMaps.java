@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,6 +17,9 @@ package com.redhat.rhn.manager.system.proxycontainerconfig;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.server.ServerFactory;
+
+import com.suse.manager.utils.SaltPortsResolver;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,6 +42,15 @@ public class ProxyContainerConfigCreateGenerateFileMaps implements ProxyContaine
         }
         String cobblerFqdn = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
         context.getConfigMap().put("replace_fqdns", Collections.singletonList(cobblerFqdn));
+        // Salt ports of the parent, server or proxy, for the salt-broker to connect to
+        Map<String, Object> parentPorts =
+                SaltPortsResolver.forMaster(ServerFactory.lookupProxyServer(context.getServerFqdn()));
+        if (parentPorts.containsKey(SaltPortsResolver.PILLAR_PUBLISH_PORT)) {
+            context.getConfigMap().put("salt_publish_port", parentPorts.get(SaltPortsResolver.PILLAR_PUBLISH_PORT));
+        }
+        if (parentPorts.containsKey(SaltPortsResolver.PILLAR_REQUEST_PORT)) {
+            context.getConfigMap().put("salt_request_port", parentPorts.get(SaltPortsResolver.PILLAR_REQUEST_PORT));
+        }
 
         // httpd.yaml
         Map<String, Object> httpdConfig = new HashMap<>();

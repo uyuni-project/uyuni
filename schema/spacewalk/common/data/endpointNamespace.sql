@@ -9808,3 +9808,14 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     WHERE ns.namespace = 'api.channel.listSoftwareChannelsByAutoSync' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/api/channel/listSoftwareChannelsByAutoSync' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.proxy.get_salt_ports' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/proxy/getSaltPorts' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.proxy.set_salt_ports' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/proxy/setSaltPorts' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
