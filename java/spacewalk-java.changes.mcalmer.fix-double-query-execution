@@ -1,0 +1,1 @@
+- Do not execute select queries twice when no IN clause is used

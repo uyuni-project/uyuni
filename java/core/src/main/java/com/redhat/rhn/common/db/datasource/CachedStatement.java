@@ -295,7 +295,7 @@ public class CachedStatement implements Serializable {
         Object resultObj = executeChecking(sqlStatement, qMap, parameters, mode, null);
         Class<DataResult<T>> drClazz = (Class<DataResult<T>>)(Class<?>) DataResult.class;
         if (drClazz.isAssignableFrom(resultObj.getClass())) {
-            return drClazz.cast(executeChecking(sqlStatement, qMap, parameters, mode, null));
+            return drClazz.cast(resultObj);
         }
         return new DataResult<>(mode);
     }
