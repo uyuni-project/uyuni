@@ -90,7 +90,7 @@ public class SystemHardwareAction extends RhnAction {
         if (isSubmitted(form)) {
             if (ctx.hasParam("update_networking_properties")) {
                 server.setPrimaryInterfaceWithName(form.get("primaryInterface").toString());
-                server.setPrimaryFQDNWithName(form.get("primaryFQDN").toString());
+                SystemManager.setPrimaryFqdn(server, form.get("primaryFQDN").toString());
                 server.asMinionServer().ifPresent(m -> MinionPillarManager.INSTANCE.generatePillar(m,
                                                   false, MinionPillarManager.PillarSubset.GENERAL));
                 createSuccessMessage(request, "message.interfaceSet", null);

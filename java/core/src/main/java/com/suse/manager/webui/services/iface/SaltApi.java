@@ -218,6 +218,26 @@ public interface SaltApi extends Serializable {
     Optional<MgrUtilRunner.RemoveKnowHostResult> removeSaltSSHKnownHost(String hostname, int port);
 
     /**
+     * Renames a hostname in a user's ~/.ssh/known_hosts file, preserving the pinned host keys.
+     * @param user the user for which to update the hostname
+     * @param oldHostname the hostname to rename
+     * @param newHostname the new hostname
+     * @param port the port of the host
+     * @return the result of the runner call
+     */
+    Optional<MgrUtilRunner.UpdateKnowHostResult> updateSaltSSHKnownHost(String user, String oldHostname,
+            String newHostname, int port);
+
+    /**
+     * Update the Salt SSH known_hosts entries of a salt-ssh minion after its primary
+     * FQDN was registered or changed. Only call this for ssh minions.
+     *
+     * @param minion the minion whose primary FQDN changed
+     * @param previousFqdnName the name the host keys are pinned under, null when unknown
+     */
+    void updateKnownHostsOnPrimaryFqdnChange(MinionServer minion, String previousFqdnName);
+
+    /**
      * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
      * @param minionList minion list
      */

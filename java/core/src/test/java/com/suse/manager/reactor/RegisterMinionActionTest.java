@@ -308,6 +308,49 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 slesAssertions,
                 DEFAULT_CONTACT_METHOD);
     }
+
+    @Test
+    public void testRegisterSSHMinionWithoutFqdnFallsBackToMinionId() throws Exception {
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
+        cleanupFunction.accept(null);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).getGrains(with(any(String.class)), with(any(TypeToken.class)),
+                    with(any(String[].class)));
+            will(returnValue(Optional.of(DEFAULT_MINION_START_UP_GRAINS)));
+            // SystemInfo without a usable fqdn grain
+            allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
+            will(returnValue(getSystemInfo(null, null, null, Map.of("fqdn", ""))));
+            List<ProductInfo> pil = new ArrayList<>();
+            pil.add(new ProductInfo(product.getName(), product.getArch().getLabel(), "descr", "eol", "epoch",
+                    "flavor", true, true, "productline", Optional.of("registerrelease"), "test", "repo",
+                    "shortname", "summary", "vendor", product.getVersion()));
+            allowing(saltServiceMock).getProducts(with(any(String.class)));
+            will(returnValue(Optional.of(pil)));
+            // The registration renames the Salt SSH known_hosts entry to the primary FQDN name
+            allowing(saltServiceMock).updateKnownHostsOnPrimaryFqdnChange(with(any(MinionServer.class)),
+                    with(aNull(String.class)));
+        }});
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() {{
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        }});
+
+        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(
+                saltServiceMock, saltServiceMock, cloudManager4Test, attestationManager);
+        action.registerSSHMinion(MINION_ID, 22, Optional.empty(), Optional.empty());
+
+        Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(MACHINE_ID);
+        assertTrue(optMinion.isPresent());
+        // No fqdn detected -> hostname falls back to the minion id for salt-ssh minions
+        assertEquals(MINION_ID, optMinion.get().getHostname());
+        assertEquals(ServerFactory.findContactMethodByLabel(SSH_PUSH_CONTACT_METHOD),
+                optMinion.get().getContactMethod());
+    }
+
     public void executeTest(ExpectationsFunction expectations, ActivationKeySupplier keySupplier,
                             Assertions assertions, String contactMethod) throws Exception {
         executeTest(expectations, keySupplier, assertions, cleanupFunction, contactMethod);

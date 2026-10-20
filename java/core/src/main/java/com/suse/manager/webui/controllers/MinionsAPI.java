@@ -402,7 +402,7 @@ public class MinionsAPI {
 
         try {
              Map<String, Object> data = new TreeMap<>();
-             List<Long> actions = ActionManager.changeProxy(user, rq.getIds(), rq.getProxy());
+             List<Long> actions = ActionManager.changeProxy(user, rq.getIds(), rq.getProxy(), rq.getProxyFqdn());
              if (actions.isEmpty()) {
                  throw new IllegalStateException("No action in schedule result");
              }

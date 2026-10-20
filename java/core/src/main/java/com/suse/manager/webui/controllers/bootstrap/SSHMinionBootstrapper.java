@@ -111,7 +111,9 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
                         minionId,
                         result.getContactMethod().orElse(defaultContactMethod),
                         proxyPath,
-                        params.getPort().orElse(SSH_PUSH_PORT)
+                        params.getPort().orElse(SSH_PUSH_PORT),
+                        params.getProxyFqdn().orElse(null),
+                        SaltSSHService.getMinionRepoHostname(params.getProxyFqdn(), params.getProxyId())
                 );
 
                 getRegisterAction().registerSSHMinion(minionId, params.getPort().orElse(SSH_PUSH_PORT),

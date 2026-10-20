@@ -3736,6 +3736,53 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    /**
+     * Test ActionManager.changeProxy with an explicit proxy FQDN. The FQDN must belong
+     * to the authorized proxy or, for direct connections, to the Uyuni server itself.
+     * @throws Exception if anything failed
+     */
+    @Test
+    public void testChangeProxyWithFqdn() throws Exception {
+        SystemHandler systemHandler = getMockedHandler();
+        ActionManager.setTaskomaticApi(systemHandler.getTaskomaticApi());
+
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(admin);
+        MinionServer minionSsh = MinionServerFactoryTest.createTestMinionServer(admin);
+        minionSsh.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
+
+        Server proxy = ServerFactoryTest.createTestProxyServer(admin, true);
+        proxy.setHostname("testproxy");
+        proxy.addFqdn("testproxy-alt.example.com");
+        ServerFactory.save(proxy);
+
+        // an additional FQDN of the authorized proxy is accepted and recorded as server path
+        List<Long> actions = ActionManager.changeProxy(admin,
+                List.of(minionSsh.getId()), proxy.getId(), "testproxy-alt.example.com");
+        assertEquals(1, actions.size());
+        assertEquals("testproxy-alt.example.com", minionSsh.getFirstServerPath().get().getHostname());
+
+        // regular minions receive the FQDN directly as mgr_server
+        actions = ActionManager.changeProxy(admin, List.of(minion.getId()), proxy.getId(), "testproxy");
+        assertEquals(1, actions.size());
+        ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0));
+        assertEquals("testproxy", action.getDetails().getPillarsMap().get().get("mgr_server"));
+
+        // a direct connection is only allowed to the Uyuni server FQDN
+        actions = ActionManager.changeProxy(admin,
+                List.of(minionSsh.getId()), 0L, ConfigDefaults.get().getJavaHostname());
+        assertEquals(1, actions.size());
+        assertEquals(0, minionSsh.getServerPaths().size());
+
+        // the FQDN of an unrelated system is rejected, even when the proxy id is accessible
+        assertThrows(java.lang.UnsupportedOperationException.class,
+                () -> ActionManager.changeProxy(admin,
+                        List.of(minionSsh.getId()), proxy.getId(), "evil.example.com"));
+
+        // ... and also for direct connections (proxyId 0)
+        assertThrows(java.lang.UnsupportedOperationException.class,
+                () -> ActionManager.changeProxy(admin, List.of(minion.getId()), 0L, "evil.example.com"));
+    }
+
     private SystemHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = mockContext.mock(TaskomaticApi.class);
         SystemHandler systemHandler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,

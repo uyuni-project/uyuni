@@ -16,14 +16,13 @@
 package com.suse.proxy.get.formdata;
 
 import static com.suse.utils.Predicates.allProvided;
-import static com.suse.utils.Predicates.isAbsent;
 import static com.suse.utils.Predicates.isProvided;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.frontend.dto.OrgProxyServer;
-import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFQDN;
+import com.redhat.rhn.domain.server.ServerPath;
 
 import com.suse.proxy.ProxyConfigUtils;
 import com.suse.proxy.model.ProxyConfig;
@@ -31,9 +30,9 @@ import com.suse.proxy.model.ProxyConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * This step acquires and maps the proxy configuration data and also the electable parents FQDNs
@@ -60,21 +59,30 @@ public class ProxyConfigGetFormDataAcquisitor implements ProxyConfigGetFormDataC
      * @param context the context
      */
     private void retrieveElectableParentsFqdn(ProxyConfigGetFormDataContext context) {
-        String localManagerFqdn = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
+        Set<String> parentFqdns = new HashSet<>();
 
-        DataResult<OrgProxyServer> orgProxyServers = SystemManager.listProxies(context.getUser().getOrg());
-        Set<String> electableParents = orgProxyServers.stream()
-                .filter(s -> !Objects.equals(s.getId(), context.getServer().getId()))
-                .map(OrgProxyServer::getName)
-                .collect(Collectors.toSet());
-
-        if (isAbsent(localManagerFqdn)) {
-            LOG.error("Could not determine the Server FQDN. Skipping it as a parent.");
+        Optional<ServerPath> parentPath = context.getServer().getFirstServerPath();
+        if (parentPath.isPresent()) {
+            Server parentProxy = parentPath.get().getId().getProxyServer();
+            if (parentProxy != null) {
+                parentFqdns.addAll(parentProxy.getFqdns().stream()
+                        .map(ServerFQDN::getName)
+                        .toList());
+            }
+            else {
+                parentFqdns.add(parentPath.get().getHostname());
+            }
         }
         else {
-            electableParents.add(localManagerFqdn);
+            String localManagerFqdn = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
+            if (isProvided(localManagerFqdn)) {
+                parentFqdns.add(localManagerFqdn);
+            }
+            else {
+                LOG.error("Could not determine the Server FQDN. Skipping it as a parent.");
+            }
         }
 
-        context.getElectableParentsFqdn().addAll(electableParents.stream().sorted().toList());
+        context.getElectableParentsFqdn().addAll(parentFqdns.stream().sorted().toList());
     }
 }

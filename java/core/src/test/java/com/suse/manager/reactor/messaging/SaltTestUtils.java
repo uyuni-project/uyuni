@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 /**
@@ -58,6 +59,8 @@ import java.util.regex.Pattern;
 public class SaltTestUtils {
 
     private static final Gson GSON = new GsonBuilder().create();
+
+    private static final AtomicInteger TEST_APPENDER_COUNTER = new AtomicInteger();
 
     /**
      * Compute a salt call response from a data file (often a JSON one, but not mandatory).
@@ -212,7 +215,11 @@ public class SaltTestUtils {
      * @return the in-memory logs appender
      */
     public static TestLogAppender enableTestLogging(Class<?> cls) {
-        TestLogAppender listAppender = new TestLogAppender("testAppender", new ArrayList<>());
+        // Appenders are tracked by name, so a unique name is required. Otherwise a
+        // previously registered test appender would shadow this one and it would not
+        // receive any event.
+        TestLogAppender listAppender = new TestLogAppender(
+                "testAppender-" + TEST_APPENDER_COUNTER.incrementAndGet(), new ArrayList<>());
         listAppender.start();
 
         LoggerContext loggerContext = (LoggerContext) LogManager.getContext(cls.getClassLoader(), false);

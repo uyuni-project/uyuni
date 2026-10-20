@@ -17,14 +17,17 @@ package com.suse.manager.webui.controllers.utils;
 
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyTest;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.controllers.bootstrap.BootstrapResult;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
@@ -46,6 +49,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,6 +143,72 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
     @Override
     protected List<String> bootstrapMods() {
         return Arrays.asList("certs", "bootstrap");
+    }
+
+    /**
+     * Tests that the bootstrap succeeds when the given proxy FQDN is a registered FQDN of
+     * the selected proxy.
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testBootstrapSucceedsWithMatchingProxyFqdn() throws Exception {
+        Server proxy = ServerFactoryTest.createTestProxyServer(user, true);
+        String proxyFqdn = "parent-" + TestUtils.randomString() + ".example.com";
+        proxy.addFqdn(proxyFqdn);
+        ServerFactory.save(proxy);
+
+        mockSuccessfulBootstrap();
+
+        BootstrapParameters params = new BootstrapParameters("myhost", Optional.of(6022), "myuser",
+                Optional.of("mypassword"), Collections.emptyList(), Optional.empty(), true,
+                Optional.of(proxy.getId()));
+        params.setProxyFqdn(of(proxyFqdn));
+
+        assertTrue(bootstrapper.bootstrap(params, user, getDefaultContactMethod()).isSuccess());
+    }
+
+    /**
+     * Tests that the bootstrap succeeds when a direct connection (proxy id 0) is combined
+     * with the Uyuni server's own FQDN.
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testBootstrapSucceedsWithServerFqdnForDirectConnection() throws Exception {
+        mockSuccessfulBootstrap();
+
+        BootstrapParameters params = new BootstrapParameters("myhost", Optional.of(6022), "myuser",
+                Optional.of("mypassword"), Collections.emptyList(), Optional.empty(), true,
+                Optional.of(0L));
+        params.setProxyFqdn(of(ConfigDefaults.get().getJavaHostname()));
+
+        assertTrue(bootstrapper.bootstrap(params, user, getDefaultContactMethod()).isSuccess());
+    }
+
+    /**
+     * Mock the salt interactions of a successful bootstrap.
+     * @throws Exception if mocking fails
+     */
+    private void mockSuccessfulBootstrap() throws Exception {
+        Key.Pair keyPair = mockKeyPair();
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
+            will(returnValue(false));
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.UNACCEPTED);
+            will(returnValue(false));
+
+            allowing(saltServiceMock).generateKeysAndAccept("myhost", false);
+            will(returnValue(keyPair));
+
+            MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.SshKeygenResult("key", "pubkey");
+            allowing(saltServiceMock).generateSSHKey(SaltSSHService.SSH_KEY_PATH, SaltSSHService.SUMA_SSH_PUB_KEY);
+            will(returnValue(of(mockResult)));
+
+            allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
+                    with(bootstrapMods()), with(any(Map.class)));
+            will(returnValue(new Result<>(Xor.right(createSuccessResult()))));
+
+            atMost(0).of(saltServiceMock).deleteKey("myhost");
+        }});
     }
 
     @Override

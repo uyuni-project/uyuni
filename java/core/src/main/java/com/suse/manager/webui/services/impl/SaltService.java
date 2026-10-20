@@ -1304,6 +1304,43 @@ public class SaltService implements SystemQuery, SaltApi {
         return callSync(call);
     }
 
+    @Override
+    public Optional<MgrUtilRunner.UpdateKnowHostResult> updateSaltSSHKnownHost(String user, String oldHostname,
+            String newHostname, int port) {
+        RunnerCall<MgrUtilRunner.UpdateKnowHostResult> call =
+                MgrUtilRunner.updateSSHKnownHost(user, oldHostname, newHostname, port);
+        return callSync(call);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateKnownHostsOnPrimaryFqdnChange(MinionServer minion, String previousFqdnName) {
+        String newName = minion.getPrimaryFqdnName();
+        String oldName = Optional.ofNullable(previousFqdnName).orElseGet(minion::getMinionId);
+        if (newName.equals(oldName)) {
+            return;
+        }
+        int port = Optional.ofNullable(minion.getSSHPushPort()).orElse(SaltSSHService.SSH_DEFAULT_PORT);
+        LOG.info("Updating Salt SSH known_hosts entries of system [{}] from [{}] to [{}]",
+                minion.getId(), oldName, newName);
+        try {
+            Optional<MgrUtilRunner.UpdateKnowHostResult> result =
+                    updateSaltSSHKnownHost("salt", oldName, newName, port);
+            if (result.map(r -> !"success".equals(r.getStatus())).orElse(true)) {
+                String comment = result.map(MgrUtilRunner.UpdateKnowHostResult::getComment)
+                        .orElse("runner call failed");
+                LOG.error("Failed to update Salt SSH known_hosts entries of system [{}] from [{}] to [{}]: {}",
+                        minion.getId(), oldName, newName, comment);
+            }
+        }
+        catch (RuntimeException e) {
+            LOG.error("Error updating Salt SSH known_hosts entries of system [{}] from [{}] to [{}]",
+                    minion.getId(), oldName, newName, e);
+        }
+    }
+
 
     /**
      * {@inheritDoc}

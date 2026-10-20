@@ -74,6 +74,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -594,6 +595,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setModified(minion.getCreated());
             minion.setContactMethod(getContactMethod(activationKey, isSaltSSH, minionId));
             minion.setHostname(grains.getOptionalAsString(FQDN).orElse(null));
+            if (isSaltSSH && StringUtils.isBlank(minion.getHostname())) {
+                // Salt-SSH connects using the hostname when no primary FQDN is registered. If the
+                // minion did not report one, fall back to the minion id (the name used at bootstrap)
+                // so the connection name is never empty.
+                minion.setHostname(minionId);
+            }
             minion.setCpe(cpe);
             systemInfo.getKernelLiveVersion().ifPresent(minion::setKernelLiveVersion);
             minion.setPayg(instanceFlavor.equals(PublicCloudInstanceFlavor.PAYG));
@@ -618,7 +625,20 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             ServerFactory.save(minion);
 
             if (isSaltSSH) {
-                minion.updateServerPaths(saltSSHProxyId);
+                Optional<String> customProxyFqdn = MinionPendingRegistrationService.get(minionId)
+                        .flatMap(MinionPendingRegistrationService.PendingMinion::getProxyFqdn);
+                if (customProxyFqdn.isPresent()) {
+                    LOG.debug("RegisterMinionEventMessageAction: updating server path for minion {} " +
+                                    "with custom proxy FQDN {}",
+                            minionId, customProxyFqdn.get());
+                    minion.updateServerPaths(customProxyFqdn.get());
+                }
+                else {
+                    LOG.debug("RegisterMinionEventMessageAction: updating server path for minion {} " +
+                                    "with saltSSHProxyId: {}",
+                            minionId, saltSSHProxyId);
+                    minion.updateServerPaths(saltSSHProxyId);
+                }
                 minion.setSSHPushPort(sshPort.orElse(SaltSSHService.SSH_PUSH_PORT));
             }
             else {
@@ -647,6 +667,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             systemInfo.getUptimeSeconds().ifPresent(us -> SaltUtils.handleUptimeUpdate(minion, us.longValue()));
             RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH, isSaltSSH);
             ServerFactory.save(minion);
+
+            if (isSaltSSH) {
+                // During the bootstrap salt-ssh connected using the minion id and pinned the host key
+                // under that name. The following salt-ssh calls use the primary FQDN name (falling back
+                // to the hostname), so rename the known_hosts entry now. Otherwise the next call would
+                // hit an unknown host key and hang on the interactive prompt.
+                saltApi.updateKnownHostsOnPrimaryFqdnChange(minion, null);
+            }
         }
         catch (RegisterMinionException rme) {
             LOG.error("Error registering minion id: {}", minionId, rme);

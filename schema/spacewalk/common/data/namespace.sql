@@ -2481,7 +2481,13 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.bootstrap', 'W', 'Bootstrap a system for management via either Salt or Salt SSH.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.bootstrap_by_proxy_fqdn', 'W', 'Bootstrap a system for management via either Salt or Salt SSH using a proxy FQDN.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.bootstrap_with_private_ssh_key', 'W', 'Bootstrap a system for management via either Salt or Salt SSH.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.bootstrap_with_private_ssh_key_by_proxy_fqdn', 'W', 'Bootstrap a system for management via either Salt or Salt SSH with a private SSH key using a proxy FQDN.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.change_proxy', 'W', 'Connect given systems to another proxy.')

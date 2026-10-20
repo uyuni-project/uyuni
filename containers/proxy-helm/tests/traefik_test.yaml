@@ -248,3 +248,51 @@ tests:
         documentSelector:
           path: metadata.name
           value: salt-request-router
+
+  - it: should render additional fqdns in ingress hosts and tls
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+        additional_fqdns:
+          - alt1.example.org
+          - alt2.example.org
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+    release:
+      namespace: proxy1
+    asserts:
+      - equal:
+          path: spec.rules[0].host
+          value: proxy.example.org
+        template: ingress.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-proxy-ssl
+      - equal:
+          path: spec.rules[1].host
+          value: alt1.example.org
+        template: ingress.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-proxy-ssl
+      - equal:
+          path: spec.rules[2].host
+          value: alt2.example.org
+        template: ingress.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-proxy-ssl
+      - equal:
+          path: spec.tls[0].hosts
+          value:
+            - proxy.example.org
+            - alt1.example.org
+            - alt2.example.org
+        template: ingress.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-proxy-ssl
