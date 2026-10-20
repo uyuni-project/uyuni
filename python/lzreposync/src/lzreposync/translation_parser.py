@@ -39,7 +39,7 @@ class TranslationParser:
                 curr_description = line.split(": ")[1]
                 reading_description = True
             elif reading_description:
-                curr_description += line.strip(" ")
+                curr_description += line
         return True
 
     def cache_pacakge_description(self, package_checksum, package_description):
