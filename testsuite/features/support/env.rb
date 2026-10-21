@@ -80,6 +80,15 @@ SCENARIO_HARD_LIMIT = ENV['SCENARIO_HARD_LIMIT'] ? ENV['SCENARIO_HARD_LIMIT'].to
 # up to ~13 h in BV) use this instead. It is 0 (watchdog disabled, rely on the external Layer 4
 # job timeout) unless explicitly set, so set it per pipeline: e.g. 3600 in CI, 50400 in BV.
 LONG_SCENARIO_HARD_LIMIT = ENV.fetch('LONG_SCENARIO_HARD_LIMIT', '9000').to_i
+# Whole-run deadline in seconds since this process started, 0 (default) disables it. Unlike the per-scenario
+# limits above it bounds the entire cucumber run, so that it fails on its own, report included, before an
+# external wall-clock limit (e.g. the `timeout` wrapping the run in the Jenkins pipeline) kills it without any.
+RUN_HARD_LIMIT = ENV.fetch('RUN_HARD_LIMIT', '0').to_i
+
+# Seconds left until the whole-run deadline (only meaningful when RUN_HARD_LIMIT is positive)
+def run_time_left
+  RUN_HARD_LIMIT - (Time.now.to_i - STARTTIME)
+end
 # Small positive wait for "is it there right now" existence gates. capybara-playwright-driver does
 # NOT support wait: 0 / wait: false: it requires wait > 0, and a 0 maps to Playwright's "disable
 # timeout" which means wait forever. Never use wait: 0 with the Playwright driver - use this instead.
@@ -403,6 +412,12 @@ Around do |scenario, block|
     else
       SCENARIO_HARD_LIMIT
     end
+
+  # The whole-run deadline caps the limit, so the watchdog also fires for a scenario that would end after it
+  if RUN_HARD_LIMIT.positive?
+    limit = limit.positive? ? [limit, run_time_left].min : run_time_left
+    limit = [limit, 1].max
+  end
 
   # limit <= 0 disables the watchdog (e.g. @long_running with no LONG_SCENARIO_HARD_LIMIT set, such
   # as a 13 h product sync in BV); the external job wall-clock remains the backstop in that case.
