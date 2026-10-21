@@ -10,9 +10,12 @@
  */
 package com.suse.manager.reactor;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.cloud.CloudPaygManager;
@@ -22,9 +25,17 @@ import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.TestSaltApi;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.salt.netapi.event.EventListener;
 import com.suse.salt.netapi.event.EventStream;
 
+import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+import jakarta.transaction.Status;
+import jakarta.transaction.Synchronization;
 
 /**
  * Unit test for {@link SaltReactor}.
@@ -133,5 +144,115 @@ class SaltReactorTest {
 
         // Verify that getEventStream() was indeed invoked, explicitly checking that the connection was attempted!
         assertTrue(getEventStreamCalled[0], "Stream connection was not attempted");
+    }
+
+    @Test
+    void testInitializerCommitsAndClosesSession() throws Exception {
+        AtomicReference<Session> initializerSession = new AtomicReference<>();
+        AtomicInteger transactionStatus = new AtomicInteger(Status.STATUS_UNKNOWN);
+
+        SaltReactor reactor = createReactorWithRunningTaskomatic(new TestSaltApi() {
+            @Override
+            public EventStream getEventStream() {
+                openSessionAndTrackTransaction(initializerSession, transactionStatus);
+                return new DummyEventStream();
+            }
+        });
+
+        startAndWaitForInitializer(reactor);
+        reactor.stop();
+
+        assertNotNull(initializerSession.get(), "Initializer did not open a Hibernate session");
+        assertEquals(Status.STATUS_COMMITTED, transactionStatus.get(), "Initializer transaction was not committed");
+        assertFalse(initializerSession.get().isOpen(), "Initializer Hibernate session was not closed");
+    }
+
+    @Test
+    void testInitializerRollsBackAndClosesSessionOnFailure() throws Exception {
+        AtomicReference<Session> initializerSession = new AtomicReference<>();
+        AtomicInteger transactionStatus = new AtomicInteger(Status.STATUS_UNKNOWN);
+
+        SaltReactor reactor = createReactorWithRunningTaskomatic(new TestSaltApi() {
+            @Override
+            public EventStream getEventStream() {
+                openSessionAndTrackTransaction(initializerSession, transactionStatus);
+                throw new IllegalStateException("Simulated event stream failure");
+            }
+        });
+
+        startAndWaitForInitializer(reactor);
+        reactor.stop();
+
+        assertNotNull(initializerSession.get(), "Initializer did not open a Hibernate session");
+        assertEquals(Status.STATUS_ROLLEDBACK, transactionStatus.get(),
+                "Initializer transaction was not rolled back");
+        assertFalse(initializerSession.get().isOpen(), "Initializer Hibernate session was not closed");
+    }
+
+    private static void openSessionAndTrackTransaction(AtomicReference<Session> sessionOut,
+                                                       AtomicInteger statusOut) {
+        // like PGEventStream, which runs SaltEventFactory queries in the session of the initializer thread
+        Session session = HibernateFactory.getSession();
+        sessionOut.set(session);
+        session.getTransaction().registerSynchronization(new Synchronization() {
+            @Override
+            public void beforeCompletion() {
+                // nothing to do
+            }
+
+            @Override
+            public void afterCompletion(int status) {
+                statusOut.set(status);
+            }
+        });
+    }
+
+    private static SaltReactor createReactorWithRunningTaskomatic(SaltApi saltApi) {
+        SaltReactor reactor = new SaltReactor(saltApi, null, null, null, null, null);
+        reactor.setTaskomaticApi(new TaskomaticApi() {
+            @Override
+            public boolean isRunning() {
+                return true;
+            }
+        });
+        return reactor;
+    }
+
+    private static void startAndWaitForInitializer(SaltReactor reactor) throws InterruptedException {
+        reactor.start();
+        Thread initializerThread = Thread.getAllStackTraces().keySet().stream()
+                .filter(t -> "salt-event-stream-initializer".equals(t.getName()))
+                .findFirst()
+                .orElse(null);
+        assertNotNull(initializerThread, "Asynchronous wait thread 'salt-event-stream-initializer' was not found");
+        initializerThread.join(10000);
+        assertFalse(initializerThread.isAlive(), "Initializer thread did not terminate");
+    }
+
+    private static class DummyEventStream implements EventStream {
+        @Override
+        public void addEventListener(EventListener listener) {
+            // nothing to do
+        }
+
+        @Override
+        public void removeEventListener(EventListener listener) {
+            // nothing to do
+        }
+
+        @Override
+        public int getListenerCount() {
+            return 0;
+        }
+
+        @Override
+        public boolean isEventStreamClosed() {
+            return false;
+        }
+
+        @Override
+        public void close() {
+            // nothing to do
+        }
     }
 }
