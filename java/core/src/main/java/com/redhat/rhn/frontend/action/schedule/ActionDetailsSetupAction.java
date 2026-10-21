@@ -52,6 +52,7 @@ public class ActionDetailsSetupAction extends RhnAction {
         request.setAttribute("scheduler", af.getScheduler());
         request.setAttribute("earliestaction", af.getEarliestDate());
         request.setAttribute("actionnotes", af.getNotes());
+        request.setAttribute("actionDescription", action.getActionDescription());
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

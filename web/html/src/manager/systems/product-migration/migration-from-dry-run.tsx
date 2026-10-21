@@ -34,7 +34,12 @@ export const SSMProductMigrationFromDryRun: FC<Props> = ({
 }: Props): JSX.Element => {
   const [outcomeMessage, setOutcomeMessage] = useState<MessageType[]>([]);
 
-  async function performMigration(dryRun: boolean, earliest: moment.Moment, actionChain?: ActionChain): Promise<void> {
+  async function performMigration(
+    dryRun: boolean,
+    earliest: moment.Moment,
+    actionChain?: ActionChain,
+    actionDescription?: string
+  ): Promise<void> {
     try {
       const request = {
         serverIds: systemsData.map((system) => system.id),
@@ -43,6 +48,7 @@ export const SSMProductMigrationFromDryRun: FC<Props> = ({
         allowVendorChange: allowVendorChange,
         earliest: earliest,
         actionChain: actionChain ? actionChain.text : null,
+        actionDescription: actionDescription,
         dryRun: dryRun,
       };
 

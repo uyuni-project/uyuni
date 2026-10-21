@@ -56,6 +56,7 @@ type SystemChannelsState = {
   scheduled: boolean;
   actionChain: ActionChain | null | undefined;
   dependencyDataAvailable: boolean;
+  actionDescription?: string;
 };
 
 class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState> {
@@ -374,6 +375,7 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
       children: selectedChildrenList,
       earliest: this.state.earliest,
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
+      actionDescription: this.state.actionDescription,
     })
       .then((data) => {
         if (data.success) {
@@ -725,8 +727,10 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
           <ActionSchedule
             actionChains={actionChains}
             earliest={this.state.earliest}
+            actionDescription={this.state.actionDescription ?? ""}
             onActionChainChanged={this.onActionChainChanged}
             onDateTimeChanged={this.onDateTimeChanged}
+            onActionDescriptionChanged={(desc) => this.setState({ actionDescription: desc })}
             systemIds={[this.props.serverId]}
             actionType="channels.subscribe"
           />

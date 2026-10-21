@@ -33,6 +33,7 @@ export type CoCoScheduleRequest = {
   actionType: typeof COCO_ATTESTATION_ACTION_TYPE;
   earliest: LocalizedMoment;
   actionChain: string | null;
+  actionDescription?: string;
 };
 
 export function getSystemCoCoSettings(serverId: number) {

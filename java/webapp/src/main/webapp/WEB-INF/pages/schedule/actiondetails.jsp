@@ -28,6 +28,12 @@
         <td><bean:message key="actiondetails.jsp.notes"/>:</td>
         <td>${requestScope.actionnotes}</td>
       </tr>
+      <c:if test="${not empty requestScope.actionDescription}">
+      <tr>
+        <td><bean:message key="actions.jsp.action_description"/>:</td>
+        <td class="action-description-col"><c:out value="${requestScope.actionDescription}"/></td>
+      </tr>
+      </c:if>
     </tbody>
   </table>
 

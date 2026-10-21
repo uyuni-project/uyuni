@@ -49,6 +49,7 @@ export default function SchedulePlaybook({
   const [playbookArgs, setPlaybookArgs] = useState<PlaybookArgs>({ flushCache: false });
   const [variables, setVariables] = useState<string>("");
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
+  const [actionDescription, setActionDescription] = useState<string>("");
   const [datetime, setDatetime] = useState(localizedMoment());
   const defaultInventory = "-";
 
@@ -92,6 +93,7 @@ export default function SchedulePlaybook({
       extraVars: variables,
       actionChainLabel: actionChain?.text || null,
       earliest: datetime,
+      actionDescription: actionDescription,
     })
       .then((res: JsonResult<number>) => (res.success ? res.data : Promise.reject(res)))
       .then((actionId) => setMessages(MsgUtils.info(<ScheduleMessage id={actionId} actionChain={actionChain?.text} />)))
@@ -196,8 +198,10 @@ export default function SchedulePlaybook({
                 <ActionSchedule
                   earliest={datetime}
                   actionChains={window.actionChains}
+                  actionDescription={actionDescription}
                   onDateTimeChanged={setDatetime}
                   onActionChainChanged={setActionChain}
+                  onActionDescriptionChanged={setActionDescription}
                   systemIds={[playbook.path.minionServerId]}
                   actionType="ansible.playbook"
                 />

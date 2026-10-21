@@ -17,6 +17,7 @@ package com.redhat.rhn.common.messaging;
 import static org.hibernate.resource.transaction.spi.TransactionStatus.COMMITTING;
 import static org.hibernate.resource.transaction.spi.TransactionStatus.ROLLING_BACK;
 
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.events.TransactionHelper;
 
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +35,7 @@ class ActionExecutor implements Runnable {
 
     private EventMessage msg;
     private List<MessageAction> actionHandlers = new ArrayList<>();
+    private final String actionDescription;
 
     /**
      * Constructor
@@ -43,6 +45,7 @@ class ActionExecutor implements Runnable {
     ActionExecutor(List<MessageAction> handlers, EventMessage eventMsg) {
         actionHandlers.addAll(handlers);
         msg = eventMsg;
+        actionDescription = Context.getCurrentContext().getActionDescription();
     }
 
     /**
@@ -51,33 +54,40 @@ class ActionExecutor implements Runnable {
      */
     @Override
     public void run() {
-        for (MessageAction action : actionHandlers) {
-            LOG.debug("run() - got action: {}", action.getClass().getName());
-            try {
-                if (msg instanceof EventDatabaseMessage evtdb) {
-                    LOG.debug("Got a EventDatabaseMessage");
-                    while (evtdb.getTransaction() != null &&
-                            (evtdb.getTransaction().isActive() ||
-                             evtdb.getTransaction().getStatus() == COMMITTING ||
-                             evtdb.getTransaction().getStatus() == ROLLING_BACK)) {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("DB message, waiting for txn: active: {}, status: {}",
-                                    evtdb.getTransaction().isActive(), evtdb.getTransaction().getStatus());
+        String previousDescription = Context.getCurrentContext().getActionDescription();
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            for (MessageAction action : actionHandlers) {
+                LOG.debug("run() - got action: {}", action.getClass().getName());
+                try {
+                    if (msg instanceof EventDatabaseMessage evtdb) {
+                        LOG.debug("Got a EventDatabaseMessage");
+                        while (evtdb.getTransaction() != null &&
+                                (evtdb.getTransaction().isActive() ||
+                                 evtdb.getTransaction().getStatus() == COMMITTING ||
+                                 evtdb.getTransaction().getStatus() == ROLLING_BACK)) {
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("DB message, waiting for txn: active: {}, status: {}",
+                                        evtdb.getTransaction().isActive(), evtdb.getTransaction().getStatus());
+                            }
+                            Thread.sleep(10);
                         }
-                        Thread.sleep(10);
+                        LOG.debug("Transaction finished.  Executing");
                     }
-                    LOG.debug("Transaction finished.  Executing");
+                    if (action.needsTransactionHandling()) {
+                        TransactionHelper.handlingTransaction(() -> action.execute(msg), action.getExceptionHandler());
+                    }
+                    else {
+                        action.execute(msg);
+                    }
                 }
-                if (action.needsTransactionHandling()) {
-                    TransactionHelper.handlingTransaction(() -> action.execute(msg), action.getExceptionHandler());
-                }
-                else {
-                    action.execute(msg);
+                catch (Exception e) {
+                    LOG.error(e);
                 }
             }
-            catch (Exception e) {
-                LOG.error(e);
-            }
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(previousDescription);
         }
     }
 

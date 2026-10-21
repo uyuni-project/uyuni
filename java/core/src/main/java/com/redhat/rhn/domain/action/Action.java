@@ -88,6 +88,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     protected static final Logger LOG = LogManager.getLogger(Action.class);
 
     public static final Integer NAME_LENGTH_LIMIT = 128;
+    public static final Integer ACTION_DESCRIPTION_LENGTH_LIMIT = 1000;
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -99,6 +100,9 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
 
     @Column
     private String name;
+
+    @Column(name = "action_description")
+    private String actionDescription;
 
     @Column(name = "earliest_action")
     private Date earliestAction;
@@ -176,6 +180,26 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Getter for actionDescription
+     * @return String to get
+    */
+    public String getActionDescription() {
+        return this.actionDescription;
+    }
+
+    /**
+     * Setter for actionDescription
+     * @param actionDescriptionIn to set
+    */
+    public void setActionDescription(String actionDescriptionIn) {
+        if (actionDescriptionIn != null && actionDescriptionIn.length() > ACTION_DESCRIPTION_LENGTH_LIMIT) {
+            throw new IllegalArgumentException("Action description cannot exceed " +
+                    ACTION_DESCRIPTION_LENGTH_LIMIT + " characters.");
+        }
+        this.actionDescription = actionDescriptionIn;
     }
 
     /**

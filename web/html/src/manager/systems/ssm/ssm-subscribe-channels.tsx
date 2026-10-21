@@ -570,8 +570,10 @@ type SummaryPageProps = {
   allowedChanges: SsmAllowedChildChannelsDto[];
   finalChanges: ChannelChangeDto[];
   footer: ReactNode;
+  actionDescription: string;
   onChangeEarliest: (earliest: moment.Moment) => void;
   onChangeActionChain: (actionChain: ActionChain | null | undefined) => void;
+  onChangeActionDescription: (actionDescription: string) => void;
 };
 
 type SummaryPageState = {
@@ -716,8 +718,10 @@ class SummaryPage extends Component<SummaryPageProps, SummaryPageState> {
         <ActionSchedule
           earliest={this.state.earliest}
           actionChains={window.actionChains}
+          actionDescription={this.props.actionDescription}
           onActionChainChanged={this.onActionChainChanged}
           onDateTimeChanged={this.onDateTimeChanged}
+          onActionDescriptionChanged={this.props.onChangeActionDescription}
           systemIds={this.computeSystemIds()}
           actionType="channels.subscribe"
         />
@@ -828,6 +832,7 @@ type SsmChannelState = {
   finalChanges: ChannelChangeDto[];
   earliest: moment.Moment;
   actionChain: ActionChain | null | undefined;
+  actionDescription?: string;
   page: number;
   scheduleResults: ScheduleChannelChangesResultDto[];
 };
@@ -843,6 +848,7 @@ type SsmScheduleChannelChangesJson = {
   earliest: moment.Moment;
   changes: ChannelChangeDto[];
   actionChain?: any;
+  actionDescription?: string;
 };
 
 type ScheduleChannelChangesResultDto = {
@@ -1031,11 +1037,18 @@ class SsmChannelPage extends Component<SsmChannelProps, SsmChannelState> {
     });
   };
 
+  onChangeActionDescription = (actionDescription: string) => {
+    this.setState({
+      actionDescription: actionDescription,
+    });
+  };
+
   onConfirm = () => {
     const req: SsmScheduleChannelChangesJson = {
       earliest: this.state.earliest,
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
       changes: this.state.finalChanges,
+      actionDescription: this.state.actionDescription,
     };
     return Network.post("/rhn/manager/systems/ssm/channels", req)
       .then((data: JsonResult<SsmScheduleChannelChangesResultJson>) => {
@@ -1116,8 +1129,10 @@ class SsmChannelPage extends Component<SsmChannelProps, SsmChannelState> {
         <SummaryPage
           allowedChanges={this.state.allowedChanges}
           finalChanges={this.state.finalChanges}
+          actionDescription={this.state.actionDescription ?? ""}
           onChangeEarliest={this.onChangeEarliest}
           onChangeActionChain={this.onChangeActionChain}
+          onChangeActionDescription={this.onChangeActionDescription}
           ref={(component) => {
             // This is used internally by testsuite/features/step_definitions/datepicker_steps.rb
             (window as any).schedulePage = component;

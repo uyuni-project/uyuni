@@ -51,4 +51,5 @@ export type MigrationScheduleRequest = {
   allowVendorChange: boolean;
   earliest: moment.Moment | null;
   actionChain: string | null;
+  actionDescription?: string;
 };

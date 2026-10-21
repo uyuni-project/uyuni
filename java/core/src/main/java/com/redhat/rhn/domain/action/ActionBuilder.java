@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.action;
 
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -137,6 +138,12 @@ public class ActionBuilder {
         //in perl (modules/rhn/RHN/DB/Scheduler.pm) version is given a 2. So that's what I did.
         action.setVersion(2L);
         action.setArchived(0L); //not archived
+
+        Context context = Context.getCurrentContext();
+        if (context != null && context.getActionDescription() != null) {
+            LOG.debug("Setting actionDescription in ActionBuilder: {}", context.getActionDescription());
+            action.setActionDescription(context.getActionDescription());
+        }
 
         return action;
     }
