@@ -173,25 +173,15 @@ public class TaskomaticApi {
      * @param channels list of channels
      * @throws TaskomaticApiException if there was an error
      */
-    public void scheduleSingleRepoSync(List<Channel> channels) throws TaskomaticApiException {
-        List<String> channelIds = channels.stream()
-                .filter(Objects::nonNull)
-                .filter(channel -> {
-                    if (channel.getId() == null) {
-                        LOG.info("Skipping repository sync scheduling for channel '{}' because its ID is null",
-                                channel.getLabel());
-                        return false;
-                    }
-                    return true;
-                })
-                .map(channel -> channel.getId().toString())
-                .toList();
-
-        if (channelIds.isEmpty()) {
-            LOG.info("No valid channels to schedule for sync");
+    public void scheduleSingleRepoSync(List<Channel> channels)
+            throws TaskomaticApiException {
+        if (channels.isEmpty()) {
             return;
         }
-
+        List<String> channelIds = new ArrayList<>(channels.size());
+        for (Channel channel : channels) {
+            channelIds.add(channel.getId().toString());
+        }
         Map<String, List<String>> scheduleParams = new HashMap<>();
         scheduleParams.put("channel_ids", channelIds);
         invoke("tasko.scheduleSingleBunchRun", OrgFactory.getSatelliteOrg().getId(),
