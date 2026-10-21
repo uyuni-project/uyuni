@@ -18,11 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionTest;
+import com.redhat.rhn.domain.kickstart.RepoInfo;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -125,6 +128,31 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
             KickstartUrlHelper.COBBLER_SERVER_VARIABLE;
 
         assertEquals(expected, helper.getCobblerMediaUrlBase());
+    }
+
+    @Test
+    public void testHttpsUrlScheme() {
+        String previous = Config.get().setString(ConfigDefaults.KICKSTART_URL_SCHEME, "https");
+        try {
+            helper = new KickstartUrlHelper(ksdata);
+            assertEquals("https://" + KickstartUrlHelper.COBBLER_SERVER_VARIABLE,
+                    helper.getCobblerMediaUrlBase());
+            assertEquals("https://" + KickstartUrlHelper.COBBLER_SERVER_VARIABLE +
+                    "$" + KickstartUrlHelper.COBBLER_MEDIA_VARIABLE, helper.getCobblerMediaUrl());
+
+            RepoInfo repo = RepoInfo.create("AppStream", "AppStream");
+            assertEquals("repo --name=AppStream --baseurl=https://" + KickstartUrlHelper.COBBLER_SERVER_VARIABLE +
+                    "$" + KickstartUrlHelper.COBBLER_MEDIA_VARIABLE + "/AppStream/AppStream",
+                    repo.getFormattedCommand(ksdata));
+        }
+        finally {
+            if (previous == null) {
+                Config.get().remove(ConfigDefaults.KICKSTART_URL_SCHEME);
+            }
+            else {
+                Config.get().setString(ConfigDefaults.KICKSTART_URL_SCHEME, previous);
+            }
+        }
     }
 
     @Test
