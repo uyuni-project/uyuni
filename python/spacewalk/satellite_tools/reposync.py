@@ -698,7 +698,7 @@ class RepoSync(object):
                             .replace("=", "_")
                         )
 
-                    ca_cert_file = client_cert_file = client_key_file = repo_id = None
+                    ca_cert_file = client_cert_file = client_key_file = None
 
                     if data["id"] is not None:
                         h = rhnSQL.execute(
@@ -778,7 +778,7 @@ class RepoSync(object):
                         raise
 
                     if self.show_packages_only:
-                        self.show_packages(plugin, repo_id)
+                        self.show_packages(plugin, data["id"])
                     elif plugin is not None:
                         if update_repodata:
                             plugin.clear_cache()
@@ -1891,7 +1891,11 @@ class RepoSync(object):
             h.execute(source_id=source_id)
             filter_data = h.fetchall_dict() or []
             filters = [
-                (row["flag"], re.split(r"[,\s]+", row["filter"])) for row in filter_data
+                (
+                    row["flag"],
+                    [v.strip() for v in row["filter"].split(",") if v.strip()],
+                )
+                for row in filter_data
             ]
         else:
             filters = self.filters
