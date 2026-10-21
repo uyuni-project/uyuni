@@ -39,6 +39,7 @@ import com.suse.salt.netapi.calls.modules.State;
 import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.logging.log4j.LogManager;
@@ -311,8 +312,8 @@ public class TransactionalActionManager {
      * @param queue optional queue flag
      * @param test optional test flag
      * @param minionSummaries target minions
-     * @param useTransactionalUpdate whether transactional minions should execute the states through
-     * transactional-update
+     * @param useTransactionalUpdate whether transactional minions should also execute through
+     * transactional-update the states that are not known internal transactional states
      * @param actionId id of the action these calls are being prepared for, used to freeze the
      * per-minion {@link FormulaTransactionalPlan#postTransactionalFormulas()} for the highstate transactional path
      */
@@ -374,11 +375,16 @@ public class TransactionalActionManager {
             return;
         }
 
+        addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
+
+        List<String> transactionalStates = useTransactionalUpdate ?
+                replaceFormulasState(states) :
+                getTransactionalPhaseStates(states);
+
         if (states.contains("formulas")) {
-            addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
             addTransactionalFormulaCalls(
                     calls,
-                    useTransactionalUpdate ? replaceFormulasState(states) : List.of("formulas_transactional"),
+                    transactionalStates,
                     pillar,
                     queue,
                     test,
@@ -388,15 +394,10 @@ public class TransactionalActionManager {
             return;
         }
 
-        if (useTransactionalUpdate) {
-            addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
-            addCall(calls, TransactionalUpdateCalls.apply(states, pillar, queue, test),
-                    minionsByTransactionalUpdate.get(true));
-            return;
-        }
-
-        addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
-        addCall(calls, withDirectCallExecutor(stateApply), minionsByTransactionalUpdate.get(true));
+        LocalCall<Map<String, State.ApplyResult>> transactionalCall = transactionalStates.isEmpty() ?
+                withDirectCallExecutor(stateApply) :
+                TransactionalUpdateCalls.apply(transactionalStates, pillar, queue, test);
+        addCall(calls, transactionalCall, minionsByTransactionalUpdate.get(true));
     }
 
     static void addTransactionalHighstateCalls(
@@ -530,6 +531,59 @@ public class TransactionalActionManager {
     }
 
     /**
+     * Reconsider the failure classification of a transactional result that is a valid dry-run preview.
+     *
+     * @param action action the result belongs to
+     * @param jsonResult Salt state result
+     * @param success success flag reported by Salt
+     * @param retcode return code reported by Salt
+     * @param failed failure classification of the result
+     * @return false when the reported failure is a valid preview, the given classification otherwise
+     */
+    public static boolean adjustFailureForPreview(Action action, JsonElement jsonResult,
+                                                  boolean success, long retcode, boolean failed) {
+        return failed && !(success && retcode == 0 && isSuccessfulPreview(action, jsonResult));
+    }
+
+    /**
+     * Check whether a transactional result is a successful dry-run preview.
+     *
+     * <p>A state that would change the system reports an explicit <code>null</code> result, which is
+     * indistinguishable from <code>false</code> once deserialized into the primitive boolean of
+     * {@link State.ApplyResult}. Only a result map whose entries all report an explicit <code>null</code> or
+     * <code>true</code> is a valid preview: a missing result, a rendering error or any other content keeps the
+     * reported failure.</p>
+     *
+     * @param action action the result belongs to
+     * @param jsonResult Salt state result
+     * @return true when the result is a valid preview of an action scheduled in test mode
+     */
+    private static boolean isSuccessfulPreview(Action action, JsonElement jsonResult) {
+        if (!(action instanceof ApplyStatesAction applyStatesAction) ||
+                applyStatesAction.getDetails() == null ||
+                !applyStatesAction.getDetails().isTest() ||
+                jsonResult == null ||
+                !jsonResult.isJsonObject()) {
+            return false;
+        }
+
+        for (var stateResult : jsonResult.getAsJsonObject().entrySet()) {
+            if (!stateResult.getValue().isJsonObject()) {
+                return false;
+            }
+            JsonElement result = stateResult.getValue().getAsJsonObject().get("result");
+            if (result == null) {
+                return false;
+            }
+            if (!result.isJsonNull() &&
+                    !(result.isJsonPrimitive() && result.getAsJsonPrimitive().isBoolean() && result.getAsBoolean())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Handle a transactional Salt result.
      *
      * @param minionServerId minion server id
@@ -563,7 +617,12 @@ public class TransactionalActionManager {
         boolean hasPostTransactionalState = action != null && hasPostTransactionalState(action, history);
         String formattedResult = formatResult(jsonResult);
         String prerequisiteResult = hasPostTransactionalState ? formattedResult : null;
-        boolean hasChanges = hasChanges(jsonResult);
+        Optional<Map<String, State.ApplyResult>> stateResults = parseStateResults(jsonResult);
+        // Changes proposed by a dry-run are not applied, so they must not trigger the snapshot reconciliation
+        // nor put the action on hold waiting for a reboot.
+        boolean preview = action instanceof ApplyStatesAction applyStatesAction &&
+                applyStatesAction.getDetails().isTest();
+        boolean hasChanges = !preview && stateResults.map(TransactionalActionManager::hasChanges).orElse(false);
         if (failed) {
             history.recordTransactionalApplyFailed(prerequisiteResult);
             if (hasChanges) {
@@ -586,10 +645,12 @@ public class TransactionalActionManager {
             if (hasPostTransactionalState) {
                 resumePublisher.accept(actionId, minionServerId);
             }
-            return TransactionalResult.success("Transactional states applied. No changes reported.");
+            return TransactionalResult.success(preview ?
+                    "Transactional states previewed. No changes applied." :
+                    "Transactional states applied. No changes reported.");
         }
 
-        Optional<Long> refreshActionId = scheduleSnapshotRefresh(action, minionServerId);
+        Optional<Long> refreshActionId = snapshotRefreshScheduler.apply(action, minionServerId);
         if (refreshActionId.isEmpty()) {
             history.recordSnapshotRefreshFailed();
             return TransactionalResult.failed("Transactional states applied. Unable to schedule snapshot refresh.");
@@ -599,7 +660,46 @@ public class TransactionalActionManager {
     }
 
     private static String formatResult(JsonElement jsonResult) {
-        return jsonResult == null || jsonResult.isJsonNull() ? null : Json.PRETTY_GSON.toJson(jsonResult);
+        if (jsonResult == null || jsonResult.isJsonNull()) {
+            return null;
+        }
+        return getRenderErrors(jsonResult).orElseGet(() -> Json.PRETTY_GSON.toJson(jsonResult));
+    }
+
+    private static Optional<Map<String, State.ApplyResult>> parseStateResults(JsonElement jsonResult) {
+        // Rendering errors are returned as a list of messages instead of a map of state results.
+        if (jsonResult == null || !jsonResult.isJsonObject()) {
+            return Optional.empty();
+        }
+        try {
+            return Optional.ofNullable(
+                    Json.GSON.fromJson(jsonResult, new TypeToken<Map<String, State.ApplyResult>>() { }.getType()));
+        }
+        catch (JsonSyntaxException e) {
+            LOG.warn("Unable to decode the transactional result as state results: {}", jsonResult, e);
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Get rendering error messages from the JSON result.
+     *
+     * @param jsonResult result returned by the minion
+     * @return the reported messages, empty when the result is not a list of messages
+     */
+    private static Optional<String> getRenderErrors(JsonElement jsonResult) {
+        if (!jsonResult.isJsonArray()) {
+            return Optional.empty();
+        }
+
+        List<String> messages = new ArrayList<>();
+        for (JsonElement element : jsonResult.getAsJsonArray()) {
+            if (!element.isJsonPrimitive() || !element.getAsJsonPrimitive().isString()) {
+                return Optional.empty();
+            }
+            messages.add(element.getAsString());
+        }
+        return messages.isEmpty() ? Optional.empty() : Optional.of(String.join("\n", messages));
     }
 
     private static boolean isHighstate(Action action) {
@@ -620,8 +720,7 @@ public class TransactionalActionManager {
 
     private static boolean shouldPreserveApplyStatesContinuationDetails(Action action) {
         return action instanceof ApplyStatesAction applyStatesAction &&
-                applyStatesAction.getDetails() != null &&
-                (isHighstate(applyStatesAction) || applyStatesAction.getDetails().getMods().contains("formulas"));
+                applyStatesAction.getDetails() != null;
     }
 
     private static List<String> getPostTransactionalStates(Action action, List<String> postTransactionalFormulas) {
@@ -632,9 +731,12 @@ public class TransactionalActionManager {
         }
         if (action instanceof ApplyStatesAction applyStatesAction &&
                 applyStatesAction.getDetails() != null &&
-                !applyStatesAction.getDetails().isUseTransactionalUpdate() &&
-                applyStatesAction.getDetails().getMods().contains("formulas")) {
-            return expandFormulasState(applyStatesAction.getDetails().getMods(), postTransactionalFormulas);
+                !applyStatesAction.getDetails().isUseTransactionalUpdate()) {
+            List<String> mods = applyStatesAction.getDetails().getMods();
+            // Without a transactional phase the action runs live from the start and has no continuation.
+            if (!getTransactionalPhaseStates(mods).isEmpty()) {
+                return getLivePhaseStates(mods, postTransactionalFormulas);
+            }
         }
         List<String> states = getAfterRebootState(action)
                 .map(List::of)
@@ -886,12 +988,8 @@ public class TransactionalActionManager {
                 .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
     }
 
-    private static boolean hasChanges(JsonElement jsonResult) {
-        Map<String, State.ApplyResult> results = Json.GSON.fromJson(
-                jsonResult,
-                new TypeToken<Map<String, State.ApplyResult>>() { }.getType());
-
-        return results != null && results.values().stream()
+    private static boolean hasChanges(Map<String, State.ApplyResult> results) {
+        return results.values().stream()
                 .map(State.ApplyResult::getChanges)
                 .anyMatch(changes -> changes != null &&
                         (!changes.isJsonObject() || !changes.getAsJsonObject().entrySet().isEmpty()));
@@ -970,15 +1068,43 @@ public class TransactionalActionManager {
         return states.size() == 1 ? getTransactionalStateToApply(states.get(0)) : Optional.empty();
     }
 
-    private static List<String> replaceFormulasState(List<String> states) {
+    /**
+     * Select the states to apply through transactional-update.
+     *
+     * <p>Prerequisite states are not resolved here: their continuation is driven by the action type, which an
+     * apply states action does not provide.</p>
+     *
+     * @param states states requested by the action
+     * @return states of the transactional phase, in the requested order
+     */
+    private static List<String> getTransactionalPhaseStates(List<String> states) {
         return states.stream()
+                .filter(state -> "formulas".equals(state) || TRANSACTIONAL_STATES.contains(state))
                 .map(state -> "formulas".equals(state) ? "formulas_transactional" : state)
                 .toList();
     }
 
-    private static List<String> expandFormulasState(List<String> states, List<String> postTransactionalFormulas) {
+    /**
+     * Select the states to apply live once the transactional snapshot is active.
+     *
+     * @param states states requested by the action
+     * @param postTransactionalFormulas formulas frozen for the live phase
+     * @return states of the live phase, in the requested order
+     */
+    private static List<String> getLivePhaseStates(List<String> states, List<String> postTransactionalFormulas) {
         return states.stream()
-                .flatMap(state -> "formulas".equals(state) ? postTransactionalFormulas.stream() : Stream.of(state))
+                .flatMap(state -> {
+                    if ("formulas".equals(state)) {
+                        return postTransactionalFormulas.stream();
+                    }
+                    return TRANSACTIONAL_STATES.contains(state) ? Stream.empty() : Stream.of(state);
+                })
+                .toList();
+    }
+
+    private static List<String> replaceFormulasState(List<String> states) {
+        return states.stream()
+                .map(state -> "formulas".equals(state) ? "formulas_transactional" : state)
                 .toList();
     }
 
