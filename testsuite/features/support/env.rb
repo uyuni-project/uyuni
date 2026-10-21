@@ -50,10 +50,11 @@ $context = {}
 $watchdog_run_aborted = false
 
 # Other global variables
-$pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
 $pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp7o'
 $sles15sp6_terminal_mac = ENV.fetch('SLES15SP6_TERMINAL_MAC', nil)
 $sles15sp7_terminal_mac = ENV.fetch('SLES15SP7_TERMINAL_MAC', nil)
+# Build validation deploys the PXE boot minion as the SLES 15 SP7 terminal and does not set PXEBOOT_MAC
+$pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil) || $sles15sp7_terminal_mac
 $private_net = ENV.fetch('PRIVATENET', nil) if ENV['PRIVATENET']
 $mirror = ENV.fetch('MIRROR', nil)
 $server_http_proxy = ENV.fetch('SERVER_HTTP_PROXY', nil) if ENV['SERVER_HTTP_PROXY']
@@ -567,8 +568,7 @@ Before('@deblike_minion') do
 end
 
 Before('@pxeboot_minion') do
-  mac_address = $pxeboot_mac || $sles15sp7_terminal_mac
-  skip_this_scenario unless mac_address
+  skip_this_scenario unless $pxeboot_mac
 end
 
 Before('@sshminion') do
