@@ -1246,53 +1246,30 @@ password={passwd}
         if filters is None:
             return
 
-        selected = []
-        excluded = []
-        allmatched_include = []
-        allmatched_exclude = []
-        if exclude_only or filters[0][0] == "-":
-            # first filter is exclude, start with full package list
-            # and then exclude from it
-            selected = packages
+        if nevra_filter:
+            names = [str(pkg) for pkg in packages]
         else:
-            excluded = packages
+            names = [pkg.name for pkg in packages]
 
-        for filter_item in filters:
-            sense, pkg_list = filter_item
-            regex = fnmatch.translate(pkg_list[0])
-            reobj = re.compile(regex)
-            if sense == "+":
-                if exclude_only:
-                    continue
-                # include
-                for excluded_pkg in excluded:
-                    if nevra_filter:
-                        pkg_name = str(excluded_pkg)
-                    else:
-                        pkg_name = excluded_pkg.name
-                    if reobj.match(pkg_name):
-                        allmatched_include.insert(0, excluded_pkg)
-                        selected.insert(0, excluded_pkg)
-                for pkg in allmatched_include:
-                    if pkg in excluded:
-                        excluded.remove(pkg)
-            elif sense == "-":
-                # exclude
-                for selected_pkg in selected:
-                    if nevra_filter:
-                        pkg_name = str(selected_pkg)
-                    else:
-                        pkg_name = selected_pkg.name
-                    if reobj.match(pkg_name):
-                        allmatched_exclude.insert(0, selected_pkg)
-                        excluded.insert(0, selected_pkg)
-                for pkg in allmatched_exclude:
-                    if pkg in selected:
-                        selected.remove(pkg)
-                excluded = excluded + allmatched_exclude
-            else:
+        # Keep one selected flag per package so that each filter is a single
+        # linear pass. If the first filter is an exclude, start with all the
+        # packages selected and then exclude from them.
+        start_selected = exclude_only or filters[0][0] == "-"
+        selected = [start_selected] * len(packages)
+
+        for sense, pkg_list in filters:
+            if sense not in ("+", "-"):
                 raise IOError("Filters are malformed")
-        return selected
+            if sense == "+" and exclude_only:
+                continue
+            include = sense == "+"
+            reobj = re.compile(fnmatch.translate(pkg_list[0]))
+            for idx, name in enumerate(names):
+                # "+" only looks at excluded packages, "-" only at selected ones
+                if selected[idx] != include and reobj.match(name):
+                    selected[idx] = include
+
+        return [pkg for pkg, is_selected in zip(packages, selected) if is_selected]
 
     def get_susedata(self):
         """

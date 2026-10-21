@@ -45,6 +45,17 @@ from spacewalk.satellite_tools.repo_plugins import yum_src, ContentPackage
 from spacewalk.satellite_tools.repo_plugins.yum_src import UpdateNotice
 
 
+# pylint: disable-next=too-few-public-methods
+class FilterPkg:
+    """Minimal package object for testing name based include/exclude filters"""
+
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return f"{self.name}-1.0-1.x86_64"
+
+
 class YumSrcTest(unittest.TestCase):
     def _make_dummy_cs(self):
         """Create a dummy ContentSource object that only talks to a mocked yum"""
@@ -209,6 +220,58 @@ class YumSrcTest(unittest.TestCase):
             ),
             1,
         )
+
+    def test_filter_packages_reinclude_with_multiple_excludes(self):
+        pkgs = [
+            FilterPkg("kernel-default"),
+            FilterPkg("kernel-debug"),
+            FilterPkg("kernel-devel"),
+            FilterPkg("vim"),
+        ]
+        filters = [
+            ("-", ["*"]),
+            ("+", ["kernel*"]),
+            ("-", ["kernel-debug*"]),
+            ("-", ["kernel-devel*"]),
+        ]
+
+        # pylint: disable-next=protected-access
+        result = yum_src.ContentSource._filter_packages(pkgs, filters)
+
+        self.assertEqual([p.name for p in result], ["kernel-default"])
+
+    def test_filter_packages_returns_no_duplicates(self):
+        pkgs = [FilterPkg("python3"), FilterPkg("python3-foo"), FilterPkg("gcc")]
+
+        # pylint: disable-next=protected-access
+        result = yum_src.ContentSource._filter_packages(
+            pkgs, [("-", ["*"]), ("+", ["python3*"])]
+        )
+
+        self.assertEqual([p.name for p in result], ["python3", "python3-foo"])
+
+    def test_filter_packages_exclude_only_ignores_includes(self):
+        pkgs = [FilterPkg("vim"), FilterPkg("gcc")]
+
+        # pylint: disable-next=protected-access
+        result = yum_src.ContentSource._filter_packages(
+            pkgs, [("+", ["vim"]), ("-", ["gcc"])], exclude_only=True
+        )
+
+        self.assertEqual([p.name for p in result], ["vim"])
+
+    def test_filter_packages_does_not_modify_input(self):
+        pkgs = [FilterPkg("vim"), FilterPkg("gcc")]
+
+        # pylint: disable-next=protected-access
+        yum_src.ContentSource._filter_packages(pkgs, [("-", ["gcc"])])
+
+        self.assertEqual([p.name for p in pkgs], ["vim", "gcc"])
+
+    def test_filter_packages_malformed_filter(self):
+        with self.assertRaises(IOError):
+            # pylint: disable-next=protected-access
+            yum_src.ContentSource._filter_packages([FilterPkg("vim")], [("?", ["*"])])
 
     @unittest.skip("temporarily disable old failing unit test file")
     def test_list_packages_with_pack(self):
