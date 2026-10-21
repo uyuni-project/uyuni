@@ -121,6 +121,12 @@
   <elaborator name="adv_elab" />
 </mode>
 
+<mode name="next_adv_datasource_seq">
+  <query params="">
+    SELECT nextval('adv_datasource_seq') AS id
+  </query>
+</mode>
+
 <query name="adv_elab" params="">
         select id,foobar, test_column, pin
                 from adv_datasource
