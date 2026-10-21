@@ -1,0 +1,1 @@
+- Fix TypeError exception in spacewalk-data-fsck
