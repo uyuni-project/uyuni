@@ -68,7 +68,7 @@ public class KickstartBuilderTest extends KickstartBaseTest {
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
         tree.setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_7));
         KickstartData data =
                 builder.create(TestUtils.randomString(), tree,
                         KickstartVirtualizationType.XEN_PARAVIRT,

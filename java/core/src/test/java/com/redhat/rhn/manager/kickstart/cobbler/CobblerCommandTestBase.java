@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
@@ -24,8 +23,16 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.cobbler.CobblerConnection;
+import org.cobbler.CobblerObject;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Base for Cobbler command tests.
@@ -60,7 +67,8 @@ public abstract class CobblerCommandTestBase extends BaseTestCaseWithUser {
      */
     @BeforeEach
     public void setUpCobblerCommandTestBase() throws Exception {
-        KickstartTestUtils.setupTestConfiguration(user);
+        boolean realCobbler = connectToCobbler || KickstartTestUtils.useRealCobbler();
+        KickstartTestUtils.setupTestConfiguration(user, realCobbler);
 
         // Make the default user admin
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -69,15 +77,62 @@ public abstract class CobblerCommandTestBase extends BaseTestCaseWithUser {
         this.ksdata = KickstartDataTest.createKickstartWithDefaultKey(this.user.getOrg());
         this.ksdata.getTree().setBasePath("/tmp/opt/repo/f9-x86_64/");
 
-        if (connectToCobbler) {
-            Config.get().setString(CobblerXMLRPCHelper.class.getName(), CobblerXMLRPCHelper.class.getName());
-            Config.get().setString(CobblerConnection.class.getName(), CobblerConnection.class.getName());
+        if (realCobbler) {
             TestUtils.commitAndCloseSession();
         }
 
         KickstartableTreeTest.createKickstartTreeItems(this.ksdata.getTree());
         CobblerDistroCreateCommand dcreate = new CobblerDistroCreateCommand(ksdata.getTree(), user);
         dcreate.store();
+    }
+
+    /**
+     * Removes everything the test created on cobbler (real or mocked) -
+     * mandatory per test: the fixtures reuse one fixed MAC address, which
+     * real cobbler rejects on the next system record.
+     */
+    @AfterEach
+    public void tearDownCobblerCommandTestBase() {
+        KickstartTestUtils.cleanUpCobbler();
+    }
+
+    /**
+     * Renders the kernel options of a cobbler object for assertions: the
+     * mock keeps the raw string, a real cobbler returns an unordered map
+     * whose blank values round-trip as "~" (normalized back to bare flags).
+     *
+     * @param obj the cobbler object owning the options
+     * @param options the options value (string on the mock, map on a real
+     *                cobbler)
+     * @return the rendered options string
+     */
+    protected static String koptsString(CobblerObject obj, Optional<?> options) {
+        Object value = options.get();
+        if (value instanceof Map) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> map = (Map<String, Object>) value;
+            return obj.convertOptionsMap(map).replaceAll("=~(?=(\\s|$))", "");
+        }
+        return String.valueOf(value);
+    }
+
+    /**
+     * Compares the rendered kernel options with the expectation as sorted
+     * tokens: real cobbler returns the options as an unordered map, so the
+     * option order is not part of the contract.
+     *
+     * @param obj the cobbler object owning the options
+     * @param options the options value
+     * @param expected the expected options string
+     */
+    protected static void assertKoptsEqual(CobblerObject obj, Optional<?> options, String expected) {
+        List<String> actual = Arrays.stream(koptsString(obj, options).trim().split("\\s+"))
+                .sorted()
+                .collect(Collectors.toList());
+        List<String> expectedTokens = Arrays.stream(expected.trim().split("\\s+"))
+                .sorted()
+                .collect(Collectors.toList());
+        Assertions.assertEquals(expectedTokens, actual);
     }
 
 }

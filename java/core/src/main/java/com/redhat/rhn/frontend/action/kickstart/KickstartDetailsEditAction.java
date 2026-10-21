@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.kickstart;
 
-
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -340,7 +339,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
 
 
     /**
-     * Proccess Cobbler form values, pulling in the form
+     * Process Cobbler form values, pulling in the form
      * and pushing the values to cobbler
      *
      * @param ksdata the kickstart data

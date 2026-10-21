@@ -104,8 +104,14 @@ public abstract class BaseTreeAction extends BaseEditAction {
         Channel c = ChannelFactory.lookupByIdAndUser(channelId, operation.getUser());
         bte.setChannel(c);
         bte.setLabel(form.getString(LABEL));
-        KickstartInstallType type = KickstartFactory.
-            lookupKickstartInstallTypeByLabel(form.getString(INSTALL_TYPE));
+
+        String installTypeLabel = form.getString(INSTALL_TYPE);
+        KickstartInstallType type = installTypeLabel == null ? null :
+                KickstartFactory.lookupKickstartInstallTypeByLabel(installTypeLabel);
+        if (type == null) {
+            return new ValidatorError("kickstart.tree.invalidinstalltype",
+                    installTypeLabel);
+        }
         bte.setInstallType(type);
 
         bte.setServerName(request.getLocalName());

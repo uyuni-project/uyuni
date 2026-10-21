@@ -21,16 +21,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.NetworkInterfaceTest;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.CobblerConnection;
+import org.cobbler.CobblerObject;
 import org.cobbler.Distro;
+import org.cobbler.Profile;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -94,6 +94,118 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     }
 
     @Test
+    public void testProfileEditKernelOptions() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        pec.setKernelOptions("  opt1=val1   opt2  ");
+        assertNull(pec.store());
+
+        Profile prof = ksdata.getCobblerObject(user);
+        assertKoptsEqual(prof, prof.getKernelOptions(), "opt1=val1 opt2");
+    }
+
+    @Test
+    public void testProfileEditKernelOptionsQuoting() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        pec.setKernelOptions("console=ttyS0 key=\"value with spaces\"");
+        assertNull(pec.store());
+
+        Profile prof = ksdata.getCobblerObject(user);
+        assertKoptsEqual(prof, prof.getKernelOptions(),
+                "console=ttyS0 key=\"value with spaces\"");
+    }
+
+    @Test
+    public void testProfileEditKernelOptionsInheritRoundTrip() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        pec.setKernelOptions(CobblerObject.INHERIT_KEY);
+        assertNull(pec.store());
+
+        // cobbler (and its mock) interpret the literal inherit marker as
+        // "no explicit options"
+        Profile prof = ksdata.getCobblerObject(user);
+        assertTrue(prof.getKernelOptions().isEmpty());
+    }
+
+    @Test
+    public void testProfileEditKernelOptionsEmpty() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        pec.setKernelOptions("");
+        assertNull(pec.store());
+
+        Profile prof = ksdata.getCobblerObject(user);
+        assertTrue(prof.getKernelOptions().isPresent());
+        assertEquals("", prof.convertOptionsMap(prof.getKernelOptions().get()));
+    }
+
+    @Test
+    public void testProfileEditKernelOptionsIdempotent() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        pec.setKernelOptions("opt1=val1   opt2");
+        assertNull(pec.store());
+
+        CobblerProfileEditCommand pec2 = new CobblerProfileEditCommand(ksdata, user);
+        pec2.setKernelOptions("opt1=val1 opt2");
+        assertNull(pec2.store());
+
+        Profile prof = ksdata.getCobblerObject(user);
+        assertKoptsEqual(prof, prof.getKernelOptions(), "opt1=val1 opt2");
+    }
+
+    @Test
+    public void testProfileEditPostKernelOptionsUntouched() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        pec.setKernelOptions("opt1=val1");
+        pec.setPostKernelOptions("  post=1   post2  ");
+        assertNull(pec.store());
+
+        Profile prof = ksdata.getCobblerObject(user);
+        assertKoptsEqual(prof, prof.getKernelOptions(), "opt1=val1");
+        assertKoptsEqual(prof, prof.getKernelOptionsPost(), "  post=1   post2  ");
+    }
+
+    @Test
+    public void testProfileEditWithoutKernelOptions() {
+        CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
+                ksdata, user);
+        assertNull(createCmd.store());
+
+        Profile prof = ksdata.getCobblerObject(user);
+        prof.setKernelOptions(Optional.of("keep=me"));
+        prof.save();
+
+        // automated paths (taskomatic sync et al.) never set kernel options
+        CobblerProfileEditCommand pec = new CobblerProfileEditCommand(ksdata, user);
+        assertNull(pec.store());
+
+        prof = ksdata.getCobblerObject(user);
+        assertKoptsEqual(prof, prof.getKernelOptions(), "keep=me");
+    }
+
+    @Test
     public void testProfileDelete() {
         CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
                 ksdata, user);
@@ -139,7 +251,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     @Test
     public void testKernelOptionsBacksync() {
         // re-use the KS tree created in setUp
-        KickstartableTree tree = KickstartFactory.lookupKickstartTrees().get(0);
+        KickstartableTree tree = ksdata.getTree();
         String cobblerId = tree.getCobblerId();
         // make sure they have null kernel options and kernel options post
         tree.setKernelOptions(null);
@@ -204,9 +316,9 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
 
     @Test
     public void testLogin() {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-        user = TestUtils.reload(user);
+        // the login itself is what is under test; with the real cobbler the
+        // authentication module validates via the shim (accept-all), so no
+        // role setup is needed
         CobblerLoginCommand cmd = new CobblerLoginCommand();
         String cobblertoken = cmd.login(user.getLogin(), "password");
         assertNotNull(cobblertoken);

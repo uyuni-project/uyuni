@@ -15,11 +15,16 @@
 
 package com.redhat.rhn.manager.kickstart.tree;
 
+import static com.redhat.rhn.testing.TestUtils.assertContains;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -67,12 +72,28 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
     }
 
     @Test
+    public void testPopulateKernelOptsForSles16() throws Exception {
+        // A cobbler without the Agama signature (PR #177) rejects
+        // opensuse16.1 distros - skip the SLE16 fixtures there.
+        assumeTrue(KickstartTestUtils.cobblerSupportsSles16());
+        TreeCreateOperation cmd = new TreeCreateOperation(user);
+        setTestTreeParams(cmd);
+        cmd.setInstallType(KickstartFactory.
+                lookupKickstartInstallTypeByLabel("opensuse16.1"));
+        cmd.setKernelOptions("");
+        cmd.store();
+        assertContains(cmd.getKernelOptions(), "root=live:");
+        assertContains(cmd.getKernelOptions(), "inst.self_update=0");
+        assertFalse(cmd.getKernelOptions().contains("install="));
+    }
+
+    @Test
     public void testCreateRhelistro() throws Exception {
         TreeCreateOperation cmd = new TreeCreateOperation(user);
         setTestTreeParams(cmd);
         cmd.setKernelOptions("");
         cmd.store();
-        assert cmd.getKernelOptions().isEmpty();
+        assertContains(cmd.getKernelOptions(), "inst.repo=");
     }
 
     @Test
@@ -86,5 +107,44 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
         TestUtils.assertContains(cmd.getKernelOptions(), "inst.repo=");
     }
 
+    /**
+     * User-typed options win over the computed distro options: a custom
+     * install= is kept, useonlinerepo= survives, and only the missing
+     * computed options are added.
+     */
+    @Test
+    public void testUserTypedOptionsWin() throws Exception {
+        TreeCreateOperation cmd = new TreeCreateOperation(user);
+        setTestTreeParams(cmd);
+        cmd.setInstallType(KickstartFactory.
+                lookupKickstartInstallTypeByLabel("sles15generic"));
+        cmd.setKernelOptions("install=http://mymirror.example.com/sles15 useonlinerepo=1");
+        assertNull(cmd.store());
+        String kopts = cmd.getKernelOptions();
+        assertContains(kopts, "install=http://mymirror.example.com/sles15");
+        assertContains(kopts, "useonlinerepo=1");
+        assertContains(kopts, "self_update=0");
+        assertEquals(1, kopts.split("install=", -1).length - 1);
+    }
+
+    /**
+     * Re-applying the distro options merge to an already complete set of
+     * options changes nothing.
+     */
+    @Test
+    public void testKernelOptionsIdempotent() throws Exception {
+        // A cobbler without the Agama signature (PR #177) rejects
+        // opensuse16.1 distros - skip the SLE16 fixtures there.
+        assumeTrue(KickstartTestUtils.cobblerSupportsSles16());
+        TreeCreateOperation cmd = new TreeCreateOperation(user);
+        setTestTreeParams(cmd);
+        cmd.setInstallType(KickstartFactory.
+                lookupKickstartInstallTypeByLabel("opensuse16.1"));
+        cmd.setKernelOptions("");
+        assertNull(cmd.store());
+        String kopts = cmd.getKernelOptions();
+        cmd.applyDistroKernelOptions();
+        assertEquals(kopts, cmd.getKernelOptions());
+    }
 }
 

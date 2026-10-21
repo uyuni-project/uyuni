@@ -49,6 +49,7 @@ public class KickstartInstallType extends BaseDomainHelper {
     // distros
     public static final String FEDORA_PREFIX = "fedora";
     public static final String SLES_PREFIX = "sles";
+    public static final String OPENSUSE_PREFIX = "opensuse";
 
     // Cobbler's OS versions
     public static final String GENERIC_OS_VERSION = "virtio26";
@@ -153,7 +154,8 @@ public class KickstartInstallType extends BaseDomainHelper {
      */
     public boolean isSUSE() {
         // We could get "suse" from the form
-        return getLabel().startsWith(SLES_PREFIX) || getLabel().equals(SUSE_BREED);
+        return getLabel().startsWith(SLES_PREFIX) || getLabel().equals(SUSE_BREED) ||
+               getLabel().startsWith(OPENSUSE_PREFIX);
     }
 
     /**
@@ -182,6 +184,20 @@ public class KickstartInstallType extends BaseDomainHelper {
      */
     public boolean isSLES12() {
         return isSUSE() && getLabel().startsWith(SLES_PREFIX + "12");
+    }
+
+    /**
+     * @return true if the installer type is SLES 16
+     */
+    public boolean isSLES16() {
+        return isSUSE() && getLabel().startsWith(OPENSUSE_PREFIX + "16");
+    }
+
+    /**
+     * @return if this installer type is SLES 16 or greater (for SLES 16+)
+     */
+    public boolean isSLES16OrGreater() {
+        return isSLES16() || (isSLES15OrGreater() && !isSLES15());
     }
 
     /**

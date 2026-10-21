@@ -68,7 +68,7 @@ class NamespaceKickstartTree
   # @param path [String] Path to the base or root of the distribution.
   # @param label [String] Label of the channel you want to associate with the distribution.
   # @param install [String] Label for KickstartInstallType - options can be obtained using kickart.tree's listInstallTypes.
-  #                         Options can be: suse, sles15generic, sles12generic, sles11generic, sles10generic, rhel_9, rhel_8, rhel_7, rhel_6, generic_rpm, fedora18.
+  #                         Options can be: suse, opensuse16.1, sles15generic, sles12generic, sles11generic, sles10generic, rhel_9, rhel_8, rhel_7, rhel_6, generic_rpm, fedora18.
   def create_distro(distro, path, label, install)
     @test.call('kickstart.tree.create', sessionKey: @test.token, treeLabel: distro, basePath: path, channelLabel: label, installType: install)
   end
@@ -79,7 +79,7 @@ class NamespaceKickstartTree
   # @param path [String] Path to the base or root of the distribution.
   # @param label [String] Label of the channel you want to associate with the distribution.
   # @param install [String] Label for KickstartInstallType - options can be obtained using kickart.tree's listInstallTypes.
-  #                         Options can be: suse, sles15generic, sles12generic, sles11generic, sles10generic, rhel_9, rhel_8, rhel_7, rhel_6, generic_rpm, fedora18.
+  #                         Options can be: suse, opensuse16.1, sles15generic, sles12generic, sles11generic, sles10generic, rhel_9, rhel_8, rhel_7, rhel_6, generic_rpm, fedora18.
   # @param options [String] Options to be passed to the kernel when booting for the installation.
   # @param post_options [String] Options to be passed to the kernel when booting for the installation.
   def create_distro_w_kernel_options(distro, path, label, install, options, post_options)
@@ -92,7 +92,7 @@ class NamespaceKickstartTree
   # @param path [String] Path to the base or root of the distribution.
   # @param label [String] Label of the channel you want to associate with the distribution.
   # @param install [String] Label for KickstartInstallType - options can be obtained using kickart.tree's listInstallTypes.
-  #                         Options can be: suse, sles15generic, sles12generic, sles11generic, sles10generic, rhel_9, rhel_8, rhel_7, rhel_6, generic_rpm, fedora18.
+  #                         Options can be: suse, opensuse16.1, sles15generic, sles12generic, sles11generic, sles10generic, rhel_9, rhel_8, rhel_7, rhel_6, generic_rpm, fedora18.
   # @param options [String] Options to be passed to the kernel when booting for the installation.
   # @param post_options [String] Options to be passed to the kernel when booting for the installation.
   def update_distro(distro, path, label, install, options, post_options)
