@@ -865,7 +865,7 @@ end
 # @return [String] The MAC address of the host.
 def get_mac_address(host)
   if host == 'pxeboot_minion'
-    mac = ENV.fetch('PXEBOOT_MAC', nil)
+    mac = $pxeboot_mac
   else
     node = get_target(host)
     output, _code = node.run('ip link show dev eth1')

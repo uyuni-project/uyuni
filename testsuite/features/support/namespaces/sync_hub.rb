@@ -17,8 +17,11 @@ class NamespaceSyncHub
   # @param peripheral_org_id [Integer] The ID of the peripheral organization that owns the custom channels.
   # @return [Integer] 1 on success.
   def add_channels_to_sync(peripheral_fqdn, channel_labels, peripheral_org_id)
-    @test.call('sync.hub.addPeripheralChannelsToSync', sessionKey: @test.token, fqdn: peripheral_fqdn, channelLabels: channel_labels,
-                                                       peripheralOrgIdWhenCustomChannel: peripheral_org_id)
+    @test.call('sync.hub.addPeripheralChannelsToSync',
+               sessionKey: @test.token,
+               fqdn: peripheral_fqdn,
+               channelLabels: channel_labels,
+               peripheralOrgIdWhenCustomChannel: peripheral_org_id)
   end
 
   # Lists the channel labels that the hub synchronizes to a peripheral.
