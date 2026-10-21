@@ -204,7 +204,7 @@ public class SystemRecord extends CobblerObject {
         List<Map<String, Object>> maps = lookupDataMapsByCriteria(
                 client, PROFILE, profileName, "find_system");
 
-        for (Map<String, Object> map : maps) {
+        for (Map<String, Object> map : Optional.ofNullable(maps).orElse(List.of())) {
             toReturn.add(handleLookup(client, map));
         }
         return toReturn;
@@ -336,8 +336,10 @@ public class SystemRecord extends CobblerObject {
     @Override
     protected void reload() {
         SystemRecord newSystem = lookupById(client, getId());
-        dataMap = newSystem.dataMap;
-        dataMapResolved = newSystem.dataMapResolved;
+        if (newSystem != null) {
+            dataMap = newSystem.dataMap;
+            dataMapResolved = newSystem.dataMapResolved;
+        }
     }
 
     /**

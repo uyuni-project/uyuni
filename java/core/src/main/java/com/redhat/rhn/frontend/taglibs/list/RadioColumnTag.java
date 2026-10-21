@@ -101,16 +101,16 @@ public class RadioColumnTag extends TagSupport {
         listName = parent.getUniqueName();
         int retval = Tag.SKIP_BODY;
 
-        if (command.equals(ListCommand.ENUMERATE)) {
+        if ((null != command) && command.equals(ListCommand.ENUMERATE)) {
             parent.addColumn();
             renderHiddenField();
             retval = Tag.EVAL_PAGE;
         }
-        else if (command.equals(ListCommand.COL_HEADER)) {
+        else if ((null != command) && command.equals(ListCommand.COL_HEADER)) {
             renderHeader(parent);
             retval = Tag.EVAL_PAGE;
         }
-        else if (command.equals(ListCommand.RENDER)) {
+        else if ((null != command) && command.equals(ListCommand.RENDER)) {
             render(valueExpr);
         }
         return retval;
@@ -123,7 +123,7 @@ public class RadioColumnTag extends TagSupport {
     public int doEndTag() throws JspException {
         ListCommand command = ListTagUtil.
                                             getCurrentCommand(this, pageContext);
-        if (command.equals(ListCommand.RENDER)) {
+        if ((null != command) &&  command.equals(ListCommand.RENDER)) {
             ListTagUtil.write(pageContext, "</td>");
         }
         release();

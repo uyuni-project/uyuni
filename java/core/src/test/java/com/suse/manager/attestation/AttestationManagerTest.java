@@ -17,7 +17,6 @@ package com.suse.manager.attestation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -136,9 +135,9 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(configData.containsKey("dummyConfigKey1"));
         assertTrue(configData.containsKey("dummyConfigKey2"));
 
-        Pillar pillar = minion.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY).orElse(new Pillar());
+        Optional<Pillar> pillar = minion.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY);
         //no more pillars at initial stage
-        assertNull(pillar.getPillar());
+        assertTrue(pillar.isEmpty());
     }
 
     @Test

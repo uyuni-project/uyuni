@@ -60,7 +60,7 @@ public class ExpandableColumnTag  extends BodyTagSupport {
     public int doStartTag() throws JspException {
         ListCommand command = ListTagUtil.
         getCurrentCommand(this, pageContext);
-        if (command.equals(ListCommand.RENDER)) {
+        if ((null != command) && command.equals(ListCommand.RENDER)) {
             try {
                 if (canRender()) {
                     if (renderIcon) {

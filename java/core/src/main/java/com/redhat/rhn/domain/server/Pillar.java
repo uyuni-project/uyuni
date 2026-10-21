@@ -159,7 +159,7 @@ public class Pillar implements Identifiable, Serializable {
                             MinionServer serverIn,
                             ServerGroup groupIn, Org orgIn) {
         this.category = categoryIn;
-        this.pillar = pillarIn;
+        this.pillar = (null == pillarIn) ? new TreeMap<>() : pillarIn;
         this.minion = serverIn;
         this.org = orgIn;
         this.group = groupIn;

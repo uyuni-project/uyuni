@@ -439,8 +439,8 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         User user = rctx.getCurrentUser();
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 
-        String barSeparatedChannelIds = request.getParameter(BASE_CHANNEL_IDS);
-        String barSeparatedNewChannelIds = request.getParameter(NEW_BASE_CHANNEL_IDS);
+        String barSeparatedChannelIds = Optional.ofNullable(request.getParameter(BASE_CHANNEL_IDS)).orElse("");
+        String barSeparatedNewChannelIds = Optional.ofNullable(request.getParameter(NEW_BASE_CHANNEL_IDS)).orElse("");
         if (log.isDebugEnabled()) {
             log.debug("base channel ids = {}", StringUtil.sanitizeLogInput(barSeparatedChannelIds));
             log.debug("new base channel ids = {}", StringUtil.sanitizeLogInput(barSeparatedNewChannelIds));
