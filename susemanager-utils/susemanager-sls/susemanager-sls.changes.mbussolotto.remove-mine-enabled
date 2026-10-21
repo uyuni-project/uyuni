@@ -1,1 +1,3 @@
+- Disable the Salt mine in the minion configuration deployed by
+  the bootstrap and highstate
 - Remove the unused mgr_mine_config_clean_up Salt state
