@@ -23,12 +23,6 @@ cobbler:
     - java/core/src/main/java/org/cobbler/*
     - java/core/src/main/java/org/cobbler/**/*
 
-documentation:
-- changed-files:
-  - any-glob-to-any-file:
-    - documentation/*
-    - documentation/**/*
-
 proxy:
 - changed-files:
   - any-glob-to-any-file:
