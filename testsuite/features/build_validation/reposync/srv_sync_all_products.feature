@@ -423,6 +423,27 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add all "leap16.1" channels with arch "aarch64"
     And I wait until all synchronized channels for "leap16.1-aarch64" have finished
 
+@susemanager
+@opensuse161ppc_minion
+  Scenario: Add openSUSE 16.1 for PowerPC
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text, refreshing the page
+    And I wait until I do not see "Loading" text
+    And I enter "openSUSE Leap 16.1 ppc64le" as the filtered product description
+    And I select "openSUSE Leap 16.1 ppc64le" as a product
+    Then I should see the "openSUSE Leap 16.1 ppc64le" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "openSUSE Leap 16.1 ppc64le" product has been added
+    And I wait until all synchronized channels for "leap16.1-ppc64le" have finished
+
+@uyuni
+@opensuse161ppc_minion
+  Scenario: Add openSUSE 16.1 for PowerPC Uyuni Client tools
+    When I use spacewalk-common-channel to add all "leap16.1" channels with arch "ppc64le"
+    And I wait until all synchronized channels for "leap16.1-ppc64le" have finished
+
 @sles15sp5s390_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5 for s390x
     Given I am authorized for the "Admin" section

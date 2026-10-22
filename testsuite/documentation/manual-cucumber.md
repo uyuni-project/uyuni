@@ -182,6 +182,8 @@ ___Platform___ | ___Client Type___ | ___Priority___ | ___Automation<br>candidate
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2604_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **openSUSE Leap 16.1 (aarch64)** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse161arm_minion.feature` | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse161arm_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
+**openSUSE Leap 16.1 (ppc64le)** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse161ppc_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse161ppc_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **Raspberry Pi OS 13** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/raspios13_minion.feature` | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/raspios13_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **Salt migration** | Salt migration minion | high | yes - `testsuite/features/build_validation/init_clients/salt_migration_minion.feature` | [General client smoke tests](#generalclientsmoke)

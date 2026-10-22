@@ -487,6 +487,20 @@ Feature: Sanity checks
     And "opensuse161arm_sshminion" should communicate with the server using public interface
     And the clock from "opensuse161arm_sshminion" should be exact
 
+@opensuse161ppc_minion
+  Scenario: The openSUSE 16.1 PowerPC minion is healthy
+    Then "opensuse161ppc_minion" should have a FQDN
+    And reverse resolution should work for "opensuse161ppc_minion"
+    And "opensuse161ppc_minion" should communicate with the server using public interface
+    And the clock from "opensuse161ppc_minion" should be exact
+
+@opensuse161ppc_sshminion
+  Scenario: The openSUSE 16.1 PowerPC SSH minion is healthy
+    Then "opensuse161ppc_sshminion" should have a FQDN
+    And reverse resolution should work for "opensuse161ppc_sshminion"
+    And "opensuse161ppc_sshminion" should communicate with the server using public interface
+    And the clock from "opensuse161ppc_sshminion" should be exact
+
 @sles15sp5s390_minion
   Scenario: The SLES 15 SP5 s390x minion is healthy
     Then "sles15sp5s390_minion" should have a FQDN
