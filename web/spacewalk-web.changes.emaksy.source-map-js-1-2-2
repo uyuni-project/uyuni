@@ -1,1 +1,3 @@
 - Update source-map-js from version 1.2.1 to 1.2.2
+- CVE-2026-93749: source-map-js event-loop denial of service
+  via indexed source-map section offsets (bsc#1282486)
