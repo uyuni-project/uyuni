@@ -19,30 +19,23 @@ import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Parent;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
 
 /**
- * SslContentSource
+ * SslContentSource represents a rhnContentSourceSsl tuple containing an SSL set (CA certificate,
+ * client certificate and key) of a content source.
+ * A content source can have more than one, and the table has no primary key, so they are mapped as
+ * a collection of embeddable values of {@link ContentSource}.
  */
-@Entity
-@Table(name = "rhnContentSourceSsl")
+@Embeddable
 public class SslContentSource extends BaseDomainHelper {
 
-    @Id
-    @Column(name = "content_source_id")
-    private Long id;
-
-    @ManyToOne
-    @MapsId
-    @JoinColumn(name = "content_source_id")
+    @Parent
     private ContentSource contentSource;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -89,25 +82,10 @@ public class SslContentSource extends BaseDomainHelper {
      * @param ssl ssl content source template
      */
     public SslContentSource(SslContentSource ssl) {
-        id = ssl.getId();
         contentSource = ssl.getContentSource();
         caCert = ssl.getCaCert();
         clientCert = ssl.getClientCert();
         clientKey = ssl.getClientKey();
-    }
-
-    /**
-     * @return Returns the id.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param idIn The id to set.
-     */
-    public void setId(Long idIn) {
-        id = idIn;
     }
 
     /**

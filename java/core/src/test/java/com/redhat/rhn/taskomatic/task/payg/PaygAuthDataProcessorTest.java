@@ -15,7 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.channel.SslContentSource;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -24,6 +28,9 @@ import com.redhat.rhn.domain.credentials.BaseCredentials;
 import com.redhat.rhn.domain.credentials.CloudCredentials;
 import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.kickstart.factory.KickstartFactoryTest;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -174,6 +181,38 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
 
             TestUtils.flushAndClearSession();
         }
+    }
+
+    @Test
+    public void canUpdateSslContentSourceForRhuiRepositories() throws Exception {
+        PaygSshData sshData = PaygSshDataFactory.savePaygSshData(createPaygSshData("RHEL 10"));
+        Org org = OrgFactory.lookupById(ConfigDefaults.get().getRhuiDefaultOrgId());
+        String label = "rhel-10-baseos-rhui-rpms-i" + sshData.getId();
+
+        // The repository already exists with an SSL set using different keys
+        ContentSource contentSource = new ContentSource();
+        contentSource.setOrg(org);
+        contentSource.setLabel(label);
+        contentSource.setSourceUrl("https://rhui.example.com/baseos");
+        contentSource.setType(ChannelFactory.lookupContentSourceType("yum"));
+        contentSource.setMetadataSigned(false);
+        contentSource.addSslContentSource(new SslContentSource(contentSource,
+                KickstartFactoryTest.createTestSslKey(org),
+                KickstartFactoryTest.createTestSslKey(org),
+                KickstartFactoryTest.createTestSslKey(org)));
+        ChannelFactory.save(contentSource);
+        TestUtils.flushAndClearSession();
+
+        paygDataProcessor.processPaygInstanceData(TestUtils.reload(sshData), parseResource("rhui.json"));
+        TestUtils.flushAndClearSession();
+
+        ContentSource updated = ChannelFactory.lookupContentSourceByOrgAndLabel(org, label);
+        assertEquals(1, updated.getSslContentSources().size());
+
+        SslContentSource sslSet = updated.getSslContentSources().iterator().next();
+        assertTrue(sslSet.getCaCert().getDescription().contains("cdn.redhat.com-chain.crt"));
+        assertTrue(sslSet.getClientCert().getDescription().contains("content-rhel10.crt"));
+        assertTrue(sslSet.getClientKey().getDescription().contains("content-rhel10.key"));
     }
 
     private void assertExpectedData() {
