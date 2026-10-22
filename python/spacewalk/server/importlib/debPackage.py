@@ -215,6 +215,9 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
             "breaks",
             "pre-depends",
             "installed-size",
+            "filename",
+            "size",
+            "sha256",
         ]
         l = []
         for k, v in header.items():
