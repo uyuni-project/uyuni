@@ -38,6 +38,7 @@ public class MgrSyncChannelDto {
     private final String productVersion;
     private final MgrSyncStatus status;
     private final boolean isSigned;
+    private final boolean isPqcSigned;
     private final String sourceUrl;
     private final String updateTag;
 
@@ -112,6 +113,13 @@ public class MgrSyncChannelDto {
     }
 
     /**
+     * @return the isPqcSigned
+     */
+    public boolean isPqcSigned() {
+        return isPqcSigned;
+    }
+
+    /**
      * @return the parentLabel
      */
     public String getParentLabel() {
@@ -161,13 +169,14 @@ public class MgrSyncChannelDto {
      * @param productVersionIn the product version
      * @param statusIn the sync status
      * @param isSignedIn is the repo signed?
+     * @param isPqcSignedIn is the repo PQC signed?
      * @param sourceUrlIn the url
      * @param updateTagIn the update tag
      */
     public MgrSyncChannelDto(String nameIn, String labelIn, String summaryIn, String descriptionIn,
             boolean mandatoryIn, boolean installerUpdatesIn, Optional<PackageArch> archIn, String parentLabelIn,
             String familyIn, String productNameIn, String productVersionIn, MgrSyncStatus statusIn,
-            boolean isSignedIn, String sourceUrlIn, String updateTagIn) {
+            boolean isSignedIn, boolean isPqcSignedIn, String sourceUrlIn, String updateTagIn) {
         this.name = nameIn;
         this.label = labelIn;
         this.summary = summaryIn;
@@ -181,6 +190,7 @@ public class MgrSyncChannelDto {
         this.productVersion = productVersionIn;
         this.status = statusIn;
         this.isSigned = isSignedIn;
+        this.isPqcSigned = isPqcSignedIn;
         this.sourceUrl = sourceUrlIn;
         this.updateTag = updateTagIn;
     }

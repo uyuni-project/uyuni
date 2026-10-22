@@ -326,6 +326,11 @@ public class ConfigDefaults {
     public static final String SIGN_METADATA = "sign_metadata";
 
     /**
+     * If true, metadata PQC signing is enabled, otherwise metadata will not be PQC signed
+     */
+    public static final String PQC_SIGN_METADATA = "sign_pqc_metadata";
+
+    /**
      * Number of threads dedicated to processing Salt events.
      */
     public static final String SALT_EVENT_THREAD_POOL_SIZE = "java.salt_event_thread_pool_size";
@@ -1205,6 +1210,14 @@ public class ConfigDefaults {
      */
     public boolean isMetadataSigningEnabled() {
         return Config.get().getBoolean(SIGN_METADATA);
+    }
+
+    /**
+     * Returns true if PQC metadata signing is enabled, otherwise false.
+     * @return metadata PQC signing enabled
+     */
+    public boolean isPqcMetadataSigningEnabled() {
+        return Config.get().getBoolean(PQC_SIGN_METADATA);
     }
 
     /**

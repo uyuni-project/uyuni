@@ -422,7 +422,8 @@ public class HubHandlerTest extends BaseHandlerTestCase {
             will(returnValue(mockDefaultHubInternalClient));
 
             allowing(mockDefaultHubInternalClient).registerHub(
-                    with(any(String.class)), with(aNull(String.class)), with(aNull(String.class)));
+                    with(any(String.class)), with(aNull(String.class)),
+                    with(aNull(String.class)), with(aNull(String.class)));
             will(throwException(new SSLHandshakeException(sshFailureErrorString)));
 
             allowing(mockDefaultHubInternalClient).deregister();

@@ -396,6 +396,7 @@ public class ChannelFactoryTest extends BaseTestCase {
         clone.setGPGKeyId(original.getGPGKeyId());
         clone.setGPGKeyFp(original.getGPGKeyFp());
         clone.setGPGCheck(original.isGPGCheck());
+        clone.setPqcCheck(original.isPqcCheck());
         clone.setEndOfLife(new Date());
         clone.setChannelFamily(cfam);
         clone.setChannelArch(original.getChannelArch());
