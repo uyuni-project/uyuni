@@ -994,6 +994,148 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
+     * Tests applyErrata() with onlyRelevant=true and errata that are each
+     * applicable to only one of two minions, scheduled into an action
+     * chain. Every requested erratum is relevant to at least one selected
+     * system, so no exception must be thrown and each server gets only its
+     * relevant errata. Scheduling into a chain keeps taskomatic out of the
+     * picture: the validation gate under test runs before scheduling.
+     *
+     * @throws Exception if something goes wrong
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testApplyErrataOnlyRelevantMixedRelevance() throws Exception {
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        errata1 = TestUtils.saveAndFlush(errata1);
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        errata2 = TestUtils.saveAndFlush(errata2);
+
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        server1.addChannel(channel);
+        Server server2 = MinionServerFactoryTest.createTestMinionServer(user);
+        server2.addChannel(channel);
+
+        // errata1 is relevant to server1 only, errata2 to server2 only
+        Package package1 = createTestPackage(user, channel, "noarch");
+        Package package2 = createTestPackage(user, channel, "noarch");
+        createTestInstalledPackage(package1, server1);
+        createTestInstalledPackage(package2, server2);
+        createLaterTestPackage(user, errata1, channel, package1);
+        createLaterTestPackage(user, errata2, channel, package2);
+
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata2.getId(), package2.getId());
+        TestUtils.flushSession();
+
+        List<Long> errataIds = new ArrayList<>();
+        errataIds.add(errata1.getId());
+        errataIds.add(errata2.getId());
+
+        List<Long> serverIds = new ArrayList<>();
+        serverIds.add(server1.getId());
+        serverIds.add(server2.getId());
+
+        String label = TestUtils.randomString();
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        // must not throw: every requested erratum is relevant to
+        // at least one of the selected systems
+        ErrataManager.applyErrata(user, errataIds, new Date(), actionChain, serverIds,
+                true, false);
+
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        assertEquals(0, actionsServer1.size(), "no actions have been scheduled for server 1");
+        assertTrue(actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)),
+                "server 1 has been added to the chain");
+        Set<Long> server1ScheduledErrata = actionChain.getEntries().stream()
+            .filter(e -> e.getServer().equals(server1))
+            .map(ActionChainEntry::getAction)
+            .map(this::errataActionFromAction)
+            .flatMap(a -> a.getErrata().stream())
+            .map(Errata::getId)
+            .collect(Collectors.toSet());
+        assertEquals(Set.of(errata1.getId()), server1ScheduledErrata,
+                "Server 1 scheduled only its relevant errata");
+
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        assertEquals(0, actionsServer2.size(), "no actions have been scheduled for server 2");
+        assertTrue(actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)),
+                "server 2 has been added to the chain");
+        Set<Long> server2ScheduledErrata = actionChain.getEntries().stream()
+            .filter(e -> e.getServer().equals(server2))
+            .map(ActionChainEntry::getAction)
+            .map(this::errataActionFromAction)
+            .flatMap(a -> a.getErrata().stream())
+            .map(Errata::getId)
+            .collect(Collectors.toSet());
+        assertEquals(Set.of(errata2.getId()), server2ScheduledErrata,
+                "Server 2 scheduled only its relevant errata");
+
+        assertEquals(2, actionChain.getEntries().size(), "action chain actually has 2 entries");
+    }
+
+    /**
+     * Tests applyErrata() with onlyRelevant=true and an erratum that is
+     * applicable to none of the selected systems. InvalidErrataException
+     * must be thrown.
+     *
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void testApplyErrataOnlyRelevantInapplicable() throws Exception {
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        errata1 = TestUtils.saveAndFlush(errata1);
+
+        List<Long> errataIds = new ArrayList<>();
+        errataIds.add(errata1.getId());
+
+        List<Long> serverIds = new ArrayList<>();
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        serverIds.add(server1.getId());
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        assertThrows(InvalidErrataException.class, () ->
+                ErrataManager.applyErrata(user, errataIds, new Date(), null, serverIds,
+                        true, false));
+    }
+
+    /**
+     * Tests applyErrata() with onlyRelevant=true and an empty errata list.
+     * No exception must be thrown and no actions are produced.
+     *
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void testApplyErrataOnlyRelevantEmptyErrata() throws Exception {
+        List<Long> serverIds = new ArrayList<>();
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        serverIds.add(server1.getId());
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        List<Long> result =
+                ErrataManager.applyErrata(user, new ArrayList<>(), new Date(), null, serverIds,
+                        true, false);
+
+        assertEquals(0, result.size(), "No Actions have been produced");
+    }
+
+    /**
      * Tests applyErrata() with 2 identical yum systems and 2 errata applicable to both.
      * This should result in 4 Actions being created
      *
