@@ -15,6 +15,8 @@ export type MessageType = {
 type Props = {
   /** Message objects to display */
   items: MessageType[] | MessageType;
+  dismissible?: boolean;
+  onClose?: (index: number) => void;
 };
 
 /**
@@ -54,7 +56,26 @@ const _classNames = {
   warning: "warning",
 };
 
-export class Messages extends Component<Props> {
+type State = {
+  dismissed: Set<number>;
+};
+
+export class Messages extends Component<Props, State> {
+  state: State = {
+    dismissed: new Set(),
+  };
+
+  handleClose = (index: number) => {
+    this.setState((prevState) => {
+      const dismissed = new Set(prevState.dismissed);
+      dismissed.add(index);
+
+      return { dismissed };
+    });
+
+    this.props.onClose?.(index);
+  };
+
   static info(text: ReactNode): MessageType {
     return Messages.message("info", text);
   }
@@ -77,15 +98,26 @@ export class Messages extends Component<Props> {
 
   render() {
     const items: MessageType[] = Array.isArray(this.props.items) ? this.props.items : [this.props.items];
+
     if (items.length === 0) return null;
 
-    const msgs = items.map((item, index) => (
-      <div key={"msg" + index} className={"alert alert-" + _classNames[item.severity]}>
-        {item.text}
-      </div>
-    ));
+    const msgs = items.map((item, index) => {
+      if (this.state.dismissed.has(index)) {
+        return null;
+      }
 
-    return <div key={"messages-pop-up"}>{msgs}</div>;
+      return (
+        <div key={"msg" + index} className={"alert alert-" + _classNames[item.severity]}>
+          {item.text}
+
+          {this.props.dismissible && (
+            <button type="button" className="btn-close" aria-label="Close" onClick={() => this.handleClose(index)} />
+          )}
+        </div>
+      );
+    });
+
+    return <div>{msgs}</div>;
   }
 }
 

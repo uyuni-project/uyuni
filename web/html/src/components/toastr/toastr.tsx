@@ -54,7 +54,7 @@ export function showWarningToastr(message: ReactNode, optionalParams: OptionalPa
   show(message, notify);
 }
 
-export function showErrorToastr(message: ReactNode | Error, optionalParams: OptionalParams = { autoHide: true }) {
+export function showErrorToastr(message: ReactNode | Error, optionalParams: OptionalParams = { autoHide: false }) {
   const notify = (msg) => {
     toast.error(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
