@@ -24,3 +24,23 @@ Following links might be of value in case you are interested:
   * [Bug reports](https://github.com/uyuni-project/uyuni/issues)
   * [Development Guides](https://github.com/uyuni-project/uyuni/wiki#development-guides)
   * [SUSE Multi-Linux Manager](https://www.suse.com/products/multi-linux-manager/)
+
+
+Community projects
+------------------
+
+The following projects are related to Uyuni but are independently maintained
+by their respective authors. They are not officially maintained or supported
+by the Uyuni project.
+
+
+**AI-Powered Intelligent Monitoring and Root Cause Analysis for Uyuni**
+
+AI-powered monitoring service that detects anomalies from Prometheus,
+collects diagnostic information from managed systems through Uyuni,
+and performs root cause analysis.
+
+- **Repository:** https://github.com/Digvijay-x1/UyuniAI
+- **Maintainer:** Digvijay Rawat
+- **Added:** September 2026
+- **Origin:** Google Summer of Code 2026
