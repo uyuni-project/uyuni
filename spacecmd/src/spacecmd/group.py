@@ -83,6 +83,10 @@ def do_group_addsystems(self, args):
 
     group_name = args.pop(0)
 
+    if not args:
+        self.help_group_addsystems()
+        return 1
+
     # use the systems listed in the SSM
     if re.match("ssm", args[0], re.I):
         systems = self.ssm.keys()
@@ -139,6 +143,10 @@ def do_group_removesystems(self, args):
         return 1
 
     group_name = args.pop(0)
+
+    if not args:
+        self.help_group_removesystems()
+        return 1
 
     # use the systems listed in the SSM
     if re.match("ssm", args[0], re.I):
