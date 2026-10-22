@@ -1,0 +1,3 @@
+- Update fast-uri from version 3.1.7 to 3.1.8
+- CVE-2026-86472: fast-uri vulnerable to inconsistent host case
+  normalization via percent-encoded octets (bsc#1280778)
