@@ -25,6 +25,8 @@ function print_help() {
 
 function setup() {
     echo "Setup:"
+    # a previous failed run may have left the image mounted
+    cleanup
     [ ! -d "${DSKCHK_IMAGE_DIR}" ] && mkdir -p "${DSKCHK_IMAGE_DIR}"
     [ ! -d "${DSKCHK_MOUNT}" ] && mkdir -p "${DSKCHK_MOUNT}"
     dd if=/dev/zero of="${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE}" bs=1M count=${DSKCHK_IMAGE_SIZE} && \

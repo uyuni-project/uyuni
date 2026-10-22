@@ -155,8 +155,9 @@ When(/^I prepare a channel clone for strict mode testing$/) do
     get_target('server').run("rm -f /srv/www/htdocs/pub/TestRepoRpmUpdates_STRICT_TEST/#{folder}/rute-dummy-2.0-1.2.*.rpm")
   end
   get_target('server').run('createrepo_c /srv/www/htdocs/pub/TestRepoRpmUpdates_STRICT_TEST')
-  get_target('server').run('gzip -dc /srv/www/htdocs/pub/TestRepoRpmUpdates/repodata/*-updateinfo.xml.gz > /tmp/updateinfo.xml')
-  get_target('server').run('modifyrepo_c --verbose --mdtype updateinfo /tmp/updateinfo.xml /srv/www/htdocs/pub/TestRepoRpmUpdates_STRICT_TEST/repodata')
+  updateinfo_file = '/srv/updateinfo.xml'
+  get_target('server').run("gzip -dc /srv/www/htdocs/pub/TestRepoRpmUpdates/repodata/*-updateinfo.xml.gz > #{updateinfo_file}")
+  get_target('server').run("modifyrepo_c --verbose --mdtype updateinfo #{updateinfo_file} /srv/www/htdocs/pub/TestRepoRpmUpdates_STRICT_TEST/repodata")
 end
 
 Given(/^I am logged into the API$/) do
@@ -623,8 +624,8 @@ When(/^I shutdown the spacewalk service$/) do
 end
 
 When(/^I execute spacewalk-debug on the server$/) do
-  get_target('server').run('spacewalk-debug')
-  success = file_extract(get_target('server'), '/tmp/spacewalk-debug.tar.bz2', 'spacewalk-debug.tar.bz2')
+  get_target('server').run('spacewalk-debug --dir /srv')
+  success = file_extract(get_target('server'), '/srv/spacewalk-debug.tar.bz2', 'spacewalk-debug.tar.bz2')
   raise ScriptError, 'Download debug file failed' unless success
 end
 
@@ -1171,7 +1172,7 @@ end
 
 When(/I copy the distribution inside the container on the server$/) do
   node = get_target('server')
-  node.run('mgradm distro copy /tmp/tftpboot-installation/SLE-15-SP7-x86_64 SLE-15-SP7-TFTP', runs_in_container: false)
+  node.run('mgradm distro copy /srv/tftpboot-installation/SLE-15-SP7-x86_64 SLE-15-SP7-TFTP', runs_in_container: false)
 end
 
 When(/I generate a supportconfig for the server$/) do
@@ -1196,7 +1197,7 @@ end
 
 When(/I remove the autoinstallation files from the server$/) do
   node = get_target('server')
-  node.run('rm -r /tmp/tftpboot-installation', runs_in_container: false)
+  node.run('rm -r /srv/tftpboot-installation', runs_in_container: false)
   node.run('rm -r /srv/www/distributions/SLE-15-SP7-TFTP')
 end
 
@@ -1358,7 +1359,7 @@ When(/^I create channel "([^"]*)" from spacecmd of type "([^"]*)"$/) do |name, t
 end
 
 When(/^I update init.sls from spacecmd with content "([^"]*)" for channel "([^"]*)"$/) do |content, label|
-  filepath = "/tmp/#{label}"
+  filepath = "/srv/#{label}"
   get_target('server').run("echo -e \"#{content}\" > #{filepath}", timeout: 600)
   command = "spacecmd -u admin -p admin -- configchannel_updateinitsls -c #{label} -f  #{filepath} -y"
   get_target('server').run(command)
@@ -1366,7 +1367,7 @@ When(/^I update init.sls from spacecmd with content "([^"]*)" for channel "([^"]
 end
 
 When(/^I update init.sls from spacecmd with content "([^"]*)" for channel "([^"]*)" and revision "([^"]*)"$/) do |content, label, revision|
-  filepath = "/tmp/#{label}"
+  filepath = "/srv/#{label}"
   get_target('server').run("echo -e \"#{content}\" > #{filepath}", timeout: 600)
   command = "spacecmd -u admin -p admin -- configchannel_updateinitsls -c #{label} -f #{filepath} -r #{revision} -y"
   get_target('server').run(command)
@@ -1529,7 +1530,7 @@ When(/^I create a read-only user for the ReportDB$/) do
   $reportdb_ro_user = 'test_user'
   file = 'create_user_reportdb.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
+  dest = "/srv/#{file}"
   success = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection in server failed' unless success
 
@@ -1545,7 +1546,7 @@ end
 When(/^I delete the read-only user for the ReportDB$/) do
   file = 'delete_user_reportdb.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
+  dest = "/srv/#{file}"
   success = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection in server failed' unless success
 

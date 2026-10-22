@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
+@skip_if_rke2
 @scope_power_management
 @scope_cobbler
 @sle_minion
