@@ -1,0 +1,4 @@
+- Update @babel/core from version 7.26.10 to 7.29.6
+- Update @babel/helpers from version 7.26.10 to 7.29.2
+- CVE-2026-49356: @babel/core allows arbitrary file reads via
+  sourceMappingURL comments (bsc#1272314)
