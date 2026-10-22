@@ -53,7 +53,7 @@ const PropertiesEdit = (props: Props) => {
       title={t("Project Properties")}
       collapsible
       icon="fa-pencil"
-      customIconClass="fa-small"
+      customIconClass="icon-size-md"
       onOpen={({ setItem, setErrors }) => {
         setItem(props.properties);
         setErrors(null);

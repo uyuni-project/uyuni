@@ -2,6 +2,7 @@ import type { FC, ReactElement } from "react";
 
 import { ChannelTreeType } from "core/channels/type/channels.type";
 
+import { IconTag } from "components/icontag";
 import { Highlight } from "components/table/Highlight";
 import { DEPRECATED_onClick } from "components/utils";
 
@@ -74,7 +75,7 @@ const BaseChannel: FC<Props> = ({
           }}
           disabled={isSelectedBaseChannel}
         />
-        <i className={`${styles.arrow} fa ${isOpen ? "fa-angle-down" : "fa-angle-right"}`} />
+        <IconTag icon={`${styles.arrow} ${isOpen ? "fa-angle-down" : "fa-angle-right"}`} />
         <Highlight
           className={styles.collapsible}
           enabled={search !== undefined && search.length > 0}

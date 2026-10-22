@@ -4,6 +4,7 @@ import { forwardRef, useRef, useState } from "react";
 
 import ReactDatePicker from "react-datepicker";
 
+import { IconTag } from "components/icontag";
 import { DEPRECATED_onClick } from "components/utils";
 
 import { localizedMoment, parseTimeString } from "utils";
@@ -139,7 +140,7 @@ export const DateTimePicker = (props: Props) => {
               data-picker-type="date"
               {...DEPRECATED_onClick(() => openDatePicker())}
             >
-              <i className="fa fa-calendar"></i>
+              <IconTag icon="fa-calendar" />
             </span>
             <ReactDatePicker
               key="date-picker"
@@ -189,7 +190,7 @@ export const DateTimePicker = (props: Props) => {
               data-picker-type="time"
               {...DEPRECATED_onClick(openTimePicker)}
             >
-              <i className="fa fa-clock-o"></i>
+              <IconTag icon="fa-clock-o" />
             </span>
             <ReactDatePicker
               open={showTimePicker}

@@ -1,3 +1,4 @@
+import { IconTag } from "components/icontag";
 import { HelpLink } from "components/utils";
 
 export const SetupHeader = () => {
@@ -28,7 +29,7 @@ export const SetupHeader = () => {
     <>
       <div className="spacewalk-toolbar-h1">
         <h1>
-          <i className="fa fa-cogs"></i> {t("Setup Wizard")} <HelpLink url="reference/admin/setup-wizard.html" />
+          <IconTag icon="fa fa-cogs" /> {t("Setup Wizard")} <HelpLink url="reference/admin/setup-wizard.html" />
         </h1>
       </div>
       <div className="spacewalk-content-nav">

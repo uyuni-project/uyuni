@@ -1,3 +1,5 @@
+import { IconTag } from "components/icontag";
+
 type Props = {
   /** Title of the icon */
   text?: string | null;
@@ -5,7 +7,7 @@ type Props = {
 
 /** Display help icon with a title */
 const HelpIcon = ({ text }: Props) => {
-  return text ? <i className="fa fa-question-circle spacewalk-help-link" title={text}></i> : null;
+  return text ? <IconTag icon="fa-question-circle" title={text} /> : null;
 };
 
 export default HelpIcon;

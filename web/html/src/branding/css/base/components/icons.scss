@@ -1,8 +1,25 @@
 .fa,
 [class^="fa-"] {
   font-family: "FontAwesome";
+  width: fit-content;
 }
 
 [class*="spacewalk-icon-"] {
   font-family: "spacewalk-icon";
+}
+.icon-size-sm {
+  font-size: 12px;
+}
+.icon-size-md {
+  font-size: 16px;
+}
+.icon-size-lg {
+  font-size: 18px;
+}
+.icon-size-xl {
+  font-size: 24px;
+}
+
+.icon-size-2xl {
+  font-size: 36px;
 }

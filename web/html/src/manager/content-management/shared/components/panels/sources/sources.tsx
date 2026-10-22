@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
 
+import { IconTag } from "components/icontag";
 import { DEPRECATED_Select } from "components/input";
 import CreatorPanel from "components/panels/CreatorPanel";
 import { Panel } from "components/panels/Panel";
@@ -74,7 +75,7 @@ const renderSourceEntry = (source) => {
   if (source.state === statesEnum.enum.DETACHED.key) {
     return (
       <div className={`text-danger ${styles.dettached}`}>
-        <i className="fa fa-minus" />
+        <IconTag icon="fa-minus" />
         <b>{source.name}</b>
       </div>
     );
@@ -107,7 +108,7 @@ const Sources = (props: SourcesProps) => {
       panelLevel="2"
       disableEditing={!hasEditingPermissions}
       collapsible
-      customIconClass="fa-small"
+      customIconClass="icon-size-md"
       onCancel={() => cancelAction()}
       onOpen={({ setItem }) => setItem(props.softwareSources.map((source) => source.label))}
       onSave={({ closeDialog, item }) => {

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { productName } from "core/user-preferences";
 
 import { AsyncButton } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
@@ -133,7 +134,7 @@ function State({ minionId, state }: { minionId: number; state: StateSource }) {
   if (state.type === "STATE" || state.type === "CONFIG") {
     return (
       <>
-        <i className="spacewalk-icon-software-channels" data-bs-toggle="tooltip" title={state.typeName} />
+        <IconTag icon="spacewalk-icon-software-channels" title={state.typeName} />
         <strong>
           <a href={`/rhn/configuration/ChannelOverview.do?ccid=${state.id}`}>{state.name}</a>
         </strong>
@@ -142,7 +143,7 @@ function State({ minionId, state }: { minionId: number; state: StateSource }) {
   } else if (state.type === "FORMULA") {
     return (
       <>
-        <i className="spacewalk-icon-salt" data-bs-toggle="tooltip" title={state.typeName} />
+        <IconTag icon="spacewalk-icon-salt" title={state.typeName} />
         <strong>
           <a href={`/rhn/manager/systems/details/formula/${state.id}?sid=${minionId}`}>{state.name}</a>
         </strong>
@@ -151,7 +152,7 @@ function State({ minionId, state }: { minionId: number; state: StateSource }) {
   } else if (state.type === "INTERNAL") {
     return (
       <>
-        <i className="spacewalk-icon-salt" data-bs-toggle="tooltip" title={state.typeName} />
+        <IconTag icon="spacewalk-icon-salt" title={state.typeName} />
         <i>{state.name}</i>
       </>
     );
@@ -167,14 +168,14 @@ function Source({ source }: { source: StateSource }) {
   } else if (source.sourceType === "GROUP") {
     return (
       <>
-        <i className="spacewalk-icon-system-groups" title={t("System Group")} />
+        <IconTag icon="spacewalk-icon-system-groups" title={t("System Group")} />
         <a href={`/rhn/manager/groups/details/${srcType}?sgid=${source.sourceId}`}>{source.sourceName}</a>
       </>
     );
   } else if (source.sourceType === "ORG") {
     return (
       <>
-        <i className="fa fa-group" title={t("Organization")} />
+        <IconTag icon="fa-group" title={t("Organization")} />
         <a href={`/rhn/manager/multiorg/details/custom?oid=${source.sourceId}`}>{source.sourceName}</a>
       </>
     );

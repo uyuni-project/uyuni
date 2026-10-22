@@ -1,6 +1,7 @@
 import { Component } from "react";
 
 import { Button } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { Messages, MessageType } from "components/messages/messages";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
@@ -189,12 +190,12 @@ class SCCDialog extends Component<Props, SCCDialogState> {
           ) : this.hasRun() ? (
             this.state.steps.every((s) => s.success) ? (
               <span>
-                <i className="fa fa-check text-success" />
+                <IconTag icon="fa-check" status="success" />
                 {t("Completed")}
               </span>
             ) : (
               <div>
-                <i className="fa fa-exclamation-triangle text-warning" />
+                <IconTag icon="fa-exclamation-triangle" status="warning" />
                 {t("Operation not successful: Empty reply from the server")}(
                 <a href="/rhn/admin/Catalina.do">{t("Details")}</a>)
               </div>

@@ -1,5 +1,7 @@
 import { ClearIndicatorProps } from "react-select";
 
+import { IconTag } from "components/icontag";
+
 import styles from "./ClearIndicator.module.scss";
 
 export const ClearIndicator = (props: ClearIndicatorProps) => {
@@ -14,7 +16,7 @@ export const ClearIndicator = (props: ClearIndicatorProps) => {
       ref={ref}
       style={getStyles("clearIndicator", props)}
     >
-      <i className={`fa fa-times ${styles.icon}`} aria-label={t("Clear")} />
+      <IconTag icon="fa-times" className={styles.icon} ariaLabel={t("Clear")} ariaHidden={false} />
     </button>
   );
 };

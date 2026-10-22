@@ -4,6 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { LinkButton, SubmitButton } from "components/buttons";
+import { IconTag } from "components/icontag";
 import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
@@ -272,7 +273,7 @@ class BuildImage extends Component<Props, State> {
                   <tbody>
                     <tr>
                       <td>
-                        <i className="fa fa-info-circle" />
+                        <IconTag icon="fa-info-circle" />
                         {t("No profile selected")}
                       </td>
                     </tr>

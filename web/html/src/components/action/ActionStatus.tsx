@@ -1,3 +1,5 @@
+import { IconTag } from "components/icontag";
+
 type Props = {
   /** ID of the server the action is running on */
   serverId: string;
@@ -21,7 +23,7 @@ export function ActionStatus(props: Props) {
   };
   return (
     <a href={`/rhn/systems/details/history/Event.do?sid=${props.serverId}&aid=${props.actionId}`}>
-      <i className={`fa ${icons[props.status]} fa-1-5x`} data-bs-toggle="tooltip" title={props.status} />
+      <IconTag icon={icons[props.status]} size="lg" title={props.status} />
     </a>
   );
 }

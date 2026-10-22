@@ -1,6 +1,7 @@
 import { StoryRow, StorySection, StripedStorySection } from "manager/storybook/layout";
 
 import { Button } from "components/buttons";
+import { IconTag } from "components/icontag";
 
 import { ActionStatus } from "../action/ActionStatus";
 
@@ -132,21 +133,21 @@ export default () => {
       </p>
       <StripedStorySection>
         <StoryRow>
-          <i
-            className="fa fa-info-circle fa-1-5x"
-            data-bs-toggle="tooltip"
-            data-bs-custom-class="wide-tooltip"
+          <IconTag
+            icon="fa-info-circle"
+            size="lg"
+            tooltipWide
             title={`Required channels:
 
             SLE-Module-Basesystem15-SP5 - aarch64
             SLE-Product-SLES15-SP5 - aarch64`}
-          ></i>
+          />
         </StoryRow>
       </StripedStorySection>
       <StorySection>
-        &lt;i className="fa fa-info-circle fa-1-5x" data-bs-toggle="tooltip" data-bs-custom-class="wide-tooltip"
-        title=`Required channels:\n SLE-Module-Basesystem15-SP5 - aarch64\n SLE-Product-SLES15-SP5 - aarch64`&gt;
-        &lt;/i&gt;
+        &lt;IconTag icon="fa-info-circle" size="lg" tooltipWide title=
+        {`Required channels:\n SLE-Module-Basesystem15-SP5 - aarch64\n SLE-Product-SLES15-SP5 - aarch64`}
+        /&gt;
       </StorySection>
     </div>
   );

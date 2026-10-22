@@ -29,9 +29,6 @@ import jakarta.servlet.jsp.PageContext;
  */
 public class ConfigTagHelper {
 
-    public static final String CONFIG_ERROR_IMG = "/img/rhn-listicon-cfg_error.gif";
-    public static final String CONFIG_ERROR_ALT_TEXT = "??Unknown Icon - Error??";
-
     private ConfigTagHelper() {
 
     }
@@ -64,18 +61,6 @@ public class ConfigTagHelper {
         HtmlTag img = new HtmlTag("img");
         img.setAttribute("alt", service.getMessage(altKey));
         img.setAttribute("src", imgPath);
-        write(img.render(), pageContext);
-    }
-
-    /**
-     * Helper Method to write a "ERROR" img icon the jsp stream..
-     * @param pageContext the context object
-     * @throws JspException in the case of an io exception
-     */
-    static void writeErrorIcon(PageContext pageContext) throws JspException {
-        HtmlTag img = new HtmlTag("img");
-        img.setAttribute("alt", CONFIG_ERROR_ALT_TEXT);
-        img.setAttribute("src", CONFIG_ERROR_IMG);
         write(img.render(), pageContext);
     }
 

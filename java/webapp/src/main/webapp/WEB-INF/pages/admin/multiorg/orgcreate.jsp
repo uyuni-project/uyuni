@@ -75,7 +75,7 @@
                                        maxlength="32"
                                        styleId="desiredpass" />
                         <span class="input-group-addon input-group-text">
-                            <i class="fa fa-times-circle text-danger fa-1-5x" id="desiredtick"></i>
+                            <i class="fa fa-times-circle text-danger icon-size-lg" id="desiredtick"></i>
                         </span>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                                        onkeyup="updateTickIcon()"
                                        maxlength="32" styleId="confirmpass"/>
                         <span class="input-group-addon input-group-text">
-                            <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>
+                            <i class="fa fa-times-circle text-danger icon-size-lg" id="confirmtick"></i>
                         </span>
                     </div>
                 </div>

@@ -2,6 +2,7 @@ import type { FC, ReactElement } from "react";
 
 import { ChildChannelType } from "core/channels/type/channels.type";
 
+import { IconTag } from "components/icontag";
 import { ChannelAnchorLink } from "components/links";
 import { Highlight } from "components/table/Highlight";
 
@@ -70,7 +71,7 @@ const ChildChannel: FC<Props> = ({ search = "", ...props }: Props): ReactElement
       <span>
         {tooltip ? (
           <span>
-            <i className="fa fa-info-circle spacewalk-help-link" title={tooltip}></i>
+            <IconTag icon="fa-info-circle" title={tooltip} />
           </span>
         ) : null}
         {recommended ? (

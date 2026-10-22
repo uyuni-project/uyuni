@@ -1,5 +1,6 @@
 import { type ReactNode, Children } from "react";
 
+import { IconTag } from "components/icontag";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { cloneReactElement, HelpLink } from "components/utils";
 
@@ -41,7 +42,7 @@ function InnerPanel(props: Props) {
   return (
     <div>
       <h2>
-        <i className={`fa ${props.icon}`} />
+        <IconTag icon={`${props.icon}`} />
         {props.title}
         &nbsp;
         {help}

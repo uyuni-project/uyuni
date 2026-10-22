@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 
+import { IconTag } from "components/icontag";
 import { DEPRECATED_onClick } from "components/utils";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
@@ -202,10 +203,9 @@ export const DEPRECATED_HierarchicalTable = forwardRef<TableRef, HierarchicalTab
           <div className="expandable-entry">
             <div style={{ paddingLeft: `${indent}px` }}>
               {!row.isLeaf && (
-                <i
-                  className={`fa ${isExpanded ? "fa-angle-down" : "fa-angle-right"} fa-1-5x pointer product-hover`}
-                  {...DEPRECATED_onClick(() => toggleRowExpanded(rowId))}
-                />
+                <span {...DEPRECATED_onClick(() => toggleRowExpanded(rowId))} className="pointer product-hover">
+                  <IconTag icon={isExpanded ? "fa-angle-down" : "fa-angle-right"} size="lg" />
+                </span>
               )}
               {renderCellContent(row, child)}
             </div>
