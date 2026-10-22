@@ -19,6 +19,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.channel.ChannelDescriptionHelper;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -172,6 +173,10 @@ public class CloneChannelAction extends RhnAction {
         form.set(EditChannelAction.LABEL, label);
 
         EditChannelAction.setupFormHelper(req, form, original);
+        form.set(EditChannelAction.DESCRIPTION, getCloneDescription(original));
     }
 
+    static String getCloneDescription(Channel original) {
+        return ChannelDescriptionHelper.getDisplayDescription(original);
+    }
 }
