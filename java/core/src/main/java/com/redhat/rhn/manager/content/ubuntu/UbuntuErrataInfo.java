@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.content.ubuntu;
 
+import com.suse.salt.netapi.utils.Xor;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +23,7 @@ import java.util.Optional;
 
 public class UbuntuErrataInfo {
     private String action;
-    private List<String> cves;
+    private Xor<String, List<String>> cves;
     private String description;
     private String id;
     private String isummary;
@@ -43,7 +45,12 @@ public class UbuntuErrataInfo {
     }
 
     public List<String> getCves() {
-        return cves;
+        return Optional.ofNullable(cves)
+            .flatMap(xor -> xor.fold(
+                single -> Optional.ofNullable(single).map(List::of),
+                list -> Optional.ofNullable(list)
+            ))
+            .orElseGet(() -> List.of());
     }
 
     public Map<String, Release> getReleases() {
