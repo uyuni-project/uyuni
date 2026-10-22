@@ -15,6 +15,7 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 
+import hashlib
 import tempfile
 import shutil
 import os
@@ -49,6 +50,10 @@ class YumSrcTest(unittest.TestCase):
     def _make_dummy_cs(self):
         """Create a dummy ContentSource object that only talks to a mocked yum"""
         real_setup_repo = yum_src.ContentSource.setup_repo
+        real_os_makedirs = yum_src.os.makedirs
+        real_os_isdir = yum_src.os.path.isdir
+        real_os_chmod = yum_src.os.chmod
+        real_fileutils_makedirs = yum_src.fileutils.makedirs
 
         # don't read configs
         patch("spacewalk.common.suseLib.initCFG").start()
@@ -62,24 +67,30 @@ class YumSrcTest(unittest.TestCase):
         yum_src.fileutils.makedirs = Mock()
         yum_src.os.chmod = Mock()
         yum_src.os.makedirs = Mock()
-        yum_src.os.path.isdir = Mock()
+        yum_src.os.path.isdir = Mock(return_value=True)
 
         yum_src.get_proxy = Mock(return_value=(None, None, None))
 
-        cs = yum_src.ContentSource("http://example.com/fake_path/", "test_repo", org="")
-        # pylint: disable-next=invalid-name
-        mockReturnPackages = MagicMock()
-        mockReturnPackages.returnPackages = MagicMock(name="returnPackages")
-        mockReturnPackages.returnPackages.return_value = []
-        cs.repo.is_configured = True
-        cs.repo.includepkgs = []
-        cs.repo.exclude = []
-        cs.repo.root = os.path.dirname(__file__)
-        cs.channel_label = "."
-
-        yum_src.ContentSource.setup_repo = real_setup_repo
-
-        return cs
+        try:
+            cs = yum_src.ContentSource(
+                "http://example.com/fake_path/", "test_repo", org=""
+            )
+            # pylint: disable-next=invalid-name
+            mockReturnPackages = MagicMock()
+            mockReturnPackages.returnPackages = MagicMock(name="returnPackages")
+            mockReturnPackages.returnPackages.return_value = []
+            cs.repo.is_configured = True
+            cs.repo.includepkgs = []
+            cs.repo.exclude = []
+            cs.repo.root = os.path.dirname(__file__)
+            cs.channel_label = "."
+            return cs
+        finally:
+            yum_src.ContentSource.setup_repo = real_setup_repo
+            yum_src.os.makedirs = real_os_makedirs
+            yum_src.os.path.isdir = real_os_isdir
+            yum_src.os.chmod = real_os_chmod
+            yum_src.fileutils.makedirs = real_fileutils_makedirs
 
     @pytest.fixture(autouse=True)
     def set_temp_path(self, tmpdir):
@@ -384,6 +395,8 @@ class YumSrcTest(unittest.TestCase):
         ), patch(
             "spacewalk.satellite_tools.repo_plugins.yum_src.subprocess.run",
             MagicMock(return_value=subprocess_mock),
+        ), patch.object(
+            yum_src.ContentSource, "_has_pqc_signature", Mock(return_value=False)
         ):
             repo = yum_src.ZypperRepo(
                 tempfile.mkdtemp(), "http://example.com/url_with_mirrorlist/", "1"
@@ -782,3 +795,193 @@ class YumSrcTest(unittest.TestCase):
         self.assertEqual(listed_packages[1].name, "n2")
         self.assertEqual(listed_packages[1].version, "2.1")
         self.assertEqual(listed_packages[1].release, "3.4")
+
+    @staticmethod
+    def _write_certificate(directory, name):
+        """
+        Write a fake certificate file, creating its directory when needed
+        """
+        os.makedirs(directory, exist_ok=True)
+        path = os.path.join(directory, name)
+        with open(path, "w", encoding="utf-8") as cert_file:
+            cert_file.write(name)
+        return path
+
+    def test_list_certificates(self):
+        keys_dir = tempfile.mkdtemp()
+        try:
+            cert = self._write_certificate(keys_dir, "common.crt")
+            # Files in subdirectories should not be listed
+            self._write_certificate(os.path.join(keys_dir, "subdir"), "sub.crt")
+
+            # pylint: disable-next=protected-access
+            certs = yum_src.ContentSource._list_certificates(keys_dir)
+            self.assertEqual(certs, [cert])
+        finally:
+            shutil.rmtree(keys_dir)
+
+    def test_list_certificates_filtering(self):
+        temp_dir = tempfile.mkdtemp()
+        try:
+            cert_pem = self._write_certificate(temp_dir, "b_cert.pem")
+            cert_crt = self._write_certificate(temp_dir, "a_cert.crt")
+            # Ignored non-certificate files
+            self._write_certificate(temp_dir, "readme.txt")
+            self._write_certificate(temp_dir, "key.pub")
+            # Ignored directory named with .pem extension
+            os.makedirs(os.path.join(temp_dir, "subdir.pem"))
+
+            # pylint: disable-next=protected-access
+            certs = yum_src.ContentSource._list_certificates(temp_dir)
+            # Should be sorted and only include valid certificate files
+            self.assertEqual(certs, [cert_crt, cert_pem])
+
+            non_existent_dir = os.path.join(temp_dir, "non_existent")
+            # pylint: disable-next=protected-access
+            certs = yum_src.ContentSource._list_certificates(non_existent_dir)
+            self.assertEqual(certs, [])
+        finally:
+            shutil.rmtree(temp_dir)
+
+    @staticmethod
+    def _write_repomd(raw_cache_dir, reponame, content):
+        """
+        Write a repomd.xml into a Zypper raw cache and return its SHA-256 digest
+        """
+        repodata_dir = os.path.join(raw_cache_dir, reponame, "repodata")
+        os.makedirs(repodata_dir, exist_ok=True)
+        with open(os.path.join(repodata_dir, "repomd.xml"), "wb") as repomd:
+            repomd.write(content)
+        return hashlib.sha256(content).hexdigest()
+
+    def test_repomd_digest(self):
+        cs = self._make_dummy_cs()
+        cs.channel_label = "test_channel"
+        raw_cache_dir = tempfile.mkdtemp()
+        try:
+            digest = self._write_repomd(raw_cache_dir, "test_channel", b"<repomd/>")
+            # pylint: disable-next=protected-access
+            self.assertEqual(cs._repomd_digest(raw_cache_dir), digest)
+
+            with self.assertRaises(yum_src.RepoMDError):
+                # pylint: disable-next=protected-access
+                cs._repomd_digest(os.path.join(raw_cache_dir, "non_existent"))
+        finally:
+            shutil.rmtree(raw_cache_dir)
+
+    def _setup_pqc_repo(self, validated_digest, synced_repomd):
+        """
+        Run setup_repo on a PQC signed repository whose signature was validated
+        for validated_digest, with synced_repomd as the reposync cached repomd.xml
+        """
+        cs = self._make_dummy_cs()
+        cs.channel_label = "test_channel"
+        root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, root)
+        os.makedirs(os.path.join(root, "etc/zypp/repos.d"))
+        self._write_repomd(
+            os.path.join(root, "var/cache/zypp/raw"), "test_channel", synced_repomd
+        )
+        repo = yum_src.ZypperRepo(root, "http://example.com/repo/", "1")
+        cs.repo = repo
+
+        with patch.object(yum_src.ZyppoSync, "_init_root", MagicMock()), patch.object(
+            yum_src.ContentSource, "_get_mirror_list", MagicMock(return_value=[])
+        ), patch.object(
+            yum_src.ContentSource, "_has_pqc_signature", Mock(return_value=True)
+        ), patch.object(
+            yum_src.ContentSource,
+            "_verify_pqc_signature",
+            Mock(return_value=validated_digest),
+        ), patch.object(
+            yum_src.ContentSource,
+            "_run_zypper_ref",
+            Mock(return_value=Mock(returncode=0, stderr=None)),
+        ):
+            cs.setup_repo(repo)
+        return repo
+
+    def test_setup_repo_pqc_repomd_matches(self):
+        repomd = b"<repomd>validated</repomd>"
+        repo = self._setup_pqc_repo(hashlib.sha256(repomd).hexdigest(), repomd)
+        self.assertTrue(repo.is_configured)
+
+    def test_setup_repo_pqc_repomd_changed(self):
+        validated_digest = hashlib.sha256(b"<repomd>validated</repomd>").hexdigest()
+        with self.assertRaises(yum_src.RepoMDError) as context:
+            self._setup_pqc_repo(validated_digest, b"<repomd>changed</repomd>")
+        self.assertIn("not PQC-validated", str(context.exception))
+
+    @staticmethod
+    def _grab_error(errno, code=None, message=None):
+        """
+        Build a URLGrabError as raised by urlgrabber for a failed mirror
+        """
+        exc = URLGrabError(errno, message or f"error {code or errno}")
+        if code is not None:
+            exc.code = code
+        return exc
+
+    def _has_pqc_signature(self, mirror_errors, found=False):
+        """
+        Run _has_pqc_signature against mirrors failing with mirror_errors
+        """
+
+        class FakeMirrorGroup:
+            # pylint: disable-next=unused-argument
+            def __init__(self, grabber, mirrors, failure_callback=None):
+                self.failure_callback = failure_callback
+
+            # pylint: disable-next=unused-argument
+            def urlread(self, url, **kwargs):
+                for exc in mirror_errors:
+                    self.failure_callback(Mock(exception=exc))
+                if found:
+                    return b"signature"
+                raise URLGrabError(256, "No more mirrors to try.")
+
+        cs = self._make_dummy_cs()
+        with patch.object(yum_src, "MirrorGroup", FakeMirrorGroup), patch.object(
+            yum_src.ContentSource, "set_download_parameters", Mock()
+        ):
+            # pylint: disable-next=protected-access
+            return cs._has_pqc_signature()
+
+    def test_has_pqc_signature_found(self):
+        self.assertTrue(self._has_pqc_signature([], found=True))
+        # A failing mirror before a mirror providing the signature is fine
+        self.assertTrue(
+            self._has_pqc_signature([self._grab_error(14, 503)], found=True)
+        )
+
+    def test_has_pqc_signature_missing(self):
+        self.assertFalse(self._has_pqc_signature([self._grab_error(14, 404)]))
+        # A file:// path that cannot be read is reported by curl as error 37
+        self.assertFalse(self._has_pqc_signature([self._grab_error(14, 37)]))
+        self.assertFalse(
+            self._has_pqc_signature(
+                [self._grab_error(14, 404), self._grab_error(14, 404)]
+            )
+        )
+
+    def test_has_pqc_signature_fetch_failure(self):
+        for mirror_errors in (
+            [self._grab_error(14, 403)],
+            [self._grab_error(14, 401)],
+            [self._grab_error(12)],  # timeout
+            [self._grab_error(14, 7)],  # curl: couldn't connect
+            [self._grab_error(14, 404), self._grab_error(14, 503)],
+            [],
+        ):
+            with self.assertRaises(yum_src.RepoMDError):
+                self._has_pqc_signature(mirror_errors)
+
+    def test_has_pqc_signature_error_hides_url(self):
+        timeout = self._grab_error(
+            12, message="Timeout on https://example.com/repo/?secret_token: timed out"
+        )
+        with self.assertRaises(yum_src.RepoMDError) as context:
+            self._has_pqc_signature([timeout, self._grab_error(14, 403)])
+        message = str(context.exception)
+        self.assertNotIn("secret_token", message)
+        self.assertIn("timeout; HTTP error 403", message)

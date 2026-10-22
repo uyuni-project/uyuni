@@ -578,7 +578,8 @@ class RepoSync(object):
         if not url:
             # TODO:need to look at user security across orgs
             h = rhnSQL.prepare("""
-                select s.id, s.source_url, s.metadata_signed, s.label as repo_label, cst.label as repo_type_label
+                select s.id, s.source_url, s.metadata_signed, s.pqc_metadata_signed,
+                       s.label as repo_label, cst.label as repo_type_label
                 from rhnContentSource s,
                      rhnChannelContentSource cs,
                      rhnContentSourceType cst
@@ -613,6 +614,7 @@ class RepoSync(object):
                     "id": None,
                     "source_url": url,
                     "metadata_signed": "N",
+                    "pqc_metadata_signed": "N",
                     "repo_label": None,
                     "repo_type": repo_type_label,
                 }
@@ -668,6 +670,9 @@ class RepoSync(object):
             insecure = False
             if data["metadata_signed"] == "N":
                 insecure = True
+            pqc_insecure = False
+            if data.get("pqc_metadata_signed") == "N":
+                pqc_insecure = True
 
             plugin = None
             repo_type = data["repo_type"]
@@ -767,6 +772,7 @@ class RepoSync(object):
                             client_key_file=client_key_file,
                             channel_arch=self.channel_arch,
                             http_headers=source_url["http_headers"],
+                            pqc_insecure=pqc_insecure,
                         )
                     except repo.GeneralRepoException as exc:
                         # pylint: disable-next=consider-using-f-string
@@ -2429,6 +2435,7 @@ class RepoSync(object):
                         id=item["id"],
                         source_url=[item["source_url"]],
                         metadata_signed=item["metadata_signed"],
+                        pqc_metadata_signed=item.get("pqc_metadata_signed"),
                         repo_label=item["repo_label"],
                         repo_type=repo_type_label,
                     )
