@@ -1,1 +1,7 @@
 - Update brace-expansion from version 1.1.18 to 1.1.21
+- CVE-2026-102276: brace-expansion: DoS via uncontrolled recursion
+  in parseCommaParts causing stack exhaustion (bsc#1283188)
+- CVE-2026-102277: brace-expansion: Quadratic-time expansion of the
+  `{a},b}` rewrite causes CPU denial of service (bsc#1283371)
+- CVE-2026-102278: brace-expansion: DoS via uncontrolled recursion
+  on nested brace groups causing stack exhaustion (bsc#1283400)
