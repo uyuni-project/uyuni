@@ -52,7 +52,7 @@ declare global {
   var d3: d3;
 
   // Defined in spacewalk-essentials.js
-  var handleSst: (...args: any[]) => any;
+  var handleSst: () => void;
   var spacewalkContentObserver: MutationObserver;
   var registerSpacewalkContentObservers: (...args: any[]) => any | undefined;
 

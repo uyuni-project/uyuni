@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
+import { action } from "storybook/actions";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { Button } from "./index";
 
@@ -35,7 +36,6 @@ const tooltipPlacementOptions = ["top", "right", "bottom", "left"];
 const meta = {
   title: "Components/Buttons/Button",
   component: Button,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -51,24 +51,48 @@ const meta = {
     icon: "fa-plus",
     tooltipPlacement: "top",
     disabled: false,
+    handler: action("clicked"),
   },
   argTypes: {
     className: {
       control: "select",
       options: buttonClassOptions,
+      description: "Uyuni button variant and optional size classes. The base `btn` class is added automatically.",
     },
-    text: { control: "text" },
-    title: { control: "text" },
+    text: {
+      control: "text",
+      description: "Visible button content. `children` can be used instead.",
+    },
+    children: {
+      control: false,
+      description: "Alternative button content used when `text` is omitted.",
+    },
+    id: {
+      control: "text",
+      description: "Optional HTML identifier assigned to the button.",
+    },
+    title: {
+      control: "text",
+      description: "Accessible name and native tooltip text.",
+    },
     icon: {
       control: "select",
       options: iconOptions,
+      description: "Font Awesome class displayed before the button content.",
     },
     tooltipPlacement: {
       control: "select",
       options: tooltipPlacementOptions,
+      description: "Preferred Bootstrap tooltip placement.",
     },
-    disabled: { control: "boolean" },
-    handler: { action: "clicked" },
+    disabled: {
+      control: "boolean",
+      description: "Prevents the button from being activated.",
+    },
+    handler: {
+      action: "clicked",
+      description: "Callback invoked when the button is activated.",
+    },
   },
 } satisfies Meta<typeof Button>;
 
@@ -96,14 +120,14 @@ export const Variants: Story = {
     },
   },
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <Button className="btn-primary" text="Primary" />
         <Button className="btn-default" text="Default" />
         <Button className="btn-danger" text="Danger" />
         <Button className="btn-tertiary" text="Tertiary" />
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
 };
 
@@ -118,16 +142,16 @@ export const Icons: Story = {
     },
   },
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <Button className="btn-primary" title="Add" icon="fa-plus" />
         <Button className="btn-default" title="Delete" icon="fa-trash" />
         <Button className="btn-primary" icon="fa-plus" text="Primary" />
         <Button className="btn-default" icon="fa-plus" text="Default" />
         <Button className="btn-tertiary" icon="fa-plus" text="Tertiary" />
         <Button className="btn-tertiary" title="Delete" icon="fa-trash" />
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
 };
 
@@ -141,8 +165,8 @@ export const Sizes: Story = {
     },
   },
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <Button className="btn-primary" text="Default button" />
         <Button className="btn-primary btn-sm" text="Small button" />
         <Button className="btn-default btn-sm" text="Small button" />
@@ -150,8 +174,8 @@ export const Sizes: Story = {
         <Button className="btn-default btn-sm" title="Delete" icon="fa-trash" />
         <Button className="btn-primary btn-sm" title="Add" icon="fa-plus" />
         <Button className="btn-tertiary btn-sm" title="Delete" icon="fa-trash" />
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
 };
 
@@ -165,13 +189,13 @@ export const Disabled: Story = {
     },
   },
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <Button className="btn-primary" text="Primary" disabled />
         <Button className="btn-default" text="Default" disabled />
         <Button className="btn-danger" text="Danger" disabled />
         <Button className="btn-tertiary" text="Tertiary" disabled />
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
 };
