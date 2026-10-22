@@ -1,7 +1,7 @@
 - Update DOMPurify from version 3.4.15 to 3.4.16
-- CVE-2026-109344: DOMPurify IN_PLACE node-removing afterSanitize hook
-  leaves detached subtree event handlers armed, causing DOM XSS
-  (bsc#1285061)
-- CVE-2026-109345: DOMPurify IN_PLACE returns a force-removed rawtext root
-  whose text carries attacker markup, allowing execution after HTML reparse
-  (bsc#1285100)
+- CVE-2026-109344: DOMPurify IN_PLACE node-removing
+  afterSanitize hook leaves detached subtree event handlers armed,
+  causing DOM XSS (bsc#1285061)
+- CVE-2026-109345: DOMPurify IN_PLACE returns a force-removed
+  rawtext root whose text carries attacker markup, allowing
+  execution after HTML reparse (bsc#1285100)
