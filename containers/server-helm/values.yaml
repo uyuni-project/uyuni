@@ -104,7 +104,6 @@ repository: registry.opensuse.org/uyuni
 #   label: Image Tag
 #   group: Images
 #   order: 210
-#   description: Default tag to use for all images. Leave empty to use the chart appVersion.
 # @schema
 # tag -- The default tag to use for all the images, can be overridden
 # By default the tag will be the appVersion of the Chart.
@@ -148,7 +147,6 @@ global:
   #   order: 100
   #   type: string
   #   required: true
-  #   description: Fully qualified domain name the server will answer as, e.g. uyuni.example.com. Changing this value later renames the server, handle with care.
   # @schema
   # global.fqdn -- Fully qualified name the server will answer as.
   fqdn: null
@@ -222,7 +220,6 @@ server:
     #   label: Mirror Host Path
     #   group: Storage
     #   order: 780
-    #   description: Path on the node to mount as the server.susemanager.fromdir mirror. Strongly discouraged as it ties the server to a node. Leave empty for none.
     # @schema
     # server.mirror.hostPath -- Path on the node to mount as mirror.
     hostPath: ""
@@ -247,7 +244,6 @@ server:
   #   label: Super Privileged Server
   #   group: Advanced
   #   order: 800
-  #   description: May be needed on clusters with SELinux or AppArmor enforced. This is a big security risk.
   #   show_subquestion_if: "false"
   # @schema
   # server.superPrivileged -- Set to true to run on a cluster with selinux or AppArmor enforced.
@@ -260,7 +256,6 @@ server:
   #   group: Advanced
   #   order: 830
   #   empty_option_label: Default
-  #   description: Value passed to the systemd log-level parameter. Empty keeps the default. Setting it adds a tty to the container.
   # @schema
   # server.systemdLogLevel -- Systemd log level to use for debugging
   systemdLogLevel: ""
@@ -270,7 +265,6 @@ server:
   #   label: AppArmor Profile
   #   order: 810
   #   subquestion_of: server.superPrivileged
-  #   description: Name of an AppArmor profile to use for the server pod. It must show up in aa-status output.
   # @schema
   # server.apparmorProfile -- Name of an AppArmor profile to use for the server pod.
   apparmorProfile: ""
@@ -280,7 +274,6 @@ server:
   #   label: SELinux Type
   #   order: 820
   #   subquestion_of: server.superPrivileged
-  #   description: SELinux type to use for the server pod. Leave empty for the container runtime default.
   # @schema
   # server.selinuxType -- Name of the SELinux type to use for the server pod.
   selinuxType: ""
@@ -332,20 +325,20 @@ services:
 
   # @schema
   # $ref: "#/definitions/serviceConfig"
-  # x-rancher-question:
-  #   variable: ports.pgsql
-  #   label: Report Database NodePort
-  #   group: Services
-  #   order: 430
-  #   description: NodePort exposing the report database PostgreSQL port (5432).
-  #   min: 30000
-  #   max: 32767
-  #   show_if: services.type=NodePort
   # @schema
   # services.reportdb -- Values setting up the reportdb service.
   reportdb:
     type: ""
     ports:
+      # @schema
+      # x-rancher-question:
+      #   label: Report Database NodePort
+      #   group: Services
+      #   order: 430
+      #   min: 30000
+      #   max: 32767
+      #   show_if: services.type=NodePort
+      # @schema
       # -- Port to use as a NodePort service
       pgsql: 30032
     # @default `nil`
@@ -353,30 +346,31 @@ services:
 
   # @schema
   # $ref: "#/definitions/serviceConfig"
-  # x-rancher-question:
-  #   - variable: ports.publish
-  #     label: Salt Publish NodePort
-  #     group: Services
-  #     order: 410
-  #     description: NodePort exposing the Salt publish port (4505).
-  #     min: 30000
-  #     max: 32767
-  #     show_if: services.type=NodePort
-  #   - variable: ports.request
-  #     label: Salt Request NodePort
-  #     group: Services
-  #     order: 420
-  #     description: NodePort exposing the Salt request port (4506).
-  #     min: 30000
-  #     max: 32767
-  #     show_if: services.type=NodePort
   # @schema
   # services.salt -- Values setting up the salt service.
   salt:
     type: ""
     ports:
+      # @schema
+      # x-rancher-question:
+      #   label: Salt Publish NodePort
+      #   group: Services
+      #   order: 410
+      #   min: 30000
+      #   max: 32767
+      #   show_if: services.type=NodePort
+      # @schema
       # -- Port to use as a NodePort service
       publish: 30005
+      # @schema
+      # x-rancher-question:
+      #   label: Salt Request NodePort
+      #   group: Services
+      #   order: 420
+      #   min: 30000
+      #   max: 32767
+      #   show_if: services.type=NodePort
+      # @schema
       # -- Port to use as a NodePort service
       request: 30006
     # @default `nil`
@@ -470,7 +464,6 @@ ingress:
   #   group: Ingress
   #   order: 380
   #   show_if: gateway.enable=false
-  #   description: Ingress class name to use. Empty means the default one. On rke2 this is likely 'traefik', on K3s it is likely empty.
   # @schema
   # ingress.class -- Specify the ingress class name to use.
   class: "traefik"
@@ -542,45 +535,51 @@ gateway:
   listeners:
     # @schema
     # $ref: "#/definitions/listener"
-    # x-rancher-question:
-    #   - variable: name
-    #     label: HTTP Listener Name
-    #     order: 330
-    #     subquestion_of: gateway.enable
-    #   - variable: port
-    #     label: HTTP Listener Port
-    #     order: 340
-    #     subquestion_of: gateway.enable
-    #     min: 1
-    #     max: 65535
     # @schema
     # gateway.listeners.http -- Configuration of the HTTP listener.
     # The default is adjusted for traefik on rke2
     http:
+      # @schema
+      # x-rancher-question:
+      #   label: HTTP Listener Name
+      #   order: 330
+      #   subquestion_of: gateway.enable
+      # @schema
       # gateway.listeners.http.name -- Name of the HTTP listener in the Gateway.
       name: "web"
+      # @schema
+      # x-rancher-question:
+      #   label: HTTP Listener Port
+      #   order: 340
+      #   subquestion_of: gateway.enable
+      #   min: 1
+      #   max: 65535
+      # @schema
       # gateway.listeners.http.port -- Port of the HTTP listener to set in the Gateway.
       port: 8000
 
     # @schema
     # $ref: "#/definitions/listener"
-    # x-rancher-question:
-    #   - variable: name
-    #     label: HTTPS Listener Name
-    #     order: 350
-    #     subquestion_of: gateway.enable
-    #   - variable: port
-    #     label: HTTPS Listener Port
-    #     order: 360
-    #     subquestion_of: gateway.enable
-    #     min: 1
-    #     max: 65535
     # @schema
     # gateway.listeners.https -- Configuration of the HTTPS listener.
     # The default is adjusted for traefik on rke2
     https:
+      # @schema
+      # x-rancher-question:
+      #   label: HTTPS Listener Name
+      #   order: 350
+      #   subquestion_of: gateway.enable
+      # @schema
       # gateway.listeners.https.name -- Name of the HTTPS listener in the Gateway.
       name: "websecure"
+      # @schema
+      # x-rancher-question:
+      #   label: HTTPS Listener Port
+      #   order: 360
+      #   subquestion_of: gateway.enable
+      #   min: 1
+      #   max: 65535
+      # @schema
       # gateway.listeners.https.port -- Port of the HTTPS listener to set in the Gateway.
       port: 8443
 
@@ -606,7 +605,6 @@ tftp:
   #   label: Enable TFTP Server
   #   group: Components
   #   order: 500
-  #   description: Deploy the TFTP server to PXE boot systems.
   #   show_subquestion_if: true
   # @schema
   # tftp.enable -- Define a TFTP server deployment with one replica if set to true
@@ -722,7 +720,6 @@ coco:
   #   group: Components
   #   order: 540
   #   min: 0
-  #   description: Number of replicas for the confidential computing attestation deployment. 0 disables it.
   # @schema
   # coco.replicas -- Number the confidential computing pods replicas
   replicas: 0
@@ -773,7 +770,6 @@ saline:
   #   label: Enable Saline
   #   group: Components
   #   order: 530
-  #   description: Deploy Saline to provide Salt master metrics.
   # @schema
   # saline.enable -- Define a saline deployment with one replica if set to true.
   enable: false
@@ -824,7 +820,6 @@ db:
   #   label: Deploy PostgreSQL
   #   group: Database
   #   order: 600
-  #   description: "Deploy the internal PostgreSQL instance. WARNING: setting this to false is not supported yet."
   #   show_subquestion_if: true
   # @schema
   # db.enable -- Deploys the internal dababase if set to true. Setting to false is not supported yet.
@@ -835,7 +830,6 @@ db:
   #   label: Pods CIDR
   #   order: 610
   #   subquestion_of: db.enable
-  #   description: Network IP range allowed to make plain text connections to the database, usually the cluster pods CIDR. The default matches rke2's pods CIDR; K3s also uses 10.42.0.0/16.
   # @schema
   # db.podsCIDR -- Network IP range to allow plain text connections from, usually the cluster pods CIDR
   # The default has been adjusted with rke2's pods CIDR default.
@@ -843,90 +837,90 @@ db:
 
   # @schema
   # $ref: "#/definitions/dbConnectionConfig"
-  # x-rancher-question:
-  #   - variable: host
-  #     label: Internal Database Host
-  #     group: Database
-  #     order: 620
-  #     type: string
-  #     description: Host name of the internal database. It should be in the SANs of the database TLS certificate.
-  #     default: ""
-  #     show_if: db.enable=false
-  #   - variable: port
-  #     label: Internal Database Port
-  #     group: Database
-  #     order: 630
-  #     min: 1
-  #     max: 65535
-  #     show_if: db.enable=false
-  #   - variable: name
-  #     label: Internal Database Name
-  #     group: Database
-  #     order: 640
-  #     type: string
-  #     default: susemanager
-  #     show_if: db.enable=false
   # @schema
   # db.internal -- Configuration of the internal database connection
   internal:
     # @default `nil`
     # @schema
     # type: ["string", "null"]
+    # x-rancher-question:
+    #   label: Internal Database Host
+    #   group: Database
+    #   order: 620
+    #   type: string
+    #   default: ""
+    #   show_if: db.enable=false
     # @schema
     # db.internal.host -- FQDN or IP where to find the internal database (unused for now)
     host: null
 
+    # @schema
+    # x-rancher-question:
+    #   label: Internal Database Port
+    #   group: Database
+    #   order: 630
+    #   min: 1
+    #   max: 65535
+    #   show_if: db.enable=false
+    # @schema
     # db.internal.port -- Port where to find the internal database (unused for now)
     port: 5432
 
     # @default `nil`
     # @schema
     # type: ["string", "null"]
+    # x-rancher-question:
+    #   label: Internal Database Name
+    #   group: Database
+    #   order: 640
+    #   type: string
+    #   default: susemanager
+    #   show_if: db.enable=false
     # @schema
     # db.internal.name -- Name of the internal database (unused for now)
     name: null
 
   # @schema
   # $ref: "#/definitions/dbConnectionConfig"
-  # x-rancher-question:
-  #   - variable: host
-  #     label: Report Database Host
-  #     group: Database
-  #     order: 650
-  #     type: string
-  #     description: Host name of the report database. It should be in the SANs of the database TLS certificate.
-  #     default: ""
-  #     show_if: db.enable=false
-  #   - variable: port
-  #     label: Report Database Port
-  #     group: Database
-  #     order: 660
-  #     min: 1
-  #     max: 65535
-  #     show_if: db.enable=false
-  #   - variable: name
-  #     label: Report Database Name
-  #     group: Database
-  #     order: 670
-  #     type: string
-  #     default: reportdb
-  #     show_if: db.enable=false
   # @schema
   # db.report -- Configuration of the report database connection
   report:
     # @default `nil`
     # @schema
     # type: ["string", "null"]
+    # x-rancher-question:
+    #   label: Report Database Host
+    #   group: Database
+    #   order: 650
+    #   type: string
+    #   default: ""
+    #   show_if: db.enable=false
     # @schema
     # db.report.host -- FQDN or IP where to find the report database (unused for now)
     host: null
 
+    # @schema
+    # x-rancher-question:
+    #   label: Report Database Port
+    #   group: Database
+    #   order: 660
+    #   min: 1
+    #   max: 65535
+    #   show_if: db.enable=false
+    # @schema
     # db.report.port -- Port where to find the report database (unused for now)
     port: 5432
 
     # @default `nil`
     # @schema
     # type: ["string", "null"]
+    # x-rancher-question:
+    #   label: Report Database Name
+    #   group: Database
+    #   order: 670
+    #   type: string
+    #   default: reportdb
+    #   show_if: db.enable=false
     # @schema
     # db.report.name -- Name of the report database (unused for now)
     name: null
@@ -973,17 +967,17 @@ volumes:
 
   # @schema
   # $ref: "#/definitions/volumeConfig"
-  # x-rancher-question:
-  #   variable: size
-  #   label: Database Volume Size
-  #   group: Storage
-  #   order: 710
-  #   type: string
-  #   description: Size of the PostgreSQL data volume. Needs to be at least 50Gi on a fast storage.
-  #   show_if: db.enable=true
   # @schema
   # volumes.var-pgsql -- var-pgsql volume configuration
   var-pgsql:
+    # @schema
+    # x-rancher-question:
+    #   label: Database Volume Size
+    #   group: Storage
+    #   order: 710
+    #   type: string
+    #   show_if: db.enable=true
+    # @schema
     # -- Requested size
     size: 50Gi
     # @default `nil`
@@ -999,16 +993,16 @@ volumes:
 
   # @schema
   # $ref: "#/definitions/volumeConfig"
-  # x-rancher-question:
-  #   variable: size
-  #   label: Packages Volume Size
-  #   group: Storage
-  #   order: 720
-  #   type: string
-  #   description: Size of the volume holding the synchronized packages. Depends on the distributions to manage.
   # @schema
   # volumes.var-spacewalk -- var-spacewalk volume configuration
   var-spacewalk:
+    # @schema
+    # x-rancher-question:
+    #   label: Packages Volume Size
+    #   group: Storage
+    #   order: 720
+    #   type: string
+    # @schema
     # -- Requested size
     size: 100Gi
     # @default `nil`
@@ -1024,15 +1018,16 @@ volumes:
 
   # @schema
   # $ref: "#/definitions/volumeConfig"
-  # x-rancher-question:
-  #   variable: size
-  #   label: Cache Volume Size
-  #   group: Storage
-  #   order: 740
-  #   type: string
   # @schema
   # volumes.var-cache -- var-cache volume configuration
   var-cache:
+    # @schema
+    # x-rancher-question:
+    #   label: Cache Volume Size
+    #   group: Storage
+    #   order: 740
+    #   type: string
+    # @schema
     # -- Requested size
     size: 10Gi
     # @default `nil`
@@ -1048,15 +1043,16 @@ volumes:
 
   # @schema
   # $ref: "#/definitions/volumeConfig"
-  # x-rancher-question:
-  #   variable: size
-  #   label: Logs Volume Size
-  #   group: Storage
-  #   order: 760
-  #   type: string
   # @schema
   # volumes.var-log -- var-log volume configuration
   var-log:
+    # @schema
+    # x-rancher-question:
+    #   label: Logs Volume Size
+    #   group: Storage
+    #   order: 760
+    #   type: string
+    # @schema
     # -- Requested size
     size: 2Gi
     # @default `nil`
@@ -1072,16 +1068,16 @@ volumes:
 
   # @schema
   # $ref: "#/definitions/volumeConfig"
-  # x-rancher-question:
-  #   variable: size
-  #   label: Web Volume Size
-  #   group: Storage
-  #   order: 730
-  #   type: string
-  #   description: Size of the volume with files published over HTTP, including unpacked auto-installation ISOs.
   # @schema
   # volumes.srv-www -- srv-www volume configuration
   srv-www:
+    # @schema
+    # x-rancher-question:
+    #   label: Web Volume Size
+    #   group: Storage
+    #   order: 730
+    #   type: string
+    # @schema
     # -- Requested size
     size: 100Gi
     # @default `nil`
@@ -1457,15 +1453,16 @@ volumes:
 
   # @schema
   # $ref: "#/definitions/volumeConfig"
-  # x-rancher-question:
-  #   variable: size
-  #   label: Search Index Volume Size
-  #   group: Storage
-  #   order: 750
-  #   type: string
   # @schema
   # volumes.var-search -- var-search volume configuration
   var-search:
+    # @schema
+    # x-rancher-question:
+    #   label: Search Index Volume Size
+    #   group: Storage
+    #   order: 750
+    #   type: string
+    # @schema
     # -- Requested size
     size: 10Gi
     # @default `nil`
