@@ -1,3 +1,7 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+SPDX-License-Identifier: MIT
+-->
 # Uyuni Server
 
 [Uyuni](https://www.uyuni-project.org) is an open source systems management solution to deploy, configure, patch and monitor Linux systems.
