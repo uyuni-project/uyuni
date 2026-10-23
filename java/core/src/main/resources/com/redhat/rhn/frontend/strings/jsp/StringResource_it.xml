@@ -26447,19 +26447,17 @@ del canale se non si rimuovono prima le versioni più recenti.</target>
         Otherwise, the channel is a child of the specified channel.
         &lt;p/&gt;
         Channel name and label are required.&lt;br&gt;
-        They each must be at least 6 characters in length.&lt;br&gt;
-        Channel name must not be longer than 256 characters and channel label must not be longer than 128 characters.&lt;br&gt;
-        Channel name and label may begin with a letter or digit.&lt;br&gt;
-        They each must not begin with rhn, redhat or red hat.&lt;br&gt;
-        They each must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.&lt;br&gt;
-        Channel name may also contain spaces, parentheses () and forward slashes ('/').
+        Channel name must be 6 to 256 characters long and begin with a letter or digit.&lt;br&gt;
+        Channel name may contain only letters, digits, whitespace, apostrophes ('), hyphens ('-'), periods ('.'), underscores ('_'), parentheses (), and forward slashes ('/').&lt;br&gt;
+        Channel label must be 6 to 128 characters long and begin with a lowercase letter or digit.&lt;br&gt;
+        Channel label may contain only lowercase letters, digits, hyphens ('-'), periods ('.'), and underscores ('_').
         &lt;p/&gt;
         Channel summary is also required and must not exceed 500 characters.
         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>Creare o modificare i canali da questa pagina.
+        <target state="needs-adaptation">Creare o modificare i canali da questa pagina.
 &lt;p/&gt;
 Se il canale genitore è stato impostato su 'nessuno', il canale risulterà essere un canale di base.
 In caso contrario esso sarà figlio del canale specificato.

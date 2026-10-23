@@ -26688,16 +26688,14 @@ given channel.</source>
         Otherwise, the channel is a child of the specified channel.
         &lt;p/&gt;
         Channel name and label are required.&lt;br&gt;
-        They each must be at least 6 characters in length.&lt;br&gt;
-        Channel name must not be longer than 256 characters and channel label must not be longer than 128 characters.&lt;br&gt;
-        Channel name and label may begin with a letter or digit.&lt;br&gt;
-        They each must not begin with rhn, redhat or red hat.&lt;br&gt;
-        They each must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.&lt;br&gt;
-        Channel name may also contain spaces, parentheses () and forward slashes ('/').
+        Channel name must be 6 to 256 characters long and begin with a letter or digit.&lt;br&gt;
+        Channel name may contain only letters, digits, whitespace, apostrophes ('), hyphens ('-'), periods ('.'), underscores ('_'), parentheses (), and forward slashes ('/').&lt;br&gt;
+        Channel label must be 6 to 128 characters long and begin with a lowercase letter or digit.&lt;br&gt;
+        Channel label may contain only lowercase letters, digits, hyphens ('-'), periods ('.'), and underscores ('_').
         &lt;p/&gt;
         Channel summary is also required and must not exceed 500 characters.
         </source>
-        <target>이 페이지에서 소프트웨어 채널을 생성하거나 편집할 수 있습니다.
+        <target state="needs-adaptation">이 페이지에서 소프트웨어 채널을 생성하거나 편집할 수 있습니다.
         &lt;p/&gt;
         상위 채널이 '없음'으로 설정되면 해당 채널이 기본 채널입니다.
         그렇지 않으면, 채널은 지정된 채널의 하위 채널입니다.
