@@ -9463,7 +9463,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.supportedregex" xml:space="preserve">
         <source>Channel name must be at least 6 characters long, begin with a letter or digit and may contain only letters, digits, whitespace, apostrophes ('), hyphens ('-'), periods ('.'), underscores ('_'), parentheses and forward slashes ('/').</source>
-        <target state="needs-adaptation">Názov kanála musí mať aspoň 6 znakov, začínať písmenom a môže obsahovať len malé písmená, pomlčky ('-'), bodky ('.'), podčiarkovníky ('_'), číslice, medzery, zátvorky a lomky ('/').</target>
+        <target state="translated">Názov kanála musí mať aspoň 6 znakov, začínať písmenom alebo číslicou a môže obsahovať len písmená, číslice, medzery, apostrofy ('), pomlčky ('-'), bodky ('.'), podčiarkovníky ('_'), zátvorky a lomky ('/').</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
