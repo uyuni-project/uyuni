@@ -1,0 +1,2 @@
+- Replace Edge Image Builder usage in kiwi build with optional
+  `mlm_kiwi_pre.sh` and `mlm_kiwi_post.sh` hooks (bsc#1256494)
