@@ -9523,7 +9523,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.supportedregex" xml:space="preserve">
         <source>Channel label must be at least 6 characters long, begin with a lowercase letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
-        <target state="needs-adaptation">Označenie kanála musí mať aspoň 6 znakov, začínať písmenom alebo číslicou a môže obsahovať len malé písmená, pomlčky ('-'), bodky ('.'), podčiarkovníky ('_') a číslice.</target>
+        <target state="translated">Označenie kanála musí mať aspoň 6 znakov, začínať malým písmenom alebo číslicou a môže obsahovať len malé písmená, pomlčky ('-'), bodky ('.'), podčiarkovníky ('_') a číslice.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
