@@ -31,6 +31,7 @@ import com.suse.salt.netapi.event.EventStream;
 import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -218,13 +219,13 @@ class SaltReactorTest {
         return reactor;
     }
 
-    private static void startAndWaitForInitializer(SaltReactor reactor) throws InterruptedException {
+    private static void startAndWaitForInitializer(SaltReactor reactor)
+            throws InterruptedException, ReflectiveOperationException {
         reactor.start();
-        Thread initializerThread = Thread.getAllStackTraces().keySet().stream()
-                .filter(t -> "salt-event-stream-initializer".equals(t.getName()))
-                .findFirst()
-                .orElse(null);
-        assertNotNull(initializerThread, "Asynchronous wait thread 'salt-event-stream-initializer' was not found");
+        Field initializerField = SaltReactor.class.getDeclaredField("initializerThread");
+        initializerField.setAccessible(true);
+        Thread initializerThread = (Thread) initializerField.get(reactor);
+        assertNotNull(initializerThread, "Initializer thread was not created");
         initializerThread.join(10000);
         assertFalse(initializerThread.isAlive(), "Initializer thread did not terminate");
     }
