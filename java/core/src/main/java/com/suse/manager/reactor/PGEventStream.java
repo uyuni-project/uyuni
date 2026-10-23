@@ -229,6 +229,10 @@ public class PGEventStream extends AbstractEventStream {
         catch (Exception e) {
             LOG.error("Unexpected exception in notification poller:", e);
         }
+        finally {
+            // create new session for each run
+            HibernateFactory.closeSession();
+        }
     }
 
     /**

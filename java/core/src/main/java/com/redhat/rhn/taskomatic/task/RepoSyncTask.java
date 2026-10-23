@@ -18,6 +18,7 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -29,6 +30,7 @@ import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
 import com.redhat.rhn.domain.notification.types.NotificationData;
+import com.redhat.rhn.domain.org.Org;
 
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -105,21 +107,28 @@ public class RepoSyncTask extends RhnJavaJob {
 
             log.info("Syncing repos for channel: {}", channel.getName());
 
+            String[] cmd = getSyncCommand(channel, params).toArray(new String[0]);
+            String channelName = channel.getName();
+            Org channelOrg = channel.getOrg();
+            // do not keep the transaction open while the external reposync runs
+            HibernateFactory.commitTransaction();
+            HibernateFactory.closeSession();
+
             NotificationData notificationData;
 
             try {
-                executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]));
-                notificationData = new ChannelSyncFinished(channel.getId(), channel.getName());
+                executeExtCmd(cmd);
+                notificationData = new ChannelSyncFinished(channelId, channelName);
             }
             catch (JobExecutionException e) {
-                notificationData = new ChannelSyncFailed(channel.getId(), channel.getName(), e.getMessage());
-                log.error("Unable to sync channel {}", channel.getId(), e);
+                notificationData = new ChannelSyncFailed(channelId, channelName, e.getMessage());
+                log.error("Unable to sync channel {}", channelId, e);
             }
 
             UserNotificationFactory.storeNotificationMessageFor(
                 UserNotificationFactory.createNotificationMessage(notificationData),
                 Set.of(AccessGroupFactory.getChannelAdmin()),
-                Optional.ofNullable(channel.getOrg())
+                Optional.ofNullable(channelOrg)
             );
         }
     }

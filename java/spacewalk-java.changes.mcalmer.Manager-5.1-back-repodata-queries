@@ -1,0 +1,2 @@
+- Speed up loading package data for repodata generation by
+  avoiding a full scan of the checksum table (bsc#1286091)
