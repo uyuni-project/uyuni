@@ -1638,6 +1638,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @apidoc.doc Clone a channel.  If arch_label is omitted, the arch label of the
      *      original channel will be used. If parent_label is omitted, the clone will be
      *      a base channel.
+     *      If originalState is true, only the original packages are cloned, without
+     *      patches. Otherwise, the current packages and patches are cloned.
+     *      Patches already cloned in the organization are reused as they are, so
+     *      changes to the original patch since then, such as a retraction, are not
+     *      included. Use channel.software.syncErrata to update them.
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "originalLabel")
      * @apidoc.param

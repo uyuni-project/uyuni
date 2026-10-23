@@ -1,0 +1,2 @@
+- Document cloned patch reuse in the 'softwarechannel_clone' and
+  'softwarechannel_clonetree' help (bsc#1282231)
