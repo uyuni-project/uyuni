@@ -125,10 +125,11 @@ def reposync_benchmark_results_dir
 end
 
 # Unique channel label for this benchmark run.
+# Stored globally so the package download benchmark scenario can reuse the synced channel.
 def reposync_benchmark_channel_label
-  return @reposync_benchmark_channel_label if @reposync_benchmark_channel_label
+  return $reposync_benchmark_channel_label if $reposync_benchmark_channel_label
 
-  @reposync_benchmark_channel_label =
+  $reposync_benchmark_channel_label =
     ENV.fetch('UYUNI_BENCH_CHANNEL_LABEL') do
       "uyuni-bench-reposync-#{Time.now.utc.strftime('%Y%m%d%H%M%S')}"
     end
