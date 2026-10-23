@@ -24,3 +24,5 @@
 # Test files
 tests/
 test.sh
+# generator script
+gen-questions.sh
