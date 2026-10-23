@@ -297,6 +297,15 @@ When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
   attach_file(field, canonical_path)
 end
 
+When(/^I attach the remote file "([^"]*)" on "([^"]*)" to "([^"]*)"$/) do |remote_file, host, field|
+  attach_dir = Dir.mktmpdir('attach')
+  (@attach_dirs ||= []) << attach_dir
+  local_file = File.join(attach_dir, File.basename(remote_file))
+  raise ScriptError, "Extraction of #{remote_file} from #{host} failed" unless file_extract(get_target(host), remote_file, local_file)
+
+  attach_file(field, local_file)
+end
+
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family

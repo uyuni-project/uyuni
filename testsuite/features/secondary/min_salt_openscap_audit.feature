@@ -28,27 +28,49 @@ Feature: OpenSCAP audit of Salt minion
     And I wait until event "Package List Refresh" is completed
 
 @susemanager
+  Scenario: Upload the SCAP content of the SLE minion to the server
+    When I follow the left menu "Audit > OpenSCAP > SCAP Content"
+    And I follow "Upload" in the content area
+    And I enter "SLE 15 SSG" as "name"
+    And I attach the remote file "/usr/share/xml/scap/ssg/content/ssg-sle15-ds.xml" on "sle_minion" to "scapFile"
+    And I attach the remote file "/usr/share/xml/scap/ssg/content/ssg-sle15-xccdf.xml" on "sle_minion" to "xccdfFile"
+    And I click on "Upload"
+    Then I should see a "SLE 15 SSG" text
+
+@uyuni
+  Scenario: Upload the SCAP content of the SLE minion to the server
+    When I follow the left menu "Audit > OpenSCAP > SCAP Content"
+    And I follow "Upload" in the content area
+    And I enter "openSUSE SSG" as "name"
+    And I attach the remote file "/usr/share/xml/scap/ssg/content/ssg-opensuse-ds.xml" on "sle_minion" to "scapFile"
+    And I attach the remote file "/usr/share/xml/scap/ssg/content/ssg-opensuse-xccdf.xml" on "sle_minion" to "xccdfFile"
+    And I click on "Upload"
+    Then I should see a "openSUSE SSG" text
+
+@susemanager
   Scenario: Schedule an OpenSCAP audit job on the SLE minion
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Audit" in the content area
     And I follow "OpenSCAP" in the content area
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
-    And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-sle15-ds.xml" as "path"
+    And I select "SLE 15 SSG" from "dataStreamName"
+    And I select "Standard System Security Profile" from "xccdfProfileId"
     And I click on "Schedule"
-    Then I should see a "XCCDF scan has been scheduled" text
+    Then I should see a "SCAP scan has been scheduled." text
     And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
 @uyuni
   Scenario: Schedule an OpenSCAP audit job on the SLE minion
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Audit" in the content area
     And I follow "OpenSCAP" in the content area
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
-    And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-opensuse-ds.xml" as "path"
+    And I select "openSUSE SSG" from "dataStreamName"
+    And I select "Standard System Security Profile" from "xccdfProfileId"
     And I click on "Schedule"
-    Then I should see a "XCCDF scan has been scheduled" text
+    Then I should see a "SCAP scan has been scheduled." text
     And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
 @susemanager
@@ -57,7 +79,7 @@ Feature: OpenSCAP audit of Salt minion
     And I follow "OpenSCAP" in the content area
     And I follow "xccdf_org.open-scap_testresult"
     Then I should see a "Details of XCCDF Scan" text
-    And I should see a "profile standard" text
+    And I should see a "Standard System Security Profile" text
     And I should see a "XCCDF Rule Results" text
     When I enter "pass" as the filtered XCCDF result type
     And I click on the filter button
@@ -69,7 +91,7 @@ Feature: OpenSCAP audit of Salt minion
     And I follow "OpenSCAP" in the content area
     And I follow "xccdf_org.open-scap_testresult"
     Then I should see a "Details of XCCDF Scan" text
-    And I should see a "profile standard" text
+    And I should see a "Standard System Security Profile" text
     And I should see a "XCCDF Rule Results" text
     When I enter "pass" as the filtered XCCDF result type
     And I click on the filter button
@@ -81,10 +103,10 @@ Feature: OpenSCAP audit of Salt minion
     And I follow "OpenSCAP" in the content area
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
-    And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-sle15-ds.xml" as "path"
+    And I select "SLE 15 SSG" from "dataStreamName"
+    And I select "Standard System Security Profile" from "xccdfProfileId"
     And I click on "Schedule"
-    Then I should see a "XCCDF scan has been scheduled" text
+    Then I should see a "SCAP scan has been scheduled." text
     When I wait for the OpenSCAP audit to finish
 
 @uyuni
@@ -93,10 +115,10 @@ Feature: OpenSCAP audit of Salt minion
     And I follow "OpenSCAP" in the content area
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
-    And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-opensuse-ds.xml" as "path"
+    And I select "openSUSE SSG" from "dataStreamName"
+    And I select "Standard System Security Profile" from "xccdfProfileId"
     And I click on "Schedule"
-    Then I should see a "XCCDF scan has been scheduled" text
+    Then I should see a "SCAP scan has been scheduled." text
     When I wait for the OpenSCAP audit to finish
 
   Scenario: Compare audit results
@@ -133,6 +155,20 @@ Feature: OpenSCAP audit of Salt minion
     And I enter "90" as "scap_retention_period"
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
+
+@susemanager
+  Scenario: Cleanup: delete the SCAP content from the server
+    When I follow the left menu "Audit > OpenSCAP > SCAP Content"
+    And I click on "Delete" in row "SLE 15 SSG"
+    And I click on "Delete" in element "delete-modal"
+    Then I should see a "SCAP content has been deleted." text
+
+@uyuni
+  Scenario: Cleanup: delete the SCAP content from the server
+    When I follow the left menu "Audit > OpenSCAP > SCAP Content"
+    And I click on "Delete" in row "openSUSE SSG"
+    And I click on "Delete" in element "delete-modal"
+    Then I should see a "SCAP content has been deleted." text
 
   Scenario: Cleanup: remove the OpenSCAP packages from the SLE minion
     When I remove OpenSCAP dependencies from "sle_minion"

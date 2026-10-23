@@ -664,7 +664,7 @@ Note: in automation, we already test some parts of this page, but not all
 
 ### 7.2 Openscap (RHEL8 with Expanded Support in AWS)
 * Priority: low
-* Automated: yes - `testsuite/features/secondary/min_rhlike_openscap_audit.feature` (RHEL/Rocky), `testsuite/features/secondary/min_salt_openscap_audit.feature` (SLES), `testsuite/features/secondary/min_deblike_openscap_audit.feature` (Debian)
+* Automated: yes - `testsuite/features/secondary/min_rhlike_openscap_audit.feature` (RHEL/Rocky), `testsuite/features/secondary/min_salt_openscap_audit.feature` (SLES)
 * Manual test below describes AWS Expanded Support deployment which is not automated
 * Could be automated: yes (AWS deployment steps)
 1. Log in to AWS using your credentials: https://eu-central-1.console.aws.amazon.com/

@@ -25,16 +25,25 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
     And I click on "Update Package List"
     And I wait until event "Package List Refresh" is completed
 
+  Scenario: Upload the SCAP content of the Red Hat-like minion to the server
+    When I follow the left menu "Audit > OpenSCAP > SCAP Content"
+    And I follow "Upload" in the content area
+    And I enter "RHEL 8 SSG" as "name"
+    And I attach the remote file "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml" on "rhlike_minion" to "scapFile"
+    And I attach the remote file "/usr/share/xml/scap/ssg/content/ssg-rhel8-xccdf.xml" on "rhlike_minion" to "xccdfFile"
+    And I click on "Upload"
+    Then I should see a "RHEL 8 SSG" text
+
   Scenario: Schedule an OpenSCAP audit job on the Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Audit" in the content area
     And I follow "OpenSCAP" in the content area
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
-    And I enter "--profile xccdf_org.ssgproject.content_profile_anssi_bp28_intermediary" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml" as "path"
+    And I select "RHEL 8 SSG" from "dataStreamName"
+    And I select "ANSSI-BP-028 (intermediary)" from "xccdfProfileId"
     And I click on "Schedule"
-    Then I should see a "XCCDF scan has been scheduled" text
+    Then I should see a "SCAP scan has been scheduled." text
     And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
   Scenario: Check the results of the OpenSCAP scan on the Red Hat-like minion
@@ -76,6 +85,12 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
     And I enter "90" as "scap_retention_period"
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
+
+  Scenario: Cleanup: delete the SCAP content from the server
+    When I follow the left menu "Audit > OpenSCAP > SCAP Content"
+    And I click on "Delete" in row "RHEL 8 SSG"
+    And I click on "Delete" in element "delete-modal"
+    Then I should see a "SCAP content has been deleted." text
 
   Scenario: Cleanup: remove the OpenSCAP packages from the Red Hat-like minion
     When I remove OpenSCAP dependencies from "rhlike_minion"

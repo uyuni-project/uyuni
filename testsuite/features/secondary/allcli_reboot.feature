@@ -11,7 +11,6 @@
 # - features/secondary/min_rhlike_openscap_audit.feature
 # - features/secondary/min_rhlike_remote_command.feature
 # - features/secondary/min_rhlike_ssh.feature
-# - features/secondary/min_deblike_openscap_audit.feature
 # - features/secondary/min_deblike_remote_command.feature
 # - features/secondary/min_deblike_ssh.feature
 # If the minions take over the alloted 10 minutes to reboot,
