@@ -9289,8 +9289,8 @@ Folgen Sie dieser URL für die vollständige Liste inaktiver Systeme:
         <target>Ungültiger Channel-Name, vergleiche unten beschriebenes Format</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.supportedregex" xml:space="preserve">
-        <source>Channel name must be at least 6 characters long, begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target>Channel-Name muss mindestens 6 Zeichen lang sein, mit einem Buchstaben beginnen und darf nur Kleinbuchstaben, Bindestriche ('-'), Punkte ('.'), Unterstriche ('_'), Ziffern, Leerstellen, Klammern und Schrägstriche ('/') enthalten.</target>
+        <source>Channel name must be at least 6 characters long, begin with a letter or digit and may contain only letters, digits, whitespace, apostrophes ('), hyphens ('-'), periods ('.'), underscores ('_'), parentheses and forward slashes ('/').</source>
+        <target state="needs-adaptation">Channel-Name muss mindestens 6 Zeichen lang sein, mit einem Buchstaben beginnen und darf nur Kleinbuchstaben, Bindestriche ('-'), Punkte ('.'), Unterstriche ('_'), Ziffern, Leerstellen, Klammern und Schrägstriche ('/') enthalten.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
@@ -9348,8 +9348,8 @@ Folgen Sie dieser URL für die vollständige Liste inaktiver Systeme:
         <target>Ungültiges Channel-Label, vergleiche unten beschriebenes Format</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.supportedregex" xml:space="preserve">
-        <source>Channel label must be at least 6 characters long, begin with a letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
-        <target>Channel-Kennung muss mindestens 6 Zeichen lang sein, mit einem Buchstaben beginnen oder einer Ziffer beginnen und darf nur Kleinbuchstaben, Bindestriche ('-'), Punkte ('.'), Unterstriche ('_') und Ziffern enthalten.</target>
+        <source>Channel label must be at least 6 characters long, begin with a lowercase letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
+        <target state="needs-adaptation">Channel-Kennung muss mindestens 6 Zeichen lang sein, mit einem Buchstaben beginnen oder einer Ziffer beginnen und darf nur Kleinbuchstaben, Bindestriche ('-'), Punkte ('.'), Unterstriche ('_') und Ziffern enthalten.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
@@ -11977,6 +11977,17 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="snapshots.refresh_list" xml:space="preserve">
+        <source>Refresh Snapshots</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.formulas" xml:space="preserve">
+        <source>Apply formulas assigned to the target system</source>
       <target state="new"/>
   </trans-unit>
       </body>

@@ -3,12 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: ../html/src/components/input/range/Range.tsx:52
+#: ../html/src/components/input/range/Range.tsx:53
+#: ../html/src/components/input/range/Range.tsx:65
+#: ../html/src/components/input/range/Range.tsx:66
 #: ../html/src/core/intl/index.test.tsx:11
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-02 11:31+0200\n"
+"POT-Creation-Date: 2026-10-23 16:32+0200\n"
 "PO-Revision-Date: 2024-08-22 17:47+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -26,17 +30,6 @@ msgstr "zbývající"
 #: ../html/javascript/spacewalk-essentials.js:444
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "Prohlížeč Internet Explorer není podporován. Zkuste použít Firefox, Chrome nebo Edge"
-
-#: ../html/src/components/CoCoScansList.tsx:78
-#: ../html/src/components/package/PackageListActionScheduler.tsx:84
-#: ../html/src/components/product-migration/utils.tsx:95
-#: ../html/src/manager/appstreams/appstreams.tsx:61
-#: ../html/src/manager/state/highstate.tsx:63
-#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:60
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:71
-#, fuzzy
-msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-msgstr "Akce byla úspěšně přidána do Řetězce akcí "
 
 #: ../html/src/components/CoCoScansList.tsx:85
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
@@ -64,7 +57,7 @@ msgstr "Potvrdit odstranění"
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:126
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:157
 #: ../html/src/manager/minion/details/support-data.tsx:145
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:274
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:112
 msgid "Schedule"
 msgstr "Plán"
@@ -73,7 +66,7 @@ msgstr "Plán"
 #: ../html/src/components/CoCoScansList.tsx:200
 #: ../html/src/components/package/PackageListActionScheduler.tsx:191
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:43
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:284
 msgid "Back to list"
 msgstr "Zpět na seznam"
 
@@ -97,12 +90,6 @@ msgstr ""
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Vzorec uložen. U tohoto vzorce není potřeba použít highstate."
-
-#: ../html/src/components/FormulaForm.tsx:136
-#, fuzzy
-#| msgid "Multiple Group formulas detected. Only one formula for \"{0}\" can be used on each system!"
-msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
-msgstr "Bylo zjištěno několik skupinových vzorců. V každém systému lze pro „{0}“ použít pouze jeden vzorec!"
 
 #: ../html/src/components/FormulaForm.tsx:167
 msgid "Please input required fields: {fields}"
@@ -167,6 +154,7 @@ msgstr "Akce byla "
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:148
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:311
+#: ../html/src/manager/systems/details/snapshots.tsx:88
 msgid "scheduled."
 msgstr "naplánováno."
 
@@ -298,10 +286,6 @@ msgstr "Vytvořit opakování"
 #, fuzzy
 msgid "Attestations"
 msgstr "Restart"
-
-#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
-msgid "No attestation report available. Schedule an execution to create one."
-msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 #, fuzzy
@@ -577,7 +561,7 @@ msgstr ""
 msgid "Create {label}"
 msgstr "Vytvořit "
 
-#: ../html/src/components/config-channels.tsx:38
+#: ../html/src/components/config-channels.tsx:39
 msgid "Configuration Channels"
 msgstr "Konfigurační kanály"
 
@@ -972,7 +956,7 @@ msgid "Sync"
 msgstr ""
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:134
-#: ../html/src/components/states-picker.tsx:501
+#: ../html/src/components/states-picker.tsx:522
 msgid "Channel Name"
 msgstr "Název kanálu"
 
@@ -1109,7 +1093,7 @@ msgid "There are no ISSv1 slaves to migrate."
 msgstr "Nejsou přiřazeny žádné stavy."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:209
-#: ../html/src/components/states-picker.tsx:408
+#: ../html/src/components/states-picker.tsx:415
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
@@ -1619,8 +1603,8 @@ msgstr "Nesmí obsahovat tyto znaky: /\\"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:302
 #: ../html/src/components/package/PackageListActionScheduler.tsx:182
-#: ../html/src/components/states-picker.tsx:410
-#: ../html/src/components/states-picker.tsx:612
+#: ../html/src/components/states-picker.tsx:417
+#: ../html/src/components/states-picker.tsx:633
 #: ../html/src/manager/admin/setup/products/products.tsx:1163
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:66
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:198
@@ -1997,14 +1981,6 @@ msgstr "Název balíčku"
 msgid "Items {from} - {to} of {total}"
 msgstr "Položky {from} - {to} z {total}"
 
-#: ../html/src/components/pagination.tsx:139
-msgid ""
-"{total, plural,\n"
-"            one {<dropdown></dropdown> of # page}\n"
-"            other {<dropdown></dropdown> of # pages}\n"
-"        }"
-msgstr ""
-
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
 msgstr "Neděle"
@@ -2069,10 +2045,6 @@ msgstr "Dny jsou omezeny na 28, aby byl k dispozici opakovatelný plán pro vše
 msgid "Custom Quartz format:"
 msgstr "Vlastní Quartz formát:"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:491
-msgid "e.g. \"0 15 2 ? * 7\""
-msgstr "např. \"0 15 2 ? * 7\""
-
 #: ../html/src/components/picker/recurring-event-picker.tsx:510
 msgid "Select a Schedule"
 msgstr "Vybrat plán"
@@ -2084,7 +2056,7 @@ msgid "Policy assignment has been saved."
 msgstr "Přiřazení stavu byla uložena."
 
 #: ../html/src/components/policies-picker.tsx:94
-#: ../html/src/components/states-picker.tsx:197
+#: ../html/src/components/states-picker.tsx:200
 msgid "An error occurred on save."
 msgstr "Při ukládání došlo k chybě."
 
@@ -2099,7 +2071,7 @@ msgid "Search in SCAP policies"
 msgstr "Vyhledávat ve stavech"
 
 #: ../html/src/components/policies-picker.tsx:165
-#: ../html/src/components/states-picker.tsx:470
+#: ../html/src/components/states-picker.tsx:491
 #: ../html/src/components/table/SearchField.tsx:66
 #: ../html/src/manager/header/search/search.tsx:80
 #: ../html/src/manager/header/search/search.tsx:89
@@ -2123,7 +2095,7 @@ msgid "Data Stream"
 msgstr "Proud"
 
 #: ../html/src/components/policies-picker.tsx:177
-#: ../html/src/components/states-picker.tsx:503
+#: ../html/src/components/states-picker.tsx:524
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:120
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:111
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:373
@@ -2145,11 +2117,12 @@ msgstr "Proud"
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:45
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:301
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:329
+#: ../html/src/manager/systems/details/snapshots.tsx:163
 msgid "Description"
 msgstr "Popis"
 
 #: ../html/src/components/policies-picker.tsx:178
-#: ../html/src/components/states-picker.tsx:504
+#: ../html/src/components/states-picker.tsx:525
 msgid "Assign"
 msgstr "Přiřadit"
 
@@ -2334,101 +2307,107 @@ msgstr "Konfigurační kanál: {name}"
 msgid "Edit Configuration Channel"
 msgstr "Upravit konfigurační kanál"
 
-#: ../html/src/components/states-picker.tsx:109
+#: ../html/src/components/states-picker.tsx:111
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "Máte neuložené změny. Chcete pokračovat?"
 
-#: ../html/src/components/states-picker.tsx:125
+#: ../html/src/components/states-picker.tsx:128
 msgid "State configuration must not be empty"
 msgstr "Konfigurace stavu nesmí být prázdná"
 
-#: ../html/src/components/states-picker.tsx:139
+#: ../html/src/components/states-picker.tsx:142
 msgid "Reboot state will be put last."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:148
+#: ../html/src/components/states-picker.tsx:151
 msgid "'Reboot system' and 'Reboot system if needed' states cannot be used together."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:175
+#: ../html/src/components/states-picker.tsx:178
 msgid "State assignments have been saved."
 msgstr "Přiřazení stavu byla uložena."
 
-#: ../html/src/components/states-picker.tsx:341
+#: ../html/src/components/states-picker.tsx:344
 msgid "No states assigned. Use search to find and assign states."
 msgstr "Nebyly přiřazeny žádné stavy. Vyhledáváním najděte a přiřaďte stavy."
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:425
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:184
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:193
 msgid "Save Changes"
 msgstr "Uložit změny"
 
-#: ../html/src/components/states-picker.tsx:438
+#: ../html/src/components/states-picker.tsx:445
 msgid "Reorder"
 msgstr "Přeuspořádat"
 
-#: ../html/src/components/states-picker.tsx:464
+#: ../html/src/components/states-picker.tsx:468
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:265
+#, fuzzy
+msgid "Use transactional update"
+msgstr "Doba provedení"
+
+#: ../html/src/components/states-picker.tsx:485
 msgid "Search in states"
 msgstr "Vyhledávat ve stavech"
 
-#: ../html/src/components/states-picker.tsx:464
+#: ../html/src/components/states-picker.tsx:485
 msgid "Search in configuration channels"
 msgstr "Hledat v konfiguračních kanálech"
 
-#: ../html/src/components/states-picker.tsx:480
+#: ../html/src/components/states-picker.tsx:501
 msgid "Edit State Ranks"
 msgstr "Upravit pořadí stavů"
 
-#: ../html/src/components/states-picker.tsx:480
+#: ../html/src/components/states-picker.tsx:501
 msgid "Edit Channel Ranks"
 msgstr "Upravit pořadí kanálů"
 
-#: ../html/src/components/states-picker.tsx:484
+#: ../html/src/components/states-picker.tsx:505
 msgid "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:487
+#: ../html/src/components/states-picker.tsx:508
 msgid "Edit the ranking of the configuration channels by dragging them. They are listed in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the bottom ones will be applied first."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:493
+#: ../html/src/components/states-picker.tsx:514
 msgid "There are no states assigned."
 msgstr "Nejsou přiřazeny žádné stavy."
 
-#: ../html/src/components/states-picker.tsx:501
+#: ../html/src/components/states-picker.tsx:522
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:284
 msgid "State Name"
 msgstr "Název stavu"
 
-#: ../html/src/components/states-picker.tsx:502
+#: ../html/src/components/states-picker.tsx:523
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:297
 msgid "State Label"
 msgstr "Štítek stavu"
 
-#: ../html/src/components/states-picker.tsx:502
+#: ../html/src/components/states-picker.tsx:523
 #: ../html/src/components/table/nested-data.example.tsx:56
 msgid "Channel Label"
 msgstr "Označení kanálu"
 
-#: ../html/src/components/states-picker.tsx:565
+#: ../html/src/components/states-picker.tsx:586
 msgid "Select the systems to schedule for immediate state execution and confirm."
 msgstr "Vyberte systémy k okamžitému provedení stavu a potvrďte."
 
-#: ../html/src/components/states-picker.tsx:576
+#: ../html/src/components/states-picker.tsx:597
 msgid "This table is empty"
 msgstr "Tato tabulka je prázdná"
 
-#: ../html/src/components/states-picker.tsx:583
-#: ../html/src/components/states-picker.tsx:624
+#: ../html/src/components/states-picker.tsx:604
+#: ../html/src/components/states-picker.tsx:645
 msgid "System Name"
 msgstr "Název systému"
 
-#: ../html/src/components/states-picker.tsx:603
+#: ../html/src/components/states-picker.tsx:624
 msgid "Execute States"
 msgstr "Výkonné stavy"
 
-#: ../html/src/components/states-picker.tsx:608
+#: ../html/src/components/states-picker.tsx:629
 msgid "Select Sytems"
 msgstr "Vybrat systémy"
 
@@ -2648,14 +2627,6 @@ msgstr "Vyžadovat tento kanál"
 
 #: ../html/src/core/intl/index.example.tsx:7
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
-msgstr ""
-
-#: ../html/src/core/intl/index.example.tsx:23
-msgid ""
-"Always use plural forms for numbers: {fooCount, plural,\n"
-"            one {only one item}\n"
-"            other {{fooCount} items}\n"
-"          }."
 msgstr ""
 
 #: ../html/src/core/intl/index.test.tsx:9
@@ -3102,11 +3073,11 @@ msgid "Hub Details"
 msgstr "Podrobnosti"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
-msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
+msgid "No hub is currently configured for this server. "
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
+msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
@@ -3130,7 +3101,7 @@ msgid "{fqdn} - Peripheral Details"
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
+msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
@@ -3283,6 +3254,12 @@ msgstr "Úprava vlastností.."
 msgid "Last Status Update"
 msgstr "Poslední aktualizace stavu"
 
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:50
+#, fuzzy
+#| msgid "Edit"
+msgid "Edit "
+msgstr "Upravit"
+
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
 msgstr "Úprava údajů o připojení ssh.."
@@ -3300,6 +3277,7 @@ msgstr "Port SSH"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:69
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:21
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:513
+#: ../html/src/manager/systems/details/snapshots.tsx:155
 msgid "User"
 msgstr "Uživatel"
 
@@ -3379,11 +3357,6 @@ msgstr "Následující instalace produktů selhaly. Zkontrolujte žurnálové so
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Některé změny byly úspěšně naplánovány."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:319
-#, fuzzy
-msgid "The following channel installations for \"{product}\" failed. Please check log files."
-msgstr "Následující instalace produktů selhaly. Zkontrolujte žurnálové soubory."
-
 #: ../html/src/manager/admin/setup/products/products.tsx:350
 msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr "Aktualizace údajů o produktu aktuálně běží na pozadí. Zkuste to znovu později."
@@ -3440,6 +3413,18 @@ msgstr "Kanály"
 #, fuzzy
 msgid "Recommended"
 msgstr "doporučeno"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:854
+msgid " channels sync failed"
+msgstr " synchronizace kanálů selhala"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:862
+msgid " channels sync in progress"
+msgstr " probíhá synchronizace kanálů"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:870
+msgid " channels synced"
+msgstr " kanály synchronizovány"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:894
 msgid "To enable this product, the parent product should be selected first"
@@ -3734,16 +3719,14 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "Ovlivněno: v kanálech, které nejsou přiřazeny, jsou dostupné záplaty"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
+msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr "Ovlivněno, záplaty dostupné v cíli Migrace produktu"
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -3782,17 +3765,13 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "Ovlivněno: v přiřazeném kanálu je dostupná aspoň 1 záplata"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
+msgid "The client is affected by a vulnerability for which a patch has been released,"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 #, fuzzy
 msgid "Affected, partial patch available in assigned channel"
 msgstr "Ovlivněno: v přiřazeném kanálu je dostupná aspoň 1 záplata"
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -3916,6 +3895,12 @@ msgstr "Chyba během zavádění dat. Zkontrolujte záznamy."
 msgid "An unexpected error occurred."
 msgstr "Při ukládání došlo k chybě."
 
+#: ../html/src/manager/audit/scap/create-scap-content.tsx:91
+#, fuzzy
+#| msgid "Playbook Content"
+msgid "Edit SCAP Content"
+msgstr "Obsah scénáře"
+
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
 msgid "SCAP Datastream File"
 msgstr ""
@@ -3943,6 +3928,15 @@ msgstr ""
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:133
 msgid "Upload the XCCDF file (*-xccdf.xml)"
 msgstr ""
+
+#: ../html/src/manager/audit/scap/create-scap-content.tsx:145
+#: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
+#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:139
+#: ../html/src/manager/images/image-profile-edit.tsx:495
+#: ../html/src/manager/images/image-store-edit.tsx:212
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
+msgid "Update"
+msgstr "Aktualizace"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:125
 #, fuzzy
@@ -3989,23 +3983,26 @@ msgstr ""
 msgid "Back to List"
 msgstr "Zpět na seznam"
 
-#: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
-#: ../html/src/manager/images/image-profile-edit.tsx:495
-#: ../html/src/manager/images/image-store-edit.tsx:212
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
-msgid "Update"
-msgstr "Aktualizace"
-
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:83
 #, fuzzy
 msgid "An error occurred while saving the tailoring file."
 msgstr "Chyba během zavádění dat. Zkontrolujte záznamy."
+
+#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:94
+#, fuzzy
+#| msgid "Edit profile"
+msgid "Edit Tailoring File"
+msgstr "Upravit profil"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:113
 #, fuzzy
 #| msgid "Create New Filter"
 msgid "Current File"
 msgstr "Vytvořit nový filtr"
+
+#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
+msgid "Replace File (optional)"
+msgstr ""
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
 #, fuzzy
@@ -5292,6 +5289,7 @@ msgstr "zahrnout, co je doporučeno"
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
 #: ../html/src/manager/notifications/notifications-list.tsx:139
 #: ../html/src/manager/state/highstate-summary.tsx:90
+#: ../html/src/manager/systems/details/snapshots.tsx:147
 msgid "Type"
 msgstr "Typ"
 
@@ -5324,26 +5322,26 @@ msgstr "Požadovaná stránka {0} se nenašla."
 #: ../html/src/manager/errors/not-found.tsx:10
 #, fuzzy
 #| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr "Pokud jste tuto adresu zadali do svého prohlížeče, důkladně zkontrolujte zápis a velká písmena."
 
 #: ../html/src/manager/errors/not-found.tsx:16
 #, fuzzy
 #| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr "Pokud jste následovali odkaz, mohl být nesprávný nebo zastaralý. Stiskněte tlačítko ZPĚT ve Vašem "
 
 #: ../html/src/manager/errors/not-found.tsx:23
-msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
-msgstr "Jestliže jste použili záložku, mohla se stránka od vytvoření záložky přesunout na jiné místo. Pomocí horních (nebo levých) navigačních panelů najděte hledanou stránku, a najdete-li dokument, nezapomeňte záložku aktualizovat."
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+msgstr "Pokud jste použili záložku, stránka se mohla mezitím přesunout jinam z "
 
 #: ../html/src/manager/errors/not-found.tsx:30
 #, fuzzy
 #| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
+msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr "Myslíte-li si, že jste na této stránce omylem, kontaktujte nás laskavě s podrobnostmi, jak jste se sem dostali "
 
-#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
+#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
 msgid "Applying the config channels has been scheduled for each minion server in this group"
 msgstr "Použití konfiguračních kanálů bylo naplánováno pro každý minion server v této skupině"
 
@@ -5411,7 +5409,7 @@ msgstr "Sestavení obrazu bylo "
 
 #: ../html/src/manager/images/image-build.tsx:219
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:273
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:29
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:50
 #: ../html/src/manager/systems/proxy.tsx:69
 #: ../html/src/manager/systems/proxy.tsx:73
@@ -5542,6 +5540,10 @@ msgid "Create additional custom info keys"
 msgstr "Vytvořit další zákaznické informační klíče"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:517
+msgid "Edit Image Profile: '"
+msgstr "Upravit profil obrazu: '"
+
+#: ../html/src/manager/images/image-profile-edit.tsx:517
 #: ../html/src/manager/images/image-profiles.tsx:147
 #: ../html/src/manager/images/image-profiles.tsx:148
 msgid "Create Image Profile"
@@ -5610,6 +5612,10 @@ msgstr "Opravdu chcete odstranit vybrané profily? (Vybráno {0} profilů)"
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
 msgstr "Použít pověření"
+
+#: ../html/src/manager/images/image-store-edit.tsx:234
+msgid "Edit Image Store: '"
+msgstr "Upravit úložiště obrazů: '"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Create Image Store"
@@ -5698,13 +5704,29 @@ msgstr "Ve frontě"
 msgid "Go to event"
 msgstr "Jdi k události"
 
+#: ../html/src/manager/images/image-view-overview.tsx:56
+msgid " is queued"
+msgstr " je ve frontě"
+
 #: ../html/src/manager/images/image-view-overview.tsx:63
 msgid "In progress"
 msgstr "Probíhá"
 
+#: ../html/src/manager/images/image-view-overview.tsx:68
+msgid " in progress"
+msgstr " probíhá"
+
 #: ../html/src/manager/images/image-view-overview.tsx:75
 msgid "Successful"
 msgstr "Úspěšné"
+
+#: ../html/src/manager/images/image-view-overview.tsx:80
+msgid " is successful"
+msgstr " je úspěšné"
+
+#: ../html/src/manager/images/image-view-overview.tsx:92
+msgid " has failed"
+msgstr " selhalo"
 
 #: ../html/src/manager/images/image-view-overview.tsx:99
 #: ../html/src/manager/images/image-view-overview.tsx:100
@@ -5724,6 +5746,10 @@ msgstr "Žádné údaje"
 #: ../html/src/manager/images/image-view.tsx:534
 msgid "Built externally"
 msgstr "Sestaveno externě"
+
+#: ../html/src/manager/images/image-view-overview.tsx:134
+msgid " Status"
+msgstr " Stav"
 
 #: ../html/src/manager/images/image-view-overview.tsx:139
 msgid "Picked Up"
@@ -5773,12 +5799,6 @@ msgstr "Upravit profil"
 #: ../html/src/manager/images/image-view-overview.tsx:354
 msgid "Edit store"
 msgstr "Upravit úložiště"
-
-#: ../html/src/manager/images/image-view-overview.tsx:469
-#: ../html/src/manager/images/image-view.tsx:801
-#, fuzzy
-msgid "Instance Details for \"{name}\""
-msgstr "Podrobnosti instance pro '{0}'"
 
 #: ../html/src/manager/images/image-view-overview.tsx:524
 #: ../html/src/manager/images/image-view-overview.tsx:525
@@ -5916,6 +5936,7 @@ msgid "Advisory"
 msgstr "Poradenství"
 
 #: ../html/src/manager/images/image-view-patches.tsx:101
+#: ../html/src/manager/systems/details/snapshots.tsx:117
 msgid "Updated"
 msgstr "Aktualizováno"
 
@@ -6263,11 +6284,6 @@ msgstr "Vyhledávat systémy"
 msgid "Current Schedule"
 msgstr "Aktuální plán"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:117
-#, fuzzy
-msgid "Url \"{url}\" is invalid"
-msgstr "URL '{0}' je neplatné"
-
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:142
 msgid "Calendar data"
 msgstr "Data kalendáře"
@@ -6297,12 +6313,12 @@ msgid "Refreshing the calendar will reschedule all affected actions."
 msgstr "Aktualizací kalendáře se všechny naplánované akce přeplánují."
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:274
 msgid "Update "
 msgstr "Aktualizace "
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:274
 msgid "Create "
 msgstr "Vytvořit "
 
@@ -6360,6 +6376,10 @@ msgstr "Níže je uveden seznam plánů údržby, které má aktuální uživate
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr "Níže je uveden seznam plánů údržby, které má aktuální uživatel k dispozici."
 
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:48
+msgid "schedule"
+msgstr "plán"
+
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:29
 msgid "No schedules created. Use Create to add a schedule."
 msgstr "Nebyly vytvořeny žádné plány. Pomocí Vytvořit přidejte plán."
@@ -6367,6 +6387,16 @@ msgstr "Nebyly vytvořeny žádné plány. Pomocí Vytvořit přidejte plán."
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:86
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr "Tím odstraníte plán ze všech systémů, které jsou mu přiřazeny."
+
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:144
+msgid "successfully"
+msgstr "úspěšně"
+
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:177
+#, fuzzy
+#| msgid "Error when deleting the "
+msgid "Error when deleting the "
+msgstr "Chyba při odstraňování "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:190
 msgid "Calendar successfully refreshed"
@@ -6522,7 +6552,7 @@ msgid "Loading playbook contents.."
 msgstr "Načítání obsahu scénářů..."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:145
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:242
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:258
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr "Testový režim"
@@ -6553,11 +6583,6 @@ msgstr "Změna proxy"
 #| msgid "Select a filter"
 msgid "Save the current Playbook"
 msgstr "Vybrat filtr"
-
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
-#, fuzzy
-msgid "Playbook \"{name}\""
-msgstr "Scénář '{0}'"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:192
 msgid "Schedule Playbook Execution"
@@ -6694,7 +6719,7 @@ msgstr ""
 msgid "OpenSCAP is not available on this system. Please install the package ''{package}'' to enable SCAP scanning."
 msgstr ""
 
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
 msgstr "Použití konfiguračních kanálů bylo "
 
@@ -7013,6 +7038,12 @@ msgstr ""
 msgid "Registry URL"
 msgstr "Registrované systémy"
 
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:331
+#, fuzzy
+#| msgid "e.g., 2048"
+msgid "e.g., "
+msgstr "např. 2048"
+
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:338
 #, fuzzy
 #| msgid "Contains Package"
@@ -7102,7 +7133,7 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
@@ -7123,7 +7154,7 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
@@ -7251,7 +7282,7 @@ msgstr "Připojení Websocket uzavřeno. Obnovte stránku a zkuste to znovu."
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "Chyba připojení k serveru. Obnovte stránku a zkuste to znovu."
 
-#: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:27
+#: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:29
 msgid "Applying the config channels has been scheduled for each minion server in this organization"
 msgstr "Použití konfiguračních kanálů bylo naplánováno pro každý minion server v této organizaci"
 
@@ -7538,23 +7569,23 @@ msgstr "Naplánováno úspěšně"
 msgid "Action scheduled on selected minions"
 msgstr "naplánována"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:268
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:292
 #, fuzzy
 msgid "Schedule Recurring Action"
 msgstr "Naplánovat opakující se Highstate"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:277
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:301
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:207
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:35
 #, fuzzy
 msgid "Action Type"
 msgstr "Akce"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:300
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:324
 msgid "Configure states to execute"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:314
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:339
 msgid "SCAP Policies"
 msgstr ""
 
@@ -7602,11 +7633,11 @@ msgstr "Následovník"
 msgid "Group"
 msgstr "Skupina"
 
-#: ../html/src/manager/recurring/recurring-actions.tsx:160
+#: ../html/src/manager/recurring/recurring-actions.tsx:161
 msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr "Chyba při odstraňování akce. Zkontrolujte, zda běží Taskomatic"
 
-#: ../html/src/manager/recurring/recurring-actions.tsx:175
+#: ../html/src/manager/recurring/recurring-actions.tsx:176
 #, fuzzy
 msgid "The below times are displayed in the server time zone {timeZone}. The scheduled time will be the server time."
 msgstr "Níže uvedené časy jsou zobrazeny v časovém pásmu serveru {0}. Naplánovaný čas bude časem serveru."
@@ -7893,6 +7924,14 @@ msgstr "Zavádím podřízené kanály.."
 msgid "Base Channel:"
 msgstr "Základní kanál:"
 
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:133
+msgid "${defaultChannelName}"
+msgstr "${defaultChannelName}"
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
+msgid "${this.getDefaultBase().name}"
+msgstr "${this.getDefaultBase().name}"
+
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
 msgid "Child Channels:"
 msgstr "Podřízené kanály:"
@@ -7995,6 +8034,12 @@ msgstr "AppStreams"
 #| msgid "No change"
 msgid "Don't change"
 msgstr "Beze změny"
+
+#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:126
+#, fuzzy
+#| msgid " (system default)"
+msgid " (No system to disable)"
+msgstr " (výchozí systém)"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
 #, fuzzy
@@ -8176,6 +8221,80 @@ msgstr "Naposledy synchronizovaná databáze hlášení"
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
 msgid "Regenerate Reporting Database Password"
 msgstr "Vygenerovat nové heslo databáze hlášení"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:57
+#: ../html/src/manager/systems/details/snapshots.tsx:60
+#, fuzzy
+#| msgid "Unable to perform action."
+msgid "Unable to load snapshot information."
+msgstr "Akci nelze provést."
+
+#: ../html/src/manager/systems/details/snapshots.tsx:87
+#, fuzzy
+msgid "The action has been "
+msgstr "Akce byla "
+
+#: ../html/src/manager/systems/details/snapshots.tsx:108
+#, fuzzy
+#| msgid "Refresh Data"
+msgid "Refresh Snapshots"
+msgstr "Aktualizovat data"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:112
+msgid "Btrfs Snapshots"
+msgstr ""
+
+#: ../html/src/manager/systems/details/snapshots.tsx:125
+#, fuzzy
+#| msgid "No streams available"
+msgid "No snapshots available."
+msgstr "K dispozici nejsou žádné proudy"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:129
+msgid "#"
+msgstr ""
+
+#: ../html/src/manager/systems/details/snapshots.tsx:136
+#, fuzzy
+#| msgid "Inactive"
+msgid "active"
+msgstr "Neaktivní"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:141
+msgid "default"
+msgstr ""
+
+#: ../html/src/manager/systems/details/snapshots.tsx:150
+msgid "Pre #"
+msgstr ""
+
+#: ../html/src/manager/systems/details/snapshots.tsx:154
+#, fuzzy
+#| msgid "fa-times"
+msgid "Date"
+msgstr "fa-times"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:158
+#, fuzzy
+#| msgid "Used by Schedule"
+msgid "Used Space"
+msgstr "Použito dle plánu"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:162
+#, fuzzy
+#| msgid "Clear Menu"
+msgid "Cleanup"
+msgstr "Menu Vymazat"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:164
+#, fuzzy
+#| msgid "User"
+msgid "Userdata"
+msgstr "Uživatel"
+
+#: ../html/src/manager/systems/details/snapshots.tsx:191
+msgid "Unable to schedule snapshot refresh."
+msgstr ""
 
 #: ../html/src/manager/systems/list-filter.tsx:4
 #, fuzzy
@@ -8725,83 +8844,40 @@ msgstr "Chyba autorizace, znovu načtěte stránku nebo se pokuste znovu odhlás
 msgid "Resource not found."
 msgstr "Zdroj nebyl nalezen."
 
-#, fuzzy
-#~| msgid "Edit"
-#~ msgid "Edit "
-#~ msgstr "Upravit"
-
-#~ msgid " channels sync failed"
-#~ msgstr " synchronizace kanálů selhala"
-
-#~ msgid " channels sync in progress"
-#~ msgstr " probíhá synchronizace kanálů"
-
-#~ msgid " channels synced"
-#~ msgstr " kanály synchronizovány"
+#: ../html/src/utils/network.ts:106
+msgid "HTTP Error code "
+msgstr "Kód chyby HTTP "
 
 #, fuzzy
-#~| msgid "Playbook Content"
-#~ msgid "Edit SCAP Content"
-#~ msgstr "Obsah scénáře"
+#~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
+#~ msgstr "Akce byla úspěšně přidána do Řetězce akcí "
 
 #, fuzzy
-#~| msgid "Edit profile"
-#~ msgid "Edit Tailoring File"
-#~ msgstr "Upravit profil"
+#~| msgid "Multiple Group formulas detected. Only one formula for \"{0}\" can be used on each system!"
+#~ msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
+#~ msgstr "Bylo zjištěno několik skupinových vzorců. V každém systému lze pro „{0}“ použít pouze jeden vzorec!"
 
-#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
-#~ msgstr "Pokud jste použili záložku, stránka se mohla mezitím přesunout jinam z "
-
-#~ msgid "Edit Image Profile: '"
-#~ msgstr "Upravit profil obrazu: '"
-
-#~ msgid "Edit Image Store: '"
-#~ msgstr "Upravit úložiště obrazů: '"
-
-#~ msgid " is queued"
-#~ msgstr " je ve frontě"
-
-#~ msgid " in progress"
-#~ msgstr " probíhá"
-
-#~ msgid " is successful"
-#~ msgstr " je úspěšné"
-
-#~ msgid " has failed"
-#~ msgstr " selhalo"
-
-#~ msgid " Status"
-#~ msgstr " Stav"
-
-#~ msgid "schedule"
-#~ msgstr "plán"
-
-#~ msgid "successfully"
-#~ msgstr "úspěšně"
+#~ msgid "e.g. \"0 15 2 ? * 7\""
+#~ msgstr "např. \"0 15 2 ? * 7\""
 
 #, fuzzy
-#~| msgid "Error when deleting the "
-#~ msgid "Error when deleting the "
-#~ msgstr "Chyba při odstraňování "
+#~ msgid "The following channel installations for \"{product}\" failed. Please check log files."
+#~ msgstr "Následující instalace produktů selhaly. Zkontrolujte žurnálové soubory."
+
+#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+#~ msgstr "Jestliže jste použili záložku, mohla se stránka od vytvoření záložky přesunout na jiné místo. Pomocí horních (nebo levých) navigačních panelů najděte hledanou stránku, a najdete-li dokument, nezapomeňte záložku aktualizovat."
 
 #, fuzzy
-#~| msgid "e.g., 2048"
-#~ msgid "e.g., "
-#~ msgstr "např. 2048"
-
-#~ msgid "${defaultChannelName}"
-#~ msgstr "${defaultChannelName}"
-
-#~ msgid "${this.getDefaultBase().name}"
-#~ msgstr "${this.getDefaultBase().name}"
+#~ msgid "Instance Details for \"{name}\""
+#~ msgstr "Podrobnosti instance pro '{0}'"
 
 #, fuzzy
-#~| msgid " (system default)"
-#~ msgid " (No system to disable)"
-#~ msgstr " (výchozí systém)"
+#~ msgid "Url \"{url}\" is invalid"
+#~ msgstr "URL '{0}' je neplatné"
 
-#~ msgid "HTTP Error code "
-#~ msgstr "Kód chyby HTTP "
+#, fuzzy
+#~ msgid "Playbook \"{name}\""
+#~ msgstr "Scénář '{0}'"
 
 #, fuzzy
 #~| msgid "Proxy certificate"

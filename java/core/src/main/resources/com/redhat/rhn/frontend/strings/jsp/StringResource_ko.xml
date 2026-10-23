@@ -26688,16 +26688,14 @@ given channel.</source>
         Otherwise, the channel is a child of the specified channel.
         &lt;p/&gt;
         Channel name and label are required.&lt;br&gt;
-        They each must be at least 6 characters in length.&lt;br&gt;
-        Channel name must not be longer than 256 characters and channel label must not be longer than 128 characters.&lt;br&gt;
-        Channel name and label may begin with a letter or digit.&lt;br&gt;
-        They each must not begin with rhn, redhat or red hat.&lt;br&gt;
-        They each must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.&lt;br&gt;
-        Channel name may also contain spaces, parentheses () and forward slashes ('/').
+        Channel name must be 6 to 256 characters long and begin with a letter or digit.&lt;br&gt;
+        Channel name may contain only letters, digits, whitespace, apostrophes ('), hyphens ('-'), periods ('.'), underscores ('_'), parentheses (), and forward slashes ('/').&lt;br&gt;
+        Channel label must be 6 to 128 characters long and begin with a lowercase letter or digit.&lt;br&gt;
+        Channel label may contain only lowercase letters, digits, hyphens ('-'), periods ('.'), and underscores ('_').
         &lt;p/&gt;
         Channel summary is also required and must not exceed 500 characters.
         </source>
-        <target>이 페이지에서 소프트웨어 채널을 생성하거나 편집할 수 있습니다.
+        <target state="needs-adaptation">이 페이지에서 소프트웨어 채널을 생성하거나 편집할 수 있습니다.
         &lt;p/&gt;
         상위 채널이 '없음'으로 설정되면 해당 채널이 기본 채널입니다.
         그렇지 않으면, 채널은 지정된 채널의 하위 채널입니다.
@@ -29601,40 +29599,40 @@ given channel.</source>
         <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
         <target state="final">&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;제품 마이그레이션&lt;/a&gt; 선택한 시스템에 설치됨</target>
       </trans-unit>
-      <trans-unit approved="yes" id="channel.manage.sync.noerrata-tt.jsp" xml:space="preserve">
+      <trans-unit approved="no" id="channel.manage.sync.noerrata-tt.jsp" xml:space="preserve">
         <source>Do not synchronize patches.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="final">패치를 동기화하지 마십시오.</target>
+        <target state="translated">패치를 동기화하지 마세요.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="channel.manage.sync.nostrict-tt.jsp" xml:space="preserve">
+      <trans-unit approved="no" id="channel.manage.sync.nostrict-tt.jsp" xml:space="preserve">
         <source>Allows a channel to deviate from the repository, keeping packages that have been removed from the remote repository.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="final">채널이 리포지토리에서 벗어날 수 있도록 허용하여 원격 리포지토리에서 제거된 패키지를 유지합니다.</target>
+        <target state="translated">repository에서 제거된 패키지를 그대로 유지하면서, 채널이 저장소의 내용과 다르게 독립적으로 운영될 수 있도록 허용하세요.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="channel.manage.sync.latestonly-tt.jsp" xml:space="preserve">
+      <trans-unit approved="no" id="channel.manage.sync.latestonly-tt.jsp" xml:space="preserve">
         <source>Synchronize the latest package version only.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="final">최신 패키지 버전만 동기화하십시오.</target>
+        <target state="translated">최신 패키지 버전만 동기화하세요.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="channel.manage.sync.synckickstart-tt.jsp" xml:space="preserve">
+      <trans-unit approved="no" id="channel.manage.sync.synckickstart-tt.jsp" xml:space="preserve">
         <source>This option prepares a directory tree ready for Kickstart auto installation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="final">이 옵션은 킥스타트 자동 설치에 사용할 수 있도록 디렉토리 트리를 준비합니다.</target>
+        <target state="translated">이 옵션은 킥스타트(Kickstart) 자동 설치가 가능한 디렉터리 트리를 준비합니다.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="channel.manage.sync.fail-tt.jsp" xml:space="preserve">
+      <trans-unit approved="no" id="channel.manage.sync.fail-tt.jsp" xml:space="preserve">
         <source>Stop synchronizing if an error occurs.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="final">오류가 발생하면 동기화를 중지합니다.</target>
+        <target state="translated">오류가 발생하면 동기화를 중지하세요.</target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.jsp.sync.status.ready" xml:space="preserve">
         <source> Completed </source>
@@ -29792,46 +29790,159 @@ given channel.</source>
         <source> Disabled </source>
         <target state="final"> 비활성화됨 </target>
       </trans-unit>
-    <trans-unit id="exportcolumn.cveNames" xml:space="preserve">
-          <source>CVEs</source>
+      <trans-unit id="exportcolumn.cveNames" xml:space="preserve">
+        <source>CVEs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.delete.jsp.actkeysheader" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="channel.delete.jsp.actkeysheader" xml:space="preserve">
         <source>Activation Keys</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.delete.jsp.actkeysparagraph" xml:space="preserve">
+        <target state="translated">활성화 키</target>
+      </trans-unit>
+      <trans-unit id="channel.delete.jsp.actkeysparagraph" xml:space="preserve">
         <source>Channel deletion will remove any Activation Key that has {0} as a base channel.
          </source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.delete.jsp.actkeysaffected" xml:space="preserve">
+        <target state="translated">채널을 삭제하면 {0} 베이스 채널을 가진 활성화 키가 제거됩니다.
+         </target>
+      </trans-unit>
+      <trans-unit id="channel.delete.jsp.actkeysaffected" xml:space="preserve" approved="yes">
         <source>Activation Keys Affected:</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.clm-diff-bunch" xml:space="preserve">
+        <target state="final">영향을 받는 활성화 키:</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.clm-diff-bunch" xml:space="preserve" approved="yes">
         <source>Generates differences for CLM channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.clm-diff" xml:space="preserve">
+        <target state="final">CLM 채널에 대한 차이 생성</target>
+      </trans-unit>
+      <trans-unit id="task.status.clm-diff" xml:space="preserve" approved="yes">
         <source>Calculate CLM Differences</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">CLM 차이 계산</target>
+      </trans-unit>
+      <trans-unit id="system.event.history.waitingForReboot" xml:space="preserve">
+        <source>Waiting for reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional" xml:space="preserve">
+        <source>Transactional progress:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.prerequisites" xml:space="preserve">
+        <source>Prerequisites</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.reboot" xml:space="preserve">
+        <source>System reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.execution" xml:space="preserve">
+        <source>Post-reboot step</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.apply" xml:space="preserve">
+        <source>Transactional update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.applyReboot" xml:space="preserve">
+        <source>System reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.step.finalization" xml:space="preserve">
+        <source>Action completion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.completed" xml:space="preserve">
+        <source>completed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.failed" xml:space="preserve">
+        <source>failed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.pending" xml:space="preserve">
+        <source>pending</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.notNeeded" xml:space="preserve">
+        <source>not needed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.status.scheduled" xml:space="preserve">
+        <source>queued</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.at" xml:space="preserve">
+        <source> at </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.event.transactional.prerequisiteResult" xml:space="preserve">
+        <source>Prerequisite result:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="ssm.operations.provisioning.remotecommand.form.use_transactional_update.label" xml:space="preserve">
+        <source>Use transactional update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/ssm/provisioning/RemoteCommand</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

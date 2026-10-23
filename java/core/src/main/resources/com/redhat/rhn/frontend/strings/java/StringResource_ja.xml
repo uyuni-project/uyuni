@@ -9382,8 +9382,8 @@ Follow this url to see the full list of inactive systems:
         <target state="final">チャンネル名が無効です。以下の形式に従ってください</target>
       </trans-unit>
       <trans-unit approved="yes" id="edit.channel.invalidchannelname.supportedregex" xml:space="preserve">
-        <source>Channel name must be at least 6 characters long, begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target state="final">チャンネル名の長さは 6 文字以上でなければならず、文字で始める必要があり、チャンネル名には小文字、ハイフン ('-')、ピリオド ('.')、アンダースコア ('_')、数字、スペース、括弧およびフォワードスラッシュ ('/') のみ含めることができます。</target>
+        <source>Channel name must be at least 6 characters long, begin with a letter or digit and may contain only letters, digits, whitespace, apostrophes ('), hyphens ('-'), periods ('.'), underscores ('_'), parentheses and forward slashes ('/').</source>
+        <target state="needs-adaptation">チャンネル名の長さは 6 文字以上でなければならず、文字で始める必要があり、チャンネル名には小文字、ハイフン ('-')、ピリオド ('.')、アンダースコア ('_')、数字、スペース、括弧およびフォワードスラッシュ ('/') のみ含めることができます。</target>
       </trans-unit>
       <trans-unit approved="yes" id="edit.channel.invalidchannelname.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
@@ -9442,8 +9442,8 @@ Follow this url to see the full list of inactive systems:
         <target state="final">チャンネルラベルが正しくありません。以下の形式に従ってください</target>
       </trans-unit>
       <trans-unit approved="yes" id="edit.channel.invalidchannellabel.supportedregex" xml:space="preserve">
-        <source>Channel label must be at least 6 characters long, begin with a letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
-        <target state="final">チャンネルラベルの長さは 6 文字以上でなければならず、文字または数字で始まる必要があり、チャンネルラベルには小文字、ハイフン ('-')、ピリオド ('.')、アンダースコア ('_')、および数字のみ含めることができます。</target>
+        <source>Channel label must be at least 6 characters long, begin with a lowercase letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
+        <target state="needs-adaptation">チャンネルラベルの長さは 6 文字以上でなければならず、文字または数字で始まる必要があり、チャンネルラベルには小文字、ハイフン ('-')、ピリオド ('.')、アンダースコア ('_')、および数字のみ含めることができます。</target>
       </trans-unit>
       <trans-unit approved="yes" id="edit.channel.invalidchannellabel.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
@@ -12227,20 +12227,31 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
         <target state="final">無効な日付形式です。ISO 8601オフセット形式(例: 2026-06-04T22:00:00Z)に従う必要があります。</target>
       </trans-unit>
-    <trans-unit id="edit_address.jsp.country.select" xml:space="preserve">
+      <trans-unit id="edit_address.jsp.country.select" xml:space="preserve">
         <source>-- Select Country --</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="system.entitle.added.peripheral_server" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.peripheral_server" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;Peripheral server&lt;/strong&gt; type has been applied.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">&lt;strong&gt;周辺機器サーバ&lt;/strong&gt; タイプが適用されました。</target>
+      </trans-unit>
+      <trans-unit id="snapshots.refresh_list" xml:space="preserve">
+        <source>Refresh Snapshots</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.formulas" xml:space="preserve">
+        <source>Apply formulas assigned to the target system</source>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
