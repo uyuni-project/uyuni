@@ -9529,7 +9529,7 @@ public class SystemHandler extends BaseHandler {
      *     #prop_desc("int", "activeSnapshot", "Currently active snapshot number")
      *     #prop_desc("int", "defaultSnapshot", "Default next-boot snapshot number")
      *     #prop_desc("date", "updated", "When snapshot information was last updated")
-     *     #prop_desc("array", "snapshots", "All known snapshots")
+     *     #prop_array_begin_desc("snapshots", "All known snapshots")
      *       #struct_begin("snapshot")
      *         #prop_desc("int", "number", "Snapshot number")
      *         #prop_desc("boolean", "active", "True if this is the currently active snapshot")
@@ -9543,7 +9543,7 @@ public class SystemHandler extends BaseHandler {
      *         #prop_desc("string", "description", "Snapshot description")
      *         #prop_desc("string", "userdata", "Snapshot userdata")
      *       #struct_end()
-     *     #prop_end()
+     *     #prop_array_end()
      *   #struct_end()
      */
     @ReadOnly

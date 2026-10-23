@@ -12,7 +12,7 @@ require 'pathname'
 
 # Used for debugging purposes
 When(/^I save a screenshot as "([^"]+)"$/) do |filename|
-  save_screenshot(filename)
+  save_screenshot(filename) # rubocop:disable Lint/Debugger
   attach File.open(filename, 'rb'), 'image/png'
 end
 

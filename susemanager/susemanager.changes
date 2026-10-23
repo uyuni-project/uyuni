@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Oct 15 13:19:39 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.3-0
+  * Add bootstrap repository definition for SUSE Linux Enterprise
+    Server for NVIDIA (ARM64) 16.1
+
+-------------------------------------------------------------------
+Thu Oct 08 00:50:51 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Add AlmaLinux 8 ppc64le bootstrap data
+
+-------------------------------------------------------------------
 Wed Aug 05 16:51:54 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

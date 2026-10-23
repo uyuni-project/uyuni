@@ -33,6 +33,7 @@ export PROVIDER=podman
 export SERVER=server
 export HOSTNAME=controller
 export MINION=sle_minion
+export SSHMINION=opensusessh
 export RHLIKE_MINION=rhlike_minion
 export DEBLIKE_MINION=deblike_minion
 export BUILD_SOURCES="downloadcontent.opensuse.org"

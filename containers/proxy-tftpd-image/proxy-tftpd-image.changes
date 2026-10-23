@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Oct 08 01:14:54 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2
+  * Use custom entry id for grub saltboot entries
+    (bsc#1258382, bsc#1208800)
+  * Add missing BuildName tag
+
+-------------------------------------------------------------------
 Wed Aug 05 12:37:32 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1

@@ -18,10 +18,13 @@ def ssh_command(command, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 
   stdout = ''
   stderr = ''
   exit_code = -1
+  # Do not wait past the whole-run deadline (see RUN_HARD_LIMIT in env.rb), but always leave a command (e.g. the
+  # mgrctl calls of the After hooks) the time to complete. Not defined when loaded from the Rakefile, outside Cucumber
+  timeout = [run_time_left, 30].max.clamp(..timeout) if defined?(RUN_HARD_LIMIT) && RUN_HARD_LIMIT.positive?
   begin
     Timeout.timeout(timeout) do # Enforce timeout on the entire SSH operation
       Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, keepalive: true, max_pkt_size: buffer_size, config: true) do |ssh|
-        stdout, stderr, exit_code = ssh_exec!(ssh, command, timeout: DEFAULT_TIMEOUT)
+        stdout, stderr, exit_code = ssh_exec!(ssh, command, timeout: timeout)
       end
     end
   rescue Timeout::Error

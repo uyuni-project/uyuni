@@ -65,10 +65,13 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
+import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
+import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressStatus;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.TransactionalMode;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
@@ -86,6 +89,7 @@ import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.utils.RhelUtilsTest;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
@@ -1333,6 +1337,170 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
         assertFalse(serversActions.stream().anyMatch(a -> a.getName().equals("Package List Refresh")),
                 "Package List Refresh must not be scheduled");
+    }
+
+    @Test
+    public void testDryRunOfAConventionalMinionCompletesTheAction() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.NON_TRANSACTIONAL,
+                List.of("packages"), false);
+
+        executeJobReturn("state.apply.with.test.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusCompleted());
+        assertNotNull(sa.getCompletionTime());
+        assertTrue(sa.getResultMsg().endsWith("(test-mode)"));
+    }
+
+    @Test
+    public void testSuccessfulDryRunContinuationFinalizesTheTransactionalHistory() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages", "custom"), true);
+
+        executeJobReturn("state.apply.with.test.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusCompleted());
+        assertNotNull(sa.getCompletionTime());
+        assertTrue(sa.getResultMsg().endsWith("(test-mode)"));
+        assertEquals(ProgressStatus.COMPLETED, findHistory(scenario).getAfterRebootStatus());
+    }
+
+    @Test
+    public void testDryRunOfATransactionalMinionCompletesTheAction() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages"), false);
+
+        executeJobReturn("transactional.update.apply.with.test.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusCompleted());
+        assertNotNull(sa.getCompletionTime());
+        assertEquals("Transactional states previewed. No changes applied.", sa.getResultMsg());
+
+        MinionTransactionalActionHistory history = findHistory(scenario);
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+        assertNull(history.getSnapshotRefreshActionId(), "A preview must not schedule a snapshot refresh");
+    }
+
+    @Test
+    public void testDryRunWithAFailedStateIsReportedAsFailed() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages"), false);
+
+        executeJobReturn("transactional.update.apply.with.test.failure.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusFailed());
+        assertEquals(ProgressStatus.FAILED, findHistory(scenario).getPrerequisiteStatus());
+    }
+
+    @Test
+    public void testDryRunWithARenderingErrorIsReportedAsFailed() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages"), false);
+
+        executeJobReturn("transactional.update.apply.with.test.render.error.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusFailed());
+        assertTrue(sa.getResultMsg().startsWith("Rendering SLS"));
+        assertEquals(ProgressStatus.FAILED, findHistory(scenario).getPrerequisiteStatus());
+    }
+
+    @Test
+    public void testDryRunWithoutAnExplicitStateResultIsReportedAsFailed() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages"), false);
+
+        executeJobReturn("transactional.update.apply.with.test.missing.result.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusFailed());
+        assertEquals(ProgressStatus.FAILED, findHistory(scenario).getPrerequisiteStatus());
+    }
+
+    @Test
+    public void testFailedDryRunOfAMixedRequestDoesNotStartTheLivePhase() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages", "custom"), false);
+
+        executeJobReturn("transactional.update.apply.with.test.failure.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusFailed());
+
+        MinionTransactionalActionHistory history = findHistory(scenario);
+        assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    public void testSuccessfulDryRunOfAMixedRequestWaitsForTheLivePhase() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages", "custom"), false);
+
+        executeJobReturn("transactional.update.apply.with.test.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertFalse(sa.isStatusFailed());
+        assertNull(sa.getCompletionTime());
+
+        MinionTransactionalActionHistory history = findHistory(scenario);
+        assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertEquals(ProgressStatus.PENDING, history.getAfterRebootStatus());
+        assertNull(history.getSnapshotRefreshActionId(), "A preview must not schedule a snapshot refresh");
+    }
+
+    private DryRunScenario createDryRunScenario(TransactionalMode mode, List<String> mods, boolean continuation)
+            throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("abcdefg.vagrant.local");
+        minion.setTransactionalMode(mode);
+        ServerFactory.save(minion);
+
+        ApplyStatesAction action = ActionManager.scheduleApplyStates(user, List.of(minion.getId()), mods,
+                new Date(), Optional.of(true));
+
+        if (continuation) {
+            MinionTransactionalActionHistory history =
+                    MinionTransactionalActionHistory.create(minion.getId(), action.getId());
+            history.recordTransactionalStateApplied("transactional preview");
+            history.recordAfterRebootScheduled();
+            TestUtils.persist(history);
+        }
+
+        DryRunScenario scenario = new DryRunScenario(action.getId(), minion.getId());
+        TestUtils.flushAndClearSession();
+        return scenario;
+    }
+
+    private ServerAction reloadServerAction(DryRunScenario scenario) {
+        return TestUtils.reload(ActionFactory.lookupById(scenario.actionId())).getServerActions().stream()
+                .filter(sa -> scenario.serverId().equals(sa.getServerId()))
+                .findFirst()
+                .orElseThrow();
+    }
+
+    private MinionTransactionalActionHistory findHistory(DryRunScenario scenario) {
+        return TransactionalActionManager.findTransactionalActionHistory(
+                scenario.serverId(), scenario.actionId()).orElseThrow();
+    }
+
+    private void executeJobReturn(String fixture, long actionId) throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        JobReturnEvent event = JobReturnEvent.parse(getJobReturnEvent(fixture, actionId)).orElseThrow();
+        new JobReturnEventMessageAction(saltServerActionService, saltUtils)
+                .execute(new JobReturnEventMessage(event));
+    }
+
+    private record DryRunScenario(Long actionId, Long serverId) {
     }
 
     @Test

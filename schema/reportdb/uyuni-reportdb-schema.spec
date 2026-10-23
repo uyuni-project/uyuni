@@ -27,7 +27,7 @@
 %define postgres %{rhnroot}/reportdb
 
 Name:           uyuni-reportdb-schema
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Report DB SQL schema for %{productprettyname} server
 License:        GPL-2.0-only

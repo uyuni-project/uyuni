@@ -27,7 +27,7 @@
 %define apache_group www
 
 Name:           spacewalk-proxy
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only

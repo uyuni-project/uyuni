@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Oct 08 01:03:23 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Fix GPG home directory and permissions for non-root users
+    when building keys
+  * Add PQC keys import part to import-suma-build-keys
+  * Apply another fix of import-suma-build-keys script
+  * Fix import-suma-build-keys script
+  * Set crypto-policy when FIPS is enabled (bsc#1270035)
+  * Apply a fix import-suma-build-keys script
+    to preserve copied files ownership
+
+-------------------------------------------------------------------
 Wed Aug 05 13:37:38 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

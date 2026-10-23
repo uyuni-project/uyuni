@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed Oct 07 18:27:45 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Make migration product configurable for DMS product migration
+  * Fix salt deletion on SSH minions (bsc#1274023)
+  * Fix migration of jmx conf (bsc#1268755)
+  * Set podman secrets for proxy directly from salt
+  * Remove unused udevdb salt module as upstream udev is used
+  * Improve Salt state support for transactional systems
+
+-------------------------------------------------------------------
 Wed Aug 05 16:54:25 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

@@ -75,6 +75,7 @@ public abstract class TransactionHelper {
 
     private static Optional<Exception> handleTransactions(boolean commit) {
         boolean committed = false;
+        Exception applicationException = null;
 
         try {
             if (commit) {
@@ -88,7 +89,7 @@ public abstract class TransactionHelper {
         }
         catch (PersistenceException e) {
             log.error("Error while committing a transaction. Rolling back", e);
-            return of(e);
+            applicationException = e;
         }
         finally {
             try {
@@ -101,7 +102,7 @@ public abstract class TransactionHelper {
                     }
                     catch (PersistenceException e) {
                         log.error("Additional error during rollback", e);
-                        return of(e);
+                        applicationException = e;
                     }
                 }
             }
@@ -110,6 +111,6 @@ public abstract class TransactionHelper {
                 HibernateFactory.closeSession();
             }
         }
-        return empty();
+        return Optional.ofNullable(applicationException);
     }
 }

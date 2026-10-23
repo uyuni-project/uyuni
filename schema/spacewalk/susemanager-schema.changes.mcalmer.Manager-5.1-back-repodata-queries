@@ -1,0 +1,3 @@
+- Fix planner estimates for package files, provides and changelogs
+  to avoid slow parallel queries during repodata generation
+  (bsc#1286091)

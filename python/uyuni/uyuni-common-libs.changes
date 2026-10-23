@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Oct 07 18:25:44 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * SonarCloud fix: python:S6659: use startswith or endswith instead
+    of string slicing
+
+-------------------------------------------------------------------
 Wed Aug 05 16:58:32 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

@@ -20,7 +20,7 @@
 
 %global debug_package %{nil}
 Name:           uyuni-storage-setup
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Tools for managing storage on %{productprettyname}
 License:        GPL-3.0-only

@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Oct 07 18:21:33 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Support '/next' directory for easier schema upgrade during
+    development and when providing PTFs
+  * Increase advisory name char limit to 150 in Errata tables
+    (bsc#1273846)
+
+-------------------------------------------------------------------
 Wed Aug 05 17:00:12 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

@@ -562,19 +562,15 @@ where snc.errata_id = :errata_id
          prd.primary_xml as primary_xml, prd.filelist as filelist_xml, prd.other as other_xml
     FROM
          rhnPackage p
+            JOIN rhnPackageName pn ON p.name_id = pn.id
+            JOIN rhnPackageEvr pevr ON p.evr_id = pevr.id
+            JOIN rhnPackageArch pa ON p.package_arch_id = pa.id
+            JOIN rhnChecksumView cs ON p.checksum_id = cs.id
             LEFT OUTER JOIN rhnPackageGroup pg ON p.package_group = pg.id
             LEFT OUTER JOIN rhnSourceRpm srpm  ON p.source_rpm_id = srpm.id
-            LEFT JOIN rhnPackageRepodata prd ON prd.package_id = p.id,
-         rhnPackageName pn,
-         rhnPackageEvr pevr,
-         rhnPackageArch pa,
-         rhnChecksumView cs
+            LEFT JOIN rhnPackageRepodata prd ON prd.package_id = p.id
     WHERE
-         p.name_id = pn.id
-         AND p.evr_id = pevr.id
-         AND p.package_arch_id = pa.id
-         AND p.checksum_id = cs.id
-         AND p.id IN (%s)
+         p.id IN (%s)
 </query>
 
 <mode name="repomdgenerator_channel_packages"

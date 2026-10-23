@@ -178,9 +178,7 @@ end
 
 Then(/^The amount of packages in channel "([^"]*)" should be the same as before$/) do |channel_label|
   add_context('channels', $api_test.channel.list_all_channels)
-  if get_context('channels').key?(channel_label) && (get_context('package_amount') != get_context('channels')[channel_label]['packages'])
-    raise 'Package counts do not match'
-  end
+  raise 'Package counts do not match' if get_context('channels').key?(channel_label) && (get_context('package_amount') != get_context('channels')[channel_label]['packages'])
 end
 
 Then(/^the channel "([^"]*)" should not be empty$/) do |channel_label|
@@ -195,9 +193,7 @@ end
 
 Then(/^The amount of packages in channel "([^"]*)" should be fewer than before$/) do |channel_label|
   add_context('channels', $api_test.channel.list_all_channels)
-  if get_context('channels').key?(channel_label) && get_context('channels')[channel_label]['packages'] >= $package_amount
-    raise 'Package count is not fewer than before'
-  end
+  raise 'Package count is not fewer than before' if get_context('channels').key?(channel_label) && get_context('channels')[channel_label]['packages'] >= $package_amount
 end
 
 When(/^I delete these channels with spacewalk-remove-channel:$/) do |table|
@@ -281,9 +277,7 @@ Then(/^"([^"]*)" should not be installed on "([^"]*)"$/) do |package, host|
 end
 
 When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |package, status, host|
-  if package.include?('suma') && product == 'Uyuni'
-    package.gsub! 'suma', 'uyuni'
-  end
+  package.gsub! 'suma', 'uyuni' if package.include?('suma') && product == 'Uyuni'
   node = get_target(host)
   if deb_host?(host)
     pkg_version = package.split('-')[-1]
@@ -308,9 +302,7 @@ end
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
   salt = $use_salt_bundle ? 'venv-salt-minion' : 'salt'
-  if host == 'server'
-    salt = 'salt'
-  end
+  salt = 'salt' if host == 'server'
   result, _return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding('UTF-8')
@@ -382,7 +374,7 @@ When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |ser
 end
 
 When(/^I execute mgr-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
-  get_target('server').run("echo -e \'mgrsync.user = \"#{u}\"\nmgrsync.password = \"#{p}\"\n\' > ~/.mgr-sync")
+  get_target('server').run("echo -e 'mgrsync.user = \"#{u}\"\nmgrsync.password = \"#{p}\"\n' > ~/.mgr-sync")
   $command_output, _code = get_target('server').run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", check_errors: false, buffer_size: 1_000_000)
 end
 
@@ -473,20 +465,22 @@ Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
   end
 end
 
-When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
+When(/^I wait until the channel "([^"]*)" has been synced(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |channel, host|
   margin = channel.include?('custom_channel') || channel.include?('ptf') ? 0 : 900
-  wait_for_channels([channel], "channel '#{channel}'", margin: margin)
+  wait_for_channels([channel], "channel '#{channel}'", host: host || 'server', margin: margin)
 end
 
-When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
+When(/^I wait until all synchronized channels for "([^"]*)" have finished(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |os_product_version, host|
+  host ||= 'server'
   channels_to_sync = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)&.clone
   raise ScriptError, "Sync error: #{os_product_version} not found" if channels_to_sync.nil?
 
   channels_to_sync = filter_channels(channels_to_sync, ['beta']) unless $beta_enabled
-  wait_for_channels(channels_to_sync, "product '#{os_product_version}'")
+  wait_for_channels(channels_to_sync, "product '#{os_product_version}'", host: host)
 end
 
-When(/^I wait until all synchronized channels have solved their dependencies$/) do
+When(/^I wait until all synchronized channels have solved their dependencies(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |host|
+  host ||= 'server'
   add_context('channels_failed_without_solv_file', [])
   channels_to_wait_solv_file = get_context('channels_to_wait_solv_file').uniq
   accumulated_timeout = get_context('channels_timeout')
@@ -507,7 +501,7 @@ When(/^I wait until all synchronized channels have solved their dependencies$/) 
     deadline_elapsed = optimized_timeout
     repeat_until_timeout(timeout: optimized_timeout, message: 'Product not fully initialized') do
       prev_count = channels_to_wait_solv_file.count
-      channels_to_wait_solv_file.reject! { |channel| channel_is_synced?(channel) }
+      channels_to_wait_solv_file.reject! { |channel| channel_is_synced?(channel, host: host) }
       break if channels_to_wait_solv_file.empty?
 
       if channels_to_wait_solv_file.count < prev_count
@@ -585,6 +579,15 @@ Then(/^the taskomatic logs should not contain errors$/) do
   end
 end
 
+Then(/^the logs messages should not contain SELinux denials$/) do
+  output, error, code = get_target('server').run('ausearch -m AVC,USER_AVC | audit2why', runs_in_container: false, check_errors: false)
+  no_matches = code == 1 && output.empty? && error.strip == '<no matches>'
+  unless no_matches
+    raise ScriptError, "SELinux audit query failed on server host (status #{code}):\n#{output}#{error}" unless code.zero? && error.empty?
+    raise ScriptError, "SELinux errors on server host:\n#{output}" unless output.empty?
+  end
+end
+
 Then(/^the log messages should not contain out of memory errors$/) do
   output, code = get_target('server').run('grep -i "Out of memory: Killed process" /var/log/messages', check_errors: false)
   raise ScriptError, "Out of memory errors in /var/log/messages:\n#{output}" if code.zero?
@@ -641,7 +644,7 @@ When(/^I extract the log files from all our active nodes$/) do
 end
 
 Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
-  step %(file "/etc/zypp/repos.d/susemanager\:channels.repo" should exist on "#{host}")
+  step %(file "/etc/zypp/repos.d/susemanager:channels.repo" should exist on "#{host}")
 end
 
 Then(/^the repo file should contain the (custom|normal) download endpoint on the "([^"]*)"$/) do |type, target|
@@ -800,7 +803,7 @@ end
 When(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
   cmd = 'spacecmd -u admin -p admin api sync.content.listProducts | grep SLES'
-  repeat_until_timeout(timeout: 1800, message: '\'mgr-sync refresh\' did not finish') do
+  repeat_until_timeout(timeout: 3600, message: '\'mgr-sync refresh\' did not finish') do
     # If the error code is different than 0 (grep matches) or 1 (no grep matches), the command failed.
     result, _code = get_target('server').run(cmd, successcodes: [0, 1], check_errors: true)
     break if result.include? 'SLES'
@@ -871,6 +874,11 @@ When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node.run(cmd)
 end
 
+When(/^I install RKE2 on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run('set -o pipefail; curl -sfL https://get.rke2.io | sudo INSTALL_RKE2_VERSION=$RKE2_VERSION INSTALL_RKE2_METHOD=$RKE2_INSTALL_METHOD sh -')
+end
+
 When(/^I run "([^"]*)" on "([^"]*)" outside the container$/) do |cmd, host|
   node = get_target(host)
   node.run(cmd, runs_in_container: false)
@@ -902,6 +910,11 @@ When(/^I wait at most (\d+) seconds until file "([^"]*)" exists on "([^"]*)"$/) 
 
     sleep(1)
   end
+end
+
+When(/^I create a symlink between "([^"]*)" and "([^"]*)" on "([^"]*)"(?: with parameters "([^"]*)")?$/) do |first_file, second_file, host, entry_parameter|
+  node = get_target(host)
+  node.run("ln #{entry_parameter} #{first_file} #{second_file}")
 end
 
 When(/^I wait until file "(.*)" exists on server$/) do |file|
@@ -1034,9 +1047,7 @@ When(/^I disable source package syncing$/) do
 end
 
 When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
-  if pattern.include?('suma') && product == 'Uyuni'
-    pattern.gsub! 'suma', 'uyuni'
-  end
+  pattern.gsub! 'suma', 'uyuni' if pattern.include?('suma') && product == 'Uyuni'
   node = get_target(host)
   node.run('zypper ref')
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
@@ -1044,9 +1055,7 @@ When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
 end
 
 When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
-  if pattern.include?('suma') && product == 'Uyuni'
-    pattern.gsub! 'suma', 'uyuni'
-  end
+  pattern.gsub! 'suma', 'uyuni' if pattern.include?('suma') && product == 'Uyuni'
   node = get_target(host)
   node.run('zypper ref')
   cmd = "zypper --non-interactive remove -t pattern #{pattern}"
@@ -1208,12 +1217,15 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without flushing)?)$/) do |host, without_flushing|
-  host = 'proxy_nontransactional' if host == 'proxy' && !$is_transactional_server
+When(/^I create the bootstrap repository for "([^"]*)" on (?:the server|(server2|server3|hub|peripheral1|peripheral2))((?: without flushing)?)$/) do |host, target, without_flushing|
+  target ||= 'server'
+  # proxy, proxy2 and proxy3 share the 'proxy' channel entries; the proxy's base channel follows
+  # the proxy's own OS, not the server's.
+  host = host_transactional?(host) ? 'proxy' : 'proxy_nontransactional' if host.match?(/^proxy\d*$/)
   base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
-  get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
+  get_target(target).wait_while_process_running('mgr-create-bootstrap-repo')
 
   log "base_channel: #{base_channel}"
   log "channel: #{channel}"
@@ -1228,9 +1240,9 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without
 
   cmd += ' --flush' unless without_flushing
 
-  log 'Creating the bootstrap repository on the server:'
+  log "Creating the bootstrap repository on #{target}:"
   log "  #{cmd}"
-  get_target('server').run(cmd, exec_option: '-it')
+  get_target(target).run(cmd, exec_option: '-it')
 end
 
 When(/^I create the bootstrap repositories including custom channels$/) do
@@ -1448,9 +1460,7 @@ end
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node = get_target(host)
   salt_call = $use_salt_bundle ? 'venv-salt-call' : 'salt-call'
-  if host == 'server'
-    salt_call = 'salt-call'
-  end
+  salt_call = 'salt-call' if host == 'server'
   source = "#{File.dirname(__FILE__)}/../upload_files/salt/#{state}.sls"
   remote_file = "/usr/share/susemanager/salt/#{state}.sls"
   success = file_inject(node, source, remote_file)
@@ -1479,14 +1489,14 @@ When(/^I export config channels "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channe
   get_target('server').run("inter-server-sync export --configChannels=#{channel} --outputDir=#{path}", verbose: true)
 end
 
-When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
+When(/^I import data with ISS v2 from "([^"]*)"(?: on (server|hub|server2|server3|peripheral1|peripheral2))?$/) do |path, host|
   # WORKAROUND for bsc#1249127
   # Remove "echo admin |" when the product issue is solved
-  get_target('server').run("echo admin | inter-server-sync import --importDir=#{path}", verbose: true)
+  get_target(host || 'server').run("echo admin | inter-server-sync import --importDir=#{path}", verbose: true)
 end
 
-Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
-  raise ScriptError, "Folder #{folder} not found" unless file_exists?(get_target('server'), "#{folder}/sql_statements.sql.gz")
+Then(/^"(.*?)" folder on (server|hub|server2|server3|peripheral1|peripheral2) should be ISS v2 export directory$/) do |folder, host|
+  raise ScriptError, "Folder #{folder} not found" unless file_exists?(get_target(host), "#{folder}/sql_statements.sql.gz")
 end
 
 When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
@@ -1649,45 +1659,57 @@ Then(/^I flush firewall on "([^"]*)"$/) do |target|
   node.run('iptables -F INPUT')
 end
 
-When(/^I generate the configuration "([^"]*)" of containerized proxy on the server$/) do |file_path|
+When(/^I generate the configuration "([^"]*)" of containerized (proxy\d*) on the (?:server|(server|server2|server3|hub|peripheral1|peripheral2))$/) do |file_path, proxy, mgr_server|
+  mgr_server ||= 'server'
   if running_k3s?
     # A server container on kubernetes has no clue about SSL certificates
     # We need to generate them using `cert-manager` and use the files as 3rd party certificate
-    generate_certificate('proxy', get_target('proxy').full_hostname)
+    generate_certificate(proxy, get_target(proxy).full_hostname)
 
     # Copy the cert files in the container to use them with spacecmd
     %w[proxy.crt proxy.key ca.crt].each do |file|
-      get_target('server').inject("/tmp/#{file}", "/tmp/#{file}")
+      get_target(mgr_server).inject("/tmp/#{file}", "/tmp/#{file}")
     end
 
     command = 'spacecmd -u admin -p admin ' \
               "proxy_container_config -- -o #{file_path} -p 8022 " \
-              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              "#{get_target(proxy).full_hostname} #{get_target(mgr_server).full_hostname} 2048 galaxy-noise@suse.de " \
               '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
+    # A peripheral holds only the hub CA certificate, not its private key, which spacecmd needs to sign the
+    # proxy certificate. Run spacecmd on the hub (the CA owner) against the peripheral's API instead.
+    peripheral = %w[server2 server3 peripheral1 peripheral2].include?(mgr_server)
+    runner = peripheral ? 'server' : mgr_server
+    server_option = peripheral ? "-s #{get_target(mgr_server).full_hostname}" : '--nossl'
     command = 'echo spacewalk > ca_pass && ' \
-              'spacecmd --nossl -u admin -p admin ' \
+              "spacecmd #{server_option} -u admin -p admin " \
               "proxy_container_config_generate_cert -- -o #{file_path} " \
-              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              "#{get_target(proxy).full_hostname} #{get_target(mgr_server).full_hostname} 2048 galaxy-noise@suse.de " \
               '--ssl-cname proxy.example.org --ca-pass ca_pass && ' \
               'rm ca_pass'
   end
-  get_target('server').run(command)
+  runner ||= mgr_server
+  get_target(runner).run(command)
+  next if runner == mgr_server
+
+  # The following copy step reads the configuration from the peripheral
+  get_target(runner).extract(file_path, file_path)
+  get_target(mgr_server).inject(file_path, file_path)
 end
 
-When(/^I copy the configuration "([^"]*)" of containerized proxy from the server to the proxy$/) do |file_path|
-  get_target('server').extract(file_path, file_path)
-  get_target('proxy').inject(file_path, file_path)
+When(/^I copy the configuration "([^"]*)" of containerized proxy from the (?:server|(server|server2|server3|hub|peripheral1|peripheral2)) to the (proxy\d*)$/) do |file_path, mgr_server, proxy|
+  get_target(mgr_server || 'server').extract(file_path, file_path)
+  get_target(proxy).inject(file_path, file_path)
 end
 
-When(/^I add avahi hosts in containerized proxy configuration$/) do
+When(/^I add avahi hosts in containerized (proxy\d*) configuration$/) do |proxy|
   if get_target('server').full_hostname.include? 'tf.local'
     hosts_list = ''
     $host_by_node.each do |node, _host|
       hosts_list += "--add-host=#{node.full_hostname}:#{node.public_ip} "
     end
     hosts_list = escape_regex(hosts_list)
-    get_target('proxy').run("echo 'export UYUNI_PODMAN_ARGS=\"#{hosts_list}\"' >> ~/.bashrc && source ~/.bashrc", runs_in_container: false)
+    get_target(proxy).run("echo 'export UYUNI_PODMAN_ARGS=\"#{hosts_list}\"' >> ~/.bashrc && source ~/.bashrc", runs_in_container: false)
     log "Avahi hosts added: #{hosts_list}"
     log 'The Development team has not been working to support avahi in containerized proxy, yet. This is best effort.'
   else
@@ -1749,17 +1771,19 @@ When(/^I reboot the "([^"]*)" host through SSH, waiting until it comes back$/) d
   node.wait_until_online
 end
 
-When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
-  steps %(
-    Given I am on the Systems overview page of this "#{host}"
-    When I follow first "Schedule System Reboot"
-    Then I should see a "System Reboot Confirmation" text
-    And I should see a "Reboot system" button
-    When I click on "Reboot system"
-    Then I should see a "Reboot scheduled for system" text
-    And I wait at most 600 seconds until event "System reboot scheduled by #{$current_user}" is completed
-    Then I should see a "This action's status is: Completed" text
-  )
+When(/^I reboot the "([^"]*)" minion through the web UI(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |host, server|
+  using_server(server) do
+    steps %(
+      Given I am on the Systems overview page of this "#{host}"#{" on #{server}" if server}
+      When I follow first "Schedule System Reboot"
+      Then I should see a "System Reboot Confirmation" text
+      And I should see a "Reboot system" button
+      When I click on "Reboot system"
+      Then I should see a "Reboot scheduled for system" text
+      And I wait at most 600 seconds until event "System reboot scheduled by #{Credentials.current.first}" is completed
+      Then I should see a "This action's status is: Completed" text
+    )
+  end
 end
 
 When(/^I reboot the "([^"]*)" if it is a transactional system$/) do |host|
@@ -1821,6 +1845,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   # Reset the API client to take the new CA into account
   log 'Resetting the API client'
   $api_test = new_api_client unless uyuni_not_installed?
+  $api_test_by_host = nil
 
   raise SystemCallError, 'Error while running spacewalk-hostname-rename command - see logs above' unless result_code.zero?
   raise ScriptError, 'Error in the output logs - see logs above' if out_spacewalk.include? 'No such file or directory'
@@ -1872,8 +1897,8 @@ When(/^I change back the server's hostname$/) do
   log "Old hostname: #{old_hostname} - New hostname: #{new_hostname}"
   server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
                    hostname #{new_hostname} &&
-                   sed -i \'$d\' /etc/hosts &&
-                   sed -i \'$d\' /etc/hosts")
+                   sed -i '$d' /etc/hosts &&
+                   sed -i '$d' /etc/hosts")
   get_target('server', refresh: true) # This will refresh the attributes of this node
   hostname, _result = get_target('server').run('hostname')
   hostname.strip!
@@ -1950,7 +1975,7 @@ When(/^I stop the health check tool on "([^"]*)"$/) do |host|
 end
 
 Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^"]*)"$/) do |word, threshold, path, host|
-  count, _ret = get_target(host).run("grep -o -i \'#{word}\' #{path} | wc -l")
+  count, _ret = get_target(host).run("grep -o -i '#{word}' #{path} | wc -l")
   occurences = count.to_i
   raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
 end
@@ -1976,21 +2001,36 @@ When(/^I wait until a new "([^"]*)" event is completed for "([^"]*)"$/) do |even
   wait_action_complete(target_event['id'])
 end
 
-When(/^I (upgrade|install) "([^"]*)" on "([^"]*)" using the API$/) do |action, package, host|
-  system_name = get_system_name(host)
-  last_event_before_action = get_last_events(host).first
+When(/^I (upgrade|install) "([^"]*)" on "([^"]*)" using the API(?: from (server|server2|server3|hub|peripheral1|peripheral2))?( if needed)?$/) do |action, package, host, mgr_server, if_needed|
+  mgr_server ||= 'server'
+  system_name = get_system_name(host, mgr_server: mgr_server)
+  last_event_before_action = get_last_events(host, mgr_server: mgr_server).first
   last_event = last_event_before_action
   case action
   when 'upgrade'
-    trigger_upgrade(system_name, package)
+    next unless trigger_upgrade(system_name, package, mgr_server: mgr_server, allow_up_to_date: !if_needed.nil?)
   when 'install'
-    trigger_install(system_name, package)
+    trigger_install(system_name, package, mgr_server: mgr_server)
   end
+  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for the new event to be created') do
+    last_event = get_last_events(host, mgr_server: mgr_server).first
+    break if last_event['id'] > last_event_before_action['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
+  end
+  wait_action_complete(last_event['id'], mgr_server: mgr_server)
+end
+
+When(/^I upgrade all packages on "([^"]*)" using the API, waiting at most (\d+) seconds$/) do |host, timeout|
+  system_name = get_system_name(host)
+  last_event_before_action = get_last_events(host).first
+  # '*' must be quoted, otherwise the shell on the server expands it
+  next unless trigger_upgrade(system_name, "'*'", allow_up_to_date: true)
+
+  last_event = last_event_before_action
   repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for the new event to be created') do
     last_event = get_last_events(host).first
     break if last_event['id'] > last_event_before_action['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
   end
-  wait_action_complete(last_event['id'])
+  wait_action_complete(last_event['id'], timeout: timeout.to_i)
 end
 
 When(/^I remove "([^"]*)" on "([^"]*)" using the API$/) do |package, host|

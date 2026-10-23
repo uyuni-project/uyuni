@@ -8,9 +8,10 @@ require 'timeout'
 require 'open-uri'
 require 'tempfile'
 
-Given(/^the Salt master can reach "(.*?)"$/) do |minion|
-  system_name = get_system_name(minion)
-  server = get_target('server')
+Given(/^the Salt master can reach "(.*?)"(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |minion, host|
+  host ||= 'server'
+  system_name = get_system_name(minion, mgr_server: host)
+  server = get_target(host)
   start = Time.now
   # 700 seconds is the maximum time it takes the proxy to recover after being redefined for Retail
   # 300 seconds would be the default first keepalive interval for the minion before it realizes the connection is stuck
@@ -216,9 +217,7 @@ When(/^I click on preview$/) do
   end
 
   # After the loop, check if the run button is still not visible
-  unless page.has_button?('run', visible: true)
-    raise "Preview button not working: the run button is not visible after #{max_attempts} attempts."
-  end
+  raise "Preview button not working: the run button is not visible after #{max_attempts} attempts." unless page.has_button?('run', visible: true)
 end
 
 When(/^I click on stop waiting$/) do
@@ -260,9 +259,7 @@ end
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
   get_target('server').run("zypper --non-interactive remove #{package}-formula")
   # Remove automatically installed dependency if needed
-  if package == 'uyuni-config'
-    get_target('server').run("zypper --non-interactive remove #{package}-modules")
-  end
+  get_target('server').run("zypper --non-interactive remove #{package}-modules") if package == 'uyuni-config'
 end
 
 When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
@@ -495,9 +492,7 @@ When(/^I change the state of "([^"]*)" to "([^"]*)" and "([^"]*)"$/) do |pkg, st
   # Options for instd_state are Any or Latest
   # Default if you pick Installed is Latest
   find("##{pkg}-pkg-state").select(state)
-  if !instd_state.to_s.empty? && state == 'Installed'
-    find("##{pkg}-version-constraint").select(instd_state)
-  end
+  find("##{pkg}-version-constraint").select(instd_state) if !instd_state.to_s.empty? && state == 'Installed'
 end
 
 When(/^I click apply$/) do
@@ -586,7 +581,7 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node.run("rm -Rf /root/salt #{salt_bundle_cleanup_paths} #{salt_classic_cleanup_paths}", check_errors: false)
 
   # Package removal using the existing step
-  step %(I remove packages "venv-salt-minion salt salt-minion" from this "#{host}")
+  step %(I remove packages "venv-salt-minion salt salt-minion" from this "#{host}" without error control)
 
   # Disable repositories
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)

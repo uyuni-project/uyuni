@@ -107,9 +107,7 @@ When(/^I run Cobbler buildiso for distro "([^"]*)" and all profiles$/) do |distr
     cobbler_profiles.push(result_cobbler) if code.zero?
     # get all profiles from isolinux.cfg
     result_isolinux, _code = get_target('server').run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{profile} | cut -c -6 | head -n 1")
-    unless result_isolinux.empty?
-      isolinux_profiles.push(result_isolinux)
-    end
+    isolinux_profiles.push(result_isolinux) unless result_isolinux.empty?
   end
   raise ScriptError, "error during comparison of Cobbler profiles.\nLogs:\nCobbler profiles:\n#{cobbler_profiles}\nisolinux profiles:\n#{isolinux_profiles}" unless cobbler_profiles == isolinux_profiles
 end
@@ -240,11 +238,11 @@ When(/^I start local monitoring of Cobbler$/) do
                     "\\''asctime\\'': \\''%(asctime)s\\'', \\''levelname\\'':  \\''%(levelname)s\\'', " \
                     "\\''message\\'': \\''%(message)s\\''}\n\""
     command = "cp #{cobbler_conf_file} #{cobbler_conf_file}.old && " \
-              "line_number=`awk \"/\\\[handlers\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
+              "line_number=`awk \"/\\[handlers\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
               "sed -e \"$(($line_number + 1))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
-              "line_number=`awk \"/\\\[formatters\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
+              "line_number=`awk \"/\\[formatters\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
               "sed -e \"$(($line_number + 1))s/$/,#{formatter_name}/\" -i #{cobbler_conf_file} && " \
-              "line_number=`awk \"/\\\[logger_root\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
+              "line_number=`awk \"/\\[logger_root\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
               "sed -e \"$(($line_number + 2))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
               "echo -e #{handler_class} >> #{cobbler_conf_file}"
     get_target('server').run("#{command} && systemctl restart cobblerd")

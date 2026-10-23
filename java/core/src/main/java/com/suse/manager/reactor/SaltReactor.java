@@ -22,6 +22,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -199,7 +200,9 @@ public class SaltReactor {
             }
             if (!isStopped) {
                 LOG.info("Taskomatic API is online. Connecting to the Salt event bus...");
-                connectToEventStream();
+                // this thread has its own Hibernate session, which must be committed and closed
+                TransactionHelper.handlingTransaction(this::connectToEventStream,
+                        e -> LOG.error("Unable to connect to the Salt event bus", e));
             }
         }, "salt-event-stream-initializer");
         initializerThread.start();
@@ -230,7 +233,8 @@ public class SaltReactor {
     public void eventStreamClosed() {
         if (!isStopped) {
             LOG.warn("Reconnecting to the Salt event bus...");
-            connectToEventStream();
+            TransactionHelper.handlingTransaction(this::connectToEventStream,
+                    e -> LOG.error("Unable to connect to the Salt event bus", e));
         }
     }
 

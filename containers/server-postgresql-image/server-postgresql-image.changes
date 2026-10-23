@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Oct 08 01:10:07 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2
+  * Avoid reverse lookups from postgresql (bsc#1270038)
+  * Use the POD_NETWORK variable as the CIDR for plain connections
+  * Increase start-period and timeout (bsc#1271124)
+  * Check disk space on startup
+  * Add sanity ownership check to the entrypoint
+  * Add missing BuildName tag
+  * Autodetect database name based on database user
+    (bsc#1272960)
+
+-------------------------------------------------------------------
 Wed Aug 05 13:35:21 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1

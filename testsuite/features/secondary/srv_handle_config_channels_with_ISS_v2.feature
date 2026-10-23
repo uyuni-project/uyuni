@@ -35,7 +35,7 @@ Feature: Export and import configuration channels with new ISS implementation
   Scenario: Export data with ISS v2
     When I ensure folder "/tmp/export_iss_v2" doesn't exist on "server"
     When I export config channels "testconfigchannel" with ISS v2 to "/tmp/export_iss_v2"
-    Then "/tmp/export_iss_v2" folder on server is ISS v2 export directory
+    Then "/tmp/export_iss_v2" folder on server should be ISS v2 export directory
 
   Scenario: Cleanup: remove the test configuration channel
     When I follow the left menu "Configuration > Channels"

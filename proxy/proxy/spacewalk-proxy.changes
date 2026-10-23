@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Oct 08 00:55:11 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Stream responses directly instead of buffering them in
+    temporary files, avoiding disk exhaustion during large client
+    updates (bsc#1275482)
+  * CVE-2026-71400: Remove cobbler_api endpoint from public interface
+    (bsc#1274613, bsc#1274775)
+  * Remove salt dependency from spacewalk-proxy-salt package
+
+-------------------------------------------------------------------
 Wed Aug 05 14:45:37 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

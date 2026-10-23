@@ -295,7 +295,7 @@ public class CachedStatement implements Serializable {
         Object resultObj = executeChecking(sqlStatement, qMap, parameters, mode, null);
         Class<DataResult<T>> drClazz = (Class<DataResult<T>>)(Class<?>) DataResult.class;
         if (drClazz.isAssignableFrom(resultObj.getClass())) {
-            return drClazz.cast(executeChecking(sqlStatement, qMap, parameters, mode, null));
+            return drClazz.cast(resultObj);
         }
         return new DataResult<>(mode);
     }
@@ -791,7 +791,7 @@ public class CachedStatement implements Serializable {
             String getName = StringUtil.beanify("get " + columnName.toLowerCase());
 
             boolean isList = false;
-            Method[] methods = obj.getClass().getMethods();
+            Method[] methods = MethodUtil.getPublicMethods(obj.getClass());
             /*
              * Now loop through the methods and find the set method for this
              * column then decide if it takes a collection Note: This action

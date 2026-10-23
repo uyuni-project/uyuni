@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Oct 07 18:16:06 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Skip the block discard when creating the XFS filesystems with
+    mgr-storage-server and mgr-storage-proxy, as it can take very
+    long on large, thin-provisioned or SAN backed disks
+
+-------------------------------------------------------------------
 Wed Aug 05 17:03:20 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

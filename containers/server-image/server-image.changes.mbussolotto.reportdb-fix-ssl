@@ -1,2 +1,0 @@
-- Disable internal DB SSL on every container start
-  (bsc#1260806, bsc#1277589)

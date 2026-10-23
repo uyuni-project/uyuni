@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
+import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -196,15 +197,10 @@ public class TransactionalActionManagerTest {
 
     @Test
     public void testHardwareRefreshContinuationKeepsEmptyPillarAndTestMode() {
-        ApplyStatesAction action = new ApplyStatesAction();
+        HardwareRefreshAction action = new HardwareRefreshAction();
         ActionType actionType = new ActionType();
         actionType.setLabel(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST.getLabel());
         action.setActionType(actionType);
-        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
-        details.setMods(List.of(SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ));
-        details.setPillarsMap(Optional.of(Map.of("example", "value")));
-        details.setTest(true);
-        action.setDetails(details);
         MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
 
         Map<LocalCall<?>, List<MinionSummary>> calls =
@@ -799,7 +795,7 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
-    public void testApplyStatesActionPreservesRecognizedStateForBothFlags() {
+    public void testApplyStatesActionUsesTransactionalUpdateForRecognizedStateForBothFlags() {
         List<String> states = List.of(SaltParameters.PACKAGES_PKGLOCK);
         for (boolean useTransactionalUpdate : List.of(false, true)) {
             MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
@@ -812,20 +808,18 @@ public class TransactionalActionManagerTest {
             assertEquals(2, calls.size());
             LocalCall<?> regularCall = callForMinion(calls, regularMinion);
             assertEquals("state.apply", regularCall.getPayload().get("fun"));
+            assertNull(regularCall.getPayload().get("module_executors"));
             assertEquals(states, statesForMinion(calls, regularMinion));
 
             LocalCall<?> transactionalCall = callForMinion(calls, transactionalMinion);
-            assertEquals(useTransactionalUpdate ? "transactional_update.apply" : "state.apply",
-                    transactionalCall.getPayload().get("fun"));
+            assertEquals("transactional_update.apply", transactionalCall.getPayload().get("fun"));
             assertEquals(states, statesForMinion(calls, transactionalMinion));
-            if (!useTransactionalUpdate) {
-                assertEquals(List.of("direct_call"), transactionalCall.getPayload().get("module_executors"));
-            }
+            assertNull(transactionalCall.getPayload().get("module_executors"));
         }
     }
 
     @Test
-    public void testApplyStatesActionPreservesMultipleRecognizedStatesForBothFlags() {
+    public void testApplyStatesActionUsesTransactionalUpdateForMultipleRecognizedStatesForBothFlags() {
         List<String> states = List.of(SaltParameters.PACKAGES_PKGINSTALL, SaltParameters.PACKAGES_PKGUPDATE);
         for (boolean useTransactionalUpdate : List.of(false, true)) {
             MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
@@ -833,41 +827,224 @@ public class TransactionalActionManagerTest {
                     states, useTransactionalUpdate, Optional.empty(), false, List.of(transactionalMinion));
 
             LocalCall<?> call = callForMinion(calls, transactionalMinion);
-            assertEquals(useTransactionalUpdate ? "transactional_update.apply" : "state.apply",
-                    call.getPayload().get("fun"));
+            assertEquals("transactional_update.apply", call.getPayload().get("fun"));
             assertEquals(states, statesForMinion(calls, transactionalMinion));
-            if (!useTransactionalUpdate) {
-                assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
-            }
+            assertNull(call.getPayload().get("module_executors"));
         }
     }
 
     @Test
-    public void testApplyStatesActionPreservesHardwareProfileUpdateForBothFlags() {
+    public void testApplyStatesPackagesUsesTransactionalUpdateWhenFlagIsNotRequested() {
+        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
+        MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+        MinionSummary otherTransactionalMinion = transactionalMinion(3L, "transactional-2");
+        Map<String, Object> pillar = Map.of("key", "value");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls = ActionManager.prepareSaltCalls(applyStatesCalls(
+                List.of(ApplyStatesEventMessage.PACKAGES), false, Optional.of(pillar), true,
+                List.of(regularMinion, transactionalMinion, otherTransactionalMinion)));
+
+        assertEquals(2, calls.size());
+        LocalCall<?> regularCall = callForMinion(calls, regularMinion);
+        assertEquals("state.apply", regularCall.getPayload().get("fun"));
+        assertNull(regularCall.getPayload().get("module_executors"));
+        assertEquals(List.of(regularMinion), calls.get(regularCall));
+
+        LocalCall<?> transactionalCall = callForMinion(calls, transactionalMinion);
+        assertEquals("transactional_update.apply", transactionalCall.getPayload().get("fun"));
+        assertNull(transactionalCall.getPayload().get("module_executors"));
+        assertEquals(List.of(transactionalMinion, otherTransactionalMinion), calls.get(transactionalCall));
+
+        Map<?, ?> kwargs = (Map<?, ?>) transactionalCall.getPayload().get("kwarg");
+        assertEquals(List.of(ApplyStatesEventMessage.PACKAGES), kwargs.get("mods"));
+        assertEquals(pillar, kwargs.get("pillar"));
+        assertEquals(true, kwargs.get("queue"));
+        assertEquals(true, kwargs.get("test"));
+        assertEquals(kwargs, ((Map<?, ?>) regularCall.getPayload().get("kwarg")));
+    }
+
+    @Test
+    public void testApplyStatesPackagesUsesTransactionalUpdateWithDefaultFlag() {
+        MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+        ApplyStatesAction action = new ApplyStatesAction();
+        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
+        details.setMods(List.of(ApplyStatesEventMessage.PACKAGES));
+        action.setDetails(details);
+
+        assertFalse(details.isUseTransactionalUpdate());
+
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                ActionManager.prepareSaltCalls(action.getSaltCalls(List.of(transactionalMinion)));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        assertEquals(List.of(ApplyStatesEventMessage.PACKAGES), statesForMinion(calls, transactionalMinion));
+    }
+
+    @Test
+    public void testApplyStatesPackagesWithoutFlagIsFullyTransactional() {
+        ApplyStatesAction action = applyStatesAction(List.of(ApplyStatesEventMessage.PACKAGES), false);
+
+        assertFalse(TransactionalActionManager.hasPostTransactionalState(action));
+
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("""
+                        {
+                          "pkg_|-jq_|-jq_|-installed": {
+                            "result": true,
+                            "changes": {}
+                          }
+                        }
+                        """),
+                false,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertFalse(result.isFailed());
+        assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
+        assertTrue(TransactionalActionManager.getPrerequisiteResult(history).isEmpty());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+        assertEquals(0, snapshotRefreshes.get());
+        assertEquals(0, resumptions.get());
+
+        List<TransactionalActionManager.ProgressEntry> entries =
+                TransactionalActionManager.getProgressEntries(action, history);
+        assertEquals("apply", entries.get(0).getStepKey());
+        assertEquals("completed", entries.get(0).getStatusKey());
+    }
+
+    @Test
+    public void testApplyStatesCustomStatesKeepFlagAfterPreparation() {
         List<List<String>> statesToApply = List.of(
-                List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE, SaltParameters.PACKAGES_PKGINSTALL));
+                List.of("custom"),
+                List.of("custom", "other-custom"),
+                List.of("packages-custom", "packagesprofileupdate", "custom.packages"));
 
         for (List<String> states : statesToApply) {
             for (boolean useTransactionalUpdate : List.of(false, true)) {
+                MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
                 MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
-                Map<LocalCall<?>, List<MinionSummary>> calls = applyStatesCalls(
-                        states, useTransactionalUpdate, Optional.empty(), false, List.of(transactionalMinion));
 
-                LocalCall<?> call = callForMinion(calls, transactionalMinion);
+                Map<LocalCall<?>, List<MinionSummary>> calls = ActionManager.prepareSaltCalls(applyStatesCalls(
+                        states, useTransactionalUpdate, Optional.empty(), false,
+                        List.of(regularMinion, transactionalMinion)));
+
+                LocalCall<?> regularCall = callForMinion(calls, regularMinion);
+                assertEquals("state.apply", regularCall.getPayload().get("fun"));
+                assertNull(regularCall.getPayload().get("module_executors"));
+                assertEquals(states, statesForMinion(calls, regularMinion));
+
+                LocalCall<?> transactionalCall = callForMinion(calls, transactionalMinion);
                 assertEquals(useTransactionalUpdate ? "transactional_update.apply" : "state.apply",
-                        call.getPayload().get("fun"));
+                        transactionalCall.getPayload().get("fun"));
                 assertEquals(states, statesForMinion(calls, transactionalMinion));
-                if (!useTransactionalUpdate) {
-                    assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
-                }
+                assertEquals(useTransactionalUpdate ? null : List.of("direct_call"),
+                        transactionalCall.getPayload().get("module_executors"));
             }
         }
     }
 
     @Test
-    public void testApplyStatesActionPreservesMixedStatesAndFlag() {
-        List<String> states = List.of("custom", ApplyStatesEventMessage.CHANNELS);
+    public void testApplyStatesMixedCustomAndRecognizedStatesSplitTransactionalAndLivePhases() {
+        List<String> states = List.of("custom", ApplyStatesEventMessage.PACKAGES, "custom-after");
+        Map<String, Object> pillar = Map.of("key", "value");
+        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
+        MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls = ActionManager.prepareSaltCalls(applyStatesCalls(
+                states, false, Optional.of(pillar), true, List.of(regularMinion, transactionalMinion)));
+
+        LocalCall<?> regularCall = callForMinion(calls, regularMinion);
+        assertEquals("state.apply", regularCall.getPayload().get("fun"));
+        assertNull(regularCall.getPayload().get("module_executors"));
+        assertEquals(states, statesForMinion(calls, regularMinion));
+        assertEquals(List.of(regularMinion), calls.get(regularCall));
+
+        LocalCall<?> transactionalCall = callForMinion(calls, transactionalMinion);
+        Map<?, ?> kwargs = (Map<?, ?>) transactionalCall.getPayload().get("kwarg");
+        assertEquals("transactional_update.apply", transactionalCall.getPayload().get("fun"));
+        assertNull(transactionalCall.getPayload().get("module_executors"));
+        assertEquals(List.of(ApplyStatesEventMessage.PACKAGES), kwargs.get("mods"));
+        assertEquals(pillar, kwargs.get("pillar"));
+        assertEquals(true, kwargs.get("queue"));
+        assertEquals(true, kwargs.get("test"));
+        assertEquals(List.of(transactionalMinion), calls.get(transactionalCall));
+
+        ApplyStatesAction action = applyStatesAction(states, false);
+        action.getDetails().setPillarsMap(Optional.of(pillar));
+        action.getDetails().setTest(true);
+        assertTrue(TransactionalActionManager.hasPostTransactionalState(action));
+
+        Map<LocalCall<?>, List<MinionSummary>> continuationCalls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action, List.of(transactionalMinion), ignored -> List.of()).orElseThrow();
+        LocalCall<?> continuationCall = callForMinion(continuationCalls, transactionalMinion);
+        Map<?, ?> continuationKwargs = (Map<?, ?>) continuationCall.getPayload().get("kwarg");
+        assertEquals("state.apply", continuationCall.getPayload().get("fun"));
+        assertEquals(List.of("direct_call"), continuationCall.getPayload().get("module_executors"));
+        assertEquals(List.of("custom", "custom-after"), continuationKwargs.get("mods"));
+        assertEquals(pillar, continuationKwargs.get("pillar"));
+        assertEquals(true, continuationKwargs.get("queue"));
+        assertEquals(true, continuationKwargs.get("test"));
+        assertEquals(List.of(transactionalMinion), continuationCalls.get(continuationCall));
+    }
+
+    @Test
+    public void testApplyStatesMixedCustomAndRecognizedStatesWithFlagRunInASinglePhase() {
+        List<String> states = List.of("custom", ApplyStatesEventMessage.PACKAGES, "custom-after");
+        MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls = ActionManager.prepareSaltCalls(applyStatesCalls(
+                states, true, Optional.empty(), false, List.of(transactionalMinion)));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        assertNull(call.getPayload().get("module_executors"));
+        assertEquals(states, statesForMinion(calls, transactionalMinion));
+
+        ApplyStatesAction action = applyStatesAction(states, true);
+        assertFalse(TransactionalActionManager.hasPostTransactionalState(action));
+        assertTrue(TransactionalActionManager.getAfterRebootSaltCalls(
+                action, List.of(transactionalMinion), ignored -> List.of()).isEmpty());
+    }
+
+    @Test
+    public void testApplyStatesMixedCustomWrappersKeepLivePhaseWhenFlagIsNotRequested() {
+        List<String> states = List.of("custom", "custom_org", "custom.group_42",
+                ApplyStatesEventMessage.CHANNELS, ApplyStatesEventMessage.PACKAGES);
+        MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls = ActionManager.prepareSaltCalls(applyStatesCalls(
+                states, false, Optional.empty(), false, List.of(transactionalMinion)));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        assertEquals(List.of(ApplyStatesEventMessage.CHANNELS, ApplyStatesEventMessage.PACKAGES),
+                statesForMinion(calls, transactionalMinion));
+
+        ApplyStatesAction action = applyStatesAction(states, false);
+        LocalCall<?> continuationCall = callForMinion(TransactionalActionManager.getAfterRebootSaltCalls(
+                action, List.of(transactionalMinion), ignored -> List.of()).orElseThrow(), transactionalMinion);
+        assertEquals(List.of("custom", "custom_org", "custom.group_42"),
+                ((Map<?, ?>) continuationCall.getPayload().get("kwarg")).get("mods"));
+    }
+
+    @Test
+    public void testApplyStatesActionPreservesHardwareProfileUpdateFlag() {
+        List<String> states = List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE);
+
         for (boolean useTransactionalUpdate : List.of(false, true)) {
             MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
             Map<LocalCall<?>, List<MinionSummary>> calls = applyStatesCalls(
@@ -880,7 +1057,49 @@ public class TransactionalActionManagerTest {
             if (!useTransactionalUpdate) {
                 assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
             }
+            assertFalse(TransactionalActionManager.hasPostTransactionalState(
+                    applyStatesAction(states, useTransactionalUpdate)));
         }
+    }
+
+    @Test
+    public void testApplyStatesActionDefersHardwareProfileUpdateToLivePhase() {
+        List<String> states = List.of(
+                ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE, SaltParameters.PACKAGES_PKGINSTALL);
+        MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls = ActionManager.prepareSaltCalls(applyStatesCalls(
+                states, false, Optional.empty(), false, List.of(transactionalMinion)));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        assertEquals(List.of(SaltParameters.PACKAGES_PKGINSTALL), statesForMinion(calls, transactionalMinion));
+
+        ApplyStatesAction action = applyStatesAction(states, false);
+        LocalCall<?> continuationCall = callForMinion(TransactionalActionManager.getAfterRebootSaltCalls(
+                action, List.of(transactionalMinion), ignored -> List.of()).orElseThrow(), transactionalMinion);
+        assertEquals("state.apply", continuationCall.getPayload().get("fun"));
+        assertEquals(List.of("direct_call"), continuationCall.getPayload().get("module_executors"));
+        assertEquals(List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                ((Map<?, ?>) continuationCall.getPayload().get("kwarg")).get("mods"));
+    }
+
+    @Test
+    public void testApplyStatesActionSplitsMixedStatesWhenFlagIsNotRequested() {
+        List<String> states = List.of("custom", ApplyStatesEventMessage.CHANNELS);
+        MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls = ActionManager.prepareSaltCalls(applyStatesCalls(
+                states, false, Optional.empty(), false, List.of(transactionalMinion)));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        assertEquals(List.of(ApplyStatesEventMessage.CHANNELS), statesForMinion(calls, transactionalMinion));
+
+        LocalCall<?> continuationCall = callForMinion(TransactionalActionManager.getAfterRebootSaltCalls(
+                applyStatesAction(states, false), List.of(transactionalMinion), ignored -> List.of())
+                .orElseThrow(), transactionalMinion);
+        assertEquals(List.of("custom"), ((Map<?, ?>) continuationCall.getPayload().get("kwarg")).get("mods"));
     }
 
     @Test
@@ -1396,6 +1615,78 @@ public class TransactionalActionManagerTest {
         assertEquals(List.of("direct_call"), continuationCall.getPayload().get("module_executors"));
         assertEquals(List.of("custom-before", "locale", "custom-after"),
                 ((Map<?, ?>) continuationCall.getPayload().get("kwarg")).get("mods"));
+    }
+
+    @Test
+    public void testFormulasStateApplyWithoutTransactionalUpdateRunsRecognizedStatesInTransactionalPass() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of("mgr_language_settings"),
+                List.of());
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+        List<String> states = List.of("custom-before", "formulas", ApplyStatesEventMessage.PACKAGES, "custom-after");
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                states,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                false,
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        assertEquals(List.of("formulas_transactional", ApplyStatesEventMessage.PACKAGES),
+                ((Map<?, ?>) call.getPayload().get("kwarg")).get("mods"));
+
+        ApplyStatesAction action = applyStatesAction(states, false);
+        Map<LocalCall<?>, List<MinionSummary>> continuationCalls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action, List.of(transactionalMinion), ignored -> persistedFormulas.get(transactionalMinion))
+                        .orElseThrow();
+
+        LocalCall<?> continuationCall = callForMinion(continuationCalls, transactionalMinion);
+        assertEquals("state.apply", continuationCall.getPayload().get("fun"));
+        assertEquals(List.of("direct_call"), continuationCall.getPayload().get("module_executors"));
+        assertEquals(List.of("custom-before", "locale", "custom-after"),
+                ((Map<?, ?>) continuationCall.getPayload().get("kwarg")).get("mods"));
+    }
+
+    @Test
+    public void testFormulasStateApplyWithoutTransactionalUpdateAndOnlyRecognizedStatesHasNoContinuation() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+        List<String> states = List.of("formulas", ApplyStatesEventMessage.PACKAGES);
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                states,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                false,
+                ignored -> emptyFormulaPlan(),
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        assertEquals(List.of("formulas_transactional", ApplyStatesEventMessage.PACKAGES),
+                ((Map<?, ?>) call.getPayload().get("kwarg")).get("mods"));
+
+        ApplyStatesAction action = applyStatesAction(states, false);
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.setPostTransactionalFormulaList(persistedFormulas.get(transactionalMinion));
+        assertFalse(TransactionalActionManager.hasPostTransactionalState(action, history));
+        assertTrue(TransactionalActionManager.getAfterRebootSaltCalls(
+                action, List.of(transactionalMinion), ignored -> List.of()).isEmpty());
     }
 
     @Test
@@ -2144,6 +2435,364 @@ public class TransactionalActionManagerTest {
                 (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
 
         assertEquals(List.of("locale"), persistedFormulas.get(transactionalMinion));
+    }
+
+    @Test
+    public void testMixedApplyStatesWithChangesWaitsForRebootBeforeLivePhase() {
+        List<String> states = List.of("custom", ApplyStatesEventMessage.PACKAGES);
+        ApplyStatesAction action = applyStatesAction(states, false);
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        List<Long> snapshotRefreshes = new ArrayList<>();
+        AtomicInteger resumptions = new AtomicInteger();
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("""
+                        {
+                          "pkg_|-jq_|-jq_|-installed": {
+                            "result": true,
+                            "changes": {"jq": {"new": "1.7", "old": ""}}
+                          }
+                        }
+                        """),
+                false,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.add(minionServerId);
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertFalse(result.isFailed());
+        assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
+        assertEquals(List.of(1L), snapshotRefreshes);
+        assertEquals(20L, history.getSnapshotRefreshActionId());
+        assertEquals(0, resumptions.get());
+
+        TransactionalActionManager.reconcileSnapshotRefreshAction(
+                history, action, true, (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertEquals(ProgressStatus.PENDING, history.getRebootStatus());
+        assertEquals(ProgressStatus.PENDING, history.getAfterRebootStatus());
+        assertEquals(0, resumptions.get());
+
+        LocalCall<?> continuationCall = callForMinion(TransactionalActionManager.getAfterRebootSaltCalls(
+                action, List.of(transactionalMinion), ignored -> history.getPostTransactionalFormulaList())
+                .orElseThrow(), transactionalMinion);
+        assertEquals(List.of("custom"), ((Map<?, ?>) continuationCall.getPayload().get("kwarg")).get("mods"));
+
+        history.recordAfterRebootScheduled();
+        assertTrue(TransactionalActionManager.recordPostTransactionalContinuationResult(Optional.of(history), false));
+        assertEquals(ProgressStatus.COMPLETED, history.getRebootStatus());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    public void testMixedApplyStatesResumesLivePhaseWhenReconciliationFindsNoPendingReboot() {
+        ApplyStatesAction action = applyStatesAction(List.of("custom", ApplyStatesEventMessage.PACKAGES), false);
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+        AtomicInteger resumptions = new AtomicInteger();
+
+        TransactionalActionManager.reconcileSnapshotRefreshAction(
+                history, action, false, (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertEquals(ProgressStatus.PENDING, history.getAfterRebootStatus());
+        assertEquals(1, resumptions.get());
+    }
+
+    @Test
+    public void testFullyTransactionalApplyStatesHasNoLivePhaseAfterReconciliation() {
+        ApplyStatesAction action = applyStatesAction(List.of(ApplyStatesEventMessage.PACKAGES), false);
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+        AtomicInteger resumptions = new AtomicInteger();
+
+        TransactionalActionManager.reconcileSnapshotRefreshAction(
+                history, action, true, (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertEquals(ProgressStatus.PENDING, history.getRebootStatus());
+        assertEquals(ProgressStatus.PENDING, history.getAfterRebootStatus());
+        assertEquals(0, resumptions.get());
+        assertFalse(TransactionalActionManager.hasPostTransactionalState(action, history));
+        assertTrue(TransactionalActionManager.getAfterRebootSaltCalls(
+                action, List.of(transactionalMinion(1L, "transactional")), ignored -> List.of()).isEmpty());
+    }
+
+    @Test
+    public void testFailedTransactionalPhaseDoesNotStartLivePhaseOfMixedApplyStates() {
+        ApplyStatesAction action = applyStatesAction(List.of("custom", ApplyStatesEventMessage.PACKAGES), false);
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger resumptions = new AtomicInteger();
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("""
+                        {
+                          "pkg_|-jq_|-jq_|-installed": {
+                            "result": false,
+                            "changes": {}
+                          }
+                        }
+                        """),
+                true,
+                (scheduledAction, minionServerId) -> Optional.of(20L),
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertTrue(result.isFailed());
+        assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
+        assertEquals(0, resumptions.get());
+
+        TransactionalActionManager.reconcileSnapshotRefreshAction(
+                history, action, true, (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertEquals(ProgressStatus.FAILED, history.getAfterRebootStatus());
+        assertEquals(0, resumptions.get());
+    }
+
+    @Test
+    public void testRenderErrorResultReportsTheReportedReason() {
+        ApplyStatesAction action = highstateAction();
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("""
+                        [
+                          "Jinja error: Formulas do not support transactional systems: vsftpd."
+                        ]
+                        """),
+                true,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertTrue(result.isFailed());
+        assertEquals("Jinja error: Formulas do not support transactional systems: vsftpd.", result.getMessage());
+        assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
+        assertEquals(0, snapshotRefreshes.get());
+        assertEquals(0, resumptions.get());
+        assertEquals(Optional.of(result.getMessage()), TransactionalActionManager.getPrerequisiteResult(history));
+    }
+
+    @Test
+    public void testUnexpectedResultShapeDoesNotPreventReportingTheFailure() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                new Action(),
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("\"Minion did not return. [No response]\""),
+                true,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> { });
+
+        assertTrue(result.isFailed());
+        assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
+        assertEquals(0, snapshotRefreshes.get());
+    }
+
+    @Test
+    public void testFormulaKeepsLivePhaseWhenItsNameMatchesAnInternalState() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        List<String> states = List.of(ApplyStatesEventMessage.PACKAGES, "formulas");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of(),
+                List.of(ApplyStatesEventMessage.PACKAGES),
+                List.of(),
+                List.of());
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                states,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                false,
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        assertEquals(List.of(ApplyStatesEventMessage.PACKAGES, "formulas_transactional"),
+                ((Map<?, ?>) call.getPayload().get("kwarg")).get("mods"));
+
+        LocalCall<?> continuationCall = callForMinion(TransactionalActionManager.getAfterRebootSaltCalls(
+                applyStatesAction(states, false), List.of(transactionalMinion),
+                ignored -> persistedFormulas.get(transactionalMinion)).orElseThrow(), transactionalMinion);
+        assertEquals(List.of(ApplyStatesEventMessage.PACKAGES),
+                ((Map<?, ?>) continuationCall.getPayload().get("kwarg")).get("mods"));
+    }
+
+    @Test
+    public void testFailedResultWithChangesStillRequestsSnapshotRefresh() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                highstateAction(),
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("""
+                        {
+                          "pkg_|-installed_|-jq_|-installed": {
+                            "result": true,
+                            "changes": {"jq": {"new": "1.6", "old": ""}}
+                          },
+                          "service_|-broken_|-broken_|-running": {
+                            "result": false,
+                            "changes": {}
+                          }
+                        }
+                        """),
+                true,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertTrue(result.isFailed());
+        assertEquals(1, snapshotRefreshes.get());
+        assertEquals(20L, history.getSnapshotRefreshActionId());
+        assertEquals(0, resumptions.get());
+    }
+
+    @Test
+    public void testDryRunWithProposedChangesCompletesWithoutSnapshotRefresh() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+        ApplyStatesAction action = applyStatesAction(List.of(ApplyStatesEventMessage.PACKAGES), false);
+        action.getDetails().setTest(true);
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                proposedChangesResult(),
+                false,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertFalse(result.isFailed());
+        assertEquals(0, snapshotRefreshes.get());
+        assertEquals(0, resumptions.get());
+        assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+        assertFalse(history.isWaitingForReboot());
+        assertNull(history.getSnapshotRefreshActionId());
+    }
+
+    @Test
+    public void testDryRunOfMixedStatesResumesTheLivePhasePreservingTestAndPillar() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        MinionSummary minion = transactionalMinion(1L, "transactional");
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        List<Long> resumedActions = new ArrayList<>();
+        ApplyStatesAction action = applyStatesAction(List.of(ApplyStatesEventMessage.PACKAGES, "custom"), false);
+        action.getDetails().setTest(true);
+        action.getDetails().setPillarsMap(Optional.of(Map.of("example", "value")));
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                proposedChangesResult(),
+                false,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumedActions.add(actionId));
+
+        assertFalse(result.isFailed());
+        assertEquals(0, snapshotRefreshes.get());
+        assertEquals(List.of(history.getActionId()), resumedActions);
+        assertFalse(history.isWaitingForReboot());
+
+        LocalCall<?> continuationCall = callForMinion(
+                TransactionalActionManager.getAfterRebootSaltCalls(action, List.of(minion),
+                        ignored -> List.of()).orElseThrow(),
+                minion);
+        Map<?, ?> kwargs = (Map<?, ?>) continuationCall.getPayload().get("kwarg");
+        assertEquals(List.of("custom"), kwargs.get("mods"));
+        assertEquals(true, kwargs.get("test"));
+        assertEquals(Map.of("example", "value"), kwargs.get("pillar"));
+    }
+
+    @Test
+    public void testFailedDryRunDoesNotResumeTheLivePhase() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+        ApplyStatesAction action = applyStatesAction(List.of(ApplyStatesEventMessage.PACKAGES, "custom"), false);
+        action.getDetails().setTest(true);
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("[\"Rendering SLS 'base:packages' failed: Jinja error\"]"),
+                true,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertTrue(result.isFailed());
+        assertEquals(0, snapshotRefreshes.get());
+        assertEquals(0, resumptions.get());
+        assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
+    }
+
+    private static JsonElement proposedChangesResult() {
+        return stateResult("""
+                {
+                  "pkg_|-packages_|-jq_|-installed": {
+                    "result": null,
+                    "comment": "The following packages would be installed/updated: jq",
+                    "changes": {"jq": {"new": "1.6", "old": ""}}
+                  },
+                  "file_|-packages_|-/etc/zypp_|-managed": {
+                    "result": true,
+                    "comment": "The file /etc/zypp is in the correct state",
+                    "changes": {}
+                  }
+                }
+                """);
     }
 
     private static FormulaTransactionalPlan emptyFormulaPlan() {

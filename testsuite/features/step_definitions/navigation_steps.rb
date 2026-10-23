@@ -169,9 +169,7 @@ Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
     break if find(:xpath, '//canvas')
 
     # If the connection failed try reloading since the VM may not have been ready
-    if find(:xpath, '//*[contains(@class, "modal-title") and text() = "Failed to connect"]')
-      refresh_page
-    end
+    refresh_page if find(:xpath, '//*[contains(@class, "modal-title") and text() = "Failed to connect"]')
   end
 end
 
@@ -234,7 +232,11 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
 end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
-  client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server
+  # The proxy's base channel follows the proxy's own OS, not the server's.
+  # In hub topologies the proxies are proxy2 and proxy3.
+  if client.match?(/\Aproxy[23]?\z/)
+    client = host_transactional?(client) ? 'proxy' : 'proxy_nontransactional'
+  end
   select(BASE_CHANNEL_BY_CLIENT[product][client], from: from, exact: false)
 end
 
@@ -526,9 +528,11 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
 end
 
 # access the clients
-Given(/^I am on the Systems overview page of this "([^"]*)"$/) do |host|
+Given(/^I am on the Systems overview page of this "([^"]*)"(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |host, mgr_server|
+  mgr_server ||= 'server'
+  switch_to_server(mgr_server)
   node = get_target(host)
-  system_id = get_system_id(node)
+  system_id = get_system_id(node, mgr_server: mgr_server)
   overview_page = "/rhn/systems/details/Overview.do?sid=#{system_id}"
   visit(overview_page)
   # An automated refresh from the software might return another page (race condition)
@@ -635,19 +639,22 @@ end
 # login, logout steps
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
-  # Save the user and password in global variables to be used by the API calls
-  $current_user = user
-  $current_password = passwd
+  # Record the identity for whichever host the web UI is currently pointed at, so
+  # API/spacecmd calls against that same host authenticate as the right user.
+  Credentials.login_as(user, passwd)
   begin
     page.reset!
   rescue NoMethodError => e
     log "The browser session could not be cleaned because there is no browser available: #{e.message}"
     capybara_register_driver
-    Capybara.reset_sessions!
+    # Reset only the current session's driver. Capybara.reset_sessions! would reset every
+    # named session in the pool, including peripheral servers parked via switch_to_server/
+    # using_server, silently logging them out and defeating session reuse across hosts.
+    Capybara.current_session.reset!
   rescue StandardError => e
     log "The browser session could not be cleaned for unknown issue: #{e.message}"
     capybara_register_driver
-    Capybara.reset_sessions!
+    Capybara.current_session.reset!
   ensure
     begin
       visit Capybara.app_host
@@ -657,10 +664,19 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
       warn "Navigation to #{Capybara.app_host} aborted (#{e.message.lines.first.chomp}) — retrying once"
       sleep 1
       visit Capybara.app_host
+    rescue Playwright::Transport::AlreadyDisconnectedError => e
+      # BUG-024/BUG-025: unlike Playwright::Error above, this means the Node driver's pipe is
+      # already dead (browser process crashed or was killed, e.g. by the env.rb scenario
+      # watchdog) - retrying visit on the same transport would just raise the same error again.
+      # Rebuild the driver and session before retrying so the next scenario gets a live browser.
+      warn "Browser transport already disconnected (#{e.message}) — rebuilding driver and retrying"
+      capybara_register_driver
+      Capybara.current_session.reset!
+      visit Capybara.app_host
     end
   end
   begin
-    next if all(:xpath, "//header//span[text()='#{$current_user}']", wait: IMMEDIATE_WAIT).any?
+    next if all(:xpath, "//header//span[text()='#{user}']", wait: IMMEDIATE_WAIT).any?
   rescue NoMethodError, Capybara::NotSupportedByDriverError
     # driver is not ready yet after session reset, proceed to full login
   end
@@ -673,8 +689,8 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
 
   raise ScriptError, 'Login page is not correctly loaded' unless has_field?('username')
 
-  fill_in('username', with: $current_user)
-  fill_in('password', with: $current_password)
+  fill_in('username', with: user)
+  fill_in('password', with: passwd)
   click_button_and_wait('Sign In', match: :first)
 
   step 'I should be logged in'
@@ -1226,6 +1242,11 @@ When(/^I check the blackbox exporter$/) do
   step 'I check "prometheus#blackbox_exporter#enabled"'
 end
 
+# Check the reinstall packages option in the Liberate formula
+When(/^I check the reinstall packages option of the liberate formula$/) do
+  step 'I check "liberate#reinstall_packages"'
+end
+
 # Navigate to a service endpoint
 When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
   node = get_target(host)
@@ -1456,8 +1477,53 @@ Then(/^the following restrictions should be (enabled|disabled):$/) do |expected_
     raise "Unknown restriction: #{restriction}" unless checkbox_id
 
     actual = checkbox_state(checkbox_id)
-    unless actual == expected_checkbox_state
-      raise "Expected '#{restriction}' to be #{expected_checkbox_state}, but was #{actual}"
+    raise "Expected '#{restriction}' to be #{expected_checkbox_state}, but was #{actual}" unless actual == expected_checkbox_state
+  end
+end
+
+When(/^I bootstrap "([^"]*)" via the UI$/) do |host|
+  system_name = get_system_name(host)
+  errors = ['Unable to bootstrap', 'Server error, please check log files', 'Internal Server Error', 'Service Unavailable']
+
+  step 'I follow the left menu "Systems > Bootstrapping"'
+  raise ScriptError, 'Bootstrap page did not load' unless has_text?('Bootstrap Minions', wait: 30)
+
+  step 'I check "manageWithSSH"'
+  step "I enter the hostname of \"#{host}\" as \"hostname\""
+  step 'I enter "linux" as "password"'
+  step 'I click on "Bootstrap"'
+
+  result = :timeout
+  start_time = Time.now
+  while Time.now - start_time <= 360
+    if has_text?('Bootstrap process initiated.', wait: 5) || has_text?('seems to already exist', wait: 0)
+      result = :success
+      break
+    end
+    error = errors.find { |e| has_text?(e, wait: 0) }
+    if error
+      log "Bootstrap error: '#{error}' after #{(Time.now - start_time).to_i}s"
+      break
     end
   end
+
+  unless result == :success
+    poll_start = Time.now
+    registered = false
+    while (Time.now - poll_start) < 360
+      sleep 60
+      step 'I follow the left menu "Systems > System List > All"'
+      next unless has_text?(system_name, wait: 10)
+
+      log "#{system_name} appeared after #{(Time.now - poll_start).to_i}s polling"
+      registered = true
+      break
+    end
+    raise ScriptError, "Bootstrap failed for #{host} — system not registered" unless registered
+  end
+end
+
+Given(/^"([^"]*)" is not already registered$/) do |host|
+  system_name = get_system_name(host)
+  pending if $api_test.system.search_by_name(system_name).any?
 end

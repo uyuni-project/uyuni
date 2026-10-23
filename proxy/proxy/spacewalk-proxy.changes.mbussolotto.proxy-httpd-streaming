@@ -1,3 +1,0 @@
-- Stream responses directly instead of buffering them in
-  temporary files, avoiding disk exhaustion during large client
-  updates (bsc#1275482)

@@ -6,10 +6,12 @@ IFS=$'\n'
 declare -a ALL_PARAMS
 ALL_PARAMS=('Hello world,' "y'all :)" "I'm singing \"I'm singing in the rain\"" "'Cause it's a beautiful day." "2 * 3 * 7")
 
+# Unquoted on purpose: the parameters are split on IFS (newline) to show how they reach the shell
+# shellcheck disable=SC2206
 [ "${#}" -ge 1 ] && ALL_PARAMS=(${@})
 DEBUG_MSG=""
 for ((i = 0 ; i < ${#ALL_PARAMS[@]} ; i++ )); do
-    PARAM="${ALL_PARAMS[@]:${i}:1}"
+    PARAM="${ALL_PARAMS[*]:${i}:1}"
     DEBUG_MSG="${DEBUG_MSG}  $((${i} + 1)):"
     if [[ "${PARAM}" =~ ^[\ ()0-9*/+-]+$ ]]; then
         echo "${PARAM} = $((${PARAM}))"

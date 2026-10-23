@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Oct 08 00:51:55 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Allow 100 connections difference between Apache and Tomcat
+  * Fix reading connections from the correct source
+  * Add reportdb connections to the database connection limit
+    (bsc#1262157)
+
+-------------------------------------------------------------------
 Wed Aug 05 16:50:02 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

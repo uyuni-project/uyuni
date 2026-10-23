@@ -17,6 +17,13 @@ Feature: Sanity checks
     And service "taskomatic" is active on "server"
     And socket "tftp" is active on "server"
     And service "tomcat" is active on "server"
+    And service "uyuni-update-config" is active on "server"
+    And service "uyuni-check-database" is active on "server"
+    And service "spacewalk-wait-for-tomcat" is active on "server"
+    And service "spacewalk-wait-for-salt" is active on "server"
+    And service "spacewalk-wait-for-taskomatic" is active on "server"
+    And service "salt-secrets-config" is active on "server"
+    And service "cobbler-refresh-mkloaders" is active on "server"
 
 @containerized_server
 @skip_if_rke2
