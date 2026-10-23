@@ -21,6 +21,7 @@ mgr_inspect_kiwi_image:
     {%- if use_bundle_build %}
     - bundle_dest: {{ bundle_dir }}
     {%- endif %}
+    - files: {{ pillar.get('collected_files', []) | json }}
 
 mgr_kiwi_cleanup:
   cmd.run:
