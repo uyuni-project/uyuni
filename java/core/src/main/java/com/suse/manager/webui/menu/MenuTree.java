@@ -44,6 +44,8 @@ import spark.utils.SparkUtils;
 public class MenuTree {
 
     private final AclFactory aclFactory;
+    // Reserved for future beta features - use with .withVisibility(betaEnabled) on menu items
+    @SuppressWarnings("unused")
     private boolean betaEnabled;
 
 
@@ -407,20 +409,14 @@ public class MenuTree {
                         .addChild(new MenuItem("SCAP Policies")
                                 .withPrimaryUrl("/rhn/manager/audit/scap/policies")
                                 .withDir("/rhn/manager/audit/scap/policies")
-                                .withDir("/rhn/manager/audit/scap/policy")
-                                .withBeta(true)
-                                .withVisibility(betaEnabled))
+                                .withDir("/rhn/manager/audit/scap/policy"))
                         .addChild(new MenuItem("SCAP Content")
                                 .withPrimaryUrl("/rhn/manager/audit/scap/content")
-                                .withDir("/rhn/manager/audit/scap/content")
-                                .withBeta(true)
-                                .withVisibility(betaEnabled))
+                                .withDir("/rhn/manager/audit/scap/content"))
                         .addChild(new MenuItem("Tailoring Files")
                                 .withPrimaryUrl("/rhn/manager/audit/scap/tailoring-files")
                                 .withDir("/rhn/manager/audit/scap/tailoring-files")
-                                .withDir("/rhn/manager/audit/scap/tailoring-file")
-                                .withBeta(true)
-                                .withVisibility(betaEnabled))
+                                .withDir("/rhn/manager/audit/scap/tailoring-file"))
                         .addChild(new MenuItem("XCCDF Diff").withPrimaryUrl("/rhn/audit/scap/Diff.do")
                                         .withAltUrl("/rhn/audit/scap/DiffSubmit.do"))
                         .addChild(new MenuItem("Advanced Search").withPrimaryUrl("/rhn/audit/scap/Search.do"))
