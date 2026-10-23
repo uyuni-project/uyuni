@@ -18,32 +18,14 @@ package com.suse.manager.webui.utils.salt.custom;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The resulting image info from kiwi-image-build
  */
 public class OSImageBuildImageInfoResult {
 
-    private OSImageInspectSlsResult.Bundle bundle;
-    private List<OSImageInspectSlsResult.Bundle> bundles;
     private OSImageInspectSlsResult.Image image;
-    private OSImageInspectSlsResult.BootImage boot_image;
-
-    /**
-     * @return the bundle info
-     */
-    public List<OSImageInspectSlsResult.Bundle> getBundles() {
-        if (bundles != null) {
-            return bundles;
-        }
-        else if (bundle != null) {
-            return Collections.singletonList(bundle);
-        }
-        else {
-            return Collections.emptyList();
-        }
-    }
+    private List<String> files;
 
     /**
      * @return the image info
@@ -53,9 +35,9 @@ public class OSImageBuildImageInfoResult {
     }
 
     /**
-     * @return the boot image info
+     * @return the paths of the build artefacts on the build host
      */
-    public Optional<OSImageInspectSlsResult.BootImage> getBootImage() {
-        return Optional.ofNullable(boot_image);
+    public List<String> getFiles() {
+        return files != null ? files : Collections.emptyList();
     }
 }
