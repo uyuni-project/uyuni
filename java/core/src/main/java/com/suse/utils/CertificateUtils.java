@@ -43,6 +43,8 @@ public final class CertificateUtils {
 
     public static final Path CERTS_PATH = Path.of("/etc/pki/trust/anchors/");
 
+    public static final Path CERTS_SAVE_PATH = Path.of("/etc/rhn/ca/");
+
     private static final Path LOCAL_TRUSTED_ROOT = CERTS_PATH.resolve("LOCAL-RHN-ORG-TRUSTED-SSL-CERT");
 
     private static final Path GPG_PUBKEY = Path.of("/srv/susemanager/salt/gpg/mgr-gpg-pub.key");
@@ -188,14 +190,9 @@ public final class CertificateUtils {
     }
 
     private static void updateCertificates() {
-        try {
-            //system command to check if a service to update the ca certificates is present
-            executeExtCmd(new String[]{"systemctl", "is-active", "--quiet", "ca-certificates.path"});
-        }
-        catch (Exception e) {
-            LOG.debug("ca-certificates.path service is not active, we will call 'update-ca-certificates' tool");
-            executeExtCmd(new String[]{"/usr/share/rhn/certs/update-ca-cert-trust.sh"});
-        }
+        // Refresh the trust store directly: CERTS_SAVE_PATH is not watched by the
+        // ca-certificates.path systemd unit, and the server may run without systemd.
+        executeExtCmd(new String[]{"/usr/sbin/update-ca-certificates"});
     }
 
     /**
@@ -214,8 +211,8 @@ public final class CertificateUtils {
             throw new IllegalArgumentException("File name contains invalid characters");
         }
 
-        Path filePath = CERTS_PATH.resolve(fileName).normalize();
-        if (!filePath.startsWith(CERTS_PATH)) {
+        Path filePath = CERTS_SAVE_PATH.resolve(fileName).normalize();
+        if (!filePath.startsWith(CERTS_SAVE_PATH)) {
             //Prevent unauthorized access through path traversal (CWE-22)
             throw new IllegalArgumentException("Attempted path traversal attack detected");
         }

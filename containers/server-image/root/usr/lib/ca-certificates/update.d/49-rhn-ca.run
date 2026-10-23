@@ -1,0 +1,24 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Copy dynamic CAs from /etc/rhn/ca to the standard p11-kit trust
+# source directory. Runs before 50java.run so the standard hooks
+# pick up certs from both /etc/pki/trust/anchors/ (projected
+# volume) and /usr/share/pki/trust/anchors/ (this hook).
+#
+# The copies are prefixed and refreshed on each run, so a CA removed
+# from /etc/rhn/ca is also removed from the trust store.
+
+[ -d "$statedir" ]
+
+TRUST_DIR=/usr/share/pki/trust/anchors
+PREFIX=rhn-ca-
+
+rm -f "${TRUST_DIR}/${PREFIX}"*
+for f in /etc/rhn/ca/*; do
+    [ -f "$f" ] || continue
+    cp "$f" "${TRUST_DIR}/${PREFIX}$(basename "$f")"
+done
+exit 0
