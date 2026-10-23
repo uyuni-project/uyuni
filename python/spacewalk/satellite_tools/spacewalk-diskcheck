@@ -49,6 +49,38 @@ function parseConfiguration {
 
     # Split into a bash array for safe iteration.
     read -ra DISKCHECKDIRS_ARR <<< "$DISKCHECKDIRS"
+
+    validatePercentage DISKCHECKALERT 90
+    validatePercentage DISKTHRESHOLD 95
+    validateFreeMB DISKTHRESHOLD_FREE_MB
+    validateFreeMB DISKCHECKALERT_FREE_MB
+}
+
+# Reset the named variable to the default if it is not a percentage between 0 and 100,
+# and report the misconfiguration.
+function validatePercentage {
+    local name="$1"
+    local default="$2"
+    local value="${!name}"
+
+    if ! [[ "$value" =~ ^[0-9]{1,3}$ ]] || [ "$value" -gt 100 ]; then
+        echo "DISKCHECK: invalid $name value '$value', using the default ${default}%"
+        printf -v "$name" '%s' "$default"
+        updateSeverity 1
+    fi
+}
+
+# Unset the named variable if it is not a valid number of MB, so that the percentage
+# threshold of the same level is used, and report the misconfiguration.
+function validateFreeMB {
+    local name="$1"
+    local value="${!name}"
+
+    if [ -n "$value" ] && ! [[ "$value" =~ ^[0-9]{1,15}$ ]]; then
+        echo "DISKCHECK: invalid $name value '$value', using the percentage threshold"
+        unset "$name"
+        updateSeverity 1
+    fi
 }
 
 function ensureSpacewalkRunning {
@@ -85,9 +117,27 @@ for DIR in "${DISKCHECKDIRS_ARR[@]}"; do
     fi
 
     USEDSPACE=$(df -PH "$DIR" | tail -1 | awk '{print $5}' | sed -e 's/%//')
-    if [ "$USEDSPACE" -gt "$DISKTHRESHOLD" ]; then
-        updateSeverity 3
+    AVAILMB=$(df -P -B1M "$DIR" | tail -1 | awk '{print $4}')
+
+    # *_FREE_MB, when set, has priority over the percentage threshold of the same level.
+    CRITICAL=0
+    ALERT=0
+    if [ -n "$DISKTHRESHOLD_FREE_MB" ]; then
+        [ "$AVAILMB" -lt "$DISKTHRESHOLD_FREE_MB" ] && CRITICAL=1
+    elif [ "$USEDSPACE" -gt "$DISKTHRESHOLD" ]; then
+        CRITICAL=1
+    fi
+    if [ -n "$DISKCHECKALERT_FREE_MB" ]; then
+        [ "$AVAILMB" -lt "$DISKCHECKALERT_FREE_MB" ] && ALERT=1
     elif [ "$USEDSPACE" -gt "$DISKCHECKALERT" ]; then
+        ALERT=1
+    fi
+
+    if [ "$CRITICAL" -eq 1 ]; then
+        echo "DISKCHECK: $DIR critical: ${USEDSPACE}% used, ${AVAILMB} MB available"
+        updateSeverity 3
+    elif [ "$ALERT" -eq 1 ]; then
+        echo "DISKCHECK: $DIR alert: ${USEDSPACE}% used, ${AVAILMB} MB available"
         updateSeverity 2
     fi
 done
