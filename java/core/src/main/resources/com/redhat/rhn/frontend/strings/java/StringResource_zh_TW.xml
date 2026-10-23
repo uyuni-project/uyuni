@@ -9239,8 +9239,8 @@ Follow this url to see the full list of inactive systems:
         <target>無效的頻道名稱，請查看以下所描述的格式</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.supportedregex" xml:space="preserve">
-        <source>Channel name must be at least 6 characters long, begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target>頻道名稱至少為六個字元，必須以字母為起始，並且只能包含小寫字母、連字號（'-'）、句號（'.'）、底線符號（'_'）、數字、空格、原括號和正斜線（'/'）。</target>
+        <source>Channel name must be at least 6 characters long, begin with a letter or digit and may contain only letters, digits, whitespace, apostrophes ('), hyphens ('-'), periods ('.'), underscores ('_'), parentheses and forward slashes ('/').</source>
+        <target state="needs-adaptation">頻道名稱至少為六個字元，必須以字母為起始，並且只能包含小寫字母、連字號（'-'）、句號（'.'）、底線符號（'_'）、數字、空格、原括號和正斜線（'/'）。</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
@@ -9298,8 +9298,8 @@ Follow this url to see the full list of inactive systems:
         <target>無效的頻道標籤，請查看以下所描述的格式</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.supportedregex" xml:space="preserve">
-        <source>Channel label must be at least 6 characters long, begin with a letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
-        <target>頻道標籤至少為六個字元，必須以字母或數字為起始，並且只能包含小寫字母、連字號（'-'）、句號（'.'）、底線符號（'_'）以及數字。</target>
+        <source>Channel label must be at least 6 characters long, begin with a lowercase letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
+        <target state="needs-adaptation">頻道標籤至少為六個字元，必須以字母或數字為起始，並且只能包含小寫字母、連字號（'-'）、句號（'.'）、底線符號（'_'）以及數字。</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>

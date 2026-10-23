@@ -9385,8 +9385,8 @@ Follow this url to see the full list of inactive systems:
         <target>채널 이름이 잘못되었습니다. 아래에 설명된 형식을 살펴보시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.supportedregex" xml:space="preserve">
-        <source>Channel name must be at least 6 characters long, begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target>채널 이름의 길이는 6자 이상이어야 하며, 문자로 시작하고 소문자, 하이픈('-'), 마침표('.'), 밑줄('_'), 숫자, 공백, 괄호 및 슬래시('/')만 포함할 수 있습니다.</target>
+        <source>Channel name must be at least 6 characters long, begin with a letter or digit and may contain only letters, digits, whitespace, apostrophes ('), hyphens ('-'), periods ('.'), underscores ('_'), parentheses and forward slashes ('/').</source>
+        <target state="needs-adaptation">채널 이름의 길이는 6자 이상이어야 하며, 문자로 시작하고 소문자, 하이픈('-'), 마침표('.'), 밑줄('_'), 숫자, 공백, 괄호 및 슬래시('/')만 포함할 수 있습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="edit.channel.invalidchannelname.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
@@ -9445,8 +9445,8 @@ Follow this url to see the full list of inactive systems:
         <target>채널 레이블이 잘못되었습니다. 아래에 설명된 형식을 살펴보시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.supportedregex" xml:space="preserve">
-        <source>Channel label must be at least 6 characters long, begin with a letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
-        <target>채널 레이블의 길이는 6자 이상이어야 하며, 문자로 시작하고 소문자, 하이픈('-'), 마침표('.'), 밑줄('_') 및 숫자만 포함할 수 있습니다.</target>
+        <source>Channel label must be at least 6 characters long, begin with a lowercase letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
+        <target state="needs-adaptation">채널 레이블의 길이는 6자 이상이어야 하며, 문자로 시작하고 소문자, 하이픈('-'), 마침표('.'), 밑줄('_') 및 숫자만 포함할 수 있습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="edit.channel.invalidchannellabel.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>

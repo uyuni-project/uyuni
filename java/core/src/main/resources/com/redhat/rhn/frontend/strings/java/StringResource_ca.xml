@@ -9385,8 +9385,8 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.supportedregex" xml:space="preserve">
-        <source>Channel name must be at least 6 characters long, begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target state="translated">El nom del canal ha de tenir com a mínim 6 caràcters, començar amb una lletra i només pot contenir lletres minúscules, guions ('-'), punts ('.'), guions baixos (''), números, espais, parèntesis i barres cap endavant ('/').</target>
+        <source>Channel name must be at least 6 characters long, begin with a letter or digit and may contain only letters, digits, whitespace, apostrophes ('), hyphens ('-'), periods ('.'), underscores ('_'), parentheses and forward slashes ('/').</source>
+        <target state="needs-adaptation">El nom del canal ha de tenir com a mínim 6 caràcters, començar amb una lletra i només pot contenir lletres minúscules, guions ('-'), punts ('.'), guions baixos (''), números, espais, parèntesis i barres cap endavant ('/').</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
@@ -9445,8 +9445,8 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.supportedregex" xml:space="preserve">
-        <source>Channel label must be at least 6 characters long, begin with a letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
-        <target state="translated">L'etiqueta del canal ha de tenir com a mínim 6 caràcters, començar amb una lletra o dígit i només pot contenir lletres en minúscula, guions ('-'), punts ('.'), guions baixos (''), i números.</target>
+        <source>Channel label must be at least 6 characters long, begin with a lowercase letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
+        <target state="needs-adaptation">L'etiqueta del canal ha de tenir com a mínim 6 caràcters, començar amb una lletra o dígit i només pot contenir lletres en minúscula, guions ('-'), punts ('.'), guions baixos (''), i números.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
