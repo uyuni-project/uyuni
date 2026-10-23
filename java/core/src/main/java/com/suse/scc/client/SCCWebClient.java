@@ -14,6 +14,7 @@
  */
 package com.suse.scc.client;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
@@ -32,12 +33,14 @@ import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.utils.DateUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.AbstractHttpMessage;
@@ -51,6 +54,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.net.NoRouteToHostException;
+import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -61,12 +65,17 @@ import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -77,7 +86,12 @@ import java.util.stream.Stream;
  */
 public class SCCWebClient implements SCCClient {
 
-    private final ExecutorService executor = Executors.newCachedThreadPool();
+    private static final int MAX_ATTEMPTS = 3;
+    private static final int BASE_DELAY_MILLIS = 1_000;
+    private static final int BACKOFF_FACTOR = 2;
+    private static final int MAX_RETRY_DELAY_MILLIS = 30_000;
+
+    private final ExecutorService executor = createPageFetchExecutor();
     private static final Logger LOG = LogManager.getLogger(SCCWebClient.class);
     private final Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
@@ -227,6 +241,19 @@ public class SCCWebClient implements SCCClient {
         List<ChannelInfoDetailsJson> list = getList("/suma/hub_channels",
                 ChannelInfoDetailsJson.class);
         return writeCache(list, "hub_channels");
+    }
+
+    private static ThreadPoolExecutor createPageFetchExecutor() {
+        int maxConnections = Math.max(1, Config.get().getInt(HttpClientAdapter.MAX_CONNECTIONS, 1));
+        AtomicInteger counter = new AtomicInteger();
+        ThreadFactory threadFactory = runnable -> {
+            Thread thread = new Thread(runnable, "scc-page-fetch-" + counter.incrementAndGet());
+            thread.setDaemon(true);
+            return thread;
+        };
+        ThreadPoolExecutor pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(maxConnections, threadFactory);
+        pool.allowCoreThreadTimeOut(true);
+        return pool;
     }
 
     /**
@@ -432,6 +459,7 @@ public class SCCWebClient implements SCCClient {
             request.releaseConnection();
         }
     }
+
     /**
      * Perform HTTP request and parse the result into a given result type.
      *
@@ -442,64 +470,140 @@ public class SCCWebClient implements SCCClient {
      * @return object of type given by resultType
      * @throws SCCClientException in case of a problem
      */
-    private <T> PaginatedResult<T> request(String endpoint, Type resultType, String method)
-            throws SCCClientException {
-        Reader streamReader = null;
-        HttpRequestBase request = SCCRequestFactory.getInstance().initRequest(
-                method, endpoint, config);
-        try {
-            // Connect and parse the response on success
-            HttpResponse response = httpClient.executeRequest(request,
-                    config.getUsername(), config.getPassword());
+    private <T> PaginatedResult<T> request(String endpoint, Type resultType, String method) throws SCCClientException {
+        int retries = 0;
+        int responseCode;
 
-            int responseCode = response.getStatusLine().getStatusCode();
+        String endpointUrl = config.getUrl() + endpoint;
 
-            if (responseCode == HttpStatus.SC_OK) {
-                streamReader = SCCClientUtils.getLoggingReader(request.getURI(), response,
-                        config.getUsername(), config.getLoggingDir(), !config.isSkipOwner());
+        do {
+            HttpRequestBase request = SCCRequestFactory.getInstance().initRequest(method, endpoint, config);
 
-                // Parse result type from JSON
-                T result = gson.fromJson(streamReader, resultType);
+            try {
+                // Connect and parse the response on success
+                HttpResponse response = httpClient.executeRequest(request, config.getUsername(), config.getPassword());
+                responseCode = response.getStatusLine().getStatusCode();
+                switch (responseCode) {
+                    case HttpStatus.SC_OK:
+                        return parseSuccessfulResponse(request.getURI(), response, resultType);
 
-                Optional<Integer> perPageOpt = Optional.ofNullable(response.getFirstHeader("Per-Page"))
-                        .map(h -> Integer.parseInt(h.getValue()));
-                Optional<Integer> totalOpt = Optional.ofNullable(response.getFirstHeader("Total"))
-                        .map(h -> Integer.parseInt(h.getValue()));
-                Optional<Integer> numPagesOpt = perPageOpt.flatMap(perPage -> totalOpt
-                        .map(total -> (int)Math.ceil(total / perPage.floatValue())));
+                    // Request was not successful but these errors can be retried
+                    case HttpStatus.SC_INTERNAL_SERVER_ERROR, HttpStatus.SC_BAD_GATEWAY,
+                         HttpStatus.SC_SERVICE_UNAVAILABLE, HttpStatus.SC_GATEWAY_TIMEOUT,
+                         HttpStatus.SC_REQUEST_TIMEOUT, 429: // TOO MANY REQUESTS
+                        int attempt = ++retries;
+                        if (attempt < MAX_ATTEMPTS) {
+                            LOG.warn("Got response code {} connecting to {}: retrying", responseCode, endpointUrl);
+                            retryDelay(endpointUrl, response, attempt);
+                        }
+                        break;
 
-                int numPages = numPagesOpt.orElse(1);
-
-                String nextUrl = null;
-                Header linkHeader = response.getFirstHeader("Link");
-                if (linkHeader != null) {
-                    String linkHeaderValue = linkHeader.getValue();
-                    Matcher m = Pattern
-                            .compile(".*<" + config.getUrl() + "(.*?)>; rel=\"next\".*")
-                            .matcher(linkHeaderValue);
-                    if (m.matches()) {
-                        nextUrl = m.group(1);
+                    // Request was not successful but this error is not retryable
+                    default:
+                        throw new SCCClientException(
+                            responseCode,
+                            endpointUrl,
+                            "Got response code " + responseCode + " connecting to " + endpointUrl + ": not retryable"
+                        );
                     }
-                }
-                return new PaginatedResult<>(result, nextUrl, numPages);
             }
-            else {
-                // Request was not successful
-                throw new SCCClientException(responseCode, request.getURI().toString(),
-                        "Got response code " + responseCode + " connecting to " + request.getURI());
+            catch (NoRouteToHostException e) {
+                String proxy = ConfigDefaults.get().getProxyHost();
+                throw new SCCClientException("No route to SCC" + (proxy != null ? " or the Proxy: " + proxy : ""));
+            }
+            catch (IOException e) {
+                throw new SCCClientException(e);
+            }
+            finally {
+                request.releaseConnection();
             }
         }
-        catch (NoRouteToHostException e) {
-            String proxy = ConfigDefaults.get().getProxyHost();
-            throw new SCCClientException("No route to SCC" +
-                    (proxy != null ? " or the Proxy: " + proxy : ""));
+        while (retries < MAX_ATTEMPTS);
+
+        throw new SCCClientException(
+            responseCode,
+            endpointUrl,
+            "Unable to connect to " + endpointUrl + ": maximum attempts reached, last response code " + responseCode
+        );
+    }
+
+    private void retryDelay(String endpointUrl, HttpResponse response, int attempt) {
+        long delayInMillis = Optional.ofNullable(response.getFirstHeader("Retry-After"))
+            .map(header -> parseRetryAfterHeader(header.getValue()))
+            .orElseGet(() -> calculateBackoff(attempt));
+
+        // Do not wait too much
+        if (delayInMillis > MAX_RETRY_DELAY_MILLIS) {
+            throw new SCCClientException(
+                response.getStatusLine().getStatusCode(),
+                endpointUrl,
+                "Unable to connect to " + endpointUrl + ": Retry-After exceeds maximum wait"
+            );
         }
-        catch (IOException e) {
-            throw new SCCClientException(e);
+
+        try {
+            Thread.sleep(delayInMillis);
         }
-        finally {
-            request.releaseConnection();
-            SCCClientUtils.closeQuietly(streamReader);
+        catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            throw new SCCClientException(
+                response.getStatusLine().getStatusCode(),
+                endpointUrl,
+                "Unable to connect to " + endpointUrl + ": retry interrupted", ex
+            );
         }
     }
+
+    private <T> PaginatedResult<T> parseSuccessfulResponse(URI requestUri, HttpResponse response, Type resultType)
+            throws IOException {
+        try (Reader streamReader = SCCClientUtils.getLoggingReader(requestUri, response,
+                config.getUsername(), config.getLoggingDir(), !config.isSkipOwner())) {
+
+            // Parse result type from JSON
+            T result = gson.fromJson(streamReader, resultType);
+
+            Optional<Integer> perPageOpt = Optional.ofNullable(response.getFirstHeader("Per-Page"))
+                    .map(h -> Integer.parseInt(h.getValue()));
+            Optional<Integer> totalOpt = Optional.ofNullable(response.getFirstHeader("Total"))
+                    .map(h -> Integer.parseInt(h.getValue()));
+            Optional<Integer> numPagesOpt = perPageOpt.flatMap(perPage -> totalOpt
+                    .map(total -> (int)Math.ceil(total / perPage.floatValue())));
+
+            int numPages = numPagesOpt.orElse(1);
+
+            String nextUrl = null;
+            Header linkHeader = response.getFirstHeader("Link");
+            if (linkHeader != null) {
+                String linkHeaderValue = linkHeader.getValue();
+                Matcher m = Pattern
+                        .compile(".*<" + config.getUrl() + "(.*?)>; rel=\"next\".*")
+                        .matcher(linkHeaderValue);
+                if (m.matches()) {
+                    nextUrl = m.group(1);
+                }
+            }
+            return new PaginatedResult<>(result, nextUrl, numPages);
+        }
+    }
+
+    private static Long parseRetryAfterHeader(String value) {
+        long delaySeconds = NumberUtils.toLong(value, -1);
+        if (delaySeconds >= 0 && delaySeconds <= Long.MAX_VALUE / 1_000) {
+            return delaySeconds * 1_000;
+        }
+
+        Date retryDate = DateUtils.parseDate(value);
+        if (retryDate != null) {
+            return Math.max(0, retryDate.getTime() - System.currentTimeMillis());
+        }
+
+        return null;
+    }
+
+    private static long calculateBackoff(int attempt) {
+        // Equal jitter - half fixed, half random
+        double calculatedDelay = BASE_DELAY_MILLIS * Math.pow(BACKOFF_FACTOR, attempt);
+        return (long) (calculatedDelay / 2 + ThreadLocalRandom.current().nextDouble() * calculatedDelay / 2);
+    }
+
 }

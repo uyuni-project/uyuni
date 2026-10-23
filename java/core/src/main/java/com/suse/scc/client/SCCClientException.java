@@ -81,6 +81,19 @@ public class SCCClientException extends RuntimeException {
     }
 
     /**
+     * Constructor expecting a custom message and a cause.
+     * @param statusCode http status code
+     * @param uri http request uri
+     * @param message the message
+     * @param cause the cause
+     */
+    public SCCClientException(int statusCode, String uri, String message, Exception cause) {
+        super(message, cause);
+        httpStatusCode = statusCode;
+        httpRequestURI = uri;
+    }
+
+    /**
      * @return Returns the httpStatusCode.
      */
     public int getHttpStatusCode() {
