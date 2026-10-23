@@ -14,6 +14,7 @@
  */
 package com.suse.scc.client;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
@@ -71,7 +72,10 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -87,7 +91,7 @@ public class SCCWebClient implements SCCClient {
     private static final int BACKOFF_FACTOR = 2;
     private static final int MAX_RETRY_DELAY_MILLIS = 30_000;
 
-    private final ExecutorService executor = Executors.newCachedThreadPool();
+    private final ExecutorService executor = createPageFetchExecutor();
     private static final Logger LOG = LogManager.getLogger(SCCWebClient.class);
     private final Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
@@ -237,6 +241,19 @@ public class SCCWebClient implements SCCClient {
         List<ChannelInfoDetailsJson> list = getList("/suma/hub_channels",
                 ChannelInfoDetailsJson.class);
         return writeCache(list, "hub_channels");
+    }
+
+    private static ThreadPoolExecutor createPageFetchExecutor() {
+        int maxConnections = Math.max(1, Config.get().getInt(HttpClientAdapter.MAX_CONNECTIONS, 1));
+        AtomicInteger counter = new AtomicInteger();
+        ThreadFactory threadFactory = runnable -> {
+            Thread thread = new Thread(runnable, "scc-page-fetch-" + counter.incrementAndGet());
+            thread.setDaemon(true);
+            return thread;
+        };
+        ThreadPoolExecutor pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(maxConnections, threadFactory);
+        pool.allowCoreThreadTimeOut(true);
+        return pool;
     }
 
     /**
