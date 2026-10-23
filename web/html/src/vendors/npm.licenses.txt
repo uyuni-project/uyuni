@@ -15072,10 +15072,10 @@ THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: moment@2.29.4
+Package: moment@2.31.0
 License text:
 
-Copyright (c) JS Foundation and other contributors
+Copyright (c) OpenJS Foundation and other contributors
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
