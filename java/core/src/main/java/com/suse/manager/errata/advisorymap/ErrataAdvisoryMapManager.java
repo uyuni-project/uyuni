@@ -11,6 +11,7 @@
 package com.suse.manager.errata.advisorymap;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
 import com.suse.manager.errata.model.errata.ErrataAdvisoryMap;
@@ -38,6 +39,10 @@ public class ErrataAdvisoryMapManager {
     private static final Logger LOG = LogManager.getLogger(ErrataAdvisoryMapManager.class);
 
     private static final String ADVISORY_MAP_CSV_DELIMITER = ",";
+
+    // the advisory map CSV can have 100k+ rows; flush/clear periodically so the
+    // Hibernate session's first-level cache doesn't retain every row for the whole import
+    private static final int FLUSH_BATCH_SIZE = 500;
 
     /**
      * Default constructor
@@ -82,6 +87,7 @@ public class ErrataAdvisoryMapManager {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStreamIn))) {
             String line;
             boolean firstLine = true;
+            int savedSinceFlush = 0;
             while ((line = br.readLine()) != null) {
                 if (firstLine) {
                     //skip first line (headers) and clear database
@@ -96,6 +102,12 @@ public class ErrataAdvisoryMapManager {
 
                     ErrataAdvisoryMap advisoryMapEntry = new ErrataAdvisoryMap(advisory, announcementId, advisoryUri);
                     advisoryMapFactory.save(advisoryMapEntry);
+
+                    if (++savedSinceFlush >= FLUSH_BATCH_SIZE) {
+                        HibernateFactory.getSession().flush();
+                        HibernateFactory.getSession().clear();
+                        savedSinceFlush = 0;
+                    }
                 }
                 firstLine = false;
             }
