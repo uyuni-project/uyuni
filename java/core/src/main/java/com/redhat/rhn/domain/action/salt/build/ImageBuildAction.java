@@ -22,8 +22,10 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageFile;
+import com.redhat.rhn.domain.image.ImageFileTypeFactory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -42,7 +44,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 import com.suse.manager.webui.utils.salt.custom.OSImageBuildImageInfoResult;
 import com.suse.manager.webui.utils.salt.custom.OSImageBuildSlsResult;
 import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
@@ -53,11 +54,13 @@ import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -289,55 +292,15 @@ public class ImageBuildAction extends Action {
                             Json.GSON.fromJson(jsonResult, OSImageBuildSlsResult.class)
                                     .getKiwiBuildInfo().getChanges().getRet();
 
-                    info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getImage().getChecksum()));
+                    if (buildInfo.getImage().getChecksum() != null) {
+                        info.setChecksum(ImageInfoFactory.convertChecksum(buildInfo.getImage().getChecksum()));
+                    }
                     info.setName(buildInfo.getImage().getName());
                     info.setVersion(buildInfo.getImage().getVersion());
 
                     ImageInfoFactory.updateRevision(info);
 
-                    List<List<Object>> files = new ArrayList<>();
-                    String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
-                    if (!buildInfo.getBundles().isEmpty()) {
-                        buildInfo.getBundles().forEach(bundle -> files.add(List.of(bundle.getFilepath(),
-                                imageDir + bundle.getFilename(), "bundle", bundle.getChecksum())));
-                    }
-                    else {
-                        files.add(List.of(buildInfo.getImage().getFilepath(),
-                                imageDir + buildInfo.getImage().getFilename(), "image",
-                                buildInfo.getImage().getChecksum()));
-                        buildInfo.getBootImage().ifPresent(f -> {
-                            files.add(List.of(f.getKernel().getFilepath(),
-                                    imageDir + f.getKernel().getFilename(), "kernel",
-                                    f.getKernel().getChecksum()));
-                            files.add(List.of(f.getInitrd().getFilepath(),
-                                    imageDir + f.getInitrd().getFilename(), "initrd",
-                                    f.getInitrd().getChecksum()));
-                        });
-                    }
-                    files.stream().forEach(file -> {
-                        String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info);
-                        targetPath += info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
-                        MgrUtilRunner.ExecResult collectResult = auxArgs.getSystemQuery()
-                                .collectKiwiImage(minionServer, (String)file.get(0), targetPath)
-                                .orElseThrow(() -> new RuntimeException("Failed to download image."));
-
-                        if (collectResult.getReturnCode() != 0) {
-                            serverAction.setStatusFailed();
-                            serverAction.setResultMsg(StringUtils
-                                    .left(SaltUtils.printStdMessages(collectResult.getStderr(),
-                                                    collectResult.getStdout()),
-                                            1024));
-                        }
-                        else {
-                            ImageFile imagefile = new ImageFile();
-                            imagefile.setFile((String)file.get(1));
-                            imagefile.setType((String)file.get(2));
-                            imagefile.setChecksum(ImageInfoFactory.convertChecksum(
-                                    (ImageChecksum.Checksum)file.get(3)));
-                            imagefile.setImageInfo(info);
-                            info.getImageFiles().add(imagefile);
-                        }
-                    });
+                    collectKiwiArtefacts(serverAction, auxArgs, minionServer, info, buildInfo);
                 });
             }
             else {
@@ -359,6 +322,48 @@ public class ImageBuildAction extends Action {
             }
         }
         ImageInfoFactory.save(info);
+    }
+
+    private void collectKiwiArtefacts(ServerAction serverAction, UpdateAuxArgs auxArgs, MinionServer minionServer,
+                                      ImageInfo info, OSImageBuildImageInfoResult buildInfo) {
+        List<String> files = ImageFileTypeFactory.filterAllowedFiles(buildInfo.getFiles(),
+                buildInfo.getImage().getBasename(), getSchedulerUser().getOrg());
+        if (files.isEmpty()) {
+            serverAction.setStatusFailed();
+            serverAction.setResultMsg("No image artefacts to collect were found in the build result.");
+            return;
+        }
+
+        String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
+        String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info) + imageDir;
+        for (String srcPath : files) {
+            MgrUtilRunner.ExecResult collectResult = auxArgs.getSystemQuery()
+                    .collectKiwiImage(minionServer, srcPath, targetPath)
+                    .orElseThrow(() -> new RuntimeException("Failed to download image."));
+
+            if (collectResult.getReturnCode() != 0) {
+                serverAction.setStatusFailed();
+                serverAction.setResultMsg(StringUtils
+                        .left(SaltUtils.printStdMessages(collectResult.getStderr(), collectResult.getStdout()),
+                                1024));
+                continue;
+            }
+
+            String filename = Path.of(srcPath).getFileName().toString();
+            try (InputStream in = Files.newInputStream(Path.of(targetPath, filename))) {
+                ImageFile imagefile = new ImageFile();
+                imagefile.setFile(imageDir + filename);
+                imagefile.setType("file");
+                imagefile.setChecksum(ChecksumFactory.safeCreate(DigestUtils.sha256Hex(in), "sha256"));
+                imagefile.setImageInfo(info);
+                info.getImageFiles().add(imagefile);
+            }
+            catch (IOException e) {
+                LOG.error("Could not compute the checksum of {}", filename, e);
+                serverAction.setStatusFailed();
+                serverAction.setResultMsg("Could not compute the checksum of " + filename + ": " + e.getMessage());
+            }
+        }
     }
 
     private void handleImageBuildLog(ImageInfo info, SaltApi saltApi) {
