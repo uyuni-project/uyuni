@@ -245,6 +245,7 @@ suseImageInfoChannel               :: suseImageInfo rhnChannel
 suseImageInfoInstalledProduct      :: suseInstalledProduct suseImageInfo
 suseImageProfile                   :: rhnRegTokenChannels web_customer suseImageStore
 suseImageStore                     :: suseCredentials web_customer suseImageStoreType
+suseImageFileType                  :: web_customer
 suseISSHub                         :: suseCredentials
 suseISSPeripheral                  :: suseCredentials
 suseISSPeripheralChannels          :: suseISSPeripheral rhnChannel
