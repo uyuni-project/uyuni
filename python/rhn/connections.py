@@ -207,6 +207,7 @@ class HTTPSConnection(HTTPConnection):
         HTTPConnection.__init__(self, host, port, timeout=timeout)
         trusted_certs = trusted_certs or []
         self.trusted_certs = trusted_certs
+        self.connect_timeout = timeout
 
     def connect(self):
         "Connect to a host on a given (SSL) port"
@@ -224,6 +225,7 @@ class HTTPSConnection(HTTPConnection):
                 continue
 
             try:
+                sock.settimeout(self.connect_timeout)
                 sock.connect((self.host, self.port))
                 sock.settimeout(self.timeout)
             except socket.error:
