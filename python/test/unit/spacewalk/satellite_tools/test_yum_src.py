@@ -58,7 +58,6 @@ class YumSrcTest(unittest.TestCase):
         yum_src.initCFG = Mock()
         yum_src.CFG = Mock()
         yum_src.CFG.MOUNT_POINT = ""
-        yum_src.CFG.PREPENDED_DIR = ""
         yum_src.CFG.REPOSYNC_MINRATE = 1000
         yum_src.CFG.REPOSYNC_TIMEOUT = 300
         yum_src.fileutils.makedirs = Mock()
@@ -319,7 +318,6 @@ class YumSrcTest(unittest.TestCase):
         CFG.REPOSYNC_MINRATE = 42
         CFG.REPOSYNC_DOWNLOAD_THREADS = 42  # Throws ValueError if not defined
         CFG.MOUNT_POINT = ""
-        CFG.PREPENDED_DIR = ""
 
         urlgrabber_spy = Mock()
         urlgrabber_spy.urlread = Mock()

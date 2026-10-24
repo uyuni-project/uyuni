@@ -256,7 +256,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `proxy_auth_timeout` | [`python/spacewalk/server/handlers/xmlrpc/proxy.py:176`](python/spacewalk/server/handlers/xmlrpc/proxy.py#L176) |
 | rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
 | rhn_server.conf | `nls_lang` | [`web/modules/rhn/RHN/DBI.pm:49`](web/modules/rhn/RHN/DBI.pm#L49) |
-| rhn_server.conf | `prepended_dir` | [`python/spacewalk/server/rhnPackage.py:136`](python/spacewalk/server/rhnPackage.py#L136) |
 | rhn_server.conf | `pam_auth_service` | [`python/spacewalk/server/rhnUser.py:94`](python/spacewalk/server/rhnUser.py#L94) |
 | rhn_server.conf | `message_to_all` | [`python/spacewalk/server/apacheRequest.py:126`](python/spacewalk/server/apacheRequest.py#L126) |
 | rhn_server.conf | `send_message_to_all` | [`python/spacewalk/server/apacheHandler.py:85`](python/spacewalk/server/apacheHandler.py#L85) |

@@ -75,6 +75,7 @@ from spacewalk.satellite_tools.syncLib import log
 from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.common.suseLib import get_proxy, URL as suseLibURL, get_content_type
 from spacewalk.server.db_config import DB_CFG
+from spacewalk.server.rhnLib import PACKAGE_DIR
 from rhn.stringutils import sstr
 from urlgrabber.grabber import URLGrabError
 from urlgrabber.mirror import MirrorGroup
@@ -318,7 +319,7 @@ class ZypperRepo:
         self.basecachedir = os.path.join(CACHE_DIR, org)
         # pylint: disable-next=redefined-outer-name,invalid-name
         with cfg_component("server") as CFG:
-            self.pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org, "stage")
+            self.pkgdir = os.path.join(CFG.MOUNT_POINT, PACKAGE_DIR, org, "stage")
         self.urls = self.baseurl
         # Make sure baseurl ends with / and urljoin will work correctly
         if self.urls[0][-1] != "/":

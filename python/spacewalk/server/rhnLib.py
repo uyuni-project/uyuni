@@ -30,6 +30,9 @@ from spacewalk.common.rhnException import rhnFault
 # architecture work
 from .rhnMapping import check_package_arch
 
+# directory below the mount point where packages are stored
+PACKAGE_DIR = "packages"
+
 
 def computeSignature(*fields):
     # Init the hash
