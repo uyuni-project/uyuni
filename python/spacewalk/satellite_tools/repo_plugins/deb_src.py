@@ -32,6 +32,7 @@ from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.server import rhnSQL
+from spacewalk.server.rhnLib import PACKAGE_DIR
 from spacewalk.common import repo
 
 try:
@@ -456,7 +457,7 @@ class ContentSource:
             self.repo = DebRepo(
                 url,
                 root,
-                os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, "stage"),
+                os.path.join(CFG.MOUNT_POINT, PACKAGE_DIR, self.org, "stage"),
                 self.proxy_addr,
                 self.proxy_user,
                 self.proxy_pass,

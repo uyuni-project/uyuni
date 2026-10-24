@@ -36,6 +36,7 @@ from spacewalk.common.rhnConfig import cfg_component
 # pylint: disable-next=unused-import
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import CACHE_DIR, ContentPackage
+from spacewalk.server.rhnLib import PACKAGE_DIR
 from spacewalk.satellite_tools.repo_plugins.yum_src import (
     ContentSource as zypper_ContentSource,
 )
@@ -217,7 +218,7 @@ class ContentSource(zypper_ContentSource):
         repo.baseurl = [self.url]
         # pylint: disable-next=invalid-name
         with cfg_component("server") as CFG:
-            pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, "stage")
+            pkgdir = os.path.join(CFG.MOUNT_POINT, PACKAGE_DIR, self.org, "stage")
         if not os.path.isdir(pkgdir):
             # pylint: disable-next=invalid-name
             with cfg_component("server") as CFG:

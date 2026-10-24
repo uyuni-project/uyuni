@@ -38,6 +38,7 @@ from spacewalk.server.importlib import (
     errataCache,
 )
 from spacewalk.server.rhnLib import (
+    PACKAGE_DIR,
     get_package_path,
     get_package_path_without_package_name,
 )
@@ -123,14 +124,11 @@ def relative_path_from_nevra(
         is_source = 0
     log_debug(4, nevra, is_source)
 
-    with cfg_component("server") as CFG:
-        prepend = CFG.PREPENDED_DIR
-
     return get_package_path(
         nevra,
         org_id=org_id,
         source=is_source,
-        prepend=prepend,
+        prepend=PACKAGE_DIR,
         omit_epoch=None,
         package_type=package_type,
         checksum_type=checksum_type,
@@ -145,10 +143,8 @@ def relative_path_from_nevra_without_package_name(
     nevra, org_id, checksum_type, checksum
 ):
     log_debug(4, nevra, "no package name")
-    with cfg_component("server") as CFG:
-        prepend = CFG.PREPENDED_DIR
     return get_package_path_without_package_name(
-        nevra, org_id, prepend, checksum_type, checksum
+        nevra, org_id, PACKAGE_DIR, checksum_type, checksum
     )
 
 
@@ -340,7 +336,7 @@ def save_uploaded_package(
     a_pkg.read_header()
 
     with cfg_component("server") as CFG:
-        temp_dir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org_id, "stage")
+        temp_dir = os.path.join(CFG.MOUNT_POINT, PACKAGE_DIR, org_id, "stage")
     if not os.path.isdir(temp_dir):
         os.makedirs(temp_dir)
     temp_stream = tempfile.NamedTemporaryFile(

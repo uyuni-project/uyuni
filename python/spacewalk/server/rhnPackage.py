@@ -25,7 +25,7 @@ from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server import rhnSQL
-from .rhnLib import parseRPMFilename
+from .rhnLib import PACKAGE_DIR, parseRPMFilename
 
 #
 # Functions that deal with the database
@@ -133,7 +133,7 @@ def unlink_package_file(path):
         log_debug(1, "Error unlinking %s;" % path)
     dirname = os.path.dirname(path)
     with cfg_component("server") as CFG:
-        base_dirs = (CFG.MOUNT_POINT + "/" + CFG.PREPENDED_DIR, CFG.MOUNT_POINT)
+        base_dirs = (CFG.MOUNT_POINT + "/" + PACKAGE_DIR, CFG.MOUNT_POINT)
     while dirname not in base_dirs:
         try:
             os.rmdir(dirname)

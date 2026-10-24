@@ -230,7 +230,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.urls = [
@@ -275,7 +274,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.urls = [
@@ -307,7 +305,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
         return CFG
 
@@ -364,7 +361,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         exception = self.reposync.ChannelTimeoutException("anony-error")
@@ -383,7 +379,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.load_plugin = Mock(return_value=Mock(side_effect=TypeError))
@@ -1002,7 +997,6 @@ class SyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         with patch("spacewalk.common.rhnConfig.CFG", CFG):
@@ -1231,7 +1225,6 @@ def test_channel_exceptions():
     # pylint: disable-next=invalid-name
     CFG = Mock()
     CFG.MOUNT_POINT = "/tmp"
-    CFG.PREPENDED_DIR = ""
     CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
     _mock_rhnsql(
