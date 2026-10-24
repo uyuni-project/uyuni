@@ -32,7 +32,9 @@ from spacewalk.common.rhnTranslate import _
 from spacewalk.server import rhnSQL
 from spacewalk.server import rhnSession
 
-# PAM service used to authenticate users with PAM authentication enabled
+# PAM service used to authenticate users with PAM authentication enabled.
+# Keep in sync with ConfigDefaults.PAM_AUTH_SERVICE in Java and the
+# PAM service file containers/server-image/root/etc/pam.d/susemanager
 PAM_AUTH_SERVICE = "susemanager"
 
 
