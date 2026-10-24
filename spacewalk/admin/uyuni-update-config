@@ -24,6 +24,7 @@ import subprocess
 from pathlib import Path
 from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.server import rhnSQL
+from spacewalk.server.rhnUser import encrypt_password
 
 
 def check_and_configure_fips():
@@ -176,6 +177,38 @@ def move_configuration(key, value):
         sys.stdout.flush()
         return False
     return True
+
+
+def hash_plain_text_passwords():
+    """
+    Hash user passwords which are still stored in plain text.
+    Values in a known hash format (PBKDF2-SHA256, SHA-256 crypt and the MD5 crypt
+    random passwords of PAM users) are kept.
+    """
+    rhnSQL.initDB()
+    h = rhnSQL.prepare("""
+            SELECT id, password
+              FROM web_contact
+             WHERE password NOT LIKE '$pbkdf2-sha256$%'
+               AND password NOT LIKE '$5$%'
+               AND password NOT LIKE '$1$%'
+               AND password <> ''
+            """)
+    h.execute()
+    rows = h.fetchall_dict() or []
+    if not rows:
+        return
+
+    update = rhnSQL.prepare("""
+            UPDATE web_contact
+               SET password = :password
+             WHERE id = :id
+            """)
+    for row in rows:
+        update.execute(password=encrypt_password(row["password"]), id=row["id"])
+    rhnSQL.commit()
+    sys.stdout.write(f"Hashed {len(rows)} plain text user passwords\n")
+    sys.stdout.flush()
 
 
 def init_scc_login():
@@ -341,6 +374,7 @@ def main():
     init_scc_login()
     import_suma_gpg_keyring()
     copy_ca()
+    hash_plain_text_passwords()
     rename_config_keys()
     change_billing_data_service()
     remove_product_name_overwrite()

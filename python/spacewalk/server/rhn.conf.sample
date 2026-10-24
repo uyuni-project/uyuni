@@ -129,10 +129,6 @@ web.rhnproc_port =   #FIXME
 #
 #   mount_point     - FIXME
 #
-#   encrypted_passwords
-#                   - client passwords can be stored encrypted or plaintext
-#                     in the database. Possible values are 0 and 1.
-#
 #   http_proxy      - this is only used for the proxy components. The server
 #                     stores its HTTP proxy settings in the database.
 #                     If one must connect to the parent via a corporate

@@ -260,18 +260,8 @@ public class UserImpl extends BaseDomainHelper implements User {
      */
     @Override
     public void setPassword(String passwordIn) {
-        /**
-         * If we're using encrypted passwords, encode the
-         * password before setting it. Otherwise, just
-         * set it.
-         */
-        if (Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS)) {
-            String hashed = Pbkdf2Sha256Crypt.crypt(passwordIn);
-            this.password = (hashed != null ? hashed : SHA256Crypt.crypt(passwordIn));
-        }
-        else {
-            this.password = passwordIn;
-        }
+        String hashed = Pbkdf2Sha256Crypt.crypt(passwordIn);
+        this.password = (hashed != null ? hashed : SHA256Crypt.crypt(passwordIn));
     }
 
     /**
@@ -484,27 +474,15 @@ public class UserImpl extends BaseDomainHelper implements User {
             }
         }
         else {
-            /*
-             * If we're using encrypted passwords, check
-             * thePassword encrypted, otherwise just do
-             * a straight clear-text comparison.
-             */
-            boolean useEncrPasswds = Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS);
-            if (useEncrPasswds) {
-                if (password.startsWith(Pbkdf2Sha256Crypt.PREFIX)) {
-                    // user has been migrated to PBKDF2-SHA256 by the Python auth path
-                    result = Pbkdf2Sha256Crypt.verify(thePassword, password);
-                }
-                else if (password.startsWith(CryptHelper.getSHA256Prefix())) {
-                    // legacy SHA-256 crypt(3) password
-                    result = SHA256Crypt.crypt(thePassword, password).equals(password);
-                }
+            if (password.startsWith(Pbkdf2Sha256Crypt.PREFIX)) {
+                // user has been migrated to PBKDF2-SHA256 by the Python auth path
+                result = Pbkdf2Sha256Crypt.verify(thePassword, password);
             }
-            else {
-                result = password.equals(thePassword);
+            else if (password.startsWith(CryptHelper.getSHA256Prefix())) {
+                // legacy SHA-256 crypt(3) password
+                result = SHA256Crypt.crypt(thePassword, password).equals(password);
             }
-            debug(!result, "DB login for user {} {} encrypted passwords failed", this,
-                        useEncrPasswds ? "with" : "without");
+            debug(!result, "DB login for user {} failed", this);
         }
         debug(result, "PAM login for user {} succeeded. ", this);
         return result;
