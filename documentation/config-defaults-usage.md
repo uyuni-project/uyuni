@@ -253,9 +253,7 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `min_user_len` | [`python/spacewalk/server/rhnUser.py:551`](python/spacewalk/server/rhnUser.py#L551) |
 | rhn_server.conf | `max_user_len` | [`python/spacewalk/server/rhnUser.py:555`](python/spacewalk/server/rhnUser.py#L555) |
 | rhn_server.conf | `max_email_len` | [`python/spacewalk/server/rhnUser.py:590`](python/spacewalk/server/rhnUser.py#L590) |
-| rhn_server.conf | `disallowed_suffixes` | [`python/spacewalk/server/rhnUser.py:722`](python/spacewalk/server/rhnUser.py#L722) |
 | rhn_server.conf | `nls_lang` | [`web/modules/rhn/RHN/DBI.pm:49`](web/modules/rhn/RHN/DBI.pm#L49) |
-| rhn_server.conf | `disallow_user_creation` | [`python/spacewalk/server/rhnUser.py:410`](python/spacewalk/server/rhnUser.py#L410) |
 | rhn_server.conf | `encrypted_passwords` | [`python/spacewalk/server/rhnUser.py:126`](python/spacewalk/server/rhnUser.py#L126) |
 | rhn_server.conf | `prepended_dir` | [`python/spacewalk/server/rhnPackage.py:136`](python/spacewalk/server/rhnPackage.py#L136) |
 | rhn_server.conf | `pam_auth_service` | [`python/spacewalk/server/rhnUser.py:94`](python/spacewalk/server/rhnUser.py#L94) |

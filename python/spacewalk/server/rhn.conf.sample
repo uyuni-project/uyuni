@@ -39,7 +39,6 @@ traceback_mail = user0@example.com, user1@example.com
 #
 # server
 #
-#server.disallow_user_creation = 0
 #server.log_file = /var/log/rhn/rhn_server.log
 
 #
