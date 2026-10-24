@@ -20,8 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
@@ -168,13 +166,7 @@ public class UpdateUserCommandTest extends BaseTestCase {
         cmd.setPassword(password);
         User user = cmd.updateUser();
         assertNotNull(user);
-
-        // can't do this if we've encrypted the passwords
-        if (!Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS)) {
-            String savedPassword = user.getPassword();
-            user.setPassword(password);
-            assertEquals(savedPassword, user.getPassword());
-        }
+        assertTrue(user.authenticate(password));
     }
 
     private void assertEmail(String email, UpdateUserCommand cmd) {

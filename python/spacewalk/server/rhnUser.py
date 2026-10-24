@@ -119,11 +119,7 @@ class User:
                 )
         # If the entry in rhnUserInfo is 'N', perform regular authentication
         ret = check_password(password, good_pwd)
-        if (
-            ret
-            and CFG.encrypted_passwords
-            and not self.contact["password"].startswith(_PBKDF2_PREFIX)
-        ):
+        if ret and not self.contact["password"].startswith(_PBKDF2_PREFIX):
             # If successfully authenticated and the stored password is not yet
             # using PBKDF2-SHA256, upgrade it transparently on next login.
             self.contact["password"] = encrypt_password(password)
@@ -408,30 +404,13 @@ def _b64_pad(s):
 
 
 def check_password(key, pwd1):
-    """Validates the given key against the current or old password
-    If encrypted_password is false, it compares key with pwd1.
-    If encrypted_password is true, it compares the encrypted key
-    with pwd1.
-
-    Historical note: we used to compare the passwords case-insensitive, and that
-    was working fine until we started to encrypt passwords. -- misa 20030530
-    """
-    encrypted_password = CFG.encrypted_passwords
-    log_debug(4, "Encrypted password:", encrypted_password)
+    """Validates the given key against the encrypted password pwd1"""
     # We don't trust the origin for key, so stringify it
     key = str(key)
     if len(key) == 0:
         # No zero-length passwords accepted
         return 0
 
-    if not encrypted_password:
-        # Unencrypted passwords
-        if key == pwd1:  # good password
-            return 1
-        log_debug(4, "Unencrypted password doesn't match")
-        return 0  # Invalid
-
-    # Crypted passwords in the database
     if pwd1.startswith(_PBKDF2_PREFIX):  # PBKDF2-SHA256 password
         # format: $pbkdf2-sha256$<iterations>$<b64salt>$<b64hash>
         try:
