@@ -17,8 +17,6 @@ package com.redhat.rhn.frontend.xmlrpc.org;
 import static com.redhat.rhn.GlobalInstanceHolder.SALT_API;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
@@ -41,7 +39,6 @@ import com.redhat.rhn.frontend.xmlrpc.MigrationToSameOrgException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchOrgException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.OrgNotInTrustException;
-import com.redhat.rhn.frontend.xmlrpc.PamAuthNotConfiguredException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.SatelliteOrgException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
@@ -177,16 +174,8 @@ public class OrgHandler extends BaseHandler {
         cmd.setLastName(lastName);
         cmd.setPrefix(prefix);
 
-        String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
         if (BooleanUtils.isTrue(usePamAuth)) {
-            if (pamAuthService != null && !pamAuthService.trim().isEmpty()) {
-                cmd.setUsePam(usePamAuth);
-            }
-            else {
-                // The user wants to use pam authentication, but the server has not been
-                // configured to use pam... Throw an error...
-                throw new PamAuthNotConfiguredException();
-            }
+            cmd.setUsePam(usePamAuth);
         }
 
         ValidatorError[] verrors = cmd.store();

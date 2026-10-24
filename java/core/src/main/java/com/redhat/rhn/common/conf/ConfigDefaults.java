@@ -53,7 +53,8 @@ public class ConfigDefaults {
 
     public static final String DEFAULT_MAIL_FROM = "default_mail_from";
     public static final String WEB_L10N_RESOURCEBUNDLES = "web.l10n_resourcebundles";
-    public static final String WEB_PAM_AUTH_SERVICE = "web.pam_auth_service";
+    /** PAM service used to authenticate users with PAM authentication enabled */
+    public static final String PAM_AUTH_SERVICE = "susemanager";
     public static final String WEB_SESSION_DATABASE_LIFETIME =
             "web.session_database_lifetime";
 

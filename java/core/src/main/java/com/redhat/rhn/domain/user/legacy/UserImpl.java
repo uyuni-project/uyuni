@@ -16,7 +16,6 @@
 
 package com.redhat.rhn.domain.user.legacy;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.CryptHelper;
@@ -49,7 +48,6 @@ import com.suse.pam.PamReturnValue;
 import com.suse.pam.PamService;
 import com.suse.pam.PamServiceFactory;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -450,13 +448,11 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     @Override
     public boolean authenticate(String thePassword) {
-        String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
         boolean result = false;
         /*
-         * If we have a valid pamAuthService and the user uses pam authentication,
-         * authenticate via pam, otherwise, use the db.
+         * If the user uses pam authentication, authenticate via pam, otherwise, use the db.
          */
-        if (!StringUtils.isBlank(pamAuthService) && this.getUsePamAuthentication()) {
+        if (this.getUsePamAuthentication()) {
             if (password.startsWith(CryptHelper.MD5_PREFIX)) {
                 // password field in DB is NOT NULL, so we set a random password
                 // when using PAM authentication. Here the password is still MD5
@@ -464,7 +460,7 @@ public class UserImpl extends BaseDomainHelper implements User {
                 setPassword(CryptHelper.getRandomPasswordForPamAuth());
             }
 
-            PamService pam = pamServiceFactory.getInstance(pamAuthService);
+            PamService pam = pamServiceFactory.getInstance(ConfigDefaults.PAM_AUTH_SERVICE);
             PamReturnValue ret = pam.authenticate(getLogin(), thePassword);
             result = PamReturnValue.PAM_SUCCESS.equals(ret);
             if (!result) {

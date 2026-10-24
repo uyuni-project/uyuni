@@ -26,12 +26,14 @@ import base64 as _base64
 # Global Modules
 from rhn.UserDictCase import UserDictCase
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 
 from spacewalk.server import rhnSQL
 from spacewalk.server import rhnSession
+
+# PAM service used to authenticate users with PAM authentication enabled
+PAM_AUTH_SERVICE = "susemanager"
 
 
 class User:
@@ -89,34 +91,26 @@ class User:
         if not allow_read_only and is_user_read_only(self.contact["login"]):
             raise rhnFault(702)
         good_pwd = str(self.contact["password"])
-        if CFG.pam_auth_service:
-            # a PAM service is defined
-            # We have to check the user's rhnUserInfo.use_pam_authentication
-            # XXX Should we create yet another __init_blah function?
-            # since it's the first time we had to lool at rhnUserInfo,
-            # I'll assume it's not something to happen very frequently,
-            # so I'll use a query for now
-            # - misa
-            #
-            h = rhnSQL.prepare("""
-                select ui.use_pam_authentication
-                from web_contact w, rhnUserInfo ui
-                where w.login_uc = UPPER(:login)
-                and w.id = ui.user_id""")
-            h.execute(login=self.contact["login"])
-            data = h.fetchone_dict()
-            if not data:
-                # This should not happen
-                # pylint: disable-next=consider-using-f-string
-                raise rhnException("No entry found for user %s" % self.contact["login"])
-            if data["use_pam_authentication"] == "Y":
-                # use PAM
-                # pylint: disable-next=import-outside-toplevel
-                from . import rhnAuthPAM
+        # We have to check the user's rhnUserInfo.use_pam_authentication
+        h = rhnSQL.prepare("""
+            select ui.use_pam_authentication
+            from web_contact w, rhnUserInfo ui
+            where w.login_uc = UPPER(:login)
+            and w.id = ui.user_id""")
+        h.execute(login=self.contact["login"])
+        data = h.fetchone_dict()
+        if not data:
+            # This should not happen
+            # pylint: disable-next=consider-using-f-string
+            raise rhnException("No entry found for user %s" % self.contact["login"])
+        if data["use_pam_authentication"] == "Y":
+            # use PAM
+            # pylint: disable-next=import-outside-toplevel
+            from . import rhnAuthPAM
 
-                return rhnAuthPAM.check_password(
-                    self.contact["login"], password, CFG.pam_auth_service
-                )
+            return rhnAuthPAM.check_password(
+                self.contact["login"], password, PAM_AUTH_SERVICE
+            )
         # If the entry in rhnUserInfo is 'N', perform regular authentication
         ret = check_password(password, good_pwd)
         if ret and not self.contact["password"].startswith(_PBKDF2_PREFIX):

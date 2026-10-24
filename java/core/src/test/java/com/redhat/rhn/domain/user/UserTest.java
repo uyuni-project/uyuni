@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.Pbkdf2Sha256Crypt;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.Server;
@@ -226,14 +226,11 @@ public class UserTest extends MockObjectTestCase {
 
     @Test
     public void testPamAuthentication() {
-        String authService = "login";
+        String authService = ConfigDefaults.PAM_AUTH_SERVICE;
         Runtime runtime = mock(Runtime.class);
         PamServiceFactory pamServiceFactory = mock(PamServiceFactory.class);
         Process process = mock(Process.class);
         ByteArrayOutputStream passwordOutputStream =  new ByteArrayOutputStream();
-
-        Config.get().setString("web.pam_auth_service", "login");
-
 
         User usr = UserTestUtils.createUser(this);
 
