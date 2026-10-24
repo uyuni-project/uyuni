@@ -256,7 +256,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `proxy_auth_timeout` | [`python/spacewalk/server/handlers/xmlrpc/proxy.py:176`](python/spacewalk/server/handlers/xmlrpc/proxy.py#L176) |
 | rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
 | rhn_server.conf | `nls_lang` | [`web/modules/rhn/RHN/DBI.pm:49`](web/modules/rhn/RHN/DBI.pm#L49) |
-| rhn_server.conf | `pam_auth_service` | [`python/spacewalk/server/rhnUser.py:94`](python/spacewalk/server/rhnUser.py#L94) |
 | rhn_server.conf | `message_to_all` | [`python/spacewalk/server/apacheRequest.py:126`](python/spacewalk/server/apacheRequest.py#L126) |
 | rhn_server.conf | `send_message_to_all` | [`python/spacewalk/server/apacheHandler.py:85`](python/spacewalk/server/apacheHandler.py#L85) |
 | rhn_server.conf | `compress_headers` | [`python/spacewalk/server/rhnRepository.py:74`](python/spacewalk/server/rhnRepository.py#L74) |
@@ -298,7 +297,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_taskomatic_daemon.conf | `TASKO_MAX_MEMORY` <sup>3</sup> | [`java/scripts/taskomatic:13`](java/scripts/taskomatic#L13) |
 | rhn_web.conf | `web.disallowed_mail_domains` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:55`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L55) |
 | rhn_web.conf | `web.kickstart_mount_point` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:567`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L567) |
-| rhn_web.conf | `web.pam_auth_service` | [`java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java:463`](java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java#L463) |
 | rhn_web.conf | `web.restrict_mail_domains` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:56`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L56) |
 | rhn_web.conf | `web.satellite` | [`susemanager-utils/susemanager-sls/src/grains/mgr_server.py:41`](susemanager-utils/susemanager-sls/src/grains/mgr_server.py#L41) |
 | rhn_web.conf | `web.session_database_lifetime` | [`java/core/src/main/java/com/redhat/rhn/common/security/PermissionException.java:129`](java/core/src/main/java/com/redhat/rhn/common/security/PermissionException.java#L129) |

@@ -61,9 +61,6 @@ default_mail_from = SUSE Manager JUnit testsuite <junit-susemanager@suse.de>
 # this mailer class sends no mail while testing
 web.mailer_class = com.redhat.rhn.testing.NoOpMail
 
-# Disable PAM auth
-web.pam_auth_service =
-
 # how long the session cookie lives in the database
 web.session_database_lifetime = 3600
 
