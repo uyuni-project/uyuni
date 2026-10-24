@@ -31,28 +31,22 @@
                 "__sls__": "images.kiwi-image-build",
                 "changes": {
                     "ret": {
-                        "boot_image": {
-                            "initrd": {
-                                "filename": "POS_Image_JeOS7.x86_64-7.0.0.initrd",
-                                "filepath": "/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.initrd",
-                                "hash": "md5:47a5391bd6c5f62c328605b0375b1216"
-                            },
-                            "kernel": {
-                                "filename": "POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54-default.kernel",
-                                "filepath": "/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54-default.kernel",
-                                "hash": "md5:62c7d8dbb3ac208fbfa92d6034f361bc"
-                            }
-                        },
                         "image": {
                             "arch": "x86_64",
                             "build_id": "build129",
-                            "filename": "POS_Image_JeOS7.x86_64-7.0.0",
-                            "filepath": "/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0",
-                            "hash": "md5:7057ea9a15784f469e03f2de045d3c73",
                             "name": "POS_Image_JeOS7",
-                            "size": 1907359744,
-                            "version": "7.0.0"
-                        }
+                            "version": "7.0.0",
+                            "basename": "POS_Image_JeOS7.x86_64-7.0.0",
+                            "type": "pxe"
+                        },
+                        "files": [
+                            "/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0",
+                            "/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.initrd",
+                            "/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54-default.kernel",
+                            "/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.md5",
+                            "/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.packages",
+                            "/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.sha256"
+                        ]
                     }
                 },
                 "__id__": "mgr_buildimage_info"
