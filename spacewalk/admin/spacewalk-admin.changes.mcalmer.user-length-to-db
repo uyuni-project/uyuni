@@ -1,0 +1,2 @@
+- Move the user login and e-mail length limits from `rhn.conf`
+  into the database

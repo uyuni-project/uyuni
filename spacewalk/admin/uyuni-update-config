@@ -89,6 +89,15 @@ DB_CONFIG_KEYS = {
     "server.satellite.http_proxy_username": "HTTP_PROXY_USERNAME",
     "server.satellite.http_proxy_password": "HTTP_PROXY_PASSWORD",
     "server.satellite.no_proxy": "NO_PROXY",
+    "server.min_user_len": "USER_LOGIN_LENGTH_MIN",
+    "web.min_user_len": "USER_LOGIN_LENGTH_MIN",
+    "min_user_len": "USER_LOGIN_LENGTH_MIN",
+    "server.max_user_len": "USER_LOGIN_LENGTH_MAX",
+    "web.max_user_len": "USER_LOGIN_LENGTH_MAX",
+    "max_user_len": "USER_LOGIN_LENGTH_MAX",
+    "server.max_email_len": "USER_EMAIL_LENGTH_MAX",
+    "web.max_email_len": "USER_EMAIL_LENGTH_MAX",
+    "max_email_len": "USER_EMAIL_LENGTH_MAX",
 }
 
 

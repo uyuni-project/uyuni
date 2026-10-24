@@ -55,3 +55,12 @@ VALUES ('HTTP_PROXY_PASSWORD', 'Password for the HTTP proxy', null, null);
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('NO_PROXY', 'Comma separated list of hosts and domains which are connected without the HTTP proxy', null, null);
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('USER_LOGIN_LENGTH_MIN', 'Minimum number of characters in user login names', null, '3');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('USER_LOGIN_LENGTH_MAX', 'Maximum number of characters in user login names', null, '64');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('USER_EMAIL_LENGTH_MAX', 'Maximum number of characters in user e-mail addresses', null, '128');

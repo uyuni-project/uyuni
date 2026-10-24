@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
@@ -51,8 +50,7 @@ public class UpdateUserCommandTest extends BaseTestCase {
 
     @Test
     public void testLongNames() {
-        int emailLength = UserDefaults.get().getMaxEmailLength();
-        Config.get().setString(UserDefaults.MAX_EMAIL_LENGTH, String.valueOf(5));
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.USER_EMAIL_LENGTH_MAX, 5);
 
 
         String invalidPassword = "password";
@@ -63,8 +61,6 @@ public class UpdateUserCommandTest extends BaseTestCase {
         assertCommandThrows(IllegalArgumentException.class, command);
         command.setPassword(invalidPassword);
         assertCommandThrows(IllegalArgumentException.class, command);
-        Config.get().setString(UserDefaults.MAX_EMAIL_LENGTH, String.valueOf(emailLength));
-
     }
 
     @Test

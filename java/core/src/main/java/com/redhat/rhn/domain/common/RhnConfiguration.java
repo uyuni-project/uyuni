@@ -51,7 +51,10 @@ public class RhnConfiguration extends BaseDomainHelper {
         HTTP_PROXY,
         HTTP_PROXY_USERNAME,
         HTTP_PROXY_PASSWORD,
-        NO_PROXY;
+        NO_PROXY,
+        USER_LOGIN_LENGTH_MIN,
+        USER_LOGIN_LENGTH_MAX,
+        USER_EMAIL_LENGTH_MAX;
     }
 
     @Id
