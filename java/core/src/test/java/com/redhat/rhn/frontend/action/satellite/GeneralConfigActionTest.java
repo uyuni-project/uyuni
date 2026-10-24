@@ -16,10 +16,10 @@ package com.redhat.rhn.frontend.action.satellite;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
@@ -31,13 +31,6 @@ import org.junit.jupiter.api.Test;
  * GeneralConfigActionTest
  */
 public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
-    private static final String TEST_CONFIG_BOOLEAN = ConfigDefaults.DISCONNECTED;
-
-    @Test
-    public void testTestValue() {
-
-        assertTrue(GeneralConfigAction.getAllowedConfigs().contains(TEST_CONFIG_BOOLEAN));
-    }
 
     @Test
     public void testNonSubmit() {
@@ -72,28 +65,26 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
                 TestConfigureSatelliteCommand.class.getName());
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
 
-        boolean origValue = Config.get().getBoolean(TEST_CONFIG_BOOLEAN);
-        boolean changedValue = !origValue;
-
-        addRequestParameter(
-                GeneralConfigAction.translateFormPropertyName(
-                        TEST_CONFIG_BOOLEAN), Boolean.toString(changedValue));
-        actionPerform();
-        assertEquals(origValue, Config.get().getBoolean(TEST_CONFIG_BOOLEAN));
-        Config.get().setBoolean(TEST_CONFIG_BOOLEAN, Boolean.toString(origValue));
-        testForwardName("failure");
-
         addRequestParameter(
                 GeneralConfigAction.translateFormPropertyName("traceback_mail"),
                 "testuser@redhat.com");
         addRequestParameter(
                 GeneralConfigAction.translateFormPropertyName("java.hostname"),
                 "testbox");
+        addRequestParameter(
+                GeneralConfigAction.translateFormPropertyName("server.satellite.http_proxy"),
+                "proxy.example.com:3128");
+        addRequestParameter(
+                GeneralConfigAction.translateFormPropertyName("server.satellite.http_proxy_username"),
+                "proxyuser");
 
         actionPerform();
 
         assertEquals("testuser@redhat.com", Config.get().getString("traceback_mail"));
         assertEquals("testbox", Config.get().getString("java.hostname"));
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        assertEquals("proxy.example.com:3128", factory.getString(RhnConfiguration.KEYS.HTTP_PROXY));
+        assertEquals("proxyuser", factory.getString(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME));
 
         testActionHasMessages(new String[] {"config.restartrequired"});
     }

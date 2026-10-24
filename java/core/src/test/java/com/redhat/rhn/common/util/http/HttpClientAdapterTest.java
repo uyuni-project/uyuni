@@ -25,9 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.manager.setup.ProxySettingsDto;
-import com.redhat.rhn.manager.setup.ProxySettingsManagerTest;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestStatics;
 
@@ -68,11 +67,7 @@ public class HttpClientAdapterTest extends BaseTestCase {
         wireMockServer.stop();
 
         // Clear proxy settings
-        ProxySettingsDto proxySettings = new ProxySettingsDto();
-        proxySettings.setHostname("");
-        proxySettings.setUsername("");
-        proxySettings.setPassword("");
-        ProxySettingsManagerTest.setProxySettings(proxySettings);
+        setProxySettings("", "", "");
 
         // Clean up the no_proxy setting
         setNoProxy("");
@@ -127,11 +122,7 @@ public class HttpClientAdapterTest extends BaseTestCase {
         String proxyAuthHeader = basicAuthHeader(PROXY_TEST_USER, PROXY_TEST_PASSWORD);
         String userAuthHeader = basicAuthHeader(TestStatics.TEST_USER, TEST_PASSWORD);
 
-        ProxySettingsDto proxySettings = new ProxySettingsDto();
-        proxySettings.setHostname("localhost:" + wireMockServer.port());
-        proxySettings.setUsername(PROXY_TEST_USER);
-        proxySettings.setPassword(PROXY_TEST_PASSWORD);
-        ProxySettingsManagerTest.setProxySettings(proxySettings);
+        setProxySettings("localhost:" + wireMockServer.port(), PROXY_TEST_USER, PROXY_TEST_PASSWORD);
 
         wireMockServer.stubFor(
             get(anyUrl())
@@ -260,7 +251,20 @@ public class HttpClientAdapterTest extends BaseTestCase {
      * @param value
      */
     private void setNoProxy(String value) {
-        Config.get().setString(HttpClientAdapter.NO_PROXY, value);
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.NO_PROXY, value);
+    }
+
+    /**
+     * Configure the HTTP proxy settings for testing.
+     * @param hostname the proxy in the form host:port
+     * @param username the proxy username
+     * @param password the proxy password
+     */
+    private void setProxySettings(String hostname, String username, String password) {
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY, hostname);
+        factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME, username);
+        factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD, password);
     }
 
     /**

@@ -75,16 +75,16 @@ public class PasswordPolicy {
     public static PasswordPolicy buildFromFactory() {
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         return new PasswordPolicy(
-                factory.getBooleanConfiguration(RhnConfiguration.KEYS.PSW_CHECK_UPPER_CHAR_FLAG).getValue(),
-                factory.getBooleanConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LOWER_CHAR_FLAG).getValue(),
-                factory.getBooleanConfiguration(RhnConfiguration.KEYS.PSW_CHECK_DIGIT_FLAG).getValue(),
-                factory.getBooleanConfiguration(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG).getValue(),
-                factory.getStringConfiguration(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHARACTERS).getValue(),
-                factory.getBooleanConfiguration(RhnConfiguration.KEYS.PSW_CHECK_CONSECUTIVE_CHAR_FLAG).getValue(),
-                factory.getBooleanConfiguration(RhnConfiguration.KEYS.PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG).getValue(),
-                factory.getIntegerConfiguration(RhnConfiguration.KEYS.PSW_CHECK_MAX_OCCURRENCE).getValue(),
-                factory.getIntegerConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).getValue(),
-                factory.getIntegerConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX).getValue()
+                factory.getBoolean(RhnConfiguration.KEYS.PSW_CHECK_UPPER_CHAR_FLAG),
+                factory.getBoolean(RhnConfiguration.KEYS.PSW_CHECK_LOWER_CHAR_FLAG),
+                factory.getBoolean(RhnConfiguration.KEYS.PSW_CHECK_DIGIT_FLAG),
+                factory.getBoolean(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG),
+                factory.getString(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHARACTERS),
+                factory.getBoolean(RhnConfiguration.KEYS.PSW_CHECK_CONSECUTIVE_CHAR_FLAG),
+                factory.getBoolean(RhnConfiguration.KEYS.PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG),
+                factory.getInteger(RhnConfiguration.KEYS.PSW_CHECK_MAX_OCCURRENCE),
+                factory.getInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN),
+                factory.getInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX)
         );
     }
 
@@ -96,21 +96,16 @@ public class PasswordPolicy {
     public static PasswordPolicy buildFromDefaults() {
             RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
             return new PasswordPolicy(
-                    factory.getBooleanConfiguration(
-                            RhnConfiguration.KEYS.PSW_CHECK_UPPER_CHAR_FLAG).getDefaultValue(),
-                    factory.getBooleanConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LOWER_CHAR_FLAG).getDefaultValue(),
-                    factory.getBooleanConfiguration(RhnConfiguration.KEYS.PSW_CHECK_DIGIT_FLAG).getDefaultValue(),
-                    factory.getBooleanConfiguration(
-                            RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG).getDefaultValue(),
-                    factory.getStringConfiguration(
-                            RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHARACTERS).getDefaultValue(),
-                    factory.getBooleanConfiguration(
-                            RhnConfiguration.KEYS.PSW_CHECK_CONSECUTIVE_CHAR_FLAG).getDefaultValue(),
-                    factory.getBooleanConfiguration(
-                            RhnConfiguration.KEYS.PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG).getDefaultValue(),
-                    factory.getIntegerConfiguration(RhnConfiguration.KEYS.PSW_CHECK_MAX_OCCURRENCE).getDefaultValue(),
-                    factory.getIntegerConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).getDefaultValue(),
-                    factory.getIntegerConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX).getDefaultValue()
+                    factory.getDefaultBoolean(RhnConfiguration.KEYS.PSW_CHECK_UPPER_CHAR_FLAG),
+                    factory.getDefaultBoolean(RhnConfiguration.KEYS.PSW_CHECK_LOWER_CHAR_FLAG),
+                    factory.getDefaultBoolean(RhnConfiguration.KEYS.PSW_CHECK_DIGIT_FLAG),
+                    factory.getDefaultBoolean(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG),
+                    factory.getDefaultString(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHARACTERS),
+                    factory.getDefaultBoolean(RhnConfiguration.KEYS.PSW_CHECK_CONSECUTIVE_CHAR_FLAG),
+                    factory.getDefaultBoolean(RhnConfiguration.KEYS.PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG),
+                    factory.getDefaultInteger(RhnConfiguration.KEYS.PSW_CHECK_MAX_OCCURRENCE),
+                    factory.getDefaultInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN),
+                    factory.getDefaultInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX)
             );
         }
 

@@ -18,6 +18,8 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.HostPortValidator;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -36,6 +38,7 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.net.IDN;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -55,22 +58,23 @@ public class GeneralConfigAction extends BaseConfigAction {
 
 
     private static final String[] STRING_CONFIG_ARRAY = {"traceback_mail",
-        ConfigDefaults.SERVER_HOSTNAME, ConfigDefaults.HTTP_PROXY,
-        ConfigDefaults.HTTP_PROXY_USERNAME, ConfigDefaults.HTTP_PROXY_PASSWORD,
-        ConfigDefaults.MOUNT_POINT};
+        ConfigDefaults.SERVER_HOSTNAME, ConfigDefaults.MOUNT_POINT};
 
-    private static final String[] BOOLEAN_CONFIG_ARRAY = { ConfigDefaults.DISCONNECTED };
+    // form fields of the HTTP proxy settings stored in the database
+    private static final String HTTP_PROXY_FIELD = "server.satellite.http_proxy";
+    private static final String HTTP_PROXY_USERNAME_FIELD = "server.satellite.http_proxy_username";
+    private static final String HTTP_PROXY_PASSWORD_FIELD = "server.satellite.http_proxy_password";
+    private static final String HTTP_PROXY_PASSWORD_CONFIRM_FIELD = "server.satellite.http_proxy_password_confirm";
 
     private static final List<String> ALLOWED_CONFIGS = new LinkedList<>();
     static {
         ALLOWED_CONFIGS.addAll(Arrays.asList(STRING_CONFIG_ARRAY));
-        ALLOWED_CONFIGS.addAll(Arrays.asList(BOOLEAN_CONFIG_ARRAY));
     }
 
-    private static final List<String> BOOLEAN_CONFIGS = Arrays.asList(BOOLEAN_CONFIG_ARRAY);
+    private static final List<String> BOOLEAN_CONFIGS = Collections.emptyList();
 
     /*
-     * enable_ssl, disconnected, mount_point
+     * enable_ssl, mount_point
      */
 
     /** {@inheritDoc} */
@@ -121,6 +125,7 @@ public class GeneralConfigAction extends BaseConfigAction {
                     csc.updateString(configKey, value);
                 }
             }
+            storeProxySettings(form);
             ValidatorError[] verrors = csc.storeConfiguration();
             if (verrors != null) {
                 errors = RhnValidationHelper.validatorErrorToActionErrors(verrors);
@@ -143,18 +148,14 @@ public class GeneralConfigAction extends BaseConfigAction {
                     form.set(translateFormPropertyName(configKey),
                             configValue);
 
-                    if (configKey.equals(ConfigDefaults.HTTP_PROXY_PASSWORD)) {
-                        form.set(
-                                translateFormPropertyName("server.satellite.http_proxy_password_confirm"),
-                                configValue);
-                    }
-                    else if (configKey.equals(ConfigDefaults.SERVER_HOSTNAME)) {
+                    if (configKey.equals(ConfigDefaults.SERVER_HOSTNAME)) {
                         form.set(
                                 translateFormPropertyName(ConfigDefaults.SERVER_HOSTNAME),
                                 IDN.toUnicode(configValue));
                     }
                 }
             }
+            loadProxySettings(form);
         }
         returnActionForward = mapping.findForward(RhnHelper.DEFAULT_FORWARD);
         if (logger.isDebugEnabled()) {
@@ -162,6 +163,27 @@ public class GeneralConfigAction extends BaseConfigAction {
                     "- end - return value={}", returnActionForward);
         }
         return returnActionForward;
+    }
+
+    private void loadProxySettings(DynaActionForm form) {
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        String password = factory.getString(RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD);
+        form.set(translateFormPropertyName(HTTP_PROXY_FIELD),
+                factory.getString(RhnConfiguration.KEYS.HTTP_PROXY));
+        form.set(translateFormPropertyName(HTTP_PROXY_USERNAME_FIELD),
+                factory.getString(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME));
+        form.set(translateFormPropertyName(HTTP_PROXY_PASSWORD_FIELD), password);
+        form.set(translateFormPropertyName(HTTP_PROXY_PASSWORD_CONFIRM_FIELD), password);
+    }
+
+    private void storeProxySettings(DynaActionForm form) {
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY,
+                form.get(translateFormPropertyName(HTTP_PROXY_FIELD)));
+        factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME,
+                form.get(translateFormPropertyName(HTTP_PROXY_USERNAME_FIELD)));
+        factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD,
+                form.get(translateFormPropertyName(HTTP_PROXY_PASSWORD_FIELD)));
     }
 
     /**
@@ -196,7 +218,7 @@ public class GeneralConfigAction extends BaseConfigAction {
      * This function checks if the user entered a valid e-mail, hostname,
      * and if the password and password confirmation fields match. Any
      * errors found are returned.
-     * @param DynaActionForm to validate
+     * @param form to validate
      * @return errors that were found in the submitted form
      */
     private ActionErrors validateForm(DynaActionForm form) {
@@ -204,26 +226,25 @@ public class GeneralConfigAction extends BaseConfigAction {
 
         // Check if proxy is given as host:port
         String proxy = (String) form.get(
-                translateFormPropertyName(ConfigDefaults.HTTP_PROXY));
+                translateFormPropertyName(HTTP_PROXY_FIELD));
         HostPortValidator validator = HostPortValidator.getInstance();
-        if (!(proxy.equals("") || validator.isValid(proxy))) {
+        if (!(proxy.isEmpty() || validator.isValid(proxy))) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("error.proxy_invalid"));
         }
 
         String password = (String) form.get(
-                   translateFormPropertyName(ConfigDefaults.HTTP_PROXY_PASSWORD));
+                   translateFormPropertyName(HTTP_PROXY_PASSWORD_FIELD));
         String confirmationPassword = (String) form.get(
-           translateFormPropertyName("server.satellite.http_proxy_password_confirm"));
+           translateFormPropertyName(HTTP_PROXY_PASSWORD_CONFIRM_FIELD));
 
         if (!password.equals(confirmationPassword)) {
             form.set(
-                    translateFormPropertyName(ConfigDefaults.HTTP_PROXY_PASSWORD),
+                    translateFormPropertyName(HTTP_PROXY_PASSWORD_FIELD),
                     "");
 
             form.set(
-                    translateFormPropertyName
-                    ("server.satellite.http_proxy_password_confirm"),
+                    translateFormPropertyName(HTTP_PROXY_PASSWORD_CONFIRM_FIELD),
                     "");
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("error.password_mismatch"));

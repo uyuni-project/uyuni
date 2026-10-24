@@ -32,6 +32,7 @@ from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.server import rhnSQL
+from spacewalk.server.rhnLib import PACKAGE_DIR
 from spacewalk.common import repo
 
 try:
@@ -422,7 +423,7 @@ class ContentSource:
 
         # read the proxy configuration in /etc/rhn/rhn.conf
         # pylint: disable-next=invalid-name
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
             self.authtoken = None
 
@@ -456,7 +457,7 @@ class ContentSource:
             self.repo = DebRepo(
                 url,
                 root,
-                os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, "stage"),
+                os.path.join(CFG.MOUNT_POINT, PACKAGE_DIR, self.org, "stage"),
                 self.proxy_addr,
                 self.proxy_user,
                 self.proxy_pass,
@@ -657,7 +658,7 @@ class ContentSource:
             self.repo.proxy, self.repo.proxy_username, self.repo.proxy_password
         )
         # pylint: disable-next=invalid-name
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
 
     @staticmethod

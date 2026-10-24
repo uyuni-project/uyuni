@@ -144,14 +144,14 @@ public class MailHelper {
     }
 
     /**
-     * Get list of admin recipients from Config 'web.traceback_mail' property
+     * Get list of admin recipients from Config 'traceback_mail' property
      * @return A list of emails from admins as defined in the configuration
      */
     public static String[] getAdminRecipientsFromConfig() {
         Config c = Config.get();
-        return StringUtils.isBlank(c.getString("web.traceback_mail")) ?
+        return StringUtils.isBlank(c.getString("traceback_mail")) ?
                 new String[]{"root@localhost"} :
-                c.getStringArray("web.traceback_mail");
+                c.getStringArray("traceback_mail");
     }
 
     /**

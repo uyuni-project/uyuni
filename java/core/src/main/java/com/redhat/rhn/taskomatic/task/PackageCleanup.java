@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
@@ -53,7 +54,7 @@ public class PackageCleanup extends RhnJavaJob {
     @Override
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
         try {
-            String pkgDir = Config.get().getString("web.mount_point");
+            String pkgDir = Config.get().getString(ConfigDefaults.MOUNT_POINT);
 
             // Retrieve list of orpahned packages
             List<Row> candidates = findCandidates();

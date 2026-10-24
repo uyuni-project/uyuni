@@ -919,8 +919,6 @@ class Backend:
 
     # pylint: disable-next=invalid-name
     def lookupPackages(self, packages, checksums, ignore_missing=0):
-        # If nevra is enabled use checksum as primary key
-        self.validate_pks()
         for package in packages:
             if not isinstance(package, IncompletePackage):
                 raise TypeError(
@@ -1090,8 +1088,6 @@ class Backend:
         transactional=0,
     ):
         # Insert/update the packages
-        self.validate_pks()
-
         # pylint: disable-next=invalid-name
         childTables = {
             "rhnPackageProvides": "package_id",
@@ -3150,15 +3146,6 @@ class Backend:
             )
             h = self.dbmodule.prepare(query)
             h.executemany(**params)
-
-    def validate_pks(self):
-        # If nevra is enabled use checksum as primary key
-        tbs = self.tables["rhnPackage"]
-        with cfg_component("server") as cfg:
-            if not cfg.ENABLE_NVREA:
-                # remove checksum from a primary key if nevra is disabled.
-                if "checksum_id" in tbs.pk:
-                    tbs.pk.remove("checksum_id")
 
 
 # Returns a tuple for the hash's values

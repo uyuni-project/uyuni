@@ -37,7 +37,6 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.suse.manager.api.ReadOnly;
 
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -74,15 +73,14 @@ public class UserExternalHandler extends BaseHandler {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        boolean keepTempRoles = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES)
-                .getValue();
+        boolean keepTempRoles = factory.getBoolean(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES);
         if (keepTempRoles && !BooleanUtils.toBoolean(keepRoles)) {
             // if the option was turned off, delete temporary roles
             // across the whole satellite
             UserGroupFactory.deleteTemporaryRoles();
         }
         // store the value
-        factory.updateConfigurationValue(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES, keepRoles);
+        factory.setValue(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES, keepRoles);
         return 1;
     }
 
@@ -107,7 +105,7 @@ public class UserExternalHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         // get the value
-        return factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES).getValue();
+        return factory.getBoolean(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES);
     }
 
     /**
@@ -131,7 +129,7 @@ public class UserExternalHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         // store the value
-        factory.updateConfigurationValue(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT, useOrgUnit);
+        factory.setValue(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT, useOrgUnit);
         return 1;
     }
 
@@ -154,7 +152,7 @@ public class UserExternalHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         // get the value
-        return factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT).getValue();
+        return factory.getBoolean(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT);
     }
 
     /**
@@ -178,10 +176,10 @@ public class UserExternalHandler extends BaseHandler {
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         if (orgId != 0) {
             verifyOrgExists(orgId);
-            factory.updateConfigurationValue(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID, String.valueOf(orgId));
+            factory.setValue(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID, orgId);
         }
         else {
-            factory.updateConfigurationValue(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID, "");
+            factory.resetToDefault(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID);
         }
         return 1;
     }
@@ -203,11 +201,8 @@ public class UserExternalHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         // get the value
-        String org = factory.getStringConfiguration(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID).getValue();
-        if (org == null || StringUtils.isEmpty(org)) {
-            return 0;
-        }
-        return Integer.parseInt(org);
+        Integer org = factory.getInteger(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID);
+        return org == null ? 0 : org;
     }
 
     /**

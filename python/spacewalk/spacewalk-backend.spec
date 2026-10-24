@@ -260,10 +260,6 @@ if [ ! -e %{rhnconf}/rhn.conf ]; then
     exit 0
 fi
 
-if test -f %{_localstatedir}/log/rhn/rhn_server_satellite.log; then
-    chown -f %{apache_user}:%{apache_group} %{_localstatedir}/log/rhn/rhn_server_satellite.log
-fi
-
 %files
 %{!?_licensedir:%global license %doc}
 %license LICENSE
@@ -408,9 +404,6 @@ fi
 %license LICENSE
 %dir %{rhnroot}/server/handlers/xmlrpc
 %{rhnroot}/server/handlers/xmlrpc/*
-# config files
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_xmlrpc.conf
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xmlrpc
 %dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers
 
@@ -432,7 +425,6 @@ fi
 %dir %{rhnroot}/upload_server/handlers
 %{rhnroot}/upload_server/handlers/__init__.py*
 %{rhnroot}/upload_server/handlers/package_push
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_upload.conf
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_upload_package-push.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-package-push-server
 
@@ -440,7 +432,6 @@ fi
 %{!?_licensedir:%global license %doc}
 %license LICENSE
 %doc README.ULN
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
 %attr(600,root,root) %config(noreplace) %{rhnconf}/signing.conf
 %attr(755,root,root) %{_bindir}/rhn-charsets
@@ -475,7 +466,6 @@ fi
 %{python3rhnroot}/satellite_tools/syncCache.py*
 %{python3rhnroot}/satellite_tools/sync_handlers.py*
 %{python3rhnroot}/satellite_tools/rhn_ssl_dbstore.py*
-%{python3rhnroot}/satellite_tools/xmlWireSource.py*
 %{python3rhnroot}/satellite_tools/updatePackages.py*
 %{python3rhnroot}/satellite_tools/reposync.py*
 %{python3rhnroot}/satellite_tools/constants.py*
@@ -510,7 +500,6 @@ fi
 %exclude %{python3rhnroot}/satellite_tools/__pycache__/xmlSource.*
 %{python3rhnroot}/satellite_tools/disk_dumper/__pycache__/*
 %{python3rhnroot}/satellite_tools/repo_plugins/__pycache__/*
-%config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
 %{_mandir}/man8/rhn-charsets.8%{?ext_man}
 %{_mandir}/man8/rhn-schema-version.8%{?ext_man}
 %{_mandir}/man8/rhn-ssl-dbstore.8%{?ext_man}
@@ -533,7 +522,6 @@ fi
 %{python3rhnroot}/satellite_tools/__init__.py*
 %{python3rhnroot}/satellite_tools/geniso.py*
 # A bunch of modules shared with satellite-tools
-%{python3rhnroot}/satellite_tools/connection.py*
 %{python3rhnroot}/satellite_tools/diskImportLib.py*
 %{python3rhnroot}/satellite_tools/syncLib.py*
 %{python3rhnroot}/satellite_tools/xmlDiskSource.py*

@@ -48,13 +48,13 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
     protected String[] getRecipients(User userIn) {
         Config c = Config.get();
         String[] retval = null;
-        if (c.getString("web.traceback_mail").isEmpty()) {
+        if (c.getString("traceback_mail").isEmpty()) {
 
             retval = new String[1];
             retval[0] = "root@localhost";
         }
         else {
-            retval = c.getStringArray("web.traceback_mail");
+            retval = c.getStringArray("traceback_mail");
         }
         return retval;
     }

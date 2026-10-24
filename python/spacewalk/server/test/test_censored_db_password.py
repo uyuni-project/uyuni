@@ -23,7 +23,7 @@ from spacewalk.server import rhnSQL
 from spacewalk.common.rhnConfig import initCFG
 from spacewalk.common.rhnTB import Traceback
 
-initCFG("server.xmlrpc")
+initCFG("server")
 
 try:
     rhnSQL.initDB("rhnuser/rhnuser@webde")

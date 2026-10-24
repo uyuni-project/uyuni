@@ -1,0 +1,2 @@
+- Fix the documented default of `mount_point` in the `rhn.conf`
+  man page

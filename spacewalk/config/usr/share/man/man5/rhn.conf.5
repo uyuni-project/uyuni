@@ -37,7 +37,7 @@ As a recommendation, we suggest at least 30 GB storage per software
 channel (including Base and child channels).
 .IP
 .B Default:
-/var/satellite
+/var/spacewalk
 
 .TP
 .B "kickstart_mount_point"
@@ -63,35 +63,6 @@ that directory.
 /var/cache
 
 .TP
-.B "server.satellite.rhn_parent"
-This parameter determines the parent RHN Classic/Red Hat Satellite whose packages will be downloaded or synced. This parameter usually points to RHN Hosted,
-.B rhn.redhat.com
-.IP
-.B Default:
-none
-
-.TP
-.B "server.satellite.http_proxy"
-This parameter determines the HTTP proxy used to download or sync packages from. Enter the IP address or HTTP Proxy FQDN address.
-.IP
-.B Default:
-none
-
-.TP
-.B "server.satellite.http_proxy_username"
-This parameter determines the HTTP proxy username.
-.IP
-.B Default:
-none
-
-.TP
-.B "server.satellite.http_proxy_password"
-This parameter determines the HTTP proxy password.
-.IP
-.B Default:
-none
-
-.TP
 .B "debug"
 .P
 .RS
@@ -115,39 +86,11 @@ Valid values:
 1
 
 .TP
-.B "disconnected (boolean)"
-This parameter controls whether server is running in connected or disconnected mode.
-When running in disconnected mode, the RHN Entitlement Certificate is activated locally
-but not on remote RHN Servers.
-.IP
-.B Default:
-0
-
-.TP
 .B "enable_snapshots" (boolean)
 This parameter controls whether server is allowed to perform system snapshots.
 .IP
 .B Default:
 1
-
-.TP
-.B "enable_nvrea" (boolean)
-This parameter controls whether server will allow package uploads for same NVREA
-(Name, Version, Release, Epoch, Arch) but different vendors.
-.RS
-.IP \(bu 3
-Spacewalk Server
-.RS
-.IP \(bu 3
-\fBDefault:\fR 1
-.RE
-.IP \(bu 3
-Red Hat Satellite Server
-.RS
-.IP \(bu 3
-\fBDefault:\fR 0
-.RE
-.RE
 
 .TP
 .B "web.maximum_config_file_size" (bytes)

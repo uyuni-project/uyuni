@@ -213,7 +213,6 @@ sub setup_cc {
     $answers{'setup-scc'} = 'N';
     return;
   }
-  $opts{disconnected} = 1;
   $answers{'setup-scc'} = 'Y';
   Spacewalk::Setup::ask(
       -question => "SCC Organization Credential Username",
@@ -278,9 +277,6 @@ sub populate_initial_configs {
     (
      mount_point => $answers->{'mount-point'} || '/var/spacewalk',
      kickstart_mount_point => $answers->{'kickstart-mount-point'} || $answers->{'mount-point'} || '/var/spacewalk',
-     serverDOTsatelliteDOThttp_proxy => $answers->{'rhn-http-proxy'} || '',
-     serverDOTsatelliteDOThttp_proxy_username => $answers->{'rhn-http-proxy-username'} || '',
-     serverDOTsatelliteDOThttp_proxy_password => $answers->{'rhn-http-proxy-password'} || '',
      javaDOThostname => $answers->{hostname},
      db_backend => $answers->{'db-backend'},
      db_user => $answers->{'db-user'},
@@ -307,15 +303,14 @@ sub populate_initial_configs {
     }
 
   my %rhnopt = ();
-  if ($answers->{disconnected} || $opts->{disconnected}) {
-    $rhnopt{'disconnected'} = "1";
-  }
-  for my $key (qw/product_name web.version enable_nvrea web.subscribe_proxy_channel force_package_upload
+  for my $key (qw/product_name web.version web.subscribe_proxy_channel force_package_upload
           web.l10n_resourcebundles web.default_mail_from/) {
     if (defined($answers->{$key})) {
       $rhnopt{$key} = $answers->{$key};
     }
   }
+  # default_mail_from is a global key used by all components
+  $rhnopt{'default_mail_from'} = delete $rhnopt{'web.default_mail_from'} if exists $rhnopt{'web.default_mail_from'};
 
   if ($answers->{'setup-scc'} && $answers->{'setup-scc'} =~ /^[Yy]/)
   {
@@ -347,6 +342,12 @@ sub populate_initial_configs {
       Spacewalk::Setup::write_config( \%rhnopt,
                 '/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf' );
   }
+
+  my %dbconfig = ();
+  $dbconfig{'HTTP_PROXY'} = $answers->{'rhn-http-proxy'} if defined $answers->{'rhn-http-proxy'};
+  $dbconfig{'HTTP_PROXY_USERNAME'} = $answers->{'rhn-http-proxy-username'} if defined $answers->{'rhn-http-proxy-username'};
+  $dbconfig{'HTTP_PROXY_PASSWORD'} = $answers->{'rhn-http-proxy-password'} if defined $answers->{'rhn-http-proxy-password'};
+  Spacewalk::Setup::write_db_config(\%dbconfig, $answers);
 
     foreach my $opt_name (qw/session_swap_secret session_secret/) {
         foreach my $i (1 .. 4) {

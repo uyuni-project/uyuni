@@ -69,7 +69,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
     public void testPasswordNotValidatedOnPAM() {
         // setup strict password policy requiring special character
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        factory.updateConfigurationValue(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG, true);
+        factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG, true);
 
         setRequestPathInfo("/newlogin/CreateUserSubmit");
         RhnMockDynaActionForm form = fillOutForm("userCreateForm", true);

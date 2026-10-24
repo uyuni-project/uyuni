@@ -13,14 +13,8 @@
 
 try:
     import urllib.parse as urlparse
-    from io import StringIO
 except ImportError:
     import urlparse
-
-    try:
-        from cStringIO import StringIO
-    except ImportError:
-        from StringIO import StringIO
 
 import io
 import os
@@ -32,6 +26,7 @@ from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
 
 try:
     from spacewalk.server import rhnSQL
+    from spacewalk.server.db_config import DB_CFG
 except ImportError:
     log_debug(2, "Loading suseLib without rhnSQL")
 
@@ -167,83 +162,6 @@ def _curl_debug(mtype, text):
     return 0
 
 
-def send(url, sendData=None):
-    """Connect to url and return the result as stringIO
-
-    :arg url: the url where the request will be sent
-    :kwarg sendData: do a post-request when "sendData" is given.
-
-    Returns the result as stringIO object.
-
-    """
-    timeout = 120
-    if CFG.is_initialized() and CFG.has_key("TIMEOUT"):
-        timeout = CFG.TIMEOUT
-    curl = pycurl.Curl()
-
-    curl.setopt(pycurl.CONNECTTIMEOUT, timeout)
-    curl.setopt(pycurl.URL, url)
-    curl.setopt(pycurl.DEBUGFUNCTION, _curl_debug)
-    curl.setopt(pycurl.VERBOSE, True)
-    proxy_url, proxy_user, proxy_pass = get_proxy(url)
-    if proxy_url:
-        curl.setopt(pycurl.PROXY, proxy_url)
-    log_debug(2, f"Connect to {url}")
-    if sendData is not None:
-        curl.setopt(pycurl.POSTFIELDS, sendData)
-        if (
-            CFG.is_initialized()
-            and CFG.has_key("DISABLE_EXPECT")
-            and CFG.DISABLE_EXPECT
-        ):
-            # disable Expect header
-            curl.setopt(pycurl.HTTPHEADER, ["Expect:"])
-
-    curl.setopt(pycurl.FOLLOWLOCATION, True)
-
-    response = StringIO()
-    curl.setopt(pycurl.WRITEFUNCTION, response.write)
-
-    try:
-        curl.perform()
-    except pycurl.error as e:
-        if e.args[0] == 56:  # Proxy requires authentication
-            log_debug(2, e.args[1])
-            if not (proxy_user and proxy_pass):
-                # pylint: disable-next=raise-missing-from
-                raise TransferException(
-                    "Proxy requires authentication, "
-                    "but reading credentials from "
-                    f"{YAST_PROXY} failed."
-                )
-            curl.setopt(pycurl.PROXYUSERPWD, f"{proxy_user}:{proxy_pass}")
-        elif e.args[0] == 60:
-            log_error(
-                "Peer certificate could not be authenticated "
-                "with known CA certificates."
-            )
-            # pylint: disable-next=raise-missing-from
-            raise TransferException(
-                "Peer certificate could not be "
-                "authenticated with known CA "
-                "certificates."
-            )
-        else:
-            log_error(e.args[1])
-            raise
-
-    status = curl.getinfo(pycurl.HTTP_CODE)
-    if status != 200 and not (URL(url).scheme == "file" and status == 0):
-        log_error(
-            f"Connecting to {URL(url).getURL(stripPw=True)} has failed with HTTP error code {status}."
-        )
-        raise TransferException(f"Connection failed with HTTP error {status}.")
-
-    # StringIO.write leaves the cursor at the end of the file
-    response.seek(0)
-    return response
-
-
 def accessible(url):
     """Try if url is accessible
 
@@ -297,17 +215,16 @@ def get_proxy(url=None):
     Returns None if no proxy URL/credentials could be read.
 
     If the url parameter is provided, a check against no_proxy will be made.
-    (server.satellite.no_proxy)
     In case this connection should not use a proxy, the values returned
     are None for url, username and password.
 
     Order of lookup (https_proxy is always preferred over http_proxy):
-    1. rhn.conf (server.satellite.http_proxy)
+    1. rhn config of the proxy (proxy.http_proxy) or database of the server (HTTP_PROXY)
     2. .curlrc (--proxy, --proxy-user)
 
     """
     proxyurl, username, password = (
-        _get_proxy_from_rhn_conf() or _get_proxy_from_yast() or (None, None, None)
+        _get_proxy_from_config() or _get_proxy_from_yast() or (None, None, None)
     )
     if not url or (url and _useProxyFor(url)):
         return (proxyurl, username, password)
@@ -577,35 +494,43 @@ def _get_proxy_from_yast():
     return (proxy_url, username, password)
 
 
-def _get_proxy_from_rhn_conf():
-    """Return a tuple of (url, user, pass) proxy information from rhn config
+def _proxy_settings_in_db():
+    """Return True if the proxy settings are stored in the database.
+
+    The proxy has no database and reads the settings from its rhn config.
+    The server stores the settings in the database.
+    """
+    return not CFG.has_key("http_proxy")
+
+
+def _get_proxy_from_config():
+    """Return a tuple of (url, user, pass) proxy information from the
+    rhn config of the proxy or the database of the server
 
     Returns None instead of a tuple if there was no proxy url. user,
     pass can be None.
 
     """
-    comp = CFG.getComponent()
-    if not CFG.has_key("http_proxy"):
-        initCFG("server.satellite")
-    result = None
-    if CFG.http_proxy:
-        # CFG.http_proxy format is <hostname>[:<port>] in 1.7
-        url = f"http://{CFG.http_proxy}"
+    if _proxy_settings_in_db():
+        proxy = DB_CFG.HTTP_PROXY
+        username = DB_CFG.HTTP_PROXY_USERNAME
+        password = DB_CFG.HTTP_PROXY_PASSWORD
+    else:
+        proxy = CFG.http_proxy
+        username = CFG.http_proxy_username
         # CFG.http_proxy_password can be a list in case of legitimate
         # commas "," are part of the password. If so, we need to
         # rebuilt the original password.
-        result = (
-            url,
-            CFG.http_proxy_username,
-            (
-                CFG.http_proxy_password
-                if not isinstance(CFG.http_proxy_password, list)
-                else ",".join(CFG.http_proxy_password)
-            ),
+        password = (
+            CFG.http_proxy_password
+            if not isinstance(CFG.http_proxy_password, list)
+            else ",".join(CFG.http_proxy_password)
         )
-    initCFG(comp)
+    if proxy:
+        # the proxy format is <hostname>[:<port>]
+        return (f"http://{proxy}", username, password)
     log_debug(2, "Could not read proxy URL from rhn config.")
-    return result
+    return None
 
 
 # pylint complains because this method has too many return statements.
@@ -615,10 +540,10 @@ def _get_proxy_from_rhn_conf():
 def _useProxyFor(url):
     """Return True if a proxy should be used for given url, otherwise False.
 
-    This function uses server.satellite.no_proxy variable to check for
+    This function uses the no_proxy setting to check for
     hosts or domains which should not be connected via a proxy.
 
-    server.satellite.no_proxy is a comma seperated list.
+    no_proxy is a comma seperated list.
     Either an exact match, or the previous character
     is a '.', so host is within the same domain.
     A leading '.' in the pattern is ignored.
@@ -633,21 +558,19 @@ def _useProxyFor(url):
     hostname = u.hostname.lower()
     if hostname in ["localhost", "127.0.0.1", "::1"]:
         return False
-    comp = CFG.getComponent()
-    if not CFG.has_key("no_proxy"):
-        initCFG("server.satellite")
-    if not CFG.has_key("no_proxy"):
-        initCFG(comp)
+    if _proxy_settings_in_db():
+        noproxy = DB_CFG.get_list("NO_PROXY")
+    elif CFG.has_key("no_proxy"):
+        noproxy = CFG.no_proxy
+    else:
         return True
-    noproxy = CFG.no_proxy
-    initCFG(comp)
     if not noproxy:
         return True
     if not isinstance(noproxy, list):
-        if noproxy == "*":
-            # just an asterisk disables all.
-            return False
         noproxy = [noproxy]
+    if noproxy == ["*"]:
+        # just an asterisk disables all.
+        return False
 
     # No proxy: Either an exact match, or the previous character
     # is a '.', so host is within the same domain.

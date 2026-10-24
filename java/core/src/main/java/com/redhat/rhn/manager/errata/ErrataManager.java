@@ -156,7 +156,7 @@ public class ErrataManager extends BaseManager {
         }
         List<File> retval = new LinkedList<>();
         for (ErrataFile errataFile : errataFiles) {
-            String directory = Config.get().getString("web.mount_point");
+            String directory = Config.get().getString(ConfigDefaults.MOUNT_POINT);
             if (directory == null) {
                 return null;
             }

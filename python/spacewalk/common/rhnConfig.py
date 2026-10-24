@@ -386,9 +386,6 @@ def parse_line(line):
         converTable = {
             "proxy.http_proxy_username": str,
             "proxy.http_proxy_password": str,
-            "server.satellite.http_proxy_username": str,
-            "server.satellite.http_proxy_password": str,
-            "server.satellite.rhn_parent": str,
             "db_name": str,
             "db_user": str,
             "db_password": str,

@@ -134,6 +134,18 @@ cd java
 make -f Makefile.docker
 ```
 
+If a PostgreSQL test database is already running in a separate container,
+skip `Makefile.docker` and point the test configuration at it instead. Create
+the git-ignored `java/buildconf/test/rhn.conf` from the example and set both
+`db_host` and `report_db_host` to the database host (for example
+`host.containers.internal`, port 5432):
+
+```bash
+cp java/buildconf/test/rhn.conf.postgresql-example java/buildconf/test/rhn.conf
+sed -i 's/^\(report_\)\?db_host = localhost/\1db_host = host.containers.internal/' \
+  java/buildconf/test/rhn.conf
+```
+
 Then run the owning module and test class, for example from the repository
 root:
 
@@ -157,6 +169,14 @@ Run the repository's containerized lint wrapper from the root:
 ```bash
 ./python/linting/lint.sh <path>
 ./python/linting/lint.sh -a
+```
+
+When running in a sandbox and the sandbox provide black and pylint, lint-local.sh
+can be used:
+
+```bash
+./python/linting/lint-local.sh <path>
+./python/linting/lint-local.sh -a
 ```
 
 Python code follows Black and the repository Pylint configuration. Keep tests
@@ -217,7 +237,13 @@ on the repository's CI workflows for their execution.
 For package changelogs, follow the existing package-specific pattern. Add a
 fragment beside the package changelog named
 `<package>.changes.<author>.<topic>` rather than editing the consolidated
-`<package>.changes` file directly.
+`<package>.changes` file directly. In changelog entries:
+
+- Keep every line at 67 characters or less, including the leading `- `
+  and the two-space indent of continuation lines.
+- Wrap configuration keys and file names that contain a dot in backticks
+  or quotes (for example `server.satellite.rhn_parent` or `rhn.conf`), so
+  that only a dot ending a sentence stays unquoted.
 
 ## Change-specific expectations
 

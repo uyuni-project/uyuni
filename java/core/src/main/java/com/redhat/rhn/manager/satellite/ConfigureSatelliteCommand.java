@@ -63,11 +63,6 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      */
     public String[] getCommandArguments(String configFilePath,
                                         Map<String, String> optionMap, List<String> removals) {
-        return getCommandArguments(false, configFilePath, optionMap, removals);
-    }
-
-    protected String[] getCommandArguments(boolean hasEnvironmentVariables, String configFilePath,
-                                           Map<String, String> optionMap, List<String> removals) {
         boolean somethingChanged = false;
 
         if (logger.isDebugEnabled()) {
@@ -77,9 +72,6 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
 
         List<String> argList = new LinkedList<>();
         argList.add("/usr/bin/sudo");
-        if (hasEnvironmentVariables) {
-            argList.add("-E");
-        }
         argList.add("/usr/bin/rhn-config-satellite.pl");
         argList.add("--target=" + configFilePath);
         for (Map.Entry<String, String> entry : optionMap.entrySet()) {
@@ -142,17 +134,6 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         if (keysToBeUpdated.contains(ConfigDefaults.MOUNT_POINT)) {
             this.updateString(ConfigDefaults.KICKSTART_MOUNT_POINT,
                     Config.get().getString(ConfigDefaults.MOUNT_POINT));
-        }
-
-        if (keysToBeUpdated.contains(ConfigDefaults.DISCONNECTED) &&
-                !Config.get().getBoolean(ConfigDefaults.DISCONNECTED)) {
-            //if there isn't already a value set for the satellite parent (We don't want to
-            // overwrite a custom value.)
-            if (Config.get().getString(ConfigDefaults.SATELLITE_PARENT) == null ||
-                    Config.get().getString(ConfigDefaults.SATELLITE_PARENT).isEmpty()) {
-                this.updateString(ConfigDefaults.SATELLITE_PARENT,
-                        ConfigDefaults.DEFAULT_SAT_PARENT);
-            }
         }
 
         ValidatorError[] retVal = executeStore();
@@ -224,14 +205,9 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      * @param newValue to set
      */
     public void updateString(String configKey, String newValue) {
-        String newValueToLog = newValue;
-        if (configKey.equals(ConfigDefaults.HTTP_PROXY_PASSWORD)) {
-            newValueToLog = "*****";
-        }
-
         if (logger.isDebugEnabled()) {
             logger.debug("updateString(String configKey={}, String newValue={}) - start",
-                    configKey, newValueToLog);
+                    configKey, newValue);
         }
 
         if (Config.get().getString(configKey) == null ||

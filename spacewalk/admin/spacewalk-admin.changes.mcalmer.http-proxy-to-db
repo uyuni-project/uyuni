@@ -1,0 +1,2 @@
+- Move the HTTP proxy settings from `rhn.conf` into the
+  database

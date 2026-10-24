@@ -8541,12 +8541,6 @@ administrator privileges.</source>
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="general.jsp.disconnected" xml:space="preserve">
-        <source>Disconnected @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="general.jsp.monitoring_backend" xml:space="preserve">
         <source>Enable Monitoring</source>
         <context-group name="ctx">

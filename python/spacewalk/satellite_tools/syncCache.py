@@ -101,7 +101,7 @@ class KickstartableTreesCache(BaseCache):
 
 
 if __name__ == "__main__":
-    initCFG("server.satellite")
+    initCFG("server")
     c = PackageCache()
     pid = "package-12345"
     c.cache_set(pid, {"a": 1, "b": 2})

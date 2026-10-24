@@ -56,7 +56,6 @@ class YumSrcTest(unittest.TestCase):
         yum_src.initCFG = Mock()
         yum_src.CFG = Mock()
         yum_src.CFG.MOUNT_POINT = ""
-        yum_src.CFG.PREPENDED_DIR = ""
         yum_src.CFG.REPOSYNC_MINRATE = 1000
         yum_src.CFG.REPOSYNC_TIMEOUT = 300
         yum_src.fileutils.makedirs = Mock()
@@ -65,6 +64,7 @@ class YumSrcTest(unittest.TestCase):
         yum_src.os.path.isdir = Mock()
 
         yum_src.get_proxy = Mock(return_value=(None, None, None))
+        yum_src.DB_CFG = Mock(HTTP_PROXY=None)
 
         cs = yum_src.ContentSource("http://example.com/fake_path/", "test_repo", org="")
         # pylint: disable-next=invalid-name
@@ -316,8 +316,6 @@ class YumSrcTest(unittest.TestCase):
         CFG.REPOSYNC_MINRATE = 42
         CFG.REPOSYNC_DOWNLOAD_THREADS = 42  # Throws ValueError if not defined
         CFG.MOUNT_POINT = ""
-        CFG.PREPENDED_DIR = ""
-        CFG.http_proxy = False
 
         urlgrabber_spy = Mock()
         urlgrabber_spy.urlread = Mock()
@@ -327,6 +325,9 @@ class YumSrcTest(unittest.TestCase):
             "spacewalk.satellite_tools.repo_plugins.yum_src.MirrorGroup",
             mirror_group_mock,
         ), patch("spacewalk.common.rhnConfig.CFG", CFG), patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.DB_CFG",
+            Mock(HTTP_PROXY=None),
+        ), patch(
             "spacewalk.satellite_tools.repo_plugins.yum_src.os.path.isfile",
             Mock(return_value=False),
         ):
