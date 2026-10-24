@@ -314,7 +314,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_web.conf | `web.session_swap_secret_2` | [`java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java:113`](java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java#L113) |
 | rhn_web.conf | `web.session_swap_secret_3` | [`java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java:117`](java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java#L117) |
 | rhn_web.conf | `web.session_swap_secret_4` | [`java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java:119`](java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java#L119) |
-| rhn_web.conf | `web.traceback_mail` | [`java/core/src/main/java/com/redhat/rhn/frontend/events/TraceBackAction.java:51`](java/core/src/main/java/com/redhat/rhn/frontend/events/TraceBackAction.java#L51) |
 | rhn_web.conf | `web.config_delim_start` | [`java/core/src/main/java/com/redhat/rhn/frontend/action/configuration/ConfigFileForm.java:94`](java/core/src/main/java/com/redhat/rhn/frontend/action/configuration/ConfigFileForm.java#L94) |
 | rhn_web.conf | `web.config_delim_end` | [`java/core/src/main/java/com/redhat/rhn/frontend/action/configuration/ConfigFileForm.java:96`](java/core/src/main/java/com/redhat/rhn/frontend/action/configuration/ConfigFileForm.java#L96) |
 | rhn_web.conf | `web.version` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:829`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L829) |
