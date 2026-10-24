@@ -76,7 +76,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_hibernate.conf | `hibernate.jakarta.cache.provider` <sup>1</sup> | [`java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java:34`](java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java#L34) |
 | rhn_hibernate.conf | `hibernate.jakarta.cache.missing_cache_strategy` <sup>1</sup> | [`java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java:34`](java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java#L34) |
 | rhn_hibernate.conf | `hibernate.javax.cache.missing_cache_strategy` <sup>1</sup> | [`java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java:34`](java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java#L34) |
-| rhn_java.conf | `java.min_user_len` | [`java/webapp/src/main/webapp/WEB-INF/pages/admin/multiorg/orgcreate.jsp:57`](java/webapp/src/main/webapp/WEB-INF/pages/admin/multiorg/orgcreate.jsp#L57) |
 | rhn_java.conf | `java.development_environment` | [`java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java:171`](java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java#L171) |
 | rhn_java.conf | `java.apiversion` | [`java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/api/ApiHandler.java:90`](java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/api/ApiHandler.java#L90) |
 | rhn_java.conf | `java.sandbox_lifetime` | [`java/core/src/main/java/com/redhat/rhn/taskomatic/task/SandboxCleanup.java:45`](java/core/src/main/java/com/redhat/rhn/taskomatic/task/SandboxCleanup.java#L45) |
@@ -250,9 +249,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `force_package_upload` | [`python/spacewalk/server/rhnPackageUpload.py:73`](python/spacewalk/server/rhnPackageUpload.py#L73) |
 | rhn_server.conf | `proxy_auth_timeout` | [`python/spacewalk/server/handlers/xmlrpc/proxy.py:176`](python/spacewalk/server/handlers/xmlrpc/proxy.py#L176) |
 | rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
-| rhn_server.conf | `min_user_len` | [`python/spacewalk/server/rhnUser.py:551`](python/spacewalk/server/rhnUser.py#L551) |
-| rhn_server.conf | `max_user_len` | [`python/spacewalk/server/rhnUser.py:555`](python/spacewalk/server/rhnUser.py#L555) |
-| rhn_server.conf | `max_email_len` | [`python/spacewalk/server/rhnUser.py:590`](python/spacewalk/server/rhnUser.py#L590) |
 | rhn_server.conf | `nls_lang` | [`web/modules/rhn/RHN/DBI.pm:49`](web/modules/rhn/RHN/DBI.pm#L49) |
 | rhn_server.conf | `encrypted_passwords` | [`python/spacewalk/server/rhnUser.py:126`](python/spacewalk/server/rhnUser.py#L126) |
 | rhn_server.conf | `prepended_dir` | [`python/spacewalk/server/rhnPackage.py:136`](python/spacewalk/server/rhnPackage.py#L136) |
@@ -298,7 +294,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_taskomatic_daemon.conf | `TASKO_MAX_MEMORY` <sup>3</sup> | [`java/scripts/taskomatic:13`](java/scripts/taskomatic#L13) |
 | rhn_web.conf | `web.disallowed_mail_domains` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:55`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L55) |
 | rhn_web.conf | `web.encrypted_passwords` | [`java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java:266`](java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java#L266) |
-| rhn_web.conf | `web.max_user_len` | [`java/core/src/main/java/com/redhat/rhn/common/conf/UserDefaults.java:38`](java/core/src/main/java/com/redhat/rhn/common/conf/UserDefaults.java#L38) |
 | rhn_web.conf | `web.kickstart_mount_point` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:567`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L567) |
 | rhn_web.conf | `web.pam_auth_service` | [`java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java:463`](java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java#L463) |
 | rhn_web.conf | `web.restrict_mail_domains` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:56`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L56) |

@@ -14,15 +14,14 @@
  */
 package com.redhat.rhn.common.conf;
 
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 /**
  * UserDefaults
  */
 public class UserDefaults {
     private static UserDefaults instance = new UserDefaults();
-    public static final String MAX_USER_LENGTH = "max_user_len";
-    public static final String MIN_USER_LENGTH = "min_user_len";
-    public static final String MAX_EMAIL_LENGTH = "min_email_len";
     /**
      * Get instance of UserDefaults.
      * @return UserDefaults instance.
@@ -35,20 +34,20 @@ public class UserDefaults {
      * @return the max login name length
      */
     public int getMaxUserLength() {
-        return Config.get().getInt(MAX_USER_LENGTH, 64);
+        return RhnConfigurationFactory.getSingleton().getInteger(RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MAX);
     }
 
     /**
      * @return the min login name length
      */
     public int getMinUserLength() {
-        return Config.get().getInt(MIN_USER_LENGTH, 5);
+        return RhnConfigurationFactory.getSingleton().getInteger(RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MIN);
     }
 
     /**
      * @return the max email length
      */
     public int getMaxEmailLength() {
-        return Config.get().getInt(MAX_EMAIL_LENGTH, 128);
+        return RhnConfigurationFactory.getSingleton().getInteger(RhnConfiguration.KEYS.USER_EMAIL_LENGTH_MAX);
     }
 }

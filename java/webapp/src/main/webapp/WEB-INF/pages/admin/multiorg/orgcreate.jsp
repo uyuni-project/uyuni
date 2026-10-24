@@ -54,7 +54,7 @@
                                maxlength="45" styleId="loginname" />
                     <span class="help-block">
                         <strong><bean:message key="tip" /></strong>
-                        <bean:message key="org.login.tip" arg0="${rhn:getConfig('java.min_user_len')}" /><br/>
+                        <bean:message key="org.login.tip" arg0="${rhn:getDbConfig('USER_LOGIN_LENGTH_MIN')}" /><br/>
                         <c:if test="${empty param.account_type}">
                             <bean:message key="org.login.examples" />
                         </c:if>
