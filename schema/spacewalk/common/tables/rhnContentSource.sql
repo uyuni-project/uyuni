@@ -34,7 +34,8 @@ rhnContentSource
                             CONSTRAINT rhn_cs_ms_ck
                                 CHECK (metadata_signed in ( 'Y' , 'N' )),
         created         TIMESTAMPTZ default(current_timestamp) NOT NULL,
-        modified        TIMESTAMPTZ default(current_timestamp) NOT NULL
+        modified        TIMESTAMPTZ default(current_timestamp) NOT NULL,
+        download_strategy_id NUMERIC NOT NULL DEFAULT 500
 )
 
   ;

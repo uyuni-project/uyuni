@@ -1,0 +1,2 @@
+- Allow relative paths consiting of only a filename, and paths with
+  a trailing slash in makedirs()
