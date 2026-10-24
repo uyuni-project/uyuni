@@ -88,8 +88,8 @@ class PackagesParser:
             hdr = {
                 "name": pkg_data["Package"],
                 "arch": pkg_data["Architecture"] + "-deb",
-                "summary": pkg_data.get(
-                    "Description", "No Summary Provided\n"
+                "summary": (
+                    pkg_data.get("Description") or "No Summary Provided"
                 ).splitlines()[0],
                 "epoch": "",
                 "version": 0,

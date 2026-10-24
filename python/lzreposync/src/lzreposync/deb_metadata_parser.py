@@ -27,19 +27,22 @@ def parse_deb_packages_metadata(
     packages_parser = PackagesParser(packages_file, repository_base_url)
     translation_parser = TranslationParser(translation_file, cache_dir)
 
-    # pylint: disable-next=consider-using-f-string
-    log(0, " Parsing %s" % translation_parser.translation_file)
-    # Parse and cache the content of Translation-en
-    translation_parser.parse_translation_file()
+    if translation_file is not None:
+        # pylint: disable-next=consider-using-f-string
+        log(0, " Parsing %s" % translation_parser.translation_file)
+        # Parse and cache the content of Translation-en
+        translation_parser.parse_translation_file()
+        
     for deb_pkg_header in packages_parser.parse_packages():
-        description_md5 = deb_pkg_header.get(
-            "Description-md5", "x"
-        )  # The x is just for none
-        deb_pkg_header.hdr["description"] = (
-            translation_parser.get_pacakge_description_by_description_md5(
-                description_md5
+        description_md5 = deb_pkg_header.get("Description-md5")
+        if translation_file is not None and description_md5:
+            description = (
+                translation_parser.get_pacakge_description_by_description_md5(
+                    description_md5
+                )
             )
-        )
+            if description is not None:
+                deb_pkg_header.hdr["description"] = description
 
         if skip_import:
             for field, checksum_type in (
@@ -88,4 +91,5 @@ def parse_deb_packages_metadata(
             # raise e  # Ignore the package and continue
             continue
 
-    translation_parser.clear_cache()
+    if translation_file is not None:
+        translation_parser.clear_cache()
