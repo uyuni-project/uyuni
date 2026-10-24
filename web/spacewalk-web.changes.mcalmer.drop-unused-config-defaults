@@ -1,0 +1,2 @@
+- Remove unused configuration defaults ssh_push_use_hostname
+  and ssh_push_task_timeout
