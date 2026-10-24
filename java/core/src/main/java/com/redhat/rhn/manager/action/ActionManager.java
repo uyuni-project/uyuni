@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -110,6 +110,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MinionServerUtils;
+import com.suse.manager.utils.SaltPortsResolver;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -2244,6 +2245,10 @@ public class ActionManager extends BaseManager {
             // action for normal minions - update salt master, the channels will be updated after minion restart
             Map<String, Object> pillar = new HashMap<>();
             pillar.put("mgr_server", proxy.map(Server::getHostname).orElse(ConfigDefaults.get().getJavaHostname()));
+            // Always set the ports to override the values of the previous Salt master stored in the pillar
+            pillar.put(SaltPortsResolver.PILLAR_PUBLISH_PORT, "");
+            pillar.put(SaltPortsResolver.PILLAR_REQUEST_PORT, "");
+            pillar.putAll(SaltPortsResolver.forMaster(proxy));
 
             Action a = scheduleApplyStates(loggedInUser, normalIds,
                     Collections.singletonList(ApplyStatesEventMessage.SET_PROXY),

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -3618,6 +3618,35 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, minion.getPillars().size());
         assertTrue(minion.getPillarByCategory("stored_pillar").isPresent());
         assertEquals("value", minion.getPillarByCategory("stored_pillar").get().getPillar().get("key"));
+    }
+
+    /**
+     * Test the SystemHandler.changeProxy method passes the Salt ports of the new Salt master
+     * @throws Exception if anything failed
+     */
+    @Test
+    public void testChangeProxySaltPorts() throws Exception {
+        SystemHandler systemHandler = getMockedHandler();
+        ActionManager.setTaskomaticApi(systemHandler.getTaskomaticApi());
+
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(admin);
+        Server proxy = ServerFactoryTest.createTestProxyServer(admin, true);
+        proxy.getProxyInfo().setSaltPublishPort(31005);
+        proxy.getProxyInfo().setSaltRequestPort(31006);
+
+        List<Long> actions = systemHandler.changeProxy(admin,
+                List.of(minion.getId().intValue()), proxy.getId().intValue());
+        Map<String, Object> pillar = ((ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0)))
+                .getDetails().getPillarsMap().orElseThrow();
+        assertEquals(31005, ((Number) pillar.get("mgr_salt_publish_port")).intValue());
+        assertEquals(31006, ((Number) pillar.get("mgr_salt_request_port")).intValue());
+
+        // back to the server using the default ports: the proxy ports have to be overridden
+        actions = systemHandler.changeProxy(admin, List.of(minion.getId().intValue()), 0);
+        pillar = ((ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actions.get(0)))
+                .getDetails().getPillarsMap().orElseThrow();
+        assertEquals("", pillar.get("mgr_salt_publish_port"));
+        assertEquals("", pillar.get("mgr_salt_request_port"));
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2020--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -18,6 +18,7 @@ package com.suse.manager.webui.controllers.utils;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -26,6 +27,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyTest;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
+import com.suse.manager.utils.SaltPortsResolver;
 import com.suse.manager.webui.controllers.bootstrap.BootstrapResult;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.services.impl.SaltSSHService;
@@ -102,6 +104,53 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         BootstrapParameters params = bootstrapper.createBootstrapParams(input);
         BootstrapResult bootstrap = bootstrapper.bootstrap(params, user, getDefaultContactMethod());
         assertFalse(bootstrap.isSuccess());
+    }
+
+    /**
+     * Verifies that custom Salt ports of the server are passed to the bootstrap state.
+     *
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void testSaltPortsInPillar() throws Exception {
+        Config.get().setString(ConfigDefaults.SALT_PUBLISH_PORT, "30005");
+        Config.get().setString(ConfigDefaults.SALT_REQUEST_PORT, "30006");
+        try {
+            BootstrapHostsJson input = mockStandardInput();
+            setEmptyActivationKeys(input);
+            Key.Pair keyPair = mockKeyPair();
+
+            context().checking(new Expectations() {{
+                allowing(saltServiceMock).keyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED,
+                        KeyStatus.REJECTED);
+                will(returnValue(false));
+                allowing(saltServiceMock).keyExists("myhost", KeyStatus.UNACCEPTED);
+                will(returnValue(false));
+                allowing(saltServiceMock).generateKeysAndAccept("myhost", false);
+                will(returnValue(keyPair));
+
+                MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.SshKeygenResult("key", "pubkey");
+                allowing(saltServiceMock).generateSSHKey(SaltSSHService.SSH_KEY_PATH,
+                        SaltSSHService.SUMA_SSH_PUB_KEY);
+                will(returnValue(of(mockResult)));
+
+                Map<String, Object> pillarData = createPillarData(Optional.empty(), Optional.empty());
+                pillarData.put(SaltPortsResolver.PILLAR_PUBLISH_PORT, 30005);
+                pillarData.put(SaltPortsResolver.PILLAR_REQUEST_PORT, 30006);
+
+                exactly(1).of(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
+                        with(bootstrapMods()), with(pillarData));
+                will(returnValue(new Result<>(Xor.left(createGenericSaltError()))));
+                allowing(saltServiceMock).deleteKey("myhost");
+            }});
+
+            BootstrapParameters params = bootstrapper.createBootstrapParams(input);
+            assertFalse(bootstrapper.bootstrap(params, user, getDefaultContactMethod()).isSuccess());
+        }
+        finally {
+            Config.get().remove(ConfigDefaults.SALT_PUBLISH_PORT);
+            Config.get().remove(ConfigDefaults.SALT_REQUEST_PORT);
+        }
     }
 
     @Test

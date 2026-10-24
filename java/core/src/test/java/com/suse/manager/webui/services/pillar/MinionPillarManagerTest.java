@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2020--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -35,7 +35,10 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.utils.SaltPortsResolver;
+
 import org.apache.commons.codec.digest.DigestUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,6 +54,12 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
+    }
+
+    @AfterEach
+    public void tearDownSaltPorts() {
+        Config.get().remove(ConfigDefaults.SALT_PUBLISH_PORT);
+        Config.get().remove(ConfigDefaults.SALT_REQUEST_PORT);
     }
 
     @Test
@@ -84,6 +93,8 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         assertEquals(ConfigDefaults.get().isUyuni(), map.get("mgr_server_is_uyuni"));
         assertTrue(map.containsKey("primary_fqdn"));
         assertEquals(minion.getHostname(), map.get("primary_fqdn"));
+        assertFalse(map.containsKey(SaltPortsResolver.PILLAR_PUBLISH_PORT));
+        assertFalse(map.containsKey(SaltPortsResolver.PILLAR_REQUEST_PORT));
 
         assertTrue(map.containsKey("channels"));
         Map<String, Object> channels = (Map<String, Object>) map.get("channels");
@@ -224,4 +235,21 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         assertEquals(proxyHostname, channelFromFile.get("host"));
     }
 
+    /**
+     * Tests that the server Salt ports are added to the general pillar of a minion connected to the server.
+     * @throws Exception - if anything goes wrong
+     */
+    @Test
+    public void testGeneratePillarWithServerSaltPorts() throws Exception {
+        Config.get().setString(ConfigDefaults.SALT_PUBLISH_PORT, "30005");
+        Config.get().setString(ConfigDefaults.SALT_REQUEST_PORT, "30006");
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        MinionPillarManager.INSTANCE.generatePillar(minion);
+
+        Map<String, Object> map = minion.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY)
+                .orElseThrow().getPillar();
+        assertEquals(30005, map.get(SaltPortsResolver.PILLAR_PUBLISH_PORT));
+        assertEquals(30006, map.get(SaltPortsResolver.PILLAR_REQUEST_PORT));
+    }
 }

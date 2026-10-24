@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -50,6 +51,7 @@ import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
+import com.suse.manager.utils.SaltPortsResolver;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.proxy.migrate.ProxyBackupApplyState;
 import com.suse.proxy.update.ProxyConfigUpdateFacade;
@@ -61,6 +63,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ProxyHandler
@@ -182,6 +185,66 @@ public class ProxyHandler extends BaseHandler {
 
         SystemManager.activateProxy(server, version);
         return 1;
+    }
+
+    /**
+     * Set the Salt ports the proxy identified by the given client certificate is exposed on.
+     * @param clientcert client certificate of the system.
+     * @param saltPublishPort the Salt publish port the clients reach the proxy on, 0 for the Salt default
+     * @param saltRequestPort the Salt request port the clients reach the proxy on, 0 for the Salt default
+     * @return 1 on success
+     * @throws ProxyNotActivatedException thrown if server is not a proxy.
+     * @throws MethodInvalidParamException thrown if certificate is invalid.
+     * @throws InvalidParameterException thrown if a port is invalid.
+     *
+     * @apidoc.doc Set the Salt ports the proxy identified by the given client certificate i.e. systemid file
+     * is exposed on, for example its Kubernetes NodePorts. The minions connected to the proxy are configured
+     * to use them on their next state apply.
+     * @apidoc.param #param_desc("string", "clientcert", "client certificate file")
+     * @apidoc.param #param_desc("int", "saltPublishPort",
+     *                           "The Salt publish port the clients reach the proxy on, 0 for the Salt default")
+     * @apidoc.param #param_desc("int", "saltRequestPort",
+     *                           "The Salt request port the clients reach the proxy on, 0 for the Salt default")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int setSaltPorts(String clientcert, Integer saltPublishPort, Integer saltRequestPort)
+        throws ProxyNotActivatedException, MethodInvalidParamException {
+        Server server = validateClientCertificate(clientcert);
+        if (!server.isProxy()) {
+            throw new ProxyNotActivatedException();
+        }
+
+        SystemManager.setProxySaltPorts(server, toSaltPort(saltPublishPort), toSaltPort(saltRequestPort));
+        return 1;
+    }
+
+    /**
+     * Get the Salt ports the clients reach the given host on.
+     * @param hostname the FQDN of a proxy, or of the server
+     * @return the Salt ports of the proxy or, for any other host, of the server
+     *
+     * @apidoc.doc Get the Salt ports the clients reach the given proxy on, or the server for any other host.
+     * Ports set to the Salt defaults are not returned.
+     * @apidoc.param #param_desc("string", "hostname", "the FQDN of a proxy or of the server")
+     * @apidoc.returntype
+     *   #struct_begin("salt_ports")
+     *     #prop_desc("int", "mgr_salt_publish_port", "the Salt publish port, if not the default")
+     *     #prop_desc("int", "mgr_salt_request_port", "the Salt request port, if not the default")
+     *   #struct_end()
+     */
+    @ReadOnly
+    public Map<String, Object> getSaltPorts(String hostname) {
+        return SaltPortsResolver.forMaster(ServerFactory.lookupProxyServer(hostname));
+    }
+
+    private static Integer toSaltPort(Integer port) {
+        if (port == null || port == 0) {
+            return null;
+        }
+        if (port < 0 || port > 65535) {
+            throw new InvalidParameterException("Invalid Salt port: " + port);
+        }
+        return port;
     }
 
     /**

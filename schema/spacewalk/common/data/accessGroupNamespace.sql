@@ -850,7 +850,9 @@ INSERT INTO access.accessGroupNamespace
         'api.proxy.is_proxy',
         'api.proxy.list_available_proxy_channels',
         'api.proxy.list_proxies',
-        'api.proxy.list_proxy_clients'
+        'api.proxy.list_proxy_clients',
+        'api.proxy.get_salt_ports',
+        'api.proxy.set_salt_ports'
     )
     ON CONFLICT DO NOTHING;
 
