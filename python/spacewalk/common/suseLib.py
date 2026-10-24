@@ -13,16 +13,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 #
 
-try:
-    import urllib.parse as urlparse
-    from io import StringIO
-except ImportError:
-    import urlparse
-
-    try:
-        from cStringIO import StringIO
-    except ImportError:
-        from StringIO import StringIO
+import urllib.parse as urlparse
 
 import io
 import os
@@ -168,83 +159,6 @@ def _curl_debug(mtype, text):
     else:
         log_debug(6, f"{mtype}: {text}")
     return 0
-
-
-def send(url, sendData=None):
-    """Connect to url and return the result as stringIO
-
-    :arg url: the url where the request will be sent
-    :kwarg sendData: do a post-request when "sendData" is given.
-
-    Returns the result as stringIO object.
-
-    """
-    timeout = 120
-    if CFG.is_initialized() and CFG.has_key("TIMEOUT"):
-        timeout = CFG.TIMEOUT
-    curl = pycurl.Curl()
-
-    curl.setopt(pycurl.CONNECTTIMEOUT, timeout)
-    curl.setopt(pycurl.URL, url)
-    curl.setopt(pycurl.DEBUGFUNCTION, _curl_debug)
-    curl.setopt(pycurl.VERBOSE, True)
-    proxy_url, proxy_user, proxy_pass = get_proxy(url)
-    if proxy_url:
-        curl.setopt(pycurl.PROXY, proxy_url)
-    log_debug(2, f"Connect to {url}")
-    if sendData is not None:
-        curl.setopt(pycurl.POSTFIELDS, sendData)
-        if (
-            CFG.is_initialized()
-            and CFG.has_key("DISABLE_EXPECT")
-            and CFG.DISABLE_EXPECT
-        ):
-            # disable Expect header
-            curl.setopt(pycurl.HTTPHEADER, ["Expect:"])
-
-    curl.setopt(pycurl.FOLLOWLOCATION, True)
-
-    response = StringIO()
-    curl.setopt(pycurl.WRITEFUNCTION, response.write)
-
-    try:
-        curl.perform()
-    except pycurl.error as e:
-        if e.args[0] == 56:  # Proxy requires authentication
-            log_debug(2, e.args[1])
-            if not (proxy_user and proxy_pass):
-                # pylint: disable-next=raise-missing-from
-                raise TransferException(
-                    "Proxy requires authentication, "
-                    "but reading credentials from "
-                    f"{YAST_PROXY} failed."
-                )
-            curl.setopt(pycurl.PROXYUSERPWD, f"{proxy_user}:{proxy_pass}")
-        elif e.args[0] == 60:
-            log_error(
-                "Peer certificate could not be authenticated "
-                "with known CA certificates."
-            )
-            # pylint: disable-next=raise-missing-from
-            raise TransferException(
-                "Peer certificate could not be "
-                "authenticated with known CA "
-                "certificates."
-            )
-        else:
-            log_error(e.args[1])
-            raise
-
-    status = curl.getinfo(pycurl.HTTP_CODE)
-    if status != 200 and not (URL(url).scheme == "file" and status == 0):
-        log_error(
-            f"Connecting to {URL(url).getURL(stripPw=True)} has failed with HTTP error code {status}."
-        )
-        raise TransferException(f"Connection failed with HTTP error {status}.")
-
-    # StringIO.write leaves the cursor at the end of the file
-    response.seek(0)
-    return response
 
 
 def accessible(url):
