@@ -385,7 +385,7 @@ class Packages(RPC_Base):
                 "orgid": org_id,
             }
 
-            if "checksum" in package and CFG.ENABLE_NVREA:
+            if "checksum" in package:
                 # pylint: disable-next=invalid-name
                 _checksum_sql_filter = """and c.checksum = :checksum
                                           and c.checksum_type = :checksum_type"""
@@ -555,7 +555,7 @@ class Packages(RPC_Base):
 
             # pylint: disable-next=invalid-name
             _checksum_sql_filter = ""
-            if "checksum" in pkg_info and CFG.ENABLE_NVREA:
+            if "checksum" in pkg_info:
                 # pylint: disable-next=invalid-name
                 _checksum_sql_filter = """and c.checksum = :checksum
                                           and c.checksum_type = :checksum_type"""

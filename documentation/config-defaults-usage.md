@@ -253,7 +253,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server_app.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `buffer_size` | [`python/spacewalk/server/apacheRequest.py:330`](python/spacewalk/server/apacheRequest.py#L330) |
-| rhn_server.conf | `enable_nvrea` | [`python/spacewalk/server/handlers/app/packages.py:386`](python/spacewalk/server/handlers/app/packages.py#L386) |
 | rhn_server.conf | `force_package_upload` | [`python/spacewalk/server/rhnPackageUpload.py:73`](python/spacewalk/server/rhnPackageUpload.py#L73) |
 | rhn_server.conf | `proxy_auth_timeout` | [`python/spacewalk/server/handlers/xmlrpc/proxy.py:176`](python/spacewalk/server/handlers/xmlrpc/proxy.py#L176) |
 | rhn_server.conf | `timeout` | [`python/spacewalk/common/suseLib.py:181`](python/spacewalk/common/suseLib.py#L181) |
