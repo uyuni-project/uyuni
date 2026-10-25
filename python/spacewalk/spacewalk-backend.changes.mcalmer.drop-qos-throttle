@@ -1,0 +1,3 @@
+- Remove the configuration options `qos` and `throttle`. They only
+  enabled calls to empty stub functions
+- Remove the unused `X-Replace-Content-Throttle` header code

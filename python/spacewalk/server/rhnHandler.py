@@ -18,7 +18,6 @@
 #
 
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 from spacewalk.common.RPC_Base import RPC_Base
@@ -44,10 +43,6 @@ class rhnHandler(RPC_Base):
         self.load_user = 0
         # do we check for entitlement of the server
         self.check_entitlement = 1
-        # do we attempt throttling
-        self.throttle = CFG.THROTTLE
-        # attempt quality of service checks
-        self.set_qos = CFG.QOS
         # do we update the checking counters
         self.update_checkin = 1
 
@@ -87,10 +82,4 @@ class rhnHandler(RPC_Base):
 
         if self.user is None:
             self.user = ""
-        # Throttle users if necessary
-        if self.throttle:
-            server.throttle()
-        # Set QOS
-        if self.set_qos:
-            server.set_qos()
         return server

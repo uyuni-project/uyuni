@@ -778,18 +778,6 @@ class Server(ServerWrapper):
             return 0  # meaningless if rhnFault not raised
         return server_lib.checkin(self.server["id"], commit)
 
-    def throttle(self):
-        """convenient wrapper for these thing until we clean the code up"""
-        if not self.server.has_key("id"):
-            return 1  # meaningless if rhnFault not raised
-        return server_lib.throttle(self.server)
-
-    def set_qos(self):
-        """convenient wrapper for these thing until we clean the code up"""
-        if not self.server.has_key("id"):
-            return 1  # meaningless if rhnFault not raised
-        return server_lib.set_qos(self.server["id"])
-
     def join_groups(self):
         """For a new server, join server groups"""
 

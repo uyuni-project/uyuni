@@ -36,7 +36,6 @@ from uyuni.common.rhnLib import rfc822time, timestamp
 # local modules imports
 # pylint: disable-next=ungrouped-imports
 from spacewalk.server import rhnChannel, rhnPackage, taskomatic, rhnSQL
-from .rhnServer import server_lib
 from .repomd import repository
 
 
@@ -361,6 +360,3 @@ class Repository(rhnRepository.Repository):
             # Not subscribed
             raise rhnFault(39, "No subscription to the specified channel")
         return 1
-
-    def set_qos(self):
-        server_lib.set_qos(self.server_id)

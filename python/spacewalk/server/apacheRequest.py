@@ -302,10 +302,6 @@ class apacheRequest:
             # pylint: disable-next=consider-using-f-string
             log_debug(1, "Serving file %s" % fpath)
             self.req.headers_out["X-Replace-Content"] = fpath
-            # Only set a byte rate if xrepcon is active
-            byte_rate = rhnFlags.get("QOS-Max-Bandwidth")
-            if byte_rate:
-                self.req.headers_out["X-Replace-Content-Throttle"] = str(byte_rate)
 
         # send the headers
         self.req.send_http_header()
@@ -615,7 +611,6 @@ class GetHandler(apacheRequest):
         server_id = rhnFlags.get("AUTH_SESSION_TOKEN")["X-RHN-Server-Id"]
         username = rhnFlags.get("AUTH_SESSION_TOKEN")["X-RHN-Auth-User-Id"]
         repository = rhnRepository.Repository(self.channel, server_id, username)
-        repository.set_qos()
         meth = method.replace(".", "_")
         f = repository.get_function(meth)
         if f is None:
