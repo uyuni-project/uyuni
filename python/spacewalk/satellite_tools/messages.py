@@ -76,8 +76,6 @@ Please contact your SUSE Multi-Linux Manager contact
 %s"""
 )
 
-not_enough_diskspace = _("  ERROR: not enough free space (%s KB) on device.")
-
 package_fetch_successful = _("    %3d/%s Fetch successful: %s (%s bytes)")
 package_fetch_extinct = _("    Extinct package:  %s")
 package_fetch_total_size = _("   Total size: %s")
