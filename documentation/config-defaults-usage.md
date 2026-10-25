@@ -255,7 +255,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `force_package_upload` | [`python/spacewalk/server/rhnPackageUpload.py:73`](python/spacewalk/server/rhnPackageUpload.py#L73) |
 | rhn_server.conf | `proxy_auth_timeout` | [`python/spacewalk/server/handlers/xmlrpc/proxy.py:176`](python/spacewalk/server/handlers/xmlrpc/proxy.py#L176) |
 | rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
-| rhn_server.conf | `nls_lang` | [`web/modules/rhn/RHN/DBI.pm:49`](web/modules/rhn/RHN/DBI.pm#L49) |
 | rhn_server.conf | `qos` | [`python/spacewalk/server/rhnHandler.py:48`](python/spacewalk/server/rhnHandler.py#L48) |
 | rhn_server.conf | `throttle` | [`python/spacewalk/server/rhnHandler.py:46`](python/spacewalk/server/rhnHandler.py#L46) |
 | rhn_server.conf | `session_lifetime` | [`python/spacewalk/server/rhnSession.py:50`](python/spacewalk/server/rhnSession.py#L50) |
@@ -313,7 +312,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_web.conf | `web.buildtimestamp` | [`java/core/src/main/java/com/suse/manager/webui/utils/SparkApplicationHelper.java:523`](java/core/src/main/java/com/suse/manager/webui/utils/SparkApplicationHelper.java#L523) |
 | rhn_web.conf | `web.maximum_config_file_size` | [`java/core/src/main/java/com/redhat/rhn/domain/config/ConfigFile.java:141`](java/core/src/main/java/com/redhat/rhn/domain/config/ConfigFile.java#L141) |
 | rhn_web.conf | `web.l10n_resourcebundles` | [`java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java:104`](java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java#L104) |
-| rhn_web.conf | `server.nls_lang` | [`web/modules/rhn/RHN/DBI.pm:49`](web/modules/rhn/RHN/DBI.pm#L49) |
 | rhn_web.conf | `web.subscribe_proxy_channel` | [`java/core/src/main/java/com/redhat/rhn/manager/system/SystemManager.java:2053`](java/core/src/main/java/com/redhat/rhn/manager/system/SystemManager.java#L2053) |
 | rhn_web.conf | `ssh_push_port_https` | [`java/core/src/main/java/com/suse/manager/webui/controllers/bootstrap/AbstractMinionBootstrapper.java:328`](java/core/src/main/java/com/suse/manager/webui/controllers/bootstrap/AbstractMinionBootstrapper.java#L328) |
 | rhn_web.conf | `ssh_push_sudo_user` | [`java/core/src/main/java/com/suse/manager/webui/services/impl/SaltSSHService.java:192`](java/core/src/main/java/com/suse/manager/webui/services/impl/SaltSSHService.java#L192) |

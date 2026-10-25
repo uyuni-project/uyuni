@@ -1,0 +1,2 @@
+- Remove the Oracle-only configuration option `nls_lang` and the
+  unused commented-out `disabled_org_check`
