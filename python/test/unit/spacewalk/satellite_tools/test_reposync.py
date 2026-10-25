@@ -805,6 +805,10 @@ class RepoSyncTest(unittest.TestCase):
             {"id": 42, "channels": ["channel1", "channel2"], "packages": []},
         )
 
+    @patch(
+        "spacewalk.satellite_tools.reposync.DB_CFG",
+        Mock(get_bool=Mock(return_value=False)),
+    )
     def test_get_compat_arches(self):
         _mock_rhnsql(self.reposync, ({"label": "a1"}, {"label": "a2"}))
         self.assertEqual(

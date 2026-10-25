@@ -666,26 +666,22 @@ class ContentSource:
         self.gpgkey_autotrust = None
         self.groupsfile = None
 
-        # pylint: disable-next=redefined-outer-name,invalid-name
-        with cfg_component("server") as CFG:
-            # configure network connection
-            try:
-                # bytes per second
-                self.minrate = int(CFG.REPOSYNC_MINRATE)
-            except ValueError:
-                self.minrate = 1000
-            try:
-                # seconds
-                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
-            except ValueError:
-                self.timeout = 300
-            try:
-                # extended reposync nevra filter enable
-                # this will filter packages based on full nevra
-                # instead of package name only.
-                self.nevra_filter = bool(CFG.REPOSYNC_NEVRA_FILTER)
-            except (AttributeError, ValueError):
-                self.nevra_filter = False
+        # configure network connection
+        try:
+            # bytes per second
+            self.minrate = int(DB_CFG.REPOSYNC_MINRATE)
+        except (TypeError, ValueError):
+            self.minrate = 1000
+        try:
+            # seconds
+            self.timeout = int(DB_CFG.REPOSYNC_TIMEOUT)
+        except (TypeError, ValueError):
+            self.timeout = 300
+        self.urlgrabber_logspec = DB_CFG.URLGRABBER_LOGSPEC
+        # extended reposync nevra filter enable
+        # this will filter packages based on full nevra
+        # instead of package name only.
+        self.nevra_filter = DB_CFG.get_bool("REPOSYNC_NEVRA_FILTER")
 
     def _load_proxy_settings(self, url):
         # Get the global HTTP Proxy settings from DB or per-repo
@@ -1652,9 +1648,7 @@ password={passwd}
         params["proxies"] = get_proxies(
             self.proxy_url, self.proxy_user, self.proxy_pass
         )
-        # pylint: disable-next=redefined-outer-name,invalid-name
-        with cfg_component("server") as CFG:
-            params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
+        params["urlgrabber_logspec"] = self.urlgrabber_logspec
 
     def get_file(self, path, local_base=None):
         try:

@@ -64,3 +64,21 @@ VALUES ('USER_LOGIN_LENGTH_MAX', 'Maximum number of characters in user login nam
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('USER_EMAIL_LENGTH_MAX', 'Maximum number of characters in user e-mail addresses', null, '128');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('REPOSYNC_DOWNLOAD_THREADS', 'Number of threads used by reposync to download packages', null, '5');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('REPOSYNC_TIMEOUT', 'Timeout of reposync downloads in seconds', null, '300');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('REPOSYNC_MINRATE', 'Minimal transfer rate of reposync downloads in bytes per second', null, '1000');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('REPOSYNC_NEVRA_FILTER', 'Filter the packages of a repository by their full NEVRA instead of the name only', null, '0');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('SYNC_SOURCE_PACKAGES', 'Synchronize source packages with reposync', null, '0');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('URLGRABBER_LOGSPEC', 'urlgrabber debug logging of reposync in the form level,filename (for example 1,-)', null, null);

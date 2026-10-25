@@ -258,13 +258,7 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
 | rhn_server.conf | `session_lifetime` | [`python/spacewalk/server/rhnSession.py:50`](python/spacewalk/server/rhnSession.py#L50) |
 | rhn_server.conf | `secret_key` | [`python/spacewalk/server/apacheAuth.py:94`](python/spacewalk/server/apacheAuth.py#L94) |
-| rhn_server.conf | `sync_source_packages` | [`python/spacewalk/satellite_tools/reposync.py:3169`](python/spacewalk/satellite_tools/reposync.py#L3169) |
 | rhn_server.conf | `sync_cache_dir` | [`python/spacewalk/satellite_tools/syncCache.py:39`](python/spacewalk/satellite_tools/syncCache.py#L39) |
-| rhn_server.conf | `reposync_download_threads` | [`python/spacewalk/satellite_tools/download.py:368`](python/spacewalk/satellite_tools/download.py#L368) |
-| rhn_server.conf | `reposync_timeout` | [`python/spacewalk/satellite_tools/download.py:377`](python/spacewalk/satellite_tools/download.py#L377) |
-| rhn_server.conf | `reposync_minrate` | [`python/spacewalk/satellite_tools/download.py:386`](python/spacewalk/satellite_tools/download.py#L386) |
-| rhn_server.conf | `reposync_nevra_filter` | [`python/spacewalk/satellite_tools/repo_plugins/deb_src.py:449`](python/spacewalk/satellite_tools/repo_plugins/deb_src.py#L449) |
-| rhn_server.conf | `urlgrabber_logspec` | [`python/spacewalk/satellite_tools/repo_plugins/yum_src.py:1654`](python/spacewalk/satellite_tools/repo_plugins/yum_src.py#L1654) |
 | rhn_server_susemanager.conf | `scc_url` | [`java/core/src/main/java/com/suse/scc/SCCTaskManager.java:132`](java/core/src/main/java/com/suse/scc/SCCTaskManager.java#L132) |
 | rhn_server_susemanager.conf | `update_host_domain` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1323`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1323) |
 | rhn_server_susemanager.conf | `forward_registration` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1316`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1316) |

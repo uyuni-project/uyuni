@@ -38,6 +38,7 @@ from spacewalk.common.rhnConfig import cfg_component
 # pylint: disable-next=unused-import
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import CACHE_DIR, ContentPackage
+from spacewalk.server.db_config import DB_CFG
 from spacewalk.server.rhnLib import PACKAGE_DIR
 from spacewalk.satellite_tools.repo_plugins.yum_src import (
     ContentSource as zypper_ContentSource,
@@ -144,8 +145,7 @@ class ContentSource(zypper_ContentSource):
 
         # read the proxy configuration
         # /etc/rhn/rhn.conf has more priority than yum.conf
-        # pylint: disable-next=invalid-name
-        with cfg_component("server") as CFG:
+        with cfg_component("server"):
             # keep authtokens for mirroring
             # pylint: disable-next=invalid-name,unused-variable
             _scheme, _netloc, _path, query, _fragid = urlsplit(url)
@@ -191,14 +191,15 @@ class ContentSource(zypper_ContentSource):
             # configure network connection
             try:
                 # bytes per second
-                self.minrate = int(CFG.REPOSYNC_MINRATE)
-            except ValueError:
+                self.minrate = int(DB_CFG.REPOSYNC_MINRATE)
+            except (TypeError, ValueError):
                 self.minrate = 1000
             try:
                 # seconds
-                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
-            except ValueError:
+                self.timeout = int(DB_CFG.REPOSYNC_TIMEOUT)
+            except (TypeError, ValueError):
                 self.timeout = 300
+            self.urlgrabber_logspec = DB_CFG.URLGRABBER_LOGSPEC
 
             self.repo = self.dnfbase.repos[self.repoid]
             self.get_metadata_paths()

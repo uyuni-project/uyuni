@@ -99,6 +99,24 @@ DB_CONFIG_KEYS = {
     "server.max_email_len": "USER_EMAIL_LENGTH_MAX",
     "web.max_email_len": "USER_EMAIL_LENGTH_MAX",
     "max_email_len": "USER_EMAIL_LENGTH_MAX",
+    "server.satellite.reposync_download_threads": "REPOSYNC_DOWNLOAD_THREADS",
+    "server.reposync_download_threads": "REPOSYNC_DOWNLOAD_THREADS",
+    "reposync_download_threads": "REPOSYNC_DOWNLOAD_THREADS",
+    "server.satellite.reposync_timeout": "REPOSYNC_TIMEOUT",
+    "server.reposync_timeout": "REPOSYNC_TIMEOUT",
+    "reposync_timeout": "REPOSYNC_TIMEOUT",
+    "server.satellite.reposync_minrate": "REPOSYNC_MINRATE",
+    "server.reposync_minrate": "REPOSYNC_MINRATE",
+    "reposync_minrate": "REPOSYNC_MINRATE",
+    "server.satellite.reposync_nevra_filter": "REPOSYNC_NEVRA_FILTER",
+    "server.reposync_nevra_filter": "REPOSYNC_NEVRA_FILTER",
+    "reposync_nevra_filter": "REPOSYNC_NEVRA_FILTER",
+    "server.susemanager.sync_source_packages": "SYNC_SOURCE_PACKAGES",
+    "server.sync_source_packages": "SYNC_SOURCE_PACKAGES",
+    "sync_source_packages": "SYNC_SOURCE_PACKAGES",
+    "server.satellite.urlgrabber_logspec": "URLGRABBER_LOGSPEC",
+    "server.urlgrabber_logspec": "URLGRABBER_LOGSPEC",
+    "urlgrabber_logspec": "URLGRABBER_LOGSPEC",
 }
 
 
@@ -130,11 +148,6 @@ RENAMED_CONFIG_KEYS = {
     # moved from rhn_server_satellite.conf to rhn_server.conf
     "server.satellite.mount_point": "server.mount_point",
     "server.satellite.sync_cache_dir": "server.sync_cache_dir",
-    "server.satellite.reposync_download_threads": "server.reposync_download_threads",
-    "server.satellite.reposync_timeout": "server.reposync_timeout",
-    "server.satellite.reposync_minrate": "server.reposync_minrate",
-    "server.satellite.reposync_nevra_filter": "server.reposync_nevra_filter",
-    "server.satellite.urlgrabber_logspec": "server.urlgrabber_logspec",
     # global keys used by all components
     "web.default_mail_from": "default_mail_from",
 }

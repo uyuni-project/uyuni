@@ -71,6 +71,7 @@ from spacewalk.satellite_tools.download import (
 from spacewalk.satellite_tools.repo_plugins import CACHE_DIR
 from spacewalk.satellite_tools.repo_plugins import yum_src
 from spacewalk.server import taskomatic, rhnPackageUpload
+from spacewalk.server.db_config import DB_CFG
 from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 from spacewalk.satellite_tools.syncLib import (
     log,
@@ -3155,6 +3156,7 @@ class RepoSync(object):
     @staticmethod
     def get_compatible_arches(channel_id):
         """Return a list of compatible package arch labels for this channel"""
+        sync_source_packages = DB_CFG.get_bool("SYNC_SOURCE_PACKAGES")
         h = rhnSQL.prepare("""select pa.label
                               from rhnChannelPackageArchCompat cpac,
                               rhnChannel c,
@@ -3163,13 +3165,11 @@ class RepoSync(object):
                               and c.channel_arch_id = cpac.channel_arch_id
                               and cpac.package_arch_id = pa.id""")
         h.execute(channel_id=channel_id)
-        # pylint: disable-next=invalid-name
-        with cfg_component("server.susemanager") as CFG:
-            arches = [
-                k["label"]
-                for k in h.fetchall_dict()
-                if CFG.SYNC_SOURCE_PACKAGES or k["label"] not in ["src", "nosrc"]
-            ]
+        arches = [
+            k["label"]
+            for k in h.fetchall_dict()
+            if sync_source_packages or k["label"] not in ["src", "nosrc"]
+        ]
         return arches
 
     @staticmethod
