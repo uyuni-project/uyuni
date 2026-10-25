@@ -2576,8 +2576,7 @@ public class ChannelManager extends BaseManager {
      * @return last repo build date
      */
     public static String getRepoLastBuild(Channel channel) {
-        String  pathPrefix = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX,
-        "rhn/repodata");
+        String pathPrefix = ConfigDefaults.REPOMD_PATH_PREFIX;
         String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT,
                 "/pub");
         File theFile = new File(mountPoint + File.separator + pathPrefix +
@@ -2600,8 +2599,7 @@ public class ChannelManager extends BaseManager {
      * @return the {@link ChannelSyncStatus} status
      */
     public static ChannelSyncStatus getChannelSyncStatus(Channel channelIn) {
-        String  pathPrefix = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX,
-                "rhn/repodata");
+        String pathPrefix = ConfigDefaults.REPOMD_PATH_PREFIX;
         String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT,
                 "/pub");
         Path mdPath = Path.of(mountPoint, pathPrefix, channelIn.getLabel());

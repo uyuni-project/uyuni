@@ -137,7 +137,11 @@ public class ConfigDefaults {
      */
     public static final int DEFAULT_CONFIG_REVISION_MAX_SIZE = 131072;
 
-    public static final String REPOMD_PATH_PREFIX = "taskomatic.repomd_path_prefix";
+    /**
+     * Directory below the repomd cache mount point where the repository metadata is stored.
+     * Keep in sync with REPOMD_PATH_PREFIX in python/spacewalk/server/rhnLib.py
+     */
+    public static final String REPOMD_PATH_PREFIX = "rhn/repodata";
 
     public static final String REPOMD_CACHE_MOUNT_POINT = "repomd_cache_mount_point";
 

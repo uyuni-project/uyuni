@@ -618,7 +618,7 @@ public class DownloadFile extends DownloadAction {
                         split[0] = tree.getChannel().getLabel();
                     }
                     diskPath = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub") +
-                            File.separator + Config.get().getString("repomd_path_prefix", "rhn/repodata/") +
+                            File.separator + ConfigDefaults.REPOMD_PATH_PREFIX +
                             File.separator + StringUtils.join(split, '/');
                 }
             }
@@ -651,7 +651,7 @@ public class DownloadFile extends DownloadAction {
                 split[0] = child.getLabel();
             }
             diskPath = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub") +
-                    File.separator + Config.get().getString("repomd_path_prefix", "rhn/repodata/") +
+                    File.separator + ConfigDefaults.REPOMD_PATH_PREFIX +
                     File.separator + StringUtils.join(split, File.separator);
         }
 

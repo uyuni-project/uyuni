@@ -462,8 +462,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      */
     private void generateFakeMetadataForChannelLabel(String channelLabel)
             throws IOException {
-        String prefix = Config.get().getString(
-                ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
+        String prefix = ConfigDefaults.REPOMD_PATH_PREFIX;
         String mountPoint = Config.get().getString(
                 ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
         File repoPath = new File(mountPoint + File.separator + prefix +

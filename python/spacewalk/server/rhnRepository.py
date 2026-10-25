@@ -36,6 +36,7 @@ from uyuni.common.rhnLib import rfc822time, timestamp
 # local modules imports
 # pylint: disable-next=ungrouped-imports
 from spacewalk.server import rhnChannel, rhnPackage, taskomatic, rhnSQL
+from .rhnLib import REPOMD_PATH_PREFIX
 from .repomd import repository
 
 
@@ -239,7 +240,7 @@ class Repository(rhnRepository.Repository):
         elif file_name.endswith(".yaml"):
             content_type = "text/yaml"
         # pylint: disable-next=consider-using-f-string
-        file_path = "%s/%s/%s" % (CFG.REPOMD_PATH_PREFIX, self.channelName, file_name)
+        file_path = "%s/%s/%s" % (REPOMD_PATH_PREFIX, self.channelName, file_name)
         if file_name in ["comps.xml", "modules.yaml"]:
             # without checksum in the filename, they are only available in the old style
             return self._repodata_python(file_name)

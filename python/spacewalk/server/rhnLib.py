@@ -33,6 +33,10 @@ from .rhnMapping import check_package_arch
 # directory below the mount point where packages are stored
 PACKAGE_DIR = "packages"
 
+# directory below the repomd cache mount point where the repository metadata
+# is stored. Keep in sync with ConfigDefaults.REPOMD_PATH_PREFIX in Java
+REPOMD_PATH_PREFIX = "rhn/repodata"
+
 
 def computeSignature(*fields):
     # Init the hash

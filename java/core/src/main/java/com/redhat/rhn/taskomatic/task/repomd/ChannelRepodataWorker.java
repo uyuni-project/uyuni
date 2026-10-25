@@ -67,7 +67,7 @@ public class ChannelRepodataWorker implements QueueWorker {
     public ChannelRepodataWorker(Map<String, Object> workItem, Logger parentLogger) {
         logger = parentLogger;
 
-        String prefixPath = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
+        String prefixPath = ConfigDefaults.REPOMD_PATH_PREFIX;
         String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
 
         channelLabelToProcess = (String) workItem.get("channel_label");
