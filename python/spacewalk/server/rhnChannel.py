@@ -274,13 +274,11 @@ class Channel(BaseChannelObject):
             os = dist.get("os")
             self._dists[release] = os
 
-    _query_get_db_channel_families = rhnSQL.Statement(
-        """
+    _query_get_db_channel_families = rhnSQL.Statement("""
         select channel_family_id
           from rhnChannelFamilyMembers
          where channel_id = :channel_id
-    """
-    )
+    """)
 
     def _get_db_channel_families(self, channel_id):
         if channel_id is None:
@@ -299,14 +297,12 @@ class Channel(BaseChannelObject):
         dists = self._get_db_dists(channel_id)
         self.set_dists(dists)
 
-    _query_get_db_dists = rhnSQL.Statement(
-        """
+    _query_get_db_dists = rhnSQL.Statement("""
         select os, release
           from rhnDistChannelMap
          where channel_id = :channel_id
          and org_id is null
-    """
-    )
+    """)
 
     def _get_db_dists(self, channel_id):
         if channel_id is None:
@@ -452,19 +448,15 @@ class Channel(BaseChannelObject):
         self._save_channel_families()
         self._save_dists()
 
-    _query_remove_channel_families = rhnSQL.Statement(
-        """
+    _query_remove_channel_families = rhnSQL.Statement("""
         delete from rhnChannelFamilyMembers
          where channel_id = :channel_id
            and channel_family_id = :channel_family_id
-    """
-    )
-    _query_add_channel_families = rhnSQL.Statement(
-        """
+    """)
+    _query_add_channel_families = rhnSQL.Statement("""
         insert into rhnChannelFamilyMembers (channel_id, channel_family_id)
         values (:channel_id, :channel_family_id)
-    """
-    )
+    """)
 
     def _save_channel_families(self):
         channel_id = self._row["id"]
@@ -517,13 +509,11 @@ class Channel(BaseChannelObject):
         self._update_dists(to_update[0], to_update[1])
         self._add_dists(to_add[0], to_add[1])
 
-    _query_add_dists = rhnSQL.Statement(
-        """
+    _query_add_dists = rhnSQL.Statement("""
         insert into rhnDistChannelMap
                (channel_id, channel_arch_id, release, os, org_id)
         values (:channel_id, :channel_arch_id, :release, :os, null)
-        """
-    )
+        """)
 
     def _add_dists(self, releases, oses):
         self._modify_dists(self._query_add_dists, releases, oses)
@@ -540,28 +530,24 @@ class Channel(BaseChannelObject):
         h = rhnSQL.prepare(query)
         h.executemany(**query_args)
 
-    _query_update_dists = rhnSQL.Statement(
-        """
+    _query_update_dists = rhnSQL.Statement("""
         update rhnDistChannelMap
            set channel_arch_id = :channel_arch_id,
                os = :os
          where channel_id = :channel_id
            and release = :release
            and org_id is null
-    """
-    )
+    """)
 
     def _update_dists(self, releases, oses):
         self._modify_dists(self._query_update_dists, releases, oses)
 
-    _query_remove_dists = rhnSQL.Statement(
-        """
+    _query_remove_dists = rhnSQL.Statement("""
         delete from rhnDistChannelMap
          where channel_id = :channel_id
            and release = :release
            and org_id is null
-    """
-    )
+    """)
 
     def _remove_dists(self, releases):
         self._modify_dists(self._query_remove_dists, releases, None)
@@ -647,8 +633,7 @@ def channel_info(channel):
     log_debug(3, channel)
 
     # get the channel information
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select
         ca.label arch,
         c.id,
@@ -666,8 +651,7 @@ def channel_info(channel):
     where
           c.channel_arch_id = ca.id
       and c.label = :channel
-    """
-    )
+    """)
     h.execute(channel=str(channel))
     ret = h.fetchone_dict()
     return __stringify(ret)
@@ -678,8 +662,7 @@ def channel_info(channel):
 
 def get_base_channel(server_id, none_ok=0):
     log_debug(3, server_id)
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select
         ca.label arch,
         c.id,
@@ -695,8 +678,7 @@ def get_base_channel(server_id, none_ok=0):
       and sc.channel_id = c.id
       and c.channel_arch_id = ca.id
       and c.parent_channel is NULL
-    """
-    )
+    """)
     h.execute(server_id=str(server_id))
     ret = h.fetchone_dict()
     if not ret:
@@ -726,8 +708,7 @@ def channels_for_server(server_id):
     # list all the channels this server is subscribed to. We also want
     # to know if any of those channels has local packages in it... A
     # local package has a org_id set.
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select
         ca.label arch,
         c.id,
@@ -753,8 +734,7 @@ def channels_for_server(server_id):
         and s.id = :server_id
         and ca.id = c.channel_arch_id
     order by c.parent_channel nulls first
-    """
-    )
+    """)
     h.execute(
         server_id=str(server_id), metadata_signed=(CFG.SIGN_METADATA == 1 and 1 or 0)
     )
@@ -803,8 +783,7 @@ def isCustomChannel(channel_id):
             False if this is not a custom channel
     """
     log_debug(3, channel_id)
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select
         rcf.label
     from
@@ -814,8 +793,7 @@ def isCustomChannel(channel_id):
         rcfm.channel_id = :channel_id
         and rcfm.channel_family_id = rcf.id
         and rcf.org_id is not null
-    """
-    )
+    """)
     h.execute(channel_id=str(channel_id))
     label = h.fetchone()
     if label:
@@ -1077,8 +1055,7 @@ def channels_for_release_arch(release, server_arch, org_id=-1, user_id=None):
     # We assume here that subchannels are compatible with the base channels,
     # so there would be no need to check for arch compatibility from this
     # point
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select
         ca.label arch,
         c.id,
@@ -1107,8 +1084,7 @@ def channels_for_release_arch(release, server_arch, org_id=-1, user_id=None):
     and cp.channel_id = c.id
     and cp.org_id = :org_id
     and c.parent_channel = :parent_channel
-    """
-    )
+    """)
     h.execute(org_id=org_id, parent_channel=base_channel["id"], user_id=user_id)
 
     channels = [base_channel]
@@ -1128,8 +1104,7 @@ def channels_for_release_arch(release, server_arch, org_id=-1, user_id=None):
     return __stringify(channels)
 
 
-_query_get_source_packages_from_ids = rhnSQL.Statement(
-    """
+_query_get_source_packages_from_ids = rhnSQL.Statement("""
     select srpm.name
       from rhnChannelPackage cp,
            rhnPackage p,
@@ -1137,8 +1112,7 @@ _query_get_source_packages_from_ids = rhnSQL.Statement(
      where cp.channel_id = :channel_id
        and cp.package_id = p.id
        and p.source_rpm_id = srpm.id
-"""
-)
+""")
 
 
 def list_packages_source(channel_id):
@@ -1441,8 +1415,7 @@ def list_all_packages_complete_sql(channel_id):
     # return the latest packages from the specified channel
     h = rhnSQL.prepare(_query_latest_packages_from_channel)
     # This gathers the provides, requires, conflicts, obsoletes info
-    g = rhnSQL.prepare(
-        """
+    g = rhnSQL.prepare("""
     select
        pp.package_id,
        'provides' as capability_type,
@@ -1582,8 +1555,7 @@ def list_all_packages_complete_sql(channel_id):
     where
        pdep.package_id = :package_id
        and pdep.capability_id = pc.id
-    """
-    )
+    """)
 
     h.execute(channel_id=str(channel_id))
     # XXX This query has to order the architectures somehow; the 7.2 up2date
@@ -1651,8 +1623,7 @@ def list_all_packages_complete_sql(channel_id):
 def list_packages_path(channel_id):
     log_debug(3, channel_id)
     # return the latest packages from the specified channel
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select
         p.path
     from
@@ -1661,8 +1632,7 @@ def list_packages_path(channel_id):
     where
         cp.channel_id = :channel_id
     and cp.package_id = p.id
-    """
-    )
+    """)
     h.execute(channel_id=str(channel_id))
     ret = h.fetchall()
     if not ret:
@@ -1850,8 +1820,7 @@ def list_obsoletes(channel):
         return ret
 
     # Get the obsoleted packages
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
         select  distinct
                 pn.name,
                 pe.version, pe.release, pe.epoch,
@@ -1880,8 +1849,7 @@ def list_obsoletes(channel):
             and p.evr_id = pe.id
             and p.package_arch_id = pa.id
             and p_info.capability_id = pc.id
-    """
-    )
+    """)
     h.execute(channel=str(channel))
     # Store stuff in a dictionary to makes things simpler
     # pylint: disable-next=redefined-builtin
@@ -1917,14 +1885,12 @@ def __auth_user(server_id, username, password):
     user = rhnUser.auth_username_password(username, password)
     # The user's password checks, verify that they have perms on that
     # server.
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select 1
     from rhnUserServerPerms usp
     where usp.user_id = :user_id
     and   usp.server_id = :server_id
-    """
-    )
+    """)
     h.execute(user_id=str(user.getid()), server_id=str(server_id))
     res = h.fetchone_dict()
     if not res:
@@ -1967,32 +1933,26 @@ def subscribe_sql(server_id, channel_id, commit=1):
     return 1
 
 
-_query_channel_details = rhnSQL.Statement(
-    """
+_query_channel_details = rhnSQL.Statement("""
 select c.id, c.label, c.parent_channel
   from rhnChannel c
  where c.label = :channel
-"""
-)
+""")
 
-_query_server_parent_channel = rhnSQL.Statement(
-    """
+_query_server_parent_channel = rhnSQL.Statement("""
 select pc.id, pc.label
   from rhnChannel c
   join rhnServerChannel sc on c.parent_channel = sc.channel_id
   join rhnChannel pc on c.parent_channel = pc.id
  where sc.server_id = :sid
  group by pc.id, pc.label
-"""
-)
+""")
 
-_query_can_subscribe = rhnSQL.Statement(
-    """
+_query_can_subscribe = rhnSQL.Statement("""
 select rhn_channel.user_role_check(:cid, wc.id, 'subscribe') as can_subscribe
   from web_contact wc
  where wc.login_uc = upper(:username)
-"""
-)
+""")
 
 
 # subscribe a server to a channel with authentication
@@ -2157,13 +2117,11 @@ def guess_channels_for_server(server, user_id=None, none_ok=0, raise_exceptions=
         raise rhnException("Server object is not a LiteServer")
     if None in (server.org_id, server.release, server.arch):
         # need to obtain the release and/or arch and/or org_id
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
         select s.org_id, s.release, sa.label arch
         from rhnServer s, rhnServerArch sa
         where s.id = :server_id and s.server_arch_id = sa.id
-        """
-        )
+        """)
         h.execute(server_id=server.id)
         ret = h.fetchone_dict()
         if not ret:
@@ -2284,11 +2242,9 @@ def unsubscribe_channel(server_id, channel, username, password):
     __auth_user(server_id, username, password)
 
     # now get the id of the channel
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select id, parent_channel from rhnChannel where label = :channel
-    """
-    )
+    """)
     h.execute(channel=channel)
     ret = h.fetchone_dict()
     if not ret:
@@ -2327,8 +2283,7 @@ def unsubscribe_all_channels(server_id):
     log_debug(3, server_id)
     # We need to unsubscribe the children channels before the base ones.
     rhnSQL.transaction("unsub_all_channels")
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select
         sc.channel_id id
     from
@@ -2338,8 +2293,7 @@ def unsubscribe_all_channels(server_id):
         sc.server_id = :server_id
     and sc.channel_id = c.id
     order by c.parent_channel nulls last
-    """
-    )
+    """)
     h.execute(server_id=str(server_id))
     while 1:
         c = h.fetchone_dict()
@@ -2383,16 +2337,14 @@ def subscribe_channels(server_id, channels):
 # check if a server is subscribed to a channel
 def is_subscribed(server_id, channel):
     log_debug(3, server_id, channel)
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select 1 subscribed
     from rhnServerChannel sc, rhnChannel c
     where
         sc.channel_id = c.id
     and c.label = :channel
     and sc.server_id = :server_id
-    """
-    )
+    """)
     h.execute(server_id=str(server_id), channel=str(channel))
     ret = h.fetchone_dict()
     if not ret:
@@ -2408,13 +2360,11 @@ def is_subscribed(server_id, channel):
 def system_reg_message(server):
     server_id = server.server["id"]
     # Is this system subscribed to a channel?
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
         select sc.channel_id
           from rhnServerChannel sc
          where sc.server_id = :server_id
-    """
-    )
+    """)
     h.execute(server_id=server_id)
     ret = h.fetchone_dict()
     if not ret:
@@ -2462,13 +2412,11 @@ def subscribe_to_tools_channel(server_id):
         # pylint: disable-next=consider-using-f-string
         raise NoBaseChannelError("Server %s has no base channel." % str(server_id))
 
-    lookup_child_channels = rhnSQL.Statement(
-        """
+    lookup_child_channels = rhnSQL.Statement("""
         select  id, label, parent_channel
           from  rhnChannel
          where  parent_channel = :id
-    """
-    )
+    """)
 
     child_channel_data = rhnSQL.prepare(lookup_child_channels)
     child_channel_data.execute(id=base_channel_dict["id"])
@@ -2510,30 +2458,24 @@ def subscribe_to_tools_channel(server_id):
 # will be safe to get rid of all this crap
 
 s_invalid_channel_title = _("System Registered but Inactive")
-s_invalid_channel_message = _(
-    """
+s_invalid_channel_message = _("""
 Invalid Architecture and OS release combination (%s, %s).
 Your system has been registered, but will not receive updates
 because it could not be subscribed to a base channel.
 Please contact your organization administrator for assistance.
-"""
-)
+""")
 
-no_autoentitlement_message = _(
-    """
+no_autoentitlement_message = _("""
   This system has been successfully registered, but is not yet entitled
   to service.  To entitle this system to service, login to the web site at:
 
   %(entitlement_url)s
-"""
-)
+""")
 
 no_entitlement_title = _("System Registered but Inactive")
-no_entitlement_message = _(
-    """
+no_entitlement_message = _("""
   This system has been successfully registered, but no service entitlements
   were available.  To entitle this system to service, login to the web site at:
 
   %(entitlement_url)s
-"""
-)
+""")
