@@ -72,7 +72,6 @@ class Repository(rhnRepository.Repository):
         self.functions.append("listAllPackagesChecksum")
         self.functions.append("listAllPackagesComplete")
         self.functions.append("repodata")
-        self.set_compress_headers(CFG.COMPRESS_HEADERS)
         self.redirect_location = None
 
     def listChannels(self):

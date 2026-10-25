@@ -256,7 +256,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `proxy_auth_timeout` | [`python/spacewalk/server/handlers/xmlrpc/proxy.py:176`](python/spacewalk/server/handlers/xmlrpc/proxy.py#L176) |
 | rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
 | rhn_server.conf | `nls_lang` | [`web/modules/rhn/RHN/DBI.pm:49`](web/modules/rhn/RHN/DBI.pm#L49) |
-| rhn_server.conf | `compress_headers` | [`python/spacewalk/server/rhnRepository.py:74`](python/spacewalk/server/rhnRepository.py#L74) |
 | rhn_server.conf | `qos` | [`python/spacewalk/server/rhnHandler.py:48`](python/spacewalk/server/rhnHandler.py#L48) |
 | rhn_server.conf | `throttle` | [`python/spacewalk/server/rhnHandler.py:46`](python/spacewalk/server/rhnHandler.py#L46) |
 | rhn_server.conf | `session_lifetime` | [`python/spacewalk/server/rhnSession.py:50`](python/spacewalk/server/rhnSession.py#L50) |

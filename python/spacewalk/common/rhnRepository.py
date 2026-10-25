@@ -45,7 +45,6 @@ class Repository(RPC_Base):
         RPC_Base.__init__(self)
         self.channelName = channelName
         # Default visible functions.
-        self.compress_headers = 1
         self.functions = [
             "getPackage",
             "getPackageSource",
@@ -54,9 +53,6 @@ class Repository(RPC_Base):
             "installation_xml",
             "media_1",
         ]
-
-    def set_compress_headers(self, val):
-        self.compress_headers = val
 
     def __del__(self):
         self.channelName = None
