@@ -112,6 +112,19 @@ Package downloads of Salt clients do not use this setting.
 16384
 
 .TP
+.B "server.session_lifetime" (seconds)
+Lifetime of the sessions which
+.B mgr-push
+gets when it logs in to upload packages.
+When a session expires,
+.B mgr-push
+logs in again.
+Web UI sessions do not use this setting.
+.IP
+.B Default:
+1800
+
+.TP
 .B "java.taskomatic_channel_repodata_workers" (integer)
 This parameter controls how many repodata workers should generate repodata information concurrently.
 If the number of repodata workers running on the system are bigger than defined on
