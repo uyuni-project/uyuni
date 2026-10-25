@@ -586,6 +586,16 @@ public class ConfigDefaults {
     }
 
     /**
+     * Return the base directory of the generated repository metadata and the OVAL data.
+     * The default is defined in the default rhn.conf; the fallback only covers setups where
+     * that file is older than this code.
+     * @return the repomd cache mount point directory
+     */
+    public String getRepomdCacheMountPoint() {
+        return Config.get().getString(REPOMD_CACHE_MOUNT_POINT, "/var/cache");
+    }
+
+    /**
      * Returns the list of default kickstart packages names
      * @return the list of default kickstart packages names
      */

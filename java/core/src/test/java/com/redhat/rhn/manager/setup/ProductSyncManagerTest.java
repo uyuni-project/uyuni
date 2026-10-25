@@ -220,8 +220,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         Map<String, com.redhat.rhn.domain.channel.Channel> channelByLabel = new HashMap<>();
 
         // Change default mount point for temporary repodata directory
-        String oldMountPoint = Config.get().getString(
-                ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
+        String oldMountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT);
         File tempMountPoint = File.createTempFile("repomd-test", "");
         tempMountPoint.delete();
         tempMountPoint.mkdir();
@@ -463,8 +462,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     private void generateFakeMetadataForChannelLabel(String channelLabel)
             throws IOException {
         String prefix = ConfigDefaults.REPOMD_PATH_PREFIX;
-        String mountPoint = Config.get().getString(
-                ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
+        String mountPoint = ConfigDefaults.get().getRepomdCacheMountPoint();
         File repoPath = new File(mountPoint + File.separator + prefix +
                 File.separator + channelLabel);
         if (!repoPath.mkdirs()) {

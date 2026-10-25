@@ -1190,7 +1190,7 @@ class UserRepoError(UserError):
             "Unable to read repository information.\n"
             + "Please verify repodata has been generated in "
             # pylint: disable-next=consider-using-f-string
-            + "/var/cache/rhn/repodata/%s." % label
+            + "%s." % repodata(label)
         )
         if error:
             # pylint: disable-next=consider-using-f-string

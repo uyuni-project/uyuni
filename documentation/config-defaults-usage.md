@@ -38,6 +38,7 @@ reference is listed. Line numbers refer to the state of the
 | rhn.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn.conf | `enable_snapshots` | [`python/spacewalk/server/rhnServer/server_lib.py:269`](python/spacewalk/server/rhnServer/server_lib.py#L269) |
 | rhn.conf | `mount_point` | [`python/spacewalk/server/handlers/app/packages.py:579`](python/spacewalk/server/handlers/app/packages.py#L579) |
+| rhn.conf | `repomd_cache_mount_point` | [`java/core/src/main/java/com/redhat/rhn/taskomatic/task/repomd/ChannelRepodataWorker.java:69`](java/core/src/main/java/com/redhat/rhn/taskomatic/task/repomd/ChannelRepodataWorker.java#L69) |
 | rhn.conf | `default_mail_from` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:73`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L73) |
 | rhn.conf | `db_ssl_enabled` | [`python/spacewalk/server/rhnSQL/__init__.py:134`](python/spacewalk/server/rhnSQL/__init__.py#L134) |
 | rhn.conf | `db_sslrootcert` | [`python/spacewalk/server/rhnSQL/__init__.py:136`](python/spacewalk/server/rhnSQL/__init__.py#L136) |

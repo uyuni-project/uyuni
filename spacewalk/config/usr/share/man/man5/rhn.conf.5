@@ -48,15 +48,18 @@ Define the directory used to store the kickstart trees.
 
 .TP
 .B "repomd_cache_mount_point"
-Define the directory used to store the packages, errata, channels, kickstart trees and also store the repositories metadata
-cache information. It is generated when using Spacewalk/Red Hat Satellite on demand when the client asks for thoses files.
-These cache files are stored in
-.B /var/cache/rhn
-and the storage needs of this directory will vary greatly. We suggest at least 10GB of space in
-.B /var/cache/rhn
-on Spacewalk/Red Hat Satellite server. Very large environments will need to increase the amount of space in
-.B /var/cache/rhn
-that directory.
+Define the base directory for the generated repository metadata of the software channels
+.RB ( rhn/repodata )
+and the downloaded OVAL data
+.RB ( rhn/ovals ).
+The storage needs of this directory vary with the number and size of the channels.
+Changing it also requires adapting the
+.B XSendFilePath
+and
+.B Directory
+settings for
+.B /var/cache/rhn/repodata
+in the Apache configuration and the storage volume of the container.
 
 .IP
 .B Default:

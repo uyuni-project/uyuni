@@ -431,7 +431,7 @@ def __rmtree_error(op, name, exc):
 
 
 def __deleteRepoData(labels):
-    directory = "/var/cache/" + REPOMD_PATH_PREFIX
+    directory = os.path.join(CFG.REPOMD_CACHE_MOUNT_POINT, REPOMD_PATH_PREFIX)
     for label in labels:
         if os.path.isdir(directory + "/" + label):
             # pylint: disable-next=deprecated-argument

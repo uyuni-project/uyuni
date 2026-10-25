@@ -17,7 +17,6 @@
 
 package com.suse.oval.ovaldownloader;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
@@ -66,7 +65,7 @@ public class OVALDownloader {
      * */
     public OVALDownloader(OVALConfig configIn) {
         this.config = configIn;
-        String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/var/cache");
+        String mountPoint = ConfigDefaults.get().getRepomdCacheMountPoint();
         Path ovalCacheDirPath = Path.of(mountPoint, "rhn", "ovals").toAbsolutePath();
 
         try {
