@@ -257,7 +257,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
 | rhn_server.conf | `session_lifetime` | [`python/spacewalk/server/rhnSession.py:50`](python/spacewalk/server/rhnSession.py#L50) |
 | rhn_server.conf | `secret_key` | [`python/spacewalk/server/apacheAuth.py:94`](python/spacewalk/server/apacheAuth.py#L94) |
-| rhn_server.conf | `reset_base_channel` | [`python/spacewalk/server/rhnServer/server_class.py:217`](python/spacewalk/server/rhnServer/server_class.py#L217) |
 | rhn_server.conf | `repomd_path_prefix` | [`python/spacewalk/server/rhnRepository.py:249`](python/spacewalk/server/rhnRepository.py#L249) |
 | rhn_server.conf | `use_taskomatic_repomd` | [`python/spacewalk/server/rhnRepository.py:284`](python/spacewalk/server/rhnRepository.py#L284) |
 | rhn_server.conf | `checksum_priority_list` | [`python/spacewalk/satellite_tools/xmlSource.py:641`](python/spacewalk/satellite_tools/xmlSource.py#L641) |

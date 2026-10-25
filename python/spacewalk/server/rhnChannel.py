@@ -2079,13 +2079,6 @@ class LiteServer:
     def get_suse_products(self):
         return self.suse_products
 
-    def add_suse_products(self, suse_products):
-        log_debug(1, suse_products)
-        if isinstance(suse_products, dict):
-            self.suse_products = suse_products["products"]
-        elif isinstance(suse_products, list):
-            self.suse_products = suse_products
-
     def __repr__(self):
         # pylint: disable-next=redefined-builtin
         dict = {}
@@ -2361,38 +2354,6 @@ def unsubscribe_all_channels(server_id):
                 "Could not unsubscribe server %s "
                 "from existing channels" % (server_id,),
             )
-    # finished unsubscribing
-    return 1
-
-
-# Unsubscribe the server from the channels in the list
-# A channel is a hash containing at least the keys:
-# [id, label, parent_channel]
-
-
-def unsubscribe_channels(server_id, channels):
-    log_debug(4, server_id, channels)
-    if not channels:
-        # Nothing to do
-        return 1
-
-    # We need to unsubscribe the children channels before the base ones.
-    rhnSQL.transaction("unsub_channels")
-
-    base_channels = [x for x in channels if not x["parent_channel"]]
-    child_channels = [x for x in channels if x["parent_channel"]]
-
-    for channel in child_channels + base_channels:
-        ret = unsubscribe_sql(server_id, channel["id"], 0)
-        if not ret:
-            rhnSQL.rollback("unsub_channels")
-            raise rhnFault(
-                36,
-                # pylint: disable-next=consider-using-f-string
-                "Could not unsubscribe server %s "
-                "from channel %s" % (server_id, channel["label"]),
-            )
-
     # finished unsubscribing
     return 1
 
