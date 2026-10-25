@@ -84,15 +84,11 @@ class apacheHandler(apacheSession):
         if ret != apache.OK:
             return ret
         # make sure we have DB connection
-        if not CFG.SEND_MESSAGE_TO_ALL:
-            try:
-                rhnSQL.initDB()
-            except rhnSQL.SQLConnectError:
-                rhnTB.Traceback(mail=1, req=req, severity="schema")
-                return apache.HTTP_INTERNAL_SERVER_ERROR
-        else:
-            # If in outage mode, close the DB connections
-            rhnSQL.closeDB()
+        try:
+            rhnSQL.initDB()
+        except rhnSQL.SQLConnectError:
+            rhnTB.Traceback(mail=1, req=req, severity="schema")
+            return apache.HTTP_INTERNAL_SERVER_ERROR
 
         # Store client capabilities
         client_cap_header = "X-RHN-Client-Capability"
@@ -144,27 +140,25 @@ class apacheHandler(apacheSession):
         if ret != apache.OK:
             return ret
 
-        if not CFG.SEND_MESSAGE_TO_ALL:
-            # Need to get any string template overrides here, before any app
-            # code gets executed, as the rhnFault error messages use the
-            # templates
-            # If send_message_to_all, we don't have DB connectivity though
-            h = rhnSQL.prepare("select label, value from rhnTemplateString")
-            h.execute()
+        # Need to get any string template overrides here, before any app
+        # code gets executed, as the rhnFault error messages use the
+        # templates
+        h = rhnSQL.prepare("select label, value from rhnTemplateString")
+        h.execute()
 
-            templateStrings = {}
-            while 1:
-                row = h.fetchone_dict()
-                if not row:
-                    break
+        templateStrings = {}
+        while 1:
+            row = h.fetchone_dict()
+            if not row:
+                break
 
-                templateStrings[row["label"]] = row["value"]
+            templateStrings[row["label"]] = row["value"]
 
-            if templateStrings:
-                rhnFlags.set("templateOverrides", templateStrings)
+        if templateStrings:
+            rhnFlags.set("templateOverrides", templateStrings)
 
-            # pylint: disable-next=consider-using-f-string
-            log_debug(4, "template strings:  %s" % templateStrings)
+        # pylint: disable-next=consider-using-f-string
+        log_debug(4, "template strings:  %s" % templateStrings)
 
         if not CFG.SECRET_KEY:
             # Secret key not defined, complain loudly
@@ -207,8 +201,7 @@ class apacheHandler(apacheSession):
             rhnSQL.rollback()
         # pylint: disable-next=unused-variable
         except Exception as exc:
-            if not CFG.SEND_MESSAGE_TO_ALL:
-                rhnSQL.rollback()
+            rhnSQL.rollback()
             raise
         log_debug(4, "Leave with return value", ret)
         return ret

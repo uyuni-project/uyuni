@@ -121,20 +121,6 @@ class apacheRequest:
 
     # call a function with parameters
     def call_function(self, method, params):
-        # short-circuit everything if sending a system-wide message.
-        if CFG.SEND_MESSAGE_TO_ALL:
-            # Fetch global message being sent to clients if applicable.
-            # pylint: disable-next=unspecified-encoding
-            msg = open(CFG.MESSAGE_TO_ALL).read()
-            # pylint: disable-next=consider-using-f-string
-            log_debug(3, "Sending message to all clients: %s" % msg)
-            # Send the message as a fault.
-            response = xmlrpclib.Fault(-1, _("IMPORTANT MESSAGE FOLLOWS:\n%s") % msg)
-            # and now send everything back
-            ret = self.response(response)
-            log_debug(4, "Leave with return value", ret)
-            return ret
-
         # req: where the response is sent to
         log_debug(2, method)
 
