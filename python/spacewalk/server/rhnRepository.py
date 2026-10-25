@@ -269,22 +269,7 @@ class Repository(rhnRepository.Repository):
             raise
 
     def repodata(self, file_name):
-        # By default we're using taskomatic's repomd. But if the config
-        # value is present and set to anything other than 1, we'll use the
-        # old python code
-        use_taskomatic = True
-        try:
-            use_taskomatic = CFG.USE_TASKOMATIC_REPOMD == 1
-        except AttributeError:
-            pass
-
-        # pylint: disable-next=consider-using-f-string
-        log_debug(4, "Using taskomatic for repomd generation: %s" % use_taskomatic)
-
-        if use_taskomatic:
-            return self._repodata_taskomatic(file_name)
-        else:
-            return self._repodata_python(file_name)
+        return self._repodata_taskomatic(file_name)
 
     # Helper functions
     # These functions are not private, they should be defined as 'protected',
