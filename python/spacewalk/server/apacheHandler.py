@@ -215,7 +215,7 @@ class apacheHandler(apacheSession):
         while 1:
             pid = status = -1
             try:
-                (pid, status) = os.waitpid(-1, 0)
+                pid, status = os.waitpid(-1, 0)
             except OSError:
                 break
             else:
