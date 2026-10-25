@@ -100,6 +100,15 @@ This parameter controls which is the maximum allowed size for configuration file
 32768
 
 .TP
+.B "server.buffer_size" (bytes)
+Size of the chunks in which the server streams files, like packages and repository metadata, to clients through the XMLRPC GET requests.
+Larger values can increase the download throughput on fast networks at the cost of more memory per request.
+Package downloads of Salt clients do not use this setting.
+.IP
+.B Default:
+16384
+
+.TP
 .B "java.taskomatic_channel_repodata_workers" (integer)
 This parameter controls how many repodata workers should generate repodata information concurrently.
 If the number of repodata workers running on the system are bigger than defined on
