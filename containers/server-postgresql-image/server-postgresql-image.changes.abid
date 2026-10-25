@@ -1,0 +1,5 @@
+- Fix DB upgrade failure on old installations where the manager
+  and report databases were owned by the PostgreSQL superuser
+  instead of their application users. Add upgrade script
+  04-fix-db-ownership that retroactively corrects ownership
+  during upgrade (uyuni#12781)
