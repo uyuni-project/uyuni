@@ -64,21 +64,40 @@ class PackagesParser:
         packages_file: currently an "_io.TextIOWrapper" format (or any file-like object)
         """
         curr_package = {}
+        current_key = None
+
         for line in packages_file:
-            if line not in ["\n", "\r\n"]:
-                row = line.split(": ")
-                if len(row) != 2:
-                    logging.debug(
-                        "Bad format in Packages file: In row: %s. Skipping package..",
-                        row,
-                    )
-                    continue
-                key, val = row[0], row[1].rstrip("\n")
-                curr_package[key] = val
-            else:
-                # End of package data
-                yield curr_package
+            line = line.rstrip("\r\n")
+
+            if not line:
+                if curr_package:
+                    yield curr_package
                 curr_package = {}
+                current_key = None
+                continue
+
+            # Preserve indentation for Description and other multiline fields.
+            if line.startswith((" ", "\t")):
+                if current_key is None:
+                    raise ValueError(
+                        "Continuation line without a preceding field"
+                    )
+                curr_package[current_key] += "\n" + line
+                continue
+
+            # Field values can themselves contain colons.
+            key, separator, value = line.partition(":")
+            if not separator or not key:
+                raise ValueError(
+                    f"Invalid field in Packages file: {line!r}"
+                )
+
+            current_key = key
+            curr_package[key] = value.lstrip(" \t")
+
+        # The final stanza may have no terminating blank line.
+        if curr_package:
+            yield curr_package
 
     def get_deb_package_hdr(self, pkg_data: dict):
         """
