@@ -39,15 +39,12 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
 
     public static final Map<String, Object> EXPECTED_FILE_CONFIGURATIONS = Map.of(
             "server", String.class,
-            "ca_crt", String.class,
             "proxy_fqdn", String.class,
             "max_cache_size_mb", Long.class,
             "server_version", String.class,
             "email", String.class,
             "httpd", Map.of(
-                    "system_id", String.class,
-                    "server_crt", String.class,
-                    "server_key", String.class
+                    "system_id", String.class
             ),
             "ssh", Map.of(
                     "server_ssh_key_pub", String.class,

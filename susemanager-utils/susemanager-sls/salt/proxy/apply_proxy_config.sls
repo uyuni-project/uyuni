@@ -25,7 +25,7 @@ mgrpxy_installed:
     - template: jinja
     - contents: |
         server: {{ pillar['server'] }}
-        {%- if not use_secrets %}
+        {%- if not use_secrets and pillar.get('ca_crt') %}
         ca_crt: |
           {{ pillar['ca_crt'] | replace('\\n', '\n') | indent(10) }}
         {%- endif %}
@@ -46,7 +46,7 @@ mgrpxy_installed:
     - contents: |
         httpd:
           system_id: {{ pillar['httpd']['system_id'] }}
-          {%- if not use_secrets %}
+          {%- if not use_secrets and pillar['httpd'].get('server_crt') and pillar['httpd'].get('server_key') %}
           server_crt: |
             {{ pillar['httpd']['server_crt'] | replace('\\n', '\n') | indent(12) }}
           server_key: |
@@ -103,13 +103,16 @@ install_proxy_packages:
 {% endif %}
 
 {%- if use_secrets %}
+{%- if pillar.get('ca_crt') %}
 uyuni-ca-secret:
   cmd.run:
     - name: /usr/bin/podman secret rm -i uyuni-ca ; /usr/bin/podman secret create uyuni-ca -
     - stdin: {{ pillar['ca_crt'] | replace('\\n', '\n') | json }}
     - require:
       - pkg: podman_installed
+{%- endif %}
 
+{%- if pillar['httpd'].get('server_crt') and pillar['httpd'].get('server_key') %}
 uyuni-proxy-cert-secret:
   cmd.run:
     - name: /usr/bin/podman secret rm -i uyuni-proxy-cert ; /usr/bin/podman secret create uyuni-proxy-cert -
@@ -123,6 +126,7 @@ uyuni-proxy-key-secret:
     - stdin: {{ pillar['httpd']['server_key'] | replace('\\n', '\n') | json }}
     - require:
       - pkg: podman_installed
+{%- endif %}
 {%- endif %}
 
 {% if transactional %}
@@ -187,9 +191,13 @@ apply_proxy_configuration:
       - pkg: podman_installed
       - pkg: mgrpxy_installed
       {%- if use_secrets %}
+      {%- if pillar.get('ca_crt') %}
       - cmd: uyuni-ca-secret
+      {%- endif %}
+      {%- if pillar['httpd'].get('server_crt') and pillar['httpd'].get('server_key') %}
       - cmd: uyuni-proxy-cert-secret
       - cmd: uyuni-proxy-key-secret
+      {%- endif %}
       {%- endif %}
 
 {%- endif %}
