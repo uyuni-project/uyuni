@@ -26696,20 +26696,18 @@ canal indicat.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="needs-adaptation">Creeu o editeu canals de programari des d'aquesta pàgina.
-        lt;p/gt;
-        Si el canal pare està establert a «none», el canal és un canal base.
-        Altrament, el canal és fill del canal especificat.
-        lt;p/gt;
-        El nom i l'etiqueta del canal són necessaris.lt;brgt;
-        Cadascun ha de tenir com a mínim 6 caràcters de longitud.lt;brgt;
-        El nom del canal no ha de tenir més de 256 caràcters i l'etiqueta del canal no ha de tenir més de 128 caràcters.lt;brgt;
-        El nom i l'etiqueta del canal poden començar amb una lletra o un dígit.lt;brgt;
-        Cadascun no ha de començar amb rhn, redhat o red hat.lt;brgt;
-        Cadascun ha de contenir només lletres minúscules, guions ('-'), punts ('.'), guions baixos (''), i numerals.lt;brgt;
-        El nom del canal també pot contenir espais, parèntesis () i barres cap endavant ('/').
-        lt;p/gt;
-        El resum del canal també és obligatori i no ha de superar els 500 caràcters.
+        <target state="translated">Creeu o editeu canals de programari des d'aquesta pàgina.
+        &lt;p/&gt;
+        Si el canal pare s'estableix com a «cap», el canal és un canal base.
+        En cas contrari, el canal és un canal fill del canal especificat.
+        &lt;p/&gt;
+        El nom i l'etiqueta del canal són obligatoris.&lt;br&gt;
+        El nom del canal ha de tenir entre 6 i 256 caràcters i començar per una lletra o un dígit.&lt;br&gt;
+        El nom del canal només pot contenir lletres, dígits, espais, apòstrofs ('), guions ('-'), punts ('.'), guions baixos ('_'), parèntesis () i barres inclinades ('/').&lt;br&gt;
+        L'etiqueta del canal ha de tenir entre 6 i 128 caràcters i començar per una lletra minúscula o un dígit.&lt;br&gt;
+        L'etiqueta del canal només pot contenir lletres minúscules, dígits, guions ('-'), punts ('.') i guions baixos ('_').
+        &lt;p/&gt;
+        El resum del canal també és obligatori i no pot superar els 500 caràcters.
         </target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.public" xml:space="preserve">
@@ -29834,14 +29832,14 @@ lt;/pgt;
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
-        <target state="translated">Esperant el reinici</target>
+        <target state="translated">S'espera el reinici</target>
       </trans-unit>
       <trans-unit id="system.event.transactional" xml:space="preserve">
         <source>Transactional progress:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
-        <target state="translated">Progrés de la transacció:</target>
+        <target state="translated">Progrés transaccional:</target>
       </trans-unit>
       <trans-unit id="system.event.transactional.step.prerequisites" xml:space="preserve">
         <source>Prerequisites</source>
@@ -29918,7 +29916,7 @@ lt;/pgt;
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
-        <target state="translated">posada a la cua</target>
+        <target state="translated">a la cua</target>
       </trans-unit>
       <trans-unit id="system.event.transactional.at" xml:space="preserve">
         <source> at </source>
@@ -29939,7 +29937,7 @@ lt;/pgt;
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/ssm/provisioning/RemoteCommand</context>
         </context-group>
-        <target state="translated">Usa l'actualització transaccional</target>
+        <target state="translated">Usa una actualització transaccional</target>
       </trans-unit>
     </body>
   </file>
