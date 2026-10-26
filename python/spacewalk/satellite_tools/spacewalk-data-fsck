@@ -40,26 +40,6 @@ report_msg = {
 report = {}
 
 
-def is_sha256_capable():
-    # pylint: disable-next=import-outside-toplevel
-    import rpm
-    # pylint: disable-next=import-outside-toplevel
-    from rhn.stringutils import sstr
-
-    ts = rpm.TransactionSet()
-    mi = ts.dbMatch("Providename", "spacewalk-schema")
-    cmp = -1
-    try:
-        h = next(mi)
-        cmp = rpm.labelCompare(
-            [sstr(h["name"]), sstr(h["version"]), sstr(h["release"])],
-            [sstr(h["name"]), "0.8.1", "1"],
-        )
-    except StopIteration:
-        pass
-    return cmp > 0
-
-
 def db_init():
     initCFG("server")
     rhnSQL.initDB()
@@ -87,11 +67,8 @@ def package_query(options, bind_path=False):
     columns = "p.id, p.org_id, p.package_size, p.path"
     tables = "rhnPackage p"
     if options.checksum or options.nevrao:
-        if is_sha256_capable():
-            columns += ", c.checksum, c.checksum_type"
-            tables += " join rhnChecksumView c on p.checksum_id = c.id"
-        else:
-            columns += ", p.md5sum as checksum, 'md5sum' as checksum_type"
+        columns += ", c.checksum, c.checksum_type"
+        tables += " join rhnChecksumView c on p.checksum_id = c.id"
     if options.nevrao:
         columns += ", n.name, evr.epoch, evr.version, evr.release, a.label as arch"
         tables += " join rhnPackageName n on p.name_id = n.id"
