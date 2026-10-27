@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,15 +7,13 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.manager.content.ubuntu;
 
 import java.util.Map;
-import java.util.Optional;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Release {
     private Map<String, Urls> archs;
@@ -24,18 +22,35 @@ public class Release {
     private Map<String, Binary> allbinaries;
 
     public Map<String, PackageInfo> getBinaries() {
-        return binaries;
+        return Objects.requireNonNullElseGet(binaries, () -> Map.of());
     }
 
     public Map<String, Binary> getAllbinaries() {
-        return allbinaries;
+        return Objects.requireNonNullElseGet(allbinaries, () -> Map.of());
     }
 
     public Map<String, PackageInfo> getSources() {
-        return sources;
+        return Objects.requireNonNullElseGet(sources, () -> Map.of());
     }
 
-    public Optional<Map<String, Urls>> getArchs() {
-        return Optional.ofNullable(archs);
+    public Map<String, Urls> getArchs() {
+        return Objects.requireNonNullElseGet(archs, () -> Map.of());
+    }
+
+    /**
+     * Retrieves a map of packages associated with this release. The key is the package name meanwhile
+     * the value is the corresponding version.
+     *
+     * @return the package name -> version map for all the packages associated with this release.
+     */
+    public Map<String, String> getPackageMap() {
+        Map<String, ? extends BasePackageInfo> packageMap = getAllbinaries();
+        if (packageMap.isEmpty()) {
+            packageMap = getBinaries();
+        }
+
+        return packageMap.entrySet().stream()
+                .map(entry -> Map.entry(entry.getKey(), entry.getValue().getVersion()))
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 }

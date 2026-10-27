@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,29 +7,15 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.manager.content.ubuntu;
 
 import java.util.Optional;
 
-public class Binary {
-    private String pocket;
-    private String version;
+public class Binary extends BasePackageInfo {
     private Optional<String> source = Optional.empty();
 
     public Optional<String> getSource() {
         return source;
-    }
-
-    public String getPocket() {
-        return pocket;
-    }
-
-    public String getVersion() {
-        return version;
     }
 }
