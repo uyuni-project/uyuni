@@ -3,3 +3,5 @@
   environments
 - Create missing hotfix channels of built content lifecycle
   environments on startup
+- Create the hotfix channel when building or promoting a content
+  lifecycle environment

@@ -392,6 +392,10 @@ public class ContentManager {
             return src;
         }
         else if (sourceType == SW_CHANNEL) {
+            if (HOTFIX_LABEL.equals(sourceLabel)) {
+                throw new ContentManagementException("Channel with label '" + HOTFIX_LABEL +
+                        "' cannot be a source, its label collides with the hotfix channels");
+            }
             Channel channel = getChannel(sourceLabel, user);
             SoftwareProjectSource newSource = new SoftwareProjectSource(project, channel);
             project.addSource(newSource, position);
@@ -652,7 +656,15 @@ public class ContentManager {
             throw new IllegalStateException("Environment " + envLabel + " must have exactly one leader channel");
         }
 
-        alignEnvironment(nextEnv, baseChannels.get(0), childChannels.stream(), emptyList(), async, user);
+        // the hotfix channel gets promoted like the other channels
+        Channel hotfixChannel = ensureHotfixTarget(env, user).getChannel();
+        Stream<Channel> childAndHotfixChannels = Stream.concat(
+                childChannels.stream().filter(c -> !c.equals(hotfixChannel)),
+                Stream.of(hotfixChannel));
+
+        alignEnvironment(nextEnv, baseChannels.get(0), childAndHotfixChannels, emptyList(), async, user);
+        // on the first promotion the hotfix channel gets cloned as a regular target, flag it
+        ensureHotfixTarget(nextEnv, user);
 
         nextEnv.setVersion(env.getVersion());
     }
@@ -697,6 +709,7 @@ public class ContentManager {
         }
 
         buildSoftwareSources(firstEnv, async, user);
+        ensureHotfixTarget(firstEnv, user);
         ContentProjectHistoryEntry entry = addHistoryEntry(message, user, project);
         firstEnv.setVersion(entry.getVersion());
     }
@@ -739,6 +752,10 @@ public class ContentManager {
             throw new ContentManagementException("Channel " + channelLabel + " does not exist");
         }
         if (!channel.isCloned()) {
+            if (isHotfixChannel(currentEnv, channel)) {
+                LOG.debug("Hotfix channel {} has no original to compare with", channelLabel);
+                return;
+            }
             throw new ContentManagementException("Channel is not a cloned channel: %s"
                     .formatted(channelLabel));
         }
@@ -778,6 +795,8 @@ public class ContentManager {
 
             List<Channel> channels = currentEnv.getTargets().stream()
                     .flatMap(tgt -> stream(tgt.asSoftwareTarget()))
+                    // the hotfix channel of the first Environment has no original to compare with
+                    .filter(tgt -> !tgt.isHotfix() || tgt.getChannel().isCloned())
                     .map(SoftwareEnvironmentTarget::getChannel).toList();
             for (Channel channel : channels) {
                 if (!channel.isCloned()) {
@@ -804,7 +823,11 @@ public class ContentManager {
      */
     public void diffEnvironmentChannel(ContentProject project, ContentEnvironment env, Channel channel,
                                         List<ContentFilter> filters) throws DependencyResolutionException {
-        if (filters == null) {
+        if (isHotfixChannel(env, channel)) {
+            // promoting copies the hotfix channel without filters
+            filters = emptyList();
+        }
+        else if (filters == null) {
             DependencyResolver resolver = new DependencyResolver(project, this.modulemdApi);
             DependencyResolutionResult result = resolver.resolveFilters(project.getActiveFilters());
             filters = result.getFilters();
@@ -981,6 +1004,13 @@ public class ContentManager {
         // ensure targets for the sources exist
         List<Pair<Channel, SoftwareEnvironmentTarget>> newSrcTgtPairs =
                 cloneChannelsToEnv(env, baseChannel, childChannels, user);
+
+        // the hotfix channel is not a project source, keep it below the current leader channel
+        Channel leaderChannel = newSrcTgtPairs.get(0).getRight().getChannel();
+        env.getTargets().stream()
+                .flatMap(t -> t.asSoftwareTarget().stream())
+                .filter(SoftwareEnvironmentTarget::isHotfix)
+                .forEach(tgt -> tgt.getChannel().setParentChannel(leaderChannel));
 
         // remove targets that are not needed anymore
         Set<SoftwareEnvironmentTarget> newTargets = newSrcTgtPairs.stream()
@@ -1174,18 +1204,19 @@ public class ContentManager {
     /**
      * Ensure the {@link ContentEnvironment} has a hotfix {@link SoftwareEnvironmentTarget}.
      *
-     * The hotfix channel is a child of the base channel of the Environment. In the first Environment it is
-     * a new channel, in the following Environments it is a clone of the hotfix channel of the previous
-     * Environment, which gets created first when it is missing.
+     * The hotfix channel is a child of the Environment's base channel. It is cloned from the previous
+     * Environment's hotfix channel, which gets created first when it is missing, or created empty if there is
+     * no built previous Environment.
      *
      * @param env the Environment
      * @param user the user
      * @return the hotfix target of the Environment
-     * @throws ContentManagementException when the Environment has no base channel
+     * @throws ContentManagementException when the Environment has no base channel, or another channel in the
+     * Environment has the label of the hotfix channel
      */
     public SoftwareEnvironmentTarget ensureHotfixTarget(ContentEnvironment env, User user) {
         List<SoftwareEnvironmentTarget> swTargets = env.getTargets().stream()
-                .flatMap(t -> stream(t.asSoftwareTarget()))
+                .flatMap(t -> t.asSoftwareTarget().stream())
                 .toList();
         Optional<SoftwareEnvironmentTarget> hotfixTarget = swTargets.stream()
                 .filter(SoftwareEnvironmentTarget::isHotfix)
@@ -1194,39 +1225,60 @@ public class ContentManager {
             return hotfixTarget.get();
         }
 
-        Channel baseChannel = swTargets.stream()
-                .map(SoftwareEnvironmentTarget::getChannel)
-                .filter(Channel::isBaseChannel)
-                .findFirst()
+        Channel baseChannel = findBaseChannel(env)
                 .orElseThrow(() -> new ContentManagementException("Environment " + env.getLabel() +
                         " of Content Project " + env.getContentProject().getLabel() + " has no base channel"));
+        // an unbuilt previous Environment, e.g. a newly inserted first one, has no hotfix channel to clone
         Optional<Channel> prevHotfixChannel = env.getPrevEnvironmentOpt()
+                .filter(prevEnv -> findBaseChannel(prevEnv).isPresent())
                 .map(prevEnv -> ensureHotfixTarget(prevEnv, user).getChannel());
-        String label = prevHotfixChannel
-                .map(prev -> channelLabelInEnvironment(prev.getLabel(), env))
-                .orElseGet(() -> channelLabelInEnvironment(HOTFIX_LABEL, env));
+        String label = prefixString(env) + HOTFIX_LABEL;
 
-        // the hotfix channel may already exist as a regular target, e.g. after promoting it
         Optional<SoftwareEnvironmentTarget> labelTarget = swTargets.stream()
                 .filter(tgt -> tgt.getChannel().getLabel().equals(label))
                 .findFirst();
         if (labelTarget.isPresent()) {
-            labelTarget.get().setHotfix(true);
-            return labelTarget.get();
+            SoftwareEnvironmentTarget existingTarget = labelTarget.get();
+            // promoting clones the hotfix channel as a regular target
+            boolean isPromotedHotfix = prevHotfixChannel.isPresent() &&
+                    existingTarget.getChannel().asCloned().map(ClonedChannel::getOriginal)
+                            .equals(prevHotfixChannel);
+            if (!isPromotedHotfix) {
+                throw new ContentManagementException("Channel " + label + " in Environment " + env.getLabel() +
+                        " of Content Project " + env.getContentProject().getLabel() +
+                        " collides with the hotfix channel label. Detach the source channel with label '" +
+                        HOTFIX_LABEL + "' from the project.");
+            }
+            existingTarget.setHotfix(true);
+            return existingTarget;
         }
 
         SoftwareEnvironmentTarget target = prevHotfixChannel
                 .map(prev -> createSoftwareTarget(prev, of(baseChannel), env, user, false))
-                .orElseGet(() -> createFirstHotfixTarget(env, baseChannel, label, user));
+                .orElseGet(() -> createNewHotfixTarget(env, baseChannel, label, user));
         target.setHotfix(true);
         // the repodata generation of the new channel sets the target to BUILT
         target.setStatus(EnvironmentTarget.Status.GENERATING_REPODATA);
         return target;
     }
 
-    private SoftwareEnvironmentTarget createFirstHotfixTarget(ContentEnvironment env, Channel baseChannel,
+    private static Optional<Channel> findBaseChannel(ContentEnvironment env) {
+        return env.getTargets().stream()
+                .flatMap(t -> stream(t.asSoftwareTarget()))
+                .map(SoftwareEnvironmentTarget::getChannel)
+                .filter(Channel::isBaseChannel)
+                .findFirst();
+    }
+
+    private static boolean isHotfixChannel(ContentEnvironment env, Channel channel) {
+        return env.getTargets().stream()
+                .flatMap(t -> stream(t.asSoftwareTarget()))
+                .anyMatch(tgt -> tgt.isHotfix() && tgt.getChannel().equals(channel));
+    }
+
+    private SoftwareEnvironmentTarget createNewHotfixTarget(ContentEnvironment env, Channel baseChannel,
             String label, User user) {
-        String name = channelNameInEnvironment(HOTFIX_NAME, env);
+        String name = prefixString(env) + HOTFIX_NAME;
         CreateChannelCommand createCmd = new CreateChannelCommand();
         createCmd.setUser(user);
         createCmd.setLabel(label);
