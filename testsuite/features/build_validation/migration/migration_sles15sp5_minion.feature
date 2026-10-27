@@ -11,6 +11,7 @@ Feature: Migrate a SLES 15 SP5 Salt minion to SLES 16.1
   Scenario: Prerequisite: update OS zypper to the latest version
     When I upgrade "zypper" on "sles15sp5_minion" using the API
     And I upgrade all packages on "sles15sp5_minion" using the API, waiting at most 1800 seconds
+    And I reboot the "sles15sp5_minion" host through SSH, waiting until it comes back
 
   Scenario: Migrate this minion to SLES 16.1
     Given I am on the Systems overview page of this "sles15sp5_minion"
