@@ -28,6 +28,9 @@ public class ScheduledRequestJson {
     /** The action chain to which to add */
     private Optional<String> actionChain = Optional.empty();
 
+    /** The optional action description/comment for the action */
+    private Optional<String> actionDescription = Optional.empty();
+
     /**
      * @return the earliest
      */
@@ -54,5 +57,19 @@ public class ScheduledRequestJson {
      */
     public void setActionChain(Optional<String> actionChainIn) {
         actionChain = actionChainIn;
+    }
+
+    /**
+     * @return the action description
+     */
+    public Optional<String> getActionDescription() {
+        return actionDescription;
+    }
+
+    /**
+     * @param actionDescriptionIn The action description to set.
+     */
+    public void setActionDescription(Optional<String> actionDescriptionIn) {
+        actionDescription = actionDescriptionIn;
     }
 }

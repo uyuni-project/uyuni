@@ -574,7 +574,7 @@ public class SystemsController {
         }
 
         ActionChain actionChain = MinionActionUtils.getActionChain(json.getActionChain(), user);
-        Date earliest = MinionActionUtils.getScheduleDate(json.getEarliest());
+        Date earliest = MinionActionUtils.getScheduleDate(json);
 
         try {
             Set<Action> sca = ActionChainManager.scheduleSubscribeChannelsAction(user,

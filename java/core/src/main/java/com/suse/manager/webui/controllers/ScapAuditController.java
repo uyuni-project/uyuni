@@ -53,6 +53,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
@@ -64,6 +65,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.controllers.utils.MultipartRequestUtil;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.AuditScanScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.ScapContentJson;
@@ -875,9 +877,7 @@ public class ScapAuditController {
                 return result(res, ResultJson.error(validationError));
             }
 
-            Date earliest = reqData.getEarliest()
-                    .map(ldt -> Date.from(ldt.atZone(java.time.ZoneId.systemDefault()).toInstant()))
-                    .orElse(new Date());
+            Date earliest = MinionActionUtils.getScheduleDate(reqData);
 
             // Resolve SCAP content filename
             String dataStreamName = reqData.getDataStreamName();
@@ -1658,13 +1658,21 @@ public class ScapAuditController {
     public String applyRemediation(Request request, Response response, User user) {
         Action action;
         String successMessage;
+        ApplyRemediationJson body;
         try {
+            body = GSON.fromJson(request.body(), ApplyRemediationJson.class);
+        }
+        catch (JsonParseException e) {
+            return result(response, ResultJson.error("Invalid JSON request body"));
+        }
 
-            ApplyRemediationJson body = GSON.fromJson(request.body(), ApplyRemediationJson.class);
-            String validationError = validateRemediationBody(body);
-            if (validationError != null) {
-                return result(response, ResultJson.error(validationError));
-            }
+        String validationError = validateRemediationBody(body);
+        if (validationError != null) {
+            return result(response, ResultJson.error(validationError));
+        }
+
+        Date earliestDate = MinionActionUtils.getScheduleDate(body);
+        try {
             Server server = SystemManager.lookupByIdAndUser(body.getServerId(), user);
             if (server == null) {
                 response.status(HttpStatus.SC_NOT_FOUND);
@@ -1673,11 +1681,11 @@ public class ScapAuditController {
 
             ScriptType scriptType = ScriptType.fromValue(body.getScriptType());
             if (scriptType == ScriptType.BASH) {
-                action = createBashRemediationAction(body, user, server);
+                action = createBashRemediationAction(body, user, server, earliestDate);
                 successMessage = "Bash remediation scheduled successfully";
             }
             else if (scriptType == ScriptType.SALT) {
-                action = createSaltRemediationAction(body, user, server);
+                action = createSaltRemediationAction(body, user, server, earliestDate);
                 successMessage = "Salt remediation scheduled successfully";
             }
             else {
@@ -1691,9 +1699,6 @@ public class ScapAuditController {
             );
             return result(response, ResultJson.success(result));
         }
-        catch (JsonParseException e) {
-            return result(response, ResultJson.error("Invalid JSON request body"));
-        }
         catch (TaskomaticApiException e) {
             LOG.error("Failed to schedule remediation action", e);
             return result(response, ResultJson.error("Failed to schedule remediation: " + e.getMessage()));
@@ -1701,6 +1706,9 @@ public class ScapAuditController {
         catch (Exception e) {
             LOG.error("Error applying remediation", e);
             return result(response, ResultJson.error("Failed to apply remediation: " + e.getMessage()));
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
 
@@ -1729,7 +1737,8 @@ public class ScapAuditController {
      * @param server the target server
      * @return the created and saved ScriptRunAction
      */
-    private Action createBashRemediationAction(ApplyRemediationJson body, User user, Server server) {
+    private Action createBashRemediationAction(ApplyRemediationJson body, User user, Server server,
+                                               Date earliestDate) {
         final long scriptTimeout = 300L;
         String script = body.getRemediationContent();
         if (!script.stripLeading().startsWith("#!")) {
@@ -1741,6 +1750,7 @@ public class ScapAuditController {
                 .ofType(ActionTypeEnum.TYPE_SCRIPT_RUN)
                 .withSchedulerUser(user)
                 .withOrg(user.getOrg())
+                .withEarliest(earliestDate)
                 .withName(REMEDIATION_ACTION_PREFIX + body.getRuleIdentifier())
                 .build();
 
@@ -1757,9 +1767,11 @@ public class ScapAuditController {
      * @param body the remediation request containing Salt state content
      * @param user the user scheduling the action
      * @param server the target server (must be a Salt minion)
+     * @param earliestDate the date of earliest execution
      * @return the created and saved ApplyStatesAction
      */
-    private Action createSaltRemediationAction(ApplyRemediationJson body, User user, Server server) {
+    private Action createSaltRemediationAction(ApplyRemediationJson body, User user, Server server,
+                                               Date earliestDate) {
         // Pass Salt state content via pillar data
         Map<String, Object> pillar = new HashMap<>();
         pillar.put("scap_remediation_state", body.getRemediationContent());
@@ -1768,7 +1780,7 @@ public class ScapAuditController {
                 Collections.singletonList(server.getId()),
                 Collections.singletonList("scap.remediation"),
                 Optional.of(pillar),
-                new Date(),
+                earliestDate,
                 Optional.empty()
         );
         action.setName(REMEDIATION_ACTION_PREFIX + body.getRuleIdentifier());

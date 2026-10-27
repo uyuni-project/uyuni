@@ -30,11 +30,13 @@ export const AppStreamsChangesConfirm = ({
 }: AppStreamsChangesConfirmProps) => {
   const [earliest, setEarliest] = useState(localizedMoment());
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
+  const [actionDescription, setActionDescription] = useState<string>("");
   const payload = {
     toEnable: toEnable,
     toDisable: toDisable,
     actionChainLabel: actionChain?.text,
     earliest: earliest,
+    actionDescription: actionDescription,
   };
 
   if (sid) {
@@ -96,8 +98,10 @@ export const AppStreamsChangesConfirm = ({
           <ActionSchedule
             earliest={earliest}
             actionChains={window.actionChains}
+            actionDescription={actionDescription}
             onActionChainChanged={(ac) => setActionChain(ac)}
             onDateTimeChanged={(date) => setEarliest(date)}
+            onActionDescriptionChanged={(desc) => setActionDescription(desc)}
             systemIds={window.minions?.map((m) => m.id)}
             actionType="states.apply"
           />

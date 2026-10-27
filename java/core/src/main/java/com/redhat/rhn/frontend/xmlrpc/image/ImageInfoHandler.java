@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
@@ -409,6 +410,37 @@ public class ImageInfoHandler extends BaseHandler {
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Schedule an image build with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param profileLabel Label of the image profile
+     * @param version Version to build or empty
+     * @param buildHostId System id of the build host
+     * @param earliestOccurrence Earliest the build can run
+     * @param actionDescription Comment / action description
+     * @return the ID of the build action created
+     *
+     * @apidoc.doc Schedule an image build with an action description
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "profileLabel")
+     * @apidoc.param #param_desc("string", "version", "version to build or empty")
+     * @apidoc.param #param_desc("int", "buildHostId", "system id of the build host")
+     * @apidoc.param #param_desc("$date", "earliestOccurrence", "earliest the build can run.")
+     * @apidoc.param #param_desc("string", "actionDescription", "Comment / action description")
+     * @apidoc.returntype #param("int", "the ID of the build action created")
+     */
+    public Long scheduleImageBuild(User loggedInUser, String profileLabel, String version,
+            Integer buildHostId, Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleImageBuild(loggedInUser, profileLabel, version, buildHostId, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
 

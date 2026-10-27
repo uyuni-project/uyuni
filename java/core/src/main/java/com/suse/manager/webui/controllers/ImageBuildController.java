@@ -403,7 +403,7 @@ public class ImageBuildController {
             return badRequest(response, "");
         }
 
-        Date scheduleDate = MinionActionUtils.getScheduleDate(buildRequest.getEarliest());
+        Date scheduleDate = MinionActionUtils.getScheduleDate(buildRequest);
         ActionChain actionChain = MinionActionUtils.getActionChain(buildRequest.getActionChain(), user);
 
         Long profileId = Long.parseLong(request.params("id"));
@@ -447,7 +447,7 @@ public class ImageBuildController {
             return badRequest(res, "");
         }
 
-        Date scheduleDate = MinionActionUtils.getScheduleDate(inspectRequest.getEarliest());
+        Date scheduleDate = MinionActionUtils.getScheduleDate(inspectRequest);
 
         Long imageId = Long.parseLong(req.params("id"));
 
@@ -489,7 +489,7 @@ public class ImageBuildController {
             return badRequest(res, "invalid_id");
         }
 
-        Date scheduleDate = MinionActionUtils.getScheduleDate(data.getEarliest());
+        Date scheduleDate = MinionActionUtils.getScheduleDate(data);
         return ImageStoreFactory.lookupByIdAndOrg(data.getStoreId(), user.getOrg())
                 .map(store -> {
                     try {

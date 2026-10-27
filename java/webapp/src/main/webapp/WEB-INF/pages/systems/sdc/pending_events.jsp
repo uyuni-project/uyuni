@@ -65,6 +65,11 @@
     <rl:column headerkey="system.event.history.summary">
       <a href="/rhn/systems/details/history/Event.do?sid=${param.sid}&amp;aid=${current.id}">${current.summary}</a>
     </rl:column>
+    <rl:column headerkey="actions.jsp.action_description" styleclass="action-description-col">
+      <div class="action-description-wrapper">
+        <c:out value="${current.actionDescription}" />
+      </div>
+    </rl:column>
     <rl:column headerkey="system.event.pending.earliest">
       <rhn:formatDate value="${current.scheduledFor}"/>
     </rl:column>

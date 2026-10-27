@@ -70,6 +70,7 @@ const ScheduleAuditScan = (): JSX.Element => {
     return Network.post(ENDPOINTS.SCHEDULE_CREATE, {
       ids: window.minions?.map((m) => m.id),
       earliest: model.earliest,
+      actionDescription: model.actionDescription,
       xccdfProfileId: model.xccdfProfileId,
       scapContentId: model.dataStreamName,
       tailoringFileId: model.tailoringFile,

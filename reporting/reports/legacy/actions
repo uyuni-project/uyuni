@@ -13,6 +13,7 @@ columns:
   earliest Earliest date of the action execution
   type_name Type of the action
   action_name Name of the action
+  action_description Action description
   scheduler Id of the scheduler
   scheduler_name Scheduler name
   in_progress_systems In progress systems
@@ -35,6 +36,7 @@ sql:
     uao.earliest_action AS earliest,
     uao.type_name,
     (CASE uao.action_name WHEN NULL THEN uao.type_name ELSE uao.action_name END) AS action_name,
+    uao.action_description,
     uao.scheduler,
     wc.login AS scheduler_name,
     CASE WHEN SA.status IN (0,1) THEN S.name ELSE NULL END AS in_progress_systems,

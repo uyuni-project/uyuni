@@ -33,6 +33,7 @@ public class Context {
     private Locale originalLocale;
     private String activeLocaleLabel;
     private TimeZone timezone;
+    private String actionDescription;
 
     private static final ThreadLocal<Context> CURRENT_CONTEXT = new ThreadLocal<>();
 
@@ -112,6 +113,28 @@ public class Context {
      */
     public void setTimezone(TimeZone timezoneIn) {
         this.timezone = timezoneIn;
+    }
+
+    /**
+     * Getter for actionDescription / scheduleReason
+     * @return String to get
+     */
+    public String getActionDescription() {
+        return this.actionDescription;
+    }
+
+    public static final int MAX_ACTION_DESCRIPTION_LENGTH = 1000;
+
+    /**
+     * Setter for actionDescription / scheduleReason
+     * @param actionDescriptionIn to set
+     */
+    public void setActionDescription(String actionDescriptionIn) {
+        if (actionDescriptionIn != null && actionDescriptionIn.length() > MAX_ACTION_DESCRIPTION_LENGTH) {
+            throw new IllegalArgumentException("Action description cannot exceed " +
+                    MAX_ACTION_DESCRIPTION_LENGTH + " characters.");
+        }
+        this.actionDescription = actionDescriptionIn;
     }
 
     /**

@@ -47,6 +47,7 @@ import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -474,6 +475,9 @@ public class RecurringActionController {
                 .map(RecurringStateConfig::getStateName)
                 .collect(Collectors.toList());
 
+        if (json.getScheduleName() != null && !json.getScheduleName().isBlank()) {
+            Context.getCurrentContext().setActionDescription("Recurring Action: " + json.getScheduleName());
+        }
         try {
             Action a = ActionManager.scheduleApplyStates(user,
                     minionIds, mods,
@@ -495,6 +499,9 @@ public class RecurringActionController {
         catch (NotInMaintenanceModeException e) {
             String errMsg = LocalizationService.getInstance().getMessage("recurring_action.not_in_maint_mode");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(errMsg)));
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
         return success(response);
     }
