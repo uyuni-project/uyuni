@@ -26,6 +26,7 @@ Feature: Mass import of Retail terminals behind a containerized proxy
     And I am on the Systems page
     Then I should see the terminals imported from the configuration file
 
+  @pxeboot_bootstrap
   Scenario: Bootstrap the PXE boot minion
     # Workaround for bsc#1220864 - Containerized Proxy has not mgr-bootstrap command
     When I create the bootstrap script for "proxy.example.org" hostname and "1-TERMINAL-KEY-x86_64" activation key on "server"
@@ -36,6 +37,7 @@ Feature: Mass import of Retail terminals behind a containerized proxy
     Then I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "pxeboot_minion", refreshing the page
 
+  @pxeboot_needs_minion
   Scenario: Check connection from bootstrapped terminal to proxy
     Given I am on the Systems page
     When I follow "pxeboot" terminal
@@ -43,6 +45,7 @@ Feature: Mass import of Retail terminals behind a containerized proxy
     And I follow "Connection" in the content area
     Then I should see a "proxy.example.org" text
 
+  @pxeboot_needs_minion
   Scenario: Install a package on the bootstrapped terminal
     Given I am on the Systems page
     When I follow "pxeboot" terminal
@@ -56,6 +59,7 @@ Feature: Mass import of Retail terminals behind a containerized proxy
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
+  @pxeboot_needs_minion
   Scenario: Remove the package from the bootstrapped terminal
     Given I am on the Systems page
     When I follow "pxeboot" terminal
@@ -69,6 +73,7 @@ Feature: Mass import of Retail terminals behind a containerized proxy
     Then I should see a "1 package removal has been scheduled" text
     When I wait until event "Package Removal scheduled by admin" is completed
 
+  @pxeboot_needs_minion
   Scenario: Cleanup: make sure salt-minion is stopped after mass import
     When I wait until Salt client is inactive on the PXE boot minion
 

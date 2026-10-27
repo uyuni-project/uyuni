@@ -86,25 +86,29 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     When I restart cobbler on the server
     Then service "cobblerd" is active on "server"
 
+  @pxeboot_bootstrap
   Scenario: PXE boot the PXE boot minion
     When I set the default PXE menu entry to the target profile on the "server"
     And I reboot the Cobbler terminal "pxeboot_minion"
     And I wait for "60" seconds
     And I set the default PXE menu entry to the local boot on the "server"
-    And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
+    And I wait at most 600 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
 
+  @pxeboot_needs_minion
   Scenario: Assure the PXE boot minion is onboarded
     Given I am on the Systems page
     When I wait until I see the name of "pxeboot_minion", refreshing the page
     And I wait until onboarding is completed for "pxeboot_minion"
     Then "pxeboot_minion" should have been reformatted
 
+  @pxeboot_needs_minion
   Scenario: Check connection from PXE boot minion to the proxy
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see a "proxy.example.org" text
 
+  @pxeboot_needs_minion
   Scenario: Install a package on the PXE boot minion
     When I install the GPG key of the test packages repository on the PXE boot minion
     And I follow "Software" in the content area
@@ -144,6 +148,7 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     When I remove packages "tftpboot-installation-SLE-15-SP7-x86_64 expect" from this "build_host"
     And I remove the autoinstallation files from the server
 
+  @pxeboot_needs_minion
   Scenario: Cleanup: delete the PXE boot minion
     When I delete "pxeboot_minion" system using the api
     And I wait until Salt client is inactive on the PXE boot minion

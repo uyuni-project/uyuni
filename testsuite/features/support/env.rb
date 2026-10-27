@@ -576,6 +576,16 @@ Before('@pxeboot_minion') do
   skip_this_scenario unless $pxeboot_mac
 end
 
+# Each PXE boot feature has one @pxeboot_bootstrap scenario that registers the PXE boot minion.
+# If it fails, the @pxeboot_needs_minion scenarios are skipped instead of each waiting for a minion that never came.
+After('@pxeboot_bootstrap') do |scenario|
+  add_context(:pxeboot_minion_failed, true) if scenario.failed?
+end
+
+Before('@pxeboot_needs_minion') do
+  skip_this_scenario if get_context(:pxeboot_minion_failed)
+end
+
 Before('@sshminion') do
   env_var_name = get_env_var_with_fallback('sshminion')
   skip_this_scenario unless ENV.key?(env_var_name)
