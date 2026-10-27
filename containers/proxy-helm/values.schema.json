@@ -127,6 +127,26 @@
       ],
       "type": "object"
     },
+    "saltServiceConfig": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/serviceConfig",
+          "required": []
+        },
+        {
+          "properties": {
+            "allowPortsChange": {
+              "default": false,
+              "description": "Allow changing the Salt ports of an existing installation. Registered minions are disconnected by such a change and need to be bootstrapped again.",
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "type": "object"
+        }
+      ],
+      "required": []
+    },
     "serviceConfig": {
       "properties": {
         "annotations": {
@@ -503,7 +523,7 @@
           ]
         },
         "salt": {
-          "$ref": "#/definitions/serviceConfig",
+          "$ref": "#/definitions/saltServiceConfig",
           "description": "Values setting up the salt service.",
           "required": []
         },
