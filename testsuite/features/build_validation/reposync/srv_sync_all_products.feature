@@ -176,8 +176,155 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @sles160_minion
   Scenario: Add SUSE Linux Enterprise Server 16.0 Uyuni Client tools
-    When I use spacewalk-common-channel to add channel "sles16-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "sles16-devel-uyuni-client-x86_64" has been synced
+    When I use spacewalk-common-channel to add channel "sles16-0-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles16-0-devel-uyuni-client-x86_64" has been synced
+
+@sles161_minion
+  Scenario: Add SUSE Linux Enterprise Server 16.1
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text, refreshing the page
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 16.1" as the filtered product description
+    And I wait until I see "SUSE Linux Enterprise Server 16.1 x86_64" text
+    And I open the sub-list of the product "SUSE Linux Enterprise Server 16.1 x86_64"
+    When I select "SUSE Linux Enterprise Server 16.1 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 16.1 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server 16.1 x86_64" product has been added
+    And I wait until all synchronized channels for "sles16.1" have finished
+
+@uyuni
+@sles161_minion
+  Scenario: Add SUSE Linux Enterprise Server 16.1 Uyuni Client tools
+    When I use spacewalk-common-channel to add channel "sles16-1-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles16-1-devel-uyuni-client-x86_64" has been synced
+
+@slesforsap15sp5_minion
+  Scenario: Add SUSE Linux Enterprise Server for SAP Applications 15 SP5
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text, refreshing the page
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server for SAP Applications 15 SP5" as the filtered product description
+    And I select "SUSE Linux Enterprise Server for SAP Applications 15 SP5 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server for SAP Applications 15 SP5 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server for SAP Applications 15 SP5 x86_64"
+    And I open the sub-list of the product "Basesystem Module 15 SP5 x86_64"
+    And I select "Desktop Applications Module 15 SP5 x86_64" as a product
+    Then I should see the "Desktop Applications Module 15 SP5 x86_64" selected
+    When I open the sub-list of the product "Desktop Applications Module 15 SP5 x86_64"
+    And I select "Development Tools Module 15 SP5 x86_64" as a product
+    Then I should see the "Development Tools Module 15 SP5 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server for SAP Applications 15 SP5 x86_64" product has been added
+    And I wait until all synchronized channels for "slesforsap15-sp5" have finished
+
+@uyuni
+@slesforsap15sp5_minion
+  Scenario: Add SUSE Linux Enterprise Server for SAP Applications 15 SP5 Uyuni Client tools
+    When I use spacewalk-common-channel to add channel "sles15-sap-sp5-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles15-sap-sp5-devel-uyuni-client-x86_64" has been synced
+
+@slesforsap15sp6_minion
+  Scenario: Add SUSE Linux Enterprise Server for SAP Applications 15 SP6
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text, refreshing the page
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server for SAP Applications 15 SP6" as the filtered product description
+    And I select "SUSE Linux Enterprise Server for SAP Applications 15 SP6 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server for SAP Applications 15 SP6 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server for SAP Applications 15 SP6 x86_64"
+    And I open the sub-list of the product "Basesystem Module 15 SP6 x86_64"
+    And I select "Desktop Applications Module 15 SP6 x86_64" as a product
+    Then I should see the "Desktop Applications Module 15 SP6 x86_64" selected
+    When I open the sub-list of the product "Desktop Applications Module 15 SP6 x86_64"
+    And I select "Development Tools Module 15 SP6 x86_64" as a product
+    Then I should see the "Development Tools Module 15 SP6 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server for SAP Applications 15 SP6 x86_64" product has been added
+    And I wait until all synchronized channels for "slesforsap15-sp6" have finished
+
+@uyuni
+@slesforsap15sp6_minion
+  Scenario: Add SUSE Linux Enterprise Server for SAP Applications 15 SP6 Uyuni Client tools
+    When I use spacewalk-common-channel to add channel "sles15-sap-sp6-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles15-sap-sp6-devel-uyuni-client-x86_64" has been synced
+
+@slesforsap15sp7_minion
+  Scenario: Add SUSE Linux Enterprise Server for SAP Applications 15 SP7
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text, refreshing the page
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server for SAP Applications 15 SP7" as the filtered product description
+    And I select "SUSE Linux Enterprise Server for SAP Applications 15 SP7 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server for SAP Applications 15 SP7 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server for SAP Applications 15 SP7 x86_64"
+    And I open the sub-list of the product "Basesystem Module 15 SP7 x86_64"
+    And I select "Desktop Applications Module 15 SP7 x86_64" as a product
+    Then I should see the "Desktop Applications Module 15 SP7 x86_64" selected
+    When I open the sub-list of the product "Desktop Applications Module 15 SP7 x86_64"
+    And I select "Development Tools Module 15 SP7 x86_64" as a product
+    Then I should see the "Development Tools Module 15 SP7 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server for SAP Applications 15 SP7 x86_64" product has been added
+    And I wait until all synchronized channels for "slesforsap15-sp7" have finished
+
+@uyuni
+@slesforsap15sp7_minion
+  Scenario: Add SUSE Linux Enterprise Server for SAP Applications 15 SP7 Uyuni Client tools
+    When I use spacewalk-common-channel to add channel "sles15-sap-sp7-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles15-sap-sp7-devel-uyuni-client-x86_64" has been synced
+
+@slesforsap160_minion
+  Scenario: Add SUSE Linux Enterprise Server for SAP applications 16.0
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text, refreshing the page
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server for SAP applications 16.0" as the filtered product description
+    And I wait until I see "SUSE Linux Enterprise Server for SAP applications 16.0 x86_64" text
+    And I open the sub-list of the product "SUSE Linux Enterprise Server for SAP applications 16.0 x86_64"
+    When I select "SUSE Linux Enterprise Server for SAP applications 16.0 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server for SAP applications 16.0 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server for SAP applications 16.0 x86_64" product has been added
+    And I wait until all synchronized channels for "slesforsap16" have finished
+
+@uyuni
+@slesforsap160_minion
+  Scenario: Add SUSE Linux Enterprise Server for SAP applications 16.0 Uyuni Client tools
+    When I use spacewalk-common-channel to add channel "sles16-sap-0-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles16-sap-0-devel-uyuni-client-x86_64" has been synced
+
+@slesforsap161_minion
+  Scenario: Add SUSE Linux Enterprise Server for SAP applications 16.1
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text, refreshing the page
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server for SAP applications 16.1" as the filtered product description
+    And I wait until I see "SUSE Linux Enterprise Server for SAP applications 16.1 x86_64" text
+    And I open the sub-list of the product "SUSE Linux Enterprise Server for SAP applications 16.1 x86_64"
+    When I select "SUSE Linux Enterprise Server for SAP applications 16.1 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server for SAP applications 16.1 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server for SAP applications 16.1 x86_64" product has been added
+    And I wait until all synchronized channels for "slesforsap16.1" have finished
+
+@uyuni
+@slesforsap161_minion
+  Scenario: Add SUSE Linux Enterprise Server for SAP applications 16.1 Uyuni Client tools
+    When I use spacewalk-common-channel to add channel "sles16-sap-1-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles16-sap-1-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @slemicro53_minion
@@ -415,7 +562,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 16.1 aarch64" product has been added
-    And I wait until all synchronized channels for "sles16-aarch64" have finished
+    And I wait until all synchronized channels for "sles16.1-aarch64" have finished
 
 @uyuni
 @opensuse161arm_minion

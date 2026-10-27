@@ -13,7 +13,7 @@ Feature: Migrate a RHEL 7 Salt SSH minion to SUSE Liberty Linux LTSS 7
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Enable the Liberate formula on the RHEL 7 SSH minion
+  Scenario: Enable the Liberate formula on the RHEL 7 Salt SSH minion
     Given I am on the Systems overview page of this "rhel7_sshminion"
     When I follow "Formulas" in the content area
     Then I should see a "Choose formulas:" text
@@ -21,14 +21,14 @@ Feature: Migrate a RHEL 7 Salt SSH minion to SUSE Liberty Linux LTSS 7
     And I click on "Save"
     Then I should see a "Formula saved" text
 
-  Scenario: Configure the Liberate formula on the RHEL 7 SSH minion
+  Scenario: Configure the Liberate formula on the RHEL 7 Salt SSH minion
     When I follow "Formulas" in the content area
     And I follow "Liberate" in the content area
     And I check the reinstall packages option of the liberate formula
     And I click on "Save"
     Then I should see a "Formula saved" text
 
-  Scenario: Migrate this SSH minion to SUSE Liberty Linux LTSS 7
+  Scenario: Migrate this Salt SSH minion to SUSE Liberty Linux LTSS 7
     Given I am on the Systems overview page of this "rhel7_sshminion"
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
@@ -40,27 +40,27 @@ Feature: Migrate a RHEL 7 Salt SSH minion to SUSE Liberty Linux LTSS 7
     When I click on "Confirm"
     Then I should see a "This system is scheduled to be migrated to" text
 
-  Scenario: Check the migration is successful for this SSH minion
+  Scenario: Check the migration is successful for this Salt SSH minion
     Given I am on the Systems overview page of this "rhel7_sshminion"
     When I follow "Events"
     And I follow "History"
     And I wait at most 3600 seconds until event "Product Migration" is completed
     And I wait until event "Package List Refresh" is completed
 
-  Scenario: Check the Liberate formula converted this SSH minion
+  Scenario: Check the Liberate formula converted this Salt SSH minion
     Then "sles_es-release-server" should be installed on "rhel7_sshminion"
     And file "/etc/sysconfig/liberated" should exist on "rhel7_sshminion"
     And file "/etc/sysconfig/liberated" should contain "LIBERATED=.True." on "rhel7_sshminion"
     And file "/var/log/yum_sles_es_migration.log" should exist on "rhel7_sshminion"
 
-  Scenario: Check that Software package refresh works on the liberated RHEL 7 SSH minion
+  Scenario: Check that Software package refresh works on the liberated RHEL 7 Salt SSH minion
     Given I am on the Systems overview page of this "rhel7_sshminion"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I click on "Update Package List"
     And I wait until event "Package List Refresh" is completed
 
-  Scenario: Check that Hardware refresh works on the liberated RHEL 7 SSH minion
+  Scenario: Check that Hardware refresh works on the liberated RHEL 7 Salt SSH minion
     Given I am on the Systems overview page of this "rhel7_sshminion"
     When I follow "Details" in the content area
     And I wait until I see "System Status" text
@@ -71,7 +71,7 @@ Feature: Migrate a RHEL 7 Salt SSH minion to SUSE Liberty Linux LTSS 7
     And I wait until event "Hardware List Refresh" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "rhel7_sshminion"
 
-  Scenario: Check the grains of the liberated RHEL 7 SSH minion on the details page
+  Scenario: Check the grains of the liberated RHEL 7 Salt SSH minion on the details page
     Given I am on the Systems overview page of this "rhel7_sshminion"
     Then the hostname for "rhel7_sshminion" should be correct
     And the kernel for "rhel7_sshminion" should be correct
@@ -80,7 +80,7 @@ Feature: Migrate a RHEL 7 Salt SSH minion to SUSE Liberty Linux LTSS 7
     And the system ID for "rhel7_sshminion" should be correct
     And the system name for "rhel7_sshminion" should be correct
 
-  Scenario: Install a package on the liberated RHEL 7 SSH minion
+  Scenario: Install a package on the liberated RHEL 7 Salt SSH minion
     Given I am on the Systems overview page of this "rhel7_sshminion"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
@@ -94,7 +94,7 @@ Feature: Migrate a RHEL 7 Salt SSH minion to SUSE Liberty Linux LTSS 7
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade" is completed
 
-  Scenario: Remove the package from the liberated RHEL 7 SSH minion
+  Scenario: Remove the package from the liberated RHEL 7 Salt SSH minion
     Given I am on the Systems overview page of this "rhel7_sshminion"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
@@ -107,7 +107,7 @@ Feature: Migrate a RHEL 7 Salt SSH minion to SUSE Liberty Linux LTSS 7
     Then I should see a "1 package removal has been scheduled" text
     And I wait until event "Package Removal" is completed
 
-  Scenario: Run a remote command on the liberated RHEL 7 SSH minion
+  Scenario: Run a remote command on the liberated RHEL 7 Salt SSH minion
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "echo 'My remote command output'"
@@ -120,6 +120,6 @@ Feature: Migrate a RHEL 7 Salt SSH minion to SUSE Liberty Linux LTSS 7
     And I expand the results for "rhel7_sshminion"
     Then I should see "My remote command output" in the command output for "rhel7_sshminion"
 
-  Scenario: Check events history for failures on the RHEL 7 SSH minion
+  Scenario: Check events history for failures on the RHEL 7 Salt SSH minion
     Given I am on the Systems overview page of this "rhel7_sshminion"
     Then I check for failed events on history event page
