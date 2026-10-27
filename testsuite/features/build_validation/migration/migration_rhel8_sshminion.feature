@@ -14,7 +14,7 @@ Feature: Liberate a RHEL 8 Salt SSH minion into SUSE Liberty Linux 8
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Subscribe the RHEL 8 SSH minion to the SUSE Liberty Linux 8 channels
+  Scenario: Subscribe the RHEL 8 Salt SSH minion to the SUSE Liberty Linux 8 channels
     Given I am on the Systems overview page of this "rhel8_sshminion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
@@ -28,7 +28,7 @@ Feature: Liberate a RHEL 8 Salt SSH minion into SUSE Liberty Linux 8
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
 
-  Scenario: Enable the Liberate formula on the RHEL 8 SSH minion
+  Scenario: Enable the Liberate formula on the RHEL 8 Salt SSH minion
     Given I am on the Systems overview page of this "rhel8_sshminion"
     When I follow "Formulas" in the content area
     Then I should see a "Choose formulas:" text
@@ -36,34 +36,34 @@ Feature: Liberate a RHEL 8 Salt SSH minion into SUSE Liberty Linux 8
     And I click on "Save"
     Then I should see a "Formula saved" text
 
-  Scenario: Configure the Liberate formula on the RHEL 8 SSH minion
+  Scenario: Configure the Liberate formula on the RHEL 8 Salt SSH minion
     When I follow "Formulas" in the content area
     And I follow "Liberate" in the content area
     And I check the reinstall packages option of the liberate formula
     And I click on "Save"
     Then I should see a "Formula saved" text
 
-  Scenario: Liberate the RHEL 8 SSH minion by applying the highstate
+  Scenario: Liberate the RHEL 8 Salt SSH minion by applying the highstate
     Given I am on the Systems overview page of this "rhel8_sshminion"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait at most 5400 seconds until event "Apply highstate scheduled" is completed
 
-  Scenario: Check the Liberate formula converted the RHEL 8 SSH minion
+  Scenario: Check the Liberate formula converted the RHEL 8 Salt SSH minion
     Then "sles_es-release" should be installed on "rhel8_sshminion"
     And file "/etc/sysconfig/liberated" should exist on "rhel8_sshminion"
     And file "/etc/sysconfig/liberated" should contain "LIBERATED=.True." on "rhel8_sshminion"
     And file "/var/log/dnf_sles_es_migration.log" should exist on "rhel8_sshminion"
 
-  Scenario: Check that Software package refresh works on the liberated RHEL 8 SSH minion
+  Scenario: Check that Software package refresh works on the liberated RHEL 8 Salt SSH minion
     Given I am on the Systems overview page of this "rhel8_sshminion"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I click on "Update Package List"
     And I wait until event "Package List Refresh" is completed
 
-  Scenario: Check that Hardware refresh works on the liberated RHEL 8 SSH minion
+  Scenario: Check that Hardware refresh works on the liberated RHEL 8 Salt SSH minion
     Given I am on the Systems overview page of this "rhel8_sshminion"
     When I follow "Details" in the content area
     And I wait until I see "System Status" text
@@ -74,7 +74,7 @@ Feature: Liberate a RHEL 8 Salt SSH minion into SUSE Liberty Linux 8
     And I wait until event "Hardware List Refresh" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "rhel8_sshminion"
 
-  Scenario: Check the grains of the liberated RHEL 8 SSH minion on the details page
+  Scenario: Check the grains of the liberated RHEL 8 Salt SSH minion on the details page
     Given I am on the Systems overview page of this "rhel8_sshminion"
     Then the hostname for "rhel8_sshminion" should be correct
     And the kernel for "rhel8_sshminion" should be correct
@@ -83,7 +83,7 @@ Feature: Liberate a RHEL 8 Salt SSH minion into SUSE Liberty Linux 8
     And the system ID for "rhel8_sshminion" should be correct
     And the system name for "rhel8_sshminion" should be correct
 
-  Scenario: Install a package on the liberated RHEL 8 SSH minion
+  Scenario: Install a package on the liberated RHEL 8 Salt SSH minion
     Given I am on the Systems overview page of this "rhel8_sshminion"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
@@ -97,7 +97,7 @@ Feature: Liberate a RHEL 8 Salt SSH minion into SUSE Liberty Linux 8
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade" is completed
 
-  Scenario: Remove the package from the liberated RHEL 8 SSH minion
+  Scenario: Remove the package from the liberated RHEL 8 Salt SSH minion
     Given I am on the Systems overview page of this "rhel8_sshminion"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
@@ -110,7 +110,7 @@ Feature: Liberate a RHEL 8 Salt SSH minion into SUSE Liberty Linux 8
     Then I should see a "1 package removal has been scheduled" text
     And I wait until event "Package Removal" is completed
 
-  Scenario: Run a remote command on the liberated RHEL 8 SSH minion
+  Scenario: Run a remote command on the liberated RHEL 8 Salt SSH minion
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "echo 'My remote command output'"
@@ -123,6 +123,6 @@ Feature: Liberate a RHEL 8 Salt SSH minion into SUSE Liberty Linux 8
     And I expand the results for "rhel8_sshminion"
     Then I should see "My remote command output" in the command output for "rhel8_sshminion"
 
-  Scenario: Check events history for failures on the RHEL 8 SSH minion
+  Scenario: Check events history for failures on the RHEL 8 Salt SSH minion
     Given I am on the Systems overview page of this "rhel8_sshminion"
     Then I check for failed events on history event page

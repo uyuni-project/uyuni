@@ -42,6 +42,10 @@ Feature: Bootstrap an openSUSE 16.1 PowerPC Salt minion
     And I follow "Proxy" in the content area
     Then I should see "opensuse161ppc_minion" hostname
 
+@monitoring_server
+  Scenario: Prepare openSUSE 16.1 PowerPC minion firewall for monitoring
+    When I enable firewall ports for monitoring on this "opensuse161ppc_minion"
+
   Scenario: Check events history for failures on openSUSE 16.1 PowerPC minion
     Given I am on the Systems overview page of this "opensuse161ppc_minion"
     Then I check for failed events on history event page

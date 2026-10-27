@@ -967,13 +967,12 @@ Then(/^I check the row with the "([^"]*)" text$/) do |text|
 end
 
 When(/^I check the first patch in the list, that does not require a reboot$/) do
-  row = find(:xpath, '//section//div[@class=\'table-responsive\']//tr', match: :first)
-  reboot_required = row.has_xpath?('.//*[contains(@title,\'Reboot Required\')]')
-  if reboot_required
-    step 'I check the second row in the list'
-  else
-    step 'I check the first row in the list'
+  within(:xpath, '//section') do
+    row = find(:xpath, '//div[contains(@class, \'table-responsive\')]//tr[.//td][not(.//*[contains(@title, \'Reboot Required\')])]', match: :first)
+    row.find(:xpath, './/input[@type=\'checkbox\']', match: :first).set(true)
   end
+rescue Capybara::ElementNotFound
+  step 'I check the first row in the list'
 end
 
 When(/^I click on the Legal button$/) do
@@ -1092,14 +1091,14 @@ end
 
 When(/^I check the second row in the list$/) do
   within(:xpath, '//section') do
-    row = find(:xpath, '//div[@class=\'table-responsive\']//tr[2]/td', match: :first)
+    row = find(:xpath, '(//div[contains(@class, \'table-responsive\')]//tr[.//td])[2]', match: :first)
     row.find(:xpath, './/input[@type=\'checkbox\']', match: :first).set(true)
   end
 end
 
 When(/^I check the first row in the list$/) do
   within(:xpath, '//section') do
-    row = find(:xpath, '//div[@class=\'table-responsive\']//tr[.//td]', match: :first)
+    row = find(:xpath, '//div[contains(@class, \'table-responsive\')]//tr[.//td]', match: :first)
     row.find(:xpath, './/input[@type=\'checkbox\']', match: :first).set(true)
   end
 end

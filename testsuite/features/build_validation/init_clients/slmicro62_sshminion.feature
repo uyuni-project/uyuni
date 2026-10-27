@@ -13,7 +13,7 @@ Feature: Bootstrap a SL Micro 6.2 Salt SSH minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Bootstrap a SL Micro 6.2 system managed via salt-ssh
+  Scenario: Bootstrap a SL Micro 6.2 Salt SSH minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
@@ -26,19 +26,19 @@ Feature: Bootstrap a SL Micro 6.2 Salt SSH minion
     And I wait until onboarding is completed for "slmicro62_sshminion"
 
 @proxy
-  Scenario: Check connection from SL Micro 6.2 SSH minion to proxy
+  Scenario: Check connection from SL Micro 6.2 Salt SSH minion to proxy
     Given I am on the Systems overview page of this "slmicro62_sshminion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
 @proxy
-  Scenario: Check registration on proxy of SL Micro 6.2 SSH minion
+  Scenario: Check registration on proxy of SL Micro 6.2 Salt SSH minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "slmicro62_sshminion" hostname
 
-  Scenario: Check events history for failures on SL Micro 6.2 SSH minion
+  Scenario: Check events history for failures on SL Micro 6.2 Salt SSH minion
     Given I am on the Systems overview page of this "slmicro62_sshminion"
     Then I check for failed events on history event page

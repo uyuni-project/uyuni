@@ -846,6 +846,37 @@ Before('@sles161_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles161_sshminion']
 end
 
+# The SLES for SAP 15 minions are converted from a plain SLES 15 minion, so both variables are needed.
+# A missing SAP variable is a legitimate skip (parallel stages unset the other minions), but the SAP
+# variable set without its base one is a broken setup that would silently skip everything and pass.
+def skip_unless_sap15_base_available(sap_host, base_host)
+  return skip_this_scenario unless ENV.key?(ENV_VAR_BY_HOST[sap_host])
+
+  return if ENV.key?(ENV_VAR_BY_HOST[base_host])
+
+  raise "#{ENV_VAR_BY_HOST[sap_host]} is set but #{ENV_VAR_BY_HOST[base_host]} is not: #{sap_host} needs #{base_host} to be converted to SLES for SAP"
+end
+
+Before('@slesforsap15sp5_minion') do
+  skip_unless_sap15_base_available('slesforsap15sp5_minion', 'sles15sp5_minion')
+end
+
+Before('@slesforsap15sp6_minion') do
+  skip_unless_sap15_base_available('slesforsap15sp6_minion', 'sles15sp6_minion')
+end
+
+Before('@slesforsap15sp7_minion') do
+  skip_unless_sap15_base_available('slesforsap15sp7_minion', 'sles15sp7_minion')
+end
+
+Before('@slesforsap160_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slesforsap160_minion']
+end
+
+Before('@slesforsap161_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slesforsap161_minion']
+end
+
 Before('@opensuse161arm_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse161arm_minion']
 end
@@ -998,6 +1029,18 @@ end
 
 Before('@skip_for_opensuse161') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'opensuse161'
+end
+
+Before('@skip_for_sles161') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'sles161'
+end
+
+Before('@skip_for_slesforsap161') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'slesforsap161'
+end
+
+Before('@skip_for_opensuse161ppc') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'opensuse161ppc'
 end
 
 Before('@skip_for_rhel10_like') do |scenario|
