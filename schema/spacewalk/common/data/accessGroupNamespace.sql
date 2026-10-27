@@ -872,7 +872,12 @@ INSERT INTO access.accessGroupNamespace
         'api.recurring.highstate.create',
         'api.recurring.highstate.update',
         'api.recurring.playbook.create',
-        'api.recurring.playbook.update'
+        'api.recurring.playbook.update',
+        'api.recurring.clm.create_build',
+        'api.recurring.clm.update_build',
+        'api.recurring.clm.create_promote',
+        'api.recurring.clm.update_promote',
+        'api.recurring.clm.list_by_project'
     )
     ON CONFLICT DO NOTHING;
 

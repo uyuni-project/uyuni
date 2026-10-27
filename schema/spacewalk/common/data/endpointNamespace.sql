@@ -8111,6 +8111,31 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.recurring.clm.create_build' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/recurring/clm/createBuild' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.recurring.clm.update_build' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/recurring/clm/updateBuild' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.recurring.clm.create_promote' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/recurring/clm/createPromote' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.recurring.clm.update_promote' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/recurring/clm/updatePromote' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.recurring.clm.list_by_project' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/recurring/clm/listByProject' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.saltkey.accept' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/saltkey/accept' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
