@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -334,7 +335,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
         ContentEnvironment mid = contentManager.
                 createEnvironment(cp.getLabel(), of(fst.getLabel()), "mid", "middle env", "desc", false, user);
-        assertEquals(1, mid.getTargets().size());
+        assertEquals(2, mid.getTargets().size()); // + hotfix
         Channel newChannel = mid.getTargets().get(0).asSoftwareTarget().get().getChannel();
         assertEquals(channel, newChannel.asCloned().map(ClonedChannel::getOriginal).get());
         assertTrue(newChannel.getLabel().startsWith("cplabel-mid-"));
@@ -808,7 +809,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         contentManager.buildProject("cplabel", empty(), false, user);
 
         List<EnvironmentTarget> tgts = env.getTargets();
-        assertEquals(1, tgts.size());
+        assertEquals(2, tgts.size()); // + hotfix
         EnvironmentTarget target = tgts.get(0);
         Channel tgtChannel = target.asSoftwareTarget().get().getChannel();
         assertEquals(Status.GENERATING_REPODATA, target.getStatus());
@@ -827,7 +828,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(Long.valueOf(2), env.getVersion());
 
         tgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.asSoftwareTarget().get().getStatus()));
-        assertEquals(2, tgts.size());
+        assertEquals(3, tgts.size()); // + hotfix
         Set<String> tgtLabels = tgts.stream()
                 .map(tgt -> tgt.asSoftwareTarget().get().getChannel().getLabel()).collect(toSet());
         TestUtils.assertContains(tgtLabels, "cplabel-fst-" + channel.getLabel());
@@ -853,10 +854,15 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(Long.valueOf(3), env.getVersion());
 
         assertEquals(newChannel, cp.lookupSwSourceLeader().get().getChannel()); // leader is changed
-        assertEquals(Status.GENERATING_REPODATA, tgts.get(0).asSoftwareTarget().get().getStatus());
-        assertEquals(1, tgts.size());
-        assertEquals("cplabel-fst-" + newChannel.getLabel(),
-                tgts.get(0).asSoftwareTarget().get().getChannel().getLabel());
+        assertEquals(2, tgts.size()); // + hotfix
+        SoftwareEnvironmentTarget leaderTgt = tgts.stream()
+                .flatMap(t -> t.asSoftwareTarget().stream())
+                .filter(t -> !t.isHotfix())
+                .findFirst().get();
+        assertEquals(Status.GENERATING_REPODATA, leaderTgt.getStatus());
+        assertEquals("cplabel-fst-" + newChannel.getLabel(), leaderTgt.getChannel().getLabel());
+        // the hotfix channel moved below the new leader
+        assertEquals(leaderTgt.getChannel(), getHotfixTarget(env).orElseThrow().getChannel().getParentChannel());
         assertEquals(channel.getPackages(), tgtChannel.getPackages());
         assertEquals(channel.getErratas(), tgtChannel.getErratas());
     }
@@ -880,7 +886,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
         contentManager.buildProject("cplabel", empty(), false, user);
         List<EnvironmentTarget> environmentTargets = env.getTargets();
-        assertEquals(1, environmentTargets.size());
+        assertEquals(2, environmentTargets.size()); // + hotfix
         assertEquals(alreadyExistingTgt, environmentTargets.get(0).asSoftwareTarget().get().getChannel());
     }
 
@@ -941,7 +947,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
         ContentEnvironment envUser1 = ContentManager.lookupEnvironment("fst", "cplabel", userSameOrg).get();
         List<EnvironmentTarget> tgts = envUser1.getTargets();
-        assertEquals(1, tgts.size());
+        assertEquals(2, tgts.size()); // + hotfix
         Channel tgtChannel = tgts.get(0).asSoftwareTarget().get().getChannel();
         // its assets should be accessible to a regular user in the org
         assertTrue(ChannelFactory.isAccessibleByUser(tgtChannel.getLabel(), userSameOrg.getId()));
@@ -1035,7 +1041,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
         List<EnvironmentTarget> testTgts = testEnv.getTargets();
         testTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
-        assertEquals(1, testTgts.size());
+        assertEquals(2, testTgts.size()); // + hotfix
         Channel tgtChannel1 = testTgts.get(0).asSoftwareTarget().get().getChannel();
         assertEquals("cplabel-test-" + channel1.getLabel(), tgtChannel1.getLabel());
 
@@ -1044,7 +1050,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
         List<EnvironmentTarget> prodTgts = prodEnv.getTargets();
         prodTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
-        assertEquals(1, prodTgts.size());
+        assertEquals(2, prodTgts.size()); // + hotfix
         tgtChannel1 = prodTgts.get(0).asSoftwareTarget().get().getChannel();
         assertEquals("cplabel-prod-" + channel1.getLabel(), tgtChannel1.getLabel());
 
@@ -1238,7 +1244,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
         List<EnvironmentTarget> testTgts = testEnv.getTargets();
         testTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
-        assertEquals(2, testTgts.size());
+        assertEquals(3, testTgts.size()); // + hotfix
         Channel tgtChannel1 = testTgts.get(0).asSoftwareTarget().get().getChannel();
         Channel tgtChannel2 = testTgts.get(1).asSoftwareTarget().get().getChannel();
         assertEquals("cplabel-test-" + channel1.getLabel(), tgtChannel1.getLabel());
@@ -1252,7 +1258,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
         List<EnvironmentTarget> prodTgts = prodEnv.getTargets();
         prodTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
-        assertEquals(2, prodTgts.size());
+        assertEquals(3, prodTgts.size()); // + hotfix
         tgtChannel1 = prodTgts.get(0).asSoftwareTarget().get().getChannel();
         tgtChannel2 = prodTgts.get(1).asSoftwareTarget().get().getChannel();
         assertEquals("cplabel-prod-" + channel1.getLabel(), tgtChannel1.getLabel());
@@ -1261,9 +1267,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // 5. build with changed sources
         contentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(Long.valueOf(2), devEnv.getVersion());
-        assertEquals(1, devEnv.getTargets().size());
-        assertEquals(2, testEnv.getTargets().size());
-        assertEquals(2, prodEnv.getTargets().size());
+        assertEquals(2, devEnv.getTargets().size()); // + hotfix
+        assertEquals(3, testEnv.getTargets().size()); // + hotfix
+        assertEquals(3, prodEnv.getTargets().size()); // + hotfix
         assertNull(ChannelFactory.lookupByLabel("cplabel-dev-" + channel1.getLabel())); // channel has been deleted
 
         // 6. next promotion cycle
@@ -1271,7 +1277,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
         testTgts = testEnv.getTargets();
         testTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
-        assertEquals(1, testTgts.size());
+        assertEquals(2, testTgts.size()); // + hotfix
         Channel tgtChannel = testTgts.get(0).asSoftwareTarget().get().getChannel();
         assertEquals("cplabel-test-" + channel2.getLabel(), tgtChannel.getLabel());
         assertNull(ChannelFactory.lookupByLabel("cplabel-test-" + channel1.getLabel())); // channel has been deleted
@@ -1281,7 +1287,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
         prodTgts = prodEnv.getTargets();
         prodTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
-        assertEquals(1, prodTgts.size());
+        assertEquals(2, prodTgts.size()); // + hotfix
         tgtChannel = prodTgts.get(0).asSoftwareTarget().get().getChannel();
         assertEquals("cplabel-prod-" + channel2.getLabel(), tgtChannel.getLabel());
         assertNull(ChannelFactory.lookupByLabel("cplabel-prod-" + channel1.getLabel())); // channel has been deleted
@@ -1306,6 +1312,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
         contentManager.promoteProject("cplabel", "dev", false, user);
+        // simulate a project built before hotfix channels were introduced
+        ContentProjectFactory.purgeTarget(getHotfixTarget(testEnv).orElseThrow());
+        ContentProjectFactory.purgeTarget(getHotfixTarget(devEnv).orElseThrow());
 
         contentManager.createMissingHotfixChannels();
 
@@ -1339,12 +1348,179 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test marking a promoted hotfix channel as hotfix target
+     * Test creating the hotfix channels when building and promoting a project
      *
      * @throws Exception if anything goes wrong
      */
     @Test
-    public void testEnsureHotfixTargetReusesExistingChannel() throws Exception {
+    public void testBuildAndPromoteCreateHotfixChannels() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment devEnv = contentManager.createEnvironment(
+                cp.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        ContentEnvironment testEnv = contentManager.createEnvironment(
+                cp.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+        Channel channel = createPopulatedChannel();
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        contentManager.buildProject("cplabel", empty(), false, user);
+        SoftwareEnvironmentTarget devHotfix = getHotfixTarget(devEnv).orElseThrow();
+        assertEquals("cplabel-dev-hotfix", devHotfix.getChannel().getLabel());
+        assertEquals("cplabel-dev-" + channel.getLabel(), devHotfix.getChannel().getParentChannel().getLabel());
+        assertTrue(testEnv.getTargets().isEmpty());
+
+        contentManager.promoteProject("cplabel", "dev", false, user);
+        SoftwareEnvironmentTarget testHotfix = getHotfixTarget(testEnv).orElseThrow();
+        assertEquals("cplabel-test-hotfix", testHotfix.getChannel().getLabel());
+        assertEquals("cplabel-test-Hotfix", testHotfix.getChannel().getName());
+        assertEquals("cplabel-test-" + channel.getLabel(), testHotfix.getChannel().getParentChannel().getLabel());
+        assertEquals(devHotfix.getChannel(), testHotfix.getChannel().asCloned().orElseThrow().getOriginal());
+
+        // building and promoting again keeps the hotfix channels
+        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.promoteProject("cplabel", "dev", false, user);
+        assertEquals(devHotfix, getHotfixTarget(devEnv).orElseThrow());
+        assertEquals(testHotfix, getHotfixTarget(testEnv).orElseThrow());
+        assertEquals(2, devEnv.getTargets().size());
+        assertEquals(2, testEnv.getTargets().size());
+
+        // an unflagged hotfix channel gets flagged instead of created again
+        testHotfix.setHotfix(false);
+        assertEquals(testHotfix, contentManager.ensureHotfixTarget(testEnv, user));
+        assertTrue(testHotfix.isHotfix());
+        assertEquals(2, testEnv.getTargets().size());
+
+        // removing the environment removes its hotfix channel too
+        contentManager.removeEnvironment("test", "cplabel", user);
+        assertNull(ChannelFactory.lookupByLabel("cplabel-test-hotfix"));
+    }
+
+    /**
+     * Test the hotfix channels when a new first environment is inserted before a built one
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testHotfixChannelsWithUnbuiltFirstEnvironment() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment testEnv = contentManager.createEnvironment(
+                cp.getLabel(), empty(), "test", "test env", "desc", false, user);
+        ContentEnvironment prodEnv = contentManager.createEnvironment(
+                cp.getLabel(), of("test"), "prod", "prod env", "desc", false, user);
+        Channel channel = createPopulatedChannel();
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.buildProject("cplabel", empty(), false, user);
+        // simulate a project built before hotfix channels were introduced
+        ContentProjectFactory.purgeTarget(getHotfixTarget(testEnv).orElseThrow());
+        // insert a new, unbuilt first environment
+        ContentEnvironment devEnv = contentManager.createEnvironment(
+                cp.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        assertTrue(devEnv.getTargets().isEmpty());
+
+        contentManager.createMissingHotfixChannels();
+        Channel testHotfixChannel = getHotfixTarget(testEnv).orElseThrow().getChannel();
+        assertEquals("cplabel-test-hotfix", testHotfixChannel.getLabel());
+        assertEquals("cplabel-test-Hotfix", testHotfixChannel.getName());
+        assertTrue(testHotfixChannel.asCloned().isEmpty());
+        assertTrue(devEnv.getTargets().isEmpty());
+
+        // promoting the built environment works
+        contentManager.promoteProject("cplabel", "test", false, user);
+        assertEquals(testHotfixChannel,
+                getHotfixTarget(prodEnv).orElseThrow().getChannel().asCloned().orElseThrow().getOriginal());
+
+        // once the first environment is built and promoted, the hotfix channel becomes a clone of it
+        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.promoteProject("cplabel", "dev", false, user);
+        // the clone info is added by SQL, the channel needs to be reloaded
+        TestUtils.flushAndClearSession();
+        devEnv = ContentManager.lookupEnvironment("dev", "cplabel", user).orElseThrow();
+        testEnv = ContentManager.lookupEnvironment("test", "cplabel", user).orElseThrow();
+        SoftwareEnvironmentTarget testHotfix = getHotfixTarget(testEnv).orElseThrow();
+        assertEquals(getHotfixTarget(devEnv).orElseThrow().getChannel(),
+                testHotfix.getChannel().asCloned().orElseThrow().getOriginal());
+        assertEquals(2, testEnv.getTargets().size());
+    }
+
+    /**
+     * Test that a source channel with the label of the hotfix channels cannot be attached
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testAttachSourceWithHotfixLabel() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Channel channel = createPopulatedChannel();
+        channel.setLabel("hotfix");
+        ChannelFactory.save(channel);
+
+        assertThrows(ContentManagementException.class,
+                () -> contentManager.attachSource("cplabel", SW_CHANNEL, "hotfix", empty(), user));
+        assertTrue(cp.getSources().isEmpty());
+    }
+
+    /**
+     * Test that an already attached source channel with the label of the hotfix channels is not turned into
+     * a hotfix channel
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testHotfixLabelCollision() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment devEnv = contentManager.createEnvironment(
+                cp.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        Channel channel = createPopulatedChannel();
+        channel.setLabel("hotfix");
+        ChannelFactory.save(channel);
+        // attached before attaching such a channel was rejected
+        cp.addSource(new SoftwareProjectSource(cp, channel), empty());
+        ContentProjectFactory.save(cp);
+
+        ContentManagementException e = assertThrows(ContentManagementException.class,
+                () -> contentManager.buildProject("cplabel", empty(), false, user));
+        assertTrue(e.getMessage().contains("collides with the hotfix channel label"));
+        assertTrue(getHotfixTarget(devEnv).isEmpty());
+
+        // startup logs the error and continues
+        devEnv.setVersion(1L);
+        contentManager.createMissingHotfixChannels();
+        assertTrue(getHotfixTarget(devEnv).isEmpty());
+        assertNull(ChannelFactory.lookupByLabel("cplabel-dev-hotfix").getParentChannel());
+    }
+
+    /**
+     * Test that the scheduled diff of the hotfix channel of the first environment is skipped
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testDiffClmChannelOfFirstHotfixChannel() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        contentManager.createEnvironment(cp.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        Channel channel = createPopulatedChannel();
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.buildProject("cplabel", empty(), false, user);
+
+        contentManager.diffClmChannel("cplabel", "dev", "cplabel-dev-hotfix");
+        assertTrue(ContentManager.listEnvironmentDifference(user, "cplabel", "dev").isEmpty());
+
+        // other channels that are not cloned still fail
+        assertThrows(ContentManagementException.class,
+                () -> contentManager.diffClmChannel("cplabel", "dev", channel.getLabel()));
+    }
+
+    /**
+     * Test that the diff of a hotfix channel ignores the project filters, as promoting does
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testDiffHotfixChannelWithoutFilters() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment devEnv = contentManager.createEnvironment(
@@ -1354,16 +1530,29 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         Channel channel = createPopulatedChannel();
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
-        contentManager.ensureHotfixTarget(devEnv, user);
-
-        // promoting clones the hotfix channel as a regular target
         contentManager.promoteProject("cplabel", "dev", false, user);
-        assertTrue(getHotfixTarget(testEnv).isEmpty());
 
-        SoftwareEnvironmentTarget testHotfix = contentManager.ensureHotfixTarget(testEnv, user);
-        assertTrue(testHotfix.isHotfix());
-        assertEquals("cplabel-test-hotfix", testHotfix.getChannel().getLabel());
-        assertEquals(2, testEnv.getTargets().size());
+        // add a package to the dev hotfix channel which matches a DENY filter of the project
+        Channel devHotfixChannel = getHotfixTarget(devEnv).orElseThrow().getChannel();
+        Package hotfixPackage = PackageTest.createTestPackage(user.getOrg(), "filtered-package");
+        devHotfixChannel.addPackage(hotfixPackage);
+        ChannelFactory.save(devHotfixChannel);
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "filtered-package");
+        ContentFilter filter = contentManager.createFilter(
+                "my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
+        contentManager.attachFilter("cplabel", filter.getId(), user);
+
+        contentManager.diffEnvironment(cp, testEnv);
+        List<ContentEnvironmentDiff> diffTest = ContentManager.listEnvironmentDifference(user, "cplabel", "test");
+        assertEquals(1, diffTest.size());
+        assertEquals(DiffAction.ADD, diffTest.get(0).getAction());
+        assertEquals(hotfixPackage.getId(), diffTest.get(0).getEntryId());
+
+        // promoting copies the package, so no difference is left
+        contentManager.promoteProject("cplabel", "dev", false, user);
+        assertTrue(getHotfixTarget(testEnv).orElseThrow().getChannel().getPackages().contains(hotfixPackage));
+        contentManager.diffEnvironment(cp, testEnv);
+        assertTrue(ContentManager.listEnvironmentDifference(user, "cplabel", "test").isEmpty());
     }
 
     private static Optional<SoftwareEnvironmentTarget> getHotfixTarget(ContentEnvironment env) {
@@ -1854,10 +2043,11 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
                 .map(ClonedChannel::getOriginal).collect(toSet());
     }
 
-    // get channels of given environment
+    // get channels of given environment, except the hotfix channel which is not cloned from a source
     private Set<Channel> getEnvChannels(ContentEnvironment testEnv) {
         return testEnv.getTargets().stream()
                 .flatMap(tgt -> tgt.asSoftwareTarget().stream())
+                .filter(tgt -> !tgt.isHotfix())
                 .map(SoftwareEnvironmentTarget::getChannel)
                 .collect(toSet());
     }
