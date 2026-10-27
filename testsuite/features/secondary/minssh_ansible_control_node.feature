@@ -1,6 +1,8 @@
 # Copyright (c) 2021-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+#TODO: follow-up card https://github.com/SUSE/spacewalk/issues/32517
+@skip_if_github_validation
 @scope_ansible
 @scope_salt_ssh
 @sshminion
