@@ -1,0 +1,2 @@
+- Add hotfix column to `suseContentEnvironmentTarget` and allow
+  at most one hotfix target per environment
