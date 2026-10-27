@@ -1,2 +1,4 @@
+- Refuse to change the Salt ports of an existing installation
+  unless `services.salt.allowPortsChange` is set
 - Configure the server with the Salt NodePorts so the clients use
   them

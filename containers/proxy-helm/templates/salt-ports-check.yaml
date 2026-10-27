@@ -1,0 +1,17 @@
+{{- $svc := lookup "v1" "Service" .Release.Namespace "salt" }}
+{{- if and $svc (not .Values.services.salt.allowPortsChange) }}
+  {{- $wanted := dict "publish" 4505 "request" 4506 }}
+  {{- if eq (default .Values.services.type .Values.services.salt.type) "NodePort" }}
+    {{- $_ := set $wanted "publish" (int .Values.services.salt.ports.publish) }}
+    {{- $_ := set $wanted "request" (int .Values.services.salt.ports.request) }}
+  {{- end }}
+  {{- $current := dict "publish" 4505 "request" 4506 }}
+  {{- if eq $svc.spec.type "NodePort" }}
+    {{- range $svc.spec.ports }}
+      {{- $_ := set $current .name (int .nodePort) }}
+    {{- end }}
+  {{- end }}
+  {{- if or (ne (get $current "publish") (get $wanted "publish")) (ne (get $current "request") (get $wanted "request")) }}
+    {{- fail (printf "Changing the Salt ports from %d/%d to %d/%d disconnects the registered minions. Set the ports before registering minions, or set services.salt.allowPortsChange=true and bootstrap the minions again." (get $current "publish") (get $current "request") (get $wanted "publish") (get $wanted "request")) }}
+  {{- end }}
+{{- end }}
