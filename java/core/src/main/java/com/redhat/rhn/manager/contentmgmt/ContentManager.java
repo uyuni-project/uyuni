@@ -77,6 +77,7 @@ import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
+import com.redhat.rhn.manager.channel.CreateChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 
@@ -89,6 +90,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +107,8 @@ public class ContentManager {
 
     private static final Logger LOG = LogManager.getLogger(ContentManager.class);
     private static final String DELIMITER = "-";
+    private static final String HOTFIX_LABEL = "hotfix";
+    private static final String HOTFIX_NAME = "Hotfix";
     private ModulemdApi modulemdApi;
 
     /**
@@ -986,6 +990,7 @@ public class ContentManager {
                 .collect(toSet());
         env.getTargets().stream()
                 .flatMap(t -> stream(t.asSoftwareTarget()))
+                .filter(tgt -> !tgt.isHotfix())
                 .filter(tgt -> !newTargets.contains(tgt))
                 .sorted((t1, t2) -> Boolean.compare(t1.getChannel().isBaseChannel(), t2.getChannel().isBaseChannel()))
                 .forEach(ContentProjectFactory::purgeTarget);
@@ -1137,6 +1142,106 @@ public class ContentManager {
         oldSuccessors.forEach(c -> c.setOriginal(targetChannel));
 
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(env, targetChannel);
+        env.addTarget(target);
+        return target;
+    }
+
+    /**
+     * Create the missing hotfix channels in all built {@link ContentEnvironment}s.
+     * The channels are created on behalf of an active administrator of the project organization.
+     */
+    public void createMissingHotfixChannels() {
+        Map<Long, Optional<User>> orgAdmins = new HashMap<>();
+        for (ContentEnvironment env : ContentProjectFactory.listEnvironmentsWithMissingHotfixTarget()) {
+            ContentProject project = env.getContentProject();
+            Optional<User> orgAdmin = orgAdmins.computeIfAbsent(project.getOrg().getId(),
+                    orgId -> project.getOrg().getActiveOrgAdmins().stream().findFirst());
+            if (orgAdmin.isEmpty()) {
+                LOG.warn("No active administrator in organization {}, cannot create hotfix channel " +
+                        "for Environment {} of Content Project {}", project.getOrg().getId(), env.getLabel(),
+                        project.getLabel());
+                continue;
+            }
+            try {
+                // creates the missing hotfix channels of the previous Environments too
+                ensureHotfixTarget(env, orgAdmin.get());
+            }
+            catch (RuntimeException e) {
+                LOG.error("Unable to create hotfix channel for Environment {} of Content Project {}",
+                        env.getLabel(), project.getLabel(), e);
+            }
+        }
+    }
+
+    /**
+     * Ensure the {@link ContentEnvironment} has a hotfix {@link SoftwareEnvironmentTarget}.
+     *
+     * The hotfix channel is a child of the base channel of the Environment. In the first Environment it is
+     * a new channel, in the following Environments it is a clone of the hotfix channel of the previous
+     * Environment, which gets created first when it is missing.
+     *
+     * @param env the Environment
+     * @param user the user
+     * @return the hotfix target of the Environment
+     * @throws ContentManagementException when the Environment has no base channel
+     */
+    public SoftwareEnvironmentTarget ensureHotfixTarget(ContentEnvironment env, User user) {
+        List<SoftwareEnvironmentTarget> swTargets = env.getTargets().stream()
+                .flatMap(t -> stream(t.asSoftwareTarget()))
+                .toList();
+        Optional<SoftwareEnvironmentTarget> hotfixTarget = swTargets.stream()
+                .filter(SoftwareEnvironmentTarget::isHotfix)
+                .findFirst();
+        if (hotfixTarget.isPresent()) {
+            return hotfixTarget.get();
+        }
+
+        Channel baseChannel = swTargets.stream()
+                .map(SoftwareEnvironmentTarget::getChannel)
+                .filter(Channel::isBaseChannel)
+                .findFirst()
+                .orElseThrow(() -> new ContentManagementException("Environment " + env.getLabel() +
+                        " of Content Project " + env.getContentProject().getLabel() + " has no base channel"));
+        Optional<Channel> prevHotfixChannel = env.getPrevEnvironmentOpt()
+                .map(prevEnv -> ensureHotfixTarget(prevEnv, user).getChannel());
+        String label = prevHotfixChannel
+                .map(prev -> channelLabelInEnvironment(prev.getLabel(), env))
+                .orElseGet(() -> channelLabelInEnvironment(HOTFIX_LABEL, env));
+
+        // the hotfix channel may already exist as a regular target, e.g. after promoting it
+        Optional<SoftwareEnvironmentTarget> labelTarget = swTargets.stream()
+                .filter(tgt -> tgt.getChannel().getLabel().equals(label))
+                .findFirst();
+        if (labelTarget.isPresent()) {
+            labelTarget.get().setHotfix(true);
+            return labelTarget.get();
+        }
+
+        SoftwareEnvironmentTarget target = prevHotfixChannel
+                .map(prev -> createSoftwareTarget(prev, of(baseChannel), env, user, false))
+                .orElseGet(() -> createFirstHotfixTarget(env, baseChannel, label, user));
+        target.setHotfix(true);
+        // the repodata generation of the new channel sets the target to BUILT
+        target.setStatus(EnvironmentTarget.Status.GENERATING_REPODATA);
+        return target;
+    }
+
+    private SoftwareEnvironmentTarget createFirstHotfixTarget(ContentEnvironment env, Channel baseChannel,
+            String label, User user) {
+        String name = channelNameInEnvironment(HOTFIX_NAME, env);
+        CreateChannelCommand createCmd = new CreateChannelCommand();
+        createCmd.setUser(user);
+        createCmd.setLabel(label);
+        createCmd.setName(name);
+        createCmd.setSummary(name);
+        createCmd.setArchLabel(baseChannel.getChannelArch().getLabel());
+        createCmd.setChecksumLabel(baseChannel.getChecksumTypeLabel());
+        createCmd.setParentLabel(baseChannel.getLabel());
+        createCmd.setGpgCheck(baseChannel.isGPGCheck());
+        Channel channel = createCmd.create();
+        syncGpgKeyInfo(baseChannel, channel);
+
+        SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(env, channel);
         env.addTarget(target);
         return target;
     }
