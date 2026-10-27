@@ -137,11 +137,13 @@ public class CloneChannelCommand extends CreateChannelCommand {
         c.setOriginal(original);
 
         // PAYG Code to avoid cloning channels under forbidden channels
-        if (cloudPaygManager.isPaygInstance()) {
+        // channels without a product, like custom channels, are not restricted
+        if (cloudPaygManager.isPaygInstance() && original.getProductName() != null) {
             if (c.getParentChannel() != null) {
                 Optional<Channel> channelTest = c.getParentChannel().originChain()
                         .flatMap(n -> n.getAccessibleChildrenFor(user).stream())
                         .filter(n -> n.getId() != null) // We filter out the cloned channel from the list
+                        .filter(n -> n.getProductName() != null)
                         .filter(n -> n.getProductName().getLabel().equals(original.getProductName().getLabel()))
                         .findFirst();
 
