@@ -24,6 +24,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Optional;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
@@ -37,6 +38,9 @@ public class SoftwareEnvironmentTarget extends EnvironmentTarget {
 
     @OneToOne
     private Channel channel;
+
+    @Column(name = "hotfix", nullable = false)
+    private boolean hotfix;
 
     /**
      * Standard constructor
@@ -79,12 +83,31 @@ public class SoftwareEnvironmentTarget extends EnvironmentTarget {
     }
 
     /**
+     * Gets whether this target is the hotfix channel of the environment.
+     *
+     * @return true if this is the hotfix target
+     */
+    public boolean isHotfix() {
+        return hotfix;
+    }
+
+    /**
+     * Sets whether this target is the hotfix channel of the environment.
+     *
+     * @param hotfixIn - true if this is the hotfix target
+     */
+    public void setHotfix(boolean hotfixIn) {
+        hotfix = hotfixIn;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
         return super.toStringBuilder()
                 .append("channel", channel)
+                .append("hotfix", hotfix)
                 .toString();
     }
 

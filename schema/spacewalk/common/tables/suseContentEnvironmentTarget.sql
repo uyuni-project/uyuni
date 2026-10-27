@@ -25,7 +25,8 @@ CREATE TABLE suseContentEnvironmentTarget(
     channel_id NUMERIC
                    CONSTRAINT suse_ct_env_tgt_chanid_fk
                        REFERENCES rhnChannel(id),
-    built_time TIMESTAMPTZ
+    built_time TIMESTAMPTZ,
+    hotfix     BOOLEAN NOT NULL DEFAULT FALSE
 )
 
 ;
@@ -38,3 +39,5 @@ CREATE UNIQUE INDEX suse_ct_env_tgt_env_cid_uq
 CREATE INDEX suse_ct_env_tgt_type
     ON suseContentEnvironmentTarget(type);
 
+CREATE UNIQUE INDEX suse_ct_env_tgt_hotfix_uq
+    ON suseContentEnvironmentTarget(env_id) WHERE hotfix;

@@ -555,6 +555,32 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests persisting the hotfix flag of {@link SoftwareEnvironmentTarget}
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testSwEnvironmentTargetHotfixFlag() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
+        ContentProjectFactory.save(envdev);
+        cp.setFirstEnvironment(envdev);
+
+        SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev,
+                ChannelTestUtils.createBaseChannel(user));
+        ContentProjectFactory.save(target);
+        SoftwareEnvironmentTarget hotfixTarget = new SoftwareEnvironmentTarget(envdev,
+                ChannelTestUtils.createBaseChannel(user));
+        hotfixTarget.setHotfix(true);
+        ContentProjectFactory.save(hotfixTarget);
+        TestUtils.flushAndClearSession();
+
+        assertFalse(ContentProjectFactory.lookupSwEnvironmentTargetById(target.getId()).get().isHotfix());
+        assertTrue(ContentProjectFactory.lookupSwEnvironmentTargetById(hotfixTarget.getId()).get().isHotfix());
+    }
+
+    /**
      * Test purging {@link SoftwareEnvironmentTarget}
      *
      * @throws Exception if anything goes wrong
