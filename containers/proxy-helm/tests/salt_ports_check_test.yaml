@@ -1,0 +1,131 @@
+suite: test the Salt ports change check
+templates:
+  - templates/salt-ports-check.yaml
+tests:
+  - it: should not check anything on a fresh install
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      services.salt.type: NodePort
+      services.salt.ports.publish: 30015
+      services.salt.ports.request: 30016
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should refuse to change the Salt ports of an existing installation
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      services.salt.type: NodePort
+      services.salt.ports.publish: 30015
+      services.salt.ports.request: 30016
+    # the mocked Service uses floats, helm-unittest can't deep copy ints
+    kubernetesProvider:
+      scheme:
+        "v1/Service":
+          gvr:
+            version: "v1"
+            resource: "services"
+          namespaced: true
+      objects:
+        - kind: Service
+          apiVersion: v1
+          metadata:
+            name: salt
+            namespace: NAMESPACE
+          spec:
+            type: ClusterIP
+            ports:
+              - name: publish
+                port: 4505.0
+              - name: request
+                port: 4506.0
+    asserts:
+      - failedTemplate:
+          errorPattern: "from 4505/4506 to 30015/30016 disconnects the registered minions"
+
+  - it: should allow changing the Salt ports when asked to
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      services.salt.type: NodePort
+      services.salt.ports.publish: 30015
+      services.salt.ports.request: 30016
+      services.salt.allowPortsChange: true
+    kubernetesProvider:
+      scheme:
+        "v1/Service":
+          gvr:
+            version: "v1"
+            resource: "services"
+          namespaced: true
+      objects:
+        - kind: Service
+          apiVersion: v1
+          metadata:
+            name: salt
+            namespace: NAMESPACE
+          spec:
+            type: ClusterIP
+            ports:
+              - name: publish
+                port: 4505.0
+              - name: request
+                port: 4506.0
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should accept unchanged Salt NodePorts
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      services.salt.type: NodePort
+      services.salt.ports.publish: 30015
+      services.salt.ports.request: 30016
+    kubernetesProvider:
+      scheme:
+        "v1/Service":
+          gvr:
+            version: "v1"
+            resource: "services"
+          namespaced: true
+      objects:
+        - kind: Service
+          apiVersion: v1
+          metadata:
+            name: salt
+            namespace: NAMESPACE
+          spec:
+            type: NodePort
+            ports:
+              - name: publish
+                port: 4505.0
+                nodePort: 30015.0
+              - name: request
+                port: 4506.0
+                nodePort: 30016.0
+    asserts:
+      - hasDocuments:
+          count: 0

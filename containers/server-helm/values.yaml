@@ -264,6 +264,8 @@ services:
       publish: 30005
       # -- Port to use as a NodePort service
       request: 30006
+    # -- Allow changing the Salt ports of an existing installation. Registered minions are disconnected by such a change and need to be bootstrapped again.
+    allowPortsChange: false
     # @default `nil`
     annotations: null
 
