@@ -477,6 +477,24 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * List the built Environments without a hotfix {@link SoftwareEnvironmentTarget}.
+     *
+     * @return the Environments
+     */
+    public static List<ContentEnvironment> listEnvironmentsWithMissingHotfixTarget() {
+        return getSession().createQuery("""
+                SELECT env
+                  FROM ContentEnvironment env
+                 WHERE env.version > 0
+                   AND NOT EXISTS (SELECT 1
+                                     FROM SoftwareEnvironmentTarget tgt
+                                    WHERE tgt.contentEnvironment = env
+                                      AND tgt.hotfix = true)
+                """, ContentEnvironment.class)
+                .list();
+    }
+
+    /**
      * Save a Project source
      *
      * @param source the project source

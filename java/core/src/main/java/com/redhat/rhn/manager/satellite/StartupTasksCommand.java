@@ -20,6 +20,7 @@ package com.redhat.rhn.manager.satellite;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,6 +48,7 @@ public class StartupTasksCommand extends BaseTransactionCommand {
             if (numOfUpgradedTgts > 0) {
                 LOG.warn("Set {} stale Content Environment Targets to FAILED state", numOfUpgradedTgts);
             }
+            new ContentManager().createMissingHotfixChannels();
         }
         catch (Exception e) {
             LOG.error("Error when executing startup tasks", e);
