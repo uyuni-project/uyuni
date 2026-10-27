@@ -62,11 +62,16 @@ Feature: Smoke tests for <client>
     And I should see a "Maintenance Schedule" text
     And I should see a "Description" text
     And I should see a "Location" text
+
+# The PowerPC guests have no UUID grain (no SMBIOS on pSeries), so the server does not register them as virtual guests and the details page has no UUID row.
+@skip_for_opensuse161ppc
+  Scenario: Client <client> UUID is displayed on the details page
     And I should see a "UUID" text
 
 # Patches are available for Ubuntu and Debian, but they are delivered through package updates rather than standalone patch files.
 # The RHEL clients have no relevant patch either: they are containers built from the current UBI images, so every package they carry is already at its newest version.
 # The openSUSE Leap 16.1 channels carry no errata, so there is nothing to install on those clients.
+# The SLES and SLES for SAP 16.1 releases have no relevant patch yet.
 @skip_for_debian
 @skip_for_amazon2023
 @skip_for_ubuntu
@@ -75,6 +80,8 @@ Feature: Smoke tests for <client>
 @skip_for_rhel9
 @skip_for_rhel10
 @skip_for_opensuse161
+@skip_for_sles161
+@skip_for_slesforsap161
   Scenario: Install a patch on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area

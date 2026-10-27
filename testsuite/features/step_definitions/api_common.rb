@@ -395,7 +395,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
     client = 'proxy_nontransactional' unless host_transactional?(proxy_host)
   end
   client = 'server_nontransactional' if client == 'server' && !host_transactional?(host)
-  base_channel_label = LABEL_BY_BASE_CHANNEL[product][BASE_CHANNEL_BY_CLIENT[product][client]]
+  base_channel_label = LABEL_BY_BASE_CHANNEL[product][BASE_CHANNEL_BY_CLIENT[product][BOOTSTRAP_CLIENT_BY_CLIENT.fetch(client, client)]]
 
   key = api_test.activationkey.create(id, description, base_channel_label, 100)
   raise StandardError, 'Error creating activation key via the API' if key.nil?
