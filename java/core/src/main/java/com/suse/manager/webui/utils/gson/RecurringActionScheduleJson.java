@@ -304,6 +304,8 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
                 return ((GroupRecurringAction) action).getGroup().getName();
             case ORG:
                 return ((OrgRecurringAction) action).getOrg().getName();
+            case NO_ENTITY:
+                return "-";
             default:
                 throw new IllegalStateException("Unsupported type " + action.getTargetType());
         }

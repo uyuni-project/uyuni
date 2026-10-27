@@ -18,6 +18,8 @@ package com.redhat.rhn.domain.recurringactions;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.state.InternalState;
@@ -106,6 +108,43 @@ public class RecurringActionFactory extends HibernateFactory {
     }
 
     /**
+     * List all recurring actions associated with a Content Project
+     *
+     * @param project the Content Project
+     * @return list of recurring actions
+     */
+    public static List<RecurringAction> listActionsForProject(ContentProject project) {
+        return getSession().createQuery("""
+                        SELECT action FROM RecurringAction action
+                         WHERE action in (
+                            SELECT bld.recurringAction FROM RecurringContentBuildType bld WHERE bld.project = :project
+                         )
+                         OR action in (
+                            SELECT prm.recurringAction FROM RecurringContentPromoteType prm WHERE prm.project = :project
+                         )
+                         ORDER BY action.id DESC
+                        """, RecurringAction.class)
+                .setParameter("project", project)
+                .list();
+    }
+
+    /**
+     * List all recurring actions associated with a Content Environment
+     *
+     * @param environment the Content Environment
+     * @return list of recurring actions
+     */
+    public static List<RecurringAction> listActionsForEnvironment(ContentEnvironment environment) {
+        return getSession().createQuery("""
+                        SELECT prm.recurringAction FROM RecurringContentPromoteType prm
+                         WHERE prm.environment = :env
+                         ORDER BY prm.recurringAction.id DESC
+                        """, RecurringAction.class)
+                .setParameter("env", environment)
+                .list();
+    }
+
+    /**
      * List all {@link RecurringAction}s that are associated with entities
      * belonging to the {@link Org} of given {@link User}.
      *
@@ -123,7 +162,7 @@ public class RecurringActionFactory extends HibernateFactory {
             "ra.name as schedule_name, " +
             "ra.active as active, " +
             "case" +
-            "  when ra.target_type = 'organization' then org.id " +
+            "  when ra.target_type in ('organization', 'no-entity') then org.id " +
             "  when ra.target_type = 'group' then sg.id " +
             "  when ra.target_type = 'minion' then minion.id " +
             "end as target_id, " +
@@ -131,13 +170,14 @@ public class RecurringActionFactory extends HibernateFactory {
             "  when ra.target_type = 'organization' then org.name " +
             "  when ra.target_type = 'group' then sg.name " +
             "  when ra.target_type = 'minion' then minion.name " +
+            "  when ra.target_type = 'no-entity' then '-' " +
             "end as target_name, " +
             "case" +
             "  when ra.target_type = 'organization' then 'ORG' " +
             "  else UPPER(ra.target_type) " +
             "end as target_type, " +
             "case" +
-            "  when ra.target_type = 'organization' then ra.org_id " +
+            "  when ra.target_type in ('organization', 'no-entity') then ra.org_id " +
             "  when ra.target_type = 'group' then sg.org_id " +
             "  when ra.target_type = 'minion' then minion.org_id " +
             "end as target_org " +
