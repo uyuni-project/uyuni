@@ -72,7 +72,8 @@ public abstract class RecurringAction extends BaseDomainHelper {
     public enum TargetType {
         MINION,
         GROUP,
-        ORG
+        ORG,
+        NO_ENTITY
     }
 
     /**
