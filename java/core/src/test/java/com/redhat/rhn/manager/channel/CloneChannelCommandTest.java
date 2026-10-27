@@ -191,6 +191,51 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests that a child channel without a product, like a custom channel, can be cloned in a SUMA PAYG instance.
+     *
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void canCloneChildChannelWithoutProductInPAYGInstance() throws Exception {
+        CloudPaygManager fakeCloudPaygManager = getFakeCloudPaygManager();
+
+        Channel parentChannel = createBaseChannel();
+        createChildrenWIthProductChannel(parentChannel);
+        Channel customChannel = createChildrenWithoutProductChannel(parentChannel);
+
+        CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE,
+                customChannel, fakeCloudPaygManager);
+        ccc.setUser(user);
+        ccc.setParentId(parentChannel.getId());
+        Channel clonedChannel = ccc.create();
+
+        assertNotNull(ChannelFactory.lookupByIdAndUser(clonedChannel.getId(), user));
+    }
+
+    /**
+     * Tests that a product channel cannot be cloned under a base channel that has only children without
+     * a product in a SUMA PAYG instance.
+     *
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void cannotCloneChildChannelUnderParentChannelWithChildrenWithoutProduct() throws Exception {
+        CloudPaygManager fakeCloudPaygManager = getFakeCloudPaygManager();
+
+        Channel parentChannelWithProductChannels = createBaseChannel();
+        Channel parentChannelWithCustomChannels = createBaseChannel();
+        Channel childrenChannel = createChildrenWIthProductChannel(parentChannelWithProductChannels);
+        createChildrenWithoutProductChannel(parentChannelWithCustomChannels);
+
+        CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE,
+                childrenChannel, fakeCloudPaygManager);
+        ccc.setUser(user);
+        ccc.setParentId(parentChannelWithCustomChannels.getId());
+
+        assertThrows(ForbiddenCloneChannelPAYGException.class, () -> ccc.create());
+    }
+
+    /**
      * Tests some recursiveness. It clones a base channel that has associated some product channel, and then
      * under that cloned base channel it clones a child channel with the same product channel as the first one.
      * This test is for SUMA PAYG instaces.
@@ -231,6 +276,14 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         return new TestCloudPaygManagerBuilder()
             .withPaygInstance()
             .build();
+    }
+
+    private Channel createChildrenWithoutProductChannel(Channel parentChannel) throws Exception {
+        Channel childrenChannel = ChannelTestUtils.createChildChannel(user, parentChannel);
+        childrenChannel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
+        childrenChannel.setSummary("summary");
+        childrenChannel.setProductName(null);
+        return ChannelFactory.save(childrenChannel);
     }
 
     private Channel createChildrenWIthProductChannel(Channel parentChannel) throws Exception {
