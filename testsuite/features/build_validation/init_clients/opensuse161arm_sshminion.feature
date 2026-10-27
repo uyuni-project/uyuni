@@ -10,7 +10,7 @@ Feature: Bootstrap an openSUSE 16.1 ARM Salt SSH minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Bootstrap an openSUSE 16.1 ARM system managed via salt-ssh
+  Scenario: Bootstrap an openSUSE 16.1 ARM Salt SSH minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
@@ -23,19 +23,19 @@ Feature: Bootstrap an openSUSE 16.1 ARM Salt SSH minion
     And I wait until onboarding is completed for "opensuse161arm_sshminion"
 
 @proxy
-  Scenario: Check connection from openSUSE 16.1 ARM SSH minion to proxy
+  Scenario: Check connection from openSUSE 16.1 ARM Salt SSH minion to proxy
     Given I am on the Systems overview page of this "opensuse161arm_sshminion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
 @proxy
-  Scenario: Check registration on proxy of openSUSE 16.1 ARM SSH minion
+  Scenario: Check registration on proxy of openSUSE 16.1 ARM Salt SSH minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "opensuse161arm_sshminion" hostname
 
-  Scenario: Check events history for failures on openSUSE 16.1 ARM SSH minion
+  Scenario: Check events history for failures on openSUSE 16.1 ARM Salt SSH minion
     Given I am on the Systems overview page of this "opensuse161arm_sshminion"
     Then I check for failed events on history event page

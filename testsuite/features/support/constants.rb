@@ -41,6 +41,11 @@ ENV_VAR_BY_HOST = {
   'sles160_sshminion' => 'SLES160_SSHMINION',
   'sles161_minion' => 'SLES161_MINION',
   'sles161_sshminion' => 'SLES161_SSHMINION',
+  'slesforsap15sp5_minion' => 'SLESFORSAP15SP5_MINION',
+  'slesforsap15sp6_minion' => 'SLESFORSAP15SP6_MINION',
+  'slesforsap15sp7_minion' => 'SLESFORSAP15SP7_MINION',
+  'slesforsap160_minion' => 'SLESFORSAP160_MINION',
+  'slesforsap161_minion' => 'SLESFORSAP161_MINION',
   'slemicro53_minion' => 'SLEMICRO53_MINION',
   'slemicro53_sshminion' => 'SLEMICRO53_SSHMINION',
   'slemicro54_minion' => 'SLEMICRO54_MINION',
@@ -226,6 +231,13 @@ PACKAGE_BY_CLIENT = {
   'sles15sp7_sshminion' => 'bison',
   'sles160_minion' => 'bison',
   'sles160_sshminion' => 'bison',
+  'sles161_minion' => 'bison',
+  'sles161_sshminion' => 'bison',
+  'slesforsap15sp5_minion' => 'bison',
+  'slesforsap15sp6_minion' => 'bison',
+  'slesforsap15sp7_minion' => 'bison',
+  'slesforsap160_minion' => 'bison',
+  'slesforsap161_minion' => 'bison',
   'slemicro53_minion' => 'dejavu',
   'slemicro53_sshminion' => 'dejavu',
   'slemicro54_minion' => 'dejavu',
@@ -324,6 +336,13 @@ BASE_CHANNEL_BY_CLIENT = {
     'sles15sp7_terminal' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sles160_minion' => 'SLE-Product-SLES-16.0 for x86_64',
     'sles160_sshminion' => 'SLE-Product-SLES-16.0 for x86_64',
+    'sles161_minion' => 'SLE-Product-SLES-16.1 for x86_64',
+    'sles161_sshminion' => 'SLE-Product-SLES-16.1 for x86_64',
+    'slesforsap15sp5_minion' => 'SLE-Product-SLES_SAP15-SP5-Pool for x86_64',
+    'slesforsap15sp6_minion' => 'SLE-Product-SLES_SAP15-SP6-Pool for x86_64',
+    'slesforsap15sp7_minion' => 'SLE-Product-SLES_SAP15-SP7-Pool for x86_64',
+    'slesforsap160_minion' => 'SLE-Product-SLES_SAP-16.0 for x86_64',
+    'slesforsap161_minion' => 'SLE-Product-SLES_SAP-16.1 for x86_64',
     'slemicro53_minion' => 'SLE-Micro-5.3-Pool for x86_64',
     'slemicro53_sshminion' => 'SLE-Micro-5.3-Pool for x86_64',
     'slemicro54_minion' => 'SLE-Micro-5.4-Pool for x86_64',
@@ -413,6 +432,13 @@ BASE_CHANNEL_BY_CLIENT = {
     'sles15sp7_terminal' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sles160_minion' => 'SLE-Product-SLES-16.0 for x86_64',
     'sles160_sshminion' => 'SLE-Product-SLES-16.0 for x86_64',
+    'sles161_minion' => 'SLE-Product-SLES-16.1 for x86_64',
+    'sles161_sshminion' => 'SLE-Product-SLES-16.1 for x86_64',
+    'slesforsap15sp5_minion' => 'SLE-Product-SLES_SAP15-SP5-Pool for x86_64',
+    'slesforsap15sp6_minion' => 'SLE-Product-SLES_SAP15-SP6-Pool for x86_64',
+    'slesforsap15sp7_minion' => 'SLE-Product-SLES_SAP15-SP7-Pool for x86_64',
+    'slesforsap160_minion' => 'SLE-Product-SLES_SAP-16.0 for x86_64',
+    'slesforsap161_minion' => 'SLE-Product-SLES_SAP-16.1 for x86_64',
     'slemicro53_minion' => 'SLE-Micro-5.3-Pool for x86_64',
     'slemicro53_sshminion' => 'SLE-Micro-5.3-Pool for x86_64',
     'slemicro54_minion' => 'SLE-Micro-5.4-Pool for x86_64',
@@ -486,6 +512,12 @@ LABEL_BY_BASE_CHANNEL = {
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'sle-product-sles15-sp6-pool-x86_64',
     'SLE-Product-SLES15-SP7-Pool for x86_64' => 'sle-product-sles15-sp7-pool-x86_64',
     'SLE-Product-SLES-16.0 for x86_64' => 'sle-product-sles-16.0-x86_64',
+    'SLE-Product-SLES-16.1 for x86_64' => 'sle-product-sles-16.1-x86_64',
+    'SLE-Product-SLES_SAP15-SP5-Pool for x86_64' => 'sle-product-sles_sap15-sp5-pool-x86_64',
+    'SLE-Product-SLES_SAP15-SP6-Pool for x86_64' => 'sle-product-sles_sap15-sp6-pool-x86_64',
+    'SLE-Product-SLES_SAP15-SP7-Pool for x86_64' => 'sle-product-sles_sap15-sp7-pool-x86_64',
+    'SLE-Product-SLES_SAP-16.0 for x86_64' => 'sle-product-sles_sap-16.0-x86_64',
+    'SLE-Product-SLES_SAP-16.1 for x86_64' => 'sle-product-sles_sap-16.1-x86_64',
     'SLE-Product-SLES15-SP5-Pool for s390x' => 'sle-product-sles15-sp5-pool-s390x',
     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
@@ -527,6 +559,12 @@ LABEL_BY_BASE_CHANNEL = {
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'sle-product-sles15-sp6-pool-x86_64',
     'SLE-Product-SLES15-SP7-Pool for x86_64' => 'sle-product-sles15-sp7-pool-x86_64',
     'SLE-Product-SLES-16.0 for x86_64' => 'sle-product-sles-16.0-x86_64',
+    'SLE-Product-SLES-16.1 for x86_64' => 'sle-product-sles-16.1-x86_64',
+    'SLE-Product-SLES_SAP15-SP5-Pool for x86_64' => 'sle-product-sles_sap15-sp5-pool-x86_64',
+    'SLE-Product-SLES_SAP15-SP6-Pool for x86_64' => 'sle-product-sles_sap15-sp6-pool-x86_64',
+    'SLE-Product-SLES_SAP15-SP7-Pool for x86_64' => 'sle-product-sles_sap15-sp7-pool-x86_64',
+    'SLE-Product-SLES_SAP-16.0 for x86_64' => 'sle-product-sles_sap-16.0-x86_64',
+    'SLE-Product-SLES_SAP-16.1 for x86_64' => 'sle-product-sles_sap-16.1-x86_64',
     'SLE-Product-SLES15-SP5-Pool for s390x' => 'sle-product-sles15-sp5-pool-s390x',
     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
@@ -599,6 +637,12 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'SLE-15-SP6-x86_64',
     'SLE-Product-SLES15-SP7-Pool for x86_64' => 'SLE-15-SP7-x86_64',
     'SLE-Product-SLES-16.0 for x86_64' => 'SLE-16.0-x86_64',
+    'SLE-Product-SLES-16.1 for x86_64' => 'SLE-16.1-x86_64',
+    'SLE-Product-SLES_SAP15-SP5-Pool for x86_64' => 'SLE-15-SP5-x86_64',
+    'SLE-Product-SLES_SAP15-SP6-Pool for x86_64' => 'SLE-15-SP6-x86_64',
+    'SLE-Product-SLES_SAP15-SP7-Pool for x86_64' => 'SLE-15-SP7-x86_64',
+    'SLE-Product-SLES_SAP-16.0 for x86_64' => 'SLES4SAP-16.0-x86_64',
+    'SLE-Product-SLES_SAP-16.1 for x86_64' => 'SLES4SAP-16.1-x86_64',
     'SLE-Product-SLES15-SP5-Pool for s390x' => 'SLE-15-SP5-s390x',
     'SLE-Micro-5.3-Pool for x86_64' => 'SLE-MICRO-5.3-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'SLE-MICRO-5.4-x86_64',
@@ -637,6 +681,12 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'SLE-15-SP6-x86_64',
     'SLE-Product-SLES15-SP7-Pool for x86_64' => 'SLE-15-SP7-x86_64',
     'SLE-Product-SLES-16.0 for x86_64' => 'SLE-16.0-x86_64',
+    'SLE-Product-SLES-16.1 for x86_64' => 'SLE-16.1-x86_64',
+    'SLE-Product-SLES_SAP15-SP5-Pool for x86_64' => 'SLE-15-SP5-x86_64',
+    'SLE-Product-SLES_SAP15-SP6-Pool for x86_64' => 'SLE-15-SP6-x86_64',
+    'SLE-Product-SLES_SAP15-SP7-Pool for x86_64' => 'SLE-15-SP7-x86_64',
+    'SLE-Product-SLES_SAP-16.0 for x86_64' => 'SLES4SAP-16.0-x86_64',
+    'SLE-Product-SLES_SAP-16.1 for x86_64' => 'SLES4SAP-16.1-x86_64',
     'SLE-Product-SLES15-SP5-Pool for s390x' => 'SLE-15-SP5-s390x',
     'SLE-Micro-5.3-Pool for x86_64' => 'SLE-MICRO-5.3-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'SLE-MICRO-5.4-x86_64',
@@ -679,6 +729,12 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'sle-product-sles15-sp6-pool-x86_64',
     'SLE-Product-SLES15-SP7-Pool for x86_64' => 'sle-product-sles15-sp7-pool-x86_64',
     'SLE-Product-SLES-16.0 for x86_64' => 'sle-product-sles-16.0-x86_64',
+    'SLE-Product-SLES-16.1 for x86_64' => 'sle-product-sles-16.1-x86_64',
+    'SLE-Product-SLES_SAP15-SP5-Pool for x86_64' => 'sle-product-sles_sap15-sp5-pool-x86_64',
+    'SLE-Product-SLES_SAP15-SP6-Pool for x86_64' => 'sle-product-sles_sap15-sp6-pool-x86_64',
+    'SLE-Product-SLES_SAP15-SP7-Pool for x86_64' => 'sle-product-sles_sap15-sp7-pool-x86_64',
+    'SLE-Product-SLES_SAP-16.0 for x86_64' => 'sle-product-sles_sap-16.0-x86_64',
+    'SLE-Product-SLES_SAP-16.1 for x86_64' => 'sle-product-sles_sap-16.1-x86_64',
     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
     'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
@@ -716,6 +772,12 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'sle-product-sles15-sp6-pool-x86_64',
     'SLE-Product-SLES15-SP7-Pool for x86_64' => 'sle-product-sles15-sp7-pool-x86_64',
     'SLE-Product-SLES-16.0 for x86_64' => 'sle-product-sles-16.0-x86_64',
+    'SLE-Product-SLES-16.1 for x86_64' => 'sle-product-sles-16.1-x86_64',
+    'SLE-Product-SLES_SAP15-SP5-Pool for x86_64' => 'sle-product-sles_sap15-sp5-pool-x86_64',
+    'SLE-Product-SLES_SAP15-SP6-Pool for x86_64' => 'sle-product-sles_sap15-sp6-pool-x86_64',
+    'SLE-Product-SLES_SAP15-SP7-Pool for x86_64' => 'sle-product-sles_sap15-sp7-pool-x86_64',
+    'SLE-Product-SLES_SAP-16.0 for x86_64' => 'sle-product-sles_sap-16.0-x86_64',
+    'SLE-Product-SLES_SAP-16.1 for x86_64' => 'sle-product-sles_sap-16.1-x86_64',
     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
     'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
@@ -759,6 +821,13 @@ PKGARCH_BY_CLIENT = {
   'sles15sp7_sshminion' => 'x86_64',
   'sles160_minion' => 'x86_64',
   'sles160_sshminion' => 'x86_64',
+  'sles161_minion' => 'x86_64',
+  'sles161_sshminion' => 'x86_64',
+  'slesforsap15sp5_minion' => 'x86_64',
+  'slesforsap15sp6_minion' => 'x86_64',
+  'slesforsap15sp7_minion' => 'x86_64',
+  'slesforsap160_minion' => 'x86_64',
+  'slesforsap161_minion' => 'x86_64',
   'slemicro53_minion' => 'x86_64',
   'slemicro53_sshminion' => 'x86_64',
   'slemicro54_minion' => 'x86_64',
@@ -1083,10 +1152,15 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-product-sles-16.0-x86_64
         multi-linux-managertools-sle-16-x86_64
       ],
-    'sles16-aarch64' =>
+    'sles16.1-aarch64' =>
       %w[
-        sle-product-sles-16.0-aarch64
-        multi-linux-managertools-sle-16-aarch64
+        sle-product-sles-16.1-aarch64
+        multi-linux-managertools-sle-16-aarch64-sles-16.1
+      ],
+    'sles16.1' =>
+      %w[
+        sle-product-sles-16.1-x86_64
+        multi-linux-managertools-sle-16-x86_64-sles-16.1
       ],
     'slesforsap15-sp5' =>
       %w[
@@ -1106,6 +1180,54 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-product-ha15-sp5-updates-x86_64-sap
         sle-module-sap-applications15-sp5-pool-x86_64
         sle-module-sap-applications15-sp5-updates-x86_64
+      ],
+    'slesforsap15-sp6' =>
+      %w[
+        managertools-sle15-pool-x86_64-sap-sp6
+        managertools-sle15-updates-x86_64-sap-sp6
+        sle-module-basesystem15-sp6-pool-x86_64-sap
+        sle-module-basesystem15-sp6-updates-x86_64-sap
+        sle-module-desktop-applications15-sp6-pool-x86_64-sap
+        sle-module-desktop-applications15-sp6-updates-x86_64-sap
+        sle-module-devtools15-sp6-pool-x86_64-sap
+        sle-module-devtools15-sp6-updates-x86_64-sap
+        sle-module-server-applications15-sp6-pool-x86_64-sap
+        sle-module-server-applications15-sp6-updates-x86_64-sap
+        sle-product-sles_sap15-sp6-pool-x86_64
+        sle-product-sles_sap15-sp6-updates-x86_64
+        sle-product-ha15-sp6-pool-x86_64-sap
+        sle-product-ha15-sp6-updates-x86_64-sap
+        sle-module-sap-applications15-sp6-pool-x86_64
+        sle-module-sap-applications15-sp6-updates-x86_64
+      ],
+    'slesforsap15-sp7' =>
+      %w[
+        managertools-sle15-pool-x86_64-sap-sp7
+        managertools-sle15-updates-x86_64-sap-sp7
+        sle-module-basesystem15-sp7-pool-x86_64-sap
+        sle-module-basesystem15-sp7-updates-x86_64-sap
+        sle-module-desktop-applications15-sp7-pool-x86_64-sap
+        sle-module-desktop-applications15-sp7-updates-x86_64-sap
+        sle-module-devtools15-sp7-pool-x86_64-sap
+        sle-module-devtools15-sp7-updates-x86_64-sap
+        sle-module-server-applications15-sp7-pool-x86_64-sap
+        sle-module-server-applications15-sp7-updates-x86_64-sap
+        sle-product-sles_sap15-sp7-pool-x86_64
+        sle-product-sles_sap15-sp7-updates-x86_64
+        sle-product-ha15-sp7-pool-x86_64-sap
+        sle-product-ha15-sp7-updates-x86_64-sap
+        sle-module-sap-applications15-sp7-pool-x86_64
+        sle-module-sap-applications15-sp7-updates-x86_64
+      ],
+    'slesforsap16' =>
+      %w[
+        sle-product-sles_sap-16.0-x86_64
+        multi-linux-managertools-sle-16-x86_64-sap
+      ],
+    'slesforsap16.1' =>
+      %w[
+        sle-product-sles_sap-16.1-x86_64
+        multi-linux-managertools-sle-16-x86_64-sap-16.1
       ],
     'sles15-sp5-s390x' =>
       %w[
@@ -1444,7 +1566,12 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
     'sles16' =>
       %w[
         sle-product-sles-16.0-x86_64
-        sles16-devel-uyuni-client-x86_64
+        sles16-0-devel-uyuni-client-x86_64
+      ],
+    'sles16.1' =>
+      %w[
+        sle-product-sles-16.1-x86_64
+        sles16-1-devel-uyuni-client-x86_64
       ],
     'slesforsap15-sp5' =>
       %w[
@@ -1462,6 +1589,53 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-product-ha15-sp5-updates-x86_64-sap
         sle-module-sap-applications15-sp5-pool-x86_64
         sle-module-sap-applications15-sp5-updates-x86_64
+        sles15-sap-sp5-devel-uyuni-client-x86_64
+      ],
+    'slesforsap15-sp6' =>
+      %w[
+        sle-module-basesystem15-sp6-pool-x86_64-sap
+        sle-module-basesystem15-sp6-updates-x86_64-sap
+        sle-module-desktop-applications15-sp6-pool-x86_64-sap
+        sle-module-desktop-applications15-sp6-updates-x86_64-sap
+        sle-module-devtools15-sp6-pool-x86_64-sap
+        sle-module-devtools15-sp6-updates-x86_64-sap
+        sle-module-server-applications15-sp6-pool-x86_64-sap
+        sle-module-server-applications15-sp6-updates-x86_64-sap
+        sle-product-sles_sap15-sp6-pool-x86_64
+        sle-product-sles_sap15-sp6-updates-x86_64
+        sle-product-ha15-sp6-pool-x86_64-sap
+        sle-product-ha15-sp6-updates-x86_64-sap
+        sle-module-sap-applications15-sp6-pool-x86_64
+        sle-module-sap-applications15-sp6-updates-x86_64
+        sles15-sap-sp6-devel-uyuni-client-x86_64
+      ],
+    'slesforsap15-sp7' =>
+      %w[
+        sle-module-basesystem15-sp7-pool-x86_64-sap
+        sle-module-basesystem15-sp7-updates-x86_64-sap
+        sle-module-desktop-applications15-sp7-pool-x86_64-sap
+        sle-module-desktop-applications15-sp7-updates-x86_64-sap
+        sle-module-devtools15-sp7-pool-x86_64-sap
+        sle-module-devtools15-sp7-updates-x86_64-sap
+        sle-module-server-applications15-sp7-pool-x86_64-sap
+        sle-module-server-applications15-sp7-updates-x86_64-sap
+        sle-product-sles_sap15-sp7-pool-x86_64
+        sle-product-sles_sap15-sp7-updates-x86_64
+        sle-product-ha15-sp7-pool-x86_64-sap
+        sle-product-ha15-sp7-updates-x86_64-sap
+        sle-module-sap-applications15-sp7-pool-x86_64
+        sle-module-sap-applications15-sp7-updates-x86_64
+        sles15-sap-sp7-devel-uyuni-client-x86_64
+      ],
+    'slesforsap16' =>
+      %w[
+        sle-product-sles_sap-16.0-x86_64
+        sles16-sap-0-devel-uyuni-client-x86_64
+      ],
+    'slesforsap16.1' =>
+      %w[
+        sle-product-sles_sap-16.1-x86_64
+        sles16-sap-1-devel-uyuni-client-x86_64
       ],
     'sles15-sp5-s390x' =>
       %w[
@@ -1714,12 +1888,16 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-sle12-updates-x86_64-sp5' => 60,
   'managertools-sle15-pool-s390x-sp5' => 60,
   'managertools-sle15-pool-x86_64-sap-sp5' => 60,
+  'managertools-sle15-pool-x86_64-sap-sp6' => 60,
+  'managertools-sle15-pool-x86_64-sap-sp7' => 60,
   'managertools-sle15-pool-x86_64-sp4' => 60,
   'managertools-sle15-pool-x86_64-sp5' => 60,
   'managertools-sle15-pool-x86_64-sp6' => 60,
   'managertools-sle15-pool-x86_64-sp7' => 60,
   'managertools-sle15-updates-s390x-sp5' => 60,
   'managertools-sle15-updates-x86_64-sap-sp5' => 60,
+  'managertools-sle15-updates-x86_64-sap-sp6' => 60,
+  'managertools-sle15-updates-x86_64-sap-sp7' => 60,
   'managertools-sle15-updates-x86_64-sp4' => 60,
   'managertools-sle15-updates-x86_64-sp5' => 60,
   'managertools-sle15-updates-x86_64-sp6' => 60,
@@ -1733,8 +1911,12 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-ubuntu2604-updates-amd64' => 60,
   'multi-linux-managertools-sle-16-aarch64-opensuse-16.0' => 60,
   'multi-linux-managertools-sle-16-aarch64' => 60,
+  'multi-linux-managertools-sle-16-aarch64-sles-16.1' => 60,
   'multi-linux-managertools-sle-16-ppc64le-opensuse-16.0' => 60,
   'multi-linux-managertools-sle-16-x86_64' => 60,
+  'multi-linux-managertools-sle-16-x86_64-sap' => 60,
+  'multi-linux-managertools-sle-16-x86_64-sap-16.1' => 60,
+  'multi-linux-managertools-sle-16-x86_64-sles-16.1' => 60,
   'opensuse_leap16_1-aarch64' => 4500,
   'opensuse_leap16_1-uyuni-client-devel-aarch64' => 120,
   'opensuse-leap-16.1-aarch64' => 7200,
@@ -1779,6 +1961,34 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'rockylinux-9-x86_64' => 360,
   'rockylinux-10-appstream-x86_64' => 1200,
   'rockylinux-10-x86_64' => 540,
+  'sle-module-basesystem15-sp5-pool-x86_64-sap' => 180,
+  'sle-module-basesystem15-sp5-updates-x86_64-sap' => 1200,
+  'sle-module-basesystem15-sp6-pool-x86_64-sap' => 120,
+  'sle-module-basesystem15-sp6-updates-x86_64-sap' => 480,
+  'sle-module-basesystem15-sp7-pool-x86_64-sap' => 720,
+  'sle-module-basesystem15-sp7-updates-x86_64-sap' => 840,
+  'sle-module-desktop-applications15-sp5-pool-x86_64-sap' => 120,
+  'sle-module-desktop-applications15-sp5-updates-x86_64-sap' => 60,
+  'sle-module-desktop-applications15-sp6-pool-x86_64-sap' => 120,
+  'sle-module-desktop-applications15-sp6-updates-x86_64-sap' => 60,
+  'sle-module-desktop-applications15-sp7-pool-x86_64-sap' => 180,
+  'sle-module-desktop-applications15-sp7-updates-x86_64-sap' => 120,
+  'sle-module-devtools15-sp5-pool-x86_64-sap' => 180,
+  'sle-module-devtools15-sp5-updates-x86_64-sap' => 1200,
+  'sle-module-devtools15-sp6-pool-x86_64-sap' => 120,
+  'sle-module-devtools15-sp6-updates-x86_64-sap' => 360,
+  'sle-module-devtools15-sp7-pool-x86_64-sap' => 180,
+  'sle-module-devtools15-sp7-updates-x86_64-sap' => 480,
+  'sle-module-server-applications15-sp5-pool-x86_64-sap' => 60,
+  'sle-module-server-applications15-sp5-updates-x86_64-sap' => 60,
+  'sle-module-server-applications15-sp6-pool-x86_64-sap' => 60,
+  'sle-module-server-applications15-sp6-updates-x86_64-sap' => 120,
+  'sle-module-server-applications15-sp7-pool-x86_64-sap' => 120,
+  'sle-module-server-applications15-sp7-updates-x86_64-sap' => 120,
+  'sle-product-sles-16.1-aarch64' => 1920,
+  'sle-product-sles-16.1-x86_64' => 2220,
+  'sle-product-sles_sap-16.0-x86_64' => 2220,
+  'sle-product-sles_sap-16.1-x86_64' => 2220,
   'sle15-sp4-installer-updates-x86_64' => 60,
   'sle15-sp7-installer-updates-x86_64' => 60,
   'sle-micro-5.3-devel-uyuni-client-x86_64' => 120,
@@ -1879,11 +2089,17 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sles12-sp5-pool-x86_64' => 120,
   'sles12-sp5-updates-x86_64' => 1920,
   'sles12-sp5-uyuni-client-devel-x86_64' => 120,
+  'sles15-sap-sp5-devel-uyuni-client-x86_64' => 120,
+  'sles15-sap-sp6-devel-uyuni-client-x86_64' => 120,
+  'sles15-sap-sp7-devel-uyuni-client-x86_64' => 120,
   'sles15-sp4-devel-uyuni-client-x86_64' => 120,
   'sles15-sp5-devel-uyuni-client-x86_64' => 120,
   'sles15-sp6-devel-uyuni-client-x86_64' => 120,
   'sles15-sp7-devel-uyuni-client-x86_64' => 120,
-  'sles16-devel-uyuni-client-x86_64' => 120,
+  'sles16-0-devel-uyuni-client-x86_64' => 120,
+  'sles16-1-devel-uyuni-client-x86_64' => 120,
+  'sles16-sap-0-devel-uyuni-client-x86_64' => 120,
+  'sles16-sap-1-devel-uyuni-client-x86_64' => 120,
   'sll-9-updates-x86_64' => 2940,
   'sll-as-9-updates-x86_64' => 2460,
   'sll-cb-9-updates-x86_64' => 3060,
@@ -1989,11 +2205,17 @@ UYUNI_MAIN_REPO_URL_BYPASS = {
   'sle-micro-5.4-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
   'sle-micro-5.5-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
   'sles12-sp5-uyuni-client-devel-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_12/',
+  'sles15-sap-sp5-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
+  'sles15-sap-sp6-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
+  'sles15-sap-sp7-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
   'sles15-sp4-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
   'sles15-sp5-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
   'sles15-sp6-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
   'sles15-sp7-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
-  'sles16-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_16/',
+  'sles16-0-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_16/',
+  'sles16-1-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_16/',
+  'sles16-sap-0-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_16/',
+  'sles16-sap-1-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_16/',
   'ubuntu-2204-amd64-uyuni-client-devel' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/xUbuntu_22.04-debbuild/',
   'ubuntu-2404-amd64-uyuni-client-devel' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/xUbuntu_24.04-debbuild/',
   'uyuni-proxy-devel-tumbleweed-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main/images/repo/Uyuni-Proxy-POOL-x86_64-Media1/'

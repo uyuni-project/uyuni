@@ -13,7 +13,7 @@ Feature: Bootstrap a Ubuntu 22.04 Salt SSH minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Bootstrap a SSH-managed Ubuntu 22.04 minion
+  Scenario: Bootstrap a Ubuntu 22.04 Salt SSH minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ubuntu2204_sshminion" as "hostname"
@@ -27,6 +27,6 @@ Feature: Bootstrap a Ubuntu 22.04 Salt SSH minion
     And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "ubuntu2204_sshminion"
 
-  Scenario: Check events history for failures on SSH-managed Ubuntu 22.04 minion
+  Scenario: Check events history for failures on Ubuntu 22.04 Salt SSH minion
     Given I am on the Systems overview page of this "ubuntu2204_sshminion"
     Then I check for failed events on history event page

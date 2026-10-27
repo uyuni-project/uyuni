@@ -11,7 +11,7 @@ Feature: Migrate a SLES 16.0 Salt SSH minion to SLES 16.1
   Scenario: Prerequisite: update OS zypper to the latest version
     When I upgrade "zypper" on "sles160_sshminion" using the API
 
-  Scenario: Migrate this SSH minion to SLES 16.1
+  Scenario: Migrate this Salt SSH minion to SLES 16.1
     Given I am on the Systems overview page of this "sles160_sshminion"
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
@@ -26,7 +26,7 @@ Feature: Migrate a SLES 16.0 Salt SSH minion to SLES 16.1
     When I click on "Confirm"
     Then I should see a "This system is scheduled to be migrated to" text
 
-  Scenario: Check the migration is successful for this SSH minion
+  Scenario: Check the migration is successful for this Salt SSH minion
     Given I am on the Systems overview page of this "sles160_sshminion"
     When I follow "Events"
     And I follow "History"
@@ -37,6 +37,6 @@ Feature: Migrate a SLES 16.0 Salt SSH minion to SLES 16.1
     Then I should see a "SUSE Linux Enterprise Server 16.1" text
     And vendor change should be enabled for product migration on "sles160_sshminion"
 
-  Scenario: Check events history for failures on the migrated SSH minion
+  Scenario: Check events history for failures on the migrated Salt SSH minion
     Given I am on the Systems overview page of this "sles160_sshminion"
     Then I check for failed events on history event page
