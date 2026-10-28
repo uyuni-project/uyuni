@@ -61,6 +61,9 @@ public class PaygAuthDataProcessor {
     private static final Gson GSON = new GsonBuilder()
             .serializeNulls()
             .create();
+    public static final String SSL_CLIENT_CERT = "sslclientcert";
+    public static final String SSL_CLIENT_KEY = "sslclientkey";
+    public static final String SSL_CA_CERT = "sslcacert";
 
     /**
      * Will process the authentication data and cryptographic material and save it on the database.
@@ -132,28 +135,18 @@ public class PaygAuthDataProcessor {
             contentSource.setSourceUrl(new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(),
                     uri.getPath(), queryString, uri.getFragment()).toString());
 
-            if (repodata.containsKey("sslclientcert") &&
-                    cryptoKeyMap.containsKey(repodata.get("sslclientcert")) &&
-                    repodata.containsKey("sslclientkey") &&
-                    cryptoKeyMap.containsKey(repodata.get("sslclientkey")) &&
-                    repodata.containsKey("sslcacert") &&
-                    cryptoKeyMap.containsKey(repodata.get("sslcacert"))) {
-                SslCryptoKey clientCert = cryptoKeyMap.get(repodata.get("sslclientcert"));
-                SslCryptoKey clientKey = cryptoKeyMap.get(repodata.get("sslclientkey"));
-                SslCryptoKey caCert = cryptoKeyMap.get(repodata.get("sslcacert"));
+            if (repodata.containsKey(SSL_CLIENT_CERT) && cryptoKeyMap.containsKey(repodata.get(SSL_CLIENT_CERT)) &&
+                repodata.containsKey(SSL_CLIENT_KEY) && cryptoKeyMap.containsKey(repodata.get(SSL_CLIENT_KEY)) &&
+                repodata.containsKey(SSL_CA_CERT) && cryptoKeyMap.containsKey(repodata.get(SSL_CA_CERT))
+            ) {
+                SslCryptoKey clientCert = cryptoKeyMap.get(repodata.get(SSL_CLIENT_CERT));
+                SslCryptoKey clientKey = cryptoKeyMap.get(repodata.get(SSL_CLIENT_KEY));
+                SslCryptoKey caCert = cryptoKeyMap.get(repodata.get(SSL_CA_CERT));
 
-                // Reuse an existing instance when present to keep orphanRemoval collection updates stable.
-                SslContentSource sslContentSource = contentSource.getSslContentSources().stream().findFirst()
-                    .orElseGet(() -> new SslContentSource(contentSource));
-
-                sslContentSource.setClientCert(clientCert);
-                sslContentSource.setClientKey(clientKey);
-                sslContentSource.setCaCert(caCert);
-
-                contentSource.setSslContentSources(Set.of(sslContentSource));
+                contentSource.setSslContentSources(
+                        Set.of(new SslContentSource(contentSource, caCert, clientCert, clientKey)));
             }
-            else if (repodata.containsKey("sslclientcert") ||
-                    repodata.containsKey("sslclientkey")) {
+            else if (repodata.containsKey(SSL_CLIENT_CERT) || repodata.containsKey(SSL_CLIENT_KEY)) {
                 LOG.error("Repository has incomplete client certificate values: {}", repoIdent);
                 continue;
             }

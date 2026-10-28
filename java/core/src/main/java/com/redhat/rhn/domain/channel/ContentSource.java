@@ -29,8 +29,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -79,8 +81,8 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
                 inverseJoinColumns = @JoinColumn(name = "channel_id"))
     private Set<Channel> channels = new HashSet<>();
 
-    @OneToMany(mappedBy = "contentSource", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
-                fetch = FetchType.LAZY, orphanRemoval = true)
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "rhnContentSourceSsl", joinColumns = @JoinColumn(name = "content_source_id"))
     private Set<SslContentSource> sslSets = new HashSet<>();
 
     @OneToMany(mappedBy = "contentSource", fetch = FetchType.LAZY)
