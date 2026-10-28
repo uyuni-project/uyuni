@@ -37,6 +37,7 @@ import jakarta.persistence.OneToOne;
 @DiscriminatorValue("software")
 public class SoftwareEnvironmentTarget extends EnvironmentTarget {
 
+    @OneToOne
     private Channel channel;
 
     /**
@@ -66,7 +67,6 @@ public class SoftwareEnvironmentTarget extends EnvironmentTarget {
      *
      * @return channel
      */
-    @OneToOne
     public Channel getChannel() {
         return channel;
     }
