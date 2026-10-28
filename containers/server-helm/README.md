@@ -29,6 +29,31 @@ Its name needs to be passed as the `registrySecret` value.
 
 The Root CA certificate of `db-cert` and `uyuni-cert` are expected in ConfigMaps named `db-ca` and `uyuni-ca` with the certificate in the `ca.crt` key.
 
+An optional `trust-anchors` ConfigMap can be created to extend the server's trust store with custom CA certificates.
+When present, it is projected into `/etc/pki/trust/anchors/` alongside `uyuni-ca` and `db-ca`.
+Each key in the ConfigMap becomes a file under that directory, so name the keys after the certificate file name (typically ending in `.crt`).
+If the ConfigMap is missing, the chart still deploys — only the `uyuni-ca` and `db-ca` certificates are projected.
+
+If you previously used the removed `ca-certs` PVC to provide additional certificates, migrate them into `trust-anchors` before upgrading.
+
+### Custom CA certificates
+
+On Kubernetes, the `/etc/pki/trust/anchors/` directory is a read-only projected volume that aggregates the `uyuni-ca`, `db-ca`, and `trust-anchors` ConfigMaps.
+To add or remove custom CAs, update the `trust-anchors` ConfigMap. Kubernetes will update the mounted files automatically (with a short delay). However, you **must** restart the `uyuni` deployment for running services to reload the trust store.
+For example, to add `my-corp.crt`:
+
+```sh
+kubectl create configmap trust-anchors -n $NAMESPACE \
+    --from-file=my-corp.crt=./my-corp.crt \
+    --dry-run=client -o yaml > trust-anchors.yaml
+kubectl apply -f trust-anchors.yaml
+kubectl rollout restart deployment/uyuni -n $NAMESPACE
+```
+
+To add or remove certificates later, regenerate the YAML file with the desired set of files and reapply. **Remember to restart the deployment after applying certificate changes.**
+
+To add or change multiple certificates, add more `--from-file` flags. To remove a certificate, edit the ConfigMap and delete the key, then restart the deployment.
+
 ### Persistent Volumes
 
 The following persistent volume claims will be created and will need to be bound to persistent volumes.
@@ -41,7 +66,6 @@ The following persistent volume claims will be created and will need to be bound
 | `var-log` | `"2Gi"` |
 | `srv-www` | `"100Gi"` |
 | `srv-tftpboot` | `"300Mi"` |
-| `ca-certs` | `"10Mi"` |
 | `etc-apache2` | `"1Mi"` |
 | `etc-cobbler` | `"1Mi"` |
 | `etc-postfix` | `"1Mi"` |
@@ -349,6 +373,7 @@ semodule -i /root/systemdcontainerpolicy.pp
 | `global.fqdn` | string | `nil` | Fully qualified name the server will answer as. |
 | `timezone` | string | `"Etc/UTC"` | The time zone to set in the containers |
 | `placement` | object | `{}` | Default node placement rules for all pods |
+| `skipPreFlight` | bool | `false` | Skip pre-flight validation checks (useful with helm template or --dry-run when the cluster cannot be queried). |
 | `server` | object | `{"affinity":{},"apparmorProfile":"","email":"admin@uyuni.lab.org","extraVolumeMounts":[],"extraVolumes":[],"image":null,"mirror":{"claimName":"","hostPath":""},"nodeName":null,"nodeSelector":{},"sccSecret":"","selinuxType":"","superPrivileged":false,"systemdLogLevel":"","tag":null,"tolerations":[]}` | Server component configuration |
 | `server.image` | string | `nil` | Overrides the default image computed using the repository property. Leave undefined to use the default |
 | `server.tag` | string | `nil` | Overrides the default tag in the tag property. Leave undefined to use the default |
