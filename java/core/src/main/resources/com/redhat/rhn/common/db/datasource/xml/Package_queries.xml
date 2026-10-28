@@ -667,7 +667,7 @@ SELECT PN.id || '|' || SPE.id AS ID_COMBO,
        rhnPackageEVR SPE ON SP.evr_id = SPE.id
  WHERE SP.server_id = :sid
    AND NOT EXISTS (SELECT 1 FROM rhnPackageSyncBlacklist PSB WHERE
-                     PSB.package_name_id = PN.id AND org_id is NULL OR org_id = :org_id)
+                     PSB.package_name_id = PN.id AND (PSB.org_id IS NULL OR PSB.org_id = :org_id))
   </query>
 </mode>
 
@@ -693,7 +693,7 @@ SELECT PN.id || '|' || SPE.id AS ID_COMBO,
        rhnPackageEVR SPE ON SP.evr_id = SPE.id
  WHERE SP.server_profile_id = :prid
    AND NOT EXISTS (SELECT 1 FROM rhnPackageSyncBlacklist PSB WHERE
-                     PSB.package_name_id = PN.id AND org_id is NULL OR org_id = :org_id)
+                     PSB.package_name_id = PN.id AND (PSB.org_id IS NULL OR PSB.org_id = :org_id))
   </query>
 </mode>
 
@@ -2381,7 +2381,7 @@ SELECT PN.id AS NAME_ID,
  WHERE S.id = :ss_id
    AND S.server_id = :sid
    AND NOT EXISTS (SELECT 1 FROM rhnPackageSyncBlacklist PSB WHERE
-                     PSB.package_name_id = PN.id AND org_id is NULL OR org_id = :org_id)
+                     PSB.package_name_id = PN.id AND (PSB.org_id IS NULL OR PSB.org_id = :org_id))
    AND NOT EXISTS (
 SELECT 1 FROM rhnServerPackage SP
  WHERE SP.server_id = :sid
