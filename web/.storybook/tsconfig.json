@@ -9,7 +9,6 @@
     "../html/src/global.d.ts",
     "../html/src/imports.d.ts"
   ],
-  "exclude": ["../html/src/storybook/generated/**/*"],
   "compilerOptions": {
     "moduleResolution": "bundler",
     "types": ["jquery", "node"]

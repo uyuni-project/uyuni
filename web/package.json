@@ -17,7 +17,6 @@
     "lint:production": "sort-package-json package.json --quiet && NODE_ENV=production eslint . -f codeframe --config eslint.config.js",
     "sort-package": "sort-package-json package.json --quiet",
     "storybook": "storybook dev -p 6006 --no-open --disable-telemetry",
-    "storybook:generate": "node html/src/build/storybook/generate-legacy-stories.js",
     "build-storybook": "storybook build -o storybook-static --disable-telemetry",
     "test": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=none\" BABEL_ENV=test jest --projects html/src/jest.config.js",
     "test:watch": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=none\" BABEL_ENV=test jest --watch --projects html/src/jest.config.js",
