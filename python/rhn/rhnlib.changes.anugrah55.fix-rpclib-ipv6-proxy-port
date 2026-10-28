@@ -1,0 +1,1 @@
+- Fix parsing of bracketed IPv6 proxy addresses with a port
