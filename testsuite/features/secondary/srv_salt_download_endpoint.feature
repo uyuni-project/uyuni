@@ -1,6 +1,5 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
-
 @scope_salt
 Feature: Endpoint to download packages
   In order to distribute software to the clients
@@ -8,7 +7,7 @@ Feature: Endpoint to download packages
   I want to download packages from the channels
 
   Scenario: Download package, user without token
-    Given I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "fake-rpm-suse-channel"
+    Given I try to download "andromeda-dummy-2.0-1.1.noarch.rpm" from channel "fake-rpm-suse-channel"
     Then the download should get a 403 response
 
   Scenario: Download package, user with a valid token for the org
@@ -18,12 +17,12 @@ Feature: Endpoint to download packages
 
   Scenario: Download package, user with an invalid token for the org
     Given I have an invalid token for organization "1"
-    When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "fake-rpm-suse-channel"
+    When I try to download "publishkey-helper-1.0-1.1.noarch.rpm" from channel "fake-rpm-suse-channel"
     Then the download should get a 403 response
 
   Scenario: Download package, user with an expired valid token for the org
     Given I have an expired valid token for organization "1"
-    When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "fake-rpm-suse-channel"
+    When I try to download "blackhole-dummy-1.0-1.1.x86_64.rpm" from channel "fake-rpm-suse-channel"
     Then the download should get a 403 response
 
   Scenario: Download package, user with an non expired valid token for the org
@@ -33,11 +32,10 @@ Feature: Endpoint to download packages
 
   Scenario: Download package, user with a valid token that cant be used until tomorrow for the org
     Given I have a not yet usable valid token for organization "1"
-    When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "fake-rpm-suse-channel"
+    When I try to download "hoag-dummy-1.1-1.1.x86_64.rpm" from channel "fake-rpm-suse-channel"
     Then the download should get a 403 response
 
   Scenario: Download package, user with a valid token for the org and specific channels
     Given I have a valid token for organization "1" and channel "foobar"
-    When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "fake-rpm-suse-channel"
+    When I try to download "milkyway-dummy-2.0-1.1.x86_64.rpm" from channel "fake-rpm-suse-channel"
     Then the download should get a 403 response
-
