@@ -76,7 +76,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testCreateFirst() {
         /*
-         * "dockerrun_pg" already creates a new Org during Init right now.
+         * "dockerrun/podmanrun" already creates a new Org during Init right now.
          * Therefore check first if Org with ID '1' exist without performing further tests then.
          * If there is no Org yet, perform actual test of createFirst method.
 
