@@ -856,6 +856,7 @@ public class CachedStatement implements Serializable {
         // this : August 23, 2005 12:00:00 AM PDT
         // vs the real date: August 23, 2005 1:36:12 PM PDT
         if (columnValue instanceof Date ||
+                columnValue instanceof java.time.temporal.TemporalAccessor ||
                 ("oracle.sql.TIMESTAMPLTZ"
                      .equals(columnValue.getClass().getCanonicalName())) ||
                 ("oracle.sql.TIMESTAMP"
