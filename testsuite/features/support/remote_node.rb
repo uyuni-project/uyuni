@@ -393,7 +393,7 @@ class RemoteNode
         return output.strip
       end
     else
-      %w[br0 eth0 eth1 eth1000 ens0 ens1 ens2 ens3 ens4 ens5 ens6 ens7].each do |dev|
+      %w[br0 eth0 eth1 eth1000 enp0s1 ens0 ens1 ens2 ens3 ens4 ens5 ens6 ens7].each do |dev|
         output, code = run_local("ip address show dev #{dev} | grep 'inet '", port: HOST_SSH_PORT, check_errors: false)
 
         next unless code.zero?
