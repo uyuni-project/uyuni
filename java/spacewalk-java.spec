@@ -77,7 +77,6 @@ BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-contrib
 BuildRequires:  ant-junit
 BuildRequires:  antlr4-java >= 4.13.0
-BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
 BuildRequires:  apache-commons-fileupload2-core
@@ -163,7 +162,6 @@ Requires:       angus-mail-core
 
 Requires:       antlr4-java >= 4.13.0
 Requires:       apache-commons-beanutils
-Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-collections
 Requires:       apache-commons-fileupload2-core
@@ -349,7 +347,6 @@ Summary:        Java version of taskomatic
 Group:          Applications/Internet
 Requires:       /sbin/unix2_chkpwd
 
-Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
