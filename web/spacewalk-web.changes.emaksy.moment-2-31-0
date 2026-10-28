@@ -1,0 +1,3 @@
+- Update moment from version 2.29.4 to 2.31.0
+- CVE-2026-17495: moment vulnerable to Path Traversal via
+  crafted non-string locale name (bsc#1280771)
