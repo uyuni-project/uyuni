@@ -42,16 +42,16 @@ if [ -f "${MANAGER_COMPLETE}" ]; then
     }
 
     # Sync peripheral and hub server root CA certificates from the database
-    run_sql "${DB_NAME}" \
+    run_sql "${DB_NAME}" -z -0 \
         -c "SELECT fqdn, root_ca FROM suseISSPeripheral WHERE root_ca IS NOT NULL" \
-        | while IFS='|' read -r fqdn root_ca; do
+        | while IFS= read -r -d '' fqdn && IFS= read -r -d '' root_ca; do
             [ -z "${fqdn}" ] && continue
             printf '%s\n' "${root_ca}" > "${TRUST_ANCHORS_DIR}/peripheral_${fqdn}_root_ca.pem"
         done
 
-    run_sql "${DB_NAME}" \
+    run_sql "${DB_NAME}" -z -0 \
         -c "SELECT fqdn, root_ca FROM suseISSHub WHERE root_ca IS NOT NULL" \
-        | while IFS='|' read -r fqdn root_ca; do
+        | while IFS= read -r -d '' fqdn && IFS= read -r -d '' root_ca; do
             [ -z "${fqdn}" ] && continue
             printf '%s\n' "${root_ca}" > "${TRUST_ANCHORS_DIR}/hub_${fqdn}_root_ca.pem"
         done
