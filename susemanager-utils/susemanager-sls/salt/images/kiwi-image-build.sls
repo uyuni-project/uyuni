@@ -1,7 +1,7 @@
 #!jinja|yaml
 # SUSE Multi-Linux Manager image build state
 #
-# Copyright (c) 2017 - 2025 SUSE LLC
+# Copyright (c) 2017 - 2026 SUSE LLC
 
 {% from "images/kiwi-detect.sls" import kiwi_method with context %}
 
@@ -18,14 +18,12 @@
 {%- set bundle_dir = root_dir + '/images/' %}
 {%- set cache_dir  = root_dir + '/cache/' %}
 
-{%- set eib_require = '' %}
 {%- set kpartx_require = '' %}
 
 {%- set activation_key = pillar.get('activation_key') %}
 {%- set use_bundle_build = pillar.get('use_bundle_build', salt['pillar.get']('custom_info:use_bundle_build', False)) %}
 
 {# Default images and overrides #}
-{%- set eib_image = salt['pillar.get']('custom_info:eib_image', 'registry.suse.com/edge/3.2/edge-image-builder:1.1.0') %}
 {%- set kiwi_image = salt['pillar.get']('custom_info:kiwi_image', 'registry.suse.com/bci/kiwi:10.2') %}
 
 mgr_buildimage_prepare_source:
@@ -46,30 +44,41 @@ mgr_buildimage_prepare_activation_key_in_source:
           susemanager:
             activation_key: {{ activation_key }}
 
+# Optional hooks shipped in the prepared source: run before prepare and after create
+{%- set hook_env = [
+  {'MLM_BUILD_ID': build_id},
+  {'MLM_SOURCE_DIR': source_dir},
+  {'MLM_CHROOT_DIR': chroot_dir},
+  {'MLM_DEST_DIR': dest_dir},
+] %}
+
+mgr_buildimage_kiwi_pre_hook:
+  cmd.run:
+    - name: bash {{ source_dir }}/mlm_kiwi_pre.sh
+    - cwd: {{ root_dir }}
+    - env: {{ hook_env }}
+    - onlyif: test -f {{ source_dir }}/mlm_kiwi_pre.sh
+    - require:
+      - module: mgr_buildimage_prepare_source
+      - file: mgr_buildimage_prepare_activation_key_in_source
+
+mgr_buildimage_kiwi_post_hook:
+  cmd.run:
+    - name: bash {{ source_dir }}/mlm_kiwi_post.sh
+    - cwd: {{ root_dir }}
+    - env: {{ hook_env }}
+    - onlyif: test -f {{ source_dir }}/mlm_kiwi_post.sh
+    - require:
+      - cmd: mgr_buildimage_kiwi_create
+
 {%- if kiwi_method == 'podman' %}
 {%- set kpartx_require = '- file: mgr_buildimage_prepare_kpartx_kiwi_yml' %}
-{%- set eib_require = '- cmd: mgr_eib' %}
 mgr_buildimage_prepare_kpartx_kiwi_yml:
   file.managed:
     - name: {{ source_dir }}/kiwi.yml
     - contents: |
         mapper:
           - part_mapper: kpartx
-
-# EIB support
-mgr_eib:
-  file.directory:
-    - name: {{ source_dir }}/root/oem
-    - onlyif:
-      - test -f {{ source_dir }}/eib/eib.yaml
-  cmd.run:
-    - names:
-      - podman run --rm --privileged -v {{ source_dir }}/eib:/eib:ro,Z {{ eib_image }} build --definition-file=eib.yaml
-      - xorriso -osirrox on -indev {{ source_dir }}/eib/combustion.iso extract / {{ source_dir }}/root/oem
-    - require:
-      - file: mgr_eib
-    - onlyif:
-      - test -f {{ source_dir }}/eib/eib.yaml
 
 {# need ca-certificates for kiwi to trust CA #}
 {# need /dev for losetup error during create #}
@@ -105,8 +114,8 @@ mgr_buildimage_kiwi_prepare:
     - require:
       - module: mgr_buildimage_prepare_source
       - file: mgr_buildimage_prepare_activation_key_in_source
+      - cmd: mgr_buildimage_kiwi_pre_hook
       {{ kpartx_require }}
-      {{ eib_require }}
 
 mgr_buildimage_kiwi_create:
   cmd.run:
@@ -119,7 +128,7 @@ mgr_buildimage_kiwi_bundle:
   cmd.run:
     - name: "{{ kiwi }} result bundle --target-dir {{ dest_dir }} --id {{ build_id }} --bundle-dir {{ bundle_dir }}"
     - require:
-      - cmd: mgr_buildimage_kiwi_create
+      - cmd: mgr_buildimage_kiwi_post_hook
 {%- endif %}
 
 {%- else %} {# kiwi legacy #}
@@ -149,6 +158,7 @@ mgr_buildimage_kiwi_prepare:
     - require:
       - module: mgr_buildimage_prepare_source
       - file: mgr_buildimage_prepare_activation_key_in_source
+      - cmd: mgr_buildimage_kiwi_pre_hook
 
 mgr_buildimage_kiwi_create:
   cmd.run:
@@ -161,7 +171,7 @@ mgr_buildimage_kiwi_bundle:
   cmd.run:
     - name: "{{ kiwi }} --nocolor --yes --bundle-build {{ dest_dir }} --bundle-id {{ build_id }} --destdir {{ bundle_dir }}"
     - require:
-      - cmd: mgr_buildimage_kiwi_create
+      - cmd: mgr_buildimage_kiwi_post_hook
 
 {%- endif %} {# use_bundle_build #}
 {%- endif %} {# else kiwi legacy #}
@@ -177,7 +187,7 @@ mgr_buildimage_kiwi_collect_image:
     {%- else %}
     - path: {{ dest_dir }}
     - require:
-      - cmd: mgr_buildimage_kiwi_create
+      - cmd: mgr_buildimage_kiwi_post_hook
     {%- endif %}
 {%- endif %} {# use_salt_transport #}
 
@@ -196,7 +206,7 @@ mgr_buildimage_info:
     {%- if use_bundle_build %}
       - mgr_buildimage_kiwi_bundle
     {%- else %}
-      - mgr_buildimage_kiwi_create
+      - mgr_buildimage_kiwi_post_hook
     {%- endif %} {# use_bundle_build #}
 {%- endif %} {# use_salt_transport #}
 
