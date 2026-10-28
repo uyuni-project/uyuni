@@ -27,7 +27,7 @@
     "zip": "rm -f node_modules.tar.gz && (tar czf node_modules.tar.gz node_modules/)"
   },
   "dependencies": {
-    "@babel/core": "7.26.10",
+    "@babel/core": "7.29.6",
     "@babel/plugin-proposal-class-properties": "7.16.7",
     "@babel/plugin-proposal-logical-assignment-operators": "7.16.7",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.16.7",
@@ -157,7 +157,7 @@
     "yarn": "Using yarn is deprecated, please use npm instead"
   },
   "overrides": {
-    "@babel/helpers": "7.26.10",
+    "@babel/helpers": "7.29.2",
     "@babel/runtime": "7.26.10",
     "@babel/traverse": "7.27.0",
     "ansi-regex": "5.0.1",
