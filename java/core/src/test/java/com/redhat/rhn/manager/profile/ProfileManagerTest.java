@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -33,6 +34,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
+import com.redhat.rhn.domain.rhnpackage.profile.ProfileTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -45,6 +47,7 @@ import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.dto.PackageMetadataOtherNewer;
 import com.redhat.rhn.frontend.dto.PackageMetadataOtherOnly;
 import com.redhat.rhn.frontend.dto.PackageMetadataThisNewer;
+import com.redhat.rhn.frontend.dto.PackageMetadataThisOnly;
 import com.redhat.rhn.frontend.dto.ProfileDto;
 import com.redhat.rhn.manager.rhnpackage.PackageManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -182,11 +185,31 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCompareServerToProfile() {
-        Long sid = 1005385254L;
-        Long prid = 4908L;
-        Long orgid = 4116748L;
-        DataResult<PackageMetadata> dr = ProfileManager.compareServerToProfile(sid, prid, orgid, null);
-        assertNotNull(dr, "DataResult was null");
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        Profile profile = ProfileTest.createTestProfile(user, ChannelFactoryTest.createTestChannel(user));
+        Package blacklisted = PackageTest.createTestPackage(user.getOrg());
+        Package unrelated = PackageTest.createTestPackage(user.getOrg());
+        PackageManagerTest.associateSystemToPackageWithArch(server, blacklisted);
+        PackageManagerTest.associateSystemToPackageWithArch(server, unrelated);
+
+        DataResult<PackageMetadata> differences = ProfileManager.compareServerToProfile(
+                server.getId(), profile.getId(), user.getOrg().getId(), null);
+        assertEquals(2, differences.size());
+
+        HibernateFactory.getSession().createNativeMutationQuery(
+                "INSERT INTO rhnPackageSyncBlacklist (package_name_id, org_id) VALUES (:nameId, :orgId)")
+                .setParameter("nameId", blacklisted.getPackageName().getId())
+                .setParameter("orgId", user.getOrg().getId())
+                .executeUpdate();
+
+        differences = ProfileManager.compareServerToProfile(
+                server.getId(), profile.getId(), user.getOrg().getId(), null);
+        assertEquals(1, differences.size());
+        PackageMetadata difference = differences.get(0);
+        assertInstanceOf(PackageMetadataThisOnly.class, difference);
+        assertEquals(unrelated.getPackageName().getId(), difference.getNameId());
+        assertEquals(unrelated.getPackageEvr().getId(), difference.getEvrId());
+        assertEquals(unrelated.getPackageArch().getId(), difference.getArchId());
     }
 
     @Test
