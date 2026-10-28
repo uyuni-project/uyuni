@@ -1479,10 +1479,10 @@ password={passwd}
 
         :returns: list
         """
-        rawpkglist = [
-            RawSolvablePackage(solvable) for solvable in self._get_solvable_packages()
-        ]
-        return self._apply_filters(rawpkglist, filters)
+        rawpkglist = self._get_solvable_packages()
+        self.num_packages = len(rawpkglist)
+        rawpkglist = self._apply_filters(rawpkglist, filters)
+        return [RawSolvablePackage(solvable) for solvable in rawpkglist]
 
     def list_packages(self, filters, latest):
         """
