@@ -1,0 +1,1 @@
+- Do not add auth in kickstart files for RHEL 10+ (bsc#1286150)

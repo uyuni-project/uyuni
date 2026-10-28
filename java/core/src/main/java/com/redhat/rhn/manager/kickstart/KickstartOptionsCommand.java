@@ -78,6 +78,10 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
                 log.debug("install is not supported on RHEL 9 or greater, don't show it");
                 continue;
             }
+            if (getKickstartData().getInstallType().isRhel10OrGreater() && "auth".equals(name)) {
+                log.debug("auth is not supported on RHEL 10 or greater, don't show it");
+                continue;
+            }
             boolean added = false;
             for (KickstartCommand c : options) {
                 if (c.getCommandName().getName().equals(name)) {

@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.kickstart.builder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
@@ -162,7 +163,9 @@ public class KickstartBuilder {
             // Note: this may in fact never happen. See above, authconfig
             // is an alias to auth.
             if (!commandNames.containsKey(firstWord)) {
-                log.warn("Unable to parse kickstart command: {}", firstWord);
+                if (log.isWarnEnabled()) {
+                    log.warn("Unable to parse kickstart command: {}", StringUtil.sanitizeLogInput(firstWord));
+                }
                 continue;
             }
 
@@ -172,9 +175,11 @@ public class KickstartBuilder {
                 isReallyKickstartProfile = true;
                 firstWord = "url";
                 restOfLine = tree.getDefaultDownloadLocation();
-                log.warn("Using default kickstartable tree URL:");
-                log.warn("   Replaced: {}", currentLine);
-                log.warn("   With: {} {}", firstWord, restOfLine);
+                if (log.isWarnEnabled()) {
+                    log.warn("Using default kickstartable tree URL:");
+                    log.warn("   Replaced: {}", StringUtil.sanitizeLogInput(currentLine));
+                    log.warn("   With: {} {}", firstWord, restOfLine);
+                }
             }
 
             KickstartCommand kc = new KickstartCommand();
@@ -593,7 +598,9 @@ public class KickstartBuilder {
     }
 
     private void setAuth(KickstartWizardHelper cmd, KickstartData ksdata) {
-        cmd.createCommand("auth", "--enableshadow --passalgo=sha256", ksdata);
+        if (!ksdata.isRhel10OrGreater()) {
+            cmd.createCommand("auth", "--enableshadow --passalgo=sha256", ksdata);
+        }
     }
 
     private void setNetwork(KickstartWizardHelper cmd, KickstartData ksdata) {
