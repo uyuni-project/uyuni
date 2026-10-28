@@ -169,14 +169,16 @@ public class RecurringEventPicker {
 
         RecurringEventPicker p = new RecurringEventPicker(name);
 
-        if (cronEntry == null || cronEntry.isEmpty()) {
-            p.setCronEntry(buildCron(
-                    cronTimes.get("minute"),
-                    cronTimes.get("hour"),
-                    cronTimes.get("dayOfMonth"),
-                    cronTimes.get("dayOfWeek"),
-                    type
-            ));
+        if (StringUtils.isEmpty(cronEntry)) {
+            if (null != cronTimes) {
+                p.setCronEntry(buildCron(
+                        cronTimes.get("minute"),
+                        cronTimes.get("hour"),
+                        cronTimes.get("dayOfMonth"),
+                        cronTimes.get("dayOfWeek"),
+                        type
+                ));
+            }
         }
         else {
             if (cronEntry.split(WHITE_SPACE).length < 6) {

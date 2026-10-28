@@ -235,7 +235,12 @@ public class UserFactory extends HibernateFactory {
         return returnedUser;
     }
 
-    private static LookupException getNoUserException(String user) {
+    /**
+     * Creates an exception when a user is not found
+     * @param user the username not found
+     * @return exception to be thrown
+     */
+    public static LookupException getNoUserException(String user) {
         LocalizationService ls = LocalizationService.getInstance();
         return new LookupException("Could not find user " + user,
                 ls.getMessage("lookup.jsp.title.user"),

@@ -1679,10 +1679,12 @@ public class Server extends BaseDomainHelper implements Identifiable {
          * relatively small, loop through the channels set and look for one without a
          * parentChannel instead of going back to the db.
          */
-        for (Channel channel : channels) {
-            if (channel.getParentChannel() == null) {
-                // This is the base channel
-                return channel;
+        if (channels != null) {
+            for (Channel channel : channels) {
+                if (channel.getParentChannel() == null) {
+                    // This is the base channel
+                    return channel;
+                }
             }
         }
         // Either we have no channels or all channels have a parent_channel. In either

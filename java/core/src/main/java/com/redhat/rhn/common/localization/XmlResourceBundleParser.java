@@ -49,7 +49,7 @@ class XmlResourceBundleParser  extends DefaultHandler {
                              String qualifiedName, Attributes attributes) {
 
         thisText = new StringBuilder();
-        if (qualifiedName.equals("trans-unit")) {
+        if (qualifiedName.equals("trans-unit") && (attributes != null)) {
             currKey = attributes.getValue("id");
         }
 

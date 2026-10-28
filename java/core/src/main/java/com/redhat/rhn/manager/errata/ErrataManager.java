@@ -970,10 +970,12 @@ public class ErrataManager extends BaseManager {
     public static List<Integer> advisorySeverityRanks() {
         List<Integer> advSeverityRankss = new ArrayList<>();
         // get ranks for all of 4 severities we define, plus 'unspecified' for null value
-        advSeverityRankss.add(Severity.getById(0).getRank());
-        advSeverityRankss.add(Severity.getById(1).getRank());
-        advSeverityRankss.add(Severity.getById(2).getRank());
-        advSeverityRankss.add(Severity.getById(3).getRank());
+        for (int id = 0; id < 4; id++) {
+            Severity s = Severity.getById(id);
+            if (s != null) {
+                advSeverityRankss.add(s.getRank());
+            }
+        }
         advSeverityRankss.add(Severity.UNSPECIFIED_RANK); // dummy rank for 'unspecified'
         return advSeverityRankss;
     }

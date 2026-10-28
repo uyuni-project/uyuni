@@ -47,7 +47,7 @@ public class DecoratorTag extends BodyTagSupport {
     @Override
     public int doEndTag() throws JspException {
         ListCommand command = ListTagUtil.getCurrentCommand(this, pageContext);
-        if (command.equals(ListCommand.ENUMERATE)) {
+        if ((null != command) && command.equals(ListCommand.ENUMERATE)) {
             if (!StringUtils.isBlank(name)) {
                 ListTag parent = (ListTag) TagSupport.findAncestorWithClass(this,
                         ListTag.class);
