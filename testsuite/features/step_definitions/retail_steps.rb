@@ -182,7 +182,7 @@ end
 
 When(/^I prepare the retail configuration file on server$/) do
   source = "#{File.dirname(__FILE__)}/../upload_files/massive-import-terminals.yml"
-  dest = '/tmp/massive-import-terminals.yml'
+  dest = '/srv/massive-import-terminals.yml'
   success = file_inject(get_target('server'), source, dest)
   raise ScriptError, "File #{file} couldn't be copied to server" unless success
 
@@ -198,7 +198,7 @@ When(/^I prepare the retail configuration file on server$/) do
 end
 
 When(/^I import the retail configuration using retail_yaml command$/) do
-  filepath = '/tmp/massive-import-terminals.yml'
+  filepath = '/srv/massive-import-terminals.yml'
   get_target('server').run("retail_yaml --api-user admin --api-pass admin --from-yaml #{filepath}")
 end
 

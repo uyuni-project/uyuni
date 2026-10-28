@@ -50,14 +50,21 @@ When(/^I create system "([^"]*)" for profile "([^"]*)"$/) do |system, profile|
 end
 
 When(/^I remove system "([^"]*)"$/) do |system|
+  # Cleanup step: the setup may have failed before creating the system
+  next log("System #{system} not found, nothing to remove") unless $cobbler_test.element_exists('systems', system)
+
   $cobbler_test.system_remove(system)
 end
 
 When(/^I remove profile "([^"]*)"$/) do |profile|
+  next log("Profile #{profile} not found, nothing to remove") unless $cobbler_test.element_exists('profiles', profile)
+
   $cobbler_test.profile_remove(profile)
 end
 
 When(/^I remove distro "([^"]*)"$/) do |distro|
+  next log("Distribution #{distro} not found, nothing to remove") unless $cobbler_test.element_exists('distros', distro)
+
   $cobbler_test.distro_remove(distro)
 end
 
@@ -256,7 +263,7 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
 
   # normal log file
   cobbler_log_file = '/var/log/cobbler/cobbler.log'
-  remote_file = '/tmp/cobbler.copy'
+  remote_file = '/srv/cobbler.copy'
   local_file = '/tmp/cobbler.log'
   # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
   node.run("cp #{cobbler_log_file} #{remote_file}")
@@ -272,7 +279,7 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
 
   # debug log file
   cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
-  remote_file = '/tmp/cobbler_debug.copy'
+  remote_file = '/srv/cobbler_debug.copy'
   local_file = '/tmp/cobbler_debug.log'
   # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
   node.run("cp #{cobbler_log_file} #{remote_file}")
