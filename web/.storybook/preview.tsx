@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
 
 import "font-awesome/css/font-awesome.css";
+// The JSP app shell links this stylesheet from layout_head.jsp; the themes use the `spacewalk-icon`
+// font for alert and status glyphs, so Storybook has to register the same @font-face.
+import "branding/fonts/font-spacewalk/css/spacewalk-font.css";
 import "manager/polyfills";
 
 import type { Decorator, Preview } from "@storybook/react-webpack5";
