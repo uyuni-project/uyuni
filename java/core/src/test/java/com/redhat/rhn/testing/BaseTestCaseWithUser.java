@@ -24,23 +24,13 @@ import java.nio.file.Path;
 /**
  * Basic test class with a User
  */
-@ExtendWith(UserForTestCaseExtension.class)
 @ExtendWith(SaltTestCaseExtension.class)
 public abstract class BaseTestCaseWithUser extends BaseTestCase {
 
-    @UserForTest(useClassNameForOrg = true)
+    @UserForTest
     protected User user;
 
     @SaltTestRootPath
     protected Path tmpSaltRoot;
 
-     @Override
-    protected void cleanupDatabaseCommits() {
-        TestUtils.deleteOrgOfUser(user);
-    }
-
-    @Override
-    protected void afterCleanupDatabaseCommits() {
-        user = null;
-    }
 }

@@ -27,6 +27,7 @@ import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.webapp.RhnServletListener;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -36,6 +37,11 @@ import org.junit.jupiter.api.Test;
 public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
 
     private static RhnServletListener rl;
+
+    @AfterEach
+    void tearDown() {
+        MessageQueue.stopMessaging();
+    }
 
     @Test
     public void testMessageQueueRegistration() {
@@ -49,9 +55,6 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
             }
         }
         assertTrue(found);
-        //don't call contextDestroyed here since it stops hibernate and
-        //screws everything up ;)
-        MessageQueue.stopMessaging();
     }
 
     @Test

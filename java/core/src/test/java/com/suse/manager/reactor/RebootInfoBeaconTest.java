@@ -55,7 +55,7 @@ public class RebootInfoBeaconTest extends BaseTestCase {
     private SaltReactor reactor;
     private JsonParser<Event> eventParser;
 
-    @UserForTest(useClassNameForOrg = true)
+    @UserForTest
     private User user;
 
     @BeforeEach
