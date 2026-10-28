@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.utils;
 
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -46,6 +47,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,6 +104,95 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         BootstrapParameters params = bootstrapper.createBootstrapParams(input);
         BootstrapResult bootstrap = bootstrapper.bootstrap(params, user, getDefaultContactMethod());
         assertFalse(bootstrap.isSuccess());
+    }
+
+    /**
+     * A system that is re-registered with a reactivation key, for instance after it has been reinstalled or
+     * migrated, still has a salt key on the master. Bootstrap must not be refused in that case, and the stale
+     * key has to be dropped so that a fresh key pair is generated and handed to the minion. Otherwise
+     * generateKeysAndAccept() finds the accepted key and returns nothing, and the reinstalled minion keeps
+     * its own key, which the master then denies.
+     *
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void testStaleKeyDeletedWhenReactivating() throws Exception {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        ActivationKey reactKey = ActivationKeyTest.createTestActivationKey(user);
+
+        BootstrapHostsJson input = mockStandardInput();
+        setNoActivationKeyAndReactivationKey(input, reactKey);
+        Key.Pair keyPair = mockKeyPair();
+
+        context().checking(new Expectations() {{
+            // a key for this host is already present on the master
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
+            will(returnValue(true));
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.UNACCEPTED);
+            will(returnValue(false));
+
+            allowing(saltServiceMock).generateKeysAndAccept("myhost", false);
+            will(returnValue(keyPair));
+
+            MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.SshKeygenResult("key", "pubkey");
+            allowing(saltServiceMock).generateSSHKey(SaltSSHService.SSH_KEY_PATH, SaltSSHService.SUMA_SSH_PUB_KEY);
+            will(returnValue(of(mockResult)));
+
+            List<String> bootstrapMods = bootstrapMods();
+            Map<String, Object> pillarData = createPillarData(Optional.empty(), Optional.of(reactKey));
+            allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
+                    with(bootstrapMods), with(pillarData));
+            Object sshResult = createSuccessResult();
+            will(returnValue(new Result<>(Xor.right(sshResult))));
+
+            // we expect the stale key to be deleted before the new one is generated
+            exactly(1).of(saltServiceMock).deleteKey("myhost");
+        }});
+
+        BootstrapParameters params = bootstrapper.createBootstrapParams(input);
+        assertTrue(bootstrapper.bootstrap(params, user, getDefaultContactMethod()).isSuccess());
+    }
+
+    /**
+     * Reactivating a system that has no salt key on the master must leave the keys alone.
+     *
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void testNoKeyDeletedWhenReactivatingWithoutExistingKey() throws Exception {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        ActivationKey reactKey = ActivationKeyTest.createTestActivationKey(user);
+
+        BootstrapHostsJson input = mockStandardInput();
+        setNoActivationKeyAndReactivationKey(input, reactKey);
+        Key.Pair keyPair = mockKeyPair();
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
+            will(returnValue(false));
+            allowing(saltServiceMock).keyExists("myhost", KeyStatus.UNACCEPTED);
+            will(returnValue(false));
+
+            allowing(saltServiceMock).generateKeysAndAccept("myhost", false);
+            will(returnValue(keyPair));
+
+            MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.SshKeygenResult("key", "pubkey");
+            allowing(saltServiceMock).generateSSHKey(SaltSSHService.SSH_KEY_PATH, SaltSSHService.SUMA_SSH_PUB_KEY);
+            will(returnValue(of(mockResult)));
+
+            List<String> bootstrapMods = bootstrapMods();
+            Map<String, Object> pillarData = createPillarData(Optional.empty(), Optional.of(reactKey));
+            allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
+                    with(bootstrapMods), with(pillarData));
+            Object sshResult = createSuccessResult();
+            will(returnValue(new Result<>(Xor.right(sshResult))));
+
+            // we expect no key to be deleted
+            atMost(0).of(saltServiceMock).deleteKey("myhost");
+        }});
+
+        BootstrapParameters params = bootstrapper.createBootstrapParams(input);
+        assertTrue(bootstrapper.bootstrap(params, user, getDefaultContactMethod()).isSuccess());
     }
 
     @Test
@@ -165,6 +256,17 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         pillarData.put("mgr_sudo_user", "root");
         reactKey.ifPresent(k -> pillarData.put("management_key", k.getKey()));
         return pillarData;
+    }
+
+    private void setNoActivationKeyAndReactivationKey(BootstrapHostsJson input, ActivationKey reactKey) {
+        context().checking(new Expectations() {{
+            allowing(input).getActivationKeys();
+            will(returnValue(Collections.emptyList()));
+            allowing(input).getFirstActivationKey();
+            will(returnValue(Optional.empty()));
+            allowing(input).maybeGetReactivationKey();
+            will(returnValue(Optional.of(reactKey.getKey())));
+        }});
     }
 
     private SaltError createGenericSaltError() {
