@@ -1,0 +1,11 @@
+- Update fast-uri from version 3.1.7 to 3.1.9
+- CVE-2026-86472: inconsistent host case normalization via
+  percent-encoded octets (bsc#1280778)
+- CVE-2026-110306: URI scheme spoofing via percent-encoded
+  scheme decoding (bsc#1286297)
+- CVE-2026-110095: improper path equivalence in relative
+  reference normalization (bsc#1286297)
+- CVE-2026-110180: host confusion via unchecked WHATWG host
+  canonicalization (bsc#1286297)
+- CVE-2026-110725: scheme injection via unescaped first-segment
+  colon in suffix references (bsc#1286297)
