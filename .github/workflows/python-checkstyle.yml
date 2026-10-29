@@ -115,6 +115,7 @@ jobs:
             "susemanager/src/test/"
             "susemanager-utils/mgr-libmod/tests/"
             "susemanager-utils/susemanager-sls/test/"
+            "susemanager-utils/susemanager-sls/src/tests/"
             "utils/tests/"
         )
         RAW_EXCLUDE=$(printf "|%s" "${EXCLUDED_DIRS[@]}"); EXCLUDE_PATTERN="^(${RAW_EXCLUDE:1})"

@@ -1,0 +1,2 @@
+- Configure the bootstrap script with the Salt ports the server
+  or proxy is exposed on, for example Kubernetes NodePorts

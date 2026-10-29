@@ -41,6 +41,15 @@
 #       annotations:
 #         type: ["object", "null"]
 #         description: "annotations to set to the service. This can be helpful to configure a load balancer"
+#   saltServiceConfig:
+#     allOf:
+#       - $ref: "#/definitions/serviceConfig"
+#       - type: "object"
+#         properties:
+#           allowPortsChange:
+#             type: "boolean"
+#             description: "Allow changing the Salt ports of an existing installation. Registered minions are disconnected by such a change and need to be bootstrapped again."
+#             default: false
 #   listener:
 #     type: "object"
 #     properties:
@@ -260,7 +269,7 @@ services:
     annotations:
 
   # @schema
-  # $ref: "#/definitions/serviceConfig"
+  # $ref: "#/definitions/saltServiceConfig"
   # @schema
   # services.salt -- Values setting up the salt service.
   salt:
@@ -271,6 +280,7 @@ services:
       publish: 30005
       # services.salt.ports.request -- Salt request port, usually known as port 4506
       request: 30006
+    allowPortsChange: false
     # @default `nil`
     annotations:
 

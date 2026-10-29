@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2020--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -22,10 +22,14 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerFQDN;
+import com.redhat.rhn.domain.server.ServerPath;
+import com.redhat.rhn.domain.server.ServerPathId;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 
 import com.suse.manager.utils.MachinePasswordUtils;
+import com.suse.manager.utils.SaltPortsResolver;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,6 +79,11 @@ public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
         pillar.add("mgr_server", minion.getChannelHost());
         if ("ssh-push-tunnel".equals(minion.getContactMethod().getLabel())) {
             pillar.add("mgr_server_https_port", Config.get().getInt("ssh_push_port_https"));
+        }
+        if (!ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod())) {
+            SaltPortsResolver.forMaster(
+                    minion.getFirstServerPath().map(ServerPath::getId).map(ServerPathId::getProxyServer))
+                    .forEach(pillar::add);
         }
 
         pillar.add("mgr_origin_server", ConfigDefaults.get().getJavaHostname());

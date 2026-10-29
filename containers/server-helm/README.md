@@ -179,6 +179,14 @@ Exposing the `tftp` service has to be done differently due to the way TFTP proto
 Either use the host network using the `tftp.hostNetwork` value or configure a load balancer for the `tftp` service.
 Note that not all load balancers will work: `serviceLB` implementation is not compatible with TFTP protocol, while MetalLB works.
 
+#### Salt ports
+
+The `salt` service can be exposed as a `NodePort` using the `services.salt.type` and `services.salt.ports` values.
+The node ports are then passed to the server, which gives them to the minions.
+Set them before registering any minion: changing the Salt ports of an existing installation disconnects the registered minions.
+The chart refuses such a change unless `services.salt.allowPortsChange` is set to `true`.
+The minions then need to be bootstrapped again.
+
 #### Exposing the report database
 
 Exposing the report database externally requires configuring the `reportdb` service as a `NodePort` or `LoadBalancer` (via the `services.reportdb` value).

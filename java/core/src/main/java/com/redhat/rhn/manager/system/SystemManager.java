@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019--2025 SUSE LLC
+ * Copyright (c) 2019--2026 SUSE LLC
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -132,6 +132,7 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.utils.Opt;
 
@@ -160,6 +161,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -2140,6 +2142,34 @@ public class SystemManager extends BaseManager {
                 subscribeServerToChannel(null, server, proxyChannel);
             }
         }
+    }
+
+    /**
+     * Store the Salt ports a proxy is exposed on and, if they changed, regenerate the pillar of the minions
+     * directly connected to it so they get the new ports on their next state apply.
+     *
+     * @param proxy the proxy system
+     * @param publishPort the Salt publish port exposed by the proxy, null for the Salt default
+     * @param requestPort the Salt request port exposed by the proxy, null for the Salt default
+     * @throws IllegalArgumentException if the system is not a proxy
+     */
+    public static void setProxySaltPorts(Server proxy, Integer publishPort, Integer requestPort) {
+        ProxyInfo info = proxy.getProxyInfo();
+        if (info == null) {
+            throw new IllegalArgumentException("System " + proxy.getId() + " is not a proxy");
+        }
+        if (Objects.equals(publishPort, info.getSaltPublishPort()) &&
+                Objects.equals(requestPort, info.getSaltRequestPort())) {
+            return;
+        }
+        info.setSaltPublishPort(publishPort);
+        info.setSaltRequestPort(requestPort);
+        ServerFactory.save(proxy);
+
+        listClientsThroughProxy(proxy.getId()).stream()
+                .map(client -> MinionServerFactory.lookupById(client.getId()))
+                .flatMap(Optional::stream)
+                .forEach(MinionPillarManager.INSTANCE::generatePillar);
     }
 
     /**

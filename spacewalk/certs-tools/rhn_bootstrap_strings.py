@@ -111,6 +111,20 @@ CLIENT_OVERRIDES={overrides}
 #Otherwise, or they will default to the templated value.
 HOSTNAME=${{MGR_SERVER_HOSTNAME:-{hostname}}}
 
+# Salt ports the client connects to on the server or proxy, empty for the Salt
+# defaults (4505 for the publish port and 4506 for the request port).
+# The ports set here are the ones of the host this script was generated for. If
+# another host is given with MGR_SERVER_HOSTNAME, its ports are not known: the
+# Salt defaults are used, unless MGR_SALT_PUBLISH_PORT and MGR_SALT_REQUEST_PORT
+# are set. Set them empty to select the Salt defaults explicitly.
+if [ "$HOSTNAME" = "{hostname}" ]; then
+    SALT_PUBLISH_PORT=${{MGR_SALT_PUBLISH_PORT-{salt_publish_port}}}
+    SALT_REQUEST_PORT=${{MGR_SALT_REQUEST_PORT-{salt_request_port}}}
+else
+    SALT_PUBLISH_PORT=${{MGR_SALT_PUBLISH_PORT-}}
+    SALT_REQUEST_PORT=${{MGR_SALT_REQUEST_PORT-}}
+fi
+
 ORG_CA_CERT={orgCACert}
 
 USING_SSL={using_ssl}
@@ -286,6 +300,8 @@ FORCE_VENV_SALT_MINION={force_venv}
         org_gpg_key=org_gpg_key,
         overrides=options.overrides,
         hostname=options.hostname,
+        salt_publish_port=options.salt_publish_port,
+        salt_request_port=options.salt_request_port,
         orgCACert=orgCACert,
         venv_section=venv_section,
         using_ssl=1,
@@ -1005,6 +1021,12 @@ enable_fqdns_grains: False
 start_event_grains: [machine_id, saltboot_initrd, susemanager, boot_time]
 mine_enabled: False
 EOF
+    if [ -n "$SALT_PUBLISH_PORT" ]; then
+        echo "publish_port: $SALT_PUBLISH_PORT" >> "$SUSEMANAGER_MASTER_FILE"
+    fi
+    if [ -n "$SALT_REQUEST_PORT" ]; then
+        echo "master_port: $SALT_REQUEST_PORT" >> "$SUSEMANAGER_MASTER_FILE"
+    fi
     cat <<EOF >> "$SUSEMANAGER_MASTER_FILE"
 
 grains:

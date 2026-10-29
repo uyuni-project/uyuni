@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009--2012 Red Hat, Inc.
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -57,6 +57,12 @@ public class ProxyInfo implements Serializable {
 
     @Column(name = "ssh_public_key")
     private byte[] sshPublicKey;
+
+    @Column(name = "salt_publish_port")
+    private Integer saltPublishPort;
+
+    @Column(name = "salt_request_port")
+    private Integer saltRequestPort;
 
     /**
      * @return the id
@@ -129,6 +135,34 @@ public class ProxyInfo implements Serializable {
         sshPublicKey = sshPublicKeyIn;
     }
 
+    /**
+     * @return the Salt publish port exposed by the proxy, null for the Salt default
+     */
+    public Integer getSaltPublishPort() {
+        return saltPublishPort;
+    }
+
+    /**
+     * @param saltPublishPortIn the Salt publish port exposed by the proxy, null for the Salt default
+     */
+    public void setSaltPublishPort(Integer saltPublishPortIn) {
+        saltPublishPort = saltPublishPortIn;
+    }
+
+    /**
+     * @return the Salt request port exposed by the proxy, null for the Salt default
+     */
+    public Integer getSaltRequestPort() {
+        return saltRequestPort;
+    }
+
+    /**
+     * @param saltRequestPortIn the Salt request port exposed by the proxy, null for the Salt default
+     */
+    public void setSaltRequestPort(Integer saltRequestPortIn) {
+        saltRequestPort = saltRequestPortIn;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -146,6 +180,8 @@ public class ProxyInfo implements Serializable {
                 .append(version, proxyInfo.version)
                 .append(sshPort, proxyInfo.sshPort)
                 .append(sshPublicKey, proxyInfo.sshPublicKey)
+                .append(saltPublishPort, proxyInfo.saltPublishPort)
+                .append(saltRequestPort, proxyInfo.saltRequestPort)
                 .isEquals();
     }
 
@@ -156,6 +192,8 @@ public class ProxyInfo implements Serializable {
                 .append(version)
                 .append(sshPort)
                 .append(sshPublicKey)
+                .append(saltPublishPort)
+                .append(saltRequestPort)
                 .toHashCode();
     }
 }
