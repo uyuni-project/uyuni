@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.rhnpackage;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -64,6 +65,12 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
     /** Logger instance */
     private static final Logger LOG = LogManager.getLogger(LockPackageAction.class);
+
+    private enum LockStatus {
+        LOCK_SUCCESS,
+        LOCK_ERROR_MULTIPLE_VERSIONS,
+        LOCK_ERROR_MISSING_PACKAGE;
+    }
 
     @Override
     protected DataResult<PackageListItem> getDataResult(Server server) {
@@ -129,17 +136,22 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             if (!pkgsToSelect.isEmpty()) {
                 try {
                     if (context.wasDispatched("pkg.lock.requestlock")) {
-                        boolean success = this.lockSelectedPackages(pkgsAlreadyLocked,
+                        LockStatus lockStatus = this.lockSelectedPackages(pkgsAlreadyLocked,
                                                   scheduleDate,
                                                   server,
                                                   request);
-                        if (success) {
-                            this.getStrutsDelegate().addInfo("pkg.lock.message.locksuccess",
-                                    infoMessages);
-                        }
-                        else {
-                            this.getStrutsDelegate().addError("pkg.lock.message.lockerror",
-                                    errorMessages);
+                        switch (lockStatus) {
+                            case LOCK_SUCCESS:
+                                getStrutsDelegate().addInfo("pkg.lock.message.locksuccess", infoMessages);
+                                break;
+                            case LOCK_ERROR_MULTIPLE_VERSIONS:
+                                getStrutsDelegate().addError("pkg.lock.message.lockerror", errorMessages);
+                                break;
+                            case LOCK_ERROR_MISSING_PACKAGE:
+                                getStrutsDelegate().addError("pkg.lock.message.lockmissingpkg", errorMessages);
+                                break;
+                            default:
+                                throw new IllegalStateException("Invalid lock status");
                         }
                     }
                     else if (context.wasDispatched("pkg.lock.requestunlock")) {
@@ -235,7 +247,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
      * (typically: Taskomatic is down)
      * @return whether the lock has been scheduled successfully
      */
-    private boolean lockSelectedPackages(Set<Package> pkgsAlreadyLocked, Date scheduleDate,
+    private LockStatus lockSelectedPackages(Set<Package> pkgsAlreadyLocked, Date scheduleDate,
             Server server, HttpServletRequest request) throws TaskomaticApiException {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
@@ -251,7 +263,11 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             for (String label : selectedPkgs) {
                 Package pkg = this.findPackage(label, user);
 
-                if (pkg == null || pkgsAlreadyLocked.contains(pkg)) {
+                if (pkg == null) {
+                    return LockStatus.LOCK_ERROR_MISSING_PACKAGE;
+                }
+
+                if (pkgsAlreadyLocked.contains(pkg)) {
                     continue;
                 }
                 // Prevent multiple versions of the same package from being locked
@@ -259,7 +275,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                         pkgsToLock.stream().anyMatch(p ->
                                 Objects.equals(p.getPackageName().getId(), pkg.getPackageName().getId())
                         )) {
-                    return false;
+                    return LockStatus.LOCK_ERROR_MULTIPLE_VERSIONS;
                 }
 
                 pkg.setLockPending(Boolean.TRUE);
@@ -278,7 +294,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         else {
             LockPackageAction.LOG.info("No packages to lock");
         }
-        return true;
+        return LockStatus.LOCK_SUCCESS;
     }
 
     /**
@@ -290,10 +306,19 @@ public class LockPackageAction extends BaseSystemPackagesAction {
      */
     private Package findPackage(String combo, User user) {
         PackageListItem pkgInfo = PackageListItem.parse(combo.split("\\~\\*\\~")[0]);
-        Package pkg = PackageFactory.lookupByNevraIds(user.getOrg(), pkgInfo.getIdOne(),
-                pkgInfo.getIdTwo(), pkgInfo.getIdThree()).get(0);
+
+        Package pkg = null;
+        List<Package> packageList = PackageFactory.lookupByNevraIds(user.getOrg(), pkgInfo.getIdOne(),
+                pkgInfo.getIdTwo(), pkgInfo.getIdThree());
+        if (!packageList.isEmpty()) {
+            pkg = packageList.get(0);
+        }
+
         if (pkg != null) {
             pkg.setLockPending(Boolean.TRUE);
+        }
+        else {
+            LOG.warn("No package found with label: {}", () -> StringUtil.sanitizeLogInput(combo));
         }
 
         return pkg;
