@@ -29,6 +29,7 @@ import java.util.Optional;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 /**
@@ -39,6 +40,7 @@ import jakarta.persistence.OneToOne;
 public class SoftwareEnvironmentTarget extends EnvironmentTarget {
 
     @OneToOne
+    @JoinColumn(name = "channel_id")
     private Channel channel;
 
     @Column(name = "hotfix", nullable = false)
