@@ -161,7 +161,7 @@ When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
 end
 
 When(/^I accept key of pxeboot minion in the Salt master$/) do
-  get_target('server').run('salt-key -y --accept=pxeboot.example.org')
+  get_target('server').run("salt-key -y --accept=#{get_system_name('pxeboot_minion')}")
 end
 
 When(/^I install the GPG key of the test packages repository on the PXE boot minion$/) do

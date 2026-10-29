@@ -831,21 +831,22 @@ def get_system_name(host, mgr_server: 'server')
     output, _code = get_target(mgr_server).run('salt-key')
     system_name =
       output.split.find do |word|
-        word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/)
+        word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/) ||
+          word.match?(/example.HP-ProLiantDL580Gen9-/)
       end
     system_name = 'pxeboot.example.org' if system_name.nil?
   when 'sles15sp6_terminal'
     output, _code = get_target(mgr_server).run('salt-key')
     system_name =
       output.split.find do |word|
-        word.match?(/example.sles15sp6terminal-/)
+        word.match?(/example.sles15sp6terminal-/) || word.match?(/example.HP-ProLiantDL360Gen9-/)
       end
     system_name = 'sles15sp6terminal.example.org' if system_name.nil?
   when 'sles15sp7_terminal'
     output, _code = get_target(mgr_server).run('salt-key')
     system_name =
       output.split.find do |word|
-        word.match?(/example.sles15sp7terminal-/)
+        word.match?(/example.sles15sp7terminal-/) || word.match?(/example.HP-ProLiantDL580Gen9-/)
       end
     system_name = 'sles15sp7terminal.example.org' if system_name.nil?
   else
