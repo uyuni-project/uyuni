@@ -1154,12 +1154,12 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
     'leap16.1-aarch64' =>
       %w[
         opensuse-leap-16.1-aarch64
-        multi-linux-managertools-sle-16-aarch64-opensuse-16.0
+        multi-linux-managertools-sle-16-aarch64-opensuse-16.1
       ],
     'leap16.1-ppc64le' =>
       %w[
         opensuse-leap-16.1-ppc64le
-        multi-linux-managertools-sle-16-ppc64le-opensuse-16.0
+        multi-linux-managertools-sle-16-ppc64le-opensuse-16.1
       ],
     'tumbleweed-x86_64' =>
       %w[
@@ -1753,9 +1753,9 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-ubuntu2204-updates-amd64' => 60,
   'managertools-ubuntu2404-updates-amd64' => 60,
   'managertools-ubuntu2604-updates-amd64' => 60,
-  'multi-linux-managertools-sle-16-aarch64-opensuse-16.0' => 60,
+  'multi-linux-managertools-sle-16-aarch64-opensuse-16.1' => 60,
   'multi-linux-managertools-sle-16-aarch64' => 60,
-  'multi-linux-managertools-sle-16-ppc64le-opensuse-16.0' => 60,
+  'multi-linux-managertools-sle-16-ppc64le-opensuse-16.1' => 60,
   'multi-linux-managertools-sle-16-x86_64' => 60,
   'multi-linux-managertools-sle-16-x86_64-sles-16.1' => 60,
   'opensuse_leap16_1-aarch64' => 4500,
