@@ -1,2 +1,3 @@
 - Add hotfix column to `suseContentEnvironmentTarget` and allow
   at most one hotfix target per environment
+- Allow a channel to be the target of only one CLM environment
