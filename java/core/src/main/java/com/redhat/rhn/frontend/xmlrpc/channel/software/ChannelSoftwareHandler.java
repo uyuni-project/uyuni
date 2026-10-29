@@ -1613,8 +1613,32 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *   #array_end()
      */
     @ReadOnly
-    public Object[] listPackagesWithoutChannel(User loggedInUser) {
-        return PackageFactory.lookupOrphanPackages(loggedInUser.getOrg()).toArray();
+    public List<Package> listPackagesWithoutChannel(User loggedInUser) {
+        return PackageFactory.lookupOrphanPackages(loggedInUser.getOrg());
+    }
+
+    /**
+     * Lists all packages for an Org that are not contained within any channel
+     * @param loggedInUser The current user
+     * @param offset number of Package objects not associated with a channel to skip
+     * @param limit maximal number of Package objects not associated with a channel
+     * @return list of Package objects not associated with a channel
+     * @throws NoSuchChannelException thrown if no channel is found.
+     *
+     * @apidoc.doc Lists all packages that are not associated with a channel.  Typically
+     *          these are custom packages.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "offset")
+     * @apidoc.param #param("int", "limit")
+     * @apidoc.returntype
+     *  #return_array_begin()
+     *      $PackageSerializer
+     *   #array_end()
+     */
+    @ReadOnly
+    public List<Package> listPackagesWithoutChannel(User loggedInUser, Integer offset, Integer limit) {
+        return PackageFactory.lookupOrphanPackages(loggedInUser.getOrg(),
+                (offset < 0) ? 0 : offset, (limit < 0) ? 0 : limit);
     }
 
     /**

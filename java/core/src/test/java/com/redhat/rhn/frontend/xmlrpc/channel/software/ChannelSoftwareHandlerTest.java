@@ -77,6 +77,7 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -728,16 +729,16 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void xxxtestListPackagesWithoutChannel() throws Exception {
         // Disable this test till we find out why listPackagesWithoutChannel takes
         // *forever*, but only running under this test!
-        Object[] iniailList = handler.listPackagesWithoutChannel(admin);
+        List<Package> initialList = handler.listPackagesWithoutChannel(admin);
 
         PackageTest.createTestPackage(admin.getOrg());
         Package nonOrphan = PackageTest.createTestPackage(admin.getOrg());
         Channel testChan = ChannelFactoryTest.createTestChannel(admin);
         ChannelTestUtility.testAddPackage(testChan, nonOrphan);
 
-        Object[] secondList = handler.listPackagesWithoutChannel(admin);
+        List<Package> secondList = handler.listPackagesWithoutChannel(admin);
 
-        assertEquals(1, secondList.length - iniailList.length);
+        assertEquals(1, secondList.size() - initialList.size());
     }
 
     @Test
@@ -1052,6 +1053,35 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         result = handler.setAutoSync(admin, channel.getLabel(), false);
         assertFalse(result);
         assertFalse(handler.isAutoSync(admin, channel.getLabel()));
+    }
+
+    @Test
+    @DisplayName("testing listPackagesWithoutChannel, paginated version")
+    public void testPaginatedListPackagesWithoutChannel() {
+        final int numOrphans = 30;
+        for (int i = 0; i < numOrphans; i++) {
+            PackageTest.createTestPackage(regular.getOrg());
+        }
+
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
+
+        //regular case
+        assertEquals(numOrphans, csh.listPackagesWithoutChannel(regular).size());
+        assertEquals(numOrphans, csh.listPackagesWithoutChannel(regular, 0, numOrphans).size());
+        assertEquals(numOrphans, csh.listPackagesWithoutChannel(regular, 0, 2 * numOrphans).size());
+        for (int i = 0; i < numOrphans; i++) {
+            assertEquals(numOrphans - i, csh.listPackagesWithoutChannel(regular, i, 2 * numOrphans).size());
+        }
+        assertEquals(0, csh.listPackagesWithoutChannel(regular, numOrphans, 2 * numOrphans).size());
+
+        //corner cases
+        assertEquals(numOrphans, csh.listPackagesWithoutChannel(regular, 0, Integer.MAX_VALUE).size());
+        assertEquals(numOrphans, csh.listPackagesWithoutChannel(regular, -10, numOrphans).size());
+
+        assertEquals(0, csh.listPackagesWithoutChannel(regular, 0, 0).size());
+        assertEquals(0, csh.listPackagesWithoutChannel(regular, 0, -10).size());
+        assertEquals(0, csh.listPackagesWithoutChannel(regular, -10, -10).size());
+        assertEquals(0, csh.listPackagesWithoutChannel(regular, numOrphans, 200).size());
     }
 
     private ChannelSoftwareHandler getMockedHandler() throws Exception {
