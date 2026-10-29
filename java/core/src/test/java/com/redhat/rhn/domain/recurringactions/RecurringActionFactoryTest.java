@@ -16,11 +16,17 @@ package com.redhat.rhn.domain.recurringactions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -342,5 +348,56 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action2.setActionType(RecurringActionType.ActionType.HIGHSTATE);
 
         assertFalse(RecurringActionFactory.lookupEqualEntityId(action2).isPresent());
+    }
+
+    @Test
+    public void testNoEntityActionCreationAndLookup() {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        ContentProject cp = new ContentProject("clm-test-proj", "CLM Test Project", "Test Desc", user.getOrg());
+        ContentProjectFactory.save(cp);
+
+        var action = new NoEntityRecurringAction();
+        action.setName("no-entity-clm-action");
+        action.setCronExpr(CRON_EXPR);
+        action.setOrg(user.getOrg());
+        action.setActionType(RecurringActionType.ActionType.CLM_BUILD);
+        action.setCreator(user);
+        RecurringActionFactory.save(action);
+
+        var buildType = new RecurringContentBuildType(cp);
+        buildType.setRecurringAction(action);
+        buildType.setId(action.getId());
+        action.setRecurringActionType(buildType);
+        RecurringActionFactory.getSession().persist(buildType);
+
+        TestUtils.flushAndClearSession();
+
+        assertNotNull(action.getId());
+        assertEquals(RecurringAction.TargetType.NO_ENTITY, action.getTargetType());
+        assertTrue(action.computeMinions().isEmpty());
+        assertTrue(action.canAccess(user));
+        assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
+
+        var lookedUp = RecurringActionFactory.lookupByJobName("recurring-action-" + action.getId());
+        assertTrue(lookedUp.isPresent());
+        assertEquals(action.getId(), lookedUp.get().getId());
+        assertEquals(RecurringActionType.ActionType.CLM_BUILD, lookedUp.get().getActionType());
+        assertTrue(lookedUp.get().getRecurringActionType() instanceof RecurringContentBuildType);
+        assertEquals(cp.getId(),
+                ((RecurringContentBuildType) lookedUp.get().getRecurringActionType()).getProject().getId());
+
+        List<RecurringAction> projectActions = RecurringActionFactory.listActionsForProject(cp);
+        assertEquals(1, projectActions.size());
+        assertEquals(action.getId(), projectActions.get(0).getId());
+    }
+
+    @Test
+    public void testContentBuildAndPromoteTypes() {
+        var buildType = new RecurringContentBuildType();
+        assertEquals(RecurringActionType.ActionType.CLM_BUILD, buildType.getActionType());
+
+        var promoteType = new RecurringContentPromoteType();
+        assertEquals(RecurringActionType.ActionType.CLM_PROMOTE, promoteType.getActionType());
     }
 }

@@ -42,7 +42,9 @@ public abstract class RecurringActionType implements Serializable {
         HIGHSTATE("Highstate"),
         CUSTOMSTATE("Custom state"),
         PLAYBOOK("Ansible Playbook"),
-        SCAPPOLICY("Scap Policy");
+        SCAPPOLICY("Scap Policy"),
+        CLM_BUILD("CLM Build"),
+        CLM_PROMOTE("CLM Promote");
         private final String description;
         ActionType(String descriptionIn) {
             this.description = descriptionIn;

@@ -16,10 +16,14 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
@@ -27,6 +31,7 @@ import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -82,13 +87,52 @@ public class RecurringActionJob extends RhnJavaJob {
     }
 
     private void scheduleAction(JobExecutionContext context, RecurringAction action) {
+        RecurringActionType actionType = action.getRecurringActionType();
+        if (actionType instanceof RecurringContentBuildType buildType) {
+            ContentProject project = buildType.getProject();
+            if (project != null) {
+                ContentManager contentManager = new ContentManager();
+                try {
+                    contentManager.buildProject(project,
+                            Optional.of("Automated build from recurring action: " + action.getName()),
+                            true, action.getCreator());
+                }
+                catch (Exception e) {
+                    log.error("Error executing recurring CLM build for project {}", project.getLabel(), e);
+                }
+            }
+            else {
+                log.warn("RecurringContentBuildType {} has no project assigned, skipping execution",
+                        action.getId());
+            }
+            return;
+        }
+        else if (actionType instanceof RecurringContentPromoteType promoteType) {
+            ContentProject project = promoteType.getProject();
+            ContentEnvironment env = promoteType.getEnvironment();
+            if (project != null && env != null) {
+                ContentManager contentManager = new ContentManager();
+                try {
+                    contentManager.promoteProject(project.getLabel(), env.getLabel(), true, action.getCreator());
+                }
+                catch (Exception e) {
+                    log.error("Error executing recurring CLM promote for project {} and env {}",
+                            project.getLabel(), env.getLabel(), e);
+                }
+            }
+            else {
+                log.warn("RecurringContentPromoteType {} has missing project or environment, skipping execution",
+                        action.getId());
+            }
+            return;
+        }
+
         List<Long> minionIds = maintenanceManager.systemIdsMaintenanceMode(action.computeMinions());
 
         if (action.getName() != null && !action.getName().isBlank()) {
             Context.getCurrentContext().setActionDescription("Recurring Action: " + action.getName());
         }
         try {
-            RecurringActionType actionType = action.getRecurringActionType();
             if (actionType instanceof RecurringHighstate highstateType) {
                 ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
                         Optional.of(highstateType.isTestMode()), context.getFireTime(), null);

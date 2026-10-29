@@ -64,6 +64,8 @@ import com.redhat.rhn.domain.contentmgmt.validation.ContentPropertiesValidator;
 import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.recurringactions.RecurringAction;
+import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -77,6 +79,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
@@ -228,8 +231,24 @@ public class ContentManager {
     public int removeProject(String label, User user) {
         ensureOrgAdmin(user);
         return lookupProject(label, user)
-                .map(ContentProjectFactory::remove)
+                .map(project -> {
+                    removeRecurringActionsForProject(project, user);
+                    return ContentProjectFactory.remove(project);
+                })
                 .orElseThrow(() -> new EntityNotExistsException(label));
+    }
+
+    private void removeRecurringActionsForProject(ContentProject project, User user) {
+        List<RecurringAction> actions = RecurringActionFactory.listActionsForProject(project);
+        for (RecurringAction action : actions) {
+            try {
+                RecurringActionManager.deleteAndUnschedule(action, user);
+            }
+            catch (Exception e) {
+                LOG.error("Failed to delete and unschedule recurring action {} for project {}",
+                        action.getId(), project.getLabel(), e);
+            }
+        }
     }
 
     /**
@@ -347,10 +366,24 @@ public class ContentManager {
         ensureOrgAdmin(user);
         return lookupEnvironment(envLabel, projectLabel, user)
                 .map(env -> {
+                    removeRecurringActionsForEnvironment(env, user);
                     ContentProjectFactory.removeEnvironment(env);
                     return 1;
                 })
                 .orElseThrow(() -> new EntityNotExistsException(envLabel));
+    }
+
+    private void removeRecurringActionsForEnvironment(ContentEnvironment env, User user) {
+        List<RecurringAction> actions = RecurringActionFactory.listActionsForEnvironment(env);
+        for (RecurringAction action : actions) {
+            try {
+                RecurringActionManager.deleteAndUnschedule(action, user);
+            }
+            catch (Exception e) {
+                LOG.error("Failed to delete and unschedule recurring action {} for environment {}",
+                        action.getId(), env.getLabel(), e);
+            }
+        }
     }
 
     /**

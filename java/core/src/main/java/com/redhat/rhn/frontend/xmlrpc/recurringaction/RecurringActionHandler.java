@@ -50,7 +50,7 @@ public class RecurringActionHandler extends BaseHandler {
     /* helper method */
     private RecurringAction.TargetType getEntityType(String entityType) {
         try {
-            return RecurringAction.TargetType.valueOf(entityType.toUpperCase());
+            return RecurringAction.TargetType.valueOf(entityType.replace('-', '_').toUpperCase());
         }
         catch (IllegalArgumentException e) {
             throw new InvalidArgsException("TargetType \"" + entityType + "\" does not exist");

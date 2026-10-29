@@ -2166,6 +2166,21 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.recurring.playbook.update', 'W', 'Update a recurring Ansible playbook action')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.recurring.clm.create_build', 'W', 'Create a new recurring CLM build action.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.recurring.clm.update_build', 'W', 'Update a recurring CLM build action.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.recurring.clm.create_promote', 'W', 'Create a new recurring CLM promote action.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.recurring.clm.update_promote', 'W', 'Update a recurring CLM promote action.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.recurring.clm.list_by_project', 'R', 'List all recurring actions associated with a Content Project.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.saltkey.accept', 'W', 'Accept a minion key')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)

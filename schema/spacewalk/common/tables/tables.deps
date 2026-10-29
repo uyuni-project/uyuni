@@ -306,6 +306,8 @@ rhnResetPassword                   :: web_contact
 suseUserNotification               :: suseNotificationMessage web_contact
 suseRecurringAction                :: web_customer web_contact rhnServerGroup suseMinionInfo
 suseRecurringScapPolicy            :: suseRecurringAction suseScapPolicy
+suseRecurringContentBuild          :: suseRecurringAction suseContentProject
+suseRecurringContentPromote        :: suseRecurringAction suseContentProject suseContentEnvironment
 suseAnsiblePath                    :: rhnServer
 rhnActionPlaybook                  :: rhnAction
 susePaygDimensionResult            :: billing_dimension_t susePaygDimensionComputation

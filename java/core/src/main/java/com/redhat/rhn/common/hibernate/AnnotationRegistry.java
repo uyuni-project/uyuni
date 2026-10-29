@@ -246,10 +246,13 @@ import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
+import com.redhat.rhn.domain.recurringactions.NoEntityRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.state.InternalState;
 import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
 import com.redhat.rhn.domain.recurringactions.state.RecurringInternalState;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
@@ -600,6 +603,7 @@ public class AnnotationRegistry {
             ModuleFilter.class,
             Namespace.class,
             NetworkInterface.class,
+            NoEntityRecurringAction.class,
             Note.class,
             NotificationMessage.class,
             OrgAdminManagement.class,
@@ -677,6 +681,8 @@ public class AnnotationRegistry {
             RepoMetadata.class,
             RhnConfiguration.class,
             RecurringConfigChannel.class,
+            RecurringContentBuildType.class,
+            RecurringContentPromoteType.class,
             RecurringHighstate.class,
             RecurringInternalState.class,
             RecurringPlaybook.class,
