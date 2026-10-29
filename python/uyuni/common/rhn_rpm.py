@@ -133,11 +133,14 @@ class RPM_Header:
         mtag = None
         if rpm.RPMTAG_MODULARITYLABEL in self.hdr.keys():
             mtag = self.hdr[rpm.RPMTAG_MODULARITYLABEL]
-        elif rpm.RPMTAG_DISTTAG in self.hdr.keys() and self.hdr[
-            rpm.RPMTAG_DISTTAG
-        ].startswith(b"module("):
-            # Strip away 'module(...)' wrap
-            mtag = self.hdr[rpm.RPMTAG_DISTTAG][7:-1]
+        elif rpm.RPMTAG_DISTTAG in self.hdr.keys():
+            dtag = self.hdr[rpm.RPMTAG_DISTTAG]
+            # rpm returns str for this tag since Python 3.13, bytes before that
+            if isinstance(dtag, bytes):
+                dtag = dtag.decode("utf-8", "ignore")
+            if dtag.startswith("module("):
+                # Strip away 'module(...)' wrap
+                mtag = self.hdr[rpm.RPMTAG_DISTTAG][7:-1]
         return mtag
 
     def checksum_type(self):
