@@ -37,6 +37,7 @@ from spacewalk.common.rhnConfig import cfg_component
 from . import messages
 
 EMAIL_LOG = None
+DEBUG_LEVEL = None
 
 
 def initEMAIL_LOG(reinit=0):
@@ -112,6 +113,12 @@ def log2disk(level, msg, cleanYN=0, notimeYN=0):
     """Log to a log file.
     Arguments: see def _prepLogMsg(...) above.
     """
+    global DEBUG_LEVEL
+    if DEBUG_LEVEL is None:
+        with cfg_component(component=None) as cfg:
+            DEBUG_LEVEL = cfg.DEBUG
+    if DEBUG_LEVEL < level:
+        return
     if not isinstance(msg, type([])):
         msg = [msg]
     for m in msg:
@@ -130,13 +137,17 @@ def log2stream(level, msg, cleanYN, notimeYN, stream):
     """Log to a specified stream.
     Arguments: see def _prepLogMsg(...) above.
     """
+    global DEBUG_LEVEL
+    if DEBUG_LEVEL is None:
+        with cfg_component(component=None) as cfg:
+            DEBUG_LEVEL = cfg.DEBUG
+    if DEBUG_LEVEL < level:
+        return
     if not isinstance(msg, type([])):
         msg = [msg]
-    with cfg_component(component=None) as CFG:
-        if CFG.DEBUG >= level:
-            for m in msg:
-                stream.write(_prepLogMsg(m, cleanYN, notimeYN, shortYN=1) + "\n")
-            stream.flush()
+    for m in msg:
+        stream.write(_prepLogMsg(m, cleanYN, notimeYN, shortYN=1) + "\n")
+    stream.flush()
 
 
 def log2email(level, msg, cleanYN=0, notimeYN=0):
