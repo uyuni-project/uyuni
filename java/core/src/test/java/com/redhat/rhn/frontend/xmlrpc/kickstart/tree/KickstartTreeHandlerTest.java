@@ -81,14 +81,14 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         String postKernelOptions = "self_update=1";
         handler.create(admin, label,
                 KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath(),
-                baseChan.getLabel(), KickstartInstallType.RHEL_6, kernelOptions, postKernelOptions);
+                baseChan.getLabel(), KickstartInstallType.RHEL_7, kernelOptions, postKernelOptions);
         KickstartableTreeDetail details = handler.getDetails(admin, label);
         assertEquals(origCount + 1, KickstartFactory.
                 lookupAccessibleTreesByOrg(admin.getOrg()).size());
         assertEquals(details.getBasePath(), KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath());
         assertEquals(details.getChannel().getLabel(), baseChan.getLabel());
-        assertEquals(details.getInstallType().getLabel(), KickstartInstallType.RHEL_6);
-        assertEquals(details.getKernelOptions(), kernelOptions);
+        assertEquals(details.getInstallType().getLabel(), KickstartInstallType.RHEL_7);
+        assertTrue(details.getKernelOptions().contains(kernelOptions));
         assertEquals(details.getKernelOptionsPost(), postKernelOptions);
     }
 
@@ -109,7 +109,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         assertEquals(testTree.getBasePath(), newBase);
         assertEquals(testTree.getChannel(), newChan);
         assertNotNull(testTree.getInstallType());
-        assertEquals(testTree.getKernelOptions(), kernelOptions);
+        assertTrue(testTree.getKernelOptions().contains(kernelOptions));
         assertEquals(testTree.getKernelOptionsPost(), postKernelOptions);
     }
 

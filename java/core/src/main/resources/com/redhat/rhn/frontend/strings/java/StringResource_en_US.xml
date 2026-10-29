@@ -5814,6 +5814,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="kickstart.tree.invalidinstalltype" xml:space="preserve">
+        <source>The installer type is not valid: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="kickstart.tree.inuse" xml:space="preserve">
         <source>The Autoinstallable Distribution you have chosen to delete is in use.  Please delete or change the Distribution for Autoinstallation Profiles using this Distribution.</source>
         <context-group name="ctx">

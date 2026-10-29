@@ -955,6 +955,17 @@ public class KickstartData extends BaseDomainHelper {
     }
 
     /**
+     * @return if this auto installation profile is SLES 16 installer type or greater
+     *  (for SLES 16+)
+     */
+    public boolean isSLES16OrGreater() {
+        if (getInstallType() != null) {
+            return (getInstallType().isSLES16OrGreater());
+        }
+        return false;
+    }
+
+    /**
      * returns true if this is a SUSE autoinstallation
      * @return if this is a SUSE autoinstallation or not
      */

@@ -134,11 +134,6 @@ public class KickstartWizardHelper {
     }
 
     /**
-     * Returns a list of possible Virtualization types
-     * @return list of VirtualizationType instances
-     */
-
-    /**
      * Store a newly created KickstartData
      * Sets created timestamp and the appropriate org
      * @param ksdata object to save
