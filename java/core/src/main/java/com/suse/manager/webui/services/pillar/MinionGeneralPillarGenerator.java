@@ -168,6 +168,12 @@ public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
         }
         // For Type deb the packages are not signed. No need to set a GPG key here.
 
+        if (ConfigDefaults.get().isPqcMetadataSigningEnabled()) {
+            if (chan.isTypeRpm()) {
+                chanProps.put("pqc_check", chan.isPqcCheck() ? "1" : "0");
+            }
+        }
+
         // Flag to override dnf modularity failsafe mechanism (module_hotfixes)
         chanProps.put("cloned_nonmodular", chan.isCloned() && !chan.isModular());
         return chanProps;

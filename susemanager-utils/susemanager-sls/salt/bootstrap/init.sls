@@ -158,6 +158,7 @@ bootstrap_repo:
       - test "{{ bootstrap_repo_exists }}" = "True"
 
 {% include 'channels/gpg-keys.sls' %}
+{% include 'channels/pqc-keys.sls' %}
 
 {%- set salt_minion_name = 'salt-minion' %}
 {%- set salt_config_dir = '/etc/salt' %}

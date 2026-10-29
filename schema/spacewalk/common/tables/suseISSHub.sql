@@ -16,6 +16,7 @@ CREATE TABLE suseISSHub
                           CONSTRAINT suse_iss_hub_fqdn_uq UNIQUE,
     root_ca             TEXT,
     gpg_key             TEXT,
+    pqc_cert            TEXT,
     mirror_creds_id     NUMERIC NULL
                         CONSTRAINT suse_iss_hub_mirrcreds_fk
                           REFERENCES suseCredentials (id) ON DELETE SET NULL,

@@ -83,6 +83,7 @@ public class RepoDetailsAction extends RhnAction {
     public static final String SOURCEID = "sourceid";
     public static final String FILTERS = "filters";
     public static final String METADATA_SIGNED = "metadataSigned";
+    public static final String PQC_METADATA_SIGNED = "pqcMetadataSigned";
 
     private static final String VALIDATION_XSD =
                 "/com/redhat/rhn/frontend/action/channel/" +
@@ -162,6 +163,8 @@ public class RepoDetailsAction extends RhnAction {
         if (isCreateMode(request)) {
             // default for has signed metadata should be true
             form.set(METADATA_SIGNED, Boolean.TRUE);
+            // default for PQC signed metadata should be false
+            form.set(PQC_METADATA_SIGNED, Boolean.FALSE);
         }
         setup(request, form, isCreateMode(request));
 
@@ -257,6 +260,7 @@ public class RepoDetailsAction extends RhnAction {
             }
         }
         form.set(METADATA_SIGNED, repo.getMetadataSigned());
+        form.set(PQC_METADATA_SIGNED, repo.getPqcMetadataSigned());
 
         // finally add the last one
         filterGroups.add(filterGroup.toString());
@@ -322,10 +326,14 @@ public class RepoDetailsAction extends RhnAction {
         String type = form.getString(TYPE);
         String sfilters = form.getString(FILTERS);
         Boolean metadataSigned = (Boolean) form.get(METADATA_SIGNED);
+        Boolean pqcMetadataSigned = (Boolean) form.get(PQC_METADATA_SIGNED);
         if (metadataSigned == null) {
-            // disabled checkbox doesn't return a value, so result is null
-            // set it to false
+            // disabled checkbox doesn't return a value, so result is null: set it to false
             metadataSigned = Boolean.FALSE;
+        }
+        if (pqcMetadataSigned == null) {
+            // disabled checkbox doesn't return a value, so result is null: set it to false
+            pqcMetadataSigned = Boolean.FALSE;
         }
         Org org = context.getCurrentUser().getOrg();
         BaseRepoCommand repoCmd = null;
@@ -341,6 +349,7 @@ public class RepoDetailsAction extends RhnAction {
         repoCmd.setUrl(url);
         repoCmd.setType(type);
         repoCmd.setMetadataSigned(metadataSigned);
+        repoCmd.setPqcMetadataSigned(pqcMetadataSigned);
 
         try {
             // Add SSL

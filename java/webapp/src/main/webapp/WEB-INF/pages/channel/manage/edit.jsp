@@ -402,6 +402,22 @@
                     </div>
                 </div>
             </div>
+            <h2><bean:message key="channel.edit.jsp.security.pqc"/></h2>
+            <div class="row">
+                <label class="col-lg-3 control-label">
+                    <bean:message key="channel.jsp.pqccheck"/>
+                </label>
+                <div class="col-lg-6">
+                    <div class="checkbox">
+                        <input type="checkbox" class="select-single"
+                                name="pqc_check" id="pqc_check"
+                            <c:if test="${requestScope.pqc_check}">
+                                checked
+                            </c:if>
+                        />
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <c:choose>
