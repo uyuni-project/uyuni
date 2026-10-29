@@ -1,0 +1,2 @@
+- Fix index out of bounds exception when locking packages
+  see github_com/uyuni-project/uyuni/issues/12255
