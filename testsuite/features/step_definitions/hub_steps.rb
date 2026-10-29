@@ -119,7 +119,10 @@ end
 
 # The gateway reuses the hub credentials on every peripheral, so the per-feature user, which only
 # exists on the hub, cannot be used: the peripheral login fails and the forwarded call has no session.
-HUB_GATEWAY_CREDENTIALS = %w[admin admin].freeze
+# No identity is recorded for this pseudo host, so Credentials returns its admin default.
+def hub_gateway_credentials
+  Credentials.for('hub_gateway')
+end
 
 # Returns the ids of the systems a server lists, sorted to compare responses from different calls.
 def system_ids(systems)
@@ -128,7 +131,7 @@ end
 
 Given(/^I am connected to the hub XMLRPC API$/) do
   api = NamespaceHub.new(get_target('server').full_hostname)
-  response = api.login_with_autoconnect(*HUB_GATEWAY_CREDENTIALS)
+  response = api.login_with_autoconnect(*hub_gateway_credentials)
   raise StandardError, 'Hub login failed' if response['SessionKey'].nil?
 
   add_context('hub_api', api)
@@ -163,6 +166,8 @@ Then(/^multicast response for "([^"]*)" should match its own system list$/) do |
   raise StandardError, 'No multicast response; run "I call multicast.system.list_systems via XMLRPC" first' if response.nil?
 
   successful = response['Successful']
+  raise StandardError, "Multicast response has no successful part: #{response}" if successful.nil?
+
   server_id = hub_server_id_of(host)
   index = successful['ServerIds'].index(server_id)
   raise StandardError, "#{host} (server ID #{server_id}) has no successful multicast response, failed ones: #{response['Failed']}" if index.nil?
@@ -178,7 +183,7 @@ end
 
 When(/^I login to hub XMLRPC API with (standard|auth relay) mode$/) do |mode|
   method = mode == 'standard' ? 'hub.login' : 'hub.loginWithAuthRelayMode'
-  session_key = NamespaceHub.new(get_target('server').full_hostname).login(method, *HUB_GATEWAY_CREDENTIALS)
+  session_key = NamespaceHub.new(get_target('server').full_hostname).login(method, *hub_gateway_credentials)
   raise StandardError, "#{method} returned no session key" if session_key.to_s.empty?
 
   add_context("hub_#{mode}_session", session_key)

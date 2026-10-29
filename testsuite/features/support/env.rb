@@ -71,7 +71,7 @@ $default_local_storage_class = ENV.fetch('LOCAL_PATH_DEFAULT_CLASS', true) if EN
 # maximal wait before giving up
 # the tests return much before that delay in case of success
 $stdout.sync = true
-STARTTIME = Time.new.to_i
+STARTTIME = Time.now.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 # Layer 3 per-scenario watchdog ceiling (see the Around hook below). Backstop against hangs that
 # Ruby's Timeout.timeout cannot interrupt (e.g. a blocked Playwright pipe call).
@@ -208,7 +208,7 @@ end
 
 # Embed a screenshot after each failed scenario
 After do |scenario|
-  current_epoch = Time.new.to_i
+  current_epoch = Time.now.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
@@ -371,7 +371,7 @@ rescue NoMethodError
 end
 
 Before do
-  current_time = Time.new
+  current_time = Time.now
   @scenario_start_time = current_time.to_i
   log "This scenario ran at: #{current_time}\n"
 end

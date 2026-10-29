@@ -51,8 +51,8 @@ Feature: Hub XMLRPC API operations
     Then multicast response for "peripheral1" should match its own system list
 
   Scenario: Verify sle_minion is not listed on the hub directly
-    Given I should see "sle_minion" registered on "peripheral1"
-    Then I should not see "sle_minion" registered on hub
+    Then I should see "sle_minion" registered on "peripheral1"
+    And I should not see "sle_minion" registered on hub
 
   Scenario: Logout from Hub XMLRPC API
     When I logout from hub XMLRPC API

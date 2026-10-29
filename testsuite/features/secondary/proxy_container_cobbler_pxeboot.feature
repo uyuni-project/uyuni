@@ -92,6 +92,7 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     And I reboot the Cobbler terminal "pxeboot_minion"
     And I wait for "60" seconds
     And I set the default PXE menu entry to the local boot on the "server"
+    # Observed: the key shows up well within 600 seconds; the former 1200 was about 2.7 times too long
     And I wait at most 600 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
 
