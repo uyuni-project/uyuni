@@ -61,15 +61,6 @@ public class TaskoFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void generatedCoverageTestListRunsOlderThan() {
-        // this test has been generated programmatically to test TaskoFactory.listRunsOlderThan
-        // containing a hibernate query that is not covered by any test so far
-        // feel free to modify and/or complete it
-        TaskoFactory.listRunsOlderThan(new Date(0));
-    }
-
-
-    @Test
     public void generatedCoverageTestListRunsNewerThan() {
         // this test has been generated programmatically to test TaskoFactory.listRunsNewerThan
         // containing a hibernate query that is not covered by any test so far
@@ -151,16 +142,6 @@ public class TaskoFactoryTest extends BaseTestCaseWithUser {
         // feel free to modify and/or complete it
         TaskoFactory.listRunsBySchedule(0L);
     }
-
-
-    @Test
-    public void generatedCoverageTestListSchedulesOlderThan() {
-        // this test has been generated programmatically to test TaskoFactory.listSchedulesOlderThan
-        // containing a hibernate query that is not covered by any test so far
-        // feel free to modify and/or complete it
-        TaskoFactory.listSchedulesOlderThan(new Date(0));
-    }
-
 
     @Test
     public void generatedCoverageTestListSchedulesByOrgAndLabel() {

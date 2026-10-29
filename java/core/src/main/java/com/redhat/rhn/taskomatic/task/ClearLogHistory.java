@@ -17,15 +17,13 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.taskomatic.TaskoFactory;
-import com.redhat.rhn.taskomatic.domain.TaskoRun;
-import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.util.Calendar;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -40,12 +38,8 @@ public class ClearLogHistory extends RhnJavaJob {
         return "clear_log_history";
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+    //package-private
+    Date getLimitTime(JobExecutionContext context, Instant currentTime) throws JobExecutionException {
         Integer days = null;
         try {
             days = (Integer) context.getJobDetail().getJobDataMap().get("days");
@@ -66,33 +60,25 @@ public class ClearLogHistory extends RhnJavaJob {
         if (days == null) {
             days = DEFAULT_DAYS_VALUE;
         }
-        Calendar now = Calendar.getInstance();
-        now.add(Calendar.DATE, -days);
-        now.set(Calendar.HOUR_OF_DAY, 0);
-        now.set(Calendar.MINUTE, 0);
-        now.set(Calendar.SECOND, 0);
-        now.set(Calendar.MILLISECOND, 0);
-        Date limitTime = now.getTime();
+
+        return Date.from(currentTime.minus(Duration.ofDays(days)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        Date limitTime = getLimitTime(context, Instant.now());
 
         if (log.isInfoEnabled()) {
             log.info("Clearing log history older than: {}",
                     LocalizationService.getInstance().formatCustomDate(limitTime));
         }
-        HibernateFactory.getSession();
-        // loop accross all the orgs
-        List<TaskoRun> runList = TaskoFactory.listRunsOlderThan(limitTime);
-        for (TaskoRun run : runList) {
-            // delete history of runs
-            TaskoFactory.deleteRun(run);
-        }
 
-        // delete outdated schedules
-        List<TaskoSchedule> scheduleList = TaskoFactory.listSchedulesOlderThan(limitTime);
-        for (TaskoSchedule schedule : scheduleList) {
-            if (TaskoFactory.listRunsBySchedule(schedule.getId()).isEmpty()) {
-                TaskoFactory.delete(schedule);
-            }
-        }
+        TaskoFactory.deleteRunsOlderThan(limitTime);
+        TaskoFactory.deleteSchedulesWithNoRunsOlderThan(limitTime);
+
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
     }

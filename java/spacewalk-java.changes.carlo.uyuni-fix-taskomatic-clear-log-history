@@ -1,0 +1,2 @@
+- Fix taskomatic clear log history bug
+  see github_com/uyuni-project/uyuni/issues/12273
