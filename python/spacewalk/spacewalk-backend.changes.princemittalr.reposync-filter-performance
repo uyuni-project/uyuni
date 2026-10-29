@@ -1,0 +1,4 @@
+- Fix quadratic slowdown when applying include/exclude filters
+  during repository sync and do not drop re-included packages
+  when several exclude filters follow an include filter
+  (gh#uyuni-project/uyuni#12030)
