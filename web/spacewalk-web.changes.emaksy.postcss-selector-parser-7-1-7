@@ -1,0 +1,3 @@
+- Update postcss-selector-parser from version 7.1.0 to 7.1.7
+- CVE-2026-104844: PostCSS: Quadratic complexity in flat selector
+  parsing allows CPU exhaustion (bsc#1284190)
