@@ -148,7 +148,6 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     When I remove packages "tftpboot-installation-SLE-15-SP7-x86_64 expect" from this "build_host"
     And I remove the autoinstallation files from the server
 
-  @pxeboot_needs_minion
   Scenario: Cleanup: delete the PXE boot minion
     When I delete "pxeboot_minion" system using the api
     And I wait until Salt client is inactive on the PXE boot minion

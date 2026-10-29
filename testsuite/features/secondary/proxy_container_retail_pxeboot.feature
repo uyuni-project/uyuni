@@ -180,7 +180,6 @@ Feature: PXE boot a Retail terminal behind a containerized proxy
     Then I should see a "1 package removal has been scheduled" text
     When I wait until event "Package Removal scheduled by admin" is completed
 
-  @pxeboot_needs_minion
   Scenario: Cleanup: let the terminal be reinstalled again
     When I navigate to the Systems overview page of this "pxeboot_minion"
     And I follow "Remote Command"
@@ -189,7 +188,6 @@ Feature: PXE boot a Retail terminal behind a containerized proxy
     Then I should see a "Remote Command has been scheduled" text
     When I wait until event "Remote Command" is completed
 
-  @pxeboot_needs_minion
   Scenario: Cleanup: delete the new Retail terminal
     When I navigate to the Systems overview page of this "pxeboot_minion"
     And I follow "Delete System"

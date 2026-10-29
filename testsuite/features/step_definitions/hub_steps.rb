@@ -162,13 +162,13 @@ Then(/^multicast response for "([^"]*)" should match its own system list$/) do |
   response = get_context('hub_multicast_response')
   raise StandardError, 'No multicast response; run "I call multicast.system.list_systems via XMLRPC" first' if response.nil?
 
-  successful = response.fetch('Successful')
+  successful = response['Successful']
   server_id = hub_server_id_of(host)
-  index = successful.fetch('ServerIds').index(server_id)
+  index = successful['ServerIds'].index(server_id)
   raise StandardError, "#{host} (server ID #{server_id}) has no successful multicast response, failed ones: #{response['Failed']}" if index.nil?
 
   expected_ids = system_ids(api_client_for(host).system.list_systems)
-  actual_ids = system_ids(successful.fetch('Responses')[index])
+  actual_ids = system_ids(successful['Responses'][index])
   raise StandardError, "Multicast listed systems #{actual_ids} for #{host}, expected #{expected_ids}" unless actual_ids == expected_ids
 end
 
@@ -896,11 +896,6 @@ end
 
 Then(/^I should see "([^"]*)" registered on "([^"]*)"$/) do |minion_host, server_host|
   raise StandardError, "#{minion_host} not found on #{server_host}" if systems_registered_as(minion_host, on: server_host).empty?
-end
-
-# The minion is registered on the hub directly unless a scenario bootstrapped it behind the peripheral.
-Given(/^"([^"]*)" is registered on "([^"]*)"$/) do |minion_host, server_host|
-  skip_this_scenario if systems_registered_as(minion_host, on: server_host).empty?
 end
 
 Then(/^I should not see "([^"]*)" registered on hub$/) do |minion_host|

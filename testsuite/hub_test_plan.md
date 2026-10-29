@@ -166,7 +166,7 @@ curl -sk https://<hub>/hub/rpc/api
 - **Regenerate Credentials** (mirror credentials) works and sync still succeeds afterwards.
 - Long repository URLs (BUG-019, fixed by bsc#1259230): `rhnContentSource.source_url` is `VARCHAR(4096)`; a URL longer than 2048 characters must not cause an HTTP 500.
 
-**Automation:** partial — `features/hub/srv_hub_channel_synchronization.feature` covers Method A, Method B (trigger from Hub Details), Method C (sync.hub add, list and trigger, with a new channel synced to peripheral1 and verified), cloned/vendor/custom channels, org mapping and credential regeneration. Not automated: synced channel/org counters. Long `source_url`: no automated regression yet (no step creates a repo with an arbitrary URL length).
+**Automation:** partial — `features/hub/srv_hub_channel_synchronization.feature` covers Method A, Method B (trigger from Hub Details), Method C (sync.hub add, list and trigger, with a new channel synced to peripheral1 and verified), cloned/vendor/custom channels, org mapping and credential regeneration. Not automated: synced channel/org counters. Long `source_url`: no automated regression (no step creates a repo with an arbitrary URL length); BUG-019 is covered by the schema fix only.
 
 ---
 
@@ -252,7 +252,7 @@ podman exec uyuni-server inter-server-sync import -d /var/spacewalk/iss-import-t
 - Every channel present before registration is still present after it, with the same label and package count.
 - No duplicate entry for the same channel label on the peripheral or the hub.
 - The hub → peripheral sync from step 5 completes without errors.
-- Source URL after registration (kept, or switched to the hub) and label-clash handling: **record actual behavior**; this plan does not fix an expected value yet.
+- Source URL after registration and label-clash handling: not asserted. Record the observed behavior (source URL kept or switched to the hub; clashing label rejected or merged) in the test report; this part is exploratory until the product behavior is specified.
 
 **Cleanup:** unregister peripheral1 from the hub, then remove the channels synced in step 1.
 
@@ -336,7 +336,7 @@ podman exec uyuni-server inter-server-sync import -d /var/spacewalk/iss-import-t
 
 **Goal:** Verify the peripheral host can be bootstrapped as a hub minion using the SUSE Multi-Linux Manager Server product synced on the hub, and that registering it as peripheral afterwards keeps a single system entry.
 
-**Prerequisites:** B-01 ordering applies (minion before registration). Product name to confirm: it is not in `features/build_validation/reposync/srv_sync_all_products.feature` yet, so a product sync step has to be added for it.
+**Prerequisites:** B-01 ordering applies (minion before registration). Product: SUSE Multi-Linux Manager Server 5.2, x86_64. Channel set follows the peripheral OS: `suse-multi-linux-manager-server-5.2-x86_64` for SL Micro 6.2, `suse-multi-linux-manager-server-sle-5.2-{pool,updates}-x86_64-sp7` for SLES 15 SP7 (`features/support/constants.rb`). It is not in `features/build_validation/reposync/srv_sync_all_products.feature` yet, so a product sync step has to be added for it.
 
 **Steps:**
 1. Hub: synchronize the SUSE Multi-Linux Manager Server product and wait for its channels to finish.
@@ -348,9 +348,8 @@ podman exec uyuni-server inter-server-sync import -d /var/spacewalk/iss-import-t
 
 **Expected:**
 - Bootstrap completes; peripheral1 shows as a Salt Minion on the hub with the server product channels subscribed.
-- After registration: one system entry with the correct type (no duplicate, as in B-01).
+- After registration: exactly one system entry for peripheral1, with the same system type as before registration (no duplicate, as in B-01). A second entry or a type change fails the test.
 - The remote command succeeds after registration, so the minion link to the hub survives.
-- Any change in system type or entry count after registration: **record actual behavior**.
 
 **Cleanup:** delete peripheral1 from the hub system list, unregister it from the hub, and delete the activation key.
 

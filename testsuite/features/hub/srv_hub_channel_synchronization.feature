@@ -51,13 +51,12 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     When I initiate channel sync from peripheral "peripheral1"
     Then I should see a "Successfully scheduled a channels synchronization." text
 
-   Scenario: Wait for cloned channel to appear on peripheral1
-     When I wait until the channel "clone-fake-rpm-suse-channel" has been synced on peripheral1
-     Then channel "clone-fake-rpm-suse-channel" should exist on "peripheral1"
-     When I wait until the channel "clone-fake-rpm-suse-channel" has been synced on peripheral1
+  Scenario: Wait for cloned channel to appear on peripheral1
+    When I wait until the channel "clone-fake-rpm-suse-channel" has been synced on peripheral1
+    Then channel "clone-fake-rpm-suse-channel" should exist on "peripheral1"
 
-   Scenario: Verify cloned channel on peripheral1 has expected packages
-     Then channel "clone-fake-rpm-suse-channel" on "peripheral1" should have "4" packages
+  Scenario: Verify cloned channel on peripheral1 has expected packages
+    Then channel "clone-fake-rpm-suse-channel" on "peripheral1" should have "4" packages
 
   Scenario: Sync the SLES 15 SP7 base channel and its modules from hub to peripheral1 for minion bootstrap
     When I configure hub to sync all "-SP7-" channels to "peripheral1"
@@ -108,7 +107,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
 
   # BUG-019 (QE test plan): HTTP 500 on peripheral channel sync when rhnContentSource.source_url
   # exceeded VARCHAR(2048). Fixed by bsc#1259230, which widens source_url to VARCHAR(4096).
-  # No manual check remains.
+  # No automated regression: no step creates a repo with an arbitrary URL length.
 
   Scenario: Regenerate mirror credentials for peripheral1 and verify sync still works
     When I regenerate mirror credentials for peripheral "peripheral1"
