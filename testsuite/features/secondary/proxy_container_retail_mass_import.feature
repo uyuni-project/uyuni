@@ -73,7 +73,6 @@ Feature: Mass import of Retail terminals behind a containerized proxy
     Then I should see a "1 package removal has been scheduled" text
     When I wait until event "Package Removal scheduled by admin" is completed
 
-  @pxeboot_needs_minion
   Scenario: Cleanup: make sure salt-minion is stopped after mass import
     When I wait until Salt client is inactive on the PXE boot minion
 

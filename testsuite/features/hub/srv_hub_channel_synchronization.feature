@@ -121,7 +121,6 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     And I add channel "test-hub-api-channel" to the sync list of "peripheral1" for organization "Test Default Organization" via the hub API
     Then the hub API should list channel "test-hub-api-channel" for sync to "peripheral1"
     When I trigger channel sync to "peripheral1" via the hub API
-    And I wait until the channel "test-hub-api-channel" has been synced on peripheral1
     Then channel "test-hub-api-channel" should exist on "peripheral1"
 
   Scenario: Cleanup: remove synced channels from peripheral1
