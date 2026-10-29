@@ -36,6 +36,9 @@ CREATE SEQUENCE suse_ct_env_tgt_seq;
 CREATE UNIQUE INDEX suse_ct_env_tgt_env_cid_uq
     ON suseContentEnvironmentTarget(env_id, channel_id);
 
+CREATE UNIQUE INDEX suse_ct_env_tgt_cid_uq
+    ON suseContentEnvironmentTarget(channel_id);
+
 CREATE INDEX suse_ct_env_tgt_type
     ON suseContentEnvironmentTarget(type);
 
