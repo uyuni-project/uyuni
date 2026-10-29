@@ -44,11 +44,6 @@ end
 # Context per feature
 $context = {}
 
-# Set by the Layer 3 watchdog (see the Around hook below) when it has force-torn-down the browser
-# session. Once true, every remaining scenario in the run is skipped with one clear reason instead
-# of failing individually with confusing Playwright::Transport::AlreadyDisconnectedError traces.
-$watchdog_run_aborted = false
-
 # Other global variables
 $pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
 $pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp7o'
@@ -174,8 +169,18 @@ Capybara.app_host = "https://#{ENV.fetch('SERVER', nil)}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
 $stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
+# Set by skip_this_scenario below. AfterStep still runs for the steps of a skipped scenario.
+$scenario_skipped = false
+
 # enable minitest assertions in steps
 World(Minitest::Assertions)
+World(Module.new do
+  # Marks the scenario as skipped before cucumber raises it, so AfterStep can leave the browser alone
+  def skip_this_scenario(message = 'Scenario skipped')
+    $scenario_skipped = true
+    super
+  end
+end)
 
 # Initialize the API client
 $api_test = new_api_client unless uyuni_not_installed?
@@ -195,6 +200,7 @@ $quality_intelligence = QualityIntelligence.new if $quality_intelligence_mode
 # quit here - Capybara keeps them cached so a later scenario that switches back reuses
 # the still-logged-in browser instead of re-authenticating.
 Before do |scenario|
+  $scenario_skipped = false
   current_feature_file = scenario.location.file
   if $feature_scope_file && $feature_scope_file != current_feature_file
     Capybara.session_name = :default
@@ -220,7 +226,7 @@ After do |scenario|
         rescue Timeout::Error
           warn 'After: Playwright connection hung during session check — triggering emergency browser kill'
           unblock_wedged_browser
-          $watchdog_run_aborted = true
+          discard_browser_session
           false
         rescue StandardError => e
           log "Web session went stale when checking for active session: #{e.message}"
@@ -361,6 +367,9 @@ end
 
 AfterStep do
   next unless capybara_session_created?
+  # Steps of a skipped scenario never touch the browser, but the check below would still run on the previous
+  # scenario's browser, which can be wedged. Skip it for them.
+  next if $scenario_skipped
 
   # has_no_css? returns immediately when the spinner is absent (the common case) and otherwise polls
   # until it disappears, so this both replaces the old wait: 0 gate and adds ~no per-step overhead.
@@ -402,6 +411,24 @@ def unblock_wedged_browser
   kill_descendant_processes(Process.pid)
 end
 
+# Drops the browser session whose Playwright connection was killed, so the next scenario starts a fresh browser
+def discard_browser_session
+  Capybara.session_pool.clear
+  Capybara.session_name = :default
+end
+
+# Saves the page into SCREENSHOT_DIR, which Jenkins copies into the build results. JPEG keeps the 2048px
+# viewport small enough to take one on every wait.
+def save_evidence_screenshot(label)
+  dir = ENV.fetch('SCREENSHOT_DIR', 'screenshots')
+  FileUtils.mkdir_p(dir)
+  path = "#{dir}/#{Time.now.strftime('%Y%m%d-%H%M%S')}_#{label.gsub(/[^\w-]/, '_')}.jpg"
+  page.driver.with_playwright_page { |pw_page| pw_page.screenshot(path: path, type: 'jpeg', quality: 60) }
+  log "Evidence screenshot: #{path} (#{current_url})"
+rescue StandardError => e
+  log "Evidence screenshot failed (#{label}): #{e.message}"
+end
+
 # Layer 3 watchdog: a hard per-scenario ceiling that survives hangs which neither Ruby's
 # Timeout.timeout nor a graceful driver.quit can interrupt. A thread blocked inside the Playwright
 # pipe never returns to the Ruby interpreter, so it cannot be interrupted in-process; the only
@@ -439,12 +466,11 @@ Around do |scenario, block|
 
       warn "WATCHDOG: scenario '#{scenario.name}' exceeded its hard limit of #{limit}s - " \
            'tearing down the browser session to unblock the run'
+      # Bounded: a wedged pipe never returns from this call, so give up after 15 s and kill anyway
+      Thread.new { save_evidence_screenshot("watchdog-trip_#{scenario.name}") }.join(15)
       unblock_wedged_browser
-      # capybara/cucumber's own After hook calls driver.reset! unconditionally, which tries to talk
-      # to the browser process we just killed and raises again - it does not rebuild a fresh one.
-      # Without this flag every remaining scenario would fail one-by-one with confusing
-      # Playwright::Transport::AlreadyDisconnectedError traces instead of a single clear reason.
-      $watchdog_run_aborted = true
+      # The scenario fails once its pending call raises; the next scenario starts a fresh browser
+      discard_browser_session
     end
 
   begin
@@ -453,12 +479,6 @@ Around do |scenario, block|
     finished = true
     watchdog.kill
   end
-end
-
-# Must be the first unconditional Before hook in the suite (registered here, right after the
-# watchdog) so it runs before any hook that touches the browser. See $watchdog_run_aborted above.
-Before do
-  skip_this_scenario if $watchdog_run_aborted
 end
 
 Before('@skip') do

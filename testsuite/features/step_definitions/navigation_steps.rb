@@ -150,12 +150,24 @@ When(/^I wait until I see the "([^"]*)" system, refreshing the page$/) do |syste
 end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
-  next unless has_content?(text, wait: 3)
+  save_evidence_screenshot("wait-start_#{text}")
+  last_capture = Time.now
+  begin
+    if has_content?(text, wait: 3)
+      repeat_until_timeout(message: "Text '#{text}' is still visible") do
+        # Capture before each browser call: if that call hangs, the last capture is the state at the hang
+        if Time.now - last_capture >= 60
+          save_evidence_screenshot("wait-tick_#{text}")
+          last_capture = Time.now
+        end
+        break unless has_content?(text, wait: 3)
 
-  repeat_until_timeout(message: "Text '#{text}' is still visible") do
-    break unless has_content?(text, wait: 3)
-
-    refresh_page
+        refresh_page
+      end
+    end
+  ensure
+    # Written on success and on failure, so a wait without this marker is one that never returned
+    save_evidence_screenshot("wait-end_#{text}")
   end
 end
 
