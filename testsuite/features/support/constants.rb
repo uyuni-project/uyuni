@@ -225,7 +225,9 @@ PACKAGE_BY_CLIENT = {
   'sles15sp7_minion' => 'bison',
   'sles15sp7_sshminion' => 'bison',
   'sles160_minion' => 'bison',
+  'sles161_minion' => 'bison',
   'sles160_sshminion' => 'bison',
+  'sles161_sshminion' => 'bison',
   'slemicro53_minion' => 'dejavu',
   'slemicro53_sshminion' => 'dejavu',
   'slemicro54_minion' => 'dejavu',
@@ -323,7 +325,9 @@ BASE_CHANNEL_BY_CLIENT = {
     'sles15sp7_sshminion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sles15sp7_terminal' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sles160_minion' => 'SLE-Product-SLES-16.0 for x86_64',
+    'sles161_minion' => 'SLE-Product-SLES-16.1 for x86_64',
     'sles160_sshminion' => 'SLE-Product-SLES-16.0 for x86_64',
+    'sles161_sshminion' => 'SLE-Product-SLES-16.1 for x86_64',
     'slemicro53_minion' => 'SLE-Micro-5.3-Pool for x86_64',
     'slemicro53_sshminion' => 'SLE-Micro-5.3-Pool for x86_64',
     'slemicro54_minion' => 'SLE-Micro-5.4-Pool for x86_64',
@@ -412,7 +416,9 @@ BASE_CHANNEL_BY_CLIENT = {
     'sles15sp7_buildhost' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sles15sp7_terminal' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sles160_minion' => 'SLE-Product-SLES-16.0 for x86_64',
+    'sles161_minion' => 'SLE-Product-SLES-16.1 for x86_64',
     'sles160_sshminion' => 'SLE-Product-SLES-16.0 for x86_64',
+    'sles161_sshminion' => 'SLE-Product-SLES-16.1 for x86_64',
     'slemicro53_minion' => 'SLE-Micro-5.3-Pool for x86_64',
     'slemicro53_sshminion' => 'SLE-Micro-5.3-Pool for x86_64',
     'slemicro54_minion' => 'SLE-Micro-5.4-Pool for x86_64',
@@ -486,6 +492,7 @@ LABEL_BY_BASE_CHANNEL = {
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'sle-product-sles15-sp6-pool-x86_64',
     'SLE-Product-SLES15-SP7-Pool for x86_64' => 'sle-product-sles15-sp7-pool-x86_64',
     'SLE-Product-SLES-16.0 for x86_64' => 'sle-product-sles-16.0-x86_64',
+    'SLE-Product-SLES-16.1 for x86_64' => 'sle-product-sles-16.1-x86_64',
     'SLE-Product-SLES15-SP5-Pool for s390x' => 'sle-product-sles15-sp5-pool-s390x',
     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
@@ -527,6 +534,7 @@ LABEL_BY_BASE_CHANNEL = {
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'sle-product-sles15-sp6-pool-x86_64',
     'SLE-Product-SLES15-SP7-Pool for x86_64' => 'sle-product-sles15-sp7-pool-x86_64',
     'SLE-Product-SLES-16.0 for x86_64' => 'sle-product-sles-16.0-x86_64',
+    'SLE-Product-SLES-16.1 for x86_64' => 'sle-product-sles-16.1-x86_64',
     'SLE-Product-SLES15-SP5-Pool for s390x' => 'sle-product-sles15-sp5-pool-s390x',
     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
@@ -679,6 +687,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'sle-product-sles15-sp6-pool-x86_64',
     'SLE-Product-SLES15-SP7-Pool for x86_64' => 'sle-product-sles15-sp7-pool-x86_64',
     'SLE-Product-SLES-16.0 for x86_64' => 'sle-product-sles-16.0-x86_64',
+    'SLE-Product-SLES-16.1 for x86_64' => 'sle-product-sles-16.1-x86_64',
     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
     'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
@@ -716,6 +725,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'sle-product-sles15-sp6-pool-x86_64',
     'SLE-Product-SLES15-SP7-Pool for x86_64' => 'sle-product-sles15-sp7-pool-x86_64',
     'SLE-Product-SLES-16.0 for x86_64' => 'sle-product-sles-16.0-x86_64',
+    'SLE-Product-SLES-16.1 for x86_64' => 'sle-product-sles-16.1-x86_64',
     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
     'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
@@ -758,7 +768,9 @@ PKGARCH_BY_CLIENT = {
   'sles15sp7_minion' => 'x86_64',
   'sles15sp7_sshminion' => 'x86_64',
   'sles160_minion' => 'x86_64',
+  'sles161_minion' => 'x86_64',
   'sles160_sshminion' => 'x86_64',
+  'sles161_sshminion' => 'x86_64',
   'slemicro53_minion' => 'x86_64',
   'slemicro53_sshminion' => 'x86_64',
   'slemicro54_minion' => 'x86_64',
@@ -1082,6 +1094,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       %w[
         sle-product-sles-16.0-x86_64
         multi-linux-managertools-sle-16-x86_64
+      ],
+    'sles161' =>
+      %w[
+        sle-product-sles-16.1-x86_64
+        multi-linux-managertools-sle-16-x86_64-sles-16.1
       ],
     'sles16-aarch64' =>
       %w[
@@ -1446,6 +1463,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-product-sles-16.0-x86_64
         sles16-devel-uyuni-client-x86_64
       ],
+    'sles161' =>
+      %w[
+        sle-product-sles-16.1-x86_64
+        sles16-devel-uyuni-client-x86_64
+      ],
     'slesforsap15-sp5' =>
       %w[
         sle-module-basesystem15-sp5-pool-x86_64-sap
@@ -1735,6 +1757,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'multi-linux-managertools-sle-16-aarch64' => 60,
   'multi-linux-managertools-sle-16-ppc64le-opensuse-16.0' => 60,
   'multi-linux-managertools-sle-16-x86_64' => 60,
+  'multi-linux-managertools-sle-16-x86_64-sles-16.1' => 60,
   'opensuse_leap16_1-aarch64' => 4500,
   'opensuse_leap16_1-uyuni-client-devel-aarch64' => 120,
   'opensuse-leap-16.1-aarch64' => 7200,
@@ -1875,6 +1898,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-product-sles15-sp7-updates-x86_64' => 60,
   'sle-product-sles-16.0-aarch64' => 1920,
   'sle-product-sles-16.0-x86_64' => 2220,
+  'sle-product-sles-16.1-x86_64' => 2220,
   'sles12-sp5-installer-updates-x86_64' => 60,
   'sles12-sp5-pool-x86_64' => 120,
   'sles12-sp5-updates-x86_64' => 1920,
