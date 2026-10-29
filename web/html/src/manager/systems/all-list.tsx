@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { LinkButton } from "components/buttons";
+import { DateTime } from "components/datetime/DateTime";
 import { IconTag } from "components/icontag";
 import * as Systems from "components/systems";
 import { Column } from "components/table/Column";
@@ -165,7 +166,7 @@ export function AllSystems(props: Props) {
           columnKey="last_checkin"
           comparator={Utils.sortByText}
           header={t("Last Checked In")}
-          cell={(item) => item.lastCheckin}
+          cell={(item) => <DateTime value={item.lastCheckin} />}
         />
         <Column
           columnKey="channel_labels"
