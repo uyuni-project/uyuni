@@ -13,6 +13,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 #
 
+import contextlib
 import unittest
 import unittest.mock
 
@@ -26,17 +27,26 @@ PROXY_PASS = "proxy_pass"
 HTTPS_PROXY_CREDS = "https://user:password@my.proxy.com:1234"
 
 
+@contextlib.contextmanager
+# pylint: disable-next=unused-argument
+def _mocked_cfg_component(component, root=None, filename=None):
+    # yield the CFG the test patched, without reading any config files
+    yield suseLib.CFG
+
+
 class SuseLibTest(unittest.TestCase):
     @classmethod
     # pylint: disable-next=bad-classmethod-argument
     def setUpClass(self):
-        self.initCFG = unittest.mock.patch("spacewalk.common.suseLib.initCFG")
-        self.initCFG.start()
+        self.cfg_component = unittest.mock.patch(
+            "spacewalk.common.suseLib.cfg_component", _mocked_cfg_component
+        )
+        self.cfg_component.start()
 
     @classmethod
     # pylint: disable-next=bad-classmethod-argument
     def tearDownClass(self):
-        self.initCFG.stop()
+        self.cfg_component.stop()
 
     @unittest.mock.patch("spacewalk.common.suseLib.CFG")
     @unittest.mock.patch("builtins.open")
@@ -173,6 +183,27 @@ class SuseLibTest(unittest.TestCase):
 
         # pylint: disable-next=protected-access
         self.assertFalse(suseLib._useProxyFor("https://example.net/repo"))
+
+    @unittest.mock.patch("spacewalk.common.suseLib.CFG")
+    def test_no_proxy_from_rhn_conf(self, mocked_CFG):
+        mocked_CFG.getComponent.return_value = "proxy.broker"
+        mocked_CFG.has_key.return_value = True
+        mocked_CFG.no_proxy = ["example.com", ".example.org"]
+
+        # pylint: disable-next=protected-access
+        self.assertFalse(suseLib._useProxyFor("https://www.example.com/repo"))
+        # pylint: disable-next=protected-access
+        self.assertFalse(suseLib._useProxyFor("https://example.org/repo"))
+        # pylint: disable-next=protected-access
+        self.assertTrue(suseLib._useProxyFor("https://example.net/repo"))
+
+    @unittest.mock.patch("spacewalk.common.suseLib.CFG")
+    def test_no_proxy_not_set_in_rhn_conf(self, mocked_CFG):
+        mocked_CFG.getComponent.return_value = "proxy.broker"
+        mocked_CFG.has_key.side_effect = lambda key: key == "http_proxy"
+
+        # pylint: disable-next=protected-access
+        self.assertTrue(suseLib._useProxyFor("https://example.net/repo"))
 
     def test_URL_getURL_with_stipPw(self):
         self.assertEqual(

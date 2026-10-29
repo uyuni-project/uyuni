@@ -21,7 +21,7 @@ import re
 import pycurl
 
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
+from spacewalk.common.rhnConfig import cfg_component, CFG, ConfigParserError
 
 try:
     from spacewalk.server import rhnSQL
@@ -225,7 +225,7 @@ def get_proxy(url=None):
     proxyurl, username, password = (
         _get_proxy_from_config() or _get_proxy_from_yast() or (None, None, None)
     )
-    if not url or (url and _useProxyFor(url)):
+    if not url or _useProxyFor(url):
         return (proxyurl, username, password)
     return (None, None, None)
 
@@ -377,31 +377,27 @@ def get_mirror_credentials():
     mirrcred_user_2, mirrcred_pass_2 etc. might still exist.
 
     """
-    comp = CFG.getComponent()
-    initCFG("server.susemanager")
-
     creds = []
 
-    # the default values should at least always be there
-    if not CFG["mirrcred_user"] or not CFG["mirrcred_pass"]:
-        initCFG(comp)
-        raise ConfigParserError(
-            "Could not read default mirror credentials: "
-            "server.susemanager.mirrcred_user, "
-            "server.susemanager.mirrcred_pass."
-        )
+    with cfg_component("server.susemanager") as cfg:
+        # the default values should at least always be there
+        if not cfg["mirrcred_user"] or not cfg["mirrcred_pass"]:
+            raise ConfigParserError(
+                "Could not read default mirror credentials: "
+                "server.susemanager.mirrcred_user, "
+                "server.susemanager.mirrcred_pass."
+            )
 
-    creds.append((CFG["mirrcred_user"], CFG["mirrcred_pass"]))
+        creds.append((cfg["mirrcred_user"], cfg["mirrcred_pass"]))
 
-    # increment the credentials number, until we can't read one
-    n = 1
-    while True:
-        try:
-            creds.append((CFG[f"mirrcred_user_{n}"], CFG[f"mirrcred_pass_{n}"]))
-        except (KeyError, AttributeError):
-            break
-        n += 1
-    initCFG(comp)
+        # increment the credentials number, until we can't read one
+        n = 1
+        while True:
+            try:
+                creds.append((cfg[f"mirrcred_user_{n}"], cfg[f"mirrcred_pass_{n}"]))
+            except (KeyError, AttributeError):
+                break
+            n += 1
     return creds
 
 
@@ -515,16 +511,17 @@ def _get_proxy_from_config():
         username = DB_CFG.HTTP_PROXY_USERNAME
         password = DB_CFG.HTTP_PROXY_PASSWORD
     else:
-        proxy = CFG.http_proxy
-        username = CFG.http_proxy_username
-        # CFG.http_proxy_password can be a list in case of legitimate
-        # commas "," are part of the password. If so, we need to
-        # rebuilt the original password.
-        password = (
-            CFG.http_proxy_password
-            if not isinstance(CFG.http_proxy_password, list)
-            else ",".join(CFG.http_proxy_password)
-        )
+        with cfg_component("proxy") as cfg:
+            proxy = cfg.http_proxy
+            username = cfg.http_proxy_username
+            # cfg.http_proxy_password can be a list in case of legitimate
+            # commas "," are part of the password. If so, we need to
+            # rebuilt the original password.
+            password = (
+                cfg.http_proxy_password
+                if not isinstance(cfg.http_proxy_password, list)
+                else ",".join(cfg.http_proxy_password)
+            )
     if proxy:
         # the proxy format is <hostname>[:<port>]
         return (f"http://{proxy}", username, password)
@@ -559,10 +556,9 @@ def _useProxyFor(url):
         return False
     if _proxy_settings_in_db():
         noproxy = DB_CFG.get_list("NO_PROXY")
-    elif CFG.has_key("no_proxy"):
-        noproxy = CFG.no_proxy
     else:
-        return True
+        with cfg_component("proxy") as cfg:
+            noproxy = cfg.no_proxy if cfg.has_key("no_proxy") else None
     if not noproxy:
         return True
     if not isinstance(noproxy, list):

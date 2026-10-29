@@ -53,7 +53,7 @@ class YumSrcTest(unittest.TestCase):
         real_setup_repo = yum_src.ContentSource.setup_repo
 
         # don't read configs
-        patch("spacewalk.common.suseLib.initCFG").start()
+        patch("spacewalk.common.suseLib.cfg_component").start()
         patch("spacewalk.common.suseLib.CFG").start()
         yum_src.initCFG = Mock()
         yum_src.CFG = Mock()
