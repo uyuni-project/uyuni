@@ -76,6 +76,24 @@ public class ContentManagementViewsController {
         get("/manager/contentmanagement/filters",
                 withUserPreferences(withCsrfToken(withRolesTemplate(
                         ContentManagementViewsController::listFiltersView))), jade);
+
+        get("/manager/contentmanagement/recurring",
+                withUserPreferences(withCsrfToken(withRolesTemplate(
+                        ContentManagementViewsController::listRecurringActionsView))), jade);
+    }
+
+    /**
+     * Handler for the Content Lifecycle recurring actions list page.
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView listRecurringActionsView(Request req, Response res, User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("betaEnabled", user.getBetaFeaturesEnabled());
+        return new ModelAndView(data, "controllers/contentmanagement/templates/recurring-actions.jade");
     }
 
     /**

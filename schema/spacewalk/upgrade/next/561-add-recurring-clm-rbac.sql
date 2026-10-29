@@ -96,3 +96,14 @@ INSERT INTO access.accessGroupNamespace (group_id, namespace_id)
         'api.recurring.clm.list_by_project'
     )
     ON CONFLICT (group_id, namespace_id) DO NOTHING;
+
+-- Web UI Route for CLM Recurring Actions
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/contentmanagement/recurring', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'clm.project.list' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/contentmanagement/recurring' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;

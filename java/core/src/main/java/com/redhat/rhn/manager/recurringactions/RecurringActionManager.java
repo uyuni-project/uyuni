@@ -296,6 +296,19 @@ public class RecurringActionManager extends BaseManager {
     }
 
     /**
+     * List all no-entity recurring actions (e.g. CLM) for the given user's org.
+     *
+     * @param user the user
+     * @return list of recurring actions
+     */
+    public static List<RecurringAction> listNoEntityRecurringActions(User user) {
+        if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
+            throw new PermissionException("CLM recurring actions require org admin role");
+        }
+        return RecurringActionFactory.listNoEntityRecurringActions(user.getOrg());
+    }
+
+    /**
      * List all members of a given entity
      *
      * @param type the type of the entity

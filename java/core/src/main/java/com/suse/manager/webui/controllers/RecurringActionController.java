@@ -228,7 +228,14 @@ public class RecurringActionController {
      * @return the result JSON object
      */
     public static String listByEntity(Request request, Response response, User user) {
-        TargetType type = TargetType.valueOf(request.params("type"));
+        String typeParam = request.params("type");
+        TargetType type;
+        if ("CLM".equalsIgnoreCase(typeParam)) {
+            type = TargetType.NO_ENTITY;
+        }
+        else {
+            type = TargetType.valueOf(typeParam.replace("-", "_").toUpperCase());
+        }
         long id = Long.parseLong(request.params("id"));
 
         List<? extends RecurringAction> schedules;
@@ -241,6 +248,9 @@ public class RecurringActionController {
                 break;
             case ORG:
                 schedules = RecurringActionManager.listOrgRecurringActions(id, user);
+                break;
+            case NO_ENTITY:
+                schedules = RecurringActionManager.listNoEntityRecurringActions(user);
                 break;
             default:
                 throw new IllegalStateException("Unsupported type " + type);
