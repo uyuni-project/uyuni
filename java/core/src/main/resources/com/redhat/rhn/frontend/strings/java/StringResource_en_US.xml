@@ -9020,6 +9020,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="contentmanagement.nav.filters" xml:space="preserve">
         <source>Filters</source>
       </trans-unit>
+      <trans-unit id="contentmanagement.nav.recurring" xml:space="preserve">
+        <source>Recurring</source>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.selectedmodules">
         <source>The following module streams will be enabled: {0}</source>
         <context-group name="ctx">

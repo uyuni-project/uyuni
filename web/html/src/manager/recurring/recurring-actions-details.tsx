@@ -185,7 +185,15 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
               </tr>
               <tr>
                 <td>{t("Target name")}:</td>
-                <td>{targetNameLink(data.targetName, data.targetType, data.targetId, data.targetAccessible)}</td>
+                <td>
+                  {targetNameLink(
+                    data.targetName,
+                    data.targetType,
+                    data.targetId,
+                    data.targetAccessible,
+                    data.projectLabel ?? data.project_label
+                  )}
+                </td>
               </tr>
               <tr>
                 <td>{t("Created by")}:</td>

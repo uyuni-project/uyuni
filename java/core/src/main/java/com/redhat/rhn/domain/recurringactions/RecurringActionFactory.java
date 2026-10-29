@@ -110,6 +110,22 @@ public class RecurringActionFactory extends HibernateFactory {
     }
 
     /**
+     * List all recurring actions of target type NO_ENTITY for the given Org.
+     *
+     * @param org the Org
+     * @return list of recurring actions
+     */
+    public static List<RecurringAction> listNoEntityRecurringActions(Org org) {
+        return getSession().createQuery("""
+                        SELECT action FROM NoEntityRecurringAction action
+                         WHERE action.org = :org
+                         ORDER BY action.id DESC
+                        """, RecurringAction.class)
+                .setParameter("org", org)
+                .list();
+    }
+
+    /**
      * List all recurring actions associated with a Content Project
      *
      * @param project the Content Project
@@ -172,8 +188,15 @@ public class RecurringActionFactory extends HibernateFactory {
             "  when ra.target_type = 'organization' then org.name " +
             "  when ra.target_type = 'group' then sg.name " +
             "  when ra.target_type = 'minion' then minion.name " +
+            "  when ra.target_type = 'no-entity' and ra.action_type = 'CLM_BUILD' then rcb_cp.name " +
+            "  when ra.target_type = 'no-entity' and ra.action_type = 'CLM_PROMOTE' then " +
+            "    rcp_cp.name || ' (' || rcp_env.name || ')' " +
             "  when ra.target_type = 'no-entity' then '-' " +
             "end as target_name, " +
+            "case" +
+            "  when ra.target_type = 'no-entity' and ra.action_type = 'CLM_BUILD' then rcb_cp.label " +
+            "  when ra.target_type = 'no-entity' and ra.action_type = 'CLM_PROMOTE' then rcp_cp.label " +
+            "end as project_label, " +
             "case" +
             "  when ra.target_type = 'organization' then 'ORG' " +
             "  else UPPER(ra.target_type) " +
@@ -186,7 +209,12 @@ public class RecurringActionFactory extends HibernateFactory {
             "from suseRecurringAction ra " +
             "left join rhnservergroup sg on sg.id = ra.group_id " +
             "left join rhnserver minion on minion.id = ra.minion_id " +
-            "left join web_customer org on org.id = ra.org_id" +
+            "left join web_customer org on org.id = ra.org_id " +
+            "left join suseRecurringContentBuild rcb on rcb.rec_id = ra.id " +
+            "left join suseContentProject rcb_cp on rcb_cp.id = rcb.project_id " +
+            "left join suseRecurringContentPromote rcp on rcp.rec_id = ra.id " +
+            "left join suseContentProject rcp_cp on rcp_cp.id = rcp.project_id " +
+            "left join suseContentEnvironment rcp_env on rcp_env.id = rcp.env_id" +
             ") ra ";
         List<Org> orgs = user.hasRole(RoleFactory.SAT_ADMIN) ? OrgFactory.lookupAllOrgs() : List.of(user.getOrg());
         Map<String, Object> params = Map.of("orgsIds", orgs.stream().map(Org::getId).collect(Collectors.toList()));
