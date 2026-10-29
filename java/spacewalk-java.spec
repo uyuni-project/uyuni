@@ -232,9 +232,6 @@ Requires:       struts >= 1.2.9
 Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       system-lock-formula
-# libtcnative-1-0 is only recommended in tomcat.
-# We want it always to prevent warnings about openssl cannot be used
-Requires:       tomcat-native
 Requires:       tomcat11-lib
 Requires:       tomcat11-servlet-6_1-api
 Requires:       uyuni-cobbler-helper
