@@ -224,7 +224,7 @@ insert into rhnTimezone
   (id, olson_name, display_name)
 values
   (sequence_nextval('rhn_timezone_id_seq'),
-   'Indian/Maldives', 'Pakistan');
+   'Asia/Karachi', 'Pakistan');
 
 insert into rhnTimezone
   (id, olson_name, display_name)
