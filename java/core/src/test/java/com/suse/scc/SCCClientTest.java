@@ -16,6 +16,7 @@ package com.suse.scc;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -48,6 +49,7 @@ import com.github.tomakehurst.wiremock.extension.Parameters;
 import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
+import com.github.tomakehurst.wiremock.stubbing.Scenario;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpStatus;
@@ -290,15 +292,62 @@ public class SCCClientTest extends BaseTestCaseWithUser {
     public void testErrorResponse() throws Exception {
         wireMockServer.stubFor(
             get(urlMatching("/connect/organizations/products/unscoped(\\?page=2){0,1}"))
-                .willReturn(aResponse().withStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR))
+                .willReturn(aResponse().withStatus(HttpStatus.SC_NOT_FOUND))
+        );
+
+        var exception = assertThrows("Did not get an exception, expected error 404", SCCClientException.class,
+            () -> sccClient.listProducts());
+
+        String url = wireMockServer.baseUrl() + "/connect/organizations/products/unscoped";
+        assertEquals("Got response code 404 connecting to " + url + ": not retryable", exception.getMessage());
+
+        wireMockServer.verify(1, getRequestedFor(urlMatching("/connect/organizations/products/unscoped")));
+    }
+
+    @Test
+    public void testErrorResponseRetriesThenSucceeds() throws Exception {
+        String urlPattern = "/connect/organizations/products/unscoped(\\?page=2){0,1}";
+
+        wireMockServer.stubFor(
+            get(urlMatching(urlPattern)).inScenario("retry-then-success")
+                .whenScenarioStateIs(Scenario.STARTED)
+                .willReturn(aResponse().withStatus(HttpStatus.SC_SERVICE_UNAVAILABLE)
+                    .withHeader("Retry-After", "0"))
+                .willSetStateTo("attempt-2")
+        );
+        wireMockServer.stubFor(
+            get(urlMatching(urlPattern)).inScenario("retry-then-success")
+                .whenScenarioStateIs("attempt-2")
+                .willReturn(aResponse().withStatus(HttpStatus.SC_BAD_GATEWAY)
+                    .withHeader("Retry-After", "0"))
+                .willSetStateTo("recovered")
+        );
+        wireMockServer.stubFor(
+            get(urlMatching(urlPattern)).inScenario("retry-then-success")
+                .whenScenarioStateIs("recovered")
+                .willReturn(aResponse().withTransformers("scc-response-transformer"))
+        );
+
+        List<SCCProductJson> products = sccClient.listProducts();
+        assertEquals(2, products.size());
+    }
+
+    @Test
+    public void testErrorResponseMaxAttempts() throws Exception {
+        wireMockServer.stubFor(
+            get(urlMatching("/connect/organizations/products/unscoped(\\?page=2){0,1}"))
+                .willReturn(aResponse().withStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR)
+                    .withHeader("Retry-After", "0"))
         );
 
         var exception = assertThrows("Did not get an exception, expected error 500", SCCClientException.class,
             () -> sccClient.listProducts());
 
-        String expectedMessage = "Got response code 500 connecting to %s/connect/organizations/products/unscoped"
-            .formatted(wireMockServer.baseUrl());
-        assertEquals(expectedMessage, exception.getMessage());
+        String url = wireMockServer.baseUrl() + "/connect/organizations/products/unscoped";
+        assertEquals("Unable to connect to " + url + ": maximum attempts reached, last response code 500",
+            exception.getMessage());
+
+        wireMockServer.verify(3, getRequestedFor(urlMatching("/connect/organizations/products/unscoped")));
     }
 
     /**

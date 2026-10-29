@@ -79,7 +79,7 @@ public class HttpClientAdapter {
      * Configuration key for the proxy skip list.
      */
     public static final String NO_PROXY = "server.satellite.no_proxy";
-    public static final String MAX_CONNCECTIONS = "java.mgr_sync_max_connections";
+    public static final String MAX_CONNECTIONS = "java.mgr_sync_max_connections";
     public static final String HTTP_CONNECTION_TIMEOUT = "java.http_connection_timeout";
     public static final String HTTP_SOCKET_TIMEOUT = "java.http_socket_timeout";
     public static final String SALT_API_HTTP_SOCKET_TIMEOUT = "java.salt_api_http_socket_timeout";
@@ -196,8 +196,8 @@ public class HttpClientAdapter {
         }
 
         requestConfig = requestConfigBuilder.build();
-        clientBuilder.setMaxConnPerRoute(Config.get().getInt(MAX_CONNCECTIONS, 1));
-        clientBuilder.setMaxConnTotal(Config.get().getInt(MAX_CONNCECTIONS, 1));
+        clientBuilder.setMaxConnPerRoute(Config.get().getInt(MAX_CONNECTIONS, 1));
+        clientBuilder.setMaxConnTotal(Config.get().getInt(MAX_CONNECTIONS, 1));
         if (allowCookies) {
             cookieStore = new BasicCookieStore();
             clientBuilder.setDefaultCookieStore(cookieStore);
