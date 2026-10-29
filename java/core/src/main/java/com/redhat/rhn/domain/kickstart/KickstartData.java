@@ -888,6 +888,16 @@ public class KickstartData extends BaseDomainHelper {
     }
 
     /**
+     * @return if this kickstart profile is rhel 10 installer type or greater
+     */
+    public boolean isRhel10OrGreater() {
+        if (getInstallType() != null) {
+            return (getInstallType().isRhel10OrGreater() || getInstallType().isFedora());
+        }
+        return false;
+    }
+
+    /**
      * @return if this kickstart profile is rhel 6 installer type or greater (for rhel7)
      */
     public boolean isRhel6OrGreater() {
