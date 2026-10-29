@@ -12,18 +12,24 @@ DOCKER_COMMON_OPTS    = --interactive --tty --rm
 #DOCKER_ENV            = -e NEXTVERSION='4.3.10'
 DOCKER_ENV            =
 
-all :: dockerrun_pg
+all :: podmanpull configlocal podmanrun
+
+configlocal ::
+	cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
+
+confighost :: configlocal
+	sed -i 's/^\(report_\)\?db_host = localhost/\1db_host = host.containers.internal/' buildconf/test/rhn.conf
 
 dockerpull ::
 	$(EXECUTOR) pull $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
 
-dockerrun_pg ::
-	cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
+dockerrun ::
 	$(EXECUTOR) run $(DOCKER_COMMON_OPTS) $(DOCKER_PG_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
+
+dockerrun_pg :: configlocal dockerrun
 
 podmanpull ::
 	podman pull $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
 
 podmanrun ::
-	cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
 	podman run $(DOCKER_COMMON_OPTS) $(DOCKER_PG_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
