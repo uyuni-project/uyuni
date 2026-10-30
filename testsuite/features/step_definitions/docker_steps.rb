@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 SUSE LLC.
+# Copyright (c) 2017-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning Docker and containerization.
@@ -87,8 +87,8 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
   repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
     step 'I follow the left menu "Images > Image List"'
     step 'I wait until I do not see "There are no entries to show." text'
-    raise SystemCallError, 'error detected while building images' if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@title, \'Failed\')]]')
-    break if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@title, \'Built\')]]', count: count)
+    raise SystemCallError, 'error detected while building images' if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@aria-label, \'Failed\')]]')
+    break if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@aria-label, \'Built\')]]', count: count.to_i)
 
     sleep 5
   end
