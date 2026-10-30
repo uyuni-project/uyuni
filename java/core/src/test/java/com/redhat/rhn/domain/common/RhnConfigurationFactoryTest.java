@@ -24,7 +24,10 @@ import com.redhat.rhn.testing.BaseTestCase;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class RhnConfigurationFactoryTest extends BaseTestCase {
 
@@ -46,6 +49,33 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
 
         assertEquals(RhnConfiguration.KEYS.values().length, keys.size());
         assertTrue(keys.contains(RhnConfiguration.KEYS.URLGRABBER_LOGSPEC));
+    }
+
+    @Test
+    public void testHiddenKeys() {
+        // keys with their own page or API
+        Set<RhnConfiguration.KEYS> expected = EnumSet.of(
+                RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID,
+                RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT,
+                RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES,
+                RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN,
+                RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX,
+                RhnConfiguration.KEYS.PSW_CHECK_LOWER_CHAR_FLAG,
+                RhnConfiguration.KEYS.PSW_CHECK_UPPER_CHAR_FLAG,
+                RhnConfiguration.KEYS.PSW_CHECK_DIGIT_FLAG,
+                RhnConfiguration.KEYS.PSW_CHECK_CONSECUTIVE_CHAR_FLAG,
+                RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG,
+                RhnConfiguration.KEYS.PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG,
+                RhnConfiguration.KEYS.PSW_CHECK_MAX_OCCURRENCE,
+                RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHARACTERS,
+                RhnConfiguration.KEYS.HTTP_PROXY,
+                RhnConfiguration.KEYS.HTTP_PROXY_USERNAME,
+                RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD);
+        Set<RhnConfiguration.KEYS> hidden = Arrays.stream(RhnConfiguration.KEYS.values())
+                .filter(RhnConfiguration.KEYS::isHidden)
+                .collect(Collectors.toCollection(() -> EnumSet.noneOf(RhnConfiguration.KEYS.class)));
+
+        assertEquals(expected, hidden);
     }
 
     @Test
