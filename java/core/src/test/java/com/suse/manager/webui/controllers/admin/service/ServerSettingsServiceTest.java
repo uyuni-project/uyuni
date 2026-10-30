@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ServerSettingsServiceTest extends BaseTestCase {
@@ -76,6 +78,29 @@ public class ServerSettingsServiceTest extends BaseTestCase {
         entry = getEntry(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT);
         assertEquals("600", entry.value());
         assertTrue(entry.modified());
+    }
+
+    @Test
+    public void testDescriptionsAreTranslatable() {
+        // the English text of every shown description must match the description in the database
+        LocalizationService ls = LocalizationService.getInstance();
+        Arrays.stream(RhnConfiguration.KEYS.values())
+                .filter(key -> !key.isHidden())
+                .forEach(key -> {
+                    String messageId = ServerSettingsService.getDescriptionMessageId(key);
+                    assertTrue(ls.hasMessage(messageId), "Missing message " + messageId);
+                    assertEquals(factory.getConfiguration(key).getDescription(),
+                            ls.getMessage(messageId, Locale.US), messageId);
+                });
+    }
+
+    @Test
+    public void testListUsesLocalizedDescription() {
+        String message = LocalizationService.getInstance().getMessage(
+                ServerSettingsService.getDescriptionMessageId(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT));
+        factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).setDescription("changed in the database");
+
+        assertEquals(message, getEntry(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).description());
     }
 
     @Test
