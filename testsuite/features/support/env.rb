@@ -50,10 +50,11 @@ $context = {}
 $watchdog_run_aborted = false
 
 # Other global variables
-$pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
 $pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp7o'
 $sles15sp6_terminal_mac = ENV.fetch('SLES15SP6_TERMINAL_MAC', nil)
 $sles15sp7_terminal_mac = ENV.fetch('SLES15SP7_TERMINAL_MAC', nil)
+# Build validation deploys the PXE boot minion as the SLES 15 SP7 terminal and does not set PXEBOOT_MAC
+$pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil) || $sles15sp7_terminal_mac
 $private_net = ENV.fetch('PRIVATENET', nil) if ENV['PRIVATENET']
 $mirror = ENV.fetch('MIRROR', nil)
 $server_http_proxy = ENV.fetch('SERVER_HTTP_PROXY', nil) if ENV['SERVER_HTTP_PROXY']
@@ -70,7 +71,7 @@ $default_local_storage_class = ENV.fetch('LOCAL_PATH_DEFAULT_CLASS', true) if EN
 # maximal wait before giving up
 # the tests return much before that delay in case of success
 $stdout.sync = true
-STARTTIME = Time.new.to_i
+STARTTIME = Time.now.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 # Layer 3 per-scenario watchdog ceiling (see the Around hook below). Backstop against hangs that
 # Ruby's Timeout.timeout cannot interrupt (e.g. a blocked Playwright pipe call).
@@ -207,7 +208,7 @@ end
 
 # Embed a screenshot after each failed scenario
 After do |scenario|
-  current_epoch = Time.new.to_i
+  current_epoch = Time.now.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
@@ -370,7 +371,7 @@ rescue NoMethodError
 end
 
 Before do
-  current_time = Time.new
+  current_time = Time.now
   @scenario_start_time = current_time.to_i
   log "This scenario ran at: #{current_time}\n"
 end
@@ -572,8 +573,17 @@ Before('@deblike_minion') do
 end
 
 Before('@pxeboot_minion') do
-  mac_address = $pxeboot_mac || $sles15sp7_terminal_mac
-  skip_this_scenario unless mac_address
+  skip_this_scenario unless $pxeboot_mac
+end
+
+# Each PXE boot feature has one @pxeboot_bootstrap scenario that registers the PXE boot minion.
+# If it fails, the @pxeboot_needs_minion scenarios are skipped instead of each waiting for a minion that never came.
+After('@pxeboot_bootstrap') do |scenario|
+  add_context(:pxeboot_minion_failed, true) if scenario.failed?
+end
+
+Before('@pxeboot_needs_minion') do
+  skip_this_scenario if get_context(:pxeboot_minion_failed)
 end
 
 Before('@sshminion') do

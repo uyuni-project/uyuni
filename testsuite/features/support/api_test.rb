@@ -12,6 +12,7 @@ require_relative 'namespaces/hub'
 require_relative 'namespaces/image'
 require_relative 'namespaces/kickstart'
 require_relative 'namespaces/schedule'
+require_relative 'namespaces/sync_hub'
 require_relative 'namespaces/system'
 require_relative 'namespaces/user'
 require_relative 'xmlrpc_client'
@@ -35,6 +36,7 @@ class ApiTest
     @image = NamespaceImage.new(self)
     @kickstart = NamespaceKickstart.new(self)
     @schedule = NamespaceSchedule.new(self)
+    @sync_hub = NamespaceSyncHub.new(self)
     @system = NamespaceSystem.new(self)
     @user = NamespaceUser.new(self)
     @connection = nil
@@ -64,6 +66,7 @@ class ApiTest
   attr_reader :image
   attr_reader :kickstart
   attr_reader :schedule
+  attr_reader :sync_hub
   attr_reader :system
   attr_reader :user
   attr_accessor :token

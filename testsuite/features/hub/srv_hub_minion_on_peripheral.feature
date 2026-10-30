@@ -30,6 +30,10 @@ Feature: Hub full topology - minion managed via peripheral server
     And I wait until onboarding is completed for "sle_minion"
     Then I should see "sle_minion" registered on "peripheral1"
 
+  Scenario: Verify sle_minion is not listed on the hub directly
+    Then I should see "sle_minion" registered on "peripheral1"
+    And I should not see "sle_minion" registered on hub
+
   # KNOWN BROKEN: the B-04 scenarios below install/verify/downgrade/patch the andromeda-dummy
   # test package, which only exists in Fake-RPM-SUSE-Channel content. The activation key above
   # now uses the real SLE-Product-SLES15-SP7-Pool vendor channel instead (see B-03 prerequisite

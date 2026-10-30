@@ -867,7 +867,7 @@ end
 # @return [String] The MAC address of the host.
 def get_mac_address(host)
   if host == 'pxeboot_minion'
-    mac = ENV.fetch('PXEBOOT_MAC', nil)
+    mac = $pxeboot_mac
   else
     node = get_target(host)
     output, _code = node.run('ip link show dev eth1')
@@ -1214,7 +1214,7 @@ end
 def get_future_time(minutes_to_add)
   raise TypeError, 'minutes_to_add should be an Integer' unless minutes_to_add.is_a?(Integer)
 
-  now = Time.new
+  now = Time.now
   future_time = now + (60 * minutes_to_add)
   future_time.strftime('%H:%M').to_s.strip
 end

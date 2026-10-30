@@ -125,11 +125,13 @@ Feature: PXE boot a Retail terminal behind a containerized proxy
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
+  @pxeboot_bootstrap
   Scenario: PXE boot the PXE boot minion
     When I reboot the Retail terminal "pxeboot_minion"
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
 
+  @pxeboot_needs_minion
   Scenario: Assure the PXE boot minion is onboarded
     Given I am on the Systems page
     When I wait until I see the name of "pxeboot_minion", refreshing the page
@@ -144,12 +146,14 @@ Feature: PXE boot a Retail terminal behind a containerized proxy
     And I wait until event "Package List Refresh" is completed
     Then "pxeboot_minion" should have been reformatted
 
+  @pxeboot_needs_minion
   Scenario: Check connection from terminal to branch server
     When I navigate to the Systems overview page of this "pxeboot_minion"
     And I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see a "proxy.example.org" text
 
+  @pxeboot_needs_minion
   Scenario: Install a package on the new Retail terminal
     When I navigate to the Systems overview page of this "pxeboot_minion"
     And I install the GPG key of the test packages repository on the PXE boot minion
@@ -163,6 +167,7 @@ Feature: PXE boot a Retail terminal behind a containerized proxy
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
+  @pxeboot_needs_minion
   Scenario: Remove the package from the new Retail terminal
     When I navigate to the Systems overview page of this "pxeboot_minion"
     And I follow "Software" in the content area
