@@ -33,34 +33,73 @@ import jakarta.persistence.Table;
 @Table(name = "rhnConfiguration")
 public class RhnConfiguration extends BaseDomainHelper {
 
+    /**
+     * Type of a configuration value
+     */
+    public enum ValueType {
+        STRING,
+        INTEGER,
+        BOOLEAN,
+        LIST
+    }
+
+    /**
+     * Visibility of a configuration key in the server settings UI.
+     * Hidden keys are managed elsewhere and can't be changed there.
+     */
+    public enum Visibility {
+        VISIBLE,
+        HIDDEN
+    }
+
     public enum KEYS {
-        EXTAUTH_DEFAULT_ORGID,
-        EXTAUTH_USE_ORGUNIT,
-        EXTAUTH_KEEP_TEMPROLES,
-        SYSTEM_CHECKIN_THRESHOLD,
-        PSW_CHECK_LENGTH_MIN,
-        PSW_CHECK_LENGTH_MAX,
-        PSW_CHECK_LOWER_CHAR_FLAG,
-        PSW_CHECK_UPPER_CHAR_FLAG,
-        PSW_CHECK_DIGIT_FLAG,
-        PSW_CHECK_CONSECUTIVE_CHAR_FLAG,
-        PSW_CHECK_SPECIAL_CHAR_FLAG,
-        PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG,
-        PSW_CHECK_MAX_OCCURRENCE,
-        PSW_CHECK_SPECIAL_CHARACTERS,
-        HTTP_PROXY,
-        HTTP_PROXY_USERNAME,
-        HTTP_PROXY_PASSWORD,
-        NO_PROXY,
-        USER_LOGIN_LENGTH_MIN,
-        USER_LOGIN_LENGTH_MAX,
-        USER_EMAIL_LENGTH_MAX,
-        REPOSYNC_DOWNLOAD_THREADS,
-        REPOSYNC_TIMEOUT,
-        REPOSYNC_MINRATE,
-        REPOSYNC_NEVRA_FILTER,
-        SYNC_SOURCE_PACKAGES,
-        URLGRABBER_LOGSPEC;
+        EXTAUTH_DEFAULT_ORGID(ValueType.INTEGER, Visibility.HIDDEN),
+        EXTAUTH_USE_ORGUNIT(ValueType.BOOLEAN, Visibility.HIDDEN),
+        EXTAUTH_KEEP_TEMPROLES(ValueType.BOOLEAN, Visibility.HIDDEN),
+        SYSTEM_CHECKIN_THRESHOLD(ValueType.INTEGER),
+        PSW_CHECK_LENGTH_MIN(ValueType.INTEGER, Visibility.HIDDEN),
+        PSW_CHECK_LENGTH_MAX(ValueType.INTEGER, Visibility.HIDDEN),
+        PSW_CHECK_LOWER_CHAR_FLAG(ValueType.BOOLEAN, Visibility.HIDDEN),
+        PSW_CHECK_UPPER_CHAR_FLAG(ValueType.BOOLEAN, Visibility.HIDDEN),
+        PSW_CHECK_DIGIT_FLAG(ValueType.BOOLEAN, Visibility.HIDDEN),
+        PSW_CHECK_CONSECUTIVE_CHAR_FLAG(ValueType.BOOLEAN, Visibility.HIDDEN),
+        PSW_CHECK_SPECIAL_CHAR_FLAG(ValueType.BOOLEAN, Visibility.HIDDEN),
+        PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG(ValueType.BOOLEAN, Visibility.HIDDEN),
+        PSW_CHECK_MAX_OCCURRENCE(ValueType.INTEGER, Visibility.HIDDEN),
+        PSW_CHECK_SPECIAL_CHARACTERS(ValueType.STRING, Visibility.HIDDEN),
+        HTTP_PROXY(ValueType.STRING, Visibility.HIDDEN),
+        HTTP_PROXY_USERNAME(ValueType.STRING, Visibility.HIDDEN),
+        HTTP_PROXY_PASSWORD(ValueType.STRING, Visibility.HIDDEN),
+        NO_PROXY(ValueType.LIST),
+        USER_LOGIN_LENGTH_MIN(ValueType.INTEGER),
+        USER_LOGIN_LENGTH_MAX(ValueType.INTEGER),
+        USER_EMAIL_LENGTH_MAX(ValueType.INTEGER),
+        REPOSYNC_DOWNLOAD_THREADS(ValueType.INTEGER),
+        REPOSYNC_TIMEOUT(ValueType.INTEGER),
+        REPOSYNC_MINRATE(ValueType.INTEGER),
+        REPOSYNC_NEVRA_FILTER(ValueType.BOOLEAN),
+        SYNC_SOURCE_PACKAGES(ValueType.BOOLEAN),
+        URLGRABBER_LOGSPEC(ValueType.STRING);
+
+        private final ValueType type;
+        private final Visibility visibility;
+
+        KEYS(ValueType typeIn) {
+            this(typeIn, Visibility.VISIBLE);
+        }
+
+        KEYS(ValueType typeIn, Visibility visibilityIn) {
+            type = typeIn;
+            visibility = visibilityIn;
+        }
+
+        public ValueType getType() {
+            return type;
+        }
+
+        public boolean isHidden() {
+            return visibility == Visibility.HIDDEN;
+        }
     }
 
     @Id
