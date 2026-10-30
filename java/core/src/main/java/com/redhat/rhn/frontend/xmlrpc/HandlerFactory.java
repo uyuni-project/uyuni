@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.xmlrpc.access.AccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.configuration.AdminConfigurationHandler;
+import com.redhat.rhn.frontend.xmlrpc.admin.distro.AdminDistroHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.gpg.AdminGpgHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler;
@@ -186,6 +187,7 @@ public class HandlerFactory {
         factory.addHandler("actionchain", new ActionChainHandler());
         factory.addHandler("activationkey", activationKeyHandler);
         factory.addHandler("admin.configuration", adminConfigurationHandler);
+        factory.addHandler("admin.distro", new AdminDistroHandler());
         factory.addHandler("admin.monitoring", new AdminMonitoringHandler());
         factory.addHandler("admin.payg", new AdminPaygHandler(taskomaticApi));
         factory.addHandler("admin.gpg", new AdminGpgHandler());
