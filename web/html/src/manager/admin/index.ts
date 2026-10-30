@@ -12,6 +12,7 @@ export default {
   "admin/setup/payg": () => import("./payg/payg.renderer"),
   "admin/setup/create-payg": () => import("./create-payg/create-payg.renderer"),
   "admin/config/password-policy": () => import("./password-policy/password-policy.renderer"),
+  "admin/config/server-settings": () => import("./server-settings/server-settings.renderer"),
   "admin/access-control": () => import("./access-control/access-group-list.renderer"),
   "admin/create-access-group": () => import("./access-control/access-group-create.renderer"),
   "admin/show-access-group": () => import("./access-control/access-group-show.renderer"),
