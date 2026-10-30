@@ -3117,6 +3117,73 @@
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
         </trans-unit>
+      <!-- Descriptions of the server settings (rhnConfiguration) -->
+      <trans-unit id="server_settings.description.NO_PROXY" xml:space="preserve">
+        <source>Comma separated list of hosts and domains which are connected without the HTTP proxy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.REPOSYNC_DOWNLOAD_THREADS" xml:space="preserve">
+        <source>Number of threads used by reposync to download packages</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.REPOSYNC_MINRATE" xml:space="preserve">
+        <source>Minimal transfer rate of reposync downloads in bytes per second</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.REPOSYNC_NEVRA_FILTER" xml:space="preserve">
+        <source>Filter the packages of a repository by their full NEVRA instead of the name only</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.REPOSYNC_TIMEOUT" xml:space="preserve">
+        <source>Timeout of reposync downloads in seconds</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.SYNC_SOURCE_PACKAGES" xml:space="preserve">
+        <source>Synchronize source packages with reposync</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.SYSTEM_CHECKIN_THRESHOLD" xml:space="preserve">
+        <source>Number of days before reporting a system as inactive</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.URLGRABBER_LOGSPEC" xml:space="preserve">
+        <source>urlgrabber debug logging of reposync in the form level,filename (for example 1,-)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.USER_EMAIL_LENGTH_MAX" xml:space="preserve">
+        <source>Maximum number of characters in user e-mail addresses</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.USER_LOGIN_LENGTH_MAX" xml:space="preserve">
+        <source>Maximum number of characters in user login names</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.USER_LOGIN_LENGTH_MIN" xml:space="preserve">
+        <source>Minimum number of characters in user login names</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
       </body>
   </file>
 </xliff>
