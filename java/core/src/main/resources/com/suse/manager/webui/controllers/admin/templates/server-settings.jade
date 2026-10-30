@@ -1,0 +1,12 @@
+include /templates/common.jade
+
+#server-settings
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('admin/config/server-settings')
+        .then(function (module) {
+            module.renderer('server-settings', !{settings})
+        });

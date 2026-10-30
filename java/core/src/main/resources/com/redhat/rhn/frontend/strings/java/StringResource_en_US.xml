@@ -676,6 +676,12 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Server Settings" xml:space="preserve">
+        <source>Server Settings</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Access Control" xml:space="preserve">
         <source>Access Control</source>
         <context-group name="ctx">
