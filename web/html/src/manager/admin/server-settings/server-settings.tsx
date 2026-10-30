@@ -133,6 +133,44 @@ const ServerSettings = (props: Props) => {
         <MessagesContainer />
         <p>{t("Change the server settings which are stored in the database.")}</p>
       </div>
+      <div className="spacewalk-content-nav">
+        <ul className="nav nav-tabs">
+          <li>
+            <a className="js-spa" href="/rhn/admin/config/GeneralConfig.do?">
+              {t("General")}
+            </a>
+          </li>
+          <li>
+            <a className="js-spa" href="/rhn/admin/config/BootstrapConfig.do?">
+              {t("Bootstrap Script")}
+            </a>
+          </li>
+          <li>
+            <a className="js-spa" href="/rhn/admin/config/Orgs.do?">
+              {t("Organizations")}
+            </a>
+          </li>
+          <li>
+            <a className="js-spa" href="/rhn/admin/config/Restart.do?">
+              {t("Restart")}
+            </a>
+          </li>
+          <li>
+            <a className="js-spa" href="/rhn/admin/config/Cobbler.do?">
+              {t("Cobbler")}
+            </a>
+          </li>
+          <li className="js-spa">
+            <a href="/rhn/manager/admin/config/monitoring?">{t("Monitoring")}</a>
+          </li>
+          <li className="js-spa">
+            <a href="/rhn/manager/admin/config/password-policy?">{t("Password Policy")}</a>
+          </li>
+          <li className="active js-spa">
+            <a href="/rhn/manager/admin/config/server-settings?">{t("Server Settings")}</a>
+          </li>
+        </ul>
+      </div>
       <Form model={model} errors={errors} onChange={(newModel) => setModel({ ...newModel })}>
         <Panel headingLevel="h2" title={t("Server Settings")}>
           {settings.map((setting) =>

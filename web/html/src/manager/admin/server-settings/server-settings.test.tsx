@@ -69,6 +69,14 @@ describe("Server settings", () => {
     expect(screen.getByText("Default: disabled", { exact: false })).not.toBeNull();
   });
 
+  test("shows the Manager Configuration tabs with Server Settings active", () => {
+    render(<ServerSettings settings={settings} />);
+
+    const active = document.querySelector(".nav-tabs li.active a");
+    expect(active?.getAttribute("href")).toBe("/rhn/manager/admin/config/server-settings?");
+    expect(screen.getByText("Password Policy")).not.toBeNull();
+  });
+
   test("offers reset only for modified settings", () => {
     render(<ServerSettings settings={settings} />);
 
