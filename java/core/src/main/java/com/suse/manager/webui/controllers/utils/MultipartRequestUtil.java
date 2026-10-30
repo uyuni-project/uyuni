@@ -21,9 +21,12 @@ import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.servlet.http.HttpServletRequest;
 import spark.Request;
 
 public class MultipartRequestUtil {
@@ -36,10 +39,32 @@ public class MultipartRequestUtil {
      * @throws FileUploadException if parsing fails
      */
     public static List<DiskFileItem> parseMultipartRequest(Request request) throws FileUploadException {
+        return parseMultipartRequest(request.raw());
+    }
+
+    /**
+     * Parse a multipart request
+     * @param request the HTTP servlet request
+     * @return list of DiskFileItem from the request
+     * @throws FileUploadException if parsing fails
+     */
+    public static List<DiskFileItem> parseMultipartRequest(HttpServletRequest request) throws FileUploadException {
+        return parseMultipartRequest(request, Paths.get(SALT_FILE_GENERATION_TEMP_PATH));
+    }
+
+    /**
+     * Parse a multipart request, spooling uploaded content to a specific temporary directory.
+     * @param request the HTTP servlet request
+     * @param tempPath the directory used to spool uploaded content, which must exist
+     * @return list of DiskFileItem from the request
+     * @throws FileUploadException if parsing fails
+     */
+    public static List<DiskFileItem> parseMultipartRequest(HttpServletRequest request, Path tempPath)
+            throws FileUploadException {
         DiskFileItemFactory fileItemFactory = DiskFileItemFactory.builder()
-                .setPath(SALT_FILE_GENERATION_TEMP_PATH)
+                .setPath(tempPath)
                 .get();
-        return new JakartaServletFileUpload<>(fileItemFactory).parseRequest(request.raw());
+        return new JakartaServletFileUpload<>(fileItemFactory).parseRequest(request);
     }
 
     /**

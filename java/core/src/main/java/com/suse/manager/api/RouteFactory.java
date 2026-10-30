@@ -49,6 +49,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -174,7 +175,9 @@ public class RouteFactory {
             Map<String, JsonElement> requestParams;
             try {
                 requestParams = requestParser.parseQueryParams(req.queryMap().toMap());
-                requestParams.putAll(requestParser.parseBody(req.body()));
+                if (!isMultipartRequest(req)) {
+                    requestParams.putAll(requestParser.parseBody(req.body()));
+                }
             }
             catch (ParseException e) {
                 LOG.error(e.getMessage(), e);
@@ -230,6 +233,11 @@ public class RouteFactory {
             }
         };
         return asJson(route);
+    }
+
+    private static boolean isMultipartRequest(Request request) {
+        String contentType = request.contentType();
+        return contentType != null && contentType.toLowerCase(Locale.ROOT).startsWith("multipart/");
     }
 
     /**
