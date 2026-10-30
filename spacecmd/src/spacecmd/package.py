@@ -272,11 +272,31 @@ def do_package_remove(self, args):
 
 def help_package_listorphans(self):
     print(_("package_listorphans: List packages that are not in a channel"))
-    print(_("usage: package_listorphans"))
+    print(_("usage: package_listorphans [LIMIT] [OFFSET]"))
+    print(
+        _(
+            "       note: when no limit nor offset are provided, all package orphans will be listed"
+        )
+    )
 
 
 def do_package_listorphans(self, args, doreturn=False):
-    packages = self.client.channel.software.listPackagesWithoutChannel(self.session)
+    # pylint: disable-next=unused-variable
+    args, _options = parse_command_arguments(args, get_argument_parser())
+
+    if 0 == len(args):
+        packages = self.client.channel.software.listPackagesWithoutChannel(self.session)
+    elif 1 == len(args):
+        packages = self.client.channel.software.listPackagesWithoutChannel(
+            self.session, int(0), int(args[0])
+        )
+    elif 2 == len(args):
+        packages = self.client.channel.software.listPackagesWithoutChannel(
+            self.session, int(args[1]), int(args[0])
+        )
+    else:
+        self.help_package_listorphans()
+        return None
 
     packages = build_package_names(packages)
 
