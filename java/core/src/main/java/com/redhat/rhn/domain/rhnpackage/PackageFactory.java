@@ -350,6 +350,27 @@ public class PackageFactory extends HibernateFactory {
     }
 
     /**
+     * lookup orphaned packages, i.e. packages that are not contained in any channel, with pagination
+     * @param orgIn the org to check for
+     * @param offsetIn number of orphaned packages to skip
+     * @param limitIn maximal number of orphaned packages
+     * @return a List of package objects that are not in any channel, with pagination
+     */
+    public static List<Package> lookupOrphanPackages(Org orgIn, int offsetIn, int limitIn) {
+        return HibernateFactory.getSession().createQuery("""
+                        SELECT p
+                        FROM   com.redhat.rhn.domain.rhnpackage.Package AS p
+                        WHERE  p.org = :org
+                        AND    p.channels is empty
+                        ORDER BY p.id
+                        """, Package.class)
+                .setParameter("org", orgIn)
+                .setMaxResults(limitIn)
+                .setFirstResult(offsetIn)
+                .list();
+    }
+
+    /**
      * Find a package based off of the NEVRA
      * @param org the org that owns the package
      * @param name the name to search for

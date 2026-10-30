@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -34,6 +35,7 @@ import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -345,6 +347,26 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        assertEquals(1, pkg.getBreaks().size());
 
    }
+    @Test
+    @DisplayName("testing lookupOrphanPackages, paginated version")
+    public void testPaginatedListPackagesWithoutChannel() {
+        final int numOrphans = 30;
+
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        for (int i = 0; i < numOrphans; i++) {
+            PackageTest.createTestPackage(user.getOrg());
+        }
+
+        //regular case
+        assertEquals(numOrphans, PackageFactory.lookupOrphanPackages(user.getOrg()).size());
+        assertEquals(numOrphans, PackageFactory.lookupOrphanPackages(user.getOrg(), 0, numOrphans).size());
+        assertEquals(numOrphans, PackageFactory.lookupOrphanPackages(user.getOrg(), 0, Integer.MAX_VALUE).size());
+        for (int i = 0; i < numOrphans; i++) {
+            assertEquals(numOrphans - i, PackageFactory.lookupOrphanPackages(user.getOrg(), i, 2 * numOrphans).size());
+        }
+        assertEquals(0, PackageFactory.lookupOrphanPackages(user.getOrg(), numOrphans, 2 * numOrphans).size());
+    }
 
    public static void createPackageProperties(Package pkg) throws Exception {
        createPackageProperty(pkg, "depProvides", new PackageProvides());
