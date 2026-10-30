@@ -13,6 +13,7 @@
 
 package com.suse.manager.webui.controllers.admin.service;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.common.RhnConfiguration;
@@ -87,8 +88,25 @@ public class ServerSettingsService {
         String value = isBoolean ? String.valueOf(factory.getBoolean(key)) : factory.getString(key);
         String defaultValue = isBoolean ? String.valueOf(factory.getDefaultBoolean(key)) :
                 factory.getDefaultString(key);
-        return new ServerSettingsEntry(key.name(), configuration.getDescription(), key.getType(), value,
+        return new ServerSettingsEntry(key.name(), getDescription(configuration), key.getType(), value,
                 defaultValue, StringUtils.isNotBlank(configuration.getValue()));
+    }
+
+    /**
+     * @return the translated description, the description from the database when there is no translation
+     */
+    private static String getDescription(RhnConfiguration configuration) {
+        LocalizationService ls = LocalizationService.getInstance();
+        String messageId = getDescriptionMessageId(configuration.getKey());
+        return ls.hasMessage(messageId) ? ls.getMessage(messageId) : configuration.getDescription();
+    }
+
+    /**
+     * @param key the configuration key
+     * @return the id of the translatable description in the database string resources
+     */
+    public static String getDescriptionMessageId(RhnConfiguration.KEYS key) {
+        return "server_settings.description." + key.name();
     }
 
     private Optional<RhnConfiguration.KEYS> lookupKey(String nameIn, ValidatorResult result) {
