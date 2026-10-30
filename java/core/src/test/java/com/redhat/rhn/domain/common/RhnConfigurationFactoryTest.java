@@ -18,13 +18,35 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class RhnConfigurationFactoryTest extends BaseTestCase {
 
     private final RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+
+    @Test
+    public void testEveryDatabaseKeyHasAnEnumConstant() {
+        List<String> dbKeys = HibernateFactory.getSession()
+                .createNativeQuery("SELECT key FROM rhnConfiguration", String.class)
+                .stream().sorted().toList();
+        List<String> enumKeys = Arrays.stream(RhnConfiguration.KEYS.values()).map(Enum::name).sorted().toList();
+
+        assertEquals(enumKeys, dbKeys);
+    }
+
+    @Test
+    public void testListAll() {
+        List<RhnConfiguration.KEYS> keys = factory.listAll().stream().map(RhnConfiguration::getKey).toList();
+
+        assertEquals(RhnConfiguration.KEYS.values().length, keys.size());
+        assertTrue(keys.contains(RhnConfiguration.KEYS.URLGRABBER_LOGSPEC));
+    }
 
     @Test
     public void testFallbackToDefault() {
@@ -68,18 +90,15 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
         assertFalse(factory.getBoolean(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT));
     }
 
-    /*
-     * disable as long as we have no boolean value to test with
     @Test
     public void testSetDefaultBooleanStoresNull() {
         // the default value is '0'
-        factory.setValue(RhnConfiguration.KEYS.DISCONNECTED, false);
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.DISCONNECTED).getValue());
+        factory.setValue(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER, false);
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER).getValue());
 
-        factory.setValue(RhnConfiguration.KEYS.DISCONNECTED, true);
-        assertTrue(factory.getBoolean(RhnConfiguration.KEYS.DISCONNECTED));
+        factory.setValue(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER, true);
+        assertTrue(factory.getBoolean(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER));
     }
-    */
 
     @Test
     public void testSetEmptyValueStoresNull() {

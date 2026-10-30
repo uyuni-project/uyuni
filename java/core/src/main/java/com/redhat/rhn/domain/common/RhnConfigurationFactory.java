@@ -57,6 +57,15 @@ public class RhnConfigurationFactory extends HibernateFactory {
     }
 
     /**
+     * get all configurations
+     *
+     * @return the configurations ordered by key
+     */
+    public List<RhnConfiguration> listAll() {
+        return getSession().createQuery("FROM RhnConfiguration ORDER BY key", RhnConfiguration.class).list();
+    }
+
+    /**
      * get a list of configurations by key
      *
      * @param keysIn the keys
