@@ -1,4 +1,4 @@
-# Copyright 2021-2025 SUSE LLC
+# Copyright 2021-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'net/http'
@@ -383,7 +383,7 @@ When(/^I press "Add Item" in (.*) section$/) do |section|
     'available zones' => 'bind#available_zones#add_item',
     'partitions' => 'partitioning#0#partitions#add_item'
   }
-  find(:xpath, "//i[@id='#{sectionids[section]}']").click
+  find(:id, sectionids[section]).click
 end
 
 When(/^I press "Add Item" in (A|NS|CNAME|for zones) section of (.*) zone$/) do |field, zone|
