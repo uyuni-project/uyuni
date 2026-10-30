@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -48,7 +49,7 @@ import org.quartz.JobExecutionContext;
 import java.util.Date;
 import java.util.Set;
 
-public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
+class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
 
     private static final String ARCH_X86_64 = "x86_64";
     private static final String ARCH_IBM_Z = "s390x";
@@ -59,7 +60,7 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
     private SystemEntitlementManager systemEntitlementManager;
 
     @BeforeEach
-    public void before() {
+    void before() {
         contextMock = mock(JobExecutionContext.class);
         // Force being in PAYG context
         cloudManager = new TestCloudPaygManagerBuilder().withPaygInstance().build();
@@ -68,12 +69,13 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
         SaltApi saltApi = new TestSaltApi();
 
         systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
+            new SystemUnentitler(saltApi),
+            new SystemEntitler(saltApi)
         );
     }
 
     @Test
-    public void canComputeDimensions() throws Exception {
+    void canComputeManagedSystemAndMonitoring() throws Exception {
         assertTrue(ServerFactory.listAllServerIds().isEmpty(), "Unable to execute test: " +
             "there are entries the rhnserver table not cleaned up by previous unit tests.");
 
@@ -84,7 +86,7 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
         createSUSEManagerProxy();          //
         createTraditionalClient();         //         X
 
-        assertEquals(ServerFactory.listAllServerIds().size(), 5, "The expected servers were not created");
+        assertEquals(5, ServerFactory.listAllServerIds().size(), "The expected servers were not created");
 
         var task = new PaygComputeDimensionsTask(DimensionsConfiguration.DEFAULT_CONFIGURATION, factory, cloudManager);
 
@@ -94,28 +96,83 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
 
         assertNotNull(computationResult, "No successful computation found");
         assertTrue(computationResult.isSuccess(), "Computation was not successful");
-        assertEquals(2, computationResult.getDimensionResults().size(), "Wrong number of result returned");
+        assertResultsCount(computationResult, DimensionsConfiguration.DEFAULT_CONFIGURATION.getDimensions().size(), 2);
 
-        // Check the result for the MANAGED_SYSTEMS dimension
-        computationResult.getResultForDimension(BillingDimension.MANAGED_SYSTEMS)
-                         .ifPresentOrElse(
-                             result -> assertEquals(3L, result.getCount(), "Wrong count for dimension MANAGED_SYSTEMS"),
-                             () -> fail("No result for dimension MANAGED_SYSTEMS")
-                         );
+        assertDimensionResult(computationResult, BillingDimension.MANAGED_SYSTEMS, 3L);
+        assertDimensionResult(computationResult, BillingDimension.MONITORING, 1L);
+    }
 
-        // Check the result for the MONITORING dimension
-        computationResult.getResultForDimension(BillingDimension.MONITORING)
-                         .ifPresentOrElse(
-                             result -> assertEquals(1L, result.getCount(), "Wrong count for dimension MONITORING"),
-                             () -> fail("No result for dimension MONITORING")
-                         );
+    @Test
+    void canComputeMultiLinuxSupportDimensions() throws Exception {
+        assertTrue(ServerFactory.listAllServerIds().isEmpty(), "Unable to execute test: " +
+            "there are entries the rhnserver table not cleaned up by previous unit tests.");
+
+        SUSEProduct sll9 = createTestSUSEProduct(user, "sll", "9", ARCH_X86_64, "RES", true);
+        SUSEProduct sll9Ems = createTestSUSEProduct(user, "sll-ems", "9.6", ARCH_X86_64, "RES-EMS", false);
+        SUSEProduct sll9Ha = createTestSUSEProduct(user, "sll-ha", "9", ARCH_X86_64, "RES-HA", false);
+
+        SUSEProduct res7 = createTestSUSEProduct(user, "res", "7", ARCH_X86_64, "RES", true);
+        SUSEProduct res7Ltss = createTestSUSEProduct(user, "res-ltss", "7", ARCH_X86_64, "RES-7-LTSS-X86", true);
+
+        SUSEProduct sll8 = createTestSUSEProduct(user, "res", "8", ARCH_X86_64, "RES", true);
+        SUSEProduct sll8Ha = createTestSUSEProduct(user, "res-ha", "8", ARCH_X86_64, "RES-HA", false);
+
+        SUSEProduct sles = createTestSUSEProduct(user, "sles", "15.4", ARCH_X86_64, "SLES", true);
+
+        // Creating the servers                         //   MLS   LTSS   EMS   HA
+        createMinionServerWithProducts(sll9);           //    X
+        createMinionServerWithProducts(sll8, sll8Ha);   //    X                 X
+        createMinionServerWithProducts(res7);           //    X
+        createMinionServerWithProducts(res7Ltss);       //    X     X
+        createMinionServerWithProducts(sll9, sll9Ems);  //    X            X
+        createMinionServerWithProducts(sll9, sll9Ha);   //    X                 X
+        createMinionServerWithProducts(sles);           //
+
+        assertEquals(7, ServerFactory.listAllServerIds().size(), "The expected servers were not created");
+
+        var task = new PaygComputeDimensionsTask(DimensionsConfiguration.DEFAULT_CONFIGURATION, factory, cloudManager);
+
+        task.execute(contextMock);
+
+        PaygDimensionComputation computationResult = factory.getLatestSuccessfulComputation();
+
+        assertNotNull(computationResult, "No successful computation found");
+        assertTrue(computationResult.isSuccess(), "Computation was not successful");
+        assertResultsCount(computationResult, DimensionsConfiguration.DEFAULT_CONFIGURATION.getDimensions().size(), 4);
+
+        assertDimensionResult(computationResult, BillingDimension.MULTI_LINUX_SUPPORT, 6L);
+        assertDimensionResult(computationResult, BillingDimension.MULTI_LINUX_SUPPORT_LTSS, 1L);
+        assertDimensionResult(computationResult, BillingDimension.MULTI_LINUX_SUPPORT_EMS, 1L);
+        assertDimensionResult(computationResult, BillingDimension.MULTI_LINUX_SUPPORT_HA, 2L);
+    }
+
+    private void assertResultsCount(PaygDimensionComputation computationResult, int total, int effective) {
+        // Check the total number of results, it should match the configuration
+        assertEquals(
+            total,
+            computationResult.getDimensionResults().size(),
+            "Number of results does not match the current configuration"
+        );
+
+        // Check how many dimensions actually have a count greater than zero
+        assertEquals(
+            effective,
+            computationResult.getDimensionResults().stream().filter(result -> result.getCount() != 0).count(),
+            "Exactly " + effective + " dimensions should have a non-zero result"
+        );
+    }
+
+    private static void assertDimensionResult(PaygDimensionComputation computationResult, BillingDimension dimension,
+                                             long expectedCount) {
+        computationResult.getResultForDimension(dimension)
+            .ifPresentOrElse(
+                result -> assertEquals(expectedCount, result.getCount(), "Wrong count for dimension " + dimension),
+                () -> fail("No result for dimension " + dimension)
+            );
     }
 
     private void createPaygSLESSapServer() {
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
-        server.setServerArch(ServerFactory.lookupServerArchByName(ARCH_X86_64));
-        server.setPayg(true);
-        ServerFactory.save(server);
+        Server server = createMinion(ARCH_X86_64, true);
 
         installSUSEProductsOnServer(server, Set.of(
             createTestSUSEProduct(user, "sles_sap", "15.4", ARCH_X86_64, "AiO", true),
@@ -125,9 +182,7 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
     }
 
     private void createSLES12Server() {
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
-        server.setServerArch(ServerFactory.lookupServerArchByName(ARCH_IBM_Z));
-        ServerFactory.save(server);
+        Server server = createMinion(ARCH_IBM_Z, false);
 
         installSUSEProductsOnServer(server, Set.of(
             createTestSUSEProduct(user, "sles", "12.3", ARCH_IBM_Z, "SLES-Z", true)
@@ -135,9 +190,7 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
     }
 
     private void createOpenSUSEServer() {
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
-        server.setServerArch(ServerFactory.lookupServerArchByName(ARCH_X86_64));
-        ServerFactory.save(server);
+        Server server = createMinion(ARCH_X86_64, false);
 
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.MONITORING);
 
@@ -148,9 +201,7 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
     }
 
     private void createSUSEManagerProxy() {
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
-        server.setServerArch(ServerFactory.lookupServerArchByName(ARCH_X86_64));
-        ServerFactory.save(server);
+        Server server = createMinion(ARCH_X86_64, false);
 
         installSUSEProductsOnServer(server, Set.of(
             createTestSUSEProduct(user, "suse-manager-proxy", "4.3", ARCH_X86_64, "SMP", true),
@@ -164,6 +215,7 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createUnentitledTestServer(
             user, true, ServerFactoryTest.TYPE_SERVER_NORMAL, new Date()
         );
+
         server.setServerArch(ServerFactory.lookupServerArchByName(ARCH_X86_64));
         ServerFactory.save(server);
 
@@ -175,4 +227,18 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
             createTestSUSEProduct(user, "sle-module-legacy", "12", ARCH_X86_64, "MODULE", false)
         ));
     }
+
+    private void createMinionServerWithProducts(SUSEProduct... products) {
+        Server server = createMinion(ARCH_X86_64, false);
+        installSUSEProductsOnServer(server, Set.of(products));
+    }
+
+    private Server createMinion(String arch, boolean payg) {
+        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setServerArch(ServerFactory.lookupServerArchByName(arch));
+        server.setPayg(payg);
+        ServerFactory.save(server);
+        return server;
+    }
+
 }
