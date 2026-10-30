@@ -60,7 +60,7 @@ def do_package_details(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    args, _options = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
         self.help_package_details()
@@ -233,7 +233,7 @@ def do_package_remove(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    args, _options = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
         self.help_package_remove()
@@ -359,7 +359,7 @@ def do_package_listinstalledsystems(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    args, _options = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
         self.help_package_listinstalledsystems()
@@ -415,7 +415,7 @@ def do_package_listerrata(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    args, _options = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
         self.help_package_listerrata()
@@ -459,7 +459,7 @@ def do_package_listdependencies(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    args, _options = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
         self.help_package_listdependencies()
