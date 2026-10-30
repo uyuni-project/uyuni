@@ -1,0 +1,2 @@
+- Add pagination in spacecmd package_listorphans command
+  (bsc#1286754)
