@@ -54,7 +54,13 @@ public class RhnConfiguration extends BaseDomainHelper {
         NO_PROXY,
         USER_LOGIN_LENGTH_MIN,
         USER_LOGIN_LENGTH_MAX,
-        USER_EMAIL_LENGTH_MAX;
+        USER_EMAIL_LENGTH_MAX,
+        REPOSYNC_DOWNLOAD_THREADS,
+        REPOSYNC_TIMEOUT,
+        REPOSYNC_MINRATE,
+        REPOSYNC_NEVRA_FILTER,
+        SYNC_SOURCE_PACKAGES,
+        URLGRABBER_LOGSPEC;
     }
 
     @Id
