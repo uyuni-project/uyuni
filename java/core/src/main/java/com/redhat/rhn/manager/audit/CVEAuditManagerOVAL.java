@@ -49,6 +49,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -438,7 +439,12 @@ public class CVEAuditManagerOVAL {
     private static void extractAndSaveOVALData(OVALOsProduct product, File ovalFile) {
         OvalParser ovalParser = new OvalParser();
         OVALResources ovalResources = ovalParser.parseResources(ovalFile);
+        AtomicInteger totalDefinitions = new AtomicInteger();
+        AtomicInteger totalSavedPackages = new AtomicInteger();
+
         ovalParser.parseDefinitionsInBulk(ovalFile, definitionsBulk -> {
+            totalDefinitions.addAndGet(definitionsBulk.size());
+
             OvalRootType ovalRoot = new OvalRootType();
             ovalRoot.setDefinitions(definitionsBulk);
             ovalRoot.setTests(ovalResources.getTests());
@@ -448,8 +454,15 @@ public class CVEAuditManagerOVAL {
             ovalRoot.setOsVersion(product.getOsVersion());
 
             OVALCleaner.cleanup(ovalRoot);
-            OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
+            totalSavedPackages.addAndGet(OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot));
         });
+
+        if (totalDefinitions.get() > 0 && totalSavedPackages.get() == 0) {
+            LOG.warn("OVAL sync for {} {} parsed {} definitions from '{}' but extracted 0 vulnerable packages. " +
+                    "The OVAL feed format or criteria comments may have changed.",
+                    product.getOsFamily().fullname(), product.getOsVersion(), totalDefinitions.get(),
+                    ovalFile.getName());
+        }
     }
 
     /**

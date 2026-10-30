@@ -1,0 +1,4 @@
+- Fix regex in Ubuntu OVAL parser to match current Canonical
+  comment wording
+- Log warning when non-empty OVAL definitions yield 0
+  vulnerable packages
