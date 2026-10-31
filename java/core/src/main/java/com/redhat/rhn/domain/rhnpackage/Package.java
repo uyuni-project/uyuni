@@ -106,6 +106,9 @@ public class Package extends BaseDomainHelper {
     @Column
     private String path;
 
+    @Column(name = "remote_path")
+    private String remotePath;
+
     @Column(name = "header_sig")
     private String headerSignature;
 
@@ -603,6 +606,13 @@ public class Package extends BaseDomainHelper {
      */
     public void setInstalledSize(Long p) {
         this.installedSize = p;
+    }
+
+    /**
+     * @return upstream package URL
+     */
+    public String getRemotePath() {
+        return remotePath;
     }
 
     /**

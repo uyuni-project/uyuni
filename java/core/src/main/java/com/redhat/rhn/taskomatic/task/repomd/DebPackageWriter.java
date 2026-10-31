@@ -217,7 +217,11 @@ public class DebPackageWriter implements Closeable {
         }
 
         buf.write("Description: ");
-        buf.write(pkgDto.getDescription());
+        String description = pkgDto.getDescription();
+        if (StringUtils.isBlank(description)) {
+            description = StringUtils.defaultIfBlank(pkgDto.getSummary(), packageName);
+        }
+        buf.write(description);
         buf.newLine();
 
         buf.flush();

@@ -113,6 +113,16 @@ SPDX-License-Identifier: GPL-2.0-only
                 </div>
             </div>
             <div class="row">
+                <label class="col-lg-3 control-label" for="downloadStrategyId">
+                    <bean:message key="repos.jsp.downloadStrategyId"/>:
+                </label>
+                <div class="col-lg-6">
+                    <html:select property="downloadStrategyId" styleClass="form-control">
+                         <html:options collection="downloadStrategies" labelProperty="label" property="value" />
+                    </html:select>
+                </div>
+            </div>
+            <div class="row">
                         <label class="col-lg-3 control-label">
                             <bean:message key="repos.jsp.filters" />
                         </label>
