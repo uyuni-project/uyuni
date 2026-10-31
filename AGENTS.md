@@ -81,6 +81,8 @@ changed. Do not assume that conventions are uniform across subsystems.
   unless the user explicitly requests that operation. These commands affect
   external infrastructure and may consume credentials from the environment.
 - Do not discard unrelated worktree changes. Avoid destructive Git operations.
+- Keep commit messages short: a brief summary of what the commit does and
+  why. Do not list every changed class, function, or keyword.
 
 ## Generated and derived files
 
@@ -292,6 +294,10 @@ fragment beside the package changelog named
 `<package>.changes.<author>.<topic>` rather than editing the consolidated
 `<package>.changes` file directly. In changelog entries:
 
+- Add an entry only for changes visible to users. Internal refactorings
+  and developer-only changes get no changelog entry.
+- Keep entries short: summarize the change, without naming every class
+  or keyword.
 - Keep every line at 67 characters or less, including the leading `- `
   and the two-space indent of continuation lines.
 - Wrap configuration keys and file names that contain a dot in backticks
