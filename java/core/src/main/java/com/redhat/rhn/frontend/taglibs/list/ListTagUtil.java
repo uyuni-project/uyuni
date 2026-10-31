@@ -456,7 +456,7 @@ public class ListTagUtil {
             String msg = String.format("Exception encounterd " +
                             "while accesing attribute = '%s' and bean class='%s'",
                                 attribute, bean.getClass().getName());
-            throw new RuntimeException(msg, e);
+            throw new IllegalStateException(msg, e);
         }
     }
 
