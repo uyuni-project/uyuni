@@ -1,0 +1,2 @@
+- Support TLS connections to the MQTT broker, with a custom CA
+  and an optional client certificate
