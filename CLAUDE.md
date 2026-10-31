@@ -17,3 +17,9 @@ guidance here.
   (finding files, grepping symbols, "where is X" style search — not
   implementation, review, or judgment calls), pass `model: "haiku"`.
   Reserve sonnet/opus for subagents that write code, review, or reason.
+- Use `model: "sonnet"` for subagents that run builds/tests/linters and
+  report results, apply already-agreed or fully specified changes
+  (e.g. a reviewer's exact suggestion), or perform mechanical
+  verification (diff comparisons, CI status). Keep opus for design
+  decisions, schema/migration changes, evaluating review suggestions,
+  git history planning, and text for reviewers or handover documents.
