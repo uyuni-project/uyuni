@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { forwardRef, useContext, useEffect, useImperativeHandle, useMemo } from "react";
 
 import { FormContext, Radio, Text, TextArea } from "components/input";

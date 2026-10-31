@@ -1,5 +1,5 @@
 # Copyright 2017-2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @long_running
 Feature: Synchronize products in the products page of the Setup Wizard

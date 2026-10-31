@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnContentSource (id, org_id, type_id, source_url, label, metadata_signed)
   SELECT sequence_nextval('rhn_chan_content_src_id_seq'), CS.org_id, CS.type_id,
          'https://yum.oracle.com/repo/OracleLinux/OL9/baseos/latest/x86_64/', 'Extern - Oracle Linux 9 (x86_64)', 'N'

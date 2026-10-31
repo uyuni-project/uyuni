@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # This feature covers plans C-04, C-05, and C-06 (pragmatic automated subset):
 # sanity checks on the hub reportdb data that feeds the Grafana dashboards.

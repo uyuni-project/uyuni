@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2026 SUSE LLC
 #
-# SPDX-License-Identifier: GPL-2.0-Only
+# SPDX-License-Identifier: GPL-2.0-only
 
 mkdir -p "/var/spacewalk/gpg"
 chown -R tomcat:susemanager "/var/spacewalk/gpg"

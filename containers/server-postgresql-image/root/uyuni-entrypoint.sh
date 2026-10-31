@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 # Custom entrypoint for Uyuni PostgreSQL container.
 #
 # Behaviour:

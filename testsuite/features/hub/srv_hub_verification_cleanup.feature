@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature should run last in the hub suite — it deregisters peripherals and
 # clears hub state, so it will break any subsequent feature that expects the

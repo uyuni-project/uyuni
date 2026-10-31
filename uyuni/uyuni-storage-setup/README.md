@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-3.0-only
+-->
+
 # uyuni-storage-setup
 
 This project contains a few scripts to help set up additional storage

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Replace the index with a non-unique one
 DROP INDEX IF EXISTS rhn_channelcomps_cid_ctype_uq;
 DROP INDEX IF EXISTS rhn_channelcomps_cid_ctype_idx;

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnActionType (id, label, name, trigger_snapshot, unlocked_only) (
     select 507, 'virt.delete', 'Deletes a virtual domain.', 'N', 'N'
     from dual

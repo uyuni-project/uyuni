@@ -1,13 +1,19 @@
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # coding: utf-8
 """
 Tests for spacewalk-manager-channel-lifecycle script.
 """
+
 import os
-import pytest
 import tempfile
 
+import pytest
 # pylint: disable-next=unused-import,unused-import
 from mock import MagicMock, patch
+
 from . import helpers
 
 helpers.symlink_source("spacewalk-manage-channel-lifecycle", "smcl")

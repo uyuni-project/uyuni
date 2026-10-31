@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnServerArch (id, label, name, arch_type_id) values (sequence_nextval('rhn_server_arch_id_seq'), 'armv7l-debian-linux', 'arm Debian', lookup_arch_type('deb'));
 
 insert into rhnServerChannelArchCompat (server_arch_id, channel_arch_id) values (LOOKUP_SERVER_ARCH('armv7l-debian-linux'), LOOKUP_CHANNEL_ARCH('channel-arm-deb'));

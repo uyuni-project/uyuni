@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Fedora 13
 update rhnPackageKey set provider_id = lookup_package_provider('Fedora')
  where key_id = '7edc6ad6e8e40fde';

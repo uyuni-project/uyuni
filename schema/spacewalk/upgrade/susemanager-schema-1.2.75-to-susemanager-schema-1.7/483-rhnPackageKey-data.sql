@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Fedora 15
 update rhnPackageKey set provider_id = lookup_package_provider('Fedora')
  where key_id = 'b4ebf579069c8460';

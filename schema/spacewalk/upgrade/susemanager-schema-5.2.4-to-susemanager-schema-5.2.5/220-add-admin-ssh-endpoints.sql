@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'api.admin.ssh.remove_known_host', 'W', 'Remove host from known list.'
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'api.admin.ssh.remove_known_host' AND access_mode = 'W');

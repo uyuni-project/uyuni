@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- scc endpoints
 
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)

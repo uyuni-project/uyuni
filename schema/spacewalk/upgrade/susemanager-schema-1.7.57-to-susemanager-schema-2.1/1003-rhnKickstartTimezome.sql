@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnKickstartTimezone (id, label, name, install_type)
         values (sequence_nextval('rhn_ks_timezone_id_seq'),
                 'Africa/Abidjan',

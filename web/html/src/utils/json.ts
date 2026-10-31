@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 /**
  * This replacer is meant to be used on JSON.stringify in order to convert some ES6 types that are not
  * converted out-of-the-box, for instance, the 'Map' type.

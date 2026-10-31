@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 // Note: to use this component you have to make sure the current user localization are injected with
 // the jade mixin userLocalization
 import { type ReactNode, createContext } from "react";

@@ -1,2 +1,9 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/channel_tabs.xml"
                 renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />

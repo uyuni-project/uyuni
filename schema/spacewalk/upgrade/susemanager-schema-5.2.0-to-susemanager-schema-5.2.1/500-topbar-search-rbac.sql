@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/Search.do', 'GET', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/Search.do' AND http_method = 'GET');

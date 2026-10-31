@@ -1,5 +1,9 @@
 #!/usr/bin/perl
 
+# SPDX-FileCopyrightText: Red Hat, Inc.
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 use strict;
 use warnings FATAL => 'all';
 use File::Basename ();

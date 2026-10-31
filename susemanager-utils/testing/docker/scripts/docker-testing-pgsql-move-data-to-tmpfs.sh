@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # Move Postgres db data to a directory specified by first argument.
 # - If the directory doesn't exists, the script will create a new directory and
 # mounts it as a tmpfs.

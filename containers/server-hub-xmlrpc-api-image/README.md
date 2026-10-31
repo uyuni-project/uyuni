@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: MIT
+-->
+
 Uyuni server hub API image.
 
 This image cannot be used independently.

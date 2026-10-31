@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 CREATE INDEX IF NOT EXISTS rhn_action_sub_channels_action_id_idx
 on rhnactionsubchannels (action_id);

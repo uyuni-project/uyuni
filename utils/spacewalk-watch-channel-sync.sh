@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: GPL-2.0-only
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+
 ###################################################
 #
 # The script will display the progress of latest

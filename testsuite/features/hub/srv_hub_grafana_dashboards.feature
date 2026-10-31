@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # This feature covers plan C-03: verifying that the three hub reporting dashboards
 # are auto-provisioned by the Grafana formula.

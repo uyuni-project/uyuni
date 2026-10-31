@@ -1,5 +1,5 @@
 # Copyright (c) 2021-2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # skip failing test in master to give us time to fix
 @scope_retracted_patches

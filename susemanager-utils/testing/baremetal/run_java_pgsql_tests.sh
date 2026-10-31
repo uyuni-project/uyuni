@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # Runs Java tests for Postgres on a SLES11SP3 host
 
 TARGET_HOST=s390vsl106.suse.de # make sure to have passwordless root SSH account

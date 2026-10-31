@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 account [success=ok new_authtok_reqd=ok ignore=ignore user_unknown=ignore default=die]    pam_unix.so   try_first_pass
 account	sufficient	pam_localuser.so 
 account	required	pam_sss.so	use_first_pass	

@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 -- Remember the privileges granted on the given views, so that they can be
 -- replayed with restore_view_acls() after the views were dropped and

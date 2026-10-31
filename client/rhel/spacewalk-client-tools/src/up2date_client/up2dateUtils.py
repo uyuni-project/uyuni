@@ -1,6 +1,7 @@
 # pylint: disable=invalid-name
 # Client code for Update Agent
-# Copyright (c) 1999--2017 Red Hat, Inc.  Distributed under GPLv2.
+# Copyright (c) 1999--2017 Red Hat, Inc.
+# SPDX-License-Identifier: GPL-2.0-only
 #
 # Author: Preston Brown <pbrown@redhat.com>
 #         Adrian Likins <alikins@redhat.com>

@@ -5,6 +5,10 @@
 # Think about to remove this file when everybody is used to use /next.
 # Remove also calling this script from 07_server_setup.sh
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 if [ $# -ne 1 ];
 then
     echo "Usage: $0 <schema_name>"

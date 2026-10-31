@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 --EPEL 8
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id)
     (select sequence_nextval('rhn_pkey_id_seq'), '21ea45ab2f86d6a1', lookup_package_key_type('gpg'),

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 export type ChannelsDependencies = {
   requiredChannels: Map<number, Set<number>>;
   requiredByChannels: Map<number, Set<number>>;

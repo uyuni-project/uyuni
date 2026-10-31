@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 --
 -- Returns the retracted packages (no matter if installed or not installed)
 -- from channels of given server.

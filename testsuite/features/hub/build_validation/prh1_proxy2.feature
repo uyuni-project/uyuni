@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # The scenarios in this feature are skipped if:
 # * there is no proxy2 ($proxy2 is nil)

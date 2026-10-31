@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Thanks to Patrick Lightbody for submitting this...
 --
 -- In your Quartz properties file, you'll need to set

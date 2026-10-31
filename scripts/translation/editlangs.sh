@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # Just a small script to do couple of common tasks with translations.
 # Commands expect XML files to be formatted using xmllint. Such state
 # can be achieved by command `format`. Available commands:

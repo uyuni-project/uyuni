@@ -1,4 +1,10 @@
 /*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
+/*
  * highlander - there can be only one.
  * Function used by package search page to ensure only relevant or channel
  * arches are selected but not both.

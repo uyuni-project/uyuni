@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 # Hub server-to-server run set.
 # Requires: one hub (SERVER) and one peripheral (SERVER2).
 # No proxy or minion nodes needed. SERVER3 is optional: without it the cross-CA scenarios of

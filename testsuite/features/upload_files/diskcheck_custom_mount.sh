@@ -1,6 +1,6 @@
 #!/bin/bash
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # default values
 DSKCHK_IMAGE_DIR=/root

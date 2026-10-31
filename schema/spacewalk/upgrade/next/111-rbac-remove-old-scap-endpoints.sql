@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Remove old SCAP scheduling Struts web endpoints
 DELETE FROM access.endpoint
     WHERE endpoint = '/systems/details/audit/ScheduleXccdf.do'

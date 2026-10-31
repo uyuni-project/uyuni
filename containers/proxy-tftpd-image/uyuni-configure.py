@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 # pylint: disable=invalid-name
 """Configure script for proxy TFTP container."""
 

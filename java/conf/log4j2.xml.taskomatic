@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <Configuration status="warn" name="TaskomaticConfig">
     <Appenders>
         <RollingFile name="rootAppender" fileName="/var/log/rhn/rhn_taskomatic_daemon.log"

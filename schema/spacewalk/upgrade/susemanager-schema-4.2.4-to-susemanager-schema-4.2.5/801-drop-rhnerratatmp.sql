@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 DROP TABLE IF EXISTS rhnErrataBuglistTmp;
 DROP TABLE IF EXISTS rhnErrataKeywordTmp;
 DROP TABLE IF EXISTS rhnErrataPackageTmp;

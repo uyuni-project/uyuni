@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #!BuildTag: uyuni/server-hub-xmlrpc-api:latest
 #!BuildName: server-hub-xmlrpc-api
 

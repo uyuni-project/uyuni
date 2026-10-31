@@ -1,5 +1,5 @@
 # Copyright (c) 2022-2024 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 require_relative 'namespaces/actionchain'
 require_relative 'namespaces/activationkey'
