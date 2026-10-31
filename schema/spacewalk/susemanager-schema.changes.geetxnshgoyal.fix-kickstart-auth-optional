@@ -1,0 +1,2 @@
+- Make the deprecated kickstart auth command optional
+  (gh#uyuni-project/uyuni#6467, bsc#1286150)
