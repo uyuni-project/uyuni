@@ -19,14 +19,13 @@
 
 # system module imports
 import os
-import stat
 import sys
 
 from rhn import rpclib
 
 # common modules imports
 from uyuni.common.usix import raise_with_tb
-from spacewalk.common import rhnRepository, rhnFlags, rhnCache
+from spacewalk.common import rhnRepository, rhnFlags
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, redirectException
@@ -37,7 +36,7 @@ from uyuni.common.rhnLib import rfc822time, timestamp
 # local modules imports
 # pylint: disable-next=ungrouped-imports
 from spacewalk.server import rhnChannel, rhnPackage, taskomatic, rhnSQL
-from .rhnServer import server_lib
+from .rhnLib import REPOMD_PATH_PREFIX
 from .repomd import repository
 
 
@@ -73,14 +72,7 @@ class Repository(rhnRepository.Repository):
         self.functions.append("listAllPackagesChecksum")
         self.functions.append("listAllPackagesComplete")
         self.functions.append("repodata")
-        self.set_compress_headers(CFG.COMPRESS_HEADERS)
         self.redirect_location = None
-
-    def getPackageHeader(self, pkgFilename):
-        ret = rhnRepository.Repository.getPackageHeader(self, pkgFilename)
-        # Clean up the download-accelerator flag
-        rhnFlags.set("Download-Accelerator-Path", None)
-        return ret
 
     def listChannels(self):
         """Clients v2+
@@ -248,7 +240,7 @@ class Repository(rhnRepository.Repository):
         elif file_name.endswith(".yaml"):
             content_type = "text/yaml"
         # pylint: disable-next=consider-using-f-string
-        file_path = "%s/%s/%s" % (CFG.REPOMD_PATH_PREFIX, self.channelName, file_name)
+        file_path = "%s/%s/%s" % (REPOMD_PATH_PREFIX, self.channelName, file_name)
         if file_name in ["comps.xml", "modules.yaml"]:
             # without checksum in the filename, they are only available in the old style
             return self._repodata_python(file_name)
@@ -278,22 +270,7 @@ class Repository(rhnRepository.Repository):
             raise
 
     def repodata(self, file_name):
-        # By default we're using taskomatic's repomd. But if the config
-        # value is present and set to anything other than 1, we'll use the
-        # old python code
-        use_taskomatic = True
-        try:
-            use_taskomatic = CFG.USE_TASKOMATIC_REPOMD == 1
-        except AttributeError:
-            pass
-
-        # pylint: disable-next=consider-using-f-string
-        log_debug(4, "Using taskomatic for repomd generation: %s" % use_taskomatic)
-
-        if use_taskomatic:
-            return self._repodata_taskomatic(file_name)
-        else:
-            return self._repodata_python(file_name)
+        return self._repodata_taskomatic(file_name)
 
     # Helper functions
     # These functions are not private, they should be defined as 'protected',
@@ -316,20 +293,9 @@ class Repository(rhnRepository.Repository):
         log_debug(3, "check flag for X-RHN-REDIRECT  ::", skip_redirect)
 
         # get the redirect and local paths
-        remotepath, localpath = self.getAllPackagePaths(pkgFilename)
+        _, localpath = self.getAllPackagePaths(pkgFilename)
 
-        # check for redirect conditions and fail over checks
-        if (
-            redirect_capable
-            and not CFG.SATELLITE
-            and not skip_redirect
-            and remotepath is not None
-        ):
-            self.redirect_location = remotepath
-            # We've set self.redirect_location, we're done here
-            # we throw a redirectException in _getFile method.
-            return None
-            # Package cannot be served from the edge, we serve it ourselves
+        # UYUNI always set SATELLITE = 1 so redirect is always disabled
         return localpath
 
     # pylint: disable-next=arguments-renamed
@@ -380,51 +346,3 @@ class Repository(rhnRepository.Repository):
             # Not subscribed
             raise rhnFault(39, "No subscription to the specified channel")
         return 1
-
-    def set_qos(self):
-        server_lib.set_qos(self.server_id)
-
-    def _getHeaderFromFile(self, filePath, stat_info=None):
-        """Wraps around common.rhnRepository's method, adding a caching layer
-        If stat_info was already passed, don't re-stat the file
-        """
-        log_debug(3, filePath)
-        if not CFG.CACHE_PACKAGE_HEADERS:
-            # pylint: disable-next=protected-access
-            return rhnRepository.Repository._getHeaderFromFile(
-                self, filePath, stat_info=stat_info
-            )
-        # Ignore stat_info for now - nobody sets it anyway
-        stat_info = None
-        try:
-            stat_info = os.stat(filePath)
-        # pylint: disable-next=bare-except
-        except:
-            raise_with_tb(
-                # pylint: disable-next=consider-using-f-string
-                rhnFault(17, "Unable to read package %s" % os.path.basename(filePath)),
-                sys.exc_info()[2],
-            )
-        lastModified = stat_info[stat.ST_MTIME]
-
-        # OK, file exists, check the cache
-        cache_key = os.path.normpath("headers/" + filePath)
-        header = rhnCache.get(cache_key, modified=lastModified, raw=1, compressed=1)
-        if header:
-            # We're good to go
-            # pylint: disable-next=consider-using-f-string
-            log_debug(2, "Header cache HIT for %s" % filePath)
-            extra_headers = {
-                "X-RHN-Package-Header": os.path.basename(filePath),
-            }
-            self._set_last_modified(lastModified, extra_headers=extra_headers)
-            return header
-        # pylint: disable-next=consider-using-f-string
-        log_debug(3, "Header cache MISS for %s" % filePath)
-        # pylint: disable-next=protected-access
-        header = rhnRepository.Repository._getHeaderFromFile(
-            self, filePath, stat_info=stat_info
-        )
-        if header:
-            rhnCache.set(cache_key, header, modified=lastModified, raw=1, compressed=1)
-        return header

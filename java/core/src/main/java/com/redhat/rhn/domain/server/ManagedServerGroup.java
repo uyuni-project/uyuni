@@ -19,7 +19,6 @@ package com.redhat.rhn.domain.server;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,8 +39,6 @@ import jakarta.persistence.ManyToMany;
 @Entity
 @DiscriminatorValue("null")
 public class ManagedServerGroup extends ServerGroup {
-
-    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     @ManyToMany(targetEntity = UserImpl.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST},
             fetch = FetchType.LAZY)
@@ -71,7 +68,7 @@ public class ManagedServerGroup extends ServerGroup {
      * @return a set of users
      */
     public Set<User> getAssociatedAdminsFor(User user) {
-        SERVER_GROUP_MANAGER.validateAdminCredentials(user);
+        GlobalInstanceHolder.SERVER_GROUP_MANAGER.validateAdminCredentials(user);
         return getAssociatedAdmins();
     }
 

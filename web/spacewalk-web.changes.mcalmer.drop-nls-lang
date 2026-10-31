@@ -1,0 +1,2 @@
+- Remove the Oracle-only `server.nls_lang` from `rhn_web.conf` and
+  the unreachable Oracle connection code from `RHN::DBI`

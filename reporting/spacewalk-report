@@ -257,7 +257,7 @@ def __field_str(v):
 
 if __name__ == "__main__":
     options, where = processCommandline(sys.argv[1:])
-    initCFG("server.satellite")
+    initCFG("server")
 
     reportdb_configured = not CFG.REPORT_DB_NAME is None
 

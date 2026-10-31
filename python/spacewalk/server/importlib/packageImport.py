@@ -95,30 +95,18 @@ class ChannelPackageSubscription(GenericPackageImport):
         self.backend.lookupChecksums(self.checksums)
 
         # Fix the package information up, and uniquify the packages too
-        with cfg_component("server") as CFG:
-            enable_nvrea = CFG.ENABLE_NVREA
         uniqdict = {}
         for package in self.batch:
             if package.ignored:
                 continue
             self._postprocessPackageNEVRA(package)
-            if not enable_nvrea:
-                # nvrea disabled, skip checksum
-                nevrao = (
-                    package["name_id"],
-                    package["evr_id"],
-                    package["package_arch_id"],
-                    package["org_id"],
-                )
-            else:
-                # As nvrea is enabled uniquify based on checksum
-                nevrao = (
-                    package["name_id"],
-                    package["evr_id"],
-                    package["package_arch_id"],
-                    package["org_id"],
-                    package["checksum_id"],
-                )
+            nevrao = (
+                package["name_id"],
+                package["evr_id"],
+                package["package_arch_id"],
+                package["org_id"],
+                package["checksum_id"],
+            )
 
             if nevrao not in uniqdict:
                 # Uniquify the channel names
@@ -555,7 +543,7 @@ class PackageImport(ChannelPackageSubscription):
             object.id = object.first_package.id
 
     def _import_signatures(self):
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             mount_point = CFG.MOUNT_POINT
         for package in self.batch:
             # skip missing files and mpm packages

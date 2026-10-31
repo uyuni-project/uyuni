@@ -243,26 +243,6 @@ def checkin(server_id, commit=1):
 
 
 # pylint: disable-next=unused-argument
-def set_qos(server_id):
-    pass
-
-
-# pylint: disable-next=unused-argument
-def throttle(server):
-    """throttle - limits access to free users if a throttle file exists
-    NOTE: We don't throttle anybody. Just stub.
-    """
-    # server_id = server['id']
-    # log_debug(3, server_id)
-    #
-    # Are we throttling?
-    # throttlefile = "/usr/share/rhn/throttle"
-    # if not os.path.exists(throttlefile):
-    #    # We don't throttle anybody
-    #    return
-
-
-# pylint: disable-next=unused-argument
 def join_rhn(org_id):
     """Stub"""
 

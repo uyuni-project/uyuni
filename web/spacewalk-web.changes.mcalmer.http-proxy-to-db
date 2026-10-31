@@ -1,0 +1,1 @@
+- Remove the HTTP proxy defaults as they are stored in the database

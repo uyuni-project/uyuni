@@ -99,6 +99,9 @@ setup_pm_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-a
 certs_py_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql python3-spacewalk-certs-tools | grep mgr_ssl_cert_setup.py' | tr -d '\r'`
 python_path=${certs_py_path%%certs*}
 
+# ADMIN_PASS is empty on purpose: 00-mgrSetup.sh then skips creating the first user.
+# This container runs the released code, which may not work with the new schema.
+# 09_build_server_code.sh creates the first user after deploying the new code.
 $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     --tmpfs /run \
     -v var-cobbler:/var/lib/cobbler \
@@ -175,7 +178,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -e SCC_PASS="test"  \
     -e ORG_NAME='SUSE Test'  \
     -e ADMIN_USER="admin"  \
-    -e ADMIN_PASS="admin"  \
+    -e ADMIN_PASS=""  \
     -e ADMIN_FIRST_NAME="Admin"  \
     -e ADMIN_LAST_NAME="Admin"  \
     -e NO_SSL="N"  \

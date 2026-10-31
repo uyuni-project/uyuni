@@ -50,7 +50,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        this.thresholdMax = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue()
+        this.thresholdMax = factory.getLong(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD)
                 .intValue() * 86400;
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }

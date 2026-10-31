@@ -18,7 +18,6 @@
 from __future__ import unicode_literals
 
 # system imports:
-import os
 import sys
 import time
 
@@ -30,13 +29,8 @@ except ImportError:
     from io import StringIO
 
 # rhn imports:
-from uyuni.common.usix import raise_with_tb
-from uyuni.common import rhnLib
 from spacewalk.common.rhnLog import log_time, log_clean
-from spacewalk.common.fileutils import chown_chmod_path, create_path
 from spacewalk.common.rhnConfig import cfg_component
-
-from . import messages
 
 EMAIL_LOG = None
 
@@ -191,124 +185,3 @@ def log(level, msg, cleanYN=0, notimeYN=0, stream=sys.stdout):
     Arguments: see def _prepLogMsg(...) above.
     """
     log2(level, level, msg, cleanYN, notimeYN, stream=stream)
-
-
-class FileCreationError(Exception):
-    pass
-
-
-class FileManip:
-    "Generic file manipulation class"
-
-    def __init__(self, relative_path, timestamp, file_size):
-        self.relative_path = relative_path
-        self.timestamp = rhnLib.timestamp(timestamp)
-        self.file_size = file_size
-        with cfg_component(component=None) as CFG:
-            self.full_path = os.path.join(CFG.MOUNT_POINT, self.relative_path)
-            self.buffer_size = CFG.BUFFER_SIZE
-
-    def write_file(self, stream_in):
-        """Writes the contents of stream_in to the filesystem
-        Returns the file size(success) or raises FileCreationError"""
-        dirname = os.path.dirname(self.full_path)
-        create_path(dirname)
-        stat = os.statvfs(dirname)
-
-        f_bsize = stat[0]  # file system block size
-        # misa: it's kind of icky whether to use f_bfree (free blocks) or
-        # f_bavail (free blocks for non-root). f_bavail is more correct, since
-        # you don't want to have the system out of disk space because of
-        # satsync; but people would get confused when looking at the output of
-        # df
-        f_bavail = stat[4]  # free blocks
-        freespace = f_bsize * float(f_bavail)
-        if self.file_size is not None and self.file_size > freespace:
-            msg = messages.not_enough_diskspace % (freespace / 1024)
-            log(-1, msg, stream=sys.stderr)
-            # pkilambi: As the metadata download does'nt check for unfetched rpms
-            # abort the sync when it runs out of disc space
-            sys.exit(-1)
-            # raise FileCreationError(msg)
-        if freespace < 5000 * 1024:  # arbitrary
-            msg = messages.not_enough_diskspace % (freespace / 1024)
-            log(-1, msg, stream=sys.stderr)
-            # pkilambi: As the metadata download does'nt check for unfetched rpms
-            # abort the sync when it runs out of disc space
-            sys.exit(-1)
-            # raise FileCreationError(msg)
-
-        fout = open(self.full_path, "wb")
-        # setting file permissions; NOTE: rhnpush uses apache to write to disk,
-        # hence the 6 setting.
-        with cfg_component(component=None) as CFG:
-            chown_chmod_path(
-                self.full_path,
-                user=CFG.httpd_user,
-                group=CFG.httpd_group,
-                chmod=int("0644", 8),
-            )
-        size = 0
-        try:
-            while 1:
-                buf = stream_in.read(self.buffer_size)
-                if not buf:
-                    break
-                buf_len = len(buf)
-                fout.write(buf)
-                size = size + buf_len
-        except IOError:
-            e = sys.exc_info()[1]
-            # pylint: disable-next=consider-using-f-string
-            msg = "IOError: %s" % e
-            log(-1, msg, stream=sys.stderr)
-            # Try not to leave garbage around
-            try:
-                os.unlink(self.full_path)
-            except (OSError, IOError):
-                pass
-            raise_with_tb(FileCreationError(msg), sys.exc_info()[2])
-        l_file_size = fout.tell()
-        fout.close()
-
-        if self.file_size is not None and self.file_size != l_file_size:
-            # Something bad happened
-            # pylint: disable-next=consider-using-f-string
-            msg = "Error: file %s has wrong size. Expected %s bytes, got %s bytes" % (
-                self.full_path,
-                self.file_size,
-                l_file_size,
-            )
-            log(-1, msg, stream=sys.stderr)
-            # Try not to leave garbage around
-            try:
-                os.unlink(self.full_path)
-            except (OSError, IOError):
-                pass
-            raise FileCreationError(msg)
-
-        os.utime(self.full_path, (self.timestamp, self.timestamp))
-        return l_file_size
-
-
-class RpmManip(FileManip):
-    """General [S]RPM manipulation class.
-
-    o Check checksums for mismatches
-    o Write RPMs to the filesystem
-    o get NVRE and NVREA
-    """
-
-    def __init__(self, pdict, path):
-        FileManip.__init__(
-            self,
-            relative_path=path,
-            timestamp=pdict["last_modified"],
-            file_size=pdict["package_size"],
-        )
-        self.pdict = pdict
-
-    def nvrea(self):
-        return tuple(
-            [self.pdict[x] for x in ["name", "version", "release", "epoch", "arch"]]
-        )
