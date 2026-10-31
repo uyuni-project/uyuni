@@ -7,6 +7,12 @@ SPDX-PackageSupplier = "Uyuni Project <>"
 SPDX-PackageDownloadLocation = "https://github.com/uyuni-project/uyuni"
 
 [[annotations]]
+path = ["AGENTS.md"]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 SUSE LLC"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
 path = ["web/html/src/branding/fonts/Lato/**"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2010-2014 tyPoland Lukasz Dziedzic <team@latofonts.com>"
