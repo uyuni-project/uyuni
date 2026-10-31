@@ -1,0 +1,3 @@
+- Read `repomd_cache_mount_point` in one place with `/var/cache` as
+  fallback instead of the inconsistent fallbacks (`/pub` and
+  `/var/cache`)

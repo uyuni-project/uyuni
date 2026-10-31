@@ -53,20 +53,24 @@ class YumSrcTest(unittest.TestCase):
         real_setup_repo = yum_src.ContentSource.setup_repo
 
         # don't read configs
-        patch("spacewalk.common.suseLib.initCFG").start()
+        patch("spacewalk.common.suseLib.cfg_component").start()
         patch("spacewalk.common.suseLib.CFG").start()
         yum_src.initCFG = Mock()
         yum_src.CFG = Mock()
         yum_src.CFG.MOUNT_POINT = ""
-        yum_src.CFG.PREPENDED_DIR = ""
-        yum_src.CFG.REPOSYNC_MINRATE = 1000
-        yum_src.CFG.REPOSYNC_TIMEOUT = 300
         yum_src.fileutils.makedirs = Mock()
         yum_src.os.chmod = Mock()
         yum_src.os.makedirs = Mock()
         yum_src.os.path.isdir = Mock()
 
         yum_src.get_proxy = Mock(return_value=(None, None, None))
+        yum_src.DB_CFG = Mock(
+            HTTP_PROXY=None,
+            REPOSYNC_MINRATE=1000,
+            REPOSYNC_TIMEOUT=300,
+            URLGRABBER_LOGSPEC=None,
+            get_bool=Mock(return_value=False),
+        )
 
         cs = yum_src.ContentSource("http://example.com/fake_path/", "test_repo", org="")
         # pylint: disable-next=invalid-name
@@ -314,12 +318,7 @@ class YumSrcTest(unittest.TestCase):
     def test_minrate_timeout_config(self):
         # pylint: disable-next=invalid-name
         CFG = Mock()
-        CFG.REPOSYNC_TIMEOUT = 42
-        CFG.REPOSYNC_MINRATE = 42
-        CFG.REPOSYNC_DOWNLOAD_THREADS = 42  # Throws ValueError if not defined
         CFG.MOUNT_POINT = ""
-        CFG.PREPENDED_DIR = ""
-        CFG.http_proxy = False
 
         urlgrabber_spy = Mock()
         urlgrabber_spy.urlread = Mock()
@@ -329,6 +328,15 @@ class YumSrcTest(unittest.TestCase):
             "spacewalk.satellite_tools.repo_plugins.yum_src.MirrorGroup",
             mirror_group_mock,
         ), patch("spacewalk.common.rhnConfig.CFG", CFG), patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.DB_CFG",
+            Mock(
+                HTTP_PROXY=None,
+                REPOSYNC_TIMEOUT=42,
+                REPOSYNC_MINRATE=42,
+                URLGRABBER_LOGSPEC=None,
+                get_bool=Mock(return_value=False),
+            ),
+        ), patch(
             "spacewalk.satellite_tools.repo_plugins.yum_src.os.path.isfile",
             Mock(return_value=False),
         ):
@@ -337,6 +345,34 @@ class YumSrcTest(unittest.TestCase):
 
             self.assertEqual(urlgrabber_spy.urlread.call_args[1]["timeout"], 42)
             self.assertEqual(urlgrabber_spy.urlread.call_args[1]["minrate"], 42)
+
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
+    @patch("spacewalk.common.rhnLog", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock())
+    def test_urlgrabber_logspec_read_once(self):
+        # pylint: disable-next=invalid-name
+        CFG = Mock()
+        CFG.MOUNT_POINT = ""
+        db_cfg = Mock(
+            HTTP_PROXY=None,
+            REPOSYNC_TIMEOUT=42,
+            REPOSYNC_MINRATE=42,
+            URLGRABBER_LOGSPEC="1,-",
+            get_bool=Mock(return_value=False),
+        )
+
+        with patch("spacewalk.common.rhnConfig.CFG", CFG), patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.DB_CFG", db_cfg
+        ):
+            cs = yum_src.ContentSource("http://example.com/foo/", "test_repo", org="")
+            # set_download_parameters() is called once per package and must not
+            # read the database again
+            db_cfg.URLGRABBER_LOGSPEC = "changed"
+            for package in ("a.rpm", "b.rpm"):
+                params = {}
+                cs.set_download_parameters(params, package)
+                self.assertEqual(params["urlgrabber_logspec"], "1,-")
 
     @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.unlink", Mock())

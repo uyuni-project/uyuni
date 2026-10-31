@@ -7,8 +7,8 @@ SPDX-License-Identifier: GPL-2.0-only
 
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-    <c:set var="loginLength" value="${rhn:getConfig('max_user_len')}"/>
+    <c:set var="loginLength" value="${rhn:getDbConfig('USER_LOGIN_LENGTH_MAX')}"/>
     <c:set var="firstNameLength" value="128"/>
     <c:set var="lastNameLength" value="128"/>
-    <c:set var="emailLength" value="${rhn:getConfig('max_email_len')}"/>
+    <c:set var="emailLength" value="${rhn:getDbConfig('USER_EMAIL_LENGTH_MAX')}"/>
     <c:set var="titleLength" value="128"/>

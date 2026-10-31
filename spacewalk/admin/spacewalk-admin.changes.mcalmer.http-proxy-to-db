@@ -1,0 +1,5 @@
+- Move the HTTP proxy settings from `rhn.conf` into the
+  database
+- Move configuration values from `rhn.conf` into the database after
+  the schema upgrade, so newly moved keys are migrated on the first
+  start after an upgrade

@@ -22,4 +22,4 @@ from wsgi import wsgiHandler
 
 
 def application(environ, start_response):
-    return wsgiHandler.handle(environ, start_response, "xmlrpc", "server.xmlrpc")
+    return wsgiHandler.handle(environ, start_response, "xmlrpc", "server")

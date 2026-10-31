@@ -1,0 +1,2 @@
+- Remove the incomplete outage mode of the Python backend and its
+  configuration options `message_to_all` and `send_message_to_all`

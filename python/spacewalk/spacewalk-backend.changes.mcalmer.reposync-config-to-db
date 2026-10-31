@@ -1,0 +1,3 @@
+- Read the reposync settings `reposync_download_threads`,
+  `reposync_timeout`, `reposync_minrate`, `reposync_nevra_filter`,
+  `sync_source_packages` and `urlgrabber_logspec` from the database

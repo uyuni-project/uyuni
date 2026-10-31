@@ -52,7 +52,6 @@ except ImportError:
 
 from .depsolver import DepSolver
 
-
 LOG_LOCATION = "/var/log/rhn/errata-clone.log"
 
 
@@ -1147,8 +1146,7 @@ class DBApi:
     def applicable_errata(from_label, to_label):
         """list of errata that is applicable to be cloned, used db because we
         need to exclude cloned errata too"""
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
         select e.id, e.advisory_name, e.advisory_type, e.issue_date,
                e.synopsis, e.update_date
         from rhnErrata e  inner join
@@ -1168,8 +1166,7 @@ class DBApi:
                       rhnChannelErrata ce2 on ce2.errata_id = e2.id inner join
                       rhnChannel c2 on c2.id = ce2.channel_id
                 where c2.label = :to_label)
-        """
-        )
+        """)
         h.execute(from_label=from_label, to_label=to_label)
         to_ret = h.fetchall_dict() or []
         return to_ret
@@ -1193,7 +1190,7 @@ class UserRepoError(UserError):
             "Unable to read repository information.\n"
             + "Please verify repodata has been generated in "
             # pylint: disable-next=consider-using-f-string
-            + "/var/cache/rhn/repodata/%s." % label
+            + "%s." % repodata(label)
         )
         if error:
             # pylint: disable-next=consider-using-f-string

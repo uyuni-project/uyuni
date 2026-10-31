@@ -7,6 +7,7 @@
 """
 Oracle ULN (Unbreakable Linux Network) authentication library.
 """
+
 import os
 import configparser
 
@@ -42,7 +43,7 @@ class ULNAuth:
     ULN_DEFAULT_HOST = "linux-update.oracle.com"
 
     def __init__(self):
-        initCFG("server.satellite")
+        initCFG("server")
         self._uln_token = None
         self._uln_url = None
 

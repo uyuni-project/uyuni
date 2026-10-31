@@ -19,9 +19,9 @@ package com.redhat.rhn.manager.user;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -46,10 +46,9 @@ public class CreateUserCommandTest extends BaseTestCase {
 
     @Test
     public void testLongNames() {
-        int maxLogin = UserDefaults.get().getMaxUserLength();
-        int emailLength = UserDefaults.get().getMaxEmailLength();
-        Config.get().setString(UserDefaults.MAX_USER_LENGTH, String.valueOf(5));
-        Config.get().setString(UserDefaults.MAX_EMAIL_LENGTH, String.valueOf(5));
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        factory.setValue(RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MAX, 5);
+        factory.setValue(RhnConfiguration.KEYS.USER_EMAIL_LENGTH_MAX, 5);
 
         String invalidLogin   = TestUtils.randomString();
         String invalidPassword = "psw";
@@ -65,10 +64,6 @@ public class CreateUserCommandTest extends BaseTestCase {
         command.setLastName(TestStatics.TEST_USER);
         //We should get 4 errors (login, email, password, prefix)
         Object[] errors = command.validate();
-        Config.get().setString(UserDefaults.MAX_USER_LENGTH,
-                                        String.valueOf(maxLogin));
-        Config.get().setString(UserDefaults.MAX_EMAIL_LENGTH,
-                                            String.valueOf(emailLength));
         assertEquals(3, errors.length);
 
     }

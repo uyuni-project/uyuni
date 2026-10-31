@@ -23,7 +23,6 @@ import sys
 
 from uyuni.common.usix import raise_with_tb
 from spacewalk.common import rhnFlags
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
@@ -191,137 +190,6 @@ class Server(ServerWrapper):
         else:
             sysid = self.server["id"]
         return sysid
-
-    # change the base channel of a server
-    def change_base_channel(self, new_rel, suse_products=None):
-        log_debug(3, self.server["id"], new_rel)
-        old_rel = self.server["release"]
-        current_channels = rhnChannel.channels_for_server(self.server["id"])
-        # Extract the base channel off of
-        old_base = [x for x in current_channels if not x["parent_channel"]]
-
-        # Quick sanity check
-        base_channels_count = len(old_base)
-        if base_channels_count == 1:
-            old_base = old_base[0]
-        elif base_channels_count == 0:
-            old_base = None
-        else:
-            raise rhnException(
-                # pylint: disable-next=consider-using-f-string
-                "Server %s subscribed to multiple base channels"
-                % (self.server["id"],)
-            )
-
-        # bz 442355
-        # Leave custom base channels alone, don't alter any of the channel subscriptions
-        if (
-            not CFG.RESET_BASE_CHANNEL
-            and old_base
-            and rhnChannel.isCustomChannel(old_base["id"])
-        ):
-            log_debug(
-                3, "Custom base channel detected, will not alter channel subscriptions"
-            )
-            self.server["release"] = new_rel
-            self.server.save()
-            msg = """The SUSE Multi-Linux Manager Update Agent has detected a
-            change in the base version of the operating system running
-            on your system, additionally you are subscribed to a custom
-            channel as your base channel.  Due to this configuration
-            your channel subscriptions will not be altered.
-            """
-            self.add_history(
-                # pylint: disable-next=consider-using-f-string
-                "Updated system release from %s to %s" % (old_rel, new_rel),
-                msg,
-            )
-            self.save_history_byid(self.server["id"])
-            return 1
-
-        s = rhnChannel.LiteServer().init_from_server(self)
-        s.release = new_rel
-        s.arch = self.archname
-        if suse_products:
-            s.add_suse_products(suse_products)
-        # Let get_server_channels deal with the errors and raise rhnFault
-        target_channels = rhnChannel.guess_channels_for_server(s, none_ok=True)
-        if target_channels:
-            target_base = [x for x in target_channels if not x["parent_channel"]][0]
-        else:
-            target_base = None
-
-        channels_to_subscribe = []
-        channels_to_unsubscribe = []
-        if old_base and target_base and old_base["id"] == target_base["id"]:
-            # Same base channel. Preserve the currently subscribed child
-            # channels, just add the ones that are missing
-            # pylint: disable-next=redefined-builtin
-            hash = {}
-            for c in current_channels:
-                hash[c["id"]] = c
-
-            for c in target_channels:
-                channel_id = c["id"]
-                if channel_id in hash:
-                    # Already subscribed to this one
-                    del hash[channel_id]
-                    continue
-                # Have to subscribe to this one
-                channels_to_subscribe.append(c)
-
-            # We don't want to lose subscriptions to prior channels, so don't
-            # do anything with hash.values()
-        else:
-            # Different base channel
-            channels_to_unsubscribe = current_channels
-            channels_to_subscribe = target_channels
-
-        rhnSQL.transaction("change_base_channel")
-        self.server["release"] = new_rel
-        self.server.save()
-        if not (channels_to_subscribe or channels_to_unsubscribe):
-            # Nothing to do, just add the history entry
-            self.add_history(
-                # pylint: disable-next=consider-using-f-string
-                "Updated system release from %s to %s"
-                % (old_rel, new_rel)
-            )
-            self.save_history_byid(self.server["id"])
-            return 1
-
-        # XXX: need a way to preserve existing subscriptions to
-        # families so we can restore access to non-public ones.
-
-        rhnChannel.unsubscribe_channels(self.server["id"], channels_to_unsubscribe)
-        rhnChannel.subscribe_channels(self.server["id"], channels_to_subscribe)
-        # now that we changed, recompute the errata cache for this one
-        rhnSQL.Procedure("queue_server")(self.server["id"])
-        # Make a history note
-        sub_channels = rhnChannel.channels_for_server(self.server["id"])
-        if sub_channels:
-            channel_list = [a["name"] for a in sub_channels]
-            msg = """The SUSE Multi-Linux Manager Update Agent has detected a
-            change in the base version of the operating system running
-            on your system and has updated your channel subscriptions
-            to reflect that.
-            Your server has been automatically subscribed to the following
-            channels:\n%s\n""" % ("\n".join(channel_list),)
-        else:
-            msg = (
-                # pylint: disable-next=consider-using-f-string
-                """*** ERROR: ***
-            While trying to subscribe this server to software channels:
-            There are no channels serving release %s"""
-                % new_rel
-            )
-        self.add_history(
-            # pylint: disable-next=consider-using-f-string
-            "Updated system release from %s to %s" % (old_rel, new_rel),
-            msg,
-        )
-        self.save_history_byid(self.server["id"])
-        return 1
 
     def take_snapshot(self, reason):
         return server_lib.snapshot_server(self.server["id"], reason)
@@ -777,18 +645,6 @@ class Server(ServerWrapper):
         if not self.server.has_key("id"):
             return 0  # meaningless if rhnFault not raised
         return server_lib.checkin(self.server["id"], commit)
-
-    def throttle(self):
-        """convenient wrapper for these thing until we clean the code up"""
-        if not self.server.has_key("id"):
-            return 1  # meaningless if rhnFault not raised
-        return server_lib.throttle(self.server)
-
-    def set_qos(self):
-        """convenient wrapper for these thing until we clean the code up"""
-        if not self.server.has_key("id"):
-            return 1  # meaningless if rhnFault not raised
-        return server_lib.set_qos(self.server["id"])
 
     def join_groups(self):
         """For a new server, join server groups"""

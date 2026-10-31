@@ -12,12 +12,6 @@ else
     echo 'uyuni_authentication_endpoint: "http://localhost"' >> /etc/cobbler/settings.d/zz-uyuni.settings
 fi
 
-if grep -q pam_auth_service /etc/rhn/rhn.conf; then
-    sed -i 's/pam_auth_service.*/pam_auth_service = susemanager/' /etc/rhn/rhn.conf
-else
-    echo 'pam_auth_service = susemanager' >> /etc/rhn/rhn.conf
-fi
-
 if [ -e /etc/sysconfig/prometheus-postgres_exporter/systemd/60-server.conf ]; then
     sed -i 's/\/etc\/postgres_exporter\//\/etc\/sysconfig\/prometheus-postgres_exporter\//' \
         /etc/sysconfig/prometheus-postgres_exporter/systemd/60-server.conf

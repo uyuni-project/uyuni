@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Red Hat, Inc.
+ * Copyright (c) 2024--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -9,14 +9,12 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
  * SPDX-License-Identifier: GPL-2.0-only
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
@@ -28,25 +26,80 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 
+/**
+ * Rhn Configuration Table
+ */
 @Entity
 @Table(name = "rhnConfiguration")
 public class RhnConfiguration extends BaseDomainHelper {
 
+    /**
+     * Type of a configuration value
+     */
+    public enum ValueType {
+        STRING,
+        INTEGER,
+        BOOLEAN,
+        LIST
+    }
+
+    /**
+     * Visibility of a configuration key in the server settings UI.
+     * Hidden keys are managed elsewhere and can't be changed there.
+     */
+    public enum Visibility {
+        VISIBLE,
+        HIDDEN
+    }
+
     public enum KEYS {
-        EXTAUTH_DEFAULT_ORGID,
-        EXTAUTH_USE_ORGUNIT,
-        EXTAUTH_KEEP_TEMPROLES,
-        SYSTEM_CHECKIN_THRESHOLD,
-        PSW_CHECK_LENGTH_MIN,
-        PSW_CHECK_LENGTH_MAX,
-        PSW_CHECK_LOWER_CHAR_FLAG,
-        PSW_CHECK_UPPER_CHAR_FLAG,
-        PSW_CHECK_DIGIT_FLAG,
-        PSW_CHECK_CONSECUTIVE_CHAR_FLAG,
-        PSW_CHECK_SPECIAL_CHAR_FLAG,
-        PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG,
-        PSW_CHECK_MAX_OCCURRENCE,
-        PSW_CHECK_SPECIAL_CHARACTERS;
+        EXTAUTH_DEFAULT_ORGID(ValueType.INTEGER, Visibility.HIDDEN),
+        EXTAUTH_USE_ORGUNIT(ValueType.BOOLEAN, Visibility.HIDDEN),
+        EXTAUTH_KEEP_TEMPROLES(ValueType.BOOLEAN, Visibility.HIDDEN),
+        SYSTEM_CHECKIN_THRESHOLD(ValueType.INTEGER),
+        PSW_CHECK_LENGTH_MIN(ValueType.INTEGER, Visibility.HIDDEN),
+        PSW_CHECK_LENGTH_MAX(ValueType.INTEGER, Visibility.HIDDEN),
+        PSW_CHECK_LOWER_CHAR_FLAG(ValueType.BOOLEAN, Visibility.HIDDEN),
+        PSW_CHECK_UPPER_CHAR_FLAG(ValueType.BOOLEAN, Visibility.HIDDEN),
+        PSW_CHECK_DIGIT_FLAG(ValueType.BOOLEAN, Visibility.HIDDEN),
+        PSW_CHECK_CONSECUTIVE_CHAR_FLAG(ValueType.BOOLEAN, Visibility.HIDDEN),
+        PSW_CHECK_SPECIAL_CHAR_FLAG(ValueType.BOOLEAN, Visibility.HIDDEN),
+        PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG(ValueType.BOOLEAN, Visibility.HIDDEN),
+        PSW_CHECK_MAX_OCCURRENCE(ValueType.INTEGER, Visibility.HIDDEN),
+        PSW_CHECK_SPECIAL_CHARACTERS(ValueType.STRING, Visibility.HIDDEN),
+        HTTP_PROXY(ValueType.STRING, Visibility.HIDDEN),
+        HTTP_PROXY_USERNAME(ValueType.STRING, Visibility.HIDDEN),
+        HTTP_PROXY_PASSWORD(ValueType.STRING, Visibility.HIDDEN),
+        NO_PROXY(ValueType.LIST),
+        USER_LOGIN_LENGTH_MIN(ValueType.INTEGER),
+        USER_LOGIN_LENGTH_MAX(ValueType.INTEGER),
+        USER_EMAIL_LENGTH_MAX(ValueType.INTEGER),
+        REPOSYNC_DOWNLOAD_THREADS(ValueType.INTEGER),
+        REPOSYNC_TIMEOUT(ValueType.INTEGER),
+        REPOSYNC_MINRATE(ValueType.INTEGER),
+        REPOSYNC_NEVRA_FILTER(ValueType.BOOLEAN),
+        SYNC_SOURCE_PACKAGES(ValueType.BOOLEAN),
+        URLGRABBER_LOGSPEC(ValueType.STRING);
+
+        private final ValueType type;
+        private final Visibility visibility;
+
+        KEYS(ValueType typeIn) {
+            this(typeIn, Visibility.VISIBLE);
+        }
+
+        KEYS(ValueType typeIn, Visibility visibilityIn) {
+            type = typeIn;
+            visibility = visibilityIn;
+        }
+
+        public ValueType getType() {
+            return type;
+        }
+
+        public boolean isHidden() {
+            return visibility == Visibility.HIDDEN;
+        }
     }
 
     @Id
@@ -60,7 +113,8 @@ public class RhnConfiguration extends BaseDomainHelper {
     @Column(name = "value", length = 512)
     private String value;
 
-    @Column(name = "default_value", length = 512)
+    // the default value is managed by schema migrations only
+    @Column(name = "default_value", length = 512, insertable = false, updatable = false)
     private String defaultValue;
 
     @Column(name = "created", nullable = false, updatable = false)
@@ -68,28 +122,6 @@ public class RhnConfiguration extends BaseDomainHelper {
 
     @Column(name = "modified", nullable = false)
     private Date modified;
-
-    /**
-     * Rhn Configuration Table
-     */
-    // Constructors
-    public RhnConfiguration() {
-    }
-
-    /**
-     * Parameter constructor
-     * @param keyIn the key
-     * @param descriptionIn the description
-     * @param valueIn the value
-     * @param defaultValueIn the default value
-     */
-    public RhnConfiguration(KEYS keyIn, String descriptionIn, String valueIn,
-                            String defaultValueIn) {
-        key = keyIn;
-        description = descriptionIn;
-        value = valueIn;
-        defaultValue = defaultValueIn;
-    }
 
     public KEYS getKey() {
         return key;
@@ -119,8 +151,11 @@ public class RhnConfiguration extends BaseDomainHelper {
         return defaultValue;
     }
 
-    public void setDefaultValue(String defaultValueIn) {
-        defaultValue = defaultValueIn;
+    /**
+     * @return the value or the default value when no value is set or the value is blank
+     */
+    public String getEffectiveValue() {
+        return StringUtils.isBlank(value) ? defaultValue : value;
     }
 
 }

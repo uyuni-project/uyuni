@@ -72,7 +72,7 @@ public class SmtpMail implements Mail {
         String smtpTlsProtocols = String.join(" ", c.getList(ConfigDefaults.WEB_SMTP_TLS_PROTOCOLS));
         String smtpUser = c.getString(ConfigDefaults.WEB_SMTP_USER);
         String smtpPass = c.getString(ConfigDefaults.WEB_SMTP_PASS);
-        String from = c.getString(ConfigDefaults.WEB_DEFAULT_MAIL_FROM, "root@localhost");
+        String from = c.getString(ConfigDefaults.DEFAULT_MAIL_FROM, "root@localhost");
         int smtpTimeout = c.getInt(ConfigDefaults.WEB_SMTP_TIMEOUT, 5000);
         int smtpConnectionTimeout = c.getInt(ConfigDefaults.WEB_SMTP_CONNECTION_TIMEOUT, 5000);
         int smtpWriteTimeout = c.getInt(ConfigDefaults.WEB_SMTP_WRITE_TIMEOUT, 5000);

@@ -1,0 +1,2 @@
+- Replace the configuration option `checksum_priority_list` with a
+  constant

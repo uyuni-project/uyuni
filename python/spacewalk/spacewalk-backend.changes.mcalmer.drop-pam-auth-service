@@ -1,0 +1,2 @@
+- Remove the configuration option `pam_auth_service`. PAM
+  authentication always uses the `susemanager` service

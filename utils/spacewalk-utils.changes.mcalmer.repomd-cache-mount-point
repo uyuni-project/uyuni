@@ -1,0 +1,2 @@
+- Show the configured repository metadata directory in the error
+  message of `spacewalk-clone-by-date`

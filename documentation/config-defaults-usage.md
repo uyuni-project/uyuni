@@ -16,13 +16,13 @@ reference is listed. Line numbers refer to the state of the
 
 - **Java** (`com.redhat.rhn.common.conf.Config`): every key of
   `rhn_<ns>.conf` is stored with the prefix derived from the file name
-  (`rhn_server_satellite.conf` -> `server.satellite.`), unless the key already
+  (`rhn_server_susemanager.conf` -> `server.susemanager.`), unless the key already
   starts with it. A lookup with a namespace (`web.foo`) checks the bare key and
   then the namespaced key; a lookup without one (`foo`) also falls back to
   `web.foo` and `server.foo`. When the code uses a `ConfigDefaults`
   constant, the reference points to where that constant is read.
-- **Python** (`spacewalk.common.rhnConfig`): `initCFG("server.xmlrpc")` merges
-  `rhn.conf`, `rhn_server.conf` and `rhn_server_xmlrpc.conf`, so keys are read
+- **Python** (`spacewalk.common.rhnConfig`): `initCFG("server.app")` merges
+  `rhn.conf`, `rhn_server.conf` and `rhn_server_app.conf`, so keys are read
   as plain attributes (`CFG.LOG_FILE`). Keys like `log_file` and `debug` that
   appear in several files are read by the same line, which picks up whichever
   component is active.
@@ -37,6 +37,9 @@ reference is listed. Line numbers refer to the state of the
 | rhn.conf | `traceback_mail` | [`python/spacewalk/common/rhnMail.py:29`](python/spacewalk/common/rhnMail.py#L29) |
 | rhn.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn.conf | `enable_snapshots` | [`python/spacewalk/server/rhnServer/server_lib.py:269`](python/spacewalk/server/rhnServer/server_lib.py#L269) |
+| rhn.conf | `mount_point` | [`python/spacewalk/server/handlers/app/packages.py:579`](python/spacewalk/server/handlers/app/packages.py#L579) |
+| rhn.conf | `repomd_cache_mount_point` | [`java/core/src/main/java/com/redhat/rhn/taskomatic/task/repomd/ChannelRepodataWorker.java:69`](java/core/src/main/java/com/redhat/rhn/taskomatic/task/repomd/ChannelRepodataWorker.java#L69) |
+| rhn.conf | `default_mail_from` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:73`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L73) |
 | rhn.conf | `db_ssl_enabled` | [`python/spacewalk/server/rhnSQL/__init__.py:134`](python/spacewalk/server/rhnSQL/__init__.py#L134) |
 | rhn.conf | `db_sslrootcert` | [`python/spacewalk/server/rhnSQL/__init__.py:136`](python/spacewalk/server/rhnSQL/__init__.py#L136) |
 | rhn.conf | `documentroot` | [`spacewalk/certs-tools/rhn_bootstrap.py:77`](spacewalk/certs-tools/rhn_bootstrap.py#L77) |
@@ -80,7 +83,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_hibernate.conf | `hibernate.jakarta.cache.provider` <sup>1</sup> | [`java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java:34`](java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java#L34) |
 | rhn_hibernate.conf | `hibernate.jakarta.cache.missing_cache_strategy` <sup>1</sup> | [`java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java:34`](java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java#L34) |
 | rhn_hibernate.conf | `hibernate.javax.cache.missing_cache_strategy` <sup>1</sup> | [`java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java:34`](java/core/src/main/java/com/redhat/rhn/common/hibernate/DefaultConnectionManager.java#L34) |
-| rhn_java.conf | `java.min_user_len` | [`java/webapp/src/main/webapp/WEB-INF/pages/admin/multiorg/orgcreate.jsp:57`](java/webapp/src/main/webapp/WEB-INF/pages/admin/multiorg/orgcreate.jsp#L57) |
 | rhn_java.conf | `java.development_environment` | [`java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java:171`](java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java#L171) |
 | rhn_java.conf | `java.apiversion` | [`java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/api/ApiHandler.java:90`](java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/api/ApiHandler.java#L90) |
 | rhn_java.conf | `java.sandbox_lifetime` | [`java/core/src/main/java/com/redhat/rhn/taskomatic/task/SandboxCleanup.java:45`](java/core/src/main/java/com/redhat/rhn/taskomatic/task/SandboxCleanup.java#L45) |
@@ -251,55 +253,12 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server_app.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `buffer_size` | [`python/spacewalk/server/apacheRequest.py:330`](python/spacewalk/server/apacheRequest.py#L330) |
-| rhn_server.conf | `ca_chain` | [`python/spacewalk/satellite_tools/xmlWireSource.py:135`](python/spacewalk/satellite_tools/xmlWireSource.py#L135) |
-| rhn_server.conf | `enable_nvrea` | [`python/spacewalk/server/handlers/app/packages.py:386`](python/spacewalk/server/handlers/app/packages.py#L386) |
 | rhn_server.conf | `force_package_upload` | [`python/spacewalk/server/rhnPackageUpload.py:73`](python/spacewalk/server/rhnPackageUpload.py#L73) |
 | rhn_server.conf | `proxy_auth_timeout` | [`python/spacewalk/server/handlers/xmlrpc/proxy.py:176`](python/spacewalk/server/handlers/xmlrpc/proxy.py#L176) |
-| rhn_server.conf | `timeout` | [`python/spacewalk/common/suseLib.py:181`](python/spacewalk/common/suseLib.py#L181) |
-| rhn_server.conf | `debug` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
-| rhn_server.conf | `traceback_mail` | [`python/spacewalk/common/rhnMail.py:29`](python/spacewalk/common/rhnMail.py#L29) |
-| rhn_server.conf | `quiet_mail` | [`python/spacewalk/common/rhnTB.py:133`](python/spacewalk/common/rhnTB.py#L133) |
-| rhn_server.conf | `min_user_len` | [`python/spacewalk/server/rhnUser.py:551`](python/spacewalk/server/rhnUser.py#L551) |
-| rhn_server.conf | `max_user_len` | [`python/spacewalk/server/rhnUser.py:555`](python/spacewalk/server/rhnUser.py#L555) |
-| rhn_server.conf | `max_email_len` | [`python/spacewalk/server/rhnUser.py:590`](python/spacewalk/server/rhnUser.py#L590) |
-| rhn_server.conf | `disallowed_suffixes` | [`python/spacewalk/server/rhnUser.py:722`](python/spacewalk/server/rhnUser.py#L722) |
-| rhn_server.conf | `nls_lang` | [`web/modules/rhn/RHN/DBI.pm:49`](web/modules/rhn/RHN/DBI.pm#L49) |
-| rhn_server.conf | `mount_point` | [`python/spacewalk/server/handlers/app/packages.py:579`](python/spacewalk/server/handlers/app/packages.py#L579) |
-| rhn_server.conf | `disallow_user_creation` | [`python/spacewalk/server/rhnUser.py:410`](python/spacewalk/server/rhnUser.py#L410) |
-| rhn_server.conf | `encrypted_passwords` | [`python/spacewalk/server/rhnUser.py:126`](python/spacewalk/server/rhnUser.py#L126) |
-| rhn_server.conf | `prepended_dir` | [`python/spacewalk/server/rhnPackage.py:136`](python/spacewalk/server/rhnPackage.py#L136) |
-| rhn_server.conf | `pam_auth_service` | [`python/spacewalk/server/rhnUser.py:94`](python/spacewalk/server/rhnUser.py#L94) |
-| rhn_server.conf | `message_to_all` | [`python/spacewalk/server/apacheRequest.py:126`](python/spacewalk/server/apacheRequest.py#L126) |
-| rhn_server.conf | `send_message_to_all` | [`python/spacewalk/server/apacheHandler.py:85`](python/spacewalk/server/apacheHandler.py#L85) |
-| rhn_server.conf | `compress_headers` | [`python/spacewalk/server/rhnRepository.py:74`](python/spacewalk/server/rhnRepository.py#L74) |
-| rhn_server.conf | `qos` | [`python/spacewalk/server/rhnHandler.py:48`](python/spacewalk/server/rhnHandler.py#L48) |
-| rhn_server.conf | `throttle` | [`python/spacewalk/server/rhnHandler.py:46`](python/spacewalk/server/rhnHandler.py#L46) |
-| rhn_server.conf | `satellite` | [`python/spacewalk/server/rhnRepository.py:322`](python/spacewalk/server/rhnRepository.py#L322) |
-| rhn_server.conf | `disconnected` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:710`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L710) |
+| rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
 | rhn_server.conf | `session_lifetime` | [`python/spacewalk/server/rhnSession.py:50`](python/spacewalk/server/rhnSession.py#L50) |
 | rhn_server.conf | `secret_key` | [`python/spacewalk/server/apacheAuth.py:94`](python/spacewalk/server/apacheAuth.py#L94) |
-| rhn_server.conf | `reset_base_channel` | [`python/spacewalk/server/rhnServer/server_class.py:217`](python/spacewalk/server/rhnServer/server_class.py#L217) |
-| rhn_server.conf | `repomd_path_prefix` | [`python/spacewalk/server/rhnRepository.py:249`](python/spacewalk/server/rhnRepository.py#L249) |
-| rhn_server.conf | `use_taskomatic_repomd` | [`python/spacewalk/server/rhnRepository.py:284`](python/spacewalk/server/rhnRepository.py#L284) |
-| rhn_server.conf | `checksum_priority_list` | [`python/spacewalk/satellite_tools/xmlSource.py:641`](python/spacewalk/satellite_tools/xmlSource.py#L641) |
-| rhn_server.conf | `sync_to_temp` | [`python/spacewalk/satellite_tools/xmlWireSource.py:181`](python/spacewalk/satellite_tools/xmlWireSource.py#L181) |
-| rhn_server.conf | `sync_source_packages` | [`python/spacewalk/satellite_tools/reposync.py:3169`](python/spacewalk/satellite_tools/reposync.py#L3169) |
-| rhn_server_iss.conf | `sat_cert_generation` | [`python/spacewalk/satellite_tools/disk_dumper/dumper.py:709`](python/spacewalk/satellite_tools/disk_dumper/dumper.py#L709) |
-| rhn_server_iss.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
-| rhn_server_satellite.conf | `log_file` | [`python/spacewalk/satellite_tools/updatePackages.py:43`](python/spacewalk/satellite_tools/updatePackages.py#L43) |
-| rhn_server_satellite.conf | `mount_point` | [`python/spacewalk/satellite_tools/contentRemove.py:610`](python/spacewalk/satellite_tools/contentRemove.py#L610) |
-| rhn_server_satellite.conf | `rhn_parent` | [`python/spacewalk/satellite_tools/xmlWireSource.py:71`](python/spacewalk/satellite_tools/xmlWireSource.py#L71) |
-| rhn_server_satellite.conf | `sync_cache_dir` | [`python/spacewalk/satellite_tools/syncCache.py:39`](python/spacewalk/satellite_tools/syncCache.py#L39) |
-| rhn_server_satellite.conf | `http_proxy` | [`python/spacewalk/satellite_tools/repo_plugins/yum_src.py:692`](python/spacewalk/satellite_tools/repo_plugins/yum_src.py#L692) |
-| rhn_server_satellite.conf | `http_proxy_username` | [`python/spacewalk/common/suseLib.py:598`](python/spacewalk/common/suseLib.py#L598) |
-| rhn_server_satellite.conf | `http_proxy_password` | [`python/spacewalk/common/suseLib.py:600`](python/spacewalk/common/suseLib.py#L600) |
-| rhn_server_satellite.conf | `no_proxy` | [`python/spacewalk/common/suseLib.py:641`](python/spacewalk/common/suseLib.py#L641) |
-| rhn_server_satellite.conf | `default_mail_from` | [`python/spacewalk/satellite_tools/reposync.py:157`](python/spacewalk/satellite_tools/reposync.py#L157) |
-| rhn_server_satellite.conf | `reposync_download_threads` | [`python/spacewalk/satellite_tools/download.py:368`](python/spacewalk/satellite_tools/download.py#L368) |
-| rhn_server_satellite.conf | `reposync_timeout` | [`python/spacewalk/satellite_tools/download.py:377`](python/spacewalk/satellite_tools/download.py#L377) |
-| rhn_server_satellite.conf | `reposync_minrate` | [`python/spacewalk/satellite_tools/download.py:386`](python/spacewalk/satellite_tools/download.py#L386) |
-| rhn_server_satellite.conf | `reposync_nevra_filter` | [`python/spacewalk/satellite_tools/repo_plugins/deb_src.py:449`](python/spacewalk/satellite_tools/repo_plugins/deb_src.py#L449) |
-| rhn_server_satellite.conf | `urlgrabber_logspec` | [`python/spacewalk/satellite_tools/repo_plugins/yum_src.py:1658`](python/spacewalk/satellite_tools/repo_plugins/yum_src.py#L1658) |
+| rhn_server.conf | `sync_cache_dir` | [`python/spacewalk/satellite_tools/syncCache.py:39`](python/spacewalk/satellite_tools/syncCache.py#L39) |
 | rhn_server_susemanager.conf | `scc_url` | [`java/core/src/main/java/com/suse/scc/SCCTaskManager.java:132`](java/core/src/main/java/com/suse/scc/SCCTaskManager.java#L132) |
 | rhn_server_susemanager.conf | `update_host_domain` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1323`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1323) |
 | rhn_server_susemanager.conf | `forward_registration` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1316`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1316) |
@@ -314,9 +273,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server_susemanager.conf | `bootstrap_repo_datamodule` | [`susemanager/src/mgr-create-bootstrap-repo:431`](susemanager/src/mgr-create-bootstrap-repo#L431) |
 | rhn_server_susemanager.conf | `auto_generate_bootstrap_repo` | [`python/spacewalk/satellite_tools/reposync.py:936`](python/spacewalk/satellite_tools/reposync.py#L936) |
 | rhn_server_upload_package-push.conf | `log_file` | [`python/spacewalk/server/apacheUploadServer.py:47`](python/spacewalk/server/apacheUploadServer.py#L47) |
-| rhn_server_xmlrpc.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
-| rhn_server_xmlrpc.conf | `cache_package_headers` | [`python/spacewalk/server/rhnRepository.py:390`](python/spacewalk/server/rhnRepository.py#L390) |
-| rhn_server_xmlrpc.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
 | rhn_taskomatic_daemon.conf | `TASKO_LIBRARY_PATH` <sup>3</sup> | [`java/scripts/taskomatic:17`](java/scripts/taskomatic#L17) |
 | rhn_taskomatic_daemon.conf | `TASKO_RHN_CLASSPATH` <sup>3</sup> | [`java/scripts/taskomatic:14`](java/scripts/taskomatic#L14) |
 | rhn_taskomatic_daemon.conf | `TASKO_RHN_JARS` <sup>3</sup> | [`java/scripts/taskomatic:14`](java/scripts/taskomatic#L14) |
@@ -325,11 +281,7 @@ reference is listed. Line numbers refer to the state of the
 | rhn_taskomatic_daemon.conf | `TASKO_INIT_MEMORY` <sup>3</sup> | [`java/scripts/taskomatic:13`](java/scripts/taskomatic#L13) |
 | rhn_taskomatic_daemon.conf | `TASKO_MAX_MEMORY` <sup>3</sup> | [`java/scripts/taskomatic:13`](java/scripts/taskomatic#L13) |
 | rhn_web.conf | `web.disallowed_mail_domains` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:55`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L55) |
-| rhn_web.conf | `web.encrypted_passwords` | [`java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java:266`](java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java#L266) |
-| rhn_web.conf | `web.max_user_len` | [`java/core/src/main/java/com/redhat/rhn/common/conf/UserDefaults.java:38`](java/core/src/main/java/com/redhat/rhn/common/conf/UserDefaults.java#L38) |
-| rhn_web.conf | `web.mount_point` | [`java/core/src/main/java/com/redhat/rhn/manager/errata/ErrataManager.java:159`](java/core/src/main/java/com/redhat/rhn/manager/errata/ErrataManager.java#L159) |
 | rhn_web.conf | `web.kickstart_mount_point` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:567`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L567) |
-| rhn_web.conf | `web.pam_auth_service` | [`java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java:463`](java/core/src/main/java/com/redhat/rhn/domain/user/legacy/UserImpl.java#L463) |
 | rhn_web.conf | `web.restrict_mail_domains` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:56`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L56) |
 | rhn_web.conf | `web.satellite` | [`susemanager-utils/susemanager-sls/src/grains/mgr_server.py:41`](susemanager-utils/susemanager-sls/src/grains/mgr_server.py#L41) |
 | rhn_web.conf | `web.session_database_lifetime` | [`java/core/src/main/java/com/redhat/rhn/common/security/PermissionException.java:129`](java/core/src/main/java/com/redhat/rhn/common/security/PermissionException.java#L129) |
@@ -341,7 +293,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_web.conf | `web.session_swap_secret_2` | [`java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java:113`](java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java#L113) |
 | rhn_web.conf | `web.session_swap_secret_3` | [`java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java:117`](java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java#L117) |
 | rhn_web.conf | `web.session_swap_secret_4` | [`java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java:119`](java/core/src/main/java/com/redhat/rhn/common/security/SessionSwap.java#L119) |
-| rhn_web.conf | `web.traceback_mail` | [`java/core/src/main/java/com/redhat/rhn/frontend/events/TraceBackAction.java:51`](java/core/src/main/java/com/redhat/rhn/frontend/events/TraceBackAction.java#L51) |
 | rhn_web.conf | `web.config_delim_start` | [`java/core/src/main/java/com/redhat/rhn/frontend/action/configuration/ConfigFileForm.java:94`](java/core/src/main/java/com/redhat/rhn/frontend/action/configuration/ConfigFileForm.java#L94) |
 | rhn_web.conf | `web.config_delim_end` | [`java/core/src/main/java/com/redhat/rhn/frontend/action/configuration/ConfigFileForm.java:96`](java/core/src/main/java/com/redhat/rhn/frontend/action/configuration/ConfigFileForm.java#L96) |
 | rhn_web.conf | `web.version` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:829`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L829) |
@@ -349,12 +300,7 @@ reference is listed. Line numbers refer to the state of the
 | rhn_web.conf | `web.version.eol` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:839`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L839) |
 | rhn_web.conf | `web.buildtimestamp` | [`java/core/src/main/java/com/suse/manager/webui/utils/SparkApplicationHelper.java:523`](java/core/src/main/java/com/suse/manager/webui/utils/SparkApplicationHelper.java#L523) |
 | rhn_web.conf | `web.maximum_config_file_size` | [`java/core/src/main/java/com/redhat/rhn/domain/config/ConfigFile.java:141`](java/core/src/main/java/com/redhat/rhn/domain/config/ConfigFile.java#L141) |
-| rhn_web.conf | `web.default_mail_from` | [`java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java:73`](java/core/src/main/java/com/redhat/rhn/common/messaging/SmtpMail.java#L73) |
-| rhn_web.conf | `server.satellite.http_proxy` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1093`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1093) |
-| rhn_web.conf | `server.satellite.http_proxy_username` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1109`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1109) |
-| rhn_web.conf | `server.satellite.http_proxy_password` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1117`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1117) |
 | rhn_web.conf | `web.l10n_resourcebundles` | [`java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java:104`](java/core/src/main/java/com/redhat/rhn/common/localization/LocalizationService.java#L104) |
-| rhn_web.conf | `server.nls_lang` | [`web/modules/rhn/RHN/DBI.pm:49`](web/modules/rhn/RHN/DBI.pm#L49) |
 | rhn_web.conf | `web.subscribe_proxy_channel` | [`java/core/src/main/java/com/redhat/rhn/manager/system/SystemManager.java:2053`](java/core/src/main/java/com/redhat/rhn/manager/system/SystemManager.java#L2053) |
 | rhn_web.conf | `ssh_push_port_https` | [`java/core/src/main/java/com/suse/manager/webui/controllers/bootstrap/AbstractMinionBootstrapper.java:328`](java/core/src/main/java/com/suse/manager/webui/controllers/bootstrap/AbstractMinionBootstrapper.java#L328) |
 | rhn_web.conf | `ssh_push_sudo_user` | [`java/core/src/main/java/com/suse/manager/webui/services/impl/SaltSSHService.java:192`](java/core/src/main/java/com/suse/manager/webui/services/impl/SaltSSHService.java#L192) |
