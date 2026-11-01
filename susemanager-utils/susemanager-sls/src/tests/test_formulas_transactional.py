@@ -31,7 +31,12 @@ def render_wrapper(pillar):
     def raise_render_error(message):
         raise RuntimeError(message)
 
-    return template.render({"pillar": pillar, "raise": raise_render_error})
+    rendered = template.render({"pillar": pillar, "raise": raise_render_error})
+    # Filter out the comments lines before comparing
+    filtered_lines = [
+        line for line in rendered.splitlines() if not line.startswith("#")
+    ]
+    return "\n".join(filtered_lines)
 
 
 def test_empty_wrapper_renders_without_states():
