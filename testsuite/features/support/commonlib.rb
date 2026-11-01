@@ -831,8 +831,7 @@ def get_system_name(host, mgr_server: 'server')
     output, _code = get_target(mgr_server).run('salt-key')
     system_name =
       output.split.find do |word|
-        word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/) ||
-          word.match?(/example.HP-ProLiantDL580Gen9-/)
+        word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/)
       end
     system_name = 'pxeboot.example.org' if system_name.nil?
   when 'sles15sp6_terminal'
