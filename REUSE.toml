@@ -7,7 +7,7 @@ SPDX-PackageSupplier = "Uyuni Project <>"
 SPDX-PackageDownloadLocation = "https://github.com/uyuni-project/uyuni"
 
 [[annotations]]
-path = ["AGENTS.md"]
+path = ["AGENTS.md", ".github/instructions/*.instructions.md"]
 precedence = "override"
 SPDX-FileCopyrightText = "2026 SUSE LLC"
 SPDX-License-Identifier = "Apache-2.0"
