@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('PSW_CHECK_LENGTH_MIN', 'Minimum number of characters in local user passwords', '4', '4')
 ON CONFLICT (key) DO NOTHING;

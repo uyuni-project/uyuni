@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in:
 # If minion registration on the peripheral server fails:
@@ -29,6 +29,10 @@ Feature: Hub full topology - minion managed via peripheral server
     When I bootstrap "sle_minion" to peripheral "peripheral1" using activation key "1-hub-test-key"
     And I wait until onboarding is completed for "sle_minion"
     Then I should see "sle_minion" registered on "peripheral1"
+
+  Scenario: Verify sle_minion is not listed on the hub directly
+    Then I should see "sle_minion" registered on "peripheral1"
+    And I should not see "sle_minion" registered on hub
 
   # KNOWN BROKEN: the B-04 scenarios below install/verify/downgrade/patch the andromeda-dummy
   # test package, which only exists in Fake-RPM-SUSE-Channel content. The activation key above

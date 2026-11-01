@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { afterEach, describe, expect, jest, test } from "@jest/globals";
 import { readFileSync } from "fs";
 import { resolve } from "path";

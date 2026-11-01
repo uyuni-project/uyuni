@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -47,6 +49,7 @@ import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -474,6 +477,9 @@ public class RecurringActionController {
                 .map(RecurringStateConfig::getStateName)
                 .collect(Collectors.toList());
 
+        if (json.getScheduleName() != null && !json.getScheduleName().isBlank()) {
+            Context.getCurrentContext().setActionDescription("Recurring Action: " + json.getScheduleName());
+        }
         try {
             Action a = ActionManager.scheduleApplyStates(user,
                     minionIds, mods,
@@ -495,6 +501,9 @@ public class RecurringActionController {
         catch (NotInMaintenanceModeException e) {
             String errMsg = LocalizationService.getInstance().getMessage("recurring_action.not_in_maint_mode");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(errMsg)));
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
         return success(response);
     }

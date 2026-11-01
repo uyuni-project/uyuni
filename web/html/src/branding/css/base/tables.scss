@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 .table {
   border-color: $tb-border-color;
 
@@ -125,4 +131,20 @@ th button.btn-link {
 
 .vertical-middle td {
   vertical-align: middle !important;
+}
+
+.action-description-col {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.action-description-wrapper {
+  max-width: 350px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }

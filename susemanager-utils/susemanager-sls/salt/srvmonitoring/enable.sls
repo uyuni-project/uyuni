@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 node_exporter:
   cmd.run:
     - name: /usr/bin/rpm --query --info golang-github-prometheus-node_exporter

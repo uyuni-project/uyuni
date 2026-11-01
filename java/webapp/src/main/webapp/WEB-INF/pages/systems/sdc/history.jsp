@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
@@ -85,6 +92,11 @@
                             ${current.summary} *
                         </c:otherwise>
                     </c:choose>
+                </rl:column>
+                <rl:column headerkey="actions.jsp.action_description" styleclass="action-description-col">
+                    <div class="action-description-wrapper">
+                        <c:out value="${current.actionDescription}" />
+                    </div>
                 </rl:column>
                 <rl:column headerkey="system.event.history.time">
                     <rhn:formatDate value="${current.completed}"/>

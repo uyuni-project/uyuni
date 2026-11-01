@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('EXTAUTH_DEFAULT_ORGID', 'Organization id, where externally authenticated users will be created.', null, null);
 

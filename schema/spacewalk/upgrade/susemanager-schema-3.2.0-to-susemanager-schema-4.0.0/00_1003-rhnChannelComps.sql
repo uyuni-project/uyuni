@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 alter table rhnChannelComps add column comps_type_id numeric not null default 1 constraint rhn_channelcomps_comps_type_fk references rhnCompsType(id);
 

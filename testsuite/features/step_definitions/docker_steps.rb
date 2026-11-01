@@ -1,5 +1,5 @@
 # Copyright (c) 2017-2023 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 ### This file contains the definitions for all steps concerning Docker and containerization.
 

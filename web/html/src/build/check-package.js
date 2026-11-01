@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 /**
  * Basic sanity check for package.json, check that all directly defined dependencies have correct versions.
  * This avoids issues with mismatched packages when building patches or working in OBS/IBS.

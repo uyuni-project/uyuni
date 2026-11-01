@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # This feature covers plan C-02: deploying the Grafana reporting stack on the
 # dedicated monitoring server via the Grafana Salt formula in hub reporting mode.

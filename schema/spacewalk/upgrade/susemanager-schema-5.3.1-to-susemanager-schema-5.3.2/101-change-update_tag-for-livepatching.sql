@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 --
 -- We only need to change the update tag for sle-module-live-patching15-sp7 channels
 -- SP6 and older are in LTSS and due to this the patches are separated already

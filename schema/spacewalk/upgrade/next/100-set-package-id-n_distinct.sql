@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 -- ANALYZE heavily underestimates the distinct package_id values of these
 -- tables because rows are clustered by package. The planner then expects

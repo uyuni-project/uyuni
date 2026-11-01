@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #!BuildTag: uyuni/proxy-salt-broker:latest
 #!BuildName: proxy-salt-broker
 

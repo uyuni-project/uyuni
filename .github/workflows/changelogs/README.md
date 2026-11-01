@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Changelog validation workflow for GitHub actions
 
 This workflow automates the process of validating changelog entries in Uyuni.

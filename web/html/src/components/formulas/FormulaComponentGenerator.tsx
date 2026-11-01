@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { type ReactNode, Component, createContext, createRef } from "react";
 
 import { default as Jexl } from "jexl";
@@ -208,7 +214,8 @@ export function generateFormulaComponentForId(
         {generateChildrenFormItems(element, value, formulaForm, id, isDisabled)}
       </Group>
     );
-  } else if (element.$type === "namespace") return generateChildrenFormItems(element, value, formulaForm, id);
+  } else if (element.$type === "namespace")
+    return generateChildrenFormItems(element, value, formulaForm, id, isDisabled);
   else if (element.$type === "edit-group") {
     return (
       <EditGroup
@@ -242,20 +249,19 @@ export function generateFormulaComponentForId(
       element.$help
     );
   else if (element.$type === "boolean")
-    return wrapper(
+    return wrapCheckboxFormGroup(
       element.$name,
+      id,
       required,
-      <div className="checkbox">
-        <input
-          type="checkbox"
-          onChange={formulaForm.handleChange}
-          name={element.$name}
-          id={id}
-          title={element.$help}
-          disabled={isDisabled}
-          checked={value}
-        />
-      </div>,
+      <input
+        type="checkbox"
+        onChange={formulaForm.handleChange}
+        name={element.$name}
+        id={id}
+        title={element.$help}
+        disabled={isDisabled}
+        checked={value}
+      />,
       element.$help
     );
   else if (element.$type === "textarea")
@@ -416,7 +422,7 @@ function defaultWrapper(elementName, required, element, help = null) {
     required,
     <>
       <div className="col-lg-6">{element}</div>
-      <HelpIcon text={help} />
+      <div className="col-lg-3 d-flex align-items-center">{elementName !== help ? <HelpIcon text={help} /> : null}</div>
     </>
   );
 }
@@ -436,6 +442,33 @@ function wrapLabel(text: ReactNode, required?: boolean, label_for?: string) {
       {text}
       {required ? <span className="required-form-field"> *</span> : null}:
     </label>
+  );
+}
+
+function wrapCheckboxFormGroup(
+  elementName: string,
+  id: string,
+  required?: boolean,
+  input?: ReactNode,
+  help?: string | null
+) {
+  return (
+    <div className="row" key={elementName}>
+      <div className="col-lg-3 control-label"></div>
+      <div className="col-lg-6">
+        <div className="checkbox">
+          <label htmlFor={id}>
+            {input} {elementName}
+            {required ? <span className="required-form-field"> *</span> : null}
+          </label>
+          {elementName !== help && (
+            <span className="help-icon-checkbox">
+              <HelpIcon text={help} />
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 

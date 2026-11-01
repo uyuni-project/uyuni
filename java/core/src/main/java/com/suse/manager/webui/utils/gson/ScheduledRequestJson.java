@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -27,6 +29,9 @@ public class ScheduledRequestJson {
 
     /** The action chain to which to add */
     private Optional<String> actionChain = Optional.empty();
+
+    /** The optional action description/comment for the action */
+    private Optional<String> actionDescription = Optional.empty();
 
     /**
      * @return the earliest
@@ -54,5 +59,19 @@ public class ScheduledRequestJson {
      */
     public void setActionChain(Optional<String> actionChainIn) {
         actionChain = actionChainIn;
+    }
+
+    /**
+     * @return the action description
+     */
+    public Optional<String> getActionDescription() {
+        return actionDescription;
+    }
+
+    /**
+     * @param actionDescriptionIn The action description to set.
+     */
+    public void setActionDescription(Optional<String> actionDescriptionIn) {
+        actionDescription = actionDescriptionIn;
     }
 }

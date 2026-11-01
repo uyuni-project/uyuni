@@ -9,6 +9,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -1000,7 +1002,7 @@ public class ConfigDefaults {
         boolean dbSslEnabled = true;
 
         // If the server with the remote reporting database is registered as a ISSv3 peripheral, the correct root
-        // certificate authority is available in /etc/pki/trust/anchors
+        // certificate authority is available in /etc/rhn/ca
         String sslRootCert = Optional.of(CertificateUtils.computeRootCaFileName("peripheral", host))
             .map(filename -> {
                 try {

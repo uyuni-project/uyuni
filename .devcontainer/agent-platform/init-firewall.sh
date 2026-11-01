@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 if [[ "${AGENT_PLATFORM_ALLOW_INTERNET}" == false ]] \
    && iptables -S OUTPUT 2>/dev/null | grep -q '^-P OUTPUT DROP'; then
   echo "Firewall already in restricted mode, skipping execution."

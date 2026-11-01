@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 ALTER TABLE suseImageInfo DROP CONSTRAINT suse_imginfo_aid_fk;
 ALTER TABLE suseImageInfo DROP CONSTRAINT suse_imginfo_aid_insp_fk;
 

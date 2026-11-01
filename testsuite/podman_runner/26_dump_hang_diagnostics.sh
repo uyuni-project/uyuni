@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 # Dump the state of the container runtime after a step failed or timed out.
 # The failures this is meant to explain are podman calls that never return, so
 # every command here has a timeout and nothing is allowed to fail the job.

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # This check should be performed outside container in this way:
 #   EXPECTED_SKILLS="$(find .devcontainer/config/shared/skills/public -mindepth 2 -maxdepth 2 -name SKILL.md -printf '%h\n' | xargs -n1 basename | sort | paste -sd' ')"
 #   docker run \

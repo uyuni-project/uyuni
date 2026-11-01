@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -8,21 +8,14 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
+ * SPDX-License-Identifier: GPL-2.0-only
  */
 package com.redhat.rhn.manager.content.ubuntu;
 
 import java.util.Optional;
 
-public class PackageInfo {
-    private String version;
+public class PackageInfo extends BasePackageInfo {
     private Optional<String> description = Optional.empty();
-
-    public String getVersion() {
-        return version;
-    }
 
     public Optional<String> getDescription() {
         return description;

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 # Hub full topology run set (BV-style pipeline).
 # Requires: hub (SERVER), peripheral (SERVER2), and a minion (MINION). SERVER3 is also needed for
 # the cross-CA scenarios of srv_hub_token_registration.feature, which are skipped without it.

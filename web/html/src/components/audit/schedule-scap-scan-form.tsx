@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { useState } from "react";
 
 import { ActionSchedule } from "components/action-schedule";
@@ -76,6 +82,7 @@ export const ScheduleScapScanForm = ({
   const [xccdfProfiles, setXccdfProfiles] = useState<Profile[]>([]);
   const [tailoringFileProfiles, setTailoringFileProfiles] = useState<Profile[]>([]);
   const [earliest, setEarliest] = useState(initialEarliest || localizedMoment());
+  const [actionDescription, setActionDescription] = useState<string>("");
   const [selectedScapPolicy, setSelectedScapPolicy] = useState<number | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [isInvalid, setIsInvalid] = useState(false);
@@ -138,6 +145,7 @@ export const ScheduleScapScanForm = ({
       ...model,
       earliest,
       selectedScapPolicy,
+      actionDescription,
     };
 
     try {
@@ -340,7 +348,9 @@ export const ScheduleScapScanForm = ({
           <div className="panel-body">
             <ActionSchedule
               earliest={earliest}
+              actionDescription={actionDescription}
               onDateTimeChanged={setEarliest}
+              onActionDescriptionChanged={setActionDescription}
               systemIds={minions?.map((m) => m.id)}
               actionType="states.apply"
             />

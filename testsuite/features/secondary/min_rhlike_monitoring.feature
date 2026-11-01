@@ -1,5 +1,5 @@
 # Copyright (c) 2022-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 # This feature depends on:
 # - features/secondary/srv_monitoring.feature: as this feature disables/re-enables monitoring capabilities
 # - sumaform: as it is configuring monitoring to be enabled after deployment

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { type FC, useState } from "react";
 
 import moment from "moment";
@@ -34,7 +40,12 @@ export const SSMProductMigrationFromDryRun: FC<Props> = ({
 }: Props): JSX.Element => {
   const [outcomeMessage, setOutcomeMessage] = useState<MessageType[]>([]);
 
-  async function performMigration(dryRun: boolean, earliest: moment.Moment, actionChain?: ActionChain): Promise<void> {
+  async function performMigration(
+    dryRun: boolean,
+    earliest: moment.Moment,
+    actionChain?: ActionChain,
+    actionDescription?: string
+  ): Promise<void> {
     try {
       const request = {
         serverIds: systemsData.map((system) => system.id),
@@ -43,6 +54,7 @@ export const SSMProductMigrationFromDryRun: FC<Props> = ({
         allowVendorChange: allowVendorChange,
         earliest: earliest,
         actionChain: actionChain ? actionChain.text : null,
+        actionDescription: actionDescription,
         dryRun: dryRun,
       };
 

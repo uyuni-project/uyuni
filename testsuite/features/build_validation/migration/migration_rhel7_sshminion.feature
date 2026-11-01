@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # RHEL 7 is the only generation where the conversion changes the base product, from
 # RHEL 7 to SUSE Liberty Linux LTSS 7, so it is driven through Product Migration. The

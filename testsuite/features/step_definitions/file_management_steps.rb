@@ -1,5 +1,5 @@
 # Copyright (c) 2023 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 ### This file contains all steps concerning file management on a system
 

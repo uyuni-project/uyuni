@@ -1,5 +1,5 @@
 # Copyright (c) 2014-2026 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 ### This file contains the definitions for all steps concerning the execution of commands on a system.
 
@@ -606,7 +606,17 @@ Then(/^the server log should not contain "([^"]*)" errors$/) do |component|
     end
   end
 
-  errors = records.select { |record| record.match?(/exception/i) && record.match?(/#{Regexp.escape(component)}/i) }
+  errors =
+    records.select do |record|
+      # While the database container stops and restarts, the salt-event-notification-poller thread in the server container
+      # is interrupted mid-query or while waiting on the JDBC connection pool
+      is_transient_db_restart = record.include?('An SQLException was provoked by the following failure: java.lang.InterruptedException')
+
+      !is_transient_db_restart &&
+        record.match?(/exception/i) &&
+        record.match?(/#{Regexp.escape(component)}/i)
+    end
+
   unless errors.empty?
     details = errors.take(5)
     details << "... and #{errors.size - details.size} more" if errors.size > details.size

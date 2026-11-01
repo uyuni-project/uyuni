@@ -1,5 +1,5 @@
 # Copyright (c) 2024-2026 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 require 'securerandom'
 require 'timeout'
@@ -178,7 +178,7 @@ class RemoteNode
   # @return [Array<String, Integer>] The output, error, and exit code.
   def run_local(cmd, port: @port, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false)
     out, err, code = ssh_command(cmd, @target, port: port, timeout: timeout, buffer_size: buffer_size)
-    out_nocolor = out.gsub(/\e\[([;\d]+)?m/, '')
+    out_nocolor = out.gsub(/\e\[([;\d]+)?m/, '') + err.gsub(/\e\[([;\d]+)?m/, '')
     raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out_nocolor}" if check_errors && !successcodes.include?(code)
 
     $stdout.puts "#{cmd} returned status code = #{code}.\nOutput:\n'#{out_nocolor}'" if verbose
@@ -393,7 +393,7 @@ class RemoteNode
         return output.strip
       end
     else
-      %w[br0 eth0 eth1 eth1000 ens0 ens1 ens2 ens3 ens4 ens5 ens6 ens7].each do |dev|
+      %w[br0 eth0 eth1 eth1000 enp0s1 ens0 ens1 ens2 ens3 ens4 ens5 ens6 ens7].each do |dev|
         output, code = run_local("ip address show dev #{dev} | grep 'inet '", port: HOST_SSH_PORT, check_errors: false)
 
         next unless code.zero?

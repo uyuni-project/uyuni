@@ -1,4 +1,9 @@
 #!/bin/bash -e
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 SCRIPT=$(basename ${0})
 BASE_DIR=$(dirname "${0}")
 OSC_API="https://api.suse.de"

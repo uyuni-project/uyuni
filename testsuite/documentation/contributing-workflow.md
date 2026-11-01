@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Contribution workflow (Uyuni and Multi-Linux Manager)
 
 This document describes the basic workflow for working with the

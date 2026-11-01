@@ -1,5 +1,5 @@
 # Copyright (c) 2025 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # Function to check or uncheck a checkbox in a the package list with the possibility to select the last package version
 #

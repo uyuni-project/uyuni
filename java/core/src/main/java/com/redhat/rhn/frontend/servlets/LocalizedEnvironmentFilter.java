@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -37,6 +39,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.jstl.core.Config;
 
 /**
@@ -66,7 +69,10 @@ public class LocalizedEnvironmentFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        initializeContext(httpRequest);
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        if (!initializeContext(httpRequest, httpResponse)) {
+            return;
+        }
         chain.doFilter(request, response);
     }
 
@@ -78,7 +84,7 @@ public class LocalizedEnvironmentFilter implements Filter {
         //do nothing
     }
 
-    private void initializeContext(HttpServletRequest request) {
+    private boolean initializeContext(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Context current = Context.getCurrentContext();
         RequestContext requestCtx = new RequestContext(request);
         User user = requestCtx.getCurrentUser();
@@ -91,6 +97,17 @@ public class LocalizedEnvironmentFilter implements Filter {
         else {
             CURRENT_SESSION_ID.remove();
         }
+        String description = request.getParameter("schedule_action_description");
+        if (description == null) {
+            description = request.getParameter("action_description");
+        }
+        if (description != null && description.length() > Context.MAX_ACTION_DESCRIPTION_LENGTH) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Action description cannot exceed " + Context.MAX_ACTION_DESCRIPTION_LENGTH + " characters.");
+            return false;
+        }
+        current.setActionDescription(description);
+        return true;
     }
 
     private void setTimeZone(Context ctx, User user, HttpServletRequest request) {

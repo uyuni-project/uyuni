@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: MIT
+-->
+
 Main Uyuni server image.
 This image runs systemd as PID 1 and requires additional permissions to run.
 

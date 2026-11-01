@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- EPEL 7
 update rhnPackageKey set provider_id = lookup_package_provider('EPEL')
  where key_id = '6a2faea2352c64e5';

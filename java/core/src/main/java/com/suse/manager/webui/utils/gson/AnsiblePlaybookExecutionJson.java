@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -17,13 +19,12 @@ package com.suse.manager.webui.utils.gson;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
  * DTO for identifying ansible playbook execution
  */
-public class AnsiblePlaybookExecutionJson {
+public class AnsiblePlaybookExecutionJson extends ScheduledRequestJson {
 
     private String playbookPath;
     private Optional<String> inventoryPath = Optional.empty();
@@ -31,7 +32,6 @@ public class AnsiblePlaybookExecutionJson {
     private boolean testMode;
     private boolean flushCache;
     private String extraVars;
-    private Optional<LocalDateTime> earliest = Optional.empty();
     private Optional<String> actionChainLabel = Optional.empty();
 
     /**
@@ -89,15 +89,6 @@ public class AnsiblePlaybookExecutionJson {
     }
 
     /**
-     * Gets the earliest.
-     *
-     * @return earliest
-     */
-    public Optional<LocalDateTime> getEarliest() {
-        return earliest;
-    }
-
-    /**
      * Gets the actionChainLabel.
      *
      * @return actionChainLabel
@@ -112,7 +103,7 @@ public class AnsiblePlaybookExecutionJson {
                 .append("playbookPath", playbookPath)
                 .append("inventoryPath", inventoryPath)
                 .append("controlNodeId", controlNodeId)
-                .append("earliest", earliest)
+                .append("earliest", getEarliest())
                 .append("actionChainLabel", actionChainLabel)
                 .toString();
     }

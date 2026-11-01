@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 Place new schema migration scripts for the upcoming, unreleased schema
 version in this directory during development (numbered like any other
 upgrade directory, e.g. `100-my-change.sql`).

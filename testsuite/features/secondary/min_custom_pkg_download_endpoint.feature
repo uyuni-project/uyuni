@@ -1,5 +1,5 @@
 # Copyright (c) 2019-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # In order to use different end-point to download rpms other than the manager instance itself, one can do so with
 # setting pillar data values as mentioned in upload_files/rpm_enpoint.sls. These scenarios test this feature

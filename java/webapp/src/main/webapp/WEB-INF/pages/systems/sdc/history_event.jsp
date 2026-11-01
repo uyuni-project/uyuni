@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
@@ -49,6 +56,18 @@
         </div>
       </div>
     </li>
+    <c:if test="${not empty requestScope.actionDescription}">
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-sm-2">
+            <strong><bean:message key="actions.jsp.action_description"/>:</strong>
+          </div>
+          <div class="col-sm-10 action-description-col">
+            <c:out value="${requestScope.actionDescription}"/>
+          </div>
+        </div>
+      </li>
+    </c:if>
     <c:if test="${requestScope.typePlaybook && not empty requestScope.inventory}">
       <li class="list-group-item">
         <div class="row">

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 /**
  * This binding is a replacement for the old spacewalk-datetimepicker.js
  * It is the Javascript helper side for DateTimePickerTag.java but bound to the timezone-aware picker component.

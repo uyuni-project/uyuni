@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 # Makefile for satellite_tool for RHNS
 #
 
@@ -5,14 +10,14 @@ TOP	= ..
 
 # Specific stuff
 SUBDIR	= satellite_tools
-SUBDIRS = exporter disk_dumper accounts repo_plugins
+SUBDIRS = accounts repo_plugins
 SPACEWALK_FILES	= __init__ connection constants diskImportLib messages \
             progress_bar req_channels satCerts syncCache \
             sync_handlers \
             syncLib SequenceServer xmlDiskSource \
             xmlSource xmlWireSource rhn_ssl_dbstore \
             satComputePkgHeaders updatePackages reposync \
-	    geniso contentRemove download appstreams
+	    contentRemove download appstreams
 SCRIPTS = spacewalk-debug \
 	  rhn-schema-version rhn-charsets \
 	  rhn-ssl-dbstore update-packages rhn-db-stats rhn-schema-stats \

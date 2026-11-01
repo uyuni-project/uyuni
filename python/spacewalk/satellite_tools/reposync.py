@@ -10,6 +10,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -3217,8 +3219,7 @@ class RepoSync(object):
                             bz["id"]
                         ),
                     )
-                    # pylint: disable-next=anomalous-backslash-in-string
-                    bz_id_match = re.search("/show_bug.cgi\?id=(\d+)", bz["href"])
+                    bz_id_match = re.search(r"/show_bug.cgi\?id=(\d+)", bz["href"])
                     if bz_id_match:
                         bz["id"] = bz_id_match.group(1)
                         # pylint: disable-next=consider-using-f-string
@@ -3293,8 +3294,7 @@ class RepoSync(object):
         N.B. We assume that all the bugs are Novell Bugzilla bugs.
 
         """
-        # pylint: disable-next=anomalous-backslash-in-string
-        bug_numbers = set(re.findall("[\[\(]#(\d{6})[\]\)]", text))
+        bug_numbers = set(re.findall(r"[\[\(]#(\d{6})[\]\)]", text))
         bugs = []
         for bug_number in bug_numbers:
             bug = importLib.Bug()
@@ -3322,8 +3322,7 @@ class RepoSync(object):
          We limit the length at 20 chars, because of the DB column size
         """
         cves = list()
-        # pylint: disable-next=anomalous-backslash-in-string
-        cves.extend([cve[:20] for cve in set(re.findall("CVE-\d{4}-\d+", text))])
+        cves.extend([cve[:20] for cve in set(re.findall(r"CVE-\d{4}-\d+", text))])
         return cves
 
     @staticmethod

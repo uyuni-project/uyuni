@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -521,9 +523,9 @@ public class UserManagerTest extends BaseTestCase {
     @Test
     public void testGetTimeZoneId() {
         RhnTimeZone tz = UserManager.getTimeZone(UserManager
-                .getTimeZone("Indian/Maldives").getTimeZoneId());
-        assertEquals(UserManager.getTimeZone("Indian/Maldives"), tz);
-        assertEquals("Indian/Maldives", tz.getOlsonName());
+                .getTimeZone("Asia/Karachi").getTimeZoneId());
+        assertEquals(UserManager.getTimeZone("Asia/Karachi"), tz);
+        assertEquals("Asia/Karachi", tz.getOlsonName());
 
         RhnTimeZone tz2 = UserManager.getTimeZone(-23);
         assertNull(tz2);

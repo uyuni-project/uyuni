@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnCpuArch (id, label, name)
 SELECT sequence_nextval('rhn_cpu_arch_id_seq'), 'cloud', 'cloud'
 WHERE NOT EXISTS ( SELECT 1 FROM rhnCpuArch WHERE label = 'cloud' AND name = 'cloud');

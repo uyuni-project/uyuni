@@ -9,6 +9,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -205,16 +207,13 @@ public class TaskoFactory extends HibernateFactory {
     }
 
     /**
-     * lists runs older than given date
+     * delete runs older than given date
      * @param limitTime date of interest
-     * @return list of runs
      */
-    public static List<TaskoRun> listRunsOlderThan(Date limitTime) {
-        return getSession()
-                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE endTime < :limit_time",
-                        TaskoRun.class)
+    public static void deleteRunsOlderThan(Date limitTime) {
+        getSession().createMutationQuery("DELETE FROM TaskoRun WHERE endTime < :limit_time")
                 .setParameter("limit_time", limitTime)
-                .list();
+                .executeUpdate();
     }
 
     /**
@@ -461,16 +460,16 @@ public class TaskoFactory extends HibernateFactory {
     }
 
     /**
-     * list schedules older than given date
+     * delete schedules older than given date, with no associated runs
      * @param limitTime time of interest
-     * @return list of schedules
      */
-    public static List<TaskoSchedule> listSchedulesOlderThan(Date limitTime) {
-        return getSession()
-                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE activeTill < :limit_time",
-                        TaskoSchedule.class)
+    public static void deleteSchedulesWithNoRunsOlderThan(Date limitTime) {
+        getSession().createMutationQuery("""
+                        DELETE FROM TaskoSchedule s
+                        WHERE s.activeTill < :limit_time
+                        AND NOT EXISTS (SELECT 1 FROM TaskoRun r WHERE r.scheduleId = s.id)""")
                 .setParameter("limit_time", limitTime)
-                .list();
+                .executeUpdate();
     }
 
     /**

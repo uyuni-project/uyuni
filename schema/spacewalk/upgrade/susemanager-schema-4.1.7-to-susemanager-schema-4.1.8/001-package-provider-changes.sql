@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 update rhnPackageProvider set name = 'SUSE LLC' where name = 'SUSE LINUX Products GmbH';
 
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '044adaee04881839', lookup_package_key_type('gpg'), lookup_package_provider('Novell Inc.') from dual where not exists (select 1 from rhnPackageKey where key_id = '044adaee04881839'));

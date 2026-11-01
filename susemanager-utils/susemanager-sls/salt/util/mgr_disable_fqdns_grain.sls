@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {%- set salt_minion_name = 'salt-minion' %}
 {%- set susemanager_minion_config = '/etc/salt/minion.d/susemanager.conf' %}
 {# Use venv-salt-minion if the state applied with it #}

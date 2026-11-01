@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -185,7 +187,7 @@ public class SsmController {
     public static String changeChannels(Request request, Response response, User user) {
         SsmScheduleChannelChangesJson changes = GSON.fromJson(request.body(), SsmScheduleChannelChangesJson.class);
 
-        Date earliestDate = MinionActionUtils.getScheduleDate(changes.getEarliest());
+        Date earliestDate = MinionActionUtils.getScheduleDate(changes);
         ActionChain actionChain = MinionActionUtils.getActionChain(changes.getActionChain(), user);
 
         List<ScheduleChannelChangesResultDto> scheduleResult =

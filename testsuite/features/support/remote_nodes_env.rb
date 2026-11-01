@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2023 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 require 'require_all'
 require_relative 'remote_node'
@@ -17,7 +17,7 @@ unless File.exist?(custom_repos_path)
   warn 'Red Hat-like minion IP address or domain name variable empty' if ENV['RHLIKE_MINION'].nil?
   warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLIKE_MINION'].nil?
   warn 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
-  warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
+  warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil? && ENV['SLES15SP7_TERMINAL_MAC'].nil?
 end
 
 # Dictionaries to obtain host or node from the RemoteNode objects

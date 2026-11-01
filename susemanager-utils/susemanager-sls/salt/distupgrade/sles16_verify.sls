@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {# SLES 16 Migration Verification State #}
 
 {% if salt['file.file_exists']('/var/lib/uyuni/sles16_migration_started') %}

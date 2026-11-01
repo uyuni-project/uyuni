@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # Prerequisites: srv_hub_minion_on_peripheral.feature must have completed successfully
 # (a managed minion on the peripheral must exist to test hub-outage behavior).
@@ -68,8 +68,7 @@ Feature: Hub outage resilience for peripherals and their minions
 
   Scenario: Cleanup: remove synced channels from peripheral1
     When I remove synced channels from "peripheral1"
-    And I wait until I see "Channel configuration updated" text
-    Then I should see a "Updated" text
+    Then I should see a "Channels synced correctly to peripheral!" text
 
   Scenario: Cleanup: deregister peripheral1 from hub
     When I unregister "peripheral1" from hub

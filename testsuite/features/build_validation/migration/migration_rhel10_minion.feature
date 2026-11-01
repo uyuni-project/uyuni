@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # RHEL 10 clients are registered against the same base product the SUSE Liberty Linux
 # channels hang from, so there is no product migration to schedule. The conversion is

@@ -1,5 +1,5 @@
 # Copyright (c) 2021-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Feature: Create bootstrap repositories
   In order to be able to enroll clients with MU repositories

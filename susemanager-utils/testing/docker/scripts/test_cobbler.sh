@@ -1,5 +1,9 @@
 #!/bin/sh -e
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 function configure_cobbler_networking() {
     # Backport of upstream script
     # https://github.com/cobbler/cobbler/blob/main/system-tests/scripts/bootstrap

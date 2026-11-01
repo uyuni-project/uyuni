@@ -1,5 +1,5 @@
 # Copyright (c) 2019-2022 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature is a dependency for:
 # - features/secondary/min_monitoring.feature

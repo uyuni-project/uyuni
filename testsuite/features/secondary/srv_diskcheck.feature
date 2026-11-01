@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause server stop that would prevent running the following features.
 # This feature can cause the server to stop and prevent it from starting. That would block all the following features.

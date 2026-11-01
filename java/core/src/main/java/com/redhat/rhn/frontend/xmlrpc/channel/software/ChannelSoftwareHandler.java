@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -1638,6 +1640,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @apidoc.doc Clone a channel.  If arch_label is omitted, the arch label of the
      *      original channel will be used. If parent_label is omitted, the clone will be
      *      a base channel.
+     *      If originalState is true, only the original packages are cloned, without
+     *      patches. Otherwise, the current packages and patches are cloned.
+     *      Patches already cloned in the organization are reused as they are, so
+     *      changes to the original patch since then, such as a retraction, are not
+     *      included. Use channel.software.syncErrata to update them.
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "originalLabel")
      * @apidoc.param

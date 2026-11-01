@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { type FC, useState } from "react";
 
 import { ChannelTreeType } from "core/channels/type/channels.type";
@@ -22,7 +28,12 @@ type Props = {
   allowVendorChange: boolean;
   hasDryRunCapability?: boolean;
   onBack?: () => void;
-  onConfirm: (dryRun: boolean, earliest: moment.Moment, actionChain?: ActionChain) => Promise<void>;
+  onConfirm: (
+    dryRun: boolean,
+    earliest: moment.Moment,
+    actionChain?: ActionChain,
+    actionDescription?: string
+  ) => Promise<void>;
 };
 
 export const MigrationConfirmScheduleForm: FC<Props> = ({
@@ -38,6 +49,7 @@ export const MigrationConfirmScheduleForm: FC<Props> = ({
 }) => {
   const [selectedEarliest, setSelectedEarliest] = useState(localizedMoment());
   const [selectedActionChain, setSelectedActionChain] = useState<ActionChain | undefined>(undefined);
+  const [actionDescription, setActionDescription] = useState<string>("");
 
   return (
     <>
@@ -95,8 +107,10 @@ export const MigrationConfirmScheduleForm: FC<Props> = ({
           <ActionSchedule
             earliest={selectedEarliest}
             actionChains={actionChains}
+            actionDescription={actionDescription}
             onActionChainChanged={(actionChain) => setSelectedActionChain(actionChain ? actionChain : undefined)}
             onDateTimeChanged={setSelectedEarliest}
+            onActionDescriptionChanged={setActionDescription}
             systemIds={systemsData.map((system) => system.id)}
             actionType="distupgrade.upgrade"
           />
@@ -143,7 +157,7 @@ export const MigrationConfirmScheduleForm: FC<Props> = ({
             id="dry-run-btn"
             className="btn-default"
             text={t("Dry run")}
-            action={() => onConfirm(true, selectedEarliest, selectedActionChain)}
+            action={() => onConfirm(true, selectedEarliest, selectedActionChain, actionDescription)}
             disabled={!hasDryRunCapability}
             title={!hasDryRunCapability ? t("Dry run is not available for this migration") : undefined}
           />
@@ -151,7 +165,7 @@ export const MigrationConfirmScheduleForm: FC<Props> = ({
             id="migrate-btn"
             className="btn-primary"
             text={t("Migrate")}
-            action={() => onConfirm(false, selectedEarliest, selectedActionChain)}
+            action={() => onConfirm(false, selectedEarliest, selectedActionChain, actionDescription)}
           />
         </div>
       </div>

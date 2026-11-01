@@ -1,5 +1,5 @@
 # Copyright (c) 2017-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # Basic images do not contain zypper nor the name of the server,
 # so the inspect functionality is not tested here.

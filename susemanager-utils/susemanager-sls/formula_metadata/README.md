@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 All metadata for your custom Salt Formulas should be put here. (/srv/formula_metadata/<your-formula-name>/)
 The state files need to be on a salt file root and belong to /srv/salt.
 

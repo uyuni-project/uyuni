@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnServerServerGroupArchCompat (server_arch_id, server_group_type)
   select LOOKUP_SERVER_ARCH('alpha-debian-linux'), LOOKUP_SG_TYPE('bootstrap_entitled') from dual
    where not exists (select 1 from rhnServerServerGroupArchCompat

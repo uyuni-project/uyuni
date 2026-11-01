@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { useEffect, useState } from "react";
 
 import { AsyncButton, SubmitButton } from "components/buttons";
@@ -41,6 +47,8 @@ export function ProxyConfig({
 
     return initialModel;
   });
+
+  const anyCertFieldFilled = !!model.rootCA || !!model.proxyCertificate || !!model.proxyKey;
 
   useEffect(() => {
     setModel((prev) => ({ ...prev }));
@@ -223,16 +231,16 @@ export function ProxyConfig({
               />
             </div>
           )}
-          {(currentConfig === undefined || model.useCertsMode === UseCertsMode.Replace) && (
+          {(currentConfig === undefined || !hasCertificates || model.useCertsMode === UseCertsMode.Replace) && (
             <>
               <Text
                 name="rootCA"
                 label={t("Root CA")}
                 hint={t("Certificate authority that issued the proxy certificate (PEM format)")}
-                required
                 type="file"
                 labelClass="col-md-3"
                 divClass="col-md-6"
+                required={anyCertFieldFilled}
               />
               <div className="row">
                 <FormMultiInput
@@ -248,7 +256,6 @@ export function ProxyConfig({
                     <Text
                       name={`intermediateCAs${index}`}
                       label={t("An intermediate CA certificate (PEM format)")}
-                      required
                       type="file"
                       divClass="col-md-8"
                       labelClass="col-md-4 no-padding"
@@ -261,19 +268,19 @@ export function ProxyConfig({
                 name="proxyCertificate"
                 label={t("Proxy certificate")}
                 hint={t("SSL certificate issued for the proxy system (PEM format)")}
-                required
                 type="file"
                 labelClass="col-md-3"
                 divClass="col-md-6"
+                required={anyCertFieldFilled}
               />
               <Text
                 name="proxyKey"
                 label={t("Proxy SSL private key")}
                 hint={t("SSL private key for the proxy system (PEM format)")}
-                required
                 type="file"
                 labelClass="col-md-3"
                 divClass="col-md-6"
+                required={anyCertFieldFilled}
               />
             </>
           )}

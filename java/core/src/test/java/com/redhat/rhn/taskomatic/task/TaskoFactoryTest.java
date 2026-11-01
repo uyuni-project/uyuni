@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -59,15 +61,6 @@ public class TaskoFactoryTest extends BaseTestCaseWithUser {
         // feel free to modify and/or complete it
         TaskoFactory.listTasks();
     }
-
-    @Test
-    public void generatedCoverageTestListRunsOlderThan() {
-        // this test has been generated programmatically to test TaskoFactory.listRunsOlderThan
-        // containing a hibernate query that is not covered by any test so far
-        // feel free to modify and/or complete it
-        TaskoFactory.listRunsOlderThan(new Date(0));
-    }
-
 
     @Test
     public void generatedCoverageTestListRunsNewerThan() {
@@ -151,16 +144,6 @@ public class TaskoFactoryTest extends BaseTestCaseWithUser {
         // feel free to modify and/or complete it
         TaskoFactory.listRunsBySchedule(0L);
     }
-
-
-    @Test
-    public void generatedCoverageTestListSchedulesOlderThan() {
-        // this test has been generated programmatically to test TaskoFactory.listSchedulesOlderThan
-        // containing a hibernate query that is not covered by any test so far
-        // feel free to modify and/or complete it
-        TaskoFactory.listSchedulesOlderThan(new Date(0));
-    }
-
 
     @Test
     public void generatedCoverageTestListSchedulesByOrgAndLabel() {

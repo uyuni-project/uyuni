@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -249,6 +251,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
     public void testExecuteCustomFormulasInternalStatePreservesTransactionalUpdate()
             throws UnsupportedEncodingException {
         String actionJsonString = "{" +
+                "'scheduleName': 'My Recurring Schedule'," +
                 "'memberIds': [" + minionServer.getId() + "]," +
                 "'details': {" +
                     "'states': [" +
@@ -274,6 +277,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
 
         assertEquals(List.of("formulas"), action.getDetails().getMods());
         assertFalse(action.getDetails().isUseTransactionalUpdate());
+        assertEquals("Recurring Action: My Recurring Schedule", action.getActionDescription());
     }
 
     @Test

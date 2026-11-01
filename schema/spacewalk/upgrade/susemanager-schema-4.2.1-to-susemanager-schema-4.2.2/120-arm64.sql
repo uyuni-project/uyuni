@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnCpuArch (id, label, name) select
 sequence_nextval('rhn_cpu_arch_id_seq'), 'arm64', 'ARM64' from dual
 where not exists (select 1 from rhnCpuArch where label = 'arm64');

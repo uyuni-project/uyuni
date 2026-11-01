@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 name: Cucumber dry run
 
 # Fails when a step in a feature file is undefined or matches more than one step definition.

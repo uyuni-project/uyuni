@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import "manager/minion/audit/audit-common.css";
 
 import SpaRenderer from "core/spa/spa-renderer";
@@ -33,6 +39,7 @@ const ScheduleAuditScanSsm = (): JSX.Element => {
     return Network.post(ENDPOINTS.SCHEDULE_CREATE, {
       ids: window.minions?.map((m) => m.id),
       earliest: model.earliest,
+      actionDescription: model.actionDescription,
       xccdfProfileId: model.xccdfProfileId,
       scapContentId: model.dataStreamName,
       tailoringFileId: model.tailoringFile,

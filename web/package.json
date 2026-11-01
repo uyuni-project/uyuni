@@ -101,7 +101,7 @@
     "typescript": "5.8.3",
     "typescript-eslint": "8.44.0",
     "use-immer": "^0.3.0",
-    "webpack": "5.99.7",
+    "webpack": "5.104.1",
     "webpack-cli": "6.0.1",
     "yargs": "17.7.2"
   },
@@ -162,7 +162,7 @@
     "@babel/traverse": "7.27.0",
     "ansi-regex": "5.0.1",
     "bootstrap": "5.3.2",
-    "brace-expansion": "1.1.18",
+    "brace-expansion": "1.1.21",
     "braces": "3.0.3",
     "cross-spawn": "7.0.5",
     "debug": "4.3.4",

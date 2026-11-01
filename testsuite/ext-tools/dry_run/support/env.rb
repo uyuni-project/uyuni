@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # Loaded instead of features/support by .github/workflows/cucumber_dry_run.yml.
 # A dry run only needs the step definitions, but features/support/env.rb connects to the infrastructure

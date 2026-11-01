@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 --
 
 insert into rhnActionType values (500, 'image.deploy', 'Deploy an image to a virtual host.', 'N', 'N');

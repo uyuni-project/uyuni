@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Ensure existing minions receive the boot_time custom grain after upgrade.
 -- Avoid duplicate pending tasks when this migration is reapplied.
 INSERT INTO rhnTaskQueue (id, org_id, task_name, task_data)

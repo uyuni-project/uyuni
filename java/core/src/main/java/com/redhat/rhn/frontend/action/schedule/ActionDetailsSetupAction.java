@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -52,6 +54,7 @@ public class ActionDetailsSetupAction extends RhnAction {
         request.setAttribute("scheduler", af.getScheduler());
         request.setAttribute("earliestaction", af.getEarliestDate());
         request.setAttribute("actionnotes", af.getNotes());
+        request.setAttribute("actionDescription", action.getActionDescription());
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

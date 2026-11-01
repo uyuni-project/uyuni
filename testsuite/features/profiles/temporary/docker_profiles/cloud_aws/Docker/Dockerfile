@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 FROM ip-172-16-1-175.eu-central-1.compute.internal/suse/sle15:15.7
 MAINTAINER Admin User "noemail@example.com"
 

@@ -7,6 +7,8 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
  */
 
 package com.suse.manager.webui.controllers;
@@ -574,7 +576,7 @@ public class SystemsController {
         }
 
         ActionChain actionChain = MinionActionUtils.getActionChain(json.getActionChain(), user);
-        Date earliest = MinionActionUtils.getScheduleDate(json.getEarliest());
+        Date earliest = MinionActionUtils.getScheduleDate(json);
 
         try {
             Set<Action> sca = ActionChainManager.scheduleSubscribeChannelsAction(user,

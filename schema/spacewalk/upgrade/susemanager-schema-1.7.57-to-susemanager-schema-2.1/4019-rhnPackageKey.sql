@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 update rhnPackageKey set provider_id = lookup_package_provider('Oracle Inc.')
  where key_id = '72f97b74ec551f03';
 

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Single Dev Container Uyuni Environment
 
 This folder contains the configuration for a single dev container environment for Uyuni. It is a stripped down version

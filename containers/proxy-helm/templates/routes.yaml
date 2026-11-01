@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 {{- if .Values.gateway.enable }}
 {{- $config := .Values.global.config | fromYaml }}
 {{- $gatewayName := .Values.gateway.name | default "uyuni-gateway" -}}

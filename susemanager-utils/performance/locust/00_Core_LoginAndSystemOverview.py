@@ -1,8 +1,12 @@
-#  pylint: disable=missing-module-docstring,invalid-name
 #! /usr/bin/python
+#  pylint: disable=missing-module-docstring,invalid-name
 
-from locust import HttpLocust, TaskSet, task
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 import yaml
+from locust import HttpLocust, TaskSet, task
 
 # pylint: disable-next=unspecified-encoding
 with open("locust_config.yml", "r") as stream:

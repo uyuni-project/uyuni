@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 if [ "$(readlink /proc/1/exe)" = "/sbin/init" ]; then
    # SysV, use pid ctime as service start time
    SALT_MINION_NAME="salt-minion"

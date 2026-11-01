@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 create table rhnISSSlave (
     id NUMERIC not null constraint rhn_isss_id_pk primary key,
     slave VARCHAR(512) not null constraint rhn_isss_name_uq unique,

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 create or replace function insert_package_capability(name_in in varchar2, version_in in varchar2 default null)
 return number
 is

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import "./audit-common.css";
 
 import { Component } from "react";
@@ -65,6 +71,7 @@ type StateType = {
   identifier: string;
   benchmarkId: string;
   earliest: any;
+  actionDescription?: string;
   hasCustomRemediation: boolean;
   isSaving: boolean;
 };
@@ -162,6 +169,10 @@ class RuleResultDetail extends Component<object, StateType> {
 
   onDateTimeChanged = (date: any) => {
     this.setState({ earliest: date });
+  };
+
+  onActionDescriptionChanged = (actionDescription: string) => {
+    this.setState({ actionDescription });
   };
 
   onFormChange = (model: any) => {
@@ -302,6 +313,7 @@ class RuleResultDetail extends Component<object, StateType> {
       remediationContent: remediationToApply,
       saveAsCustom: false, // Don't auto-save, user must explicitly save
       earliest: this.state.earliest,
+      actionDescription: this.state.actionDescription,
     })
       .then((data) => {
         const actionId = data.data?.actionId || data.value;
@@ -482,7 +494,9 @@ class RuleResultDetail extends Component<object, StateType> {
               <div className="panel-body">
                 <ActionSchedule
                   earliest={this.state.earliest}
+                  actionDescription={this.state.actionDescription ?? ""}
                   onDateTimeChanged={this.onDateTimeChanged}
+                  onActionDescriptionChanged={this.onActionDescriptionChanged}
                   systemIds={window.minions?.map((m) => m.id)}
                   actionType="states.apply"
                 />

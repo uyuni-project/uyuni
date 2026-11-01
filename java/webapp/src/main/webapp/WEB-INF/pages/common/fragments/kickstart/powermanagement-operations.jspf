@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <button type="submit" name="dispatch" class="btn btn-default"
   value='<bean:message key="kickstart.powermanagement.jsp.power_on"/>'>
   <i class="fa fa-power-off"></i><bean:message key="kickstart.powermanagement.jsp.power_on"/>

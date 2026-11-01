@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- bootstrap entitlements
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )

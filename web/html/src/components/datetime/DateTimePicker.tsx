@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import "react-datepicker/dist/react-datepicker.css";
 
 import { forwardRef, useRef, useState } from "react";

@@ -39,7 +39,6 @@ check_current_installation
 
 : "${SCC_USER:=}"
 : "${SCC_PASS:=}"
-: "${ISS_PARENT:=}"
 
 : "${MANAGER_ENABLE_TFTP:=n}"
 

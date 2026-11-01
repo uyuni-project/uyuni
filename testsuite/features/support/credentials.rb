@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # Tracks which identity is authenticated against which host in a multi-server (hub +
 # peripherals) test run.

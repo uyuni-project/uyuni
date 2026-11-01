@@ -1,0 +1,2 @@
+- Move mgr-proxy-ssh-* scripts to the proxy ssh container
+  (bsc#1274066)

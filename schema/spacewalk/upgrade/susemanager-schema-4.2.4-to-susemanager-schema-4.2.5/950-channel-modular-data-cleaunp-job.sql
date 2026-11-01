@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnTaskoTask (id, name, class)
 SELECT sequence_nextval('rhn_tasko_task_id_seq'), 'channel-modular-data-cleanup', 'com.redhat.rhn.taskomatic.task.ModularDataCleanup'
 WHERE NOT EXISTS (SELECT 1 FROM rhnTaskoTask WHERE name='channel-modular-data-cleanup');

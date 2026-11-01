@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 #/bin/bash -e
 if [ -z ${1} -o -z ${2} ]; then
   echo "This scripts needs two parameters: the first one for the UID, the second one for the GID"

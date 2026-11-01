@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -21,10 +28,6 @@
     </a>
   </c:if>
 
-  <a href="/rhn/systems/details/audit/ScheduleXccdf.do?sid=${param.sid}&path=${testResult.scapActionDetails.path}&params=${testResult.scapActionDetails.parametersContents}&ovalfiles=${testResult.scapActionDetails.ovalfiles}">
-    <rhn:icon type="header-refresh" title="system.audit.xccdfdetails.jsp.reschedule" />
-    <bean:message key="system.audit.xccdfdetails.jsp.reschedule"/>
-  </a>
 </div>
 
 <h2><bean:message key="system.audit.xccdfdetails.jsp.header"/></h2>

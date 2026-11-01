@@ -1,5 +1,5 @@
 # Copyright (c) 2024-2026 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 ### This file contains all steps concerning content lifecycle and hostname management
 
@@ -27,19 +27,19 @@ When(/^I click promote from QA to Production$/) do
 end
 
 Then(/^I should see a "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
-  within(:xpath, "//h3[text()='#{env}']/../..") do
+  within(:xpath, "//h3[text()='#{env}']/../../..") do
     raise ScriptError, "Text \"#{text}\" not found" unless check_text?(text)
   end
 end
 
 When(/^I wait at most (\d+) seconds until I see "([^"]*)" text in the environment "([^"]*)"$/) do |seconds, text, env|
-  within(:xpath, "//h3[text()='#{env}']/../..") do
+  within(:xpath, "//h3[text()='#{env}']/../../..") do
     step %(I wait at most #{seconds} seconds until I see "#{text}" text)
   end
 end
 
 When(/^I wait until I see "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
-  within(:xpath, "//h3[text()='#{env}']/../..") do
+  within(:xpath, "//h3[text()='#{env}']/../../..") do
     raise ScriptError, "Text \"#{text}\" not found" unless check_text?(text, timeout: DEFAULT_TIMEOUT)
   end
 end

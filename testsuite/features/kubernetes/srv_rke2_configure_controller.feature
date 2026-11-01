@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # Configure controller to establish communication via chrome driver
 #  with a MLM/Uyuni server installed on RKE2 

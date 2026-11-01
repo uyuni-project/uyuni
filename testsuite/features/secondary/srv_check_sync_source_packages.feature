@@ -1,5 +1,5 @@
 # Copyright (c) 2018-2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # requires
 # - reposync/srv_create_fake_channels.feature

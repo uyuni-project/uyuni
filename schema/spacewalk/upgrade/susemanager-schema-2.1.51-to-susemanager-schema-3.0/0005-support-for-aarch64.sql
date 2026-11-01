@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnChannelArch (id, label, name, arch_type_id) select
 sequence_nextval('rhn_channel_arch_id_seq'), 'channel-aarch64', 'AArch64', lookup_arch_type('rpm') from dual
 where not exists (select 1 from rhnChannelArch where label = 'channel-aarch64');

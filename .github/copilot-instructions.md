@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # GitHub Copilot Instructions
 
 The repository-root [`AGENTS.md`](../AGENTS.md) is the canonical instruction

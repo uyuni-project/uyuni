@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 INSERT INTO access.accessGroup(org_id, label, description) VALUES (null, 'activation_key_admin', 'Activation Key Administrator');
 INSERT INTO access.accessGroup(org_id, label, description) VALUES (null, 'image_admin', 'Image Administrator');

@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <!-- This fragment is obsolete and only includes the editor itself, but
       just add data-editor="language" to the textarea to ge the editor
       The following is just for backward compatibility -->

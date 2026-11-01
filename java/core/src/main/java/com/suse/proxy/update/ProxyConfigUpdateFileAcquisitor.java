@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -39,15 +41,12 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
 
     public static final Map<String, Object> EXPECTED_FILE_CONFIGURATIONS = Map.of(
             "server", String.class,
-            "ca_crt", String.class,
             "proxy_fqdn", String.class,
             "max_cache_size_mb", Long.class,
             "server_version", String.class,
             "email", String.class,
             "httpd", Map.of(
-                    "system_id", String.class,
-                    "server_crt", String.class,
-                    "server_key", String.class
+                    "system_id", String.class
             ),
             "ssh", Map.of(
                     "server_ssh_key_pub", String.class,

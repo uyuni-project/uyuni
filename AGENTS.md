@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Repository Instructions
 
 ## Scope and source of truth
@@ -19,7 +25,8 @@ If every changed file is under `testsuite/`, work from
 `CODING_STANDARDS.md`. Do not apply the subsystem sections below (frontend,
 Java, Python, schema, Salt, and their build and test commands) to testsuite
 work. The repository-wide sections still apply: Working practices, Generated
-and derived files, and CI, packaging, and deployment.
+and derived files, Licensing headers (REUSE), and CI, packaging, and
+deployment.
 
 For mixed changes, follow the section for each other subsystem touched, and
 `testsuite/AGENTS.md` for the files under `testsuite/`.
@@ -74,6 +81,8 @@ changed. Do not assume that conventions are uniform across subsystems.
   unless the user explicitly requests that operation. These commands affect
   external infrastructure and may consume credentials from the environment.
 - Do not discard unrelated worktree changes. Avoid destructive Git operations.
+- Keep commit messages short: a brief summary of what the commit does and
+  why. Do not list every changed class, function, or keyword.
 
 ## Generated and derived files
 
@@ -88,6 +97,35 @@ Edit sources, not build output:
 
 If generated output is intentionally refreshed, use the repository's generator
 and include only the expected result.
+
+## Licensing headers (REUSE)
+
+CI runs `reuse lint` (`.github/workflows/reuse.yml`); every file needs a
+copyright and license.
+
+- Start new files that allow comments with this header, below any shebang,
+  in the file's own comment syntax (for example `#` in `tito.props`, not
+  `<!-- -->`):
+
+  ```text
+  SPDX-FileCopyrightText: <current year> SUSE LLC
+
+  SPDX-License-Identifier: <license>
+  ```
+
+- Copy the license from neighbouring files; it differs per component. It
+  must have a file in `LICENSES/`.
+- A classic copyright block with an `SPDX-License-Identifier` line is
+  sufficient. Do not add or rewrite headers in files you only edit.
+- Files that cannot hold comments (JSON, binaries, fixtures, generated
+  files) and changelog fragments get no header. Ensure a `REUSE.toml`
+  `[[annotations]]` glob covers them, extending an existing entry with the
+  same license and holder. Do not add `.license` sidecar files.
+- Third-party files keep their upstream copyright and license, recorded in
+  `REUSE.toml`.
+
+Run `reuse lint` if installed; otherwise report that the check was left to
+CI.
 
 ## Build and test commands
 
@@ -134,6 +172,31 @@ cd java
 make -f Makefile.docker
 ```
 
+This pulls the test database image, writes the git-ignored
+`java/buildconf/test/rhn.conf` from `rhn.conf.postgresql-example`, and runs
+the database container in the foreground with PostgreSQL published on
+localhost:5432. Keep it running in a separate terminal while tests run.
+
+When the agent runs in a sandbox (for example a podman-based sandbox), it
+usually cannot start containers, and `localhost` inside the sandbox is not
+the host. Ask the user to start the database on the host, outside the
+sandbox:
+
+```bash
+cd java
+make -f Makefile.docker confighost podmanrun
+```
+
+`confighost` writes `rhn.conf` with `db_host` and `report_db_host` set to
+`host.containers.internal`, so tests inside the sandbox reach the database on
+the host. If the user already started the database on the host (for example
+with plain `make -f Makefile.docker`), regenerate only the configuration
+from the repository root:
+
+```bash
+make -C java -f Makefile.docker confighost
+```
+
 Then run the owning module and test class, for example from the repository
 root:
 
@@ -158,6 +221,18 @@ Run the repository's containerized lint wrapper from the root:
 ./python/linting/lint.sh <path>
 ./python/linting/lint.sh -a
 ```
+
+`lint.sh` runs Black and Pylint in the CI container image by default. In a
+sandbox that cannot run containers but provides `black` and `pylint`, add
+`-l` to use the local binaries:
+
+```bash
+./python/linting/lint.sh -l <path>
+./python/linting/lint.sh -l -a
+```
+
+Local tool versions can differ from the CI image; CI's result is
+authoritative.
 
 Python code follows Black and the repository Pylint configuration. Keep tests
 isolated with mocks and temporary paths; do not make unit tests depend on a
@@ -217,7 +292,17 @@ on the repository's CI workflows for their execution.
 For package changelogs, follow the existing package-specific pattern. Add a
 fragment beside the package changelog named
 `<package>.changes.<author>.<topic>` rather than editing the consolidated
-`<package>.changes` file directly.
+`<package>.changes` file directly. In changelog entries:
+
+- Add an entry only for changes visible to users. Internal refactorings
+  and developer-only changes get no changelog entry.
+- Keep entries short: summarize the change, without naming every class
+  or keyword.
+- Keep every line at 67 characters or less, including the leading `- `
+  and the two-space indent of continuation lines.
+- Wrap configuration keys and file names that contain a dot in backticks
+  or quotes (for example `server.satellite.rhn_parent` or `rhn.conf`), so
+  that only a dot ending a sentence stays unquoted.
 
 ## Change-specific expectations
 

@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('admin.access', 'R', 'List and detail custom access groups.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
@@ -2934,9 +2936,6 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.scap.list_xccdf_scans', 'R', 'Return a list of finished OpenSCAP scans for a given system.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
-    VALUES ('api.system.scap.schedule_xccdf_scan', 'W', 'Schedule OpenSCAP scan.')
-    ON CONFLICT (namespace, access_mode) DO NOTHING;
-INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.search.device_description', 'R', 'List the systems which match the device description.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -3140,8 +3139,8 @@ INSERT INTO access.namespace (namespace, access_mode, description) VALUES
     ('api.system.scap.list_scap_content', 'R', 'Lists SCAP content for a given system'),
     ('api.system.scap.list_policies', 'R', 'Lists SCAP policies for a given system'),
     ('api.system.scap.list_tailoring_files', 'R', 'Lists SCAP tailoring files for a given system'),
-    ('api.system.scap.schedule_beta_xccdf_scan_custom', 'W', 'Schedules a custom XCCDF scan'),
-    ('api.system.scap.schedule_beta_xccdf_scan_with_policy', 'W', 'Schedules a XCCDF scan using a specific policy'),
+    ('api.system.scap.schedule_xccdf_scan_with_policy', 'W', 'Schedule SCAP scan using a policy'),
+    ('api.system.scap.schedule_xccdf_scan_custom', 'W', 'Schedule SCAP scan with custom parameters'),
     ('audit.scap.management', 'R', 'View SCAP content, tailoring files, and policies'),
     ('audit.scap.management', 'W', 'Create, edit, or delete SCAP content, tailoring files, and policies'),
     ('audit.scap.execution', 'R', 'View SCAP scan results and remediation scripts'),
