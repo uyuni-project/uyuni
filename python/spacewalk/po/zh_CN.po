@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 09:41+0200\n"
+"POT-Creation-Date: 2026-11-01 11:56+0100\n"
 "PO-Revision-Date: 2025-11-14 09:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/backend/zh_CN/>\n"
@@ -25,27 +25,27 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.14.3\n"
 
-#: ../server/apacheAuth.py:80
+#: ../server/apacheAuth.py:82
 #, python-format
 msgid "incomplete proxy authentication token: %s"
 msgstr "不完整的代理身份验证令牌：%s"
 
-#: ../server/apacheAuth.py:111
+#: ../server/apacheAuth.py:113
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
 msgstr "发送的代理签名 %s 与我们的 %s 不匹配。"
 
-#: ../server/apacheAuth.py:150
+#: ../server/apacheAuth.py:152
 msgid "declined proxy authentication"
 msgstr "已拒绝代理身份验证"
 
-#: ../server/apacheRequest.py:68
+#: ../server/apacheRequest.py:70
 #, python-format
 msgid "Invalid request received (%s)."
 msgstr "收到的请求无效 (%s)。"
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:130
+#: ../server/apacheRequest.py:132
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -54,7 +54,7 @@ msgstr ""
 "重要消息如下：\n"
 "%s"
 
-#: ../server/apacheRequest.py:160
+#: ../server/apacheRequest.py:162
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -64,12 +64,12 @@ msgstr ""
 "%s：%s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:675
+#: ../server/apacheRequest.py:677
 #, python-format
 msgid "Invalid URI %s"
 msgstr "无效的 URI %s"
 
-#: ../server/handlers/app/packages.py:220
+#: ../server/handlers/app/packages.py:222
 #, python-format
 msgid ""
 "\n"
@@ -93,27 +93,27 @@ msgstr "无效会话密钥"
 msgid "This server ID no longer exists"
 msgstr "此服务器 ID 不再存在"
 
-#: ../server/importlib/userAuth.py:109
+#: ../server/importlib/userAuth.py:111
 msgid "You are not authorized to manage packages in the null org"
 msgstr "未授权您管理 null 组织中的软件包"
 
-#: ../server/importlib/userAuth.py:115
+#: ../server/importlib/userAuth.py:117
 #, python-format
 msgid "You are not allowed to manage packages in the %s org"
 msgstr "不允许您管理 %s 组织中的软件包"
 
 #. ok, you're a regular user who doesn't manage any channels.
 #. take a hike.
-#: ../server/importlib/userAuth.py:132
+#: ../server/importlib/userAuth.py:134
 msgid "You are not allowed to perform administrative tasks"
 msgstr "不允许您执行管理任务"
 
-#: ../server/importlib/userAuth.py:159
+#: ../server/importlib/userAuth.py:161
 #, python-format
 msgid "You are not allowed to manage channel %s, or that channel does not exist"
 msgstr "不允许您管理通道 %s 或不存在的通道"
 
-#: ../server/importlib/userAuth.py:229
+#: ../server/importlib/userAuth.py:231
 #, python-format
 msgid ""
 "\n"
@@ -124,12 +124,12 @@ msgstr ""
 "               已在此服务器上停用 %s 帐户。\n"
 "               请联系您的组织管理员取得更多帮助。"
 
-#: ../server/rhnChannel.py:2216
+#: ../server/rhnChannel.py:2218
 #, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr "您的帐户无权访问与 (release='%(release)s', arch='%(arch)s')%(www_activation)s 匹配的任何通道"
 
-#: ../server/rhnChannel.py:2235
+#: ../server/rhnChannel.py:2237
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "订阅权限不足，无法获取发行版 (%s, %s"
@@ -138,11 +138,11 @@ msgstr "订阅权限不足，无法获取发行版 (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
+#: ../server/rhnChannel.py:2551 ../server/rhnChannel.py:2570
 msgid "System Registered but Inactive"
 msgstr "系统已注册但处于非活动状态"
 
-#: ../server/rhnChannel.py:2551
+#: ../server/rhnChannel.py:2553
 #, python-format
 msgid ""
 "\n"
@@ -157,7 +157,7 @@ msgstr ""
 "因为它无法订阅基础通道。\n"
 "请联系您的组织管理员以取得帮助。\n"
 
-#: ../server/rhnChannel.py:2560
+#: ../server/rhnChannel.py:2562
 #, python-format
 msgid ""
 "\n"
@@ -172,7 +172,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2570
+#: ../server/rhnChannel.py:2572
 #, python-format
 msgid ""
 "\n"
@@ -188,22 +188,22 @@ msgstr ""
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
-#: ../server/rhnHandler.py:62
+#: ../server/rhnHandler.py:64
 msgid "Please run rhn_register as root on this client"
 msgstr "请在此客户端中以 root 身份运行 rhn_register"
 
-#: ../server/rhnHandler.py:76
+#: ../server/rhnHandler.py:78
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "未为系统配置文件启用服务：\"%s\""
 
-#: ../server/rhnPackage.py:51 ../server/rhnPackage.py:97
-#: ../server/rhnPackage.py:117 ../server/rhnPackage.py:179
+#: ../server/rhnPackage.py:53 ../server/rhnPackage.py:99
+#: ../server/rhnPackage.py:119 ../server/rhnPackage.py:181
 #, python-format
 msgid "Invalid RPM package %s requested"
 msgstr "请求的 RPM 软件包 %s 无效"
 
-#: ../server/rhnPackage.py:123
+#: ../server/rhnPackage.py:125
 msgid "Package not found"
 msgstr "找不到软件包"
 
@@ -221,181 +221,181 @@ msgstr "为令牌 `%s' 指派了多个基础通道"
 msgid "Conflicting base channels"
 msgstr "有冲突的基础通道"
 
-#: ../server/rhnServer/server_token.py:223
+#: ../server/rhnServer/server_token.py:221
 #, python-format
 msgid "Failed to add server to group %s"
 msgstr "无法将服务器添加到组 %s"
 
-#: ../server/rhnServer/server_token.py:574
+#: ../server/rhnServer/server_token.py:552
 #, python-format
 msgid "Maximum usage count of %s reached"
 msgstr "已达到 %s 的最大用量计数"
 
-#: ../server/rhnServer/server_token.py:866
+#: ../server/rhnServer/server_token.py:844
 msgid "Stacking of re-registration tokens with different base entitlements is not supported"
 msgstr "不支持将重新注册令牌与不同的基础权利堆叠到一起"
 
-#: ../server/rhnServer/server_token.py:943
+#: ../server/rhnServer/server_token.py:917
 #, python-format
 msgid "Could not find token '%s'"
 msgstr "找不到令牌 '%s'"
 
 #. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:976
+#: ../server/rhnServer/server_token.py:950
 msgid "Tokens from mismatching orgs"
 msgstr "来自不匹配的组织的令牌"
 
 #. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:986
+#: ../server/rhnServer/server_token.py:960
 msgid "Kickstart session mismatch"
 msgstr "Kickstart 会话不匹配"
 
-#: ../server/rhnServer/server_token.py:1010
+#: ../server/rhnServer/server_token.py:984
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "不支持堆叠重新注册令牌"
 
-#: ../server/rhnUser.py:321 ../server/rhnUser.py:324
+#: ../server/rhnUser.py:323 ../server/rhnUser.py:326
 msgid "Invalid username/password combination"
 msgstr "无效的用户名/口令组合"
 
 #. nope, not reserved either
-#: ../server/rhnUser.py:505
+#: ../server/rhnUser.py:507
 #, python-format
 msgid "Username `%s' has not been reserved"
 msgstr "未保留用户名 `%s'"
 
 #. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:511
+#: ../server/rhnUser.py:513
 msgid "E-mail address not specified"
 msgstr "未指定电子邮件地址"
 
-#: ../server/rhnUser.py:553
+#: ../server/rhnUser.py:555
 #, python-format
 msgid "username should be at least %d characters"
 msgstr "用户名应至少为 %d 个字符"
 
-#: ../server/rhnUser.py:557
+#: ../server/rhnUser.py:559
 #, python-format
 msgid "username should be less than %d characters"
 msgstr "用户名应小于 %d 个字符"
 
-#: ../server/rhnUser.py:571
+#: ../server/rhnUser.py:573
 #, python-format
 msgid "username = `%s', invalid character `%s'"
 msgstr "用户名 = `%s'，字符 `%s' 无效"
 
-#: ../server/rhnUser.py:592
+#: ../server/rhnUser.py:594
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr "请将您的电子邮件地址限制为 %s 个字符"
 
-#: ../server/rhnUser.py:690
+#: ../server/rhnUser.py:692
 #, python-format
 msgid "password must be at least %d characters"
 msgstr "口令必须至少为 %d 个字符"
 
-#: ../server/rhnUser.py:694
+#: ../server/rhnUser.py:696
 #, python-format
 msgid "Password must be shorter than %d characters"
 msgstr "口令必须短于 %d 个字符"
 
-#: ../server/rhnUser.py:710
+#: ../server/rhnUser.py:712
 #, python-format
 msgid "password contains character `%s'"
 msgstr "口令包含字符 `%s'"
 
-#: ../server/rhnUser.py:719
+#: ../server/rhnUser.py:721
 #, python-format
 msgid "username should be at least %d characters long"
 msgstr "用户名长度应至少为 %d 个字符"
 
-#: ../server/rhnUser.py:730
+#: ../server/rhnUser.py:732
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "无法注册以 %s 结尾的用户名"
 
 #. 0-999: Red Hat client/client-like interaction errors:
-#: ../common/rhnException.py:55
+#: ../common/rhnException.py:57
 msgid "This does not appear to be a valid username."
 msgstr "这似乎不是有效的用户名。"
 
-#: ../common/rhnException.py:56
+#: ../common/rhnException.py:58
 msgid "Invalid username and password combination."
 msgstr "无效的用户名和口令组合。"
 
-#: ../common/rhnException.py:57
+#: ../common/rhnException.py:59
 msgid "This login is already taken, or the password is incorrect."
 msgstr "此登录名已被使用，或者口令不正确。"
 
-#: ../common/rhnException.py:58
+#: ../common/rhnException.py:60
 msgid "Permission denied."
 msgstr "权限被拒绝。"
 
-#: ../common/rhnException.py:59
+#: ../common/rhnException.py:61
 msgid "Object not found."
 msgstr "找不到对象。"
 
-#: ../common/rhnException.py:60
+#: ../common/rhnException.py:62
 msgid "Invalid System Digital ID."
 msgstr "无效的系统数字 ID。"
 
-#: ../common/rhnException.py:61
+#: ../common/rhnException.py:63
 msgid "Invalid System Credentials."
 msgstr "无效的系统身份凭证。"
 
-#: ../common/rhnException.py:62
+#: ../common/rhnException.py:64
 msgid "Could not retrieve user data from database."
 msgstr "无法从数据库检索用户数据。"
 
-#: ../common/rhnException.py:63
+#: ../common/rhnException.py:65
 msgid "Valid username required."
 msgstr "必须填写有效用户名。"
 
-#: ../common/rhnException.py:64
+#: ../common/rhnException.py:66
 msgid "Valid password required."
 msgstr "必须填写有效口令。"
 
-#: ../common/rhnException.py:65
+#: ../common/rhnException.py:67
 msgid "Minimum username length violation."
 msgstr "最小用户名长度违规。"
 
-#: ../common/rhnException.py:66
+#: ../common/rhnException.py:68
 msgid "Minimum password length violation."
 msgstr "最小口令长度违规。"
 
-#: ../common/rhnException.py:67
+#: ../common/rhnException.py:69
 msgid "The username contains invalid characters."
 msgstr "用户名包含无效字符。"
 
-#: ../common/rhnException.py:68
+#: ../common/rhnException.py:70
 msgid "File not found."
 msgstr "找不到文件。"
 
-#: ../common/rhnException.py:69
+#: ../common/rhnException.py:71
 msgid "Architecture and OS version combination is not supported."
 msgstr "不支持该体系结构和操作系统版本组合。"
 
-#: ../common/rhnException.py:70
+#: ../common/rhnException.py:72
 msgid "Could not retrieve system data from database."
 msgstr "无法从数据库检索系统数据。"
 
-#: ../common/rhnException.py:71
+#: ../common/rhnException.py:73
 msgid "Invalid arguments passed to function."
 msgstr "向函数传递了无效参数。"
 
-#: ../common/rhnException.py:72
+#: ../common/rhnException.py:74
 msgid "Unable to retrieve requested entry."
 msgstr "无法检索请求的项。"
 
-#: ../common/rhnException.py:73
+#: ../common/rhnException.py:75
 msgid "Could not update database entry."
 msgstr "无法更新数据库项。"
 
-#: ../common/rhnException.py:74
+#: ../common/rhnException.py:76
 msgid "Unsupported server architecture."
 msgstr "不支持的服务器体系结构。"
 
-#: ../common/rhnException.py:76
+#: ../common/rhnException.py:78
 #, python-format
 msgid ""
 "\n"
@@ -416,15 +416,15 @@ msgstr ""
 "     选择 \"订阅管理\" 以便为此系统启用服务。\n"
 "     "
 
-#: ../common/rhnException.py:85
+#: ../common/rhnException.py:87
 msgid "Record not available in the database."
 msgstr "数据库中未提供记录。"
 
-#: ../common/rhnException.py:86
+#: ../common/rhnException.py:88
 msgid "Invalid value for entry."
 msgstr "项的值无效。"
 
-#: ../common/rhnException.py:88
+#: ../common/rhnException.py:90
 #, python-format
 msgid ""
 "\n"
@@ -441,47 +441,47 @@ msgstr ""
 "     选择 \"订阅管理\" 为此系统启用该服务。\n"
 "     "
 
-#: ../common/rhnException.py:95
+#: ../common/rhnException.py:97
 msgid "Channel error"
 msgstr "通道错误"
 
-#: ../common/rhnException.py:96
+#: ../common/rhnException.py:98
 msgid "Client session token is invalid."
 msgstr "客户端会话令牌无效。"
 
-#: ../common/rhnException.py:97
+#: ../common/rhnException.py:99
 msgid "Client session token has expired."
 msgstr "客户端会话令牌已失效。"
 
-#: ../common/rhnException.py:98
+#: ../common/rhnException.py:100
 msgid "You are not authorized to retrieve the requested object."
 msgstr "未授权您检索请求的对象。"
 
-#: ../common/rhnException.py:99
+#: ../common/rhnException.py:101
 msgid "Invalid action"
 msgstr "无效操作"
 
-#: ../common/rhnException.py:101
+#: ../common/rhnException.py:103
 msgid "You are not allowed to perform administrative tasks on this system."
 msgstr "不允许您在此系统上执行管理任务。"
 
-#: ../common/rhnException.py:104
+#: ../common/rhnException.py:106
 msgid "The system is already subscribed to the specified channel."
 msgstr "系统已订阅指定的通道。"
 
-#: ../common/rhnException.py:105
+#: ../common/rhnException.py:107
 msgid "The system is not currently subscribed to the specified channel."
 msgstr "系统目前未订阅指定的通道。"
 
-#: ../common/rhnException.py:106
+#: ../common/rhnException.py:108
 msgid "The specified channel does not exist."
 msgstr "指定的通道不存在。"
 
-#: ../common/rhnException.py:107
+#: ../common/rhnException.py:109
 msgid "Invalid channel version."
 msgstr "无效通道版本。"
 
-#: ../common/rhnException.py:109
+#: ../common/rhnException.py:111
 msgid ""
 "\n"
 "     User group membership limits exceeded.\n"
@@ -501,7 +501,7 @@ msgstr ""
 "     数目。\n"
 "     "
 
-#: ../common/rhnException.py:119
+#: ../common/rhnException.py:121
 msgid ""
 "\n"
 "     System group membership limits exceeded.\n"
@@ -521,7 +521,7 @@ msgstr ""
 "     配置文件数目。\n"
 "     "
 
-#: ../common/rhnException.py:129
+#: ../common/rhnException.py:131
 msgid ""
 "\n"
 "     Invalid architecture.\n"
@@ -535,11 +535,11 @@ msgstr ""
 "     软件包的体系结构不受以下对象的支持：\n"
 "     "
 
-#: ../common/rhnException.py:136
+#: ../common/rhnException.py:138
 msgid "Invalid RPM header"
 msgstr "无效的 RPM 头"
 
-#: ../common/rhnException.py:138
+#: ../common/rhnException.py:140
 msgid ""
 "\n"
 "    This system is already registered as a Salt Minion. If you want to register it as a traditional client\n"
@@ -552,15 +552,15 @@ msgstr ""
 "    "
 
 #. For the uploading tools
-#: ../common/rhnException.py:144
+#: ../common/rhnException.py:146
 msgid "Invalid information uploaded to the server"
 msgstr "向服务器上载了无效信息"
 
-#: ../common/rhnException.py:145
+#: ../common/rhnException.py:147
 msgid "Error uploading network interfaces configuration."
 msgstr "上载网络接口配置时出错。"
 
-#: ../common/rhnException.py:147
+#: ../common/rhnException.py:149
 msgid ""
 "\n"
 "     Package Upload Failed due to uniqueness constraint violation.\n"
@@ -574,7 +574,7 @@ msgstr ""
 "     尚不存在于服务器上\n"
 "     "
 
-#: ../common/rhnException.py:154
+#: ../common/rhnException.py:156
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -586,7 +586,7 @@ msgstr ""
 "     如需获得更多帮助，请联系您的 SUSE Multi-Linux Manager 管理员。\n"
 "     "
 
-#: ../common/rhnException.py:161
+#: ../common/rhnException.py:163
 msgid ""
 "\n"
 "     The activation token specified could not be found on the server.\n"
@@ -598,19 +598,19 @@ msgstr ""
 "     请使用有效密钥重试。\n"
 "     "
 
-#: ../common/rhnException.py:166
+#: ../common/rhnException.py:168
 msgid "Too many systems registered using this registration token"
 msgstr "使用此注册令牌注册了过多的系统"
 
-#: ../common/rhnException.py:167
+#: ../common/rhnException.py:169
 msgid "Token contains invalid, obsoleted or insufficient settings"
 msgstr "令牌包含无效、已过时或不充分的设置"
 
-#: ../common/rhnException.py:168
+#: ../common/rhnException.py:170
 msgid "Conflicting activation tokens"
 msgstr "有冲突的激活令牌"
 
-#: ../common/rhnException.py:171
+#: ../common/rhnException.py:173
 msgid ""
 "\n"
 "     No matching base channel found for your system.\n"
@@ -620,7 +620,7 @@ msgstr ""
 "     未找到与您的系统匹配的基础通道。\n"
 "     "
 
-#: ../common/rhnException.py:176
+#: ../common/rhnException.py:178
 msgid ""
 "\n"
 "     You do not have subscription permission to the designated channel.\n"
@@ -634,84 +634,84 @@ msgstr ""
 "     组织管理员以了解更多详细。\n"
 "     "
 
-#: ../common/rhnException.py:182
+#: ../common/rhnException.py:184
 msgid "You can not unsubscribe from base channel."
 msgstr "无法取消订阅基础通道。"
 
-#: ../common/rhnException.py:183
+#: ../common/rhnException.py:185
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
 msgstr "无法订阅 SUSE Multi-Linux Manager 或代理通道。"
 
 #. 80-90: server group errors
-#: ../common/rhnException.py:185
+#: ../common/rhnException.py:187
 msgid "There was an error while trying to join the system to its groups"
 msgstr "尝试将系统加入其组时出错"
 
 #. 90-100: entitlement errors
-#: ../common/rhnException.py:187
+#: ../common/rhnException.py:189
 msgid "Unable to entitle system"
 msgstr "无法为系统赋权"
 
 #. 100-109: e-mail and uuid related faults
-#: ../common/rhnException.py:189
+#: ../common/rhnException.py:191
 msgid "Maximum e-mail length violation."
 msgstr "最大电子邮件长度违规。"
 
-#: ../common/rhnException.py:190
+#: ../common/rhnException.py:192
 msgid "This system has been previously registered."
 msgstr "此系统在过去已注册。"
 
-#: ../common/rhnException.py:191
+#: ../common/rhnException.py:193
 msgid "Invalid username"
 msgstr "无效用户名"
 
 #. 140-159 applet errors
-#: ../common/rhnException.py:193
+#: ../common/rhnException.py:195
 msgid "Unable to look up server"
 msgstr "无法查找服务器"
 
 #. 160-179: OSAD errors
-#: ../common/rhnException.py:195
+#: ../common/rhnException.py:197
 msgid "Required argument is missing"
 msgstr "缺少必需的参数"
 
 #. 600-699: RHEL5+ EN errors
-#: ../common/rhnException.py:197
+#: ../common/rhnException.py:199
 msgid "No entitlement information tied to hardware"
 msgstr "没有任何权利信息与硬件相关联"
 
-#: ../common/rhnException.py:198
+#: ../common/rhnException.py:200
 msgid "Installation number is not entitling"
 msgstr "安装号未赋权"
 
 #. 700-799: Additional user input verification errors.
-#: ../common/rhnException.py:200
+#: ../common/rhnException.py:202
 msgid "Maximum username length violation"
 msgstr "最大用户名长度违规"
 
-#: ../common/rhnException.py:201
+#: ../common/rhnException.py:203
 msgid "Maximum password length violation"
 msgstr "最大口令长度违规"
 
-#: ../common/rhnException.py:202
+#: ../common/rhnException.py:204
 msgid "This user has read only API access. Action denied."
 msgstr "此用户拥有只读 API 访问权限。操作被拒绝。"
 
-#: ../common/rhnException.py:203
+#: ../common/rhnException.py:205
 msgid "System Name cannot be less than 1 character"
 msgstr "系统名不能短于 1 个字符"
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
-#: ../common/rhnException.py:206
+#: ../common/rhnException.py:208
 msgid "SUSE Multi-Linux Manager Proxy error."
 msgstr "SUSE Multi-Linux Manager 代理错误。"
 
-#: ../common/rhnException.py:207
+#: ../common/rhnException.py:209
 msgid "SUSE Multi-Linux Manager Proxy unable to login."
 msgstr "SUSE Multi-Linux Manager 代理无法登录。"
 
-#: ../common/rhnException.py:210
+#: ../common/rhnException.py:212
 msgid ""
 "\n"
 "     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk Proxy Server\n"
@@ -723,15 +723,15 @@ msgstr ""
 "     不匹配。\n"
 "     "
 
-#: ../common/rhnException.py:215
+#: ../common/rhnException.py:217
 msgid "SUSE Multi-Linux Manager Proxy session token is invalid."
 msgstr "SUSE Multi-Linux Manager 代理会话令牌无效。"
 
-#: ../common/rhnException.py:216
+#: ../common/rhnException.py:218
 msgid "SUSE Multi-Linux Manager Proxy session token has expired."
 msgstr "SUSE Multi-Linux Manager 代理会话令牌已失效。"
 
-#: ../common/rhnException.py:220
+#: ../common/rhnException.py:222
 msgid ""
 "\n"
 "      user creation is not allowed via mgr_register;\n"
@@ -743,7 +743,7 @@ msgstr ""
 "     请联系您的系统管理员来创建您的帐户。\n"
 "     "
 
-#: ../common/rhnException.py:226
+#: ../common/rhnException.py:228
 msgid ""
 "\n"
 "     This SUSE Multi-Linux Manager server is not allowed to use Inter Server Sync on this server\n"
@@ -753,7 +753,7 @@ msgstr ""
 "     此服务器上不允许该 SUSE Multi-Linux Manager 服务器使用服务器间同步\n"
 "     "
 
-#: ../common/rhnException.py:231
+#: ../common/rhnException.py:233
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Multi-Linux Manager Server.\n"
@@ -764,141 +764,141 @@ msgstr ""
 "     "
 
 #. 3000-3999: XML dumper errors:
-#: ../common/rhnException.py:236
+#: ../common/rhnException.py:238
 msgid "Invalid datatype passed"
 msgstr "传递了无效的数据类型"
 
-#: ../common/rhnException.py:237
+#: ../common/rhnException.py:239
 msgid "Unable to retrieve channel"
 msgstr "无法检索通道"
 
-#: ../common/rhnException.py:238
+#: ../common/rhnException.py:240
 msgid "Unable to retrieve package"
 msgstr "无法检索软件包"
 
-#: ../common/rhnException.py:239
+#: ../common/rhnException.py:241
 msgid "Unable to retrieve erratum"
 msgstr "无法检索勘误"
 
-#: ../common/rhnException.py:240
+#: ../common/rhnException.py:242
 msgid "File is missing"
 msgstr "缺少文件"
 
-#: ../common/rhnException.py:241
+#: ../common/rhnException.py:243
 msgid "Function retrieval error"
 msgstr "函数检索错误"
 
-#: ../common/rhnException.py:242
+#: ../common/rhnException.py:244
 msgid "Function execution error"
 msgstr "函数执行错误"
 
-#: ../common/rhnException.py:243
+#: ../common/rhnException.py:245
 msgid "Missing version string"
 msgstr "缺少版本字符串"
 
-#: ../common/rhnException.py:244
+#: ../common/rhnException.py:246
 msgid "Invalid version string"
 msgstr "无效的版本字符串"
 
-#: ../common/rhnException.py:245
+#: ../common/rhnException.py:247
 msgid "Mismatching versions"
 msgstr "不匹配的版本"
 
-#: ../common/rhnException.py:246
+#: ../common/rhnException.py:248
 msgid "Invalid channel version"
 msgstr "无效的通道版本"
 
-#: ../common/rhnException.py:247
+#: ../common/rhnException.py:249
 msgid "No comps file for channel"
 msgstr "通道没有 comps 文件"
 
-#: ../common/rhnException.py:248
+#: ../common/rhnException.py:250
 msgid "Unable to retrieve comps file"
 msgstr "无法检索 comps 文件"
 
 #. 4000 - 4999: config management errors
-#: ../common/rhnException.py:250
+#: ../common/rhnException.py:252
 msgid "Configuration action missing"
 msgstr "缺少配置操作"
 
-#: ../common/rhnException.py:251
+#: ../common/rhnException.py:253
 msgid "File too large"
 msgstr "文件太大"
 
-#: ../common/rhnException.py:252
+#: ../common/rhnException.py:254
 msgid "File contains binary data"
 msgstr "文件包含二进制数据"
 
-#: ../common/rhnException.py:253
+#: ../common/rhnException.py:255
 msgid "Configuration channel is not empty"
 msgstr "配置通道不为空"
 
-#: ../common/rhnException.py:254
+#: ../common/rhnException.py:256
 msgid "Permission error"
 msgstr "权限错误"
 
-#: ../common/rhnException.py:255
+#: ../common/rhnException.py:257
 msgid "Content missing for configuration file"
 msgstr "配置文件缺少内容"
 
-#: ../common/rhnException.py:256
+#: ../common/rhnException.py:258
 msgid "Template delimiters not specified"
 msgstr "未指定模板分隔符"
 
-#: ../common/rhnException.py:257
+#: ../common/rhnException.py:259
 msgid "Configuration channel does not exist"
 msgstr "配置通道不存在"
 
-#: ../common/rhnException.py:258
+#: ../common/rhnException.py:260
 msgid "Configuration channel already exists"
 msgstr "配置通道已存在"
 
-#: ../common/rhnException.py:259
+#: ../common/rhnException.py:261
 msgid "File missing from configuration channel"
 msgstr "配置通道中缺少文件"
 
-#: ../common/rhnException.py:260
+#: ../common/rhnException.py:262
 msgid "Different revision of this file is uploaded"
 msgstr "上载了此文件的不同版本"
 
-#: ../common/rhnException.py:261
+#: ../common/rhnException.py:263
 msgid "File already uploaded to configuration channel"
 msgstr "文件已上载到配置通道"
 
-#: ../common/rhnException.py:262
+#: ../common/rhnException.py:264
 msgid "File size exceeds remaining quota space"
 msgstr "文件大小超过了剩余的配额空间"
 
-#: ../common/rhnException.py:263
+#: ../common/rhnException.py:265
 msgid "Full path of file must be specified"
 msgstr "必须指定文件的完整路径"
 
-#: ../common/rhnException.py:264
+#: ../common/rhnException.py:266
 msgid "Invalid revision number"
 msgstr "无效的修订版号"
 
-#: ../common/rhnException.py:265
+#: ../common/rhnException.py:267
 msgid "Cannot compare files of different file type"
 msgstr "无法比较不同类型的文件"
 
 #. 5100 - 5199: scap results reporting error
-#: ../common/rhnException.py:267
+#: ../common/rhnException.py:269
 msgid "SCAP results file transfer is invalid or incomplete"
 msgstr "传输的 SCAP 结果文件无效或不完整"
 
-#: ../common/rhnException.py:268
+#: ../common/rhnException.py:270
 msgid "Error composing directory path for detailed SCAP results"
 msgstr "编写详细 SCAP 结果的目录路径时出错"
 
-#: ../common/rhnException.py:269
+#: ../common/rhnException.py:271
 msgid "Error composing file path for detailed SCAP results"
 msgstr "编写详细 SCAP 结果的文件路径时出错"
 
-#: ../common/rhnException.py:270
+#: ../common/rhnException.py:272
 msgid "Invalid content encoding"
 msgstr "无效的内容编码"
 
-#: ../common/rhnException.py:317
+#: ../common/rhnException.py:319
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -914,7 +914,7 @@ msgstr ""
 "     说明发生此错误时您正在尝试执行哪项\n"
 "     操作，并详细告知如何重现此问题。\n"
 
-#: ../common/rhnException.py:368
+#: ../common/rhnException.py:370
 #, python-format
 msgid ""
 "Error Message:\n"
@@ -923,38 +923,32 @@ msgstr ""
 "错误消息：\n"
 "    %s\n"
 
-#: ../common/rhnException.py:370
+#: ../common/rhnException.py:372
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr "错误类代码：%s\n"
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:375
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr "错误类信息：%s\n"
 
-#: ../common/rhnException.py:375
+#: ../common/rhnException.py:377
 #, python-format
 msgid "Explanation: %s"
 msgstr "说明：%s"
 
-#: ../common/rhnTB.py:220
+#: ../common/rhnTB.py:221
 #, python-format
 msgid "ERROR: %s %s: %s"
 msgstr "错误：%s %s：%s"
 
-#: ../common/rhnTB.py:221
+#: ../common/rhnTB.py:222
 #, python-format
 msgid "TRACEBACK: %s"
 msgstr "回溯：%s"
 
-#: ../satellite_tools/disk_dumper/iss.py:1634
-#: ../satellite_tools/disk_dumper/iss.py:1640
-#, python-format
-msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr "%s 至少应采用 YYYYMMDD 格式。\n"
-
-#: ../satellite_tools/messages.py:28
+#: ../satellite_tools/messages.py:30
 #, python-format
 msgid ""
 "\n"
@@ -965,7 +959,7 @@ msgstr ""
 "错误：正在执行步骤 %s。错误为：\n"
 "%s\n"
 
-#: ../satellite_tools/messages.py:35
+#: ../satellite_tools/messages.py:37
 #, python-format
 msgid ""
 "\n"
@@ -982,7 +976,7 @@ msgstr ""
 "       ISO，确保不缺少任何 ISO，然后以交互方式\n"
 "       重新装入并重新填充临时储存库 (%s)。\n"
 
-#: ../satellite_tools/messages.py:45
+#: ../satellite_tools/messages.py:47
 #, python-format
 msgid ""
 "\n"
@@ -993,7 +987,7 @@ msgstr ""
 "错误：同步信息时出现问题。\n"
 "       错误消息：%s\n"
 
-#: ../satellite_tools/messages.py:52
+#: ../satellite_tools/messages.py:54
 #, python-format
 msgid ""
 "\n"
@@ -1008,7 +1002,7 @@ msgstr ""
 "       基本网络连接和/或名称解析，然后重试。\n"
 "       错误消息：%s\n"
 
-#: ../satellite_tools/messages.py:61
+#: ../satellite_tools/messages.py:63
 #, python-format
 msgid ""
 "\n"
@@ -1025,7 +1019,7 @@ msgstr ""
 "       父通道：\n"
 "       %s\n"
 
-#: ../satellite_tools/messages.py:71
+#: ../satellite_tools/messages.py:73
 #, python-format
 msgid ""
 "\n"
@@ -1038,120 +1032,124 @@ msgstr ""
 "请联系您的 SUSE Multi-Linux Manager 联系人\n"
 "%s"
 
-#: ../satellite_tools/messages.py:77
+#: ../satellite_tools/messages.py:79
 #, python-format
 msgid "  ERROR: not enough free space (%s KB) on device."
 msgstr "  错误：设备上的可用空间不足 (%s KB)。"
 
-#: ../satellite_tools/messages.py:79
+#: ../satellite_tools/messages.py:81
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr "    %3d/%s 提取成功：%s（%s 字节）"
 
-#: ../satellite_tools/messages.py:80
+#: ../satellite_tools/messages.py:82
 #, python-format
 msgid "    Extinct package:  %s"
 msgstr "    软件包不存在：%s"
 
-#: ../satellite_tools/messages.py:81
+#: ../satellite_tools/messages.py:83
 #, python-format
 msgid "   Total size: %s"
 msgstr "   总大小：%s"
 
-#: ../satellite_tools/messages.py:83
+#: ../satellite_tools/messages.py:85
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
 msgstr "      已下载 %s，共 %s。估计剩余时间：%s"
 
-#: ../satellite_tools/messages.py:85
+#: ../satellite_tools/messages.py:87
 #, python-format
 msgid "    Fetch unsuccessful: %s"
 msgstr "    提取失败：%s"
 
-#: ../satellite_tools/messages.py:86
+#: ../satellite_tools/messages.py:88
 #, python-format
 msgid "   RPM fetch summary: %s"
 msgstr "   RPM 提取摘要：%s"
 
-#: ../satellite_tools/messages.py:87
+#: ../satellite_tools/messages.py:89
 #, python-format
 msgid "       success: %d"
 msgstr "       成功：%d"
 
-#: ../satellite_tools/messages.py:88
+#: ../satellite_tools/messages.py:90
 #, python-format
 msgid "       failed:  %d"
 msgstr "       失败：%d"
 
-#: ../satellite_tools/messages.py:89
+#: ../satellite_tools/messages.py:91
 #, python-format
 msgid "       extinct: %d"
 msgstr "       不存在：%d"
 
-#: ../satellite_tools/messages.py:91
+#: ../satellite_tools/messages.py:93
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr "   正在检索/分析 *相关的* 软件包元数据：%s (%s)"
 
-#: ../satellite_tools/messages.py:92
+#: ../satellite_tools/messages.py:94
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
 msgstr "   正在检索/分析勘误数据：%s (%s)"
 
-#: ../satellite_tools/messages.py:93
+#: ../satellite_tools/messages.py:95
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
 msgstr "   正在检索/分析 kickstart 数据：%s (%s)"
 
-#: ../satellite_tools/messages.py:94
+#: ../satellite_tools/messages.py:96
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr "   正在检索/分析 kickstart 树文件：%s (%s)"
 
-#: ../satellite_tools/messages.py:95
+#: ../satellite_tools/messages.py:97
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
 msgstr "   正在导入 *相关的* 软件包元数据：%s (%s)"
 
-#: ../satellite_tools/messages.py:96
+#: ../satellite_tools/messages.py:98
 msgid "   * WARNING: this may be a slow process."
 msgstr "   * 警告：此过程可能需要较长时间。"
 
-#: ../satellite_tools/messages.py:97
+#: ../satellite_tools/messages.py:99
 msgid "Linking packages to channels"
 msgstr "将软件包链接到通道"
 
-#: ../satellite_tools/messages.py:98
+#: ../satellite_tools/messages.py:100
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
 msgstr "   正在导入 *相关的* 勘误：%s (%s)"
 
-#: ../satellite_tools/messages.py:99
+#: ../satellite_tools/messages.py:101
 msgid "   No new kickstartable tree to import"
 msgstr "   没有可导入的新 kickstart 树"
 
-#: ../satellite_tools/messages.py:100
+#: ../satellite_tools/messages.py:102
 #, python-format
 msgid "Importing kickstartable trees (%d)"
 msgstr "正在导入 kickstart 树 (%d)"
 
-#: ../satellite_tools/messages.py:101
+#: ../satellite_tools/messages.py:103
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "已导入 kickstart 树 (%d)"
 
-#: ../satellite_tools/reposync.py:148
+#: ../satellite_tools/reposync.py:150
 msgid "+++ sending log as an email +++"
 msgstr "+++ 正在以电子邮件形式发送日志 +++"
 
-#: ../satellite_tools/reposync.py:151
+#: ../satellite_tools/reposync.py:153
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s 同步报告，来自 %s"
 
-#: ../satellite_tools/reposync.py:161
+#: ../satellite_tools/reposync.py:163
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
+
+#, python-format
+#~ msgid "format of %s should be at least YYYYMMDD.\n"
+#~ msgstr "%s 至少应采用 YYYYMMDD 格式。\n"
 
 #~ msgid "ISS is disabled on this server."
 #~ msgstr "已在此服务器上禁用 ISS。"
