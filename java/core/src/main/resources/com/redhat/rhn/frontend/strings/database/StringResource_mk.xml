@@ -333,13 +333,6 @@
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Indian/Maldives" xml:space="preserve">
-        <source>(GMT+0500) Pakistan</source>
-        <target>(GMT+0500) Пакистан</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/UserDetails</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Asia/Kabul" xml:space="preserve">
         <source>(GMT+0430) Afghanistan</source>
         <target>(GMT+0430) Авганистан</target>
@@ -3633,6 +3626,13 @@
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
-    </body>
+    <trans-unit id="Asia/Karachi" xml:space="preserve">
+        <source>(GMT+0500) Pakistan</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

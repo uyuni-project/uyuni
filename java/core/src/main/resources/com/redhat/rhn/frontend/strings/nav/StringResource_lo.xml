@@ -502,13 +502,6 @@
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="nav.system.audit.schedule.beta" xml:space="preserve">
-        <source>Schedule</source>
-        <target state="translated">ກຳນົດເວລາ</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/manager/systems/details/schedule-scap-scan</context>
-        </context-group>
-      </trans-unit>
       <!-- CoCo Attestation -->
       <trans-unit id="nav.system.coco" xml:space="preserve">
         <source>Confidential Computing</source>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 09:41+0200\n"
+"POT-Creation-Date: 2026-11-01 11:56+0100\n"
 "PO-Revision-Date: 2011-03-04 16:08+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -17,34 +17,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../server/apacheAuth.py:80
+#: ../server/apacheAuth.py:82
 #, python-format
 msgid "incomplete proxy authentication token: %s"
 msgstr ""
 
-#: ../server/apacheAuth.py:111
+#: ../server/apacheAuth.py:113
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
 msgstr ""
 
-#: ../server/apacheAuth.py:150
+#: ../server/apacheAuth.py:152
 msgid "declined proxy authentication"
 msgstr ""
 
-#: ../server/apacheRequest.py:68
+#: ../server/apacheRequest.py:70
 #, python-format
 msgid "Invalid request received (%s)."
 msgstr ""
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:130
+#: ../server/apacheRequest.py:132
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
 "%s"
 msgstr ""
 
-#: ../server/apacheRequest.py:160
+#: ../server/apacheRequest.py:162
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -52,12 +52,12 @@ msgid ""
 msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:675
+#: ../server/apacheRequest.py:677
 #, python-format
 msgid "Invalid URI %s"
 msgstr ""
 
-#: ../server/handlers/app/packages.py:220
+#: ../server/handlers/app/packages.py:222
 #, python-format
 msgid ""
 "\n"
@@ -78,27 +78,27 @@ msgstr ""
 msgid "This server ID no longer exists"
 msgstr ""
 
-#: ../server/importlib/userAuth.py:109
+#: ../server/importlib/userAuth.py:111
 msgid "You are not authorized to manage packages in the null org"
 msgstr ""
 
-#: ../server/importlib/userAuth.py:115
+#: ../server/importlib/userAuth.py:117
 #, python-format
 msgid "You are not allowed to manage packages in the %s org"
 msgstr ""
 
 #. ok, you're a regular user who doesn't manage any channels.
 #. take a hike.
-#: ../server/importlib/userAuth.py:132
+#: ../server/importlib/userAuth.py:134
 msgid "You are not allowed to perform administrative tasks"
 msgstr ""
 
-#: ../server/importlib/userAuth.py:159
+#: ../server/importlib/userAuth.py:161
 #, python-format
 msgid "You are not allowed to manage channel %s, or that channel does not exist"
 msgstr ""
 
-#: ../server/importlib/userAuth.py:229
+#: ../server/importlib/userAuth.py:231
 #, python-format
 msgid ""
 "\n"
@@ -106,12 +106,12 @@ msgid ""
 "               Please contact your Org administrator for more help."
 msgstr ""
 
-#: ../server/rhnChannel.py:2216
+#: ../server/rhnChannel.py:2218
 #, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
 
-#: ../server/rhnChannel.py:2235
+#: ../server/rhnChannel.py:2237
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr ""
@@ -120,11 +120,11 @@ msgstr ""
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
+#: ../server/rhnChannel.py:2551 ../server/rhnChannel.py:2570
 msgid "System Registered but Inactive"
 msgstr ""
 
-#: ../server/rhnChannel.py:2551
+#: ../server/rhnChannel.py:2553
 #, python-format
 msgid ""
 "\n"
@@ -134,7 +134,7 @@ msgid ""
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
 
-#: ../server/rhnChannel.py:2560
+#: ../server/rhnChannel.py:2562
 #, python-format
 msgid ""
 "\n"
@@ -144,7 +144,7 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 
-#: ../server/rhnChannel.py:2570
+#: ../server/rhnChannel.py:2572
 #, python-format
 msgid ""
 "\n"
@@ -155,22 +155,22 @@ msgid ""
 msgstr ""
 
 #. Invalid server certificate.
-#: ../server/rhnHandler.py:62
+#: ../server/rhnHandler.py:64
 msgid "Please run rhn_register as root on this client"
 msgstr ""
 
-#: ../server/rhnHandler.py:76
+#: ../server/rhnHandler.py:78
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr ""
 
-#: ../server/rhnPackage.py:51 ../server/rhnPackage.py:97
-#: ../server/rhnPackage.py:117 ../server/rhnPackage.py:179
+#: ../server/rhnPackage.py:53 ../server/rhnPackage.py:99
+#: ../server/rhnPackage.py:119 ../server/rhnPackage.py:181
 #, python-format
 msgid "Invalid RPM package %s requested"
 msgstr ""
 
-#: ../server/rhnPackage.py:123
+#: ../server/rhnPackage.py:125
 msgid "Package not found"
 msgstr ""
 
@@ -188,181 +188,181 @@ msgstr ""
 msgid "Conflicting base channels"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:223
+#: ../server/rhnServer/server_token.py:221
 #, python-format
 msgid "Failed to add server to group %s"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:574
+#: ../server/rhnServer/server_token.py:552
 #, python-format
 msgid "Maximum usage count of %s reached"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:866
+#: ../server/rhnServer/server_token.py:844
 msgid "Stacking of re-registration tokens with different base entitlements is not supported"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:943
+#: ../server/rhnServer/server_token.py:917
 #, python-format
 msgid "Could not find token '%s'"
 msgstr ""
 
 #. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:976
+#: ../server/rhnServer/server_token.py:950
 msgid "Tokens from mismatching orgs"
 msgstr ""
 
 #. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:986
+#: ../server/rhnServer/server_token.py:960
 msgid "Kickstart session mismatch"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:1010
+#: ../server/rhnServer/server_token.py:984
 msgid "Stacking of re-registration tokens is not supported"
 msgstr ""
 
-#: ../server/rhnUser.py:321 ../server/rhnUser.py:324
+#: ../server/rhnUser.py:323 ../server/rhnUser.py:326
 msgid "Invalid username/password combination"
 msgstr ""
 
 #. nope, not reserved either
-#: ../server/rhnUser.py:505
+#: ../server/rhnUser.py:507
 #, python-format
 msgid "Username `%s' has not been reserved"
 msgstr ""
 
 #. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:511
+#: ../server/rhnUser.py:513
 msgid "E-mail address not specified"
 msgstr ""
 
-#: ../server/rhnUser.py:553
+#: ../server/rhnUser.py:555
 #, python-format
 msgid "username should be at least %d characters"
 msgstr ""
 
-#: ../server/rhnUser.py:557
+#: ../server/rhnUser.py:559
 #, python-format
 msgid "username should be less than %d characters"
 msgstr ""
 
-#: ../server/rhnUser.py:571
+#: ../server/rhnUser.py:573
 #, python-format
 msgid "username = `%s', invalid character `%s'"
 msgstr ""
 
-#: ../server/rhnUser.py:592
+#: ../server/rhnUser.py:594
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr ""
 
-#: ../server/rhnUser.py:690
+#: ../server/rhnUser.py:692
 #, python-format
 msgid "password must be at least %d characters"
 msgstr ""
 
-#: ../server/rhnUser.py:694
+#: ../server/rhnUser.py:696
 #, python-format
 msgid "Password must be shorter than %d characters"
 msgstr ""
 
-#: ../server/rhnUser.py:710
+#: ../server/rhnUser.py:712
 #, python-format
 msgid "password contains character `%s'"
 msgstr ""
 
-#: ../server/rhnUser.py:719
+#: ../server/rhnUser.py:721
 #, python-format
 msgid "username should be at least %d characters long"
 msgstr ""
 
-#: ../server/rhnUser.py:730
+#: ../server/rhnUser.py:732
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr ""
 
 #. 0-999: Red Hat client/client-like interaction errors:
-#: ../common/rhnException.py:55
+#: ../common/rhnException.py:57
 msgid "This does not appear to be a valid username."
 msgstr ""
 
-#: ../common/rhnException.py:56
+#: ../common/rhnException.py:58
 msgid "Invalid username and password combination."
 msgstr ""
 
-#: ../common/rhnException.py:57
+#: ../common/rhnException.py:59
 msgid "This login is already taken, or the password is incorrect."
 msgstr ""
 
-#: ../common/rhnException.py:58
+#: ../common/rhnException.py:60
 msgid "Permission denied."
 msgstr ""
 
-#: ../common/rhnException.py:59
+#: ../common/rhnException.py:61
 msgid "Object not found."
 msgstr ""
 
-#: ../common/rhnException.py:60
+#: ../common/rhnException.py:62
 msgid "Invalid System Digital ID."
 msgstr ""
 
-#: ../common/rhnException.py:61
+#: ../common/rhnException.py:63
 msgid "Invalid System Credentials."
 msgstr ""
 
-#: ../common/rhnException.py:62
+#: ../common/rhnException.py:64
 msgid "Could not retrieve user data from database."
 msgstr ""
 
-#: ../common/rhnException.py:63
+#: ../common/rhnException.py:65
 msgid "Valid username required."
 msgstr ""
 
-#: ../common/rhnException.py:64
+#: ../common/rhnException.py:66
 msgid "Valid password required."
 msgstr ""
 
-#: ../common/rhnException.py:65
+#: ../common/rhnException.py:67
 msgid "Minimum username length violation."
 msgstr ""
 
-#: ../common/rhnException.py:66
+#: ../common/rhnException.py:68
 msgid "Minimum password length violation."
 msgstr ""
 
-#: ../common/rhnException.py:67
+#: ../common/rhnException.py:69
 msgid "The username contains invalid characters."
 msgstr ""
 
-#: ../common/rhnException.py:68
+#: ../common/rhnException.py:70
 msgid "File not found."
 msgstr ""
 
-#: ../common/rhnException.py:69
+#: ../common/rhnException.py:71
 msgid "Architecture and OS version combination is not supported."
 msgstr ""
 
-#: ../common/rhnException.py:70
+#: ../common/rhnException.py:72
 msgid "Could not retrieve system data from database."
 msgstr ""
 
-#: ../common/rhnException.py:71
+#: ../common/rhnException.py:73
 msgid "Invalid arguments passed to function."
 msgstr ""
 
-#: ../common/rhnException.py:72
+#: ../common/rhnException.py:74
 msgid "Unable to retrieve requested entry."
 msgstr ""
 
-#: ../common/rhnException.py:73
+#: ../common/rhnException.py:75
 msgid "Could not update database entry."
 msgstr ""
 
-#: ../common/rhnException.py:74
+#: ../common/rhnException.py:76
 msgid "Unsupported server architecture."
 msgstr ""
 
-#: ../common/rhnException.py:76
+#: ../common/rhnException.py:78
 #, python-format
 msgid ""
 "\n"
@@ -375,15 +375,15 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:85
+#: ../common/rhnException.py:87
 msgid "Record not available in the database."
 msgstr ""
 
-#: ../common/rhnException.py:86
+#: ../common/rhnException.py:88
 msgid "Invalid value for entry."
 msgstr ""
 
-#: ../common/rhnException.py:88
+#: ../common/rhnException.py:90
 #, python-format
 msgid ""
 "\n"
@@ -394,47 +394,47 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:95
+#: ../common/rhnException.py:97
 msgid "Channel error"
 msgstr ""
 
-#: ../common/rhnException.py:96
+#: ../common/rhnException.py:98
 msgid "Client session token is invalid."
 msgstr ""
 
-#: ../common/rhnException.py:97
+#: ../common/rhnException.py:99
 msgid "Client session token has expired."
 msgstr ""
 
-#: ../common/rhnException.py:98
+#: ../common/rhnException.py:100
 msgid "You are not authorized to retrieve the requested object."
 msgstr ""
 
-#: ../common/rhnException.py:99
+#: ../common/rhnException.py:101
 msgid "Invalid action"
 msgstr ""
 
-#: ../common/rhnException.py:101
+#: ../common/rhnException.py:103
 msgid "You are not allowed to perform administrative tasks on this system."
 msgstr ""
 
-#: ../common/rhnException.py:104
+#: ../common/rhnException.py:106
 msgid "The system is already subscribed to the specified channel."
 msgstr ""
 
-#: ../common/rhnException.py:105
+#: ../common/rhnException.py:107
 msgid "The system is not currently subscribed to the specified channel."
 msgstr ""
 
-#: ../common/rhnException.py:106
+#: ../common/rhnException.py:108
 msgid "The specified channel does not exist."
 msgstr ""
 
-#: ../common/rhnException.py:107
+#: ../common/rhnException.py:109
 msgid "Invalid channel version."
 msgstr ""
 
-#: ../common/rhnException.py:109
+#: ../common/rhnException.py:111
 msgid ""
 "\n"
 "     User group membership limits exceeded.\n"
@@ -446,7 +446,7 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:119
+#: ../common/rhnException.py:121
 msgid ""
 "\n"
 "     System group membership limits exceeded.\n"
@@ -458,7 +458,7 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:129
+#: ../common/rhnException.py:131
 msgid ""
 "\n"
 "     Invalid architecture.\n"
@@ -467,11 +467,11 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:136
+#: ../common/rhnException.py:138
 msgid "Invalid RPM header"
 msgstr ""
 
-#: ../common/rhnException.py:138
+#: ../common/rhnException.py:140
 msgid ""
 "\n"
 "    This system is already registered as a Salt Minion. If you want to register it as a traditional client\n"
@@ -480,15 +480,15 @@ msgid ""
 msgstr ""
 
 #. For the uploading tools
-#: ../common/rhnException.py:144
+#: ../common/rhnException.py:146
 msgid "Invalid information uploaded to the server"
 msgstr ""
 
-#: ../common/rhnException.py:145
+#: ../common/rhnException.py:147
 msgid "Error uploading network interfaces configuration."
 msgstr ""
 
-#: ../common/rhnException.py:147
+#: ../common/rhnException.py:149
 msgid ""
 "\n"
 "     Package Upload Failed due to uniqueness constraint violation.\n"
@@ -497,7 +497,7 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:154
+#: ../common/rhnException.py:156
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -505,7 +505,7 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:161
+#: ../common/rhnException.py:163
 msgid ""
 "\n"
 "     The activation token specified could not be found on the server.\n"
@@ -513,26 +513,26 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:166
+#: ../common/rhnException.py:168
 msgid "Too many systems registered using this registration token"
 msgstr ""
 
-#: ../common/rhnException.py:167
+#: ../common/rhnException.py:169
 msgid "Token contains invalid, obsoleted or insufficient settings"
 msgstr ""
 
-#: ../common/rhnException.py:168
+#: ../common/rhnException.py:170
 msgid "Conflicting activation tokens"
 msgstr ""
 
-#: ../common/rhnException.py:171
+#: ../common/rhnException.py:173
 msgid ""
 "\n"
 "     No matching base channel found for your system.\n"
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:176
+#: ../common/rhnException.py:178
 msgid ""
 "\n"
 "     You do not have subscription permission to the designated channel.\n"
@@ -541,84 +541,84 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:182
+#: ../common/rhnException.py:184
 msgid "You can not unsubscribe from base channel."
 msgstr ""
 
-#: ../common/rhnException.py:183
+#: ../common/rhnException.py:185
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
 msgstr ""
 
 #. 80-90: server group errors
-#: ../common/rhnException.py:185
+#: ../common/rhnException.py:187
 msgid "There was an error while trying to join the system to its groups"
 msgstr ""
 
 #. 90-100: entitlement errors
-#: ../common/rhnException.py:187
+#: ../common/rhnException.py:189
 msgid "Unable to entitle system"
 msgstr ""
 
 #. 100-109: e-mail and uuid related faults
-#: ../common/rhnException.py:189
+#: ../common/rhnException.py:191
 msgid "Maximum e-mail length violation."
 msgstr ""
 
-#: ../common/rhnException.py:190
+#: ../common/rhnException.py:192
 msgid "This system has been previously registered."
 msgstr ""
 
-#: ../common/rhnException.py:191
+#: ../common/rhnException.py:193
 msgid "Invalid username"
 msgstr ""
 
 #. 140-159 applet errors
-#: ../common/rhnException.py:193
+#: ../common/rhnException.py:195
 msgid "Unable to look up server"
 msgstr ""
 
 #. 160-179: OSAD errors
-#: ../common/rhnException.py:195
+#: ../common/rhnException.py:197
 msgid "Required argument is missing"
 msgstr ""
 
 #. 600-699: RHEL5+ EN errors
-#: ../common/rhnException.py:197
+#: ../common/rhnException.py:199
 msgid "No entitlement information tied to hardware"
 msgstr ""
 
-#: ../common/rhnException.py:198
+#: ../common/rhnException.py:200
 msgid "Installation number is not entitling"
 msgstr ""
 
 #. 700-799: Additional user input verification errors.
-#: ../common/rhnException.py:200
+#: ../common/rhnException.py:202
 msgid "Maximum username length violation"
 msgstr ""
 
-#: ../common/rhnException.py:201
+#: ../common/rhnException.py:203
 msgid "Maximum password length violation"
 msgstr ""
 
-#: ../common/rhnException.py:202
+#: ../common/rhnException.py:204
 msgid "This user has read only API access. Action denied."
 msgstr ""
 
-#: ../common/rhnException.py:203
+#: ../common/rhnException.py:205
 msgid "System Name cannot be less than 1 character"
 msgstr ""
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
-#: ../common/rhnException.py:206
+#: ../common/rhnException.py:208
 msgid "SUSE Multi-Linux Manager Proxy error."
 msgstr ""
 
-#: ../common/rhnException.py:207
+#: ../common/rhnException.py:209
 msgid "SUSE Multi-Linux Manager Proxy unable to login."
 msgstr ""
 
-#: ../common/rhnException.py:210
+#: ../common/rhnException.py:212
 msgid ""
 "\n"
 "     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk Proxy Server\n"
@@ -626,15 +626,15 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:215
+#: ../common/rhnException.py:217
 msgid "SUSE Multi-Linux Manager Proxy session token is invalid."
 msgstr ""
 
-#: ../common/rhnException.py:216
+#: ../common/rhnException.py:218
 msgid "SUSE Multi-Linux Manager Proxy session token has expired."
 msgstr ""
 
-#: ../common/rhnException.py:220
+#: ../common/rhnException.py:222
 msgid ""
 "\n"
 "      user creation is not allowed via mgr_register;\n"
@@ -642,14 +642,14 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:226
+#: ../common/rhnException.py:228
 msgid ""
 "\n"
 "     This SUSE Multi-Linux Manager server is not allowed to use Inter Server Sync on this server\n"
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:231
+#: ../common/rhnException.py:233
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Multi-Linux Manager Server.\n"
@@ -657,141 +657,141 @@ msgid ""
 msgstr ""
 
 #. 3000-3999: XML dumper errors:
-#: ../common/rhnException.py:236
+#: ../common/rhnException.py:238
 msgid "Invalid datatype passed"
 msgstr ""
 
-#: ../common/rhnException.py:237
+#: ../common/rhnException.py:239
 msgid "Unable to retrieve channel"
 msgstr ""
 
-#: ../common/rhnException.py:238
+#: ../common/rhnException.py:240
 msgid "Unable to retrieve package"
 msgstr ""
 
-#: ../common/rhnException.py:239
+#: ../common/rhnException.py:241
 msgid "Unable to retrieve erratum"
 msgstr ""
 
-#: ../common/rhnException.py:240
+#: ../common/rhnException.py:242
 msgid "File is missing"
 msgstr ""
 
-#: ../common/rhnException.py:241
+#: ../common/rhnException.py:243
 msgid "Function retrieval error"
 msgstr ""
 
-#: ../common/rhnException.py:242
+#: ../common/rhnException.py:244
 msgid "Function execution error"
 msgstr ""
 
-#: ../common/rhnException.py:243
+#: ../common/rhnException.py:245
 msgid "Missing version string"
 msgstr ""
 
-#: ../common/rhnException.py:244
+#: ../common/rhnException.py:246
 msgid "Invalid version string"
 msgstr ""
 
-#: ../common/rhnException.py:245
+#: ../common/rhnException.py:247
 msgid "Mismatching versions"
 msgstr ""
 
-#: ../common/rhnException.py:246
+#: ../common/rhnException.py:248
 msgid "Invalid channel version"
 msgstr ""
 
-#: ../common/rhnException.py:247
+#: ../common/rhnException.py:249
 msgid "No comps file for channel"
 msgstr ""
 
-#: ../common/rhnException.py:248
+#: ../common/rhnException.py:250
 msgid "Unable to retrieve comps file"
 msgstr ""
 
 #. 4000 - 4999: config management errors
-#: ../common/rhnException.py:250
+#: ../common/rhnException.py:252
 msgid "Configuration action missing"
 msgstr ""
 
-#: ../common/rhnException.py:251
+#: ../common/rhnException.py:253
 msgid "File too large"
 msgstr ""
 
-#: ../common/rhnException.py:252
+#: ../common/rhnException.py:254
 msgid "File contains binary data"
 msgstr ""
 
-#: ../common/rhnException.py:253
+#: ../common/rhnException.py:255
 msgid "Configuration channel is not empty"
 msgstr ""
 
-#: ../common/rhnException.py:254
+#: ../common/rhnException.py:256
 msgid "Permission error"
 msgstr ""
 
-#: ../common/rhnException.py:255
+#: ../common/rhnException.py:257
 msgid "Content missing for configuration file"
 msgstr ""
 
-#: ../common/rhnException.py:256
+#: ../common/rhnException.py:258
 msgid "Template delimiters not specified"
 msgstr ""
 
-#: ../common/rhnException.py:257
+#: ../common/rhnException.py:259
 msgid "Configuration channel does not exist"
 msgstr ""
 
-#: ../common/rhnException.py:258
+#: ../common/rhnException.py:260
 msgid "Configuration channel already exists"
 msgstr ""
 
-#: ../common/rhnException.py:259
+#: ../common/rhnException.py:261
 msgid "File missing from configuration channel"
 msgstr ""
 
-#: ../common/rhnException.py:260
+#: ../common/rhnException.py:262
 msgid "Different revision of this file is uploaded"
 msgstr ""
 
-#: ../common/rhnException.py:261
+#: ../common/rhnException.py:263
 msgid "File already uploaded to configuration channel"
 msgstr ""
 
-#: ../common/rhnException.py:262
+#: ../common/rhnException.py:264
 msgid "File size exceeds remaining quota space"
 msgstr ""
 
-#: ../common/rhnException.py:263
+#: ../common/rhnException.py:265
 msgid "Full path of file must be specified"
 msgstr ""
 
-#: ../common/rhnException.py:264
+#: ../common/rhnException.py:266
 msgid "Invalid revision number"
 msgstr ""
 
-#: ../common/rhnException.py:265
+#: ../common/rhnException.py:267
 msgid "Cannot compare files of different file type"
 msgstr ""
 
 #. 5100 - 5199: scap results reporting error
-#: ../common/rhnException.py:267
+#: ../common/rhnException.py:269
 msgid "SCAP results file transfer is invalid or incomplete"
 msgstr ""
 
-#: ../common/rhnException.py:268
+#: ../common/rhnException.py:270
 msgid "Error composing directory path for detailed SCAP results"
 msgstr ""
 
-#: ../common/rhnException.py:269
+#: ../common/rhnException.py:271
 msgid "Error composing file path for detailed SCAP results"
 msgstr ""
 
-#: ../common/rhnException.py:270
+#: ../common/rhnException.py:272
 msgid "Invalid content encoding"
 msgstr ""
 
-#: ../common/rhnException.py:317
+#: ../common/rhnException.py:319
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -801,45 +801,39 @@ msgid ""
 "     details on how to reproduce this problem.\n"
 msgstr ""
 
-#: ../common/rhnException.py:368
+#: ../common/rhnException.py:370
 #, python-format
 msgid ""
 "Error Message:\n"
 "    %s\n"
 msgstr ""
 
-#: ../common/rhnException.py:370
+#: ../common/rhnException.py:372
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr ""
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:375
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr ""
 
-#: ../common/rhnException.py:375
+#: ../common/rhnException.py:377
 #, python-format
 msgid "Explanation: %s"
 msgstr ""
 
-#: ../common/rhnTB.py:220
+#: ../common/rhnTB.py:221
 #, python-format
 msgid "ERROR: %s %s: %s"
 msgstr ""
 
-#: ../common/rhnTB.py:221
+#: ../common/rhnTB.py:222
 #, python-format
 msgid "TRACEBACK: %s"
 msgstr ""
 
-#: ../satellite_tools/disk_dumper/iss.py:1634
-#: ../satellite_tools/disk_dumper/iss.py:1640
-#, python-format
-msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:28
+#: ../satellite_tools/messages.py:30
 #, python-format
 msgid ""
 "\n"
@@ -847,7 +841,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:35
+#: ../satellite_tools/messages.py:37
 #, python-format
 msgid ""
 "\n"
@@ -858,7 +852,7 @@ msgid ""
 "       the temporary repository (%s).\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:45
+#: ../satellite_tools/messages.py:47
 #, python-format
 msgid ""
 "\n"
@@ -866,7 +860,7 @@ msgid ""
 "       Error message: %s\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:52
+#: ../satellite_tools/messages.py:54
 #, python-format
 msgid ""
 "\n"
@@ -876,7 +870,7 @@ msgid ""
 "       Error message: %s\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:61
+#: ../satellite_tools/messages.py:63
 #, python-format
 msgid ""
 "\n"
@@ -887,7 +881,7 @@ msgid ""
 "       %s\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:71
+#: ../satellite_tools/messages.py:73
 #, python-format
 msgid ""
 "\n"
@@ -896,117 +890,117 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:77
+#: ../satellite_tools/messages.py:79
 #, python-format
 msgid "  ERROR: not enough free space (%s KB) on device."
 msgstr ""
 
-#: ../satellite_tools/messages.py:79
+#: ../satellite_tools/messages.py:81
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:80
+#: ../satellite_tools/messages.py:82
 #, python-format
 msgid "    Extinct package:  %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:81
+#: ../satellite_tools/messages.py:83
 #, python-format
 msgid "   Total size: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:83
+#: ../satellite_tools/messages.py:85
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:85
+#: ../satellite_tools/messages.py:87
 #, python-format
 msgid "    Fetch unsuccessful: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:86
+#: ../satellite_tools/messages.py:88
 #, python-format
 msgid "   RPM fetch summary: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:87
+#: ../satellite_tools/messages.py:89
 #, python-format
 msgid "       success: %d"
 msgstr ""
 
-#: ../satellite_tools/messages.py:88
+#: ../satellite_tools/messages.py:90
 #, python-format
 msgid "       failed:  %d"
 msgstr ""
 
-#: ../satellite_tools/messages.py:89
+#: ../satellite_tools/messages.py:91
 #, python-format
 msgid "       extinct: %d"
 msgstr ""
 
-#: ../satellite_tools/messages.py:91
+#: ../satellite_tools/messages.py:93
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:92
+#: ../satellite_tools/messages.py:94
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:93
+#: ../satellite_tools/messages.py:95
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:94
+#: ../satellite_tools/messages.py:96
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:95
+#: ../satellite_tools/messages.py:97
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:96
+#: ../satellite_tools/messages.py:98
 msgid "   * WARNING: this may be a slow process."
 msgstr ""
 
-#: ../satellite_tools/messages.py:97
-msgid "Linking packages to channels"
-msgstr ""
-
-#: ../satellite_tools/messages.py:98
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr ""
-
 #: ../satellite_tools/messages.py:99
-msgid "   No new kickstartable tree to import"
+msgid "Linking packages to channels"
 msgstr ""
 
 #: ../satellite_tools/messages.py:100
 #, python-format
-msgid "Importing kickstartable trees (%d)"
+msgid "   Importing *relevant* errata: %s (%s)"
 msgstr ""
 
 #: ../satellite_tools/messages.py:101
+msgid "   No new kickstartable tree to import"
+msgstr ""
+
+#: ../satellite_tools/messages.py:102
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:103
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:148
+#: ../satellite_tools/reposync.py:150
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:151
+#: ../satellite_tools/reposync.py:153
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:161
+#: ../satellite_tools/reposync.py:163
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""

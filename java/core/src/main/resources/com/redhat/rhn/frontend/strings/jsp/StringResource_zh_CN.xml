@@ -5432,8 +5432,8 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.scap" xml:space="preserve">
-        <source>&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
-        <target state="translated">使用 OpenSCAP &lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;审计&lt;/a&gt;系统</target>
+        <source>&lt;a href="/rhn/manager/systems/ssm/audit/schedule-scap-scan"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
+        <target state="needs-adaptation">使用 OpenSCAP &lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;审计&lt;/a&gt;系统</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -7829,20 +7829,6 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt;安装 {0} 个补丁</target>
       </trans-unit>
-      <trans-unit approved="yes" id="message.xccdfeval" xml:space="preserve">
-        <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
-        </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;安排&lt;/a&gt; XCCDF 扫描</target>
-      </trans-unit>
-      <trans-unit id="message.xccdfeval.ssm" xml:space="preserve">
-        <source>XCCDF scan has been scheduled successfully.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
-        </context-group>
-        <target state="translated">已成功安排 XCCDF 扫描。</target>
-      </trans-unit>
       <trans-unit id="message.xccdfdiff.missing" xml:space="preserve">
         <source>XCCDF scan of id={0} could not be found for user {1}.</source>
         <context-group name="ctx">
@@ -7856,13 +7842,6 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
         <target state="translated">一个或多个所选系统缺少 {0} 系统类型。</target>
-      </trans-unit>
-      <trans-unit id="message.xccdfeval.failed" xml:space="preserve">
-        <source>Action was not scheduled.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
-        </context-group>
-        <target state="translated">未安排该操作。</target>
       </trans-unit>
       <trans-unit id="message.capability.missing" xml:space="preserve">
         <source>One or more of the selected systems lack the {0} client-capability.</source>
@@ -14137,81 +14116,11 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">Manage Errata Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.schedulexccdf.jsp.schedule" xml:space="preserve">
-        <source>Schedule New XCCDF Scan</source>
-        <target state="translated">安排新的 XCCDF 扫描</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.schedulexccdf.jsp.button" xml:space="preserve">
-        <source>Schedule</source>
-        <target state="translated">日程安排</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.confirmschedulexccdf.jsp.button" xml:space="preserve">
-        <source>Confirm</source>
-        <target state="translated">确认</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.schedulexccdf.jsp.command" xml:space="preserve">
-        <source>Command</source>
-        <target state="translated">命令</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.schedulexccdf.jsp.arguments" xml:space="preserve">
         <source>Command-line Arguments</source>
         <target state="translated">命令行参数</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.schedulexccdf.jsp.path" xml:space="preserve">
-        <source>Path to XCCDF document</source>
-        <target state="translated">XCCDF 文档的路径</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit approved="yes" id="system.audit.schedulexccdf.jsp.xccdfEval" xml:space="preserve">
-        <source>/usr/bin/oscap xccdf eval</source>
-        <target state="final">/usr/bin/oscap xccdf eval</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.schedulexccdf.jsp.tooltip" xml:space="preserve">
-        <source>Certain versions of OpenSCAP may require the --profile command-line argument. --profile specifies a particular profile from the XCCDF document.</source>
-        <target state="translated">OpenSCAP 的某些版本可能需要 --profile 命令行参数。--profile 指定 XCCDF 文档的特定配置文件。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.schedulexccdf.jsp.nosoonerthan" xml:space="preserve">
-        <source>Earliest</source>
-        <target state="translated">最早</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="ssm.audit.xccdf.targetedsystems" xml:space="preserve">
-        <source>Targeted Systems</source>
-        <target state="translated">目标系统</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule for SSM</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="ssm.audit.xccdf.capability" xml:space="preserve">
-        <source>OpenSCAP Scan Capability</source>
-        <target state="translated">OpenSCAP 扫描功能</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule for SSM</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.overview" xml:space="preserve">
@@ -14518,13 +14427,6 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       <trans-unit id="system.audit.xccdfdetails.jsp.nodiff" xml:space="preserve">
         <source>No comparable scan was found.</source>
         <target state="translated">找不到可比较的扫描。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.xccdfdetails.jsp.reschedule" xml:space="preserve">
-        <source>reschedule</source>
-        <target state="translated">重新安排</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
@@ -29029,13 +28931,6 @@ given channel.</source>
         </context-group>
         <target state="final">执行 Ansible 剧本</target>
       </trans-unit>
-      <trans-unit approved="yes" id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
-        <source>Optional OVAL Files (comma separated)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        <target state="final">可选 OVAL 文件（逗号分隔）</target>
-      </trans-unit>
       <trans-unit approved="yes" id="system.event.scapOvalFiles" xml:space="preserve">
         <source>&lt;strong&gt;OVAL files (comma separated): &lt;/strong&gt; </source>
         <context-group name="ctx">
@@ -29943,6 +29838,17 @@ given channel.</source>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="actions.jsp.action_description" xml:space="preserve">
+        <source>Comment / Reason</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="pkg.lock.message.lockmissingpkg" xml:space="preserve">
+        <source>Failed to lock selected packages. Can't find one of the packages to lock.</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 09:41+0200\n"
+"POT-Creation-Date: 2026-11-01 11:56+0100\n"
 "PO-Revision-Date: 2025-10-05 15:59+0000\n"
 "Last-Translator: Ferdinan Rizky Budiarto <ferdinan.rizky@yahoo.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/id/>\n"
@@ -18,27 +18,27 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.13.3\n"
 
-#: ../server/apacheAuth.py:80
+#: ../server/apacheAuth.py:82
 #, python-format
 msgid "incomplete proxy authentication token: %s"
 msgstr "token autentikasi proksi tidak lengkap: %s"
 
-#: ../server/apacheAuth.py:111
+#: ../server/apacheAuth.py:113
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
 msgstr "Tanda tangan proksi yang dikirim %s tidak cocok dengan milik kami %s."
 
-#: ../server/apacheAuth.py:150
+#: ../server/apacheAuth.py:152
 msgid "declined proxy authentication"
 msgstr "autentikasi proksi ditolak"
 
-#: ../server/apacheRequest.py:68
+#: ../server/apacheRequest.py:70
 #, python-format
 msgid "Invalid request received (%s)."
 msgstr "Permintaan tidak valid diterima (%s)."
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:130
+#: ../server/apacheRequest.py:132
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -47,7 +47,7 @@ msgstr ""
 "PESAN PENTING BERIKUT:\n"
 "%s"
 
-#: ../server/apacheRequest.py:160
+#: ../server/apacheRequest.py:162
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -57,12 +57,12 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:675
+#: ../server/apacheRequest.py:677
 #, python-format
 msgid "Invalid URI %s"
 msgstr "URI “%s” Tidak Sah"
 
-#: ../server/handlers/app/packages.py:220
+#: ../server/handlers/app/packages.py:222
 #, python-format
 msgid ""
 "\n"
@@ -86,27 +86,27 @@ msgstr "Kunci sesi tidak valid"
 msgid "This server ID no longer exists"
 msgstr "ID server ini sudah tidak ada"
 
-#: ../server/importlib/userAuth.py:109
+#: ../server/importlib/userAuth.py:111
 msgid "You are not authorized to manage packages in the null org"
 msgstr "Anda tidak memiliki otorisasi untuk mengelola paket di null org"
 
-#: ../server/importlib/userAuth.py:115
+#: ../server/importlib/userAuth.py:117
 #, python-format
 msgid "You are not allowed to manage packages in the %s org"
 msgstr "Anda tidak diizinkan untuk mengelola paket dalam organisasi %s"
 
 #. ok, you're a regular user who doesn't manage any channels.
 #. take a hike.
-#: ../server/importlib/userAuth.py:132
+#: ../server/importlib/userAuth.py:134
 msgid "You are not allowed to perform administrative tasks"
 msgstr "Anda tidak diizinkan untuk melakukan tugas administratif"
 
-#: ../server/importlib/userAuth.py:159
+#: ../server/importlib/userAuth.py:161
 #, python-format
 msgid "You are not allowed to manage channel %s, or that channel does not exist"
 msgstr "Anda tidak diizinkan untuk mengelola saluran %s, atau saluran tersebut tidak ada"
 
-#: ../server/importlib/userAuth.py:229
+#: ../server/importlib/userAuth.py:231
 #, python-format
 msgid ""
 "\n"
@@ -117,12 +117,12 @@ msgstr ""
 "               Akun %s telah dinonaktifkan pada server ini.\n"
 "               Silakan hubungi administrator Organisasi Anda untuk bantuan lebih lanjut."
 
-#: ../server/rhnChannel.py:2216
+#: ../server/rhnChannel.py:2218
 #, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr "Akun Anda tidak memiliki akses ke saluran apa pun yang cocok (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 
-#: ../server/rhnChannel.py:2235
+#: ../server/rhnChannel.py:2237
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Hak langganan untuk rilis (%s, %s) tidak mencukupi"
@@ -131,11 +131,11 @@ msgstr "Hak langganan untuk rilis (%s, %s) tidak mencukupi"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
+#: ../server/rhnChannel.py:2551 ../server/rhnChannel.py:2570
 msgid "System Registered but Inactive"
 msgstr "Sistem Terdaftar tetapi Tidak Aktif"
 
-#: ../server/rhnChannel.py:2551
+#: ../server/rhnChannel.py:2553
 #, python-format
 msgid ""
 "\n"
@@ -150,7 +150,7 @@ msgstr ""
 "karena tidak dapat berlangganan ke saluran dasar.\n"
 "Silakan hubungi administrator organisasi Anda untuk bantuan.\n"
 
-#: ../server/rhnChannel.py:2560
+#: ../server/rhnChannel.py:2562
 #, python-format
 msgid ""
 "\n"
@@ -165,7 +165,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2570
+#: ../server/rhnChannel.py:2572
 #, python-format
 msgid ""
 "\n"
@@ -181,22 +181,22 @@ msgstr ""
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
-#: ../server/rhnHandler.py:62
+#: ../server/rhnHandler.py:64
 msgid "Please run rhn_register as root on this client"
 msgstr "Silakan jalankan rhn_register sebagai root pada klien ini"
 
-#: ../server/rhnHandler.py:76
+#: ../server/rhnHandler.py:78
 #, fuzzy, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Layanan tidak diaktifkan untuk profil sistem: \"%s\""
 
-#: ../server/rhnPackage.py:51 ../server/rhnPackage.py:97
-#: ../server/rhnPackage.py:117 ../server/rhnPackage.py:179
+#: ../server/rhnPackage.py:53 ../server/rhnPackage.py:99
+#: ../server/rhnPackage.py:119 ../server/rhnPackage.py:181
 #, fuzzy, python-format
 msgid "Invalid RPM package %s requested"
 msgstr "Paket RPM %s tidak valid diminta"
 
-#: ../server/rhnPackage.py:123
+#: ../server/rhnPackage.py:125
 #, fuzzy
 msgid "Package not found"
 msgstr "Paket tidak ditemukan"
@@ -216,207 +216,207 @@ msgstr "Token '%s' memiliki lebih dari satu saluran dasar yang ditugaskan"
 msgid "Conflicting base channels"
 msgstr "Saluran dasar yang bertentangan"
 
-#: ../server/rhnServer/server_token.py:223
+#: ../server/rhnServer/server_token.py:221
 #, fuzzy, python-format
 msgid "Failed to add server to group %s"
 msgstr "Gagal menambahkan server ke grup %s"
 
-#: ../server/rhnServer/server_token.py:574
+#: ../server/rhnServer/server_token.py:552
 #, fuzzy, python-format
 msgid "Maximum usage count of %s reached"
 msgstr "Jumlah penggunaan maksimum dari %s tercapai"
 
-#: ../server/rhnServer/server_token.py:866
+#: ../server/rhnServer/server_token.py:844
 #, fuzzy
 msgid "Stacking of re-registration tokens with different base entitlements is not supported"
 msgstr "Penumpukan token pendaftaran ulang dengan hak dasar yang berbeda tidak didukung"
 
-#: ../server/rhnServer/server_token.py:943
+#: ../server/rhnServer/server_token.py:917
 #, fuzzy, python-format
 msgid "Could not find token '%s'"
 msgstr "Tidak dapat menemukan token '%s'"
 
 #. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:976
+#: ../server/rhnServer/server_token.py:950
 #, fuzzy
 msgid "Tokens from mismatching orgs"
 msgstr "Token dari organisasi yang tidak cocok"
 
 #. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:986
+#: ../server/rhnServer/server_token.py:960
 #, fuzzy
 msgid "Kickstart session mismatch"
 msgstr "Ketidakcocokan sesi kickstart"
 
-#: ../server/rhnServer/server_token.py:1010
+#: ../server/rhnServer/server_token.py:984
 #, fuzzy
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Penumpukan token pendaftaran ulang tidak didukung"
 
-#: ../server/rhnUser.py:321 ../server/rhnUser.py:324
+#: ../server/rhnUser.py:323 ../server/rhnUser.py:326
 #, fuzzy
 msgid "Invalid username/password combination"
 msgstr "Kombinasi nama pengguna/kata sandi tidak valid"
 
 #. nope, not reserved either
-#: ../server/rhnUser.py:505
+#: ../server/rhnUser.py:507
 #, fuzzy, python-format
 msgid "Username `%s' has not been reserved"
 msgstr "Nama pengguna '%s' belum dicadangkan"
 
 #. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:511
+#: ../server/rhnUser.py:513
 #, fuzzy
 msgid "E-mail address not specified"
 msgstr "Alamat e-mail tidak ditentukan"
 
-#: ../server/rhnUser.py:553
+#: ../server/rhnUser.py:555
 #, fuzzy, python-format
 msgid "username should be at least %d characters"
 msgstr "nama pengguna harus setidaknya %d karakter"
 
-#: ../server/rhnUser.py:557
+#: ../server/rhnUser.py:559
 #, fuzzy, python-format
 msgid "username should be less than %d characters"
 msgstr "nama pengguna harus kurang dari %d karakter"
 
-#: ../server/rhnUser.py:571
+#: ../server/rhnUser.py:573
 #, fuzzy, python-format
 msgid "username = `%s', invalid character `%s'"
 msgstr "username = '%s', karakter '%s' tidak valid"
 
-#: ../server/rhnUser.py:592
+#: ../server/rhnUser.py:594
 #, fuzzy, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr "Batasi alamat e-mail Anda ke %s chars"
 
-#: ../server/rhnUser.py:690
+#: ../server/rhnUser.py:692
 #, fuzzy, python-format
 msgid "password must be at least %d characters"
 msgstr "kata sandi harus setidaknya %d karakter"
 
-#: ../server/rhnUser.py:694
+#: ../server/rhnUser.py:696
 #, fuzzy, python-format
 msgid "Password must be shorter than %d characters"
 msgstr "Kata sandi harus lebih pendek dari karakter %d"
 
-#: ../server/rhnUser.py:710
+#: ../server/rhnUser.py:712
 #, fuzzy, python-format
 msgid "password contains character `%s'"
 msgstr "kata sandi berisi karakter '%s'"
 
-#: ../server/rhnUser.py:719
+#: ../server/rhnUser.py:721
 #, fuzzy, python-format
 msgid "username should be at least %d characters long"
 msgstr "username harus setidaknya %d karakter panjang"
 
-#: ../server/rhnUser.py:730
+#: ../server/rhnUser.py:732
 #, fuzzy, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Tidak dapat mendaftarkan nama pengguna yang diakhiri dengan %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
-#: ../common/rhnException.py:55
+#: ../common/rhnException.py:57
 #, fuzzy
 msgid "This does not appear to be a valid username."
 msgstr "Ini tampaknya tidak menjadi nama pengguna yang valid."
 
-#: ../common/rhnException.py:56
+#: ../common/rhnException.py:58
 #, fuzzy
 msgid "Invalid username and password combination."
 msgstr "Kombinasi nama pengguna dan kata sandi tidak valid."
 
-#: ../common/rhnException.py:57
+#: ../common/rhnException.py:59
 #, fuzzy
 msgid "This login is already taken, or the password is incorrect."
 msgstr "Login ini sudah diambil, atau sandi tidak benar."
 
-#: ../common/rhnException.py:58
+#: ../common/rhnException.py:60
 #, fuzzy
 msgid "Permission denied."
 msgstr "Hak akses ditolak."
 
-#: ../common/rhnException.py:59
+#: ../common/rhnException.py:61
 #, fuzzy
 msgid "Object not found."
 msgstr "Objek tidak ditemukan"
 
-#: ../common/rhnException.py:60
+#: ../common/rhnException.py:62
 #, fuzzy
 msgid "Invalid System Digital ID."
 msgstr "ID Digital sistem tidak valid."
 
-#: ../common/rhnException.py:61
+#: ../common/rhnException.py:63
 #, fuzzy
 msgid "Invalid System Credentials."
 msgstr "Kredensial sistem tidak valid."
 
-#: ../common/rhnException.py:62
+#: ../common/rhnException.py:64
 #, fuzzy
 msgid "Could not retrieve user data from database."
 msgstr "Tak bisa mengambil data pengguna dari pangkalan data."
 
-#: ../common/rhnException.py:63
+#: ../common/rhnException.py:65
 #, fuzzy
 msgid "Valid username required."
 msgstr "Diperlukan nama pengguna yang valid."
 
-#: ../common/rhnException.py:64
+#: ../common/rhnException.py:66
 #, fuzzy
 msgid "Valid password required."
 msgstr "Diperlukan kata sandi yang valid."
 
-#: ../common/rhnException.py:65
+#: ../common/rhnException.py:67
 #, fuzzy
 msgid "Minimum username length violation."
 msgstr "Pelanggaran panjang nama pengguna minimum."
 
-#: ../common/rhnException.py:66
+#: ../common/rhnException.py:68
 #, fuzzy
 msgid "Minimum password length violation."
 msgstr "Pelanggaran panjang kata sandi minimum."
 
-#: ../common/rhnException.py:67
+#: ../common/rhnException.py:69
 #, fuzzy
 msgid "The username contains invalid characters."
 msgstr "Nama pengguna berisi karakter yang tidak valid."
 
-#: ../common/rhnException.py:68
+#: ../common/rhnException.py:70
 #, fuzzy
 msgid "File not found."
 msgstr "Berkas tidak ditemukan."
 
-#: ../common/rhnException.py:69
+#: ../common/rhnException.py:71
 #, fuzzy
 msgid "Architecture and OS version combination is not supported."
 msgstr "Kombinasi versi arsitektur dan OS tidak didukung."
 
-#: ../common/rhnException.py:70
+#: ../common/rhnException.py:72
 #, fuzzy
 msgid "Could not retrieve system data from database."
 msgstr "Tidak dapat mengambil data sistem dari database."
 
-#: ../common/rhnException.py:71
+#: ../common/rhnException.py:73
 #, fuzzy
 msgid "Invalid arguments passed to function."
 msgstr "Argumen tidak valid diteruskan ke fungsi."
 
-#: ../common/rhnException.py:72
+#: ../common/rhnException.py:74
 #, fuzzy
 msgid "Unable to retrieve requested entry."
 msgstr "Tidak dapat mengambil entri yang diminta."
 
-#: ../common/rhnException.py:73
+#: ../common/rhnException.py:75
 #, fuzzy
 msgid "Could not update database entry."
 msgstr "Tidak dapat memperbarui entri database."
 
-#: ../common/rhnException.py:74
+#: ../common/rhnException.py:76
 #, fuzzy
 msgid "Unsupported server architecture."
 msgstr "Arsitektur server yang tidak didukung."
 
-#: ../common/rhnException.py:76
+#: ../common/rhnException.py:78
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -435,17 +435,17 @@ msgstr ""
 "     atau login di https://%(hostname)s, dan dari tab \"Ikhtisar\",\n"
 "     pilih \"Manajemen Langganan\" untuk mengaktifkan layanan untuk sistem ini."
 
-#: ../common/rhnException.py:85
+#: ../common/rhnException.py:87
 #, fuzzy
 msgid "Record not available in the database."
 msgstr "Catatan tidak tersedia dalam database."
 
-#: ../common/rhnException.py:86
+#: ../common/rhnException.py:88
 #, fuzzy
 msgid "Invalid value for entry."
 msgstr "Nilai tidak valid untuk entri."
 
-#: ../common/rhnException.py:88
+#: ../common/rhnException.py:90
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -460,57 +460,57 @@ msgstr ""
 "     atau login di https://%(hostname)s, dan dari tab \"Ikhtisar\",\n"
 "     pilih \"Manajemen Langganan\" untuk mengaktifkan layanan untuk sistem ini."
 
-#: ../common/rhnException.py:95
+#: ../common/rhnException.py:97
 #, fuzzy
 msgid "Channel error"
 msgstr "Kesalahan saluran"
 
-#: ../common/rhnException.py:96
+#: ../common/rhnException.py:98
 #, fuzzy
 msgid "Client session token is invalid."
 msgstr "Token sesi klien tidak valid."
 
-#: ../common/rhnException.py:97
+#: ../common/rhnException.py:99
 #, fuzzy
 msgid "Client session token has expired."
 msgstr "Token sesi klien telah kedaluwarsa."
 
-#: ../common/rhnException.py:98
+#: ../common/rhnException.py:100
 #, fuzzy
 msgid "You are not authorized to retrieve the requested object."
 msgstr "Anda tidak berwenang untuk mengambil objek yang diminta."
 
-#: ../common/rhnException.py:99
+#: ../common/rhnException.py:101
 #, fuzzy
 msgid "Invalid action"
 msgstr "Tindakan tidak sah"
 
-#: ../common/rhnException.py:101
+#: ../common/rhnException.py:103
 #, fuzzy
 msgid "You are not allowed to perform administrative tasks on this system."
 msgstr "Anda tidak diizinkan untuk melakukan tugas administratif pada sistem ini."
 
-#: ../common/rhnException.py:104
+#: ../common/rhnException.py:106
 #, fuzzy
 msgid "The system is already subscribed to the specified channel."
 msgstr "Sistem ini sudah berlangganan ke saluran yang ditentukan."
 
-#: ../common/rhnException.py:105
+#: ../common/rhnException.py:107
 #, fuzzy
 msgid "The system is not currently subscribed to the specified channel."
 msgstr "Sistem saat ini tidak berlangganan saluran yang ditentukan."
 
-#: ../common/rhnException.py:106
+#: ../common/rhnException.py:108
 #, fuzzy
 msgid "The specified channel does not exist."
 msgstr "Saluran yang ditentukan tidak ada."
 
-#: ../common/rhnException.py:107
+#: ../common/rhnException.py:109
 #, fuzzy
 msgid "Invalid channel version."
 msgstr "Versi saluran tidak valid."
 
-#: ../common/rhnException.py:109
+#: ../common/rhnException.py:111
 #, fuzzy
 msgid ""
 "\n"
@@ -529,7 +529,7 @@ msgstr ""
 "     akun jika jumlah maksimum pengguna yang diizinkan untuk berlangganan kebutuhan server\n"
 "     untuk diubah."
 
-#: ../common/rhnException.py:119
+#: ../common/rhnException.py:121
 #, fuzzy
 msgid ""
 "\n"
@@ -548,7 +548,7 @@ msgstr ""
 "     akun untuk memodifikasi jumlah maksimum profil sistem yang dapat\n"
 "     berlangganan akun Anda."
 
-#: ../common/rhnException.py:129
+#: ../common/rhnException.py:131
 #, fuzzy
 msgid ""
 "\n"
@@ -561,12 +561,12 @@ msgstr ""
 "\n"
 "Arsitektur paket tidak didukung oleh"
 
-#: ../common/rhnException.py:136
+#: ../common/rhnException.py:138
 #, fuzzy
 msgid "Invalid RPM header"
 msgstr "Header RPM tidak valid"
 
-#: ../common/rhnException.py:138
+#: ../common/rhnException.py:140
 #, fuzzy
 msgid ""
 "\n"
@@ -578,17 +578,17 @@ msgstr ""
 "    silakan hapus terlebih dahulu melalui UI web atau API dan kemudian daftarkan menggunakan alat tradisional."
 
 #. For the uploading tools
-#: ../common/rhnException.py:144
+#: ../common/rhnException.py:146
 #, fuzzy
 msgid "Invalid information uploaded to the server"
 msgstr "Informasi tidak valid yang diunggah ke server"
 
-#: ../common/rhnException.py:145
+#: ../common/rhnException.py:147
 #, fuzzy
 msgid "Error uploading network interfaces configuration."
 msgstr "Galat saat mengunggah konfigurasi antarmuka jaringan."
 
-#: ../common/rhnException.py:147
+#: ../common/rhnException.py:149
 #, fuzzy
 msgid ""
 "\n"
@@ -601,7 +601,7 @@ msgstr ""
 "     Pastikan paket tidak memiliki dependensi duplikat atau\n"
 "     belum ada di server"
 
-#: ../common/rhnException.py:154
+#: ../common/rhnException.py:156
 #, fuzzy
 msgid ""
 "\n"
@@ -612,7 +612,7 @@ msgstr ""
 "Opsi --force rhnpush dinonaktifkan di server ini.\n"
 "     Hubungi administrator SUSE Manager Anda untuk bantuan lebih lanjut."
 
-#: ../common/rhnException.py:161
+#: ../common/rhnException.py:163
 #, fuzzy
 msgid ""
 "\n"
@@ -623,22 +623,22 @@ msgstr ""
 "Token aktivasi yang ditentukan tidak dapat ditemukan di server.\n"
 "     Silakan coba lagi dengan kunci yang valid."
 
-#: ../common/rhnException.py:166
+#: ../common/rhnException.py:168
 #, fuzzy
 msgid "Too many systems registered using this registration token"
 msgstr "Terlalu banyak sistem yang terdaftar menggunakan token pendaftaran ini"
 
-#: ../common/rhnException.py:167
+#: ../common/rhnException.py:169
 #, fuzzy
 msgid "Token contains invalid, obsoleted or insufficient settings"
 msgstr "Token berisi pengaturan yang tidak valid, usang, atau tidak memadai"
 
-#: ../common/rhnException.py:168
+#: ../common/rhnException.py:170
 #, fuzzy
 msgid "Conflicting activation tokens"
 msgstr "Token aktivasi yang bertentangan"
 
-#: ../common/rhnException.py:171
+#: ../common/rhnException.py:173
 #, fuzzy
 msgid ""
 "\n"
@@ -646,7 +646,7 @@ msgid ""
 "     "
 msgstr "Tidak ada saluran dasar yang cocok yang ditemukan untuk sistem Anda."
 
-#: ../common/rhnException.py:176
+#: ../common/rhnException.py:178
 #, fuzzy
 msgid ""
 "\n"
@@ -659,101 +659,101 @@ msgstr ""
 "     Lihat channel atau organisasi organisasi Anda\n"
 "     administrator untuk rincian lebih lanjut."
 
-#: ../common/rhnException.py:182
+#: ../common/rhnException.py:184
 #, fuzzy
 msgid "You can not unsubscribe from base channel."
 msgstr "Anda tidak dapat berhenti berlangganan dari saluran dasar."
 
-#: ../common/rhnException.py:183
+#: ../common/rhnException.py:185
 #, fuzzy
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
 msgstr "Manajer SUSE atau saluran Proxy tidak dapat di subscribe."
 
 #. 80-90: server group errors
-#: ../common/rhnException.py:185
+#: ../common/rhnException.py:187
 #, fuzzy
 msgid "There was an error while trying to join the system to its groups"
 msgstr "Ada kesalahan saat mencoba untuk bergabung dengan sistem untuk kelompok-kelompok"
 
 #. 90-100: entitlement errors
-#: ../common/rhnException.py:187
+#: ../common/rhnException.py:189
 #, fuzzy
 msgid "Unable to entitle system"
 msgstr "Tidak dapat memberikan hak sistem"
 
 #. 100-109: e-mail and uuid related faults
-#: ../common/rhnException.py:189
+#: ../common/rhnException.py:191
 #, fuzzy
 msgid "Maximum e-mail length violation."
 msgstr "Pelanggaran panjang e-mail maksimum."
 
-#: ../common/rhnException.py:190
+#: ../common/rhnException.py:192
 #, fuzzy
 msgid "This system has been previously registered."
 msgstr "Sistem ini sebelumnya telah terdaftar."
 
-#: ../common/rhnException.py:191
+#: ../common/rhnException.py:193
 #, fuzzy
 msgid "Invalid username"
 msgstr "Username tidak valid"
 
 #. 140-159 applet errors
-#: ../common/rhnException.py:193
+#: ../common/rhnException.py:195
 #, fuzzy
 msgid "Unable to look up server"
 msgstr "Tidak dapat mencari server"
 
 #. 160-179: OSAD errors
-#: ../common/rhnException.py:195
+#: ../common/rhnException.py:197
 #, fuzzy
 msgid "Required argument is missing"
 msgstr "Diperlukan argumen yang hilang."
 
 #. 600-699: RHEL5+ EN errors
-#: ../common/rhnException.py:197
+#: ../common/rhnException.py:199
 #, fuzzy
 msgid "No entitlement information tied to hardware"
 msgstr "Tidak ada informasi penetapan yang terkait dengan perangkat keras"
 
-#: ../common/rhnException.py:198
+#: ../common/rhnException.py:200
 #, fuzzy
 msgid "Installation number is not entitling"
 msgstr "Nomor instalasi tidak entitling"
 
 #. 700-799: Additional user input verification errors.
-#: ../common/rhnException.py:200
+#: ../common/rhnException.py:202
 #, fuzzy
 msgid "Maximum username length violation"
 msgstr "Pelanggaran panjang nama pengguna maksimum"
 
-#: ../common/rhnException.py:201
+#: ../common/rhnException.py:203
 #, fuzzy
 msgid "Maximum password length violation"
 msgstr "Pelanggaran panjang kata sandi maksimum"
 
-#: ../common/rhnException.py:202
+#: ../common/rhnException.py:204
 #, fuzzy
 msgid "This user has read only API access. Action denied."
 msgstr "Pengguna ini hanya memiliki akses API. Tindakan ditolak."
 
-#: ../common/rhnException.py:203
+#: ../common/rhnException.py:205
 #, fuzzy
 msgid "System Name cannot be less than 1 character"
 msgstr "Nama sistem tidak boleh kurang dari 1 karakter"
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
-#: ../common/rhnException.py:206
+#: ../common/rhnException.py:208
 #, fuzzy
 msgid "SUSE Multi-Linux Manager Proxy error."
 msgstr "Galat Proksi Manajer SUSE."
 
-#: ../common/rhnException.py:207
+#: ../common/rhnException.py:209
 #, fuzzy
 msgid "SUSE Multi-Linux Manager Proxy unable to login."
 msgstr "SUSE Manager Proxy tidak dapat login."
 
-#: ../common/rhnException.py:210
+#: ../common/rhnException.py:212
 #, fuzzy
 msgid ""
 "\n"
@@ -764,17 +764,17 @@ msgstr ""
 "ID sistem Proksi Manajer SUSE tidak cocok dengan Server Proksi Spacewalk\n"
 "     dalam database."
 
-#: ../common/rhnException.py:215
+#: ../common/rhnException.py:217
 #, fuzzy
 msgid "SUSE Multi-Linux Manager Proxy session token is invalid."
 msgstr "Token sesi Proksi Manajer SUSE tidak valid."
 
-#: ../common/rhnException.py:216
+#: ../common/rhnException.py:218
 #, fuzzy
 msgid "SUSE Multi-Linux Manager Proxy session token has expired."
 msgstr "Token sesi Proxy Manajer SUSE telah kedaluwarsa."
 
-#: ../common/rhnException.py:220
+#: ../common/rhnException.py:222
 #, fuzzy
 msgid ""
 "\n"
@@ -785,7 +785,7 @@ msgstr ""
 "pembuatan pengguna tidak diperbolehkan melalui mgr_register;\n"
 "     silahkan hubungi sysadmin Anda untuk memiliki account Anda dibuat."
 
-#: ../common/rhnException.py:226
+#: ../common/rhnException.py:228
 #, fuzzy
 msgid ""
 "\n"
@@ -793,7 +793,7 @@ msgid ""
 "     "
 msgstr "Server Manajer SUSE ini tidak diizinkan untuk menggunakan Inter Server Sync di server ini"
 
-#: ../common/rhnException.py:231
+#: ../common/rhnException.py:233
 #, fuzzy
 msgid ""
 "\n"
@@ -802,174 +802,174 @@ msgid ""
 msgstr "Inter Server sync dinonaktifkan pada Server manajer SUSE ini."
 
 #. 3000-3999: XML dumper errors:
-#: ../common/rhnException.py:236
+#: ../common/rhnException.py:238
 #, fuzzy
 msgid "Invalid datatype passed"
 msgstr "Tipe data tidak valid dilewatkan"
 
-#: ../common/rhnException.py:237
+#: ../common/rhnException.py:239
 #, fuzzy
 msgid "Unable to retrieve channel"
 msgstr "Tidak dapat mengambil saluran"
 
-#: ../common/rhnException.py:238
+#: ../common/rhnException.py:240
 #, fuzzy
 msgid "Unable to retrieve package"
 msgstr "Tidak dapat mengambil paket"
 
-#: ../common/rhnException.py:239
+#: ../common/rhnException.py:241
 #, fuzzy
 msgid "Unable to retrieve erratum"
 msgstr "Tidak dapat mengambil erratum"
 
-#: ../common/rhnException.py:240
+#: ../common/rhnException.py:242
 #, fuzzy
 msgid "File is missing"
 msgstr "Berkas hilang"
 
-#: ../common/rhnException.py:241
+#: ../common/rhnException.py:243
 #, fuzzy
 msgid "Function retrieval error"
 msgstr "Galat pengambilan fungsi"
 
-#: ../common/rhnException.py:242
+#: ../common/rhnException.py:244
 #, fuzzy
 msgid "Function execution error"
 msgstr "Galat eksekusi fungsi"
 
-#: ../common/rhnException.py:243
+#: ../common/rhnException.py:245
 #, fuzzy
 msgid "Missing version string"
 msgstr "String versi hilang"
 
-#: ../common/rhnException.py:244
+#: ../common/rhnException.py:246
 #, fuzzy
 msgid "Invalid version string"
 msgstr "String versi tidak valid"
 
-#: ../common/rhnException.py:245
+#: ../common/rhnException.py:247
 #, fuzzy
 msgid "Mismatching versions"
 msgstr "Versi yang tidak cocok"
 
-#: ../common/rhnException.py:246
+#: ../common/rhnException.py:248
 #, fuzzy
 msgid "Invalid channel version"
 msgstr "Versi saluran tidak valid"
 
-#: ../common/rhnException.py:247
+#: ../common/rhnException.py:249
 #, fuzzy
 msgid "No comps file for channel"
 msgstr "Tidak ada file comps untuk saluran"
 
-#: ../common/rhnException.py:248
+#: ../common/rhnException.py:250
 #, fuzzy
 msgid "Unable to retrieve comps file"
 msgstr "Tidak dapat mengambil berkas comps"
 
 #. 4000 - 4999: config management errors
-#: ../common/rhnException.py:250
+#: ../common/rhnException.py:252
 #, fuzzy
 msgid "Configuration action missing"
 msgstr "Tindakan konfigurasi hilang"
 
-#: ../common/rhnException.py:251
+#: ../common/rhnException.py:253
 #, fuzzy
 msgid "File too large"
 msgstr "Berkas terlalu besar"
 
-#: ../common/rhnException.py:252
+#: ../common/rhnException.py:254
 #, fuzzy
 msgid "File contains binary data"
 msgstr "File berisi data biner"
 
-#: ../common/rhnException.py:253
+#: ../common/rhnException.py:255
 #, fuzzy
 msgid "Configuration channel is not empty"
 msgstr "Saluran konfigurasi tidak kosong"
 
-#: ../common/rhnException.py:254
+#: ../common/rhnException.py:256
 #, fuzzy
 msgid "Permission error"
 msgstr "Galat izin"
 
-#: ../common/rhnException.py:255
+#: ../common/rhnException.py:257
 #, fuzzy
 msgid "Content missing for configuration file"
 msgstr "Konten hilang untuk file konfigurasi"
 
-#: ../common/rhnException.py:256
+#: ../common/rhnException.py:258
 #, fuzzy
 msgid "Template delimiters not specified"
 msgstr "Pembatas templat tidak ditentukan"
 
-#: ../common/rhnException.py:257
+#: ../common/rhnException.py:259
 #, fuzzy
 msgid "Configuration channel does not exist"
 msgstr "Saluran konfigurasi tidak ada"
 
-#: ../common/rhnException.py:258
+#: ../common/rhnException.py:260
 #, fuzzy
 msgid "Configuration channel already exists"
 msgstr "Saluran konfigurasi sudah ada"
 
-#: ../common/rhnException.py:259
+#: ../common/rhnException.py:261
 #, fuzzy
 msgid "File missing from configuration channel"
 msgstr "File hilang dari saluran konfigurasi"
 
-#: ../common/rhnException.py:260
+#: ../common/rhnException.py:262
 #, fuzzy
 msgid "Different revision of this file is uploaded"
 msgstr "Revisi yang berbeda dari file ini diunggah"
 
-#: ../common/rhnException.py:261
+#: ../common/rhnException.py:263
 #, fuzzy
 msgid "File already uploaded to configuration channel"
 msgstr "File yang sudah diunggah ke saluran konfigurasi"
 
-#: ../common/rhnException.py:262
+#: ../common/rhnException.py:264
 #, fuzzy
 msgid "File size exceeds remaining quota space"
 msgstr "Ukuran file melebihi ruang kuota yang tersisa"
 
-#: ../common/rhnException.py:263
+#: ../common/rhnException.py:265
 #, fuzzy
 msgid "Full path of file must be specified"
 msgstr "Path lengkap file harus ditentukan"
 
-#: ../common/rhnException.py:264
+#: ../common/rhnException.py:266
 #, fuzzy
 msgid "Invalid revision number"
 msgstr "Nomor revisi tidak valid"
 
-#: ../common/rhnException.py:265
+#: ../common/rhnException.py:267
 #, fuzzy
 msgid "Cannot compare files of different file type"
 msgstr "Tidak dapat membandingkan berkas jenis berkas yang berbeda"
 
 #. 5100 - 5199: scap results reporting error
-#: ../common/rhnException.py:267
+#: ../common/rhnException.py:269
 #, fuzzy
 msgid "SCAP results file transfer is invalid or incomplete"
 msgstr "Transfer berkas hasil SCAP tidak valid atau tidak lengkap"
 
-#: ../common/rhnException.py:268
+#: ../common/rhnException.py:270
 #, fuzzy
 msgid "Error composing directory path for detailed SCAP results"
 msgstr "Galat saat menyusun jalur direktori untuk hasil SCAP terperinci"
 
-#: ../common/rhnException.py:269
+#: ../common/rhnException.py:271
 #, fuzzy
 msgid "Error composing file path for detailed SCAP results"
 msgstr "Galat saat menyusun jalur berkas untuk hasil SCAP rinci"
 
-#: ../common/rhnException.py:270
+#: ../common/rhnException.py:272
 #, fuzzy
 msgid "Invalid content encoding"
 msgstr "Pengkodean konten tidak valid"
 
-#: ../common/rhnException.py:317
+#: ../common/rhnException.py:319
 #, fuzzy
 msgid ""
 "\n"
@@ -985,45 +985,39 @@ msgstr ""
 "     rincian dari apa yang Anda coba lakukan ketika kesalahan ini terjadi dan\n"
 "     rincian tentang cara mereproduksi masalah ini."
 
-#: ../common/rhnException.py:368
+#: ../common/rhnException.py:370
 #, fuzzy, python-format
 msgid ""
 "Error Message:\n"
 "    %s\n"
 msgstr "Pesan kesalahan tak tertangani: %s"
 
-#: ../common/rhnException.py:370
+#: ../common/rhnException.py:372
 #, fuzzy, python-format
 msgid "Error Class Code: %s\n"
 msgstr "Kode Kelas Galat: %s"
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:375
 #, fuzzy, python-format
 msgid "Error Class Info: %s\n"
 msgstr "Galat Info Kelas: %s"
 
-#: ../common/rhnException.py:375
+#: ../common/rhnException.py:377
 #, fuzzy, python-format
 msgid "Explanation: %s"
 msgstr "Penjelasan: %s"
 
-#: ../common/rhnTB.py:220
+#: ../common/rhnTB.py:221
 #, fuzzy, python-format
 msgid "ERROR: %s %s: %s"
 msgstr "GALAT: %s %s: %s"
 
-#: ../common/rhnTB.py:221
+#: ../common/rhnTB.py:222
 #, fuzzy, python-format
 msgid "TRACEBACK: %s"
 msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
 
-#: ../satellite_tools/disk_dumper/iss.py:1634
-#: ../satellite_tools/disk_dumper/iss.py:1640
-#, fuzzy, python-format
-msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr "format dari %s harus setidaknya YYYYMMDD."
-
-#: ../satellite_tools/messages.py:28
+#: ../satellite_tools/messages.py:30
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1033,7 +1027,7 @@ msgstr ""
 "GALAT: menjalankan langkah %s. Galat adalah:\n"
 "%s"
 
-#: ../satellite_tools/messages.py:35
+#: ../satellite_tools/messages.py:37
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1049,7 +1043,7 @@ msgstr ""
 "       bahwa Anda memiliki mereka semua, dan kemudian berulang-ulang dan mengisi kembali\n"
 "       repositori sementara (%s)."
 
-#: ../satellite_tools/messages.py:45
+#: ../satellite_tools/messages.py:47
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1059,7 +1053,7 @@ msgstr ""
 "GALAT: ada masalah sinkronisasi informasi.\n"
 "       Pesan galat: %s"
 
-#: ../satellite_tools/messages.py:52
+#: ../satellite_tools/messages.py:54
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1073,7 +1067,7 @@ msgstr ""
 "       konektivitas jaringan dasar, dan/atau resolusi nama, dan coba lagi.\n"
 "       Pesan galat: %s"
 
-#: ../satellite_tools/messages.py:61
+#: ../satellite_tools/messages.py:63
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1089,7 +1083,7 @@ msgstr ""
 "       Transaksi:\n"
 "       %s"
 
-#: ../satellite_tools/messages.py:71
+#: ../satellite_tools/messages.py:73
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1101,125 +1095,129 @@ msgstr ""
 "Silakan hubungi kontak SUSE Manager Anda\n"
 "%s"
 
-#: ../satellite_tools/messages.py:77
+#: ../satellite_tools/messages.py:79
 #, fuzzy, python-format
 msgid "  ERROR: not enough free space (%s KB) on device."
 msgstr "GALAT: tidak cukup ruang kosong (%s KB) pada perangkat."
 
-#: ../satellite_tools/messages.py:79
+#: ../satellite_tools/messages.py:81
 #, fuzzy, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr "%3d/%s Fetch berhasil: %s (%s bytes)"
 
-#: ../satellite_tools/messages.py:80
+#: ../satellite_tools/messages.py:82
 #, fuzzy, python-format
 msgid "    Extinct package:  %s"
 msgstr "Paket punah: %s"
 
-#: ../satellite_tools/messages.py:81
+#: ../satellite_tools/messages.py:83
 #, fuzzy, python-format
 msgid "   Total size: %s"
 msgstr "Total ukuran: %s"
 
-#: ../satellite_tools/messages.py:83
+#: ../satellite_tools/messages.py:85
 #, fuzzy, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
 msgstr "Diunduh %s dari %s. Perkiraan sisa waktu: %s"
 
-#: ../satellite_tools/messages.py:85
+#: ../satellite_tools/messages.py:87
 #, fuzzy, python-format
 msgid "    Fetch unsuccessful: %s"
 msgstr "Fetch gagal: %s"
 
-#: ../satellite_tools/messages.py:86
+#: ../satellite_tools/messages.py:88
 #, fuzzy, python-format
 msgid "   RPM fetch summary: %s"
 msgstr "Ringkasan pengambilan RPM: %s"
 
-#: ../satellite_tools/messages.py:87
+#: ../satellite_tools/messages.py:89
 #, fuzzy, python-format
 msgid "       success: %d"
 msgstr "sukses: %d"
 
-#: ../satellite_tools/messages.py:88
+#: ../satellite_tools/messages.py:90
 #, fuzzy, python-format
 msgid "       failed:  %d"
 msgstr "Impor yang gagal (%d)"
 
-#: ../satellite_tools/messages.py:89
+#: ../satellite_tools/messages.py:91
 #, fuzzy, python-format
 msgid "       extinct: %d"
 msgstr "punah: %d"
 
-#: ../satellite_tools/messages.py:91
+#: ../satellite_tools/messages.py:93
 #, fuzzy, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr "Mengambil / mem-parsing *relevan* metadata paket: %s (%s)"
 
-#: ../satellite_tools/messages.py:92
+#: ../satellite_tools/messages.py:94
 #, fuzzy, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
 msgstr "Mengambil / mengurai data errata: %s (%s)"
 
-#: ../satellite_tools/messages.py:93
+#: ../satellite_tools/messages.py:95
 #, fuzzy, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
 msgstr "Mengambil / mengurai data kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:94
+#: ../satellite_tools/messages.py:96
 #, fuzzy, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr "Mengambil / mengurai berkas pohon kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:95
+#: ../satellite_tools/messages.py:97
 #, fuzzy, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
 msgstr "Mengimpor metadata paket *relevant*: %s (%s)"
 
-#: ../satellite_tools/messages.py:96
+#: ../satellite_tools/messages.py:98
 #, fuzzy
 msgid "   * WARNING: this may be a slow process."
 msgstr "* PERINGATAN: ini mungkin proses yang lambat."
 
-#: ../satellite_tools/messages.py:97
+#: ../satellite_tools/messages.py:99
 #, fuzzy
 msgid "Linking packages to channels"
 msgstr "Menautkan paket ke saluran"
 
-#: ../satellite_tools/messages.py:98
+#: ../satellite_tools/messages.py:100
 #, fuzzy, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
 msgstr "Mengimpor *relevan* errata: %s (%s)"
 
-#: ../satellite_tools/messages.py:99
+#: ../satellite_tools/messages.py:101
 #, fuzzy
 msgid "   No new kickstartable tree to import"
 msgstr "Tidak ada pohon kickstartable baru untuk mengimpor"
 
-#: ../satellite_tools/messages.py:100
+#: ../satellite_tools/messages.py:102
 #, fuzzy, python-format
 msgid "Importing kickstartable trees (%d)"
 msgstr "Mengimpor pohon kickstartable (%d)"
 
-#: ../satellite_tools/messages.py:101
+#: ../satellite_tools/messages.py:103
 #, fuzzy, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "Pohon kickstartable impor (%d)"
 
-#: ../satellite_tools/reposync.py:148
+#: ../satellite_tools/reposync.py:150
 #, fuzzy
 msgid "+++ sending log as an email +++"
 msgstr "+++ mengirim log sebagai email +++"
 
-#: ../satellite_tools/reposync.py:151
+#: ../satellite_tools/reposync.py:153
 #, fuzzy, python-format
 msgid "%s sync. report from %s"
 msgstr "Sinkronisasi %s. laporan dari %s"
 
-#: ../satellite_tools/reposync.py:161
+#: ../satellite_tools/reposync.py:163
 #, fuzzy
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
+
+#, fuzzy, python-format
+#~ msgid "format of %s should be at least YYYYMMDD.\n"
+#~ msgstr "format dari %s harus setidaknya YYYYMMDD."
 
 #, fuzzy
 #~ msgid "ISS is disabled on this server."
