@@ -482,7 +482,8 @@ end
 When(/^I wait until all synchronized channels have solved their dependencies(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |host|
   host ||= 'server'
   add_context('channels_failed_without_solv_file', [])
-  channels_to_wait_solv_file = get_context('channels_to_wait_solv_file').uniq
+  # The context is unset when the preceding sync step failed before registering any channel
+  channels_to_wait_solv_file = (get_context('channels_to_wait_solv_file') || []).uniq
   accumulated_timeout = get_context('channels_timeout')
   checking_rate = 10
 

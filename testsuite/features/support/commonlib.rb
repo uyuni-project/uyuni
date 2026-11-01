@@ -296,7 +296,14 @@ def click_link_and_wait(locator = nil, force: false, **options)
       pw_page.get_by_role('link', name: locator, exact: false).first.click(force: true)
     end
   else
-    click_link(locator, **options)
+    begin
+      click_link(locator, **options)
+    rescue Playwright::Error => e
+      # The element was re-rendered (e.g. a React tab) between lookup and click: look it up again, once
+      raise unless e.message.include?('not attached to the DOM')
+
+      click_link(locator, **options)
+    end
   end
   wait_for_page_transition
 end

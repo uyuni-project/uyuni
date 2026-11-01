@@ -250,5 +250,5 @@ Feature: Smoke tests for <client>
     And I wait until I do not see "Loading Grafana" text
     When I follow "Client Systems"
     When I enter "<client>" hostname on grafana's host field
-    And I wait until I do not see "No data" text
+    And I wait until I do not see "No data" text, refreshing the page
     Then I should see "<client>" hostname
