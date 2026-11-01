@@ -106,11 +106,11 @@ SPDX-License-Identifier: GPL-2.0-only
                     <div class="col-lg-6">
                         <div class="well well-sm">
                         <c:choose>
-                            <c:when test="${channel.description eq null}">
+                            <c:when test="${empty channel_description}">
                                 <span class="no-details"><bean:message key="none.message"/></span>
                             </c:when>
                             <c:otherwise>
-                                <c:out value="${channel.description}"/>
+                                <span class="text-pre-line"><c:out value="${channel_description}"/></span>
                             </c:otherwise>
                         </c:choose>
                         </div>
@@ -199,4 +199,3 @@ SPDX-License-Identifier: GPL-2.0-only
             </html:form>
     </body>
 </html>
-
