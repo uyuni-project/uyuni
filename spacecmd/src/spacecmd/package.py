@@ -313,11 +313,31 @@ def do_package_listorphans(self, args, doreturn=False):
 
 def help_package_removeorphans(self):
     print(_("package_removeorphans: Remove packages that are not in a channel"))
-    print(_("usage: package_removeorphans"))
+    print(_("usage: package_removeorphans [LIMIT] [OFFSET]"))
+    print(
+        _(
+            "       note: when no limit nor offset are provided, all package orphans will be removed"
+        )
+    )
 
 
 def do_package_removeorphans(self, args):
-    packages = self.client.channel.software.listPackagesWithoutChannel(self.session)
+    # pylint: disable-next=unused-variable
+    args, _options = parse_command_arguments(args, get_argument_parser())
+
+    if 0 == len(args):
+        packages = self.client.channel.software.listPackagesWithoutChannel(self.session)
+    elif 1 == len(args):
+        packages = self.client.channel.software.listPackagesWithoutChannel(
+            self.session, int(0), int(args[0])
+        )
+    elif 2 == len(args):
+        packages = self.client.channel.software.listPackagesWithoutChannel(
+            self.session, int(args[1]), int(args[0])
+        )
+    else:
+        self.help_package_removeorphans()
+        return None
 
     if not packages:
         print(_("No orphaned packages has been found"))
