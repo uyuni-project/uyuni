@@ -19,7 +19,7 @@ SPDX-License-Identifier: GPL-2.0-only
         <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
         <rhn:toolbar base="h2" icon="header-event-history">
-            <bean:message key="system.event.history.header" />
+            <bean:message key="system.event.history.header" /> test
         </rhn:toolbar>
 
         <div class="page-summary">
@@ -43,6 +43,15 @@ SPDX-License-Identifier: GPL-2.0-only
         <rl:listset name="eventSet" legend="system-history">
             <rhn:csrf />
             <rhn:hidden name="sid" value="${param.sid}" />
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <a class="btn btn-default"
+                       href="/rhn/systems/details/history/History.do?sid=${fn:escapeXml(param.sid)}">
+                        <rhn:icon type="header-refresh" />
+                        <bean:message key="system.event.history.refresh" />
+                    </a>
+                </div>
+            </div>
             <rl:list emptykey="system.event.history.noevent">
                 <rl:decorator name="PageSizeDecorator" />
                 <rl:decorator name="ElaborationDecorator" />
