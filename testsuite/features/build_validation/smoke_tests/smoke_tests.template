@@ -66,6 +66,7 @@ Feature: Smoke tests for <client>
 
 # Patches are available for Ubuntu and Debian, but they are delivered through package updates rather than standalone patch files.
 # The RHEL clients have no relevant patch either: they are containers built from the current UBI images, so every package they carry is already at its newest version.
+# The openSUSE Leap 16.1 channels carry no errata, so there is nothing to install on those clients.
 @skip_for_debian
 @skip_for_amazon2023
 @skip_for_ubuntu
@@ -73,6 +74,7 @@ Feature: Smoke tests for <client>
 @skip_for_rhel8
 @skip_for_rhel9
 @skip_for_rhel10
+@skip_for_opensuse161
   Scenario: Install a patch on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
