@@ -1,0 +1,2 @@
+- Replace the configuration option `prepended_dir` with a constant.
+  Packages are always stored below the `packages` directory

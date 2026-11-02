@@ -69,6 +69,7 @@ import java.util.Set;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 
 /**
@@ -89,7 +90,15 @@ public class ScriptRunAction extends ScriptAction {
         skipCommandScriptPerms = skipCommandScriptPermsIn;
     }
 
-    private static final SaltUtils SALT_UTILS = GlobalInstanceHolder.SALT_UTILS;
+    @Transient
+    private final transient SaltUtils saltUtils;
+
+    /**
+     * Constructor
+     */
+    public ScriptRunAction() {
+        saltUtils = GlobalInstanceHolder.SALT_UTILS;
+    }
 
     /**
      * {@inheritDoc}
@@ -142,7 +151,7 @@ public class ScriptRunAction extends ScriptAction {
     @Override
     public void onCancelAction() {
         if (allServersFinished()) {
-            FileUtils.deleteFile(SALT_UTILS.getScriptPath(getId()));
+            FileUtils.deleteFile(saltUtils.getScriptPath(getId()));
         }
     }
 
@@ -155,7 +164,7 @@ public class ScriptRunAction extends ScriptAction {
 
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
         // write script to /srv/susemanager/salt/scripts/script_<action_id>.sh
-        Path scriptFile = SALT_UTILS.getScriptPath(getId());
+        Path scriptFile = saltUtils.getScriptPath(getId());
         try {
             // make sure parent dir exists
             if (!Files.exists(scriptFile) && !Files.exists(scriptFile.getParent())) {

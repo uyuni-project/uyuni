@@ -20,17 +20,9 @@
 import os
 import stat
 
-try:
-    #  python 2
-    import cStringIO
-except ImportError:
-    #  python3
-    import io as cStringIO
-import sys
 from rhn import rpclib
 
 from uyuni.common import usix
-from uyuni.common import rhn_rpm
 from uyuni.common.rhnLib import rfc822time
 
 # local imports
@@ -53,19 +45,14 @@ class Repository(RPC_Base):
         RPC_Base.__init__(self)
         self.channelName = channelName
         # Default visible functions.
-        self.compress_headers = 1
         self.functions = [
             "getPackage",
-            "getPackageHeader",
             "getPackageSource",
             "i18n",
             "content",
             "installation_xml",
             "media_1",
         ]
-
-    def set_compress_headers(self, val):
-        self.compress_headers = val
 
     def __del__(self):
         self.channelName = None
@@ -178,25 +165,6 @@ class Repository(RPC_Base):
         filePath = self.getSourcePackagePath(pkgFilename)
         return self._getFile(filePath)
 
-    def getPackageHeader(self, pkgFilename):
-        """Get rpm header.
-        XXX: stock 8.0 clients could not compress headers, we need to either
-        change the function name, or version the protocol
-        """
-        log_debug(3, pkgFilename)
-        pkg = pkgFilename.split(".")
-        # Basic sanity checks:
-        if pkg[-1] not in ["hdr", "rpm"]:
-            # pylint: disable-next=consider-using-f-string
-            raise rhnFault(21, "'%s' not a valid RPM header name" % pkgFilename)
-
-        pkgFilename = ".".join(pkg[:-1]) + ".rpm"
-        filePath = self.getPackagePath(pkgFilename)
-        data = self._getHeaderFromFile(filePath)
-        # XXX: Interesting. Found that if returned just data, this
-        #      function works fine. Investigate later.
-        return rpclib.transports.File(cStringIO.StringIO(data), len(data))
-
     # The real workhorse for all flavors of listall
     # It tries to pull data out of a file; if it doesn't work,
     # it calls the data producer with the specified params to generate the
@@ -216,55 +184,6 @@ class Repository(RPC_Base):
         lastModified = features["lastModified"]
         self._set_last_modified(lastModified)
         return rpclib.transports.File(open(filePath, "rb"), length, name=filePath)
-
-    def _getHeaderFromFile(self, filePath, stat_info=None):
-        """Utility function to extract a header from an rpm.
-        If stat_info was already passed, don't re-stat the file
-        """
-        log_debug(3, filePath)
-        if stat_info:
-            s = stat_info
-        else:
-            s = None
-            try:
-                s = os.stat(filePath)
-            except:
-                usix.raise_with_tb(
-                    rhnFault(
-                        17,
-                        # pylint: disable-next=consider-using-f-string
-                        "Unable to read package %s" % os.path.basename(filePath),
-                    ),
-                    sys.exc_info()[2],
-                )
-
-        lastModified = s[stat.ST_MTIME]
-        del s  # XXX: not neccessary?
-
-        # Get the package header from the file
-        # since we stat()ed the file, we know it's there already
-        fd = os.open(filePath, os.O_RDONLY)
-        h = rhn_rpm.get_package_header(fd=fd)
-        os.close(fd)
-        if h is None:
-            # pylint: disable-next=consider-using-f-string
-            raise rhnFault(17, "Invalid RPM %s" % os.path.basename(filePath))
-        stringIO = cStringIO.StringIO()
-        # Put the result in stringIO
-        stringIO.write(h.unload())
-        del h  # XXX: not neccessary?
-
-        pkgFilename = os.path.basename(filePath)
-        pkg = pkgFilename.split(".")
-        # Replace .rpm with .hdr
-        pkg[-1] = "hdr"
-        pkgFilename = ".".join(pkg)
-        extra_headers = {
-            "X-RHN-Package-Header": pkgFilename,
-        }
-        self._set_last_modified(lastModified, extra_headers=extra_headers)
-        rhnFlags.set("AlreadyEncoded", 1)
-        return stringIO.getvalue()
 
     @staticmethod
     def _set_last_modified(last_modified, extra_headers=None):

@@ -1,0 +1,2 @@
+- Store the HTTP proxy settings (http_proxy, http_proxy_username,
+  http_proxy_password and no_proxy) in the database

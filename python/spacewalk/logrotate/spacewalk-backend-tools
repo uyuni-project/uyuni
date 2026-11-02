@@ -16,16 +16,6 @@
 #LOGROTATE-3.8#    su root @HTTPD_GROUP@
 }
 
-/var/log/rhn/rhn_server_satellite.log {
-    rotate 5
-    copytruncate
-    compress
-    notifempty
-    missingok
-    size 10M
-    su @HTTPD_USER@ @HTTPD_GROUP@
-}
-
 /var/log/rhn/reposync.log {
     rotate 5
     copytruncate

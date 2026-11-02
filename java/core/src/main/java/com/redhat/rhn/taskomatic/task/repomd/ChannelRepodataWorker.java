@@ -20,7 +20,6 @@ import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.BUILT;
 import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.FAILED;
 import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.GENERATING_REPODATA;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -67,8 +66,8 @@ public class ChannelRepodataWorker implements QueueWorker {
     public ChannelRepodataWorker(Map<String, Object> workItem, Logger parentLogger) {
         logger = parentLogger;
 
-        String prefixPath = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
-        String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
+        String prefixPath = ConfigDefaults.REPOMD_PATH_PREFIX;
+        String mountPoint = ConfigDefaults.get().getRepomdCacheMountPoint();
 
         channelLabelToProcess = (String) workItem.get("channel_label");
 

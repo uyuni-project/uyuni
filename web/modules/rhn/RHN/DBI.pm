@@ -43,31 +43,21 @@ sub is_true {
 
 sub _get_dbi_connect_parameters {
         if (not defined $DSN) {
-                my $backend = PXT::Config->get("db_backend");
                 my $dbname = PXT::Config->get("db_name");
-                if ($backend eq "oracle") {
-                        $DSN = "dbi:Oracle:$dbname";
-
-                        my $nls_lang = PXT::Config->get('server', 'nls_lang');
-                        if (defined $nls_lang and $nls_lang ne '') {
-                                $ENV{NLS_LANG} = $nls_lang;
+                $DSN = "dbi:Pg:dbname=$dbname";
+                my $host = PXT::Config->get("db_host");
+                if (defined $host and $host ne '' and $host ne 'localhost') {
+                        $DSN .= ";host=$host";
+                        my $port = PXT::Config->get("db_port");
+                        if (defined $port and $port ne '' and $port ne '5432') {
+                                $DSN .= ";port=$port";
                         }
-                } else {
-                        $DSN = "dbi:Pg:dbname=$dbname";
-                        my $host = PXT::Config->get("db_host");
-                        if (defined $host and $host ne '' and $host ne 'localhost') {
-                                $DSN .= ";host=$host";
-                                my $port = PXT::Config->get("db_port");
-                                if (defined $port and $port ne '' and $port ne '5432') {
-                                        $DSN .= ";port=$port";
-                                }
-                                if (is_true(PXT::Config->get("db_ssl_enabled"))) {
-                                        $DSN .= ";sslmode=verify-full";
-                                        $DSN .= ";sslrootcert=" . PXT::Config->get("db_sslrootcert");
-                                }
-                                else {
-                                        $DSN .= ";sslmode=disable";
-                                }
+                        if (is_true(PXT::Config->get("db_ssl_enabled"))) {
+                                $DSN .= ";sslmode=verify-full";
+                                $DSN .= ";sslrootcert=" . PXT::Config->get("db_sslrootcert");
+                        }
+                        else {
+                                $DSN .= ";sslmode=disable";
                         }
                 }
                 $LOGIN = PXT::Config->get("db_user");

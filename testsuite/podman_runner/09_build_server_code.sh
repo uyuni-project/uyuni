@@ -60,6 +60,19 @@ $PODMAN_CMD exec server bash -c "set -xe;npm --prefix web ci --ignore-scripts --
 $PODMAN_CMD exec server bash -c "rctomcat restart"
 $PODMAN_CMD exec server bash -c "rctaskomatic restart"
 
+# Create the first user with the new code, as the released code may not work with the new schema.
+# 07_server_setup.sh skips this step by passing an empty ADMIN_PASS to 00-mgrSetup.sh.
+timeout 360 bash -c "until $PODMAN_CMD exec server curl -kfs https://localhost/rhn/Login.do > /dev/null 2>&1; do sleep 5; done"
+$PODMAN_CMD exec server bash -c "curl -ks -o /tmp/curl_out \
+    --data-urlencode 'orgName=SUSE Test' \
+    --data-urlencode 'adminLogin=admin' \
+    --data-urlencode 'adminPassword=admin' \
+    --data-urlencode 'firstName=Admin' \
+    --data-urlencode 'lastName=Admin' \
+    --data-urlencode 'email=a@b.com' \
+    https://localhost/rhn/manager/api/org/createFirst; \
+    cat /tmp/curl_out; echo; grep -q '^{\"success\":true' /tmp/curl_out"
+
 # mgr-push
 $PODMAN_CMD exec server bash -c "cp /client/tools/mgr-push/*.py /usr/lib/python3.13/site-packages/rhnpush/"
 $PODMAN_CMD exec server bash -c "cp /client/tools/mgr-push/rhnpushrc /etc/sysconfig/rhn/rhnpushrc"

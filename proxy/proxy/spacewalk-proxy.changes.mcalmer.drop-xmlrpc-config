@@ -1,0 +1,2 @@
+- Remove the obsolete `getPackageHeader` call from the list of
+  locally served functions

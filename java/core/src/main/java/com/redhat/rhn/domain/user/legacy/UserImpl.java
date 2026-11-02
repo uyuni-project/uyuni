@@ -18,7 +18,6 @@
 
 package com.redhat.rhn.domain.user.legacy;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.CryptHelper;
@@ -51,7 +50,6 @@ import com.suse.pam.PamReturnValue;
 import com.suse.pam.PamService;
 import com.suse.pam.PamServiceFactory;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -260,18 +258,8 @@ public class UserImpl extends BaseDomainHelper implements User {
      */
     @Override
     public void setPassword(String passwordIn) {
-        /**
-         * If we're using encrypted passwords, encode the
-         * password before setting it. Otherwise, just
-         * set it.
-         */
-        if (Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS)) {
-            String hashed = Pbkdf2Sha256Crypt.crypt(passwordIn);
-            this.password = (hashed != null ? hashed : SHA256Crypt.crypt(passwordIn));
-        }
-        else {
-            this.password = passwordIn;
-        }
+        String hashed = Pbkdf2Sha256Crypt.crypt(passwordIn);
+        this.password = (hashed != null ? hashed : SHA256Crypt.crypt(passwordIn));
     }
 
     /**
@@ -462,13 +450,11 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     @Override
     public boolean authenticate(String thePassword) {
-        String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
         boolean result = false;
         /*
-         * If we have a valid pamAuthService and the user uses pam authentication,
-         * authenticate via pam, otherwise, use the db.
+         * If the user uses pam authentication, authenticate via pam, otherwise, use the db.
          */
-        if (!StringUtils.isBlank(pamAuthService) && this.getUsePamAuthentication()) {
+        if (this.getUsePamAuthentication()) {
             if (password.startsWith(CryptHelper.MD5_PREFIX)) {
                 // password field in DB is NOT NULL, so we set a random password
                 // when using PAM authentication. Here the password is still MD5
@@ -476,7 +462,7 @@ public class UserImpl extends BaseDomainHelper implements User {
                 setPassword(CryptHelper.getRandomPasswordForPamAuth());
             }
 
-            PamService pam = pamServiceFactory.getInstance(pamAuthService);
+            PamService pam = pamServiceFactory.getInstance(ConfigDefaults.PAM_AUTH_SERVICE);
             PamReturnValue ret = pam.authenticate(getLogin(), thePassword);
             result = PamReturnValue.PAM_SUCCESS.equals(ret);
             if (!result) {
@@ -484,27 +470,15 @@ public class UserImpl extends BaseDomainHelper implements User {
             }
         }
         else {
-            /*
-             * If we're using encrypted passwords, check
-             * thePassword encrypted, otherwise just do
-             * a straight clear-text comparison.
-             */
-            boolean useEncrPasswds = Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS);
-            if (useEncrPasswds) {
-                if (password.startsWith(Pbkdf2Sha256Crypt.PREFIX)) {
-                    // user has been migrated to PBKDF2-SHA256 by the Python auth path
-                    result = Pbkdf2Sha256Crypt.verify(thePassword, password);
-                }
-                else if (password.startsWith(CryptHelper.getSHA256Prefix())) {
-                    // legacy SHA-256 crypt(3) password
-                    result = SHA256Crypt.crypt(thePassword, password).equals(password);
-                }
+            if (password.startsWith(Pbkdf2Sha256Crypt.PREFIX)) {
+                // user has been migrated to PBKDF2-SHA256 by the Python auth path
+                result = Pbkdf2Sha256Crypt.verify(thePassword, password);
             }
-            else {
-                result = password.equals(thePassword);
+            else if (password.startsWith(CryptHelper.getSHA256Prefix())) {
+                // legacy SHA-256 crypt(3) password
+                result = SHA256Crypt.crypt(thePassword, password).equals(password);
             }
-            debug(!result, "DB login for user {} {} encrypted passwords failed", this,
-                        useEncrPasswds ? "with" : "without");
+            debug(!result, "DB login for user {} failed", this);
         }
         debug(result, "PAM login for user {} succeeded. ", this);
         return result;

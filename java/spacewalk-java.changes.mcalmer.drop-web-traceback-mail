@@ -1,0 +1,2 @@
+- Read the global configuration key `traceback_mail` instead of
+  `web.traceback_mail`

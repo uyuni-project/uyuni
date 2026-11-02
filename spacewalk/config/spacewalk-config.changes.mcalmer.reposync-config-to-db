@@ -1,0 +1,2 @@
+- Do not write `server.reposync_nevra_filter` into `rhn.conf`
+  any more; the setting is stored in the database

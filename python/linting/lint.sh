@@ -43,7 +43,7 @@ function help() {
   echo ""
   echo "Files must provide path relative to the repository root, for example:"
   echo ""
-  echo "  $(basename ${0}) python/spacewalk/satellite_tools/xmlWireSource.py"
+  echo "  $(basename ${0}) python/spacewalk/satellite_tools/reposync.py"
   echo ""
   echo "You can provide a Python directory, in which case Black lints and Pylint" \
        "checks every Python file in the directory, for example:"

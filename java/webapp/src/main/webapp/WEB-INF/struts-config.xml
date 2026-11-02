@@ -367,7 +367,6 @@ SPDX-License-Identifier: GPL-2.0-only
             <form-property name="server|satellite|http_proxy_password"  type="java.lang.String"/>
             <form-property name="server|satellite|http_proxy_password_confirm"  type="java.lang.String"/>
             <form-property name="mount_point"  type="java.lang.String"/>
-            <form-property name="disconnected"  type="java.lang.Boolean"/>
             <form-property name="submitted"  type="java.lang.Boolean"/>
             <form-property name="no_scrub" type="java.lang.String"
                         initial="server|satellite|http_proxy_password, server|satellite|http_proxy_password_confirm"/>

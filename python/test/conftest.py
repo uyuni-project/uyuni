@@ -34,7 +34,7 @@ def pytest_sessionstart(session):
     # rhnConfig requires the defaults config files at import time
     defaults_path = os.path.join(tmp_path, "defaults")
     os.mkdir(defaults_path)
-    for conf_file in ["rhn.conf", "rhn_server.conf", "rhn_server_satellite.conf"]:
+    for conf_file in ["rhn.conf", "rhn_server.conf"]:
         shutil.copy(
             os.path.join(os.path.dirname(spacewalk.__file__), "rhn-conf", conf_file),
             defaults_path,

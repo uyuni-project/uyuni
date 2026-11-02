@@ -118,7 +118,7 @@ public class ProxyBackupEventAction implements MessageAction {
         try {
             config = ProxyConfigUtils.loadFilesToProxyConfig(configPath, httpdPath, sshPath);
             if (config.getEmail() == null || config.getEmail().isEmpty()) {
-                config.setEmail(Config.get().getString("web.traceback_mail"));
+                config.setEmail(Config.get().getString("traceback_mail"));
             }
             config.setProxyPort(8022);
             configPillar = ProxyConfigUtils.proxyConfigToPillar(config).setMinion(proxy);

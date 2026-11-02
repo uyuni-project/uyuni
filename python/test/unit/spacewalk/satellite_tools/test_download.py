@@ -41,16 +41,16 @@ def test_reposync_timeout_minrate_are_passed_to_curl():
     params = NoKeyErrorsDict({"http_headers": dict(), "urls": ["http://example.com"]})
 
     # pylint: disable-next=invalid-name
-    CFG = Mock()
-    CFG.REPOSYNC_TIMEOUT = 42
-    CFG.REPOSYNC_MINRATE = 42
-    CFG.REPOSYNC_DOWNLOAD_THREADS = 42  # Throws ValueError if not defined
+    DB_CFG = Mock()
+    DB_CFG.REPOSYNC_TIMEOUT = 42
+    DB_CFG.REPOSYNC_MINRATE = 42
+    DB_CFG.REPOSYNC_DOWNLOAD_THREADS = 42  # Throws ValueError if not defined
 
     curl_spy = Mock()
 
     with patch(
         "spacewalk.satellite_tools.download.pycurl.Curl", Mock(return_value=curl_spy)
-    ), patch("spacewalk.common.rhnConfig.CFG", CFG):
+    ), patch("spacewalk.satellite_tools.download.DB_CFG", DB_CFG):
         td = ThreadedDownloader(force=True)
         td.add(params)
         td.run()
@@ -76,16 +76,16 @@ def test_reposync_threaded_downloader_sets_failed_pkgs():
     )
 
     # pylint: disable-next=invalid-name
-    CFG = Mock()
-    CFG.REPOSYNC_TIMEOUT = 1
-    CFG.REPOSYNC_MINRATE = 1
-    CFG.REPOSYNC_DOWNLOAD_THREADS = 1
+    DB_CFG = Mock()
+    DB_CFG.REPOSYNC_TIMEOUT = 1
+    DB_CFG.REPOSYNC_MINRATE = 1
+    DB_CFG.REPOSYNC_DOWNLOAD_THREADS = 1
 
     curl_spy = Mock()
 
     with patch(
         "spacewalk.satellite_tools.download.pycurl.Curl", Mock(return_value=curl_spy)
-    ), patch("spacewalk.common.rhnConfig.CFG", CFG):
+    ), patch("spacewalk.satellite_tools.download.DB_CFG", DB_CFG):
         td = ThreadedDownloader(retries=0, force=True)
         td.add(params)
         td.run()
@@ -107,9 +107,6 @@ def test_reposync_configured_http_proxy_passed_to_urlgrabber():
     # pylint: disable-next=invalid-name
     CFG = Mock()
     CFG.http_proxy = http_proxy
-    CFG.REPOSYNC_TIMEOUT = 42
-    CFG.REPOSYNC_MINRATE = 42
-    CFG.REPOSYNC_DOWNLOAD_THREADS = 42  # Throws ValueError if not defined
 
     curl_spy = Mock()
 

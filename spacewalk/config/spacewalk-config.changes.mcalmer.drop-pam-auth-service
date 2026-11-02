@@ -1,0 +1,1 @@
+- Do not write `pam_auth_service` into `rhn.conf` any more

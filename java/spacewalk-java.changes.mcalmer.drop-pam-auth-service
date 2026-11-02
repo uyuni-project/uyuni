@@ -1,0 +1,3 @@
+- Remove the configuration option `web.pam_auth_service`. PAM
+  authentication is always available and uses the `susemanager`
+  service

@@ -7622,9 +7622,6 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="api.action.invalidactiontype" xml:space="preserve">
         <source>Invalid action type</source>
       </trans-unit>
-      <trans-unit id="api.org.pamAuthNotConfigured" xml:space="preserve">
-        <source>The server is not configured to support PAM authentication. Refer to the reference guide for instructions on how to set up PAM.</source>
-      </trans-unit>
       <trans-unit id="api.org.migrationtosameorg" xml:space="preserve">
         <source>User cannot migrate a system where the origination and destination organizations are the same.  Org Id: {0}, System Id: {1}.</source>
       </trans-unit>

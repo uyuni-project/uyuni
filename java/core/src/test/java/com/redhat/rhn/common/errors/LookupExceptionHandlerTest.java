@@ -18,7 +18,6 @@ package com.redhat.rhn.common.errors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.events.TraceBackAction;
@@ -67,11 +66,8 @@ public class LookupExceptionHandlerTest extends MockObjectTestCase {
          */
         Logger log = LogManager.getLogger(LookupExceptionHandler.class);
         Level orig = log.getLevel();
-        Config c = Config.get();
-        String mail = c.getString("web.traceback_mail", "");
         try {
             Configurator.setLevel(this.getClass().getName(), Level.OFF);
-            c.setString("web.traceback_mail", "jesusr@redhat.com");
 
             LookupException ex = new LookupException("Simply a test");
 
@@ -95,7 +91,6 @@ public class LookupExceptionHandlerTest extends MockObjectTestCase {
         finally {
             //Turn tracebacks and logging back on
             Thread.sleep(1000); //wait for message to be sent
-            c.setString("web.traceback_mail", mail);
             Configurator.setLevel(this.getClass().getName(), orig);
         }
     }

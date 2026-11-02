@@ -296,9 +296,12 @@ Syncs the content from yum repos into SUSE Manager channels.
         <listitem>
             <variablelist>
                 <varlistentry>
-                    <term>server.satellite.reposync_download_threads = 5</term>
+                    <term>server.reposync_download_threads = 5</term>
                     <listitem>
                         <para>Set maximum number of threads to be used for simultaneous downloads.</para>
+                        <para>The value is stored in the database as REPOSYNC_DOWNLOAD_THREADS
+                        in the rhnConfiguration table. A value set in /etc/rhn/rhn.conf is
+                        moved into the database when the server starts.</para>
                     </listitem>
                 </varlistentry>
             </variablelist>

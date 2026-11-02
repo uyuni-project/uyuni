@@ -1,0 +1,2 @@
+- Remove `min_user_len`, `max_user_len` and `max_email_len` from
+  `rhn_server.conf`. The limits moved into the database

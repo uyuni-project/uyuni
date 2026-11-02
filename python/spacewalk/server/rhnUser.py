@@ -20,7 +20,6 @@
 # Stuff for handling Certificates and Servers
 #
 
-import re
 import hmac
 import hashlib
 import os as _os
@@ -29,13 +28,16 @@ import base64 as _base64
 # Global Modules
 from rhn.UserDictCase import UserDictCase
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 
-from spacewalk.server import db_config
 from spacewalk.server import rhnSQL
 from spacewalk.server import rhnSession
+
+# PAM service used to authenticate users with PAM authentication enabled.
+# Keep in sync with ConfigDefaults.PAM_AUTH_SERVICE in Java and the
+# PAM service file containers/server-image/root/etc/pam.d/susemanager
+PAM_AUTH_SERVICE = "susemanager"
 
 
 class User:
@@ -93,41 +95,29 @@ class User:
         if not allow_read_only and is_user_read_only(self.contact["login"]):
             raise rhnFault(702)
         good_pwd = str(self.contact["password"])
-        if CFG.pam_auth_service:
-            # a PAM service is defined
-            # We have to check the user's rhnUserInfo.use_pam_authentication
-            # XXX Should we create yet another __init_blah function?
-            # since it's the first time we had to lool at rhnUserInfo,
-            # I'll assume it's not something to happen very frequently,
-            # so I'll use a query for now
-            # - misa
-            #
-            h = rhnSQL.prepare("""
-                select ui.use_pam_authentication
-                from web_contact w, rhnUserInfo ui
-                where w.login_uc = UPPER(:login)
-                and w.id = ui.user_id""")
-            h.execute(login=self.contact["login"])
-            data = h.fetchone_dict()
-            if not data:
-                # This should not happen
-                # pylint: disable-next=consider-using-f-string
-                raise rhnException("No entry found for user %s" % self.contact["login"])
-            if data["use_pam_authentication"] == "Y":
-                # use PAM
-                # pylint: disable-next=import-outside-toplevel
-                from . import rhnAuthPAM
+        # We have to check the user's rhnUserInfo.use_pam_authentication
+        h = rhnSQL.prepare("""
+            select ui.use_pam_authentication
+            from web_contact w, rhnUserInfo ui
+            where w.login_uc = UPPER(:login)
+            and w.id = ui.user_id""")
+        h.execute(login=self.contact["login"])
+        data = h.fetchone_dict()
+        if not data:
+            # This should not happen
+            # pylint: disable-next=consider-using-f-string
+            raise rhnException("No entry found for user %s" % self.contact["login"])
+        if data["use_pam_authentication"] == "Y":
+            # use PAM
+            # pylint: disable-next=import-outside-toplevel
+            from . import rhnAuthPAM
 
-                return rhnAuthPAM.check_password(
-                    self.contact["login"], password, CFG.pam_auth_service
-                )
+            return rhnAuthPAM.check_password(
+                self.contact["login"], password, PAM_AUTH_SERVICE
+            )
         # If the entry in rhnUserInfo is 'N', perform regular authentication
         ret = check_password(password, good_pwd)
-        if (
-            ret
-            and CFG.encrypted_passwords
-            and not self.contact["password"].startswith(_PBKDF2_PREFIX)
-        ):
+        if ret and not self.contact["password"].startswith(_PBKDF2_PREFIX):
             # If successfully authenticated and the stored password is not yet
             # using PBKDF2-SHA256, upgrade it transparently on next login.
             self.contact["password"] = encrypt_password(password)
@@ -401,202 +391,6 @@ def is_user_read_only(user):
     return 0
 
 
-def reserve_user(username, password):
-    """create a reservation record"""
-    return __reserve_user_db(username, password)
-
-
-def __reserve_user_db(user, password):
-    encrypted_password = CFG.encrypted_passwords
-    log_debug(
-        3, user, CFG.disallow_user_creation, encrypted_password, CFG.pam_auth_service
-    )
-    user = str(user)
-    h = rhnSQL.prepare("""
-    select w.id, w.password, w.org_id, ui.use_pam_authentication
-    from web_contact w, rhnUserInfo ui
-    where w.login_uc = upper(:p1)
-    and w.id = ui.user_id
-    """)
-    h.execute(p1=user)
-    data = h.fetchone_dict()
-    if data and data["id"]:
-        # contact exists, check password
-        if data["use_pam_authentication"] == "Y" and CFG.pam_auth_service:
-            # We use PAM for authentication
-            # pylint: disable-next=import-outside-toplevel
-            from . import rhnAuthPAM
-
-            if rhnAuthPAM.check_password(user, password, CFG.pam_auth_service) > 0:
-                return 1
-            return -1
-
-        if check_password(password, data["password"]) > 0:
-            return 1
-        return -1
-
-    # user doesn't exist.  now we fail, instead of reserving user.
-    if CFG.disallow_user_creation:
-        raise rhnFault(2001)
-    user, password = check_user_password(user, password)
-
-    # now check the reserved table
-    h = rhnSQL.prepare("""
-    select r.login, r.password from rhnUserReserved r
-    where r.login_uc = upper(:p1)
-    """)
-    h.execute(p1=user)
-    data = h.fetchone_dict()
-    if data and data["login"]:
-        # found already reserved
-        if check_password(password, data["password"]) > 0:
-            return 1
-        return -2
-
-    validate_new_username(user)
-    log_debug(3, "calling validate_new_password")
-    validate_new_password(password)
-
-    # this is not reserved either, register it
-    if encrypted_password:
-        # Encrypt the password, let the function pick the salt
-        password = encrypt_password(password)
-
-    h = rhnSQL.prepare("""
-    insert into rhnUserReserved (login, password)
-    values (:username, :password)
-    """)
-    h.execute(username=user, password=password)
-    rhnSQL.commit()
-
-    # all should be dandy
-    return 0
-
-
-def new_user(username, password, email, org_id, org_password):
-    """create a new user account"""
-    return __new_user_db(username, password, email, org_id, org_password)
-
-
-# pylint: disable-next=unused-argument
-def __new_user_db(username, password, email, org_id, org_password):
-    encrypted_password = CFG.encrypted_passwords
-    log_debug(3, username, email, encrypted_password)
-
-    # now search it in the database
-    h = rhnSQL.prepare("""
-    select w.id, w.password, ui.use_pam_authentication
-    from web_contact w, rhnUserInfo ui
-    where w.login_uc = upper(:username)
-    and w.id = ui.user_id
-    """)
-    h.execute(username=username)
-    data = h.fetchone_dict()
-
-    pre_existing_user = 0
-
-    if not data:
-        # the username is not there, check the reserved user table
-        h = rhnSQL.prepare("""
-        select login, password from rhnUserReserved
-        where login_uc = upper(:username)
-        """)
-        h.execute(username=username)
-        data = h.fetchone_dict()
-        if not data:  # nope, not reserved either
-            raise rhnFault(1, _("Username `%s' has not been reserved") % username)
-    else:
-        pre_existing_user = 1
-
-    if not pre_existing_user and not email:
-        # New accounts have to specify an e-mail address
-        raise rhnFault(30, _("E-mail address not specified"))
-
-    # we have to perform PAM authentication if data has a field called
-    # 'use_pam_authentication' and its value is 'Y', and we do have a PAM
-    # service set in the config file.
-    # Note that if the user is only reserved we don't do PAM authentication
-    if data.get("use_pam_authentication") == "Y" and CFG.pam_auth_service:
-        # Check the password with PAM
-        # pylint: disable-next=import-outside-toplevel
-        from . import rhnAuthPAM
-
-        if rhnAuthPAM.check_password(username, password, CFG.pam_auth_service) <= 0:
-            # Bad password
-            raise rhnFault(2)
-        # We don't care about the password anymore, replace it with something
-        # pylint: disable-next=import-outside-toplevel
-        import time
-
-        # pylint: disable-next=consider-using-f-string
-        password = "pam:%.8f" % time.time()
-    else:
-        # Regular authentication
-        if check_password(password, data["password"]) == 0:
-            # Bad password
-            raise rhnFault(2)
-
-    # creation of user was never supported in spacewalk but this call was mis-used
-    # to check username/password in the past
-    # so let's skip other checks and return now
-    return 0
-
-
-def check_user_password(username, password):
-    """Do some minimal checks on the data thrown our way."""
-    # username is required
-    if not username:
-        raise rhnFault(11)
-    # password is required
-    if not password:
-        raise rhnFault(12)
-    if len(username) < CFG.MIN_USER_LEN:
-        raise rhnFault(
-            13, _("username should be at least %d characters") % CFG.MIN_USER_LEN
-        )
-    if len(username) > CFG.MAX_USER_LEN:
-        raise rhnFault(
-            700, _("username should be less than %d characters") % CFG.MAX_USER_LEN
-        )
-    username = username[: CFG.MAX_USER_LEN]
-
-    # Invalid characters
-    # ***NOTE*** Must coordinate with web and installer folks about any
-    # changes to this set of characters!!!!
-    # pylint: disable-next=anomalous-backslash-in-string
-    invalid_re = re.compile(".*[\s&+%'`\"=#]", re.I)
-    tmp = invalid_re.match(username)
-    if tmp is not None:
-        pos = tmp.regs[0]
-        raise rhnFault(
-            15,
-            _("username = `%s', invalid character `%s'")
-            % (username, username[pos[1] - 1]),
-        )
-
-    # use new password validation method
-    validate_new_password(password)
-
-    return username, password
-
-
-def check_email(email):
-    """Do some minimal checks on the e-mail address"""
-    if email is not None:
-        email = email.strip()
-
-    if not email:
-        # Still supported
-        return None
-
-    if len(email) > CFG.MAX_EMAIL_LEN:
-        raise rhnFault(
-            100, _("Please limit your e-mail address to %s chars") % CFG.MAX_EMAIL_LEN
-        )
-    # XXX More to come (check the format is indeed foo@bar.baz
-    return email
-
-
 _PBKDF2_ITERATIONS = 600000
 _PBKDF2_MIN_ITERATIONS = _PBKDF2_ITERATIONS
 _PBKDF2_MAX_ITERATIONS = 2_000_000
@@ -608,30 +402,13 @@ def _b64_pad(s):
 
 
 def check_password(key, pwd1):
-    """Validates the given key against the current or old password
-    If encrypted_password is false, it compares key with pwd1.
-    If encrypted_password is true, it compares the encrypted key
-    with pwd1.
-
-    Historical note: we used to compare the passwords case-insensitive, and that
-    was working fine until we started to encrypt passwords. -- misa 20030530
-    """
-    encrypted_password = CFG.encrypted_passwords
-    log_debug(4, "Encrypted password:", encrypted_password)
+    """Validates the given key against the encrypted password pwd1"""
     # We don't trust the origin for key, so stringify it
     key = str(key)
     if len(key) == 0:
         # No zero-length passwords accepted
         return 0
 
-    if not encrypted_password:
-        # Unencrypted passwords
-        if key == pwd1:  # good password
-            return 1
-        log_debug(4, "Unencrypted password doesn't match")
-        return 0  # Invalid
-
-    # Crypted passwords in the database
     if pwd1.startswith(_PBKDF2_PREFIX):  # PBKDF2-SHA256 password
         # format: $pbkdf2-sha256$<iterations>$<b64salt>$<b64hash>
         try:
@@ -671,62 +448,3 @@ def encrypt_password(key, salt=None):
     b64salt = _base64.b64encode(raw_salt).decode().rstrip("=")
     b64hash = _base64.b64encode(dk).decode().rstrip("=")
     return f"{_PBKDF2_PREFIX}{_PBKDF2_ITERATIONS}${b64salt}${b64hash}"
-
-
-def validate_new_password(password):
-    """Perform all the checks required for new passwords"""
-    log_debug(3, "Entered validate_new_password")
-    #
-    # We're copying the code because we don't want to
-    # invalidate any of the existing passwords.
-    #
-
-    # Validate password based on configurable length
-    # regular expression
-    if not password:
-        raise rhnFault(12)
-    MIN_PASSWD_LEN = db_config.value("PSW_CHECK_LENGTH_MIN")
-    MAX_PASSWD_LEN = db_config.value("PSW_CHECK_LENGTH_MAX")
-    if len(password) < MIN_PASSWD_LEN:
-        raise rhnFault(
-            14, _("password must be at least %d characters") % MIN_PASSWD_LEN
-        )
-    if len(password) > MAX_PASSWD_LEN:
-        raise rhnFault(
-            701, _("Password must be shorter than %d characters") % MAX_PASSWD_LEN
-        )
-
-    password = password[:MAX_PASSWD_LEN]
-    invalid_re = re.compile(r"[^ A-Za-z0-9`!@#$%^&*()-_=+[{\]}\\|;:'\",<.>/?~]")
-    asterisks_re = re.compile(r"^\**$")
-
-    # make sure the password isn't all *'s
-    tmp = asterisks_re.match(password)
-    if tmp is not None:
-        raise rhnFault(15, "password cannot be all asterisks '*'")
-
-    # make sure we have only printable characters
-    tmp = invalid_re.search(password)
-    if tmp is not None:
-        pos = tmp.regs[0]
-        raise rhnFault(15, _("password contains character `%s'") % password[pos[1] - 1])
-
-
-def validate_new_username(username):
-    """Perform all the checks required for new usernames."""
-    log_debug(3)
-    if len(username) < CFG.MIN_NEW_USER_LEN:
-        raise rhnFault(
-            13,
-            _("username should be at least %d characters long") % CFG.MIN_NEW_USER_LEN,
-        )
-
-    disallowed_suffixes = CFG.DISALLOWED_SUFFIXES or []
-    if not isinstance(disallowed_suffixes, type([])):
-        disallowed_suffixes = [disallowed_suffixes]
-
-    log_debug(4, "Disallowed suffixes", disallowed_suffixes)
-
-    for suffix in disallowed_suffixes:
-        if username[-len(suffix) :].upper() == suffix.upper():
-            raise rhnFault(106, _("Cannot register usernames ending with %s") % suffix)
