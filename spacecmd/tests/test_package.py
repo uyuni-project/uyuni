@@ -906,8 +906,9 @@ class TestSCPackage:
 
             :param shell:
         """
-        shell.client.channel.software.listPackagesWithoutChannel = MagicMock(
-            return_value=[
+        mock = MagicMock()
+        mock.side_effect = [
+            [
                 {
                     "name": "vim",
                     "version": "0.1",
@@ -932,8 +933,10 @@ class TestSCPackage:
                     "arch": "AMD64",
                     "arch_label": "amd64",
                 },
-            ]
-        )
+            ],
+            [],
+        ]
+        shell.client.channel.software.listPackagesWithoutChannel = mock
         shell.client.packages.removePackage = MagicMock()
         shell.user_confirm = MagicMock(return_value=False)
         mprint = MagicMock()
@@ -956,8 +959,9 @@ class TestSCPackage:
 
             :param shell:
         """
-        shell.client.channel.software.listPackagesWithoutChannel = MagicMock(
-            return_value=[
+        mock = MagicMock()
+        mock.side_effect = [
+            [
                 {
                     "name": "vim",
                     "version": "0.1",
@@ -982,8 +986,10 @@ class TestSCPackage:
                     "arch": "AMD64",
                     "arch_label": "amd64",
                 },
-            ]
-        )
+            ],
+            [],
+        ]
+        shell.client.channel.software.listPackagesWithoutChannel = mock
         shell.client.packages.removePackage = MagicMock()
         shell.user_confirm = MagicMock(return_value=True)
         mprint = MagicMock()
@@ -996,17 +1002,6 @@ class TestSCPackage:
         assert mprint.called
         assert out is 0
         assert shell.client.channel.software.listPackagesWithoutChannel.called
-
-        exp = [
-            "Packages",
-            "--------",
-            "vim-0.1-42:5.x86_64\nvim-data-0.2-43.x86_64\nvim-plugins-1.17-16.x86_64",
-        ]
-
-        for call in mprint.call_args_list:
-            assert_expect([call], next(iter(exp)))
-            exp.pop(0)
-        assert not exp
 
     # pylint: disable-next=redefined-outer-name
     def test_package_listinstallsystems_noarg(self, shell):

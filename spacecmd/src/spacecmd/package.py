@@ -275,7 +275,7 @@ def help_package_listorphans(self):
     print(_("usage: package_listorphans [LIMIT] [OFFSET]"))
     print(
         _(
-            "       note: when no limit nor offset are provided, all package orphans will be listed"
+            "       note: when no limit nor offset are provided, all orphan packages will be listed"
         )
     )
 
@@ -313,10 +313,10 @@ def do_package_listorphans(self, args, doreturn=False):
 
 def help_package_removeorphans(self):
     print(_("package_removeorphans: Remove packages that are not in a channel"))
-    print(_("usage: package_removeorphans [LIMIT] [OFFSET]"))
+    print(_("usage: package_removeorphans [BATCH_SIZE]"))
     print(
         _(
-            "       note: when no limit nor offset are provided, all package orphans will be removed"
+            "       optional: BATCH_SIZE size of the batch in which orphan packages will be removed in, default 1000"
         )
     )
 
@@ -326,37 +326,50 @@ def do_package_removeorphans(self, args):
     args, _options = parse_command_arguments(args, get_argument_parser())
 
     if 0 == len(args):
-        packages = self.client.channel.software.listPackagesWithoutChannel(self.session)
+        batch_size = 1000
     elif 1 == len(args):
-        packages = self.client.channel.software.listPackagesWithoutChannel(
-            self.session, int(0), int(args[0])
-        )
-    elif 2 == len(args):
-        packages = self.client.channel.software.listPackagesWithoutChannel(
-            self.session, int(args[1]), int(args[0])
-        )
+        batch_size = int(args[0])
     else:
         self.help_package_removeorphans()
         return None
 
-    if not packages:
-        print(_("No orphaned packages has been found"))
-        logging.warning(_N("No orphaned packages"))
+    package_ids = []
+    packages = self.client.channel.software.listPackagesWithoutChannel(
+        self.session, int(0), batch_size
+    )
+    package_ids.extend([p.get("id") for p in packages])
+
+    if not package_ids:
+        print(_("No orphan packages have been found"))
+        logging.warning(_N("No orphan packages"))
         return 1
 
-    print(_("Packages"))
-    print("--------")
-    print("\n".join(sorted(build_package_names(packages))))
+    offset = batch_size
+    while packages:
+        packages = self.client.channel.software.listPackagesWithoutChannel(
+            self.session, offset, batch_size
+        )
+        package_ids.extend([p.get("id") for p in packages])
+        offset += batch_size
 
-    if not self.user_confirm(_("Remove these packages [y/N]:")):
+    print(
+        _(
+            "There are %i orphan packages to be removed (use package_listorphans to see the list)"
+        )
+        % len(package_ids)
+    )
+
+    if not self.user_confirm(
+        _("Remove these %i orphan packages [y/N]:") % len(package_ids)
+    ):
         print(_("No packages were removed"))
         return 1
 
-    for package in packages:
+    for pid in package_ids:
         try:
-            self.client.packages.removePackage(self.session, package.get("id"))
+            self.client.packages.removePackage(self.session, pid)
         except xmlrpclib.Fault:
-            logging.error(_N("Failed to remove package ID %i") % package.get("id"))
+            logging.error(_N("Failed to remove package ID %i") % pid)
             return 1
 
     return 0
