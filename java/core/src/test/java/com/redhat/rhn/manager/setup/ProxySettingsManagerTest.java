@@ -83,9 +83,9 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         emptySettings.setPassword("");
         ProxySettingsManager.storeProxySettings(emptySettings, new RhnMockHttpServletRequest());
 
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY).getValue());
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME).getValue());
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD).getValue());
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY).testGetStoredValue());
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME).testGetStoredValue());
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD).testGetStoredValue());
     }
 
     @Test

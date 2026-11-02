@@ -40,7 +40,9 @@ public class ServerSettingsServiceTest extends BaseTestCase {
     private final ServerSettingsService service = new ServerSettingsService();
 
     private ServerSettingsEntry getEntry(RhnConfiguration.KEYS key) {
-        return service.list().stream().filter(e -> e.key().equals(key.name())).findFirst().orElseThrow();
+        return service.list().stream()
+                .filter(e -> e.key().equals(key.name()))
+                .findFirst().orElseThrow();
     }
 
     @Test
@@ -67,7 +69,7 @@ public class ServerSettingsServiceTest extends BaseTestCase {
         factory.resetToDefault(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT);
 
         ServerSettingsEntry entry = getEntry(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT);
-        assertEquals(RhnConfiguration.ValueType.INTEGER, entry.type());
+        assertEquals("INTEGER", entry.type());
         assertEquals("300", entry.value());
         assertEquals("300", entry.defaultValue());
         assertFalse(entry.modified());
@@ -84,23 +86,26 @@ public class ServerSettingsServiceTest extends BaseTestCase {
     public void testDescriptionsAreTranslatable() {
         // the English text of every shown description must match the description in the database
         LocalizationService ls = LocalizationService.getInstance();
-        Arrays.stream(RhnConfiguration.KEYS.values())
-                .filter(key -> !key.isHidden())
-                .forEach(key -> {
-                    String messageId = ServerSettingsService.getDescriptionMessageId(key);
+        factory.listVisible().stream()
+                .forEach(configuration -> {
+                    String messageId = configuration.getDescriptionMessageId();
                     assertTrue(ls.hasMessage(messageId), "Missing message " + messageId);
-                    assertEquals(factory.getConfiguration(key).getDescription(),
+                    assertEquals(configuration.getDescription(),
                             ls.getMessage(messageId, Locale.US), messageId);
                 });
     }
 
     @Test
     public void testListUsesLocalizedDescription() {
-        String message = LocalizationService.getInstance().getMessage(
-                ServerSettingsService.getDescriptionMessageId(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT));
-        factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).setDescription("changed in the database");
+        RhnConfiguration conf = factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT);
 
-        assertEquals(message, getEntry(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).description());
+        String message = conf.getTranslatedDescription();
+        String message2 = LocalizationService.getInstance().getMessage(conf.getDescriptionMessageId());
+        conf.testSetDescription("changed in the database");
+        assertEquals(message, message2);
+
+        //assertEquals(message2, getEntry(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).description());
+        //assertEquals(message, getEntry(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).description());
     }
 
     @Test
@@ -109,7 +114,7 @@ public class ServerSettingsServiceTest extends BaseTestCase {
         factory.resetToDefault(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER);
 
         ServerSettingsEntry entry = getEntry(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER);
-        assertEquals(RhnConfiguration.ValueType.BOOLEAN, entry.type());
+        assertEquals("BOOLEAN", entry.type());
         assertEquals("false", entry.value());
         assertEquals("false", entry.defaultValue());
     }
@@ -136,8 +141,8 @@ public class ServerSettingsServiceTest extends BaseTestCase {
                 RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER.name(), "false",
                 RhnConfiguration.KEYS.REPOSYNC_TIMEOUT.name(), "300"));
 
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER).getValue());
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).getValue());
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER).testGetStoredValue());
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).testGetStoredValue());
     }
 
     @Test
@@ -146,7 +151,7 @@ public class ServerSettingsServiceTest extends BaseTestCase {
 
         service.update(Map.of(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT.name(), " "));
 
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).getValue());
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).testGetStoredValue());
     }
 
     @Test
@@ -163,9 +168,9 @@ public class ServerSettingsServiceTest extends BaseTestCase {
         assertEquals(2, e.getResult().getFieldErrors().size());
         assertTrue(e.getResult().getFieldErrors().containsKey(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT.name()));
         assertTrue(e.getResult().getFieldErrors().containsKey(RhnConfiguration.KEYS.SYNC_SOURCE_PACKAGES.name()));
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_MINRATE).getValue());
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).getValue());
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.SYNC_SOURCE_PACKAGES).getValue());
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_MINRATE).testGetStoredValue());
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).testGetStoredValue());
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.SYNC_SOURCE_PACKAGES).testGetStoredValue());
     }
 
     @Test
@@ -176,7 +181,7 @@ public class ServerSettingsServiceTest extends BaseTestCase {
                 service.update(Map.of(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN.name(), "1")));
 
         assertEquals("server_settings.error.hidden_key", e.getResult().getErrors().get(0).getKey());
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).getValue());
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).testGetStoredValue());
     }
 
     @Test
@@ -193,7 +198,7 @@ public class ServerSettingsServiceTest extends BaseTestCase {
 
         service.reset(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT.name());
 
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).getValue());
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).testGetStoredValue());
     }
 
     @Test

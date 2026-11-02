@@ -134,7 +134,7 @@ public class ServerSettingsControllerTest extends BaseControllerTestCase {
                 controller.resetSetting(getPostRequestWithCsrfAndBody(URL + "/reset", body), response, satAdmin));
 
         assertTrue(isSuccess(result));
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).getValue());
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).testGetStoredValue());
     }
 
     @Test
