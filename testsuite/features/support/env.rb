@@ -470,6 +470,32 @@ Before('@skip_known_issue') do
   raise Core::Test::Result::Failed, 'This scenario is known to fail, skipping it'
 end
 
+# Smoke tests: a client whose scenarios fail slowly twice in a row (a step wait of ~500 s expired each time) is
+# dead. Skip the rest of that feature instead of spending a full wait on every remaining scenario.
+SMOKE_SLOW_FAILURE_SECONDS = 300
+SMOKE_SLOW_FAILURES_BEFORE_SKIP = 2
+$smoke_slow_failures = Hash.new(0)
+
+After do |scenario|
+  feature_file = scenario.location.file
+  next unless feature_file.include?('/smoke_tests/')
+
+  if scenario.failed?
+    elapsed = Time.now.to_i - (@scenario_start_time || Time.now.to_i)
+    $smoke_slow_failures[feature_file] += 1 if elapsed >= SMOKE_SLOW_FAILURE_SECONDS
+  elsif scenario.passed?
+    $smoke_slow_failures[feature_file] = 0
+  end
+end
+
+Before do |scenario|
+  feature_file = scenario.location.file
+  next unless $smoke_slow_failures[feature_file] >= SMOKE_SLOW_FAILURES_BEFORE_SKIP
+
+  log "Skipping: #{SMOKE_SLOW_FAILURES_BEFORE_SKIP} scenarios of this feature already failed after a long wait"
+  skip_this_scenario
+end
+
 # Create a user for each feature
 Before('not @no_user_creation') do |scenario|
   feature_path = scenario.location.file
