@@ -860,10 +860,26 @@ Then(/^the hub reportdb "([^"]*)" table should have a recent synced_date$/) do |
   raise StandardError, "synced_date in #{table} is not recent" unless recent == 't'
 end
 
+TEST_ORG_ADMIN_LOGIN = 'test_org_admin'.freeze
+TEST_ORG_ADMIN_PASSWORD = 'TestPass123!'.freeze
+
 When(/^I create organization "([^"]*)" on "([^"]*)"$/) do |org_name, host|
   api = api_client_for(host)
-  org_admin = { adminLogin: 'test_org_admin', adminPassword: 'TestPass123!', prefix: 'Mr.', firstName: 'Test', lastName: 'Admin', email: 'test_org_admin@example.com' }
+  org_admin = { adminLogin: TEST_ORG_ADMIN_LOGIN, adminPassword: TEST_ORG_ADMIN_PASSWORD, prefix: 'Mr.', firstName: 'Test', lastName: 'Admin', email: 'test_org_admin@example.com' }
   api.call('org.create', sessionKey: api.token, orgName: org_name, **org_admin, usePamAuth: false)
+end
+
+# channel.listSoftwareChannels only lists the channels of the caller's organization, so a channel
+# synced into the organization created above is invisible to the default admin of api_client_for.
+Then(/^channel "([^"]*)" should exist on "([^"]*)" for the test organization admin$/) do |channel, host|
+  client = XmlrpcClient.new(get_target(host).full_hostname, ssl_verify: false)
+  token = client.call('auth.login', login: TEST_ORG_ADMIN_LOGIN, password: TEST_ORG_ADMIN_PASSWORD)
+  begin
+    labels = client.call('channel.listSoftwareChannels', sessionKey: token).map { |c| c['label'] }
+  ensure
+    client.call('auth.logout', sessionKey: token)
+  end
+  raise StandardError, "Channel #{channel} not found on #{host} in the test organization: #{labels}" unless labels.include?(channel)
 end
 
 # Peripheral-side activation key and minion bootstrap

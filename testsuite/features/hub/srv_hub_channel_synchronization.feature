@@ -103,7 +103,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     When I initiate channel sync from peripheral "peripheral1"
     And I should see a "Successfully scheduled a channels synchronization." text
     And I wait until the channel "test-hub-custom-channel" has been synced on peripheral1
-    Then channel "test-hub-custom-channel" should exist on "peripheral1"
+    Then channel "test-hub-custom-channel" should exist on "peripheral1" for the test organization admin
 
   # BUG-019 (QE test plan): HTTP 500 on peripheral channel sync when rhnContentSource.source_url
   # exceeded VARCHAR(2048). Fixed by bsc#1259230, which widens source_url to VARCHAR(4096).
@@ -121,7 +121,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     And I add channel "test-hub-api-channel" to the sync list of "peripheral1" for organization "Test Default Organization" via the hub API
     Then the hub API should list channel "test-hub-api-channel" for sync to "peripheral1"
     When I trigger channel sync to "peripheral1" via the hub API
-    Then channel "test-hub-api-channel" should exist on "peripheral1"
+    Then channel "test-hub-api-channel" should exist on "peripheral1" for the test organization admin
 
   Scenario: Cleanup: remove synced channels from peripheral1
     When I remove synced channels from "peripheral1"
