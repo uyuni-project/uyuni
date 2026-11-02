@@ -13,8 +13,6 @@
 
 package com.suse.manager.webui.controllers.admin.beans;
 
-import com.redhat.rhn.domain.common.RhnConfiguration;
-
 /**
  * A server setting as shown in the UI. Boolean values are normalized to "true" and "false".
  * @param key the configuration key
@@ -24,6 +22,6 @@ import com.redhat.rhn.domain.common.RhnConfiguration;
  * @param defaultValue the default value
  * @param modified true when a value is set, false when the default value is used
  */
-public record ServerSettingsEntry(String key, String description, RhnConfiguration.ValueType type, String value,
+public record ServerSettingsEntry(String key, String description, String type, String value,
                                   String defaultValue, boolean modified) {
 }
