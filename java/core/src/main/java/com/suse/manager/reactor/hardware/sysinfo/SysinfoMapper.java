@@ -99,9 +99,9 @@ public class SysinfoMapper {
             String sequenceCode = sysvalues.get(SYSINFO_KEY_SEQUENCE_CODE);
             String type = sysvalues.get(SYSINFO_KEY_TYPE);
 
-            // we're only interested in the special case where we're on a S390 mainframe and we got info
-            // about the virtual host this system is running on
-            if (StringUtils.isBlank(sequenceCode) || StringUtils.isBlank(type) || !CpuArchUtil.isS390(cpuArch)) {
+            // we're only interested in the special case where we're on a S390 mainframe
+            // and we got info about the virtual host this system is running on
+            if (!isS390NeedingForeignSystem(sequenceCode, type, cpuArch)) {
                 return Optional.empty();
             }
 
@@ -122,6 +122,14 @@ public class SysinfoMapper {
             LOG.error("Failed to map mainframe sysinfo for minion {} : {}", server.getMinionId(), e);
             return Optional.of(SYSINFO_MAPPING_FAILED + e.getMessage());
         }
+    }
+
+    private boolean isS390NeedingForeignSystem(
+            String sequenceCode, String type, String cpuArch) {
+
+        return CpuArchUtil.isS390(cpuArch) &&
+                StringUtils.isNotBlank(sequenceCode) &&
+                StringUtils.isNotBlank(type);
     }
 
     /**
