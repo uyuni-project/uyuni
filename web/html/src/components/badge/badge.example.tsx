@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { StoryRow, StorySection, StripedStorySection } from "manager/storybook/layout";
 
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
