@@ -12,6 +12,19 @@ The Contributing page in the wiki provides some guidance on how to get started d
 
 https://github.com/uyuni-project/uyuni/wiki/Contributing
 
+## Windows checkout limitations
+
+Some paths in the Uyuni repository contain characters that are not supported in Windows filenames, such as `:`. This can cause a full Git checkout to fail with `error: invalid path`, particularly for files under `testsuite/dockerfiles/server-all-in-one-dev/mirror/`.
+
+If you encounter this error on Windows:
+
+- Avoid repeatedly running a full checkout, as the same unsupported paths may cause it to fail again.
+- Consider using Git sparse-checkout to work with only the directories needed for your contribution.
+- For frontend work, the relevant source code and development instructions are under [`web/`](web/README.md).
+- For development requiring the complete repository, consider a Linux environment.
+
+These limitations relate to the Windows filesystem and do not necessarily indicate repository corruption.
+
 ## Pull Requests
 
 The following roles exist in the context of a Pull Request:
