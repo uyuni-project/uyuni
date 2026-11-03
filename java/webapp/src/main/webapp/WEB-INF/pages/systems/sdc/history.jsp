@@ -19,7 +19,7 @@ SPDX-License-Identifier: GPL-2.0-only
         <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
         <rhn:toolbar base="h2" icon="header-event-history">
-            <bean:message key="system.event.history.header" /> test
+            <bean:message key="system.event.history.header" />
         </rhn:toolbar>
 
         <div class="page-summary">
