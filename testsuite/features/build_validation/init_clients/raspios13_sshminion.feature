@@ -13,7 +13,7 @@ Feature: Bootstrap a Raspberri Pi OS 13 Salt SSH minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Bootstrap a SSH-managed Raspberri Pi OS 13 minion
+  Scenario: Bootstrap a Raspberri Pi OS 13 Salt SSH minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "raspios13_sshminion" as "hostname"
@@ -27,6 +27,6 @@ Feature: Bootstrap a Raspberri Pi OS 13 Salt SSH minion
     And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "raspios13_sshminion"
 
-  Scenario: Check events history for failures on SSH-managed Raspberri Pi OS 13 minion
+  Scenario: Check events history for failures on Raspberri Pi OS 13 Salt SSH minion
     Given I am on the Systems overview page of this "raspios13_sshminion"
     Then I check for failed events on history event page

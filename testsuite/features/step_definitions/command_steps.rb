@@ -1233,7 +1233,7 @@ When(/^I create the bootstrap repository for "([^"]*)" on (?:the server|(server2
   # proxy, proxy2 and proxy3 share the 'proxy' channel entries; the proxy's base channel follows
   # the proxy's own OS, not the server's.
   host = host_transactional?(host) ? 'proxy' : 'proxy_nontransactional' if host.match?(/^proxy\d*$/)
-  base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
+  base_channel = BASE_CHANNEL_BY_CLIENT[product][BOOTSTRAP_CLIENT_BY_CLIENT.fetch(host, host)]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   get_target(target).wait_while_process_running('mgr-create-bootstrap-repo')
