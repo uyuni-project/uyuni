@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 __spacewalk_common_channels_options="c:config= u:user= p:password= s:server= k:keys= n:dry-run
     a:archs= v:verbose l:list d:default-channels h:help"
 

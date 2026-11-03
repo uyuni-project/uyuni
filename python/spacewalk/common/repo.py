@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 """
 Repository tools
 """
@@ -235,7 +240,7 @@ class DpkgRepo:
                 entry = Entry._make(
                     filter(None, line.strip().replace("\t", " ").split(" "))
                 )
-                int(entry.checksum, 0x10)  # assert entry.checksum is hexadecimal
+                int(entry.checksum, 0x10)  # asserts that entry.checksum is hexadecimal
                 rel_entry = DpkgRepo.ReleaseEntry(int(entry.size), entry.path)
             except (TypeError, ValueError):
                 continue

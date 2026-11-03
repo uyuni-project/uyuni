@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { Virtuoso } from "react-virtuoso";
 
 import styles from "./VirtualList.module.scss";

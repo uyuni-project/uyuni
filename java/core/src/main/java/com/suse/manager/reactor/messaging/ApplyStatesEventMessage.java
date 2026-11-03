@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -37,6 +39,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     public static final String PACKAGES_PROFILE_UPDATE = "packages.profileupdate";
     public static final String HARDWARE_PROFILE_UPDATE = "hardware.profileupdate";
     public static final String VIRTUAL_PROFILE_UPDATE = "hardware.virtprofile";
+    public static final String SNAPSHOTS_REFRESH = "snapshots.refresh";
     public static final String CHANNELS = "channels";
     public static final String SALT_MINION_SERVICE = "services.salt-minion";
     public static final String REPORTDB_USER = "services.reportdb-user";

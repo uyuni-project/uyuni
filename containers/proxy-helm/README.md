@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: MIT
+-->
+
 # proxy-helm
 
 This chart installs [Uyuni proxy](https://uyuni-project.org).

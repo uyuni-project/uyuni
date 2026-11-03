@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <datasource_modes>
 
 <mode name="systems_with_feature" class="com.redhat.rhn.frontend.dto.SystemOverview">
@@ -1781,6 +1788,10 @@ select event_id as id,
        all_events.history_type,
        all_events.history_type_name,
        all_events.history_status,
+       all_events.pending_reboot_action_id,
+       case when all_events.history_type is not null and action_details.org_id = :oid
+            then action_details.action_description
+            else null end as action_description,
        case when action_details.org_id != :oid then 0
          else 1 end as history_visible
   from (select SH.id event_id,
@@ -1790,7 +1801,8 @@ select event_id as id,
                SH.created as completed,  -- view this as the "completed" date for sorting reasons
                NULL as history_status,
                NULL as history_type,
-               NULL as history_type_name
+               NULL as history_type_name,
+               NULL as pending_reboot_action_id
           from rhnServerHistory SH
          where SH.server_id = :sid
          union
@@ -1801,13 +1813,20 @@ select event_id as id,
                SA.completion_time as completed,
                AStat.name as history_status,
                AType.label as history_type,
-               AType.name as history_type_name
+               AType.name as history_type_name,
+               TAH.action_id as pending_reboot_action_id
           from rhnActionType AType,
                rhnActionStatus AStat,
                rhnAction A
      left join web_contact U
             on U.id = A.scheduler,
                rhnServerAction SA
+     left join suseTransactionalActionHistory TAH
+           on TAH.minion_server_id = SA.server_id
+           and TAH.action_id = SA.action_id
+           and TAH.reboot_required = true
+           and TAH.reboot_status = 'PENDING'
+           and TAH.after_reboot_status = 'PENDING'
          where SA.server_id = :sid
            and SA.action_id = A.id
            and ATYPE.id = A.action_type
@@ -1834,6 +1853,10 @@ order by completed desc, picked_up desc, all_events.created desc, event_id desc
          all_events.history_type,
          all_events.history_type_name,
          all_events.history_status,
+         all_events.pending_reboot_action_id,
+         case when all_events.history_type is not null and action_details.org_id = :oid
+              then action_details.action_description
+              else null end as action_description,
          case when action_details.org_id != :oid then 0 else 1 end as history_visible
     from (
               select SH.id event_id,
@@ -1843,7 +1866,8 @@ order by completed desc, picked_up desc, all_events.created desc, event_id desc
                      SH.created as completed,  -- view this as the "completed" date for sorting reasons
                      NULL as history_status,
                      NULL as history_type,
-                     NULL as history_type_name
+                     NULL as history_type_name,
+                     NULL as pending_reboot_action_id
                 from rhnServerHistory SH
                where SH.server_id = :sid
                      AND SH.id = :eid
@@ -1855,13 +1879,20 @@ order by completed desc, picked_up desc, all_events.created desc, event_id desc
                      SA.completion_time as completed,
                      AStat.name as history_status,
                      AType.label as history_type,
-                     AType.name as history_type_name
+                     AType.name as history_type_name,
+                     TAH.action_id as pending_reboot_action_id
                 from rhnActionType AType,
                      rhnActionStatus AStat,
                      rhnAction A
            left join web_contact U
                   on U.id = A.scheduler,
                      rhnServerAction SA
+           left join suseTransactionalActionHistory TAH
+                  on TAH.minion_server_id = SA.server_id
+                 and TAH.action_id = SA.action_id
+                 and TAH.reboot_required = true
+                 and TAH.reboot_status = 'PENDING'
+                 and TAH.after_reboot_status = 'PENDING'
                where SA.server_id = :sid
                  and SA.action_id = A.id
                  and ATYPE.id = A.action_type
@@ -1892,7 +1923,9 @@ select count(action_id) as count
                 , A.prerequisite AS prereq_aid
                 , SP.status AS prereq_status_id
                 , A.name AS action_name
+                , CASE WHEN A.org_id = S.org_id THEN A.action_description ELSE NULL END AS action_description
     FROM rhnServerAction SA
+                INNER JOIN rhnServer S ON SA.server_id = S.id
                 INNER JOIN rhnAction A ON SA.action_id = A.id
                 INNER JOIN rhnActionStatus AStat ON AStat.id = SA.status
                 INNER JOIN rhnActionType AType ON AType.id = A.action_type
@@ -1914,7 +1947,9 @@ ORDER BY scheduled_for DESC, prereq_aid NULLS FIRST
                 , A.prerequisite AS prereq_aid
                 , SP.status As prereq_status_id
                 , A.name AS action_name
+                , CASE WHEN A.org_id = S.org_id THEN A.action_description ELSE NULL END AS action_description
     FROM rhnServerAction SA
+                INNER JOIN rhnServer S ON SA.server_id = S.id
                 INNER JOIN rhnAction A ON SA.action_id = A.id
                 INNER JOIN rhnActionStatus AStat ON AStat.id = SA.status
                 INNER JOIN rhnActionType AType ON AType.id = A.action_type

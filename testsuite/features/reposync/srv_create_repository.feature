@@ -1,5 +1,5 @@
 # Copyright (c) 2015-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in:
 # If the fake-rpm-repo fails to be created:
@@ -20,6 +20,7 @@ Feature: Add a repository to a channel
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
     And I enable source package syncing
+    And I mirror the RPM test packages locally
 
   Scenario: Add a test repository for x86_64
     When I follow the left menu "Software > Manage > Repositories"

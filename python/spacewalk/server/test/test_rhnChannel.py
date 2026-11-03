@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -37,7 +39,7 @@ def test_server_search(use_key=0):
 
 
 if __name__ == "__main__":
-    initCFG("server.xmlrpc")
+    initCFG("server")
     rhnSQL.initDB("rhnuser/rhnuser@webdev")
 
     # pylint: disable-next=using-constant-test
@@ -105,12 +107,3 @@ if __name__ == "__main__":
         )
     )
     # pprint.pprint(ret)
-
-    server_id = 1002156837
-    channels = rhnChannel.channels_for_server(server_id)
-
-    s = rhnServer.search(server_id)
-    s.change_base_channel("2.1AS-foobar")
-    print([x["label"] for x in channels])
-    print([x["label"] for x in rhnChannel.channels_for_server(server_id)])
-    rhnSQL.commit()

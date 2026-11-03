@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -32,10 +34,7 @@ class ListMissingTestCase(unittest.TestCase):
         rhnSQL.rollback()
 
     def testPresence(self):
-        if self.packageobj.listMissingSourcePackages:
-            assert 1
-        else:
-            assert 0
+        assert self.packageobj.listMissingSourcePackages
 
     # pylint: disable-next=invalid-name
     def testlistMissingSourcePackages(self):
@@ -46,10 +45,7 @@ class ListMissingTestCase(unittest.TestCase):
             self.myserver.getPassword(),
         )
         # pylint: disable-next=unidiomatic-typecheck
-        if type(package_list) == type([]):
-            assert 1
-        else:
-            assert 0
+        assert type(package_list) == type([])
 
 
 if __name__ == "__main__":

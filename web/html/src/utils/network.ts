@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { showErrorToastr } from "components/toastr";
 

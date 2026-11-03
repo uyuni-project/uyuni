@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package spacewalk-java
 #
@@ -56,7 +60,7 @@
 %endif
 
 Name:           spacewalk-java
-Version:        5.3.1
+Version:        5.3.3
 Release:        0
 Summary:        Java web application files for %{productprettyname}
 License:        GPL-2.0-only

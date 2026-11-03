@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <!-- This file just provide a basic fallback configuration useful for development -->
 <!-- The actual configuration used at runtime by the packaged application is in scripts/log42.xml -->
 <Configuration name="Basic" status="warn">

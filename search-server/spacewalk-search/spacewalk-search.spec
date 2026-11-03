@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package spacewalk-search
 #
@@ -27,10 +31,10 @@
 %define oro (oro or jakarta-oro)
 
 Name:           spacewalk-search
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Spacewalk Full Text Search Server
-License:        Apache-2.0 AND GPL-2.0-only
+License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 # This src.rpm is cannonical upstream

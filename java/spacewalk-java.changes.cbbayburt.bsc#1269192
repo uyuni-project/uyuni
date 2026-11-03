@@ -1,2 +1,0 @@
-- Make setting of column filters in ListTag idempotent
-  (bsc#1269192)

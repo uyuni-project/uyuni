@@ -1,0 +1,6 @@
+- Remove the obsolete `getPackageHeader` GET request and the
+  `cache_package_headers` configuration option
+- Move `min_schema_version` into `rhn_server.conf` and remove
+  `rhn_server_xmlrpc.conf`
+- Remove the logrotate configuration for the no longer used
+  `rhn_server_xmlrpc.log`

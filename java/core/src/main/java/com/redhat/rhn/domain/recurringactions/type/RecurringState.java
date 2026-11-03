@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -40,6 +42,7 @@ import jakarta.persistence.Transient;
 public class RecurringState extends RecurringActionType {
 
     private boolean testMode;
+    private boolean useTransactionalUpdate;
     private Set<RecurringStateConfig> stateConfig;
 
     /**
@@ -108,6 +111,26 @@ public class RecurringState extends RecurringActionType {
      */
     public void setTestMode(boolean testModeIn) {
         this.testMode = testModeIn;
+    }
+
+    /**
+     * Gets whether transactional systems execute this recurring state through transactional-update.
+     *
+     * @return true when transactional-update should be used
+     */
+    @Column(name = "use_transactional_update")
+    @Convert(converter = YesNoConverter.class)
+    public boolean isUseTransactionalUpdate() {
+        return useTransactionalUpdate;
+    }
+
+    /**
+     * Sets whether transactional systems execute this recurring state through transactional-update.
+     *
+     * @param useTransactionalUpdateIn whether transactional-update should be used
+     */
+    public void setUseTransactionalUpdate(boolean useTransactionalUpdateIn) {
+        useTransactionalUpdate = useTransactionalUpdateIn;
     }
 
     /**

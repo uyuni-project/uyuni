@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnTimezone (id, olson_name, display_name) (
     select sequence_nextval('rhn_timezone_id_seq'),
            'America/Santiago',

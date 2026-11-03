@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Playwright controller setup
 
 The UI part of the test suite is driven by [Playwright](https://playwright.dev/) through the

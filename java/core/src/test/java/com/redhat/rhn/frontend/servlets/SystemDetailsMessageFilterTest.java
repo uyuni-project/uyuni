@@ -7,6 +7,8 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
  */
 package com.redhat.rhn.frontend.servlets;
 
@@ -55,7 +57,7 @@ public class SystemDetailsMessageFilterTest extends BaseTestCase {
         SystemDetailsMessageFilter filter = new SystemDetailsMessageFilter();
         filter.processSystemMessages(request, server);
 
-        ActionMessages messages = (ActionMessages) request.getSession().getAttribute("org.apache.struts.action.ERROR");
+        ActionMessages messages = (ActionMessages) request.getAttribute("org.apache.struts.action.ERROR");
         @SuppressWarnings("unchecked")
         Iterator<ActionMessage> globalMessagesIterator = messages.get(ActionMessages.GLOBAL_MESSAGE);
 
@@ -73,7 +75,7 @@ public class SystemDetailsMessageFilterTest extends BaseTestCase {
         SystemDetailsMessageFilter filter = new SystemDetailsMessageFilter();
         filter.processSystemMessages(request, minionServer);
         ActionMessages messages =
-                ((ActionMessages) request.getSession().getAttribute("org.apache.struts.action.ERROR"));
+                ((ActionMessages) request.getAttribute("org.apache.struts.action.ERROR"));
         assertNull(messages);
     }
 }

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { ConfigChannels } from "components/config-channels";
@@ -9,6 +15,7 @@ import Network from "utils/network";
 declare global {
   interface Window {
     groupId?: any;
+    hasTransactionalSystems?: boolean;
   }
 }
 
@@ -16,11 +23,12 @@ function matchUrl(target) {
   return "/rhn/manager/api/states/match?id=" + window.groupId + "&type=GROUP" + (target ? "&target=" + target : "");
 }
 
-function applyRequest(component) {
+function applyRequest(component, useTransactionalUpdate) {
   return Network.post("/rhn/manager/api/states/apply", {
     id: window.groupId,
     type: "GROUP",
     states: ["custom_groups"],
+    useTransactionalUpdate: Boolean(window.hasTransactionalSystems && useTransactionalUpdate),
   }).then(() => {
     component.setState({
       messages: MessagesUtils.info(
@@ -40,6 +48,11 @@ function saveRequest(states) {
 
 export const renderer = () =>
   SpaRenderer.renderNavigationReact(
-    <ConfigChannels matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest} />,
+    <ConfigChannels
+      matchUrl={matchUrl}
+      saveRequest={saveRequest}
+      applyRequest={applyRequest}
+      showTransactionalUpdate={window.hasTransactionalSystems}
+    />,
     document.getElementById("config-channels")
   );

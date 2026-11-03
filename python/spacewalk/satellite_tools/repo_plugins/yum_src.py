@@ -11,6 +11,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # SUSE trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
@@ -72,10 +74,11 @@ from spacewalk.satellite_tools.syncLib import log
 # pylint: disable-next=unused-import
 from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.common.suseLib import get_proxy, URL as suseLibURL, get_content_type
+from spacewalk.server.db_config import DB_CFG
+from spacewalk.server.rhnLib import PACKAGE_DIR
 from rhn.stringutils import sstr
 from urlgrabber.grabber import URLGrabError
 from urlgrabber.mirror import MirrorGroup
-
 
 # namespace prefix to parse patches.xml file
 PATCHES_XML = "{http://novell.com/package/metadata/suse/patches}"
@@ -315,8 +318,8 @@ class ZypperRepo:
         self.baseurl = [url]
         self.basecachedir = os.path.join(CACHE_DIR, org)
         # pylint: disable-next=redefined-outer-name,invalid-name
-        with cfg_component("server.satellite") as CFG:
-            self.pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org, "stage")
+        with cfg_component("server") as CFG:
+            self.pkgdir = os.path.join(CFG.MOUNT_POINT, PACKAGE_DIR, org, "stage")
         self.urls = self.baseurl
         # Make sure baseurl ends with / and urljoin will work correctly
         if self.urls[0][-1] != "/":
@@ -613,7 +616,7 @@ class ContentSource:
 
         # keep authtokens for mirroring
         # pylint: disable-next=invalid-name,unused-variable
-        (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
+        _scheme, _netloc, _path, query, _fragid = urlsplit(url)
         if query:
             self.authtoken = query
 
@@ -663,64 +666,55 @@ class ContentSource:
         self.gpgkey_autotrust = None
         self.groupsfile = None
 
-        # pylint: disable-next=redefined-outer-name,invalid-name
-        with cfg_component("server.satellite") as CFG:
-            # configure network connection
-            try:
-                # bytes per second
-                self.minrate = int(CFG.REPOSYNC_MINRATE)
-            except ValueError:
-                self.minrate = 1000
-            try:
-                # seconds
-                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
-            except ValueError:
-                self.timeout = 300
-            try:
-                # extended reposync nevra filter enable
-                # this will filter packages based on full nevra
-                # instead of package name only.
-                self.nevra_filter = bool(CFG.REPOSYNC_NEVRA_FILTER)
-            except (AttributeError, ValueError):
-                self.nevra_filter = False
+        # configure network connection
+        try:
+            # bytes per second
+            self.minrate = int(DB_CFG.REPOSYNC_MINRATE)
+        except (TypeError, ValueError):
+            self.minrate = 1000
+        try:
+            # seconds
+            self.timeout = int(DB_CFG.REPOSYNC_TIMEOUT)
+        except (TypeError, ValueError):
+            self.timeout = 300
+        self.urlgrabber_logspec = DB_CFG.URLGRABBER_LOGSPEC
+        # extended reposync nevra filter enable
+        # this will filter packages based on full nevra
+        # instead of package name only.
+        self.nevra_filter = DB_CFG.get_bool("REPOSYNC_NEVRA_FILTER")
 
     def _load_proxy_settings(self, url):
-        # read the proxy configuration in /etc/rhn/rhn.conf
-        # pylint: disable-next=redefined-outer-name,invalid-name
-        with cfg_component("server.satellite") as CFG:
-            # Get the global HTTP Proxy settings from DB or per-repo
-            # settings on /etc/rhn/spacewalk-repo-sync/zypper.conf
-            if CFG.http_proxy:
-                self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(url)
-                self.proxy_hostname = self.proxy_url
-            elif os.path.isfile(REPOSYNC_ZYPPER_CONF):
-                zypper_cfg = configparser.ConfigParser()
-                # pylint: disable-next=unspecified-encoding
-                zypper_cfg.read_file(open(REPOSYNC_ZYPPER_CONF))
-                section_name = None
+        # Get the global HTTP Proxy settings from DB or per-repo
+        # settings on /etc/rhn/spacewalk-repo-sync/zypper.conf
+        if DB_CFG.HTTP_PROXY:
+            self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(url)
+            self.proxy_hostname = self.proxy_url
+        elif os.path.isfile(REPOSYNC_ZYPPER_CONF):
+            zypper_cfg = configparser.ConfigParser()
+            # pylint: disable-next=unspecified-encoding
+            zypper_cfg.read_file(open(REPOSYNC_ZYPPER_CONF))
+            section_name = None
 
-                if zypper_cfg.has_section(self.name):
-                    section_name = self.name
+            if zypper_cfg.has_section(self.name):
+                section_name = self.name
+            # pylint: disable-next=undefined-variable
+            elif zypper_cfg.has_section(channel_label):
                 # pylint: disable-next=undefined-variable
-                elif zypper_cfg.has_section(channel_label):
-                    # pylint: disable-next=undefined-variable
-                    section_name = channel_label
-                elif zypper_cfg.has_section("main"):
-                    section_name = "main"
+                section_name = channel_label
+            elif zypper_cfg.has_section("main"):
+                section_name = "main"
 
-                if section_name:
-                    if zypper_cfg.has_option(section_name, option="proxy"):
-                        self.proxy_hostname = zypper_cfg.get(
-                            section_name, option="proxy"
-                        )
-                        # pylint: disable-next=consider-using-f-string
-                        self.proxy_url = "http://%s" % self.proxy_hostname
+            if section_name:
+                if zypper_cfg.has_option(section_name, option="proxy"):
+                    self.proxy_hostname = zypper_cfg.get(section_name, option="proxy")
+                    # pylint: disable-next=consider-using-f-string
+                    self.proxy_url = "http://%s" % self.proxy_hostname
 
-                    if zypper_cfg.has_option(section_name, "proxy_username"):
-                        self.proxy_user = zypper_cfg.get(section_name, "proxy_username")
+                if zypper_cfg.has_option(section_name, "proxy_username"):
+                    self.proxy_user = zypper_cfg.get(section_name, "proxy_username")
 
-                    if zypper_cfg.has_option(section_name, "proxy_password"):
-                        self.proxy_pass = zypper_cfg.get(section_name, "proxy_password")
+                if zypper_cfg.has_option(section_name, "proxy_password"):
+                    self.proxy_pass = zypper_cfg.get(section_name, "proxy_password")
 
     def _get_mirror_list(self, repo, url):
         returnlist = []
@@ -796,7 +790,7 @@ class ContentSource:
                     continue
                 try:
                     # This started throwing ValueErrors, BZ 666826
-                    (s, b, p, q, f, o) = urlparse(url)
+                    s, b, p, q, f, o = urlparse(url)
                     if p[-1] != "/":
                         p = p + "/"
                 # pylint: disable-next=unused-variable
@@ -805,7 +799,6 @@ class ContentSource:
 
                 if s not in ["http", "ftp", "file", "https"]:
                     skipped = url
-                    continue
                 else:
                     goodurls.append(urlunparse((s, b, p, q, f, o)))
             return goodurls
@@ -1655,9 +1648,7 @@ password={passwd}
         params["proxies"] = get_proxies(
             self.proxy_url, self.proxy_user, self.proxy_pass
         )
-        # pylint: disable-next=redefined-outer-name,invalid-name
-        with cfg_component("server.satellite") as CFG:
-            params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
+        params["urlgrabber_logspec"] = self.urlgrabber_logspec
 
     def get_file(self, path, local_base=None):
         try:

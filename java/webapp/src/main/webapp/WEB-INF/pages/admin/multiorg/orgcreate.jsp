@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -54,7 +61,7 @@
                                maxlength="45" styleId="loginname" />
                     <span class="help-block">
                         <strong><bean:message key="tip" /></strong>
-                        <bean:message key="org.login.tip" arg0="${rhn:getConfig('java.min_user_len')}" /><br/>
+                        <bean:message key="org.login.tip" arg0="${rhn:getDbConfig('USER_LOGIN_LENGTH_MIN')}" /><br/>
                         <c:if test="${empty param.account_type}">
                             <bean:message key="org.login.examples" />
                         </c:if>

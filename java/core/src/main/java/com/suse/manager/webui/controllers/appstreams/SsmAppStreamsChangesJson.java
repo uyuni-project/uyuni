@@ -8,23 +8,25 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers.appstreams;
 
-import java.time.LocalDateTime;
+import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
+
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-public class SsmAppStreamsChangesJson {
+public class SsmAppStreamsChangesJson extends ScheduledRequestJson {
     private Long channelId;
     private Set<String> toEnable;
     private Set<String> toDisable;
     private String actionChainLabel;
-    private Optional<LocalDateTime> earliest = Optional.empty();
 
     public Long getChannelId() {
         return channelId;
@@ -40,9 +42,5 @@ public class SsmAppStreamsChangesJson {
 
     public Optional<String> getActionChainLabel() {
         return Optional.ofNullable(actionChainLabel);
-    }
-
-    public Optional<LocalDateTime> getEarliest() {
-        return earliest;
     }
 }

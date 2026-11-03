@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 -- WebUI permissions
 
@@ -978,6 +980,7 @@ INSERT INTO access.accessGroupNamespace
         'api.system.get_running_kernel',
         'api.system.get_script_action_details',
         'api.system.get_script_results',
+        'api.system.get_snapshot_info',
         'api.system.get_subscribed_base_channel',
         'api.system.get_system_currency_multipliers',
         'api.system.get_system_currency_scores',
@@ -1054,6 +1057,7 @@ INSERT INTO access.accessGroupNamespace
         'api.system.schedule_reboot',
         'api.system.schedule_s_p_migration',
         'api.system.schedule_script_run',
+        'api.system.schedule_snapshot_refresh',
         'api.system.schedule_sync_packages_with_system',
         'api.system.search_by_name',
         'api.system.send_osa_ping',
@@ -1127,7 +1131,6 @@ INSERT INTO access.accessGroupNamespace
         'api.system.scap.get_xccdf_scan_details',
         'api.system.scap.get_xccdf_scan_rule_results',
         'api.system.scap.list_xccdf_scans',
-        'api.system.scap.schedule_xccdf_scan',
         'api.system.search.device_description',
         'api.system.search.device_driver',
         'api.system.search.device_id',
@@ -1301,8 +1304,8 @@ ON CONFLICT (group_id, namespace_id) DO NOTHING;
 INSERT INTO access.accessGroupNamespace (group_id, namespace_id)
     SELECT ag.id, ns.id FROM access.accessGroup ag, access.namespace ns
     WHERE ns.namespace IN (
-        'api.system.scap.schedule_beta_xccdf_scan_custom',
-        'api.system.scap.schedule_beta_xccdf_scan_with_policy'
+        'api.system.scap.schedule_xccdf_scan_with_policy',
+        'api.system.scap.schedule_xccdf_scan_custom'
     )
     AND ns.access_mode = 'W'
 ON CONFLICT (group_id, namespace_id) DO NOTHING;

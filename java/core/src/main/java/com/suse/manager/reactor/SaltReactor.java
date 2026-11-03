@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -22,6 +24,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -41,6 +44,8 @@ import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.reactor.messaging.ResumeTransactionalActionEventMessage;
+import com.suse.manager.reactor.messaging.ResumeTransactionalActionEventMessageAction;
 import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
@@ -132,6 +137,9 @@ public class SaltReactor {
                 RegisterMinionEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(saltServerActionService, saltUtils),
                 JobReturnEventMessage.class);
+        MessageQueue.registerAction(
+                new ResumeTransactionalActionEventMessageAction(saltServerActionService),
+                ResumeTransactionalActionEventMessage.class);
         MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
                 RefreshGeneratedSaltFilesEventMessage.class);
         MessageQueue.registerAction(new RunnableEventMessageAction(),
@@ -194,7 +202,9 @@ public class SaltReactor {
             }
             if (!isStopped) {
                 LOG.info("Taskomatic API is online. Connecting to the Salt event bus...");
-                connectToEventStream();
+                // this thread has its own Hibernate session, which must be committed and closed
+                TransactionHelper.handlingTransaction(this::connectToEventStream,
+                        e -> LOG.error("Unable to connect to the Salt event bus", e));
             }
         }, "salt-event-stream-initializer");
         initializerThread.start();
@@ -225,7 +235,8 @@ public class SaltReactor {
     public void eventStreamClosed() {
         if (!isStopped) {
             LOG.warn("Reconnecting to the Salt event bus...");
-            connectToEventStream();
+            TransactionHelper.handlingTransaction(this::connectToEventStream,
+                    e -> LOG.error("Unable to connect to the Salt event bus", e));
         }
     }
 

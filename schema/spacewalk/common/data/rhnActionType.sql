@@ -8,6 +8,8 @@
 -- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 -- 
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
@@ -74,4 +76,5 @@ insert into rhnActionType values (524, 'appstreams.configure', 'Configure AppStr
 insert into rhnActionType values (525, 'ansible.inventory', 'Refresh Ansible inventories', 'N', 'N', 'N');
 insert into rhnActionType values (526, 'supportdata.get', 'Get supportdata from a system', 'N', 'N', 'N');
 insert into rhnActionType values (527, 'virt.refresh_list', 'Refresh virtual instance information', 'N', 'N', 'N');
+insert into rhnActionType values (528, 'snapshots.refresh_list', 'Refresh Snapshots', 'N', 'N', 'N');
 commit;

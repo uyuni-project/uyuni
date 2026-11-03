@@ -9,6 +9,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -2068,7 +2070,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
         Date lastCheckin = this.getLastCheckin();
         long millisInDay = (1000 * 60 * 60 * 24);
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue();
+        long threshold = factory.getLong(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD);
         Date yesterday = new Timestamp(System.currentTimeMillis() -
                 (millisInDay * threshold));
         return lastCheckin.before(yesterday);
@@ -2587,13 +2589,12 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * Return <code>true</code> if OS on this system supports Transactional Update,
-     * <code>false</code> otherwise.
+     * Return the effective transactional classification of this system.
      *
-     * @return <code>true</code> if OS supports Transactional Update
+     * @return <code>true</code> if the system has to be treated as transactional
      */
-    public boolean doesOsSupportsTransactionalUpdate() {
-        return isSLEMicro() || isLeapMicro() || isopenSUSEMicroOS();
+    public boolean isTransactionalUpdate() {
+        return ServerConstants.isTransactionalByOsName(getOs());
     }
 
     /**

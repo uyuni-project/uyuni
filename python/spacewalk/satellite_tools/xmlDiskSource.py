@@ -11,6 +11,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -54,7 +56,7 @@ class DiskSource:
     def _loadFile(self, filename):
         # Look for a gzip file first
         if self.allow_compressed_files:
-            if filename[-3:] == ".gz" and os.path.exists(filename):
+            if filename.endswith(".gz") and os.path.exists(filename):
                 return gzip.open(filename, "rb")
 
             if os.path.exists(filename + ".gz"):

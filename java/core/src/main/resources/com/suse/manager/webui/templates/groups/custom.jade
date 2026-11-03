@@ -17,6 +17,7 @@
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.groupId = "#{groupId}";
+    window.hasTransactionalSystems = #{hasTransactionalSystems};
 
 script(src='/javascript/legacy/jquery-ui.js?cb=#{webBuildtimestamp}')
 

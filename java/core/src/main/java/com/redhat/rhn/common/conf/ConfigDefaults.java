@@ -9,6 +9,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -16,6 +18,8 @@
 package com.redhat.rhn.common.conf;
 
 import com.redhat.rhn.common.validator.HostPortValidator;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
@@ -24,6 +28,9 @@ import com.suse.utils.CertificateUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -46,10 +53,14 @@ public class ConfigDefaults {
     // Names of the configuration parameters
     //
 
-    public static final String WEB_DEFAULT_MAIL_FROM = "web.default_mail_from";
-    public static final String WEB_ENCRYPTED_PASSWORDS = "web.encrypted_passwords";
+    public static final String DEFAULT_MAIL_FROM = "default_mail_from";
     public static final String WEB_L10N_RESOURCEBUNDLES = "web.l10n_resourcebundles";
-    public static final String WEB_PAM_AUTH_SERVICE = "web.pam_auth_service";
+    /**
+     * PAM service used to authenticate users with PAM authentication enabled.
+     * Keep in sync with PAM_AUTH_SERVICE in python/spacewalk/server/rhnUser.py and the
+     * PAM service file containers/server-image/root/etc/pam.d/susemanager
+     */
+    public static final String PAM_AUTH_SERVICE = "susemanager";
     public static final String WEB_SESSION_DATABASE_LIFETIME =
             "web.session_database_lifetime";
 
@@ -87,8 +98,6 @@ public class ConfigDefaults {
     public static final String NON_EXPIRABLE_PACKAGE_URLS =
         "java.non_expirable_package_urls";
 
-    public static final String SATELLITE_PARENT = "server.satellite.rhn_parent";
-
     public static final String SERVER_HOSTNAME = "java.hostname";
 
     public static final String KICKSTART_HOST = "kickstart_host";
@@ -96,8 +105,6 @@ public class ConfigDefaults {
     public static final String CONFIG_REVISION_MAX_SIZE = "web.maximum_config_file_size";
 
     public static final String WEB_EXCLUDED_COUNTRIES = "java.excluded_countries";
-
-    public static final String DISCONNECTED = "disconnected";
 
     public static final String DEFAULT_SAT_PARENT = "satellite.rhn.redhat.com";
 
@@ -130,7 +137,11 @@ public class ConfigDefaults {
      */
     public static final int DEFAULT_CONFIG_REVISION_MAX_SIZE = 131072;
 
-    public static final String REPOMD_PATH_PREFIX = "taskomatic.repomd_path_prefix";
+    /**
+     * Directory below the repomd cache mount point where the repository metadata is stored.
+     * Keep in sync with REPOMD_PATH_PREFIX in python/spacewalk/server/rhnLib.py
+     */
+    public static final String REPOMD_PATH_PREFIX = "rhn/repodata";
 
     public static final String REPOMD_CACHE_MOUNT_POINT = "repomd_cache_mount_point";
 
@@ -231,9 +242,6 @@ public class ConfigDefaults {
     /**
      * HTTP proxy defaults
      */
-    public static final String HTTP_PROXY = "server.satellite.http_proxy";
-    public static final String HTTP_PROXY_USERNAME = "server.satellite.http_proxy_username";
-    public static final String HTTP_PROXY_PASSWORD = "server.satellite.http_proxy_password";
     private static final int DEFAULT_HTTP_PROXY_PORT = 80;
 
     /**
@@ -433,6 +441,11 @@ public class ConfigDefaults {
     private static final String ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL = "java.errata_advisory_map_csv_download_url";
 
     /**
+     * url to download the Ubuntu USN database, the source of the Ubuntu errata information
+     */
+    private static final String UBUNTU_ERRATA_DB_DOWNLOAD_URL = "java.ubuntu_errata_db_download_url";
+
+    /**
      * OpenID Connect authorization parameters
      */
     public static final String OIDC_ENABLED = "web.oidc.enabled";
@@ -573,6 +586,16 @@ public class ConfigDefaults {
     }
 
     /**
+     * Return the base directory of the generated repository metadata and the OVAL data.
+     * The default is defined in the default rhn.conf; the fallback only covers setups where
+     * that file is older than this code.
+     * @return the repomd cache mount point directory
+     */
+    public String getRepomdCacheMountPoint() {
+        return Config.get().getString(REPOMD_CACHE_MOUNT_POINT, "/var/cache");
+    }
+
+    /**
      * Returns the list of default kickstart packages names
      * @return the list of default kickstart packages names
      */
@@ -700,14 +723,6 @@ public class ConfigDefaults {
      */
     public int getDefaultVirtCpus() {
         return Config.get().getInt(VIRT_CPU, 1);
-    }
-
-    /**
-     * Check if this Sat is disconnected or not
-     * @return boolean if this sat is disconnected or not
-     */
-    public boolean isDisconnected() {
-        return (Config.get().getBoolean(DISCONNECTED));
     }
 
     /**
@@ -992,7 +1007,7 @@ public class ConfigDefaults {
         boolean dbSslEnabled = true;
 
         // If the server with the remote reporting database is registered as a ISSv3 peripheral, the correct root
-        // certificate authority is available in /etc/pki/trust/anchors
+        // certificate authority is available in /etc/rhn/ca
         String sslRootCert = Optional.of(CertificateUtils.computeRootCaFileName("peripheral", host))
             .map(filename -> {
                 try {
@@ -1090,7 +1105,7 @@ public class ConfigDefaults {
      * @return the proxy hostname:port string
      */
     private String getProxyString() {
-        String result = Config.get().getString(HTTP_PROXY);
+        String result = RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.HTTP_PROXY);
         if (StringUtils.isEmpty(result)) {
             return null;
         }
@@ -1106,7 +1121,7 @@ public class ConfigDefaults {
      * @return the proxy username
      */
     public String getProxyUsername() {
-        return Config.get().getString(HTTP_PROXY_USERNAME);
+        return RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME);
     }
 
     /**
@@ -1114,7 +1129,15 @@ public class ConfigDefaults {
      * @return the proxy password
      */
     public String getProxyPassword() {
-        return Config.get().getString(HTTP_PROXY_PASSWORD);
+        return RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD);
+    }
+
+    /**
+     * Gets the comma separated list of hosts and domains which are connected without proxy.
+     * @return the no proxy list
+     */
+    public String getNoProxy() {
+        return RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.NO_PROXY);
     }
 
     /**
@@ -1388,6 +1411,28 @@ public class ConfigDefaults {
     public String getErrataAdvisoryMapCsvDownloadUrl() {
         return Config.get().getString(ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL,
                 "https://ftp.suse.com/pub/projects/security/advisory-map.csv");
+    }
+
+    /**
+     * Return the url to download the Ubuntu USN database, the source of the Ubuntu errata information
+     *
+     * @return the url to download the Ubuntu USN database from
+     * @throws IOException in case the configured url is not a http(s) url
+     */
+    public String getUbuntuErrataDbDownloadUrl() throws IOException {
+        String jsonDBUrl = Config.get().getString(UBUNTU_ERRATA_DB_DOWNLOAD_URL,
+                "https://usn.ubuntu.com/usn-db/database.json");
+        String scheme;
+        try {
+            scheme = new URI(jsonDBUrl).getScheme();
+        }
+        catch (URISyntaxException e) {
+            throw new IOException(UBUNTU_ERRATA_DB_DOWNLOAD_URL + " must be a http(s) url: " + jsonDBUrl, e);
+        }
+        if (!"http".equalsIgnoreCase(scheme) && !"https".equalsIgnoreCase(scheme)) {
+            throw new IOException(UBUNTU_ERRATA_DB_DOWNLOAD_URL + " must be a http(s) url: " + jsonDBUrl);
+        }
+        return jsonDBUrl;
     }
 
     /**

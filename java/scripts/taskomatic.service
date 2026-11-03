@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 [Unit]
 Description=Taskomatic
 After=local-fs.target cobblerd.service sendmail.service apache2.service
@@ -5,7 +10,6 @@ Requires=apache2.service
 
 [Service]
 Type=simple
-PassEnvironment=DISKTHRESHOLD DISKCHECKALERT DISKCHECKDIRS
 EnvironmentFile=/usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 ExecStart=/usr/sbin/taskomatic
 Restart=on-failure

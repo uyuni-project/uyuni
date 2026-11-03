@@ -5237,11 +5237,12 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.scap" xml:space="preserve">
-          <source>&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
+          <source>&lt;a href="/rhn/manager/systems/ssm/audit/schedule-scap-scan"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
         <trans-unit id="ssm.errata.message.scheduled" xml:space="preserve">
           <source>Patch updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source>
         <context-group name="ctx">
@@ -7434,18 +7435,6 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <target>{0} પેચ સ્થાપનો &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; માટે &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
       </trans-unit>
-      <trans-unit id="message.xccdfeval" xml:space="preserve">
-        <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="message.xccdfeval.ssm" xml:space="preserve">
-        <source>XCCDF scan has been scheduled successfully.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="message.xccdfdiff.missing" xml:space="preserve">
         <source>XCCDF scan of id={0} could not be found for user {1}.</source>
         <context-group name="ctx">
@@ -7454,12 +7443,6 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="message.entitlement.missing" xml:space="preserve">
         <source>One or more of the selected systems lack the {0} system type.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="message.xccdfeval.failed" xml:space="preserve">
-        <source>Action was not scheduled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
@@ -13453,73 +13436,13 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">Manage Errata Pages</context>
         </context-group>
         </trans-unit>
-      <trans-unit id="system.audit.schedulexccdf.jsp.schedule" xml:space="preserve">
-          <source>Schedule New XCCDF Scan</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.button" xml:space="preserve">
-          <source>Schedule</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.confirmschedulexccdf.jsp.button" xml:space="preserve">
-          <source>Confirm</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.command" xml:space="preserve">
-          <source>Command</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.arguments" xml:space="preserve">
+      <trans-unit id="system.audit.schedulexccdf.jsp.arguments" xml:space="preserve">
           <source>Command-line Arguments</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
         </context-group>
         </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.path" xml:space="preserve">
-          <source>Path to XCCDF document</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.xccdfEval" xml:space="preserve">
-          <source>/usr/bin/oscap xccdf eval</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.tooltip" xml:space="preserve">
-          <source>Certain versions of OpenSCAP may require the --profile command-line argument. --profile specifies a particular profile from the XCCDF document.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.nosoonerthan" xml:space="preserve">
-          <source>Earliest</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-      <trans-unit id="ssm.audit.xccdf.targetedsystems" xml:space="preserve">
-          <source>Targeted Systems</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule for SSM</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="ssm.audit.xccdf.capability" xml:space="preserve">
-          <source>OpenSCAP Scan Capability</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule for SSM</context>
-        </context-group>
-        </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.overview" xml:space="preserve">
+        <trans-unit id="system.audit.listscap.jsp.overview" xml:space="preserve">
           <source>OpenSCAP Scans</source>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
@@ -13781,12 +13704,6 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="system.audit.xccdfdetails.jsp.nodiff" xml:space="preserve">
           <source>No comparable scan was found.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.xccdfdetails.jsp.reschedule" xml:space="preserve">
-          <source>reschedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
@@ -25276,18 +25193,17 @@ given channel.</source>
         Otherwise, the channel is a child of the specified channel.
         &lt;p/&gt;
         Channel name and label are required.&lt;br&gt;
-        They each must be at least 6 characters in length.&lt;br&gt;
-        Channel name must not be longer than 256 characters and channel label must not be longer than 128 characters.&lt;br&gt;
-        Channel name and label may begin with a letter or digit.&lt;br&gt;
-        They each must not begin with rhn, redhat or red hat.&lt;br&gt;
-        They each must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.&lt;br&gt;
-        Channel name may also contain spaces, parentheses () and forward slashes ('/').
+        Channel name must be 6 to 256 characters long and begin with a letter or digit.&lt;br&gt;
+        Channel name may contain only letters, digits, whitespace, apostrophes ('), hyphens ('-'), periods ('.'), underscores ('_'), parentheses (), and forward slashes ('/').&lt;br&gt;
+        Channel label must be 6 to 128 characters long and begin with a lowercase letter or digit.&lt;br&gt;
+        Channel label may contain only lowercase letters, digits, hyphens ('-'), periods ('.'), and underscores ('_').
         &lt;p/&gt;
         Channel summary is also required and must not exceed 500 characters.
         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.public" xml:space="preserve">
         <source>This channel is &lt;strong&gt;public&lt;/strong&gt; and may be
@@ -27257,14 +27173,7 @@ given channel.</source>
         </context-group>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
-        <source>Optional OVAL Files (comma separated)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="system.event.scapOvalFiles" xml:space="preserve">
+      <trans-unit id="system.event.scapOvalFiles" xml:space="preserve">
           <source>&lt;strong&gt;OVAL files (comma separated): &lt;/strong&gt; </source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
@@ -28061,6 +27970,129 @@ given channel.</source>
   </trans-unit>
       <trans-unit id="task.status.clm-diff" xml:space="preserve">
         <source>Calculate CLM Differences</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.event.history.waitingForReboot" xml:space="preserve">
+          <source>Waiting for reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional" xml:space="preserve">
+          <source>Transactional progress:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.step.prerequisites" xml:space="preserve">
+          <source>Prerequisites</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.step.reboot" xml:space="preserve">
+          <source>System reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.step.execution" xml:space="preserve">
+          <source>Post-reboot step</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.step.apply" xml:space="preserve">
+          <source>Transactional update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.step.applyReboot" xml:space="preserve">
+          <source>System reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.step.finalization" xml:space="preserve">
+          <source>Action completion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.status.completed" xml:space="preserve">
+          <source>completed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.status.failed" xml:space="preserve">
+          <source>failed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.status.pending" xml:space="preserve">
+          <source>pending</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.status.notNeeded" xml:space="preserve">
+          <source>not needed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.status.scheduled" xml:space="preserve">
+          <source>queued</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.at" xml:space="preserve">
+          <source> at </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="system.event.transactional.prerequisiteResult" xml:space="preserve">
+          <source>Prerequisite result:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.use_transactional_update.label" xml:space="preserve">
+          <source>Use transactional update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/ssm/provisioning/RemoteCommand</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="actions.jsp.action_description" xml:space="preserve">
+        <source>Comment / Reason</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="pkg.lock.message.lockmissingpkg" xml:space="preserve">
+        <source>Failed to lock selected packages. Can't find one of the packages to lock.</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

@@ -8,15 +8,14 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
-import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.manager.setup.SetupWizardSessionCache;
@@ -46,22 +45,11 @@ public class ProxySettingsRenderer {
             return settings;
         }
 
-        // Find the current user
-        RequestContext rhnContext = new RequestContext(request);
-        User webUser = rhnContext.getCurrentUser();
-
         if (log.isDebugEnabled()) {
             log.debug("Saving proxy settings: {}", settings);
         }
 
-        // OLDTODO: Handle errors
-        ValidatorError[] errors =
-                ProxySettingsManager.storeProxySettings(settings, webUser, request);
-        if (errors != null) {
-            for (ValidatorError error : errors) {
-                log.error("error: {}", error);
-            }
-        }
+        ProxySettingsManager.storeProxySettings(settings, request);
         return settings;
     }
 

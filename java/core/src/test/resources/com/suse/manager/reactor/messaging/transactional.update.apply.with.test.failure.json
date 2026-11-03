@@ -1,0 +1,53 @@
+{
+  "tag": "salt/job/20220813132425331229/ret/abcdefg.vagrant.local",
+  "data": {
+    "cmd": "_return",
+    "id": "abcdefg.vagrant.local",
+    "success": true,
+    "jid": "20220813132425331229",
+    "fun": "transactional_update.apply",
+    "fun_args": [
+      {
+        "mods": [
+          "packages"
+        ],
+        "queue": true,
+        "test": true
+      }
+    ],
+    "metadata": {
+      "suma-action-id": 50,
+      "suma-force-pkg-list-refresh": false,
+      "suma-action-chain": false,
+      "batch-mode": true,
+      "suma-minion-startup": false
+    },
+    "out": "highstate",
+    "return": {
+      "file_|-mgrchannels_repo_|-/etc/zypp/repos.d/susemanager:channels.repo_|-managed": {
+        "changes": {},
+        "comment": "The file /etc/zypp/repos.d/susemanager:channels.repo is in the correct state",
+        "name": "/etc/zypp/repos.d/susemanager:channels.repo",
+        "result": true,
+        "__sls__": "channels",
+        "__run_num__": 1,
+        "start_time": "15:24:30.831103",
+        "duration": 185.937,
+        "__id__": "mgrchannels_repo"
+      },
+      "saltutil_|-sync_states_|-sync_states_|-sync_states": {
+        "name": "sync_states",
+        "changes": {},
+        "result": false,
+        "comment": "State failed to execute",
+        "__sls__": "util.syncstates",
+        "__run_num__": 0,
+        "start_time": "15:24:30.761469",
+        "duration": 4.046,
+        "__id__": "sync_states"
+      }
+    },
+    "retcode": 0,
+    "_stamp": "2022-08-13T13:24:54.602818"
+  }
+}

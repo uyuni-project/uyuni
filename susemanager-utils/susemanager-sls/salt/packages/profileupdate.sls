@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 packages:
   module.run:
     - name: pkg.info_installed
@@ -68,4 +72,11 @@ kernel_live_version:
 {%- else %}
       - module: sync_modules
 {%- endif %}
+
+{%- if grains.get('transactional', False) %}
+package-profile-snapper-list-snapshots:
+  cmd.run:
+    - name: snapper --json --no-dbus list
+{%- endif %}
+
 {% endif %}

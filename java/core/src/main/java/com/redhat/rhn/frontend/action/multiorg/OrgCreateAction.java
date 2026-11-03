@@ -8,14 +8,14 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.multiorg;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.CryptHelper;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
@@ -63,14 +63,8 @@ public class OrgCreateAction extends RhnAction {
                     LoginHelper.isSchemaUpgradeRequired().toString());
         }
 
-        /*
-         * If we are a sat and we have setup pam authentication already, display the
-         * checkbox and instructions
-         */
-        String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
-        if (pamAuthService != null && !pamAuthService.trim().isEmpty()) {
-            request.setAttribute("displaypamcheckbox", "true");
-        }
+        // display the pam checkbox and instructions
+        request.setAttribute("displaypamcheckbox", "true");
 
         request.setAttribute("availablePrefixes", UserActionHelper.getPrefixes());
         if (isSubmitted(dynaForm)) {

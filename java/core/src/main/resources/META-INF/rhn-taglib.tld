@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <!-- a tag library descriptor -->
 <taglib xmlns="http://java.sun.com/xml/ns/j2ee"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -707,6 +715,11 @@
         <name>getConfig</name>
         <function-class>com.redhat.rhn.frontend.taglibs.RhnTagFunctions</function-class>
         <function-signature>java.lang.String getConfig(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>getDbConfig</name>
+        <function-class>com.redhat.rhn.frontend.taglibs.RhnTagFunctions</function-class>
+        <function-signature>java.lang.String getDbConfig(java.lang.String)</function-signature>
     </function>
     <function>
         <name>getProductVersion</name>

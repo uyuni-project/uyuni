@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 ALTER TABLE SystemAction
     ADD COLUMN IF NOT EXISTS scheduled_by VARCHAR(64),
     ADD COLUMN IF NOT EXISTS earliest_action TIMESTAMPTZ,

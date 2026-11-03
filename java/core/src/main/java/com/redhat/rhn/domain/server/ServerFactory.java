@@ -9,6 +9,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -1175,7 +1177,9 @@ public class ServerFactory extends HibernateFactory {
     public static List<Server> listSystemsInSsm(User user) {
         return getSession().createNativeQuery("""
                 select           S.*,
+                                 mi.server_id,
                                  mi.container_runtime,
+                                 mi.transactional_mode,
                                  mi.minion_id,
                                  mi.kernel_live_version,
                                  mi.ssh_push_port,

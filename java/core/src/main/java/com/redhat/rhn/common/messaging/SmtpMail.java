@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -70,7 +72,7 @@ public class SmtpMail implements Mail {
         String smtpTlsProtocols = String.join(" ", c.getList(ConfigDefaults.WEB_SMTP_TLS_PROTOCOLS));
         String smtpUser = c.getString(ConfigDefaults.WEB_SMTP_USER);
         String smtpPass = c.getString(ConfigDefaults.WEB_SMTP_PASS);
-        String from = c.getString(ConfigDefaults.WEB_DEFAULT_MAIL_FROM, "root@localhost");
+        String from = c.getString(ConfigDefaults.DEFAULT_MAIL_FROM, "root@localhost");
         int smtpTimeout = c.getInt(ConfigDefaults.WEB_SMTP_TIMEOUT, 5000);
         int smtpConnectionTimeout = c.getInt(ConfigDefaults.WEB_SMTP_CONNECTION_TIMEOUT, 5000);
         int smtpWriteTimeout = c.getInt(ConfigDefaults.WEB_SMTP_WRITE_TIMEOUT, 5000);

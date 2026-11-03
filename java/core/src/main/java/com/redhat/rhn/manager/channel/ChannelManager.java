@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -2574,10 +2576,8 @@ public class ChannelManager extends BaseManager {
      * @return last repo build date
      */
     public static String getRepoLastBuild(Channel channel) {
-        String  pathPrefix = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX,
-        "rhn/repodata");
-        String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT,
-                "/pub");
+        String pathPrefix = ConfigDefaults.REPOMD_PATH_PREFIX;
+        String mountPoint = ConfigDefaults.get().getRepomdCacheMountPoint();
         File theFile = new File(mountPoint + File.separator + pathPrefix +
                 File.separator + channel.getLabel() + File.separator +
                 (channel.isTypeDeb() ? "Release" : "repomd.xml"));
@@ -2598,10 +2598,8 @@ public class ChannelManager extends BaseManager {
      * @return the {@link ChannelSyncStatus} status
      */
     public static ChannelSyncStatus getChannelSyncStatus(Channel channelIn) {
-        String  pathPrefix = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX,
-                "rhn/repodata");
-        String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT,
-                "/pub");
+        String pathPrefix = ConfigDefaults.REPOMD_PATH_PREFIX;
+        String mountPoint = ConfigDefaults.get().getRepomdCacheMountPoint();
         Path mdPath = Path.of(mountPoint, pathPrefix, channelIn.getLabel());
         File mainFile = new File(mdPath.toString(), (channelIn.isTypeDeb() ? "Release" : "repomd.xml"));
         if (!mainFile.exists()) {

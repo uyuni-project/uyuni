@@ -1,0 +1,2 @@
+- Remove the unused `change_base_channel()` and its configuration
+  option `reset_base_channel`

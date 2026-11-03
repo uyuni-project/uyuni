@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -17,7 +19,6 @@ package com.suse.manager.gatherer;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
@@ -118,7 +119,7 @@ public class GathererRunner {
         if (debuglevel >= 3) {
             args.add("-v");
         }
-        String noProxy = Config.get().getString(HttpClientAdapter.NO_PROXY);
+        String noProxy = config.getNoProxy();
         if (!StringUtils.isEmpty(noProxy)) {
             env.put("no_proxy", noProxy);
             LOGGER.debug("Set no_proxy to {}", noProxy);

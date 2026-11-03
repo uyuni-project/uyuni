@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 alter table rhn_probe_param_value disable constraint rhn_ppval_p_id_cmd_id_parm_pk;
 drop index rhn_ppval_p_id_cmd_id_parm_pk;
 alter table rhn_probe_param_value enable constraint rhn_ppval_p_id_cmd_id_parm_pk;

@@ -1,2 +1,0 @@
-- Set default checksum type for new UI channels to sha256
-  (bsc#1269011)

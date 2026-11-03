@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Pre-task: we need to make sure there are no custom states with name equal to
 -- some existing configuration channel label. We'll relabel the conflicting
 -- channels  by appending a random suffix to them.

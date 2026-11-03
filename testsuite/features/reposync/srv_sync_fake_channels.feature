@@ -1,5 +1,5 @@
 # Copyright (c) 2022-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in:
 # If Fake-Base-Channel-Debian-like fails to be updated with the repository:

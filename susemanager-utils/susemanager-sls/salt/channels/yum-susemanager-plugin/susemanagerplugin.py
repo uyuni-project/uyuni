@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 #  pylint: disable=missing-module-docstring
 from yum.plugins import TYPE_CORE
 from yum import config

@@ -1,5 +1,5 @@
-# Copyright (c) 2017-2023 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# Copyright (c) 2017-2026 SUSE LLC.
+# SPDX-License-Identifier: MIT
 
 ### This file contains the definitions for all steps concerning Docker and containerization.
 
@@ -87,8 +87,8 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
   repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
     step 'I follow the left menu "Images > Image List"'
     step 'I wait until I do not see "There are no entries to show." text'
-    raise SystemCallError, 'error detected while building images' if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@title, \'Failed\')]]')
-    break if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@title, \'Built\')]]', count: count)
+    raise SystemCallError, 'error detected while building images' if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@aria-label, \'Failed\')]]')
+    break if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@aria-label, \'Built\')]]', count: count.to_i)
 
     sleep 5
   end
@@ -115,9 +115,7 @@ When(/^I delete the image "([^"]*)" with version "([^"]*)" via API calls$/) do |
   refute_nil(images_list, 'ERROR: no images at all were retrieved.')
   image_id = 0
   images_list.each do |element|
-    if element['name'] == image_name_todel.strip && element['version'] == version.strip
-      image_id = element['id']
-    end
+    image_id = element['id'] if element['name'] == image_name_todel.strip && element['version'] == version.strip
   end
   if image_id.zero?
     log "Image #{image_name_todel} with version #{version} does not exist, skipping"

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Namespaces
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'admin.access', 'R', 'List and detail custom access groups.'

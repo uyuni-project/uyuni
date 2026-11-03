@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <datasource_modes>
 
 <mode name="available_prefixes">
@@ -48,7 +55,7 @@
 <write-mode name="reset_satconfig_default_value">
   <query params="key">
     UPDATE rhnConfiguration
-    SET value = default_value
+    SET value = NULL
     WHERE key = :key
    </query>
 </write-mode>

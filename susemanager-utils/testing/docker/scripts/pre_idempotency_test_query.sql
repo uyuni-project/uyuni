@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 -- resets randomized cron_expr of errata-advisory-map-sync-default, to pass idempotency test
 -- in order toreset the effects of "select randomize_bunch_schedule('errata-advisory-map-sync-default');"

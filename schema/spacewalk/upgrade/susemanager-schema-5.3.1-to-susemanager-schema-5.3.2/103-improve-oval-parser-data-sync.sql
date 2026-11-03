@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 ALTER TABLE suseOVALPlatformVulnerable ADD COLUMN IF NOT EXISTS last_modified TIMESTAMPTZ DEFAULT current_timestamp NOT NULL;
 ALTER TABLE suseOVALVulnerablePackage ADD COLUMN IF NOT EXISTS last_modified TIMESTAMPTZ DEFAULT current_timestamp NOT NULL;
 

@@ -40,7 +40,6 @@ unset MANAGER_ADMIN_EMAIL
 unset MANAGER_MAIL_FROM
 unset SCC_USER
 unset SCC_PASS
-unset ISS_PARENT
 unset MANAGER_ENABLE_TFTP
 
 # Remove the in-progress marker - init completed successfully

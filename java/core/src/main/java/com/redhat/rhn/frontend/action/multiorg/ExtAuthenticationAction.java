@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -57,23 +59,24 @@ public class ExtAuthenticationAction extends RhnAction {
             // store the value
             RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
             String toOrgString = daForm.getString("to_org");
-            if (!StringUtils.isEmpty(toOrgString)) {
+            if (StringUtils.isEmpty(toOrgString)) {
+                factory.resetToDefault(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID);
+            }
+            else {
                 // just check the org id is valid
                 OrgFactory.lookupById(Long.parseLong(toOrgString));
+                factory.setValue(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID, toOrgString);
             }
-            // store the value
-            factory.updateConfigurationValue(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT, toOrgString);
 
             Boolean keepRoles = (Boolean) daForm.get("keep_roles");
-            boolean keepTempRoles = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES)
-                    .getValue();
+            boolean keepTempRoles = factory.getBoolean(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES);
             if (keepTempRoles && !BooleanUtils.toBoolean(keepRoles)) {
                 // if the option was turned off, delete temporary roles
                 // across the whole satellite
                 UserGroupFactory.deleteTemporaryRoles();
             }
             // store the value
-            factory.updateConfigurationValue(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES, keepRoles);
+            factory.setValue(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES, keepRoles);
 
             createSuccessMessage(request, "message.ext_auth_updated", null);
             return mapping.findForward("success");
@@ -88,7 +91,7 @@ public class ExtAuthenticationAction extends RhnAction {
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        Boolean useOrgUnit = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT).getValue();
+        Boolean useOrgUnit = factory.getBoolean(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT);
         form.set("use_ou", useOrgUnit);
 
         DataList<OrgDto> dr = OrgManager.activeOrgs(user);
@@ -102,7 +105,7 @@ public class ExtAuthenticationAction extends RhnAction {
         }
         request.setAttribute("orgs", orgs);
 
-        Long actOrgId = factory.getLongConfiguration(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID).getValue();
+        Long actOrgId = factory.getLong(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID);
         if (actOrgId != null) {
             form.set("to_org", actOrgId.toString());
         }
@@ -110,7 +113,7 @@ public class ExtAuthenticationAction extends RhnAction {
             form.set("to_org", null);
         }
 
-        Boolean keepRoles = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES).getValue();
+        Boolean keepRoles = factory.getBoolean(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES);
         form.set("keep_roles", keepRoles);
     }
 }

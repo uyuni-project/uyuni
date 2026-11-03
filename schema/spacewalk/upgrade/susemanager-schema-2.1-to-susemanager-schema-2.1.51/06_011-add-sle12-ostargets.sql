@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into suseOSTarget (id, os, target, channel_arch_id) values
 (sequence_nextval('suse_ostarget_id_seq'), 'sle-12-ppc64le', 'sle-12-ppc64le', LOOKUP_CHANNEL_ARCH('channel-ppc64le'));
 

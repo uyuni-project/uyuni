@@ -1,4 +1,69 @@
 -------------------------------------------------------------------
+Wed Oct 07 18:40:28 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Implemented dark mode across the application
+  * Fix duplicate remaining characters label in the Create Custom
+    Info Key description field. (bsc#1269679)
+  * Improve handling of invalid issue_date values when creating
+    CLM filters via the API. (bsc#1271467)
+  * Fixed the Download CSV button on the Systems List page
+    redirecting to the Systems Overview page. (bsc#1271972)
+  * Fixed the "Clear selected system set" button flickering
+    during page navigation. (bsc#1271523)
+  * Fix image status icon to reflect failed image inspections.
+    (bsc#1255090)
+  * Improved filter creation workflow by moving mode selection
+    before form fields.
+  * Implemented a reusable Toggle Button Group UI component.
+  * Improved table selection messages for better clarity.
+  * Removed "Go to OS image directory listing" link
+    from Images page. (bsc#1251867)
+  * Show a spinner when a formula is being saved.
+  * Update @babel/plugin-transform-modules-systemjs to 7.29.8
+  * Prevent Bootstrap handling for ReactModal and invalid modal
+    targets.
+  * Update brace-expansion from version 1.1.12 to 1.1.18
+  * Update browserslist from version 4.26.3 to 4.28.9
+  * Bump moment-timezone to 0.5.38 to remove unused temporary
+    tarballs from the packaged npm dependency
+  * Update nanoid from 3.3.8 to 3.3.18
+  * Fix frontend console warnings in products, tables and SSM.
+  * Update dompurify from version 3.2.5 to 3.4.15
+  * Update fast-uri to version 3.1.7
+  * Guard legacy Ace editor setup when its textarea is absent.
+  * Update immutable to version 4.3.9
+  * Update js-yaml from version 4.1.1 to 4.3.2
+  * Support legacy CoCo contracts during mixed-version development.
+  * Update lodash to version 4.18.1 and license
+  * Update lodash-es from version 4.17.21 to 4.18.1
+  * Prevent asynchronous updates after manager views unmount.
+  * Update minimatch from version 3.0.5 to 3.1.4
+  * Update picomatch from version 2.3.1 to 2.3.2
+  * Update picomatch from version 4.0.3 to 4.0.7
+  * Update postcss from version 8.5.6 to 8.5.28
+  * Split the buttons storybook example into separate files per topic
+  * Cancel stale product requests during page navigation.
+  * Publish the web component Storybook on GitHub Pages
+  * Update transitive qs to 6.16.0 and express to 4.22.3
+  * Submit ranking forms once using the native browser flow.
+  * Refactor checkboxes in the RBAC UI
+  * Reuse common Check component
+  * Fix React and Bootstrap modal interoperability and related UI
+    warnings.
+  * Replace explicit React Fragment components with shorthand syntax
+  * Fix React key and ref warnings in several frontend views.
+  * Fix recurring action cleanup and browser navigation.
+  * Prevent asynchronous updates after shared components unmount.
+  * Clean up SSM WebSocket connections when leaving the page.
+  * Add Storybook support for Uyuni web components
+  * Add typed Button stories with controls and variants
+  * Update transitive yaml dependency used by Babel tooling from
+    version 1.10.2 to 1.10.3
+  * Add `web.version.eol` setting to provide an end of life date
+  * Add transactional snapshots UI and action progress details
+
+-------------------------------------------------------------------
 Wed Aug 05 16:49:27 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

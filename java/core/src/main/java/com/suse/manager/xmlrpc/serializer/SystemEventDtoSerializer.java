@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -33,6 +35,7 @@ import java.util.Optional;
  *      #prop_desc("string", "status", "status of the event")
  *      #prop_desc("string", "summary", "summary of the event")
  *      #prop_desc("$date", "completed", "date that the event occurred")
+ *      #prop_desc("boolean", "pending_reboot", "true when the action is waiting for a reboot")
  *  #struct_end()
  *
  */
@@ -51,6 +54,7 @@ public class SystemEventDtoSerializer extends ApiResponseSerializer<SystemEventD
                 .add("status", src.getHistoryStatus())
                 .add("summary", src.getSummary())
                 .add("completed", src.getCompleted())
+                .add("pending_reboot", src.isPendingRebootAction())
                 .build();
     }
 }

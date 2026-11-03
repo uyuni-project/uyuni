@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package spacecmd
 #
@@ -43,7 +47,7 @@
 %endif
 
 Name:           spacecmd
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Command-line interface to %{productprettyname} servers
 License:        GPL-3.0-or-later

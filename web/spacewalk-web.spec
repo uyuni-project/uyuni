@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package spacewalk-web
 #
@@ -31,7 +35,7 @@
 %{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
 
 Name:           spacewalk-web
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only

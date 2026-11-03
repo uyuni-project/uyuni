@@ -1,2 +1,0 @@
-- Removed simple-core dependency in favor of the JDK built-in
-  HttpServer implementation

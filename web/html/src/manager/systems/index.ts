@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 export default {
   "systems/activation-key/activation-key-channels": () => import("./activation-key/activation-key-channels.renderer"),
   "systems/bootstrap/bootstrap-minions": () => import("./bootstrap/bootstrap-minions"),
@@ -11,6 +17,7 @@ export default {
   "systems/list/virtual": () => import("./virtual-list.renderer"),
   "systems/list/all": () => import("./all-list.renderer"),
   "systems/details/mgr-server-info": () => import("./details/mgr-server-info.renderer"),
+  "systems/details/snapshots": () => import("./details/snapshots.renderer"),
   "systems/coco-settings": () => import("./coco/ssm-settings.renderer"),
   "systems/coco-schedule": () => import("./coco/ssm-schedule.renderer"),
   "systems/product-migration": () => import("./product-migration/ssm-product-migration.renderer"),

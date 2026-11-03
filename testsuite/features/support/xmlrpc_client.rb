@@ -1,5 +1,5 @@
 # Copyright (c) 2022-2023 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 require 'xmlrpc/client'
 require_relative 'api_retry'
@@ -9,10 +9,10 @@ class XmlrpcClient
   # Initializes a new XmlrpcClient object.
   #
   # @param host [String] The hostname of the Spacewalk server.
-  def initialize(host)
+  # @param ssl_verify [Boolean] Whether to verify SSL certificates (default is true).
+  def initialize(host, ssl_verify: true)
     puts 'Activating XML-RPC API'
-    protocol = $debug_mode ? 'http://' : 'https://'
-    @xmlrpc_client = XMLRPC::Client.new2("#{protocol}#{host}/rpc/api", nil, DEFAULT_TIMEOUT)
+    @xmlrpc_client = XmlrpcSslHelper.build_client("#{server_protocol}#{host}/rpc/api", ssl_verify: ssl_verify)
   end
 
   # Calls a remote method with a list of parameters.

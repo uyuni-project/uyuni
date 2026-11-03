@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -36,6 +38,7 @@ import com.suse.manager.webui.services.TestSaltApi;
 import com.suse.manager.webui.services.TestSystemQuery;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -172,6 +175,24 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         actionChain = MinionActionUtils.getActionChain(Optional.of(newLabel), user);
         assertNotNull(actionChain);
         assertEquals(newLabel, actionChain.getLabel());
+    }
+
+    @Test
+    public void canRetrieveActionDescriptionFromRequest() {
+        Context ctx = Context.getCurrentContext();
+        String originalDesc = ctx.getActionDescription();
+        try {
+            ScheduledRequestJson request = new ScheduledRequestJson() {
+            };
+            String testDesc = "Deploying updates for SUMA-446";
+            request.setActionDescription(Optional.of(testDesc));
+
+            MinionActionUtils.getScheduleDate(request);
+            assertEquals(testDesc, ctx.getActionDescription());
+        }
+        finally {
+            ctx.setActionDescription(originalDesc);
+        }
     }
 
 }

@@ -10,6 +10,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -77,7 +79,7 @@ class Tests(unittest.TestCase):
     def test_missing_1(self):
         "Tests exceptions raised by the code"
         self._cleanup(self.key)
-        self.assertEqual(None, rhnCache.get(self.key))
+        self.assertIsNone(rhnCache.get(self.key))
 
     def test_exception_1(self):
         "Tests raising exceptions"
@@ -87,7 +89,7 @@ class Tests(unittest.TestCase):
         "Should return None, opening uncompressed data as compressed"
         rhnCache.set(self.key, self.content, raw=1)
 
-        self.assertEqual(None, rhnCache.get(self.key, compressed=1, raw=1))
+        self.assertIsNone(rhnCache.get(self.key, compressed=1, raw=1))
 
         self._cleanup(self.key)
 
@@ -95,7 +97,7 @@ class Tests(unittest.TestCase):
         "Should return None, opening uncompressed data as compressed"
         rhnCache.set(self.key, "12345", raw=1)
 
-        self.assertEqual(None, rhnCache.get(self.key, raw=0))
+        self.assertIsNone(rhnCache.get(self.key, raw=0))
 
         self._cleanup(self.key)
 

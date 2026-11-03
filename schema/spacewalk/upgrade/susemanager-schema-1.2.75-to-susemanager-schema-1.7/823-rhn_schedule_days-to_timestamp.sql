@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 update rhn_schedule_days
 set start_1 = to_timestamp('2000-09-08 12:00:02 AM','YYYY-MM-DD HH:MI:SS AM')

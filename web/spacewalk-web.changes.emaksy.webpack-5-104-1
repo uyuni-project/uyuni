@@ -1,0 +1,2 @@
+- Update webpack from version 5.99.7 to 5.104.1
+  (CVE-2025-68157, CVE-2025-68458)

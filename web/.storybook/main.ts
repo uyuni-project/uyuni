@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 /* eslint-disable no-console */
 import type { StorybookConfig } from "@storybook/react-webpack5";
 import { createRequire } from "module";

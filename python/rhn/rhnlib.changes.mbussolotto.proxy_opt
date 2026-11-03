@@ -1,0 +1,2 @@
+- Add connect timeout to HTTPSConnection and apply
+  timeout before connect (bsc#1277719)

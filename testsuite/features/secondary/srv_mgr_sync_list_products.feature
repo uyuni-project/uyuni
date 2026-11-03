@@ -1,5 +1,5 @@
 # Copyright (c) 2018-2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Feature: List available products
   In order to use software channels
@@ -14,7 +14,7 @@ Feature: List available products
 @uyuni
   Scenario: List available products
     When I execute mgr-sync "list products" with user "admin" and password "admin"
-    Then I should get "[ ] openSUSE Leap 15.6 x86_64"
+    Then I should get "[ ] RHEL and Liberty 8 Base"
 
 @susemanager
   Scenario: List all available products

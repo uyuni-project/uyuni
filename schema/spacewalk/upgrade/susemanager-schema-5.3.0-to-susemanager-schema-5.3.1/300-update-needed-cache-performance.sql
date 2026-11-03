@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 -- Replace the MATERIALIZED CTE in update_needed_cache with a temp table
 -- to give the planner accurate row estimates and enable a fast indexed anti-join.

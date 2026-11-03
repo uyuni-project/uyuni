@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 INSERT INTO suseInternalState (id, name, label)
          VALUES (1, 'certs', 'Certificates');
 
@@ -49,3 +51,6 @@ INSERT INTO suseInternalState (id, name, label)
 
 INSERT INTO suseInternalState (id, name, label)
          VALUES (14, 'rebootifneeded', 'Reboot system if needed');
+
+INSERT INTO suseInternalState (id, name, label)
+         VALUES (15, 'formulas', 'Formulas');

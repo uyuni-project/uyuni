@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -58,7 +60,7 @@ public class CryptHelper {
             salt = salt.substring(prefix.length());
         }
 
-        // If we recieve a string such as $1$salt$something else, we only want
+        // If we receive a string such as $1$salt$something else, we only want
         // to keep the salt portion of it
         int end = salt.indexOf('$');
         if (end != -1) {
@@ -117,7 +119,7 @@ public class CryptHelper {
         // stupid HACK!  Actually this is beyond HACK.
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         return RandomStringUtils.random(
-                factory.getIntegerConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX).getValue(),
+                factory.getInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX),
                 0, 0,
                 true, true, null, new SecureRandom());
     }

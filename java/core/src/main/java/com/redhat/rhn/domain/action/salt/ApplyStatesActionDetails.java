@@ -7,6 +7,8 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
  */
 package com.redhat.rhn.domain.action.salt;
 
@@ -71,6 +73,10 @@ public class ApplyStatesActionDetails extends BaseDomainHelper {
     @Column
     @Convert(converter = YesNoConverter.class)
     private boolean direct = false;
+
+    @Column(name = "use_transactional_update")
+    @Convert(converter = YesNoConverter.class)
+    private boolean useTransactionalUpdate = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = true)
@@ -244,6 +250,21 @@ public class ApplyStatesActionDetails extends BaseDomainHelper {
      */
     public void setDirect(boolean directIn) {
         direct = directIn;
+    }
+
+    /**
+     * @return true when transactional systems should execute these states through transactional-update
+     */
+    public boolean isUseTransactionalUpdate() {
+        return useTransactionalUpdate;
+    }
+
+    /**
+     * @param useTransactionalUpdateIn whether transactional systems should execute these states through
+     * transactional-update
+     */
+    public void setUseTransactionalUpdate(boolean useTransactionalUpdateIn) {
+        useTransactionalUpdate = useTransactionalUpdateIn;
     }
 
     /**

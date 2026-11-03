@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 --- After CentOS8 EoL, we need to use the EL8 client tools for all EL8 clones
 CREATE OR REPLACE PROCEDURE public.el8_ctools_for_all (v_source_url_el8 VARCHAR, v_source_url_centos8 VARCHAR, v_repo_label_regex VARCHAR, v_channel_label_regex VARCHAR)
 AS $$

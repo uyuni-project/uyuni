@@ -9,6 +9,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -19,9 +21,9 @@ package com.redhat.rhn.domain.action.rhnpackage;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,8 +70,11 @@ public class PackageRemoveAction extends PackageAction {
         params.put(SaltParameters.PARAM_PKGS, uniquePkgs);
         params.put("param_pkgs_duplicates", duplicatedPkgs);
 
-        ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGREMOVE),
-                Optional.of(params)), minionSummaries);
+        TransactionalActionManager.addApplyCalls(
+                ret,
+                List.of(SaltParameters.PACKAGES_PKGREMOVE),
+                Optional.of(params),
+                minionSummaries);
         return ret;
     }
 

@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -34,6 +36,7 @@ import java.util.Optional;
  *      #prop_desc("$date", "created", "date that the event was created")
  *      #prop_desc("$date", "picked_up", "date that the event was picked up")
  *      #prop_desc("$date", "completed", "date that the event occurred")
+ *      #prop_desc("boolean", "pending_reboot", "true when the action is waiting for a reboot")
 
  *      #prop_desc("$date", "earliest_action", "earliest date this action could occur")
  *      #prop_desc("string", "result_msg", "the result string of the action executed on the client machine (optional)")
@@ -72,6 +75,7 @@ public class SystemEventDetailsDtoSerializer extends ApiResponseSerializer<Syste
                 .add("created", src.getCreated())
                 .add("picked_up", src.getPickedUp())
                 .add("completed", src.getCompleted())
+                .add("pending_reboot", src.isPendingRebootAction())
                 .add("earliest_action", src.getEarliestAction())
                 .add("result_msg", src.getResultMsg())
                 .add("result_code", src.getResultCode());

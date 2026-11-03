@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -15,7 +17,6 @@
 
 package com.suse.oval.ovaldownloader;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
@@ -64,7 +65,7 @@ public class OVALDownloader {
      * */
     public OVALDownloader(OVALConfig configIn) {
         this.config = configIn;
-        String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/var/cache");
+        String mountPoint = ConfigDefaults.get().getRepomdCacheMountPoint();
         Path ovalCacheDirPath = Path.of(mountPoint, "rhn", "ovals").toAbsolutePath();
 
         try {

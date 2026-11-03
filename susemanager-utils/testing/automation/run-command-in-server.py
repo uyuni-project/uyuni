@@ -1,10 +1,14 @@
-#  pylint: disable=missing-module-docstring,invalid-name
 #!/usr/bin/python3
-import paramiko
-import sys
+#  pylint: disable=missing-module-docstring,invalid-name
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
 
+import sys
 # pylint: disable-next=deprecated-module
 from optparse import OptionParser
+
+import paramiko
 
 
 def debug(msg):
@@ -51,7 +55,7 @@ parser.add_option(
     help="verbose",
 )
 
-(options, args) = parser.parse_args()
+options, args = parser.parse_args()
 if len(args) != 1:
     # pylint: disable-next=consider-using-f-string
     errors(["Usage: {} HOSTNAME".format(sys.argv[0])])

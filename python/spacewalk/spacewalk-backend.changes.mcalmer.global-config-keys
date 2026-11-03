@@ -1,0 +1,2 @@
+- Define `mount_point` and `default_mail_from` as global keys in
+  the default `rhn.conf`

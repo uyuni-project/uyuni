@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -17,8 +19,10 @@ package com.redhat.rhn.manager.recurringactions;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType.GROUP;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType.MINION;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType.ORG;
+import static com.redhat.rhn.domain.recurringactions.type.RecurringActionType.ActionType.CUSTOMSTATE;
 import static com.redhat.rhn.domain.recurringactions.type.RecurringActionType.ActionType.HIGHSTATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -30,7 +34,9 @@ import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
@@ -56,6 +62,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Tests for {@link RecurringActionManager}
@@ -408,5 +415,61 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         catch (ValidatorException e) {
             // no-op
         }
+    }
+
+    @Test
+    public void testFormulasInternalStateIsAcceptedAndPreservesTransactionalUpdate() throws Exception {
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
+        } });
+
+        var action = RecurringActionManager.createRecurringAction(MINION, CUSTOMSTATE, minion.getId(), user);
+        action.setCronExpr(CRON_EXPR);
+        action.setName("test-recurring-action-formulas");
+        RecurringState recurringState = (RecurringState) action.getRecurringActionType();
+        recurringState.setUseTransactionalUpdate(false);
+        recurringState.saveStateConfig(Set.of(formulasInternalStateConfig(1L)));
+
+        RecurringAction saved = RecurringActionManager.saveAndSchedule(action, user);
+
+        assertTrue(((RecurringState) saved.getRecurringActionType()).getStateConfig().stream()
+                .anyMatch(state -> "formulas".equals(state.getStateName())));
+        assertFalse(((RecurringState) saved.getRecurringActionType()).isUseTransactionalUpdate());
+    }
+
+    @Test
+    public void testFormulasInternalStateCanBeCombinedWithAnotherInternalState() throws Exception {
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
+        } });
+
+        var action = RecurringActionManager.createRecurringAction(MINION, CUSTOMSTATE, minion.getId(), user);
+        action.setCronExpr(CRON_EXPR);
+        action.setName("test-recurring-action-formulas-combined");
+        RecurringState recurringState = (RecurringState) action.getRecurringActionType();
+        recurringState.setUseTransactionalUpdate(true);
+        recurringState.saveStateConfig(Set.of(formulasInternalStateConfig(1L), internalStateConfig("channels", 2L)));
+
+        RecurringAction saved = RecurringActionManager.saveAndSchedule(action, user);
+
+        RecurringState savedState = (RecurringState) saved.getRecurringActionType();
+        assertTrue(savedState.isUseTransactionalUpdate());
+        assertEquals(2, savedState.getStateConfig().size());
+        assertTrue(savedState.getStateConfig().stream().anyMatch(state -> "formulas".equals(state.getStateName())));
+        assertTrue(savedState.getStateConfig().stream().anyMatch(state -> "channels".equals(state.getStateName())));
+    }
+
+    private static RecurringStateConfig formulasInternalStateConfig(Long position) {
+        return internalStateConfig("formulas", position);
+    }
+
+    private static RecurringStateConfig internalStateConfig(String name, Long position) {
+        return RecurringActionFactory.lookupInternalStateByName(name)
+                .map(state -> new StateConfigFactory().getRecurringState(state, position))
+                .orElseThrow();
     }
 }

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
@@ -32,6 +38,7 @@ declare global {
     timezone?: any;
     localTime?: any;
     betaEnabled?: boolean;
+    hasTransactionalSystems?: boolean;
   }
 }
 

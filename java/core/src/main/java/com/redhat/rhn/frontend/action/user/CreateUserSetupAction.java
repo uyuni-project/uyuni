@@ -8,13 +8,14 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.user;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
@@ -62,18 +63,9 @@ public class CreateUserSetupAction extends BaseUserSetupAction {
         form.set("desiredpassword", "");
         form.set("desiredpasswordConfirm", "");
 
-        /*
-         * If we are a sat, then we for sure want to display the PAM section
-         */
+        // display the PAM section with the checkbox and instructions
         request.setAttribute("displaypam", "true");
-        /*
-        * If we are a sat and we have setup pam authentication already, display the
-        * checkbox and instructions
-        */
-        String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
-        if (pamAuthService != null && !pamAuthService.trim().isEmpty()) {
-            request.setAttribute("displaypamcheckbox", "true");
-        }
+        request.setAttribute("displaypamcheckbox", "true");
 
         request.setAttribute("timezones", getTimeZones());
         if (currentUser.getTimeZone() != null) {

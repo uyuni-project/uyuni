@@ -8,6 +8,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -28,6 +30,7 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.server.rhnPackage import unlink_package_file
+from spacewalk.server.rhnLib import REPOMD_PATH_PREFIX
 from spacewalk.server import rhnSQL
 
 
@@ -428,7 +431,7 @@ def __rmtree_error(op, name, exc):
 
 
 def __deleteRepoData(labels):
-    directory = "/var/cache/" + CFG.repomd_path_prefix
+    directory = os.path.join(CFG.REPOMD_CACHE_MOUNT_POINT, REPOMD_PATH_PREFIX)
     for label in labels:
         if os.path.isdir(directory + "/" + label):
             # pylint: disable-next=deprecated-argument

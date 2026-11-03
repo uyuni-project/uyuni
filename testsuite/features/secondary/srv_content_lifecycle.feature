@@ -1,5 +1,5 @@
 # Copyright (c) 2019-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @scc_credentials
 @scope_content_lifecycle_management

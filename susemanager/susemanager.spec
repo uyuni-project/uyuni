@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package susemanager
 #
@@ -50,7 +54,7 @@
 %global pythonsmroot %{python3_sitelib}/spacewalk
 
 Name:           susemanager
-Version:        5.3.1
+Version:        5.3.3
 Release:        0
 Summary:        %{productprettyname} specific scripts
 License:        GPL-2.0-only

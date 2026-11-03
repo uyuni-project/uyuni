@@ -1,2 +1,0 @@
-- Improve handling of invalid issue_date values when creating
-  CLM filters via the API. (bsc#1271467)

@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 set -e
 
 PGUSER=${POSTGRES_USER:-postgres}
@@ -6,7 +11,9 @@ PGPORT=${POSTGRES_PORT:-5432}
 
 UPGRADE_IN_PROGRESS="/run/postgresql/upgrade_in_progress"
 
-if ! /usr/bin/diskcheck.sh; then
+DISK_SEVERITY=0
+/usr/bin/diskcheck.sh || DISK_SEVERITY=$?
+if [ "$DISK_SEVERITY" -eq 3 ]; then
     exit 1
 fi
 

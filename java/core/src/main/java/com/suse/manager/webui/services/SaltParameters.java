@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -47,4 +49,6 @@ public class SaltParameters {
     public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
     public static final String ALLOW_VENDOR_CHANGE = "allow_vendor_change";
     public static final String INVENTORY_PATH = "/etc/ansible/hosts";
+
+    public static final String HARDWARE_PROFILE_UPDATE_PREREQ = "hardware.profileupdate_prereq";
 }

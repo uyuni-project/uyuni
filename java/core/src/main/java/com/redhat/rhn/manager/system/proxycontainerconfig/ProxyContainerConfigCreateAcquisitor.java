@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -77,12 +79,14 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         SSLCertPair proxyPair = context.getProxyCertKey();
         String rootCaCert = context.getRootCA();
         if (ConfigDefaults.get().isSsl() && (proxyPair == null || !proxyPair.isComplete())) {
-            proxyPair = context.getCertManager().generateCertificate(
-                    context.getCaPair(),
-                    context.getCaPassword(),
-                    context.getCertData()
-            );
-            rootCaCert = context.getCaPair().getCertificate();
+            if (context.getCaPair() != null) {
+                proxyPair = context.getCertManager().generateCertificate(
+                        context.getCaPair(),
+                        context.getCaPassword(),
+                        context.getCertData()
+                );
+                rootCaCert = context.getCaPair().getCertificate();
+            }
         }
         context.setProxyPair(proxyPair);
         context.setRootCaCert(rootCaCert);

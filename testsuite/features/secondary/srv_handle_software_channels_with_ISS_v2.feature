@@ -1,5 +1,5 @@
 # Copyright (c) 2021-2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Feature: Export and import software channels with new ISS implementation
   Distribute software between servers
@@ -36,7 +36,7 @@ Feature: Export and import software channels with new ISS implementation
   Scenario: Export data with ISS v2
     When I ensure folder "/tmp/export_iss_v2" doesn't exist on "server"
     When I export software channels "clone-fake-rpm-suse-channel" with ISS v2 to "/tmp/export_iss_v2"
-    Then "/tmp/export_iss_v2" folder on server is ISS v2 export directory
+    Then "/tmp/export_iss_v2" folder on server should be ISS v2 export directory
 
   Scenario: Cleanup: remove cloned channels
     When I follow the left menu "Software > Manage > Channels"

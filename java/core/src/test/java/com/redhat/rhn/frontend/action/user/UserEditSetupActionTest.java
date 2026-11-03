@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -20,8 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
@@ -80,12 +80,7 @@ public class UserEditSetupActionTest extends BaseTestCase {
             assertNotNull(sah.getRequest().getAttribute("disabledRoles"));
             assertInstanceOf(User.class, sah.getRequest().getAttribute("user"));
 
-            //If we have pam setup where we're testing, make sure displaypam was set
-            String pamAuthService = Config.get().getString(
-                    ConfigDefaults.WEB_PAM_AUTH_SERVICE);
-            if (pamAuthService != null && !pamAuthService.trim().isEmpty()) {
-                assertNotNull(sah.getRequest().getAttribute("displaypam"));
-            }
+            assertNotNull(sah.getRequest().getAttribute("displaypam"));
         }
         finally {
             TestUtils.disableLocalizationDebugMode();

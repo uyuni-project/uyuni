@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -53,7 +55,7 @@ public class CheckinCandidatesResolver {
     public CheckinCandidatesResolver(String findCheckinCandidatesQueryIn) {
         this.findCheckinCandidatesQuery = findCheckinCandidatesQueryIn;
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        this.thresholdMax = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue() *
+        this.thresholdMax = factory.getLong(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD) *
                 86400;
         this.thresholdMin = (int) (this.thresholdMax / 2);
         this.mean = this.thresholdMax;

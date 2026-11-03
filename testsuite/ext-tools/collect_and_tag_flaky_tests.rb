@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # Collect all the issues from a GitHub project board column
 # and tag the corresponding Cucumber feature files with a given tag
@@ -157,9 +157,7 @@ def tag_cucumber_feature_files(directory_path, gh_cards, tag, regex_on_gh_card_t
             next_line = lines[index + 1]
             if next_line&.match?(/^\s*\* Related GitHub Card:/)
               skip_next_line = true
-              if next_line != related_card_line
-                temp_file.puts(related_card_line)
-              end
+              temp_file.puts(related_card_line) if next_line != related_card_line
             else
               temp_file.puts(related_card_line)
             end

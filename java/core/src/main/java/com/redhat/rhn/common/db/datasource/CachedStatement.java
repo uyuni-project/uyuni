@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -295,7 +297,7 @@ public class CachedStatement implements Serializable {
         Object resultObj = executeChecking(sqlStatement, qMap, parameters, mode, null);
         Class<DataResult<T>> drClazz = (Class<DataResult<T>>)(Class<?>) DataResult.class;
         if (drClazz.isAssignableFrom(resultObj.getClass())) {
-            return drClazz.cast(executeChecking(sqlStatement, qMap, parameters, mode, null));
+            return drClazz.cast(resultObj);
         }
         return new DataResult<>(mode);
     }
@@ -791,7 +793,7 @@ public class CachedStatement implements Serializable {
             String getName = StringUtil.beanify("get " + columnName.toLowerCase());
 
             boolean isList = false;
-            Method[] methods = obj.getClass().getMethods();
+            Method[] methods = MethodUtil.getPublicMethods(obj.getClass());
             /*
              * Now loop through the methods and find the set method for this
              * column then decide if it takes a collection Note: This action

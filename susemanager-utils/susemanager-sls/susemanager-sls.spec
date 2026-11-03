@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package susemanager-sls
 #
@@ -39,7 +43,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Static Salt state files for %{productprettyname}
 License:        Apache-2.0 AND LGPL-2.1-only

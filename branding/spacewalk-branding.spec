@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package spacewalk-branding
 #
@@ -25,7 +29,7 @@
 %global tomcat_path %{wwwroot}/tomcat
 %global wwwdocroot %{wwwroot}/htdocs
 Name:           spacewalk-branding
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        %{productprettyname} branding data
 License:        GPL-2.0-only AND OFL-1.1

@@ -333,13 +333,6 @@
         </context-group>
         <target state="translated">（GMT+0530）印度（加尔各答）</target>
       </trans-unit>
-      <trans-unit id="Indian/Maldives" xml:space="preserve">
-        <source>(GMT+0500) Pakistan</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/UserDetails</context>
-        </context-group>
-        <target state="translated">（GMT+0500）巴基斯坦</target>
-      </trans-unit>
       <trans-unit id="Asia/Kabul" xml:space="preserve">
         <source>(GMT+0430) Afghanistan</source>
         <context-group name="ctx">
@@ -3633,6 +3626,13 @@
         </context-group>
         <target state="final">(GMT+0800) 中国</target>
       </trans-unit>
-    </body>
+    <trans-unit id="Asia/Karachi" xml:space="preserve">
+        <source>(GMT+0500) Pakistan</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

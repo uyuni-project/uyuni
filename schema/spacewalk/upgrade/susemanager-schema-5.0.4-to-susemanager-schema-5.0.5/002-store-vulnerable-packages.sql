@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 create or replace function
     lookup_oval_platform(platform_cpe_in in varchar)
     returns numeric

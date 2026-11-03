@@ -7,6 +7,8 @@
 -- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 -- 
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
@@ -30,6 +32,7 @@ select	ao.org_id                                       as org_id,
 	usp.user_id                                     as user_id,
     	ao.action_id                                    as id,
 	ao.type_name                                    as type_name,
+	ao.action_description                           as action_description,
         ao.scheduler                                    as scheduler,
 	ao.earliest_action                              as earliest_action,
 	coalesce( ao.name, ao.type_name )		as action_name,
@@ -45,6 +48,7 @@ group by ao.org_id,
 	 usp.user_id,
 	 ao.action_id,
 	 ao.type_name,
+	 ao.action_description,
 	 ao.scheduler,
 	 ao.earliest_action,
 	 coalesce( ao.name, ao.type_name ),

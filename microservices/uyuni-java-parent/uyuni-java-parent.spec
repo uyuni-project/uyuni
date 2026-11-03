@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package uyuni-java-parent
 #
@@ -20,7 +24,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           uyuni-java-parent
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Parent POM for all Uyuni Maven components
 License:        GPL-2.0-only

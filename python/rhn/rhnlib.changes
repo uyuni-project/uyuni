@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct 08 01:01:42 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Fix maxsplit positional argument deprecation (bsc#1274654)
+
+-------------------------------------------------------------------
 Wed Aug 05 12:38:26 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

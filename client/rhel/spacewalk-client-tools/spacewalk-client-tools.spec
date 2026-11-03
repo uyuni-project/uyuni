@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package spacewalk-client-tools
 #
@@ -66,7 +70,7 @@
 %bcond_with    test
 
 Name:           spacewalk-client-tools
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Support programs and libraries for %{productprettyname}
 License:        GPL-2.0-only

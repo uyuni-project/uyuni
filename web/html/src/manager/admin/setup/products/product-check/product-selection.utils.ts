@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 export type ProductSelectionState = "checked" | "unchecked" | "partially";
 
 export type ProductStatus = "INSTALLED" | "AVAILABLE" | "UNAVAILABLE";

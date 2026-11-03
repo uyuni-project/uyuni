@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -25,7 +27,7 @@ from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server import rhnSQL
-from .rhnLib import parseRPMFilename
+from .rhnLib import PACKAGE_DIR, parseRPMFilename
 
 #
 # Functions that deal with the database
@@ -115,7 +117,7 @@ def check_package_file(rel_path, logpkg, raisepkg):
     if rel_path is None:
         log_error("Package path null for package id", logpkg)
         raise rhnFault(17, _("Invalid RPM package %s requested") % raisepkg)
-    with cfg_component("server.satellite") as CFG:
+    with cfg_component("server") as CFG:
         filePath = f"{CFG.MOUNT_POINT}/{rel_path}"
     if not os.access(filePath, os.R_OK):
         # Package not found on the filesystem
@@ -132,8 +134,8 @@ def unlink_package_file(path):
         # pylint: disable-next=consider-using-f-string
         log_debug(1, "Error unlinking %s;" % path)
     dirname = os.path.dirname(path)
-    with cfg_component("server.satellite") as CFG:
-        base_dirs = (CFG.MOUNT_POINT + "/" + CFG.PREPENDED_DIR, CFG.MOUNT_POINT)
+    with cfg_component("server") as CFG:
+        base_dirs = (CFG.MOUNT_POINT + "/" + PACKAGE_DIR, CFG.MOUNT_POINT)
     while dirname not in base_dirs:
         try:
             os.rmdir(dirname)

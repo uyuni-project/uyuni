@@ -10,6 +10,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -69,6 +71,7 @@ from spacewalk.satellite_tools.download import (
 from spacewalk.satellite_tools.repo_plugins import CACHE_DIR
 from spacewalk.satellite_tools.repo_plugins import yum_src
 from spacewalk.server import taskomatic, rhnPackageUpload
+from spacewalk.server.db_config import DB_CFG
 from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 from spacewalk.satellite_tools.syncLib import (
     log,
@@ -367,7 +370,7 @@ def getChannelRepo():
         row = h.fetchone_dict()
         if not row:
             break
-        if not row["label"] in items:
+        if row["label"] not in items:
             items[row["label"]] = []
         if row["source_url"]:
             items[row["label"]] += [row["source_url"]]
@@ -2101,7 +2104,7 @@ class RepoSync(object):
             new_version = 0
             for n in notice["version"].split("."):
                 new_version = (new_version + int(n)) * 100
-            notice["version"] = new_version / 100
+            notice["version"] = new_version // 100
         if RepoSync._is_old_suse_style(notice):
             # old suse style; we need to append the version to id
             # to get a seperate patch for every issue
@@ -3153,6 +3156,7 @@ class RepoSync(object):
     @staticmethod
     def get_compatible_arches(channel_id):
         """Return a list of compatible package arch labels for this channel"""
+        sync_source_packages = DB_CFG.get_bool("SYNC_SOURCE_PACKAGES")
         h = rhnSQL.prepare("""select pa.label
                               from rhnChannelPackageArchCompat cpac,
                               rhnChannel c,
@@ -3161,13 +3165,11 @@ class RepoSync(object):
                               and c.channel_arch_id = cpac.channel_arch_id
                               and cpac.package_arch_id = pa.id""")
         h.execute(channel_id=channel_id)
-        # pylint: disable-next=invalid-name
-        with cfg_component("server.susemanager") as CFG:
-            arches = [
-                k["label"]
-                for k in h.fetchall_dict()
-                if CFG.SYNC_SOURCE_PACKAGES or k["label"] not in ["src", "nosrc"]
-            ]
+        arches = [
+            k["label"]
+            for k in h.fetchall_dict()
+            if sync_source_packages or k["label"] not in ["src", "nosrc"]
+        ]
         return arches
 
     @staticmethod
@@ -3217,8 +3219,7 @@ class RepoSync(object):
                             bz["id"]
                         ),
                     )
-                    # pylint: disable-next=anomalous-backslash-in-string
-                    bz_id_match = re.search("/show_bug.cgi\?id=(\d+)", bz["href"])
+                    bz_id_match = re.search(r"/show_bug.cgi\?id=(\d+)", bz["href"])
                     if bz_id_match:
                         bz["id"] = bz_id_match.group(1)
                         # pylint: disable-next=consider-using-f-string
@@ -3276,7 +3277,7 @@ class RepoSync(object):
                 notice["update_id"][:4] in ("res5", "res6")
                 and int(notice["version"]) > 6
             )
-            or (notice["update_id"][:4] == "res4")
+            or (notice["update_id"].startswith("res4"))
         ):
             # old style suse updateinfo starts with version >= 1000 or
             # have the res update_tag
@@ -3293,8 +3294,7 @@ class RepoSync(object):
         N.B. We assume that all the bugs are Novell Bugzilla bugs.
 
         """
-        # pylint: disable-next=anomalous-backslash-in-string
-        bug_numbers = set(re.findall("[\[\(]#(\d{6})[\]\)]", text))
+        bug_numbers = set(re.findall(r"[\[\(]#(\d{6})[\]\)]", text))
         bugs = []
         for bug_number in bug_numbers:
             bug = importLib.Bug()
@@ -3322,8 +3322,7 @@ class RepoSync(object):
          We limit the length at 20 chars, because of the DB column size
         """
         cves = list()
-        # pylint: disable-next=anomalous-backslash-in-string
-        cves.extend([cve[:20] for cve in set(re.findall("CVE-\d{4}-\d+", text))])
+        cves.extend([cve[:20] for cve in set(re.findall(r"CVE-\d{4}-\d+", text))])
         return cves
 
     @staticmethod

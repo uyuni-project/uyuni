@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 // This variable set controls the body color
 $body-color: $eos-bc-gray-1000;
 $body-background: $white;
@@ -96,3 +102,7 @@ $sb-striped-border: $eos-bc-gray-300;
 
 /* Product Page */
 $product-installed-color: $eos-bc-green-900;
+
+// Formula form
+$formula-form-border: $eos-bc-gray-100;
+$add-button-border: $eos-bc-gray-300;

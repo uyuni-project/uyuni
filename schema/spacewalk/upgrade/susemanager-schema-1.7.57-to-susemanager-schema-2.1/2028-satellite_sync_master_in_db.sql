@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 alter table rhnISSMaster add is_current_master char(1) default 'N' not null
     constraint rhn_issm_master_yn check (is_current_master in ('Y', 'N'));

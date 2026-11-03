@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -573,8 +575,7 @@ public class UserManager extends BaseManager {
     private static User performLoginActions(User user) {
         user.setLastLoggedIn(new Date());
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        boolean keepTempRoles = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES)
-                .getValue();
+        boolean keepTempRoles = factory.getBoolean(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES);
         if (!keepTempRoles) {
             // delete all temporary roles
             UserManager.resetTemporaryRoles(user, new HashSet<>());

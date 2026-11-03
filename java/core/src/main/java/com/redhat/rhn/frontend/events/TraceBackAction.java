@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -48,13 +50,13 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
     protected String[] getRecipients(User userIn) {
         Config c = Config.get();
         String[] retval = null;
-        if (c.getString("web.traceback_mail").isEmpty()) {
+        if (c.getString("traceback_mail").isEmpty()) {
 
             retval = new String[1];
             retval[0] = "root@localhost";
         }
         else {
-            retval = c.getStringArray("web.traceback_mail");
+            retval = c.getStringArray("traceback_mail");
         }
         return retval;
     }

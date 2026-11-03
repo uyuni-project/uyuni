@@ -9,6 +9,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -985,7 +987,7 @@ public class SystemManager extends BaseManager {
             PageControl pc) {
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         return systemListShortInactive(user,
-                factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue(), pc);
+                factory.getLong(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD), pc);
     }
 
     /**

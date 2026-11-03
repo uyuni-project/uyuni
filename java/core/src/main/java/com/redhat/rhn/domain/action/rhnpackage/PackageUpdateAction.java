@@ -9,6 +9,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -29,6 +31,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
@@ -86,14 +89,14 @@ public class PackageUpdateAction extends PackageAction {
                 getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
                         d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
                 .toList();
-        if (pkgs.isEmpty()) {
-            // Full system package update using update state
-            ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGUPDATE), Optional.empty()), filteredMinions);
-        }
-        else {
-            ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGINSTALL),
-                    Optional.of(singletonMap(SaltParameters.PARAM_PKGS, pkgs))), filteredMinions);
-        }
+        List<String> states = pkgs.isEmpty() ?
+                List.of(SaltParameters.PACKAGES_PKGUPDATE) :
+                List.of(SaltParameters.PACKAGES_PKGINSTALL);
+        Optional<Map<String, Object>> pillar = pkgs.isEmpty() ?
+                Optional.empty() :
+                Optional.of(singletonMap(SaltParameters.PARAM_PKGS, pkgs));
+
+        TransactionalActionManager.addApplyCalls(ret, states, pillar, filteredMinions);
         return ret;
     }
 

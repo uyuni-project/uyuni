@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -33,6 +35,7 @@ public class Context {
     private Locale originalLocale;
     private String activeLocaleLabel;
     private TimeZone timezone;
+    private String actionDescription;
 
     private static final ThreadLocal<Context> CURRENT_CONTEXT = new ThreadLocal<>();
 
@@ -112,6 +115,28 @@ public class Context {
      */
     public void setTimezone(TimeZone timezoneIn) {
         this.timezone = timezoneIn;
+    }
+
+    /**
+     * Getter for actionDescription / scheduleReason
+     * @return String to get
+     */
+    public String getActionDescription() {
+        return this.actionDescription;
+    }
+
+    public static final int MAX_ACTION_DESCRIPTION_LENGTH = 1000;
+
+    /**
+     * Setter for actionDescription / scheduleReason
+     * @param actionDescriptionIn to set
+     */
+    public void setActionDescription(String actionDescriptionIn) {
+        if (actionDescriptionIn != null && actionDescriptionIn.length() > MAX_ACTION_DESCRIPTION_LENGTH) {
+            throw new IllegalArgumentException("Action description cannot exceed " +
+                    MAX_ACTION_DESCRIPTION_LENGTH + " characters.");
+        }
+        this.actionDescription = actionDescriptionIn;
     }
 
     /**

@@ -1,0 +1,32 @@
+{
+  "tag": "salt/job/20220813132425331229/ret/abcdefg.vagrant.local",
+  "data": {
+    "cmd": "_return",
+    "id": "abcdefg.vagrant.local",
+    "success": true,
+    "jid": "20220813132425331229",
+    "fun": "transactional_update.apply",
+    "fun_args": [
+      {
+        "mods": [
+          "packages"
+        ],
+        "queue": true,
+        "test": true
+      }
+    ],
+    "metadata": {
+      "suma-action-id": 50,
+      "suma-force-pkg-list-refresh": false,
+      "suma-action-chain": false,
+      "batch-mode": true,
+      "suma-minion-startup": false
+    },
+    "out": "highstate",
+    "return": [
+      "Rendering SLS 'base:packages' failed: Jinja variable 'dict object' has no attribute 'pkg'"
+    ],
+    "retcode": 0,
+    "_stamp": "2022-08-13T13:24:54.602818"
+  }
+}

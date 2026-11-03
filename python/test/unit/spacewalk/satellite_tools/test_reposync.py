@@ -11,6 +11,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -106,14 +108,35 @@ class RepoSyncTest(unittest.TestCase):
         importlib.reload(spacewalk.satellite_tools.reposync)
         importlib.reload(spacewalk.satellite_tools.appstreams)
 
+    def test_fix_notice_uses_integer_version_for_dotted_versions(self):
+        test_cases = [
+            ("1.2", "SUSE-2024-001", 102, "SUSE-2024-001"),
+            ("10.12", "SUSE-2024-002", 1012, "SUSE-2024-002-1012"),
+            ("2.0", "res5-PATCH-1234", 200, "res5-PATCH-1234-200"),
+        ]
+
+        for version, update_id, expected_version, expected_update_id in test_cases:
+            notice = {
+                "version": version,
+                "update_id": update_id,
+                "from": "security@suse.de",
+            }
+
+            self.reposync.RepoSync.fix_notice(notice)
+
+            self.assertEqual(notice["version"], expected_version)
+            self.assertIs(type(notice["version"]), int)
+            self.assertEqual(notice["update_id"], expected_update_id)
+            self.assertNotIn(".0", notice["update_id"])
+
     def test_init_succeeds_with_correct_attributes(self):
         rs = _init_reposync(self.reposync, "Label", RTYPE)
 
         self.assertEqual(rs.channel_label, "Label")
 
         # these should have been set automatically
-        self.assertEqual(rs.fail, False)
-        self.assertEqual(rs.interactive, True)
+        self.assertFalse(rs.fail)
+        self.assertTrue(rs.interactive)
 
     def test_init_with_custom_url(self):
         rs = _init_reposync(self.reposync, "Label", RTYPE, url="http://example.com")
@@ -136,8 +159,8 @@ class RepoSyncTest(unittest.TestCase):
             self.reposync, "Label", RTYPE, fail=True, noninteractive=True
         )
 
-        self.assertEqual(rs.fail, True)
-        self.assertEqual(rs.interactive, False)
+        self.assertTrue(rs.fail)
+        self.assertFalse(rs.interactive)
 
     def test_init_wrong_url(self):
         """Test generates empty metadata via taskomatic and quits"""
@@ -209,7 +232,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.urls = [
@@ -254,7 +276,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.urls = [
@@ -286,7 +307,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
         return CFG
 
@@ -343,7 +363,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         exception = self.reposync.ChannelTimeoutException("anony-error")
@@ -362,7 +381,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.load_plugin = Mock(return_value=Mock(side_effect=TypeError))
@@ -548,7 +566,7 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=protected-access
         processed = rs._updates_process_packages(packages, "a name", [])
         for p in processed:
-            self.assertTrue(isinstance(p, self.reposync.importLib.IncompletePackage))
+            self.assertIsInstance(p, self.reposync.importLib.IncompletePackage)
 
     def test_updates_process_packages_returns_the_right_values(self):
         rs = self._create_mocked_reposync()
@@ -695,7 +713,7 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(self.reposync, [])
         # pylint: disable-next=protected-access
         self.assertEqual(rs._updates_process_packages(packages, "patchy", []), [])
-        self.assertEqual(self.reposync.log.call_args, None)
+        self.assertIsNone(self.reposync.log.call_args)
 
     # RedHat has errata with empty package list
     # they removed the check - therefor this is disabled too
@@ -770,7 +788,7 @@ class RepoSyncTest(unittest.TestCase):
     def test_get_errata_no_advisories_found(self):
         rs = self._create_mocked_reposync()
         _mock_rhnsql(self.reposync, None)
-        self.assertEqual(rs.get_errata("bogus"), None)
+        self.assertIsNone(rs.get_errata("bogus"))
 
     def test_get_errata_advisories_but_no_channels(self):
         rs = self._create_mocked_reposync()
@@ -787,6 +805,10 @@ class RepoSyncTest(unittest.TestCase):
             {"id": 42, "channels": ["channel1", "channel2"], "packages": []},
         )
 
+    @patch(
+        "spacewalk.satellite_tools.reposync.DB_CFG",
+        Mock(get_bool=Mock(return_value=False)),
+    )
     def test_get_compat_arches(self):
         _mock_rhnsql(self.reposync, ({"label": "a1"}, {"label": "a2"}))
         self.assertEqual(
@@ -981,7 +1003,6 @@ class SyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         with patch("spacewalk.common.rhnConfig.CFG", CFG):
@@ -1210,7 +1231,6 @@ def test_channel_exceptions():
     # pylint: disable-next=invalid-name
     CFG = Mock()
     CFG.MOUNT_POINT = "/tmp"
-    CFG.PREPENDED_DIR = ""
     CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
     _mock_rhnsql(

@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -15,8 +17,6 @@
 package com.redhat.rhn.frontend.action.user;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
@@ -97,13 +97,8 @@ public class UserEditSetupAction extends RhnAction {
         request.setAttribute("availablePrefixes", UserActionHelper.getPrefixes());
         request.setAttribute("self", loggedInUser.equals(targetUser));
 
-        //Should we display the pam checkbox?
-        String pamAuthService = Config.get().getString(
-                ConfigDefaults.WEB_PAM_AUTH_SERVICE);
-        if (pamAuthService != null && !pamAuthService.trim().isEmpty()) {
-            request.setAttribute("displaypam", "true");
-            form.set("usepam", targetUser.getUsePamAuthentication());
-        }
+        request.setAttribute("displaypam", "true");
+        form.set("usepam", targetUser.getUsePamAuthentication());
 
         // Keep the new list tag happy:
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());

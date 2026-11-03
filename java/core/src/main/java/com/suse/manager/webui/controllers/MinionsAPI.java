@@ -7,6 +7,8 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
  */
 package com.suse.manager.webui.controllers;
 
@@ -557,7 +559,7 @@ public class MinionsAPI {
     public String schedulePtfAction(Request request, Response response, User user, Server server) {
         PackageActionJson scheduleRequest = GSON.fromJson(request.body(), PackageActionJson.class);
 
-        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest.getEarliest());
+        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest);
         ActionChain chain = MinionActionUtils.getActionChain(scheduleRequest.getActionChain(), user);
         List<Map<String, Long>> pkgMap = scheduleRequest.getSelectedPackageMap();
 
@@ -685,7 +687,7 @@ public class MinionsAPI {
 
         ScheduledRequestJson scheduleRequest = GSON.fromJson(request.body(), ScheduledRequestJson.class);
 
-        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest.getEarliest());
+        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest);
         ActionChain chain = MinionActionUtils.getActionChain(scheduleRequest.getActionChain(), user);
 
         Long result;
@@ -757,7 +759,7 @@ public class MinionsAPI {
         SystemScheduledRequestJson scheduleRequest = GSON.fromJson(request.body(), SystemScheduledRequestJson.class);
         Long result;
 
-        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest.getEarliest());
+        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest);
         ActionChain chain = MinionActionUtils.getActionChain(scheduleRequest.getActionChain(), user);
 
         try {

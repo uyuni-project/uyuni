@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -179,6 +181,30 @@ public class MinionServerFactory extends HibernateFactory {
                 .getResultList();
     }
 
+    /**
+     * Return <code>true</code> if the given organization has at least one minion that has to be
+     * treated as transactional.
+     *
+     * @param orgId the organization id
+     * @return <code>true</code> if at least one transactional minion exists in the organization
+     */
+    public static boolean hasTransactionalMinions(Long orgId) {
+        return getSession().createQuery("""
+                        SELECT m.id
+                        FROM MinionServer m
+                        WHERE m.org.id = :orgId
+                          AND (m.transactionalMode = :transactional
+                               OR (m.transactionalMode = :unknown AND m.os IN (:osNames)))
+                        """, Long.class)
+                .setParameter("orgId", orgId)
+                .setParameter("transactional", TransactionalMode.TRANSACTIONAL)
+                .setParameter("unknown", TransactionalMode.UNKNOWN)
+                .setParameterList("osNames", ServerConstants.TRANSACTIONAL_OS_NAMES, StandardBasicTypes.STRING)
+                .setMaxResults(1)
+                .uniqueResultOptional()
+                .isPresent();
+    }
+
    /**
     * Find all the serverActions that involve a traditional client, given an Action Id.
     *
@@ -233,7 +259,8 @@ public class MinionServerFactory extends HibernateFactory {
                                    s.digitalServerId,
                                    s.machineId,
                                    c.label,
-                                   s.os
+                                   s.os,
+                                   s.transactionalMode
                                    )
                         FROM   ServerAction AS sa
                         JOIN   sa.server AS s

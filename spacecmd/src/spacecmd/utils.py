@@ -1,6 +1,6 @@
 # pylint: disable=missing-module-docstring
 #
-# Licensed under the GNU General Public License Version 3
+# SPDX-License-Identifier: GPL-3.0-or-later
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -227,7 +227,7 @@ def filter_results(items, patterns, search=False):
 
 def editor(template="", delete=False):
     # create a temporary file
-    (descriptor, file_name) = mkstemp(prefix="spacecmd.")
+    descriptor, file_name = mkstemp(prefix="spacecmd.")
 
     if template and descriptor:
         try:
@@ -551,7 +551,6 @@ def print_errata_list(errata):
             logging.warning(
                 _N("%s is an unknown errata type"), erratum.get("advisory_name")
             )
-            continue
 
     if not errata:
         return

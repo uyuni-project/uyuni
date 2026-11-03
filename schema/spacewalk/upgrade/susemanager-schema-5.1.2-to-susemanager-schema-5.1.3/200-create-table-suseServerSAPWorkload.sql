@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 CREATE TABLE IF NOT EXISTS suseServerSAPWorkload (
     id BIGINT CONSTRAINT suse_sap_workload_id_pk PRIMARY KEY GENERATED ALWAYS AS IDENTITY,

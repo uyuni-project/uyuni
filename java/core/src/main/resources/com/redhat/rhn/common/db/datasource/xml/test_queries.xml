@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <datasource_modes>
 <mode name="user_tables_for_user_pg">
   <query params="username">
@@ -119,6 +126,12 @@
      WHERE foobar = :foobar
   </query>
   <elaborator name="adv_elab" />
+</mode>
+
+<mode name="next_adv_datasource_seq">
+  <query params="">
+    SELECT nextval('adv_datasource_seq') AS id
+  </query>
 </mode>
 
 <query name="adv_elab" params="">

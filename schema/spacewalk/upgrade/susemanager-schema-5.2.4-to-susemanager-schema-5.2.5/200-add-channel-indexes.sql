@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 CREATE INDEX IF NOT EXISTS rhn_action_sub_channels_tokens_token_id_idx
     ON rhnActionSubChannelsTokens (token_id);
 

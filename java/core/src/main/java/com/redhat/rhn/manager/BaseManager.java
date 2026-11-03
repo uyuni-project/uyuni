@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -96,7 +98,7 @@ public abstract class BaseManager {
 
     /**
      * Returns a DataResult for the given SelectMode with no bounds.  This
-     * can be usefull if you want a list without pagination controls.
+     * can be useful if you want a list without pagination controls.
      *
      * @param <T> the DataResults type
      * @param queryParams Named parameters for the driving query.

@@ -324,13 +324,6 @@
         </context-group>
         <target>(GMT+0530) भारत (कोलकाता)</target>
       </trans-unit>
-      <trans-unit id="Indian/Maldives" xml:space="preserve">
-        <source>(GMT+0500) Pakistan</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/UserDetails</context>
-        </context-group>
-        <target>(GMT+0500) पाकिस्तान</target>
-      </trans-unit>
       <trans-unit id="Asia/Kabul" xml:space="preserve">
         <source>(GMT+0430) Afghanistan</source>
         <context-group name="ctx">
@@ -3613,6 +3606,13 @@
   </trans-unit>
       <trans-unit id="Asia/Shanghai" xml:space="preserve">
         <source>(GMT+0800) China</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Asia/Karachi" xml:space="preserve">
+        <source>(GMT+0500) Pakistan</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>

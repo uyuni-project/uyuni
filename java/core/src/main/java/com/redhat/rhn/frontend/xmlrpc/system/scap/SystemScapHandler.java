@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -21,13 +23,11 @@ import com.redhat.rhn.domain.audit.ScapPolicy;
 import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.frontend.dto.XccdfTestResultDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
-import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
-import com.redhat.rhn.manager.MissingCapabilityException;
-import com.redhat.rhn.manager.MissingEntitlementException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -35,9 +35,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.webui.utils.ScapUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -128,145 +126,6 @@ public class SystemScapHandler extends BaseHandler {
     }
 
     /**
-     * Run OpenSCAP XCCDF Evaluation on a given list of servers
-     * @param loggedInUser The current user
-     * @param sids The list of server ids,
-     * @param xccdfPath The path to xccdf document.
-     * @param oscapParams The additional params for oscap tool.
-     * @return ID of new SCAP action.
-     *
-     * @apidoc.doc Schedule OpenSCAP scan.
-     * @apidoc.param #session_key()
-     * @apidoc.param #array_single("int", "sids")
-     * @apidoc.param #param_desc("string", "xccdfPath", "path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapParams", "additional parameters for oscap tool.")
-     * @apidoc.returntype #param_desc("int", "id", "ID if SCAP action created")
-     */
-    public int scheduleXccdfScan(User loggedInUser, List sids,
-            String xccdfPath, String oscapParams) {
-        return scheduleXccdfScan(loggedInUser, sids, xccdfPath,
-                oscapParams, null, new Date());
-    }
-
-    /**
-     * Run OpenSCAP XCCDF Evaluation on a given list of servers
-     * @param loggedInUser The current user
-     * @param sids The list of server ids,
-     * @param xccdfPath The path to xccdf document.
-     * @param oscapParams The additional params for oscap tool.
-     * @param date The date of earliest occurence.
-     * @return ID of new SCAP action.
-     *
-     * @apidoc.doc Schedule OpenSCAP scan.
-     * @apidoc.param #session_key()
-     * @apidoc.param #array_single("int", "sids")
-     * @apidoc.param #param_desc("string", "xccdfPath", "path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapParams", "additional parameters for oscap tool.")
-     * @apidoc.param #param_desc("$date","date",
-     *                       "The date to schedule the action")
-     * @apidoc.returntype #param_desc("int", "id", "ID if SCAP action created")
-     */
-    public int scheduleXccdfScan(User loggedInUser, List sids,
-            String xccdfPath, String oscapParams, Date date) {
-        return scheduleXccdfScan(loggedInUser, sids, xccdfPath,
-                oscapParams, null, date);
-    }
-
-    /**
-     * Run OpenSCAP XCCDF Evaluation on a given list of servers
-     * @param loggedInUser The current user
-     * @param sids The list of server ids,
-     * @param xccdfPath The path to xccdf document.
-     * @param oscapParams The additional params for oscap tool.
-     * @param ovalFiles Optional OVAL files for oscap tool.
-     * @param date The date of earliest occurence.
-     * @return ID of new SCAP action.
-     *
-     * @apidoc.doc Schedule OpenSCAP scan.
-     * @apidoc.param #session_key()
-     * @apidoc.param #array_single("int", "sids")
-     * @apidoc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
-     * @apidoc.param #param_desc("string", "ovalFiles", "Additional OVAL files for oscap tool.")
-     * @apidoc.param #param_desc("$date","date",
-     *                       "The date to schedule the action")
-     * @apidoc.returntype #param_desc("int", "id", "ID if SCAP action created")
-     */
-    public int scheduleXccdfScan(User loggedInUser, List sids,
-             String xccdfPath, String oscapParams, String ovalFiles, Date date) {
-        if (sids.isEmpty()) {
-            throw new InvalidSystemException();
-        }
-
-        HashSet<Long> longServerIds = new HashSet<>();
-        for (Object serverIdIn : sids) {
-            longServerIds.add(Long.valueOf((Integer) serverIdIn));
-        }
-
-        try {
-            ScapAction action = ActionManager.scheduleXccdfEval(loggedInUser,
-                    longServerIds, xccdfPath, oscapParams, ovalFiles, date);
-            return action.getId().intValue();
-        }
-        catch (MissingEntitlementException e) {
-           throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException(
-                   e.getMessage());
-        }
-        catch (MissingCapabilityException e) {
-           throw new com.redhat.rhn.frontend.xmlrpc.MissingCapabilityException(
-                   e.getCapability(), e.getServer());
-        }
-        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-            throw new TaskomaticApiException(e.getMessage());
-        }
-    }
-
-    /**
-     * Run Open Scap XCCDF Evaluation on a given server
-     * @param loggedInUser The current user
-     * @param sid The server id.
-     * @param xccdfPath The path to xccdf path.
-     * @param oscapParams The additional params for oscap tool.
-     * @return ID of the new scap action.
-     *
-     * @apidoc.doc Schedule Scap XCCDF scan.
-     * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "sid")
-     * @apidoc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
-     * @apidoc.returntype #param_desc("int", "id", "ID of the scap action created")
-     */
-    public int scheduleXccdfScan(User loggedInUser, Integer sid,
-        String xccdfPath, String oscapParams) {
-        return scheduleXccdfScan(loggedInUser, sid, xccdfPath, oscapParams, new Date());
-    }
-
-    /**
-     * Run Open Scap XCCDF Evaluation on a given server at a given time.
-     * @param loggedInUser The current user
-     * @param sid The server id.
-     * @param xccdfPath The path to xccdf path.
-     * @param oscapParams The additional params for oscap tool.
-     * @param date The date of earliest occurence
-     * @return ID of the new scap action.
-     *
-     * @apidoc.doc Schedule Scap XCCDF scan.
-     * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "sid")
-     * @apidoc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
-     * @apidoc.param #param_desc("$date","date",
-     *                       "The date to schedule the action")
-     * @apidoc.returntype #param_desc("int", "id", "ID of the scap action created")
-     */
-    public int scheduleXccdfScan(User loggedInUser, Integer sid,
-            String xccdfPath, String oscapParams, Date date) {
-        List serverIds = new ArrayList<>();
-        serverIds.add(sid);
-        return scheduleXccdfScan(loggedInUser, serverIds, xccdfPath, oscapParams, null, date);
-    }
-
-    /**
      * List all available SCAP content.
      * @param loggedInUser The current user
      * @return a list of SCAP content
@@ -280,8 +139,6 @@ public class SystemScapHandler extends BaseHandler {
      */
     @ReadOnly
     public List<ScapContent> listScapContent(User loggedInUser) {
-        // Validate beta feature is enabled
-        validateBetaFeatureEnabled(loggedInUser);
         return ScapFactory.listScapContent();
     }
 
@@ -299,8 +156,6 @@ public class SystemScapHandler extends BaseHandler {
      */
     @ReadOnly
     public List<TailoringFile> listTailoringFiles(User loggedInUser) {
-        // Validate beta feature is enabled
-        validateBetaFeatureEnabled(loggedInUser);
         return ScapFactory.listTailoringFiles(loggedInUser.getOrg());
     }
 
@@ -318,8 +173,6 @@ public class SystemScapHandler extends BaseHandler {
      */
     @ReadOnly
     public List<ScapPolicy> listPolicies(User loggedInUser) {
-        // Validate beta feature is enabled
-        validateBetaFeatureEnabled(loggedInUser);
         return ScapFactory.listScapPolicies(loggedInUser.getOrg());
     }
 
@@ -339,11 +192,9 @@ public class SystemScapHandler extends BaseHandler {
      * @apidoc.param #param_desc("$date", "date", "The date to schedule the action")
      * @apidoc.returntype #param_desc("int", "id", "ID of SCAP action created")
      */
-    public Long scheduleBetaXccdfScanWithPolicy(User loggedInUser, List<Integer> sids,
-                                                Integer policyId, Date date)
+    public Long scheduleXccdfScanWithPolicy(User loggedInUser, List<Integer> sids,
+                                            Integer policyId, Date date)
             throws TaskomaticApiException {
-        // Validate beta feature is enabled
-        validateBetaFeatureEnabled(loggedInUser);
 
         if (sids == null || sids.isEmpty()) {
             throw new IllegalArgumentException("Server IDs list cannot be empty");
@@ -422,11 +273,9 @@ public class SystemScapHandler extends BaseHandler {
      * @apidoc.param #param_desc("$date", "date", "The date to schedule the action")
      * @apidoc.returntype #param_desc("int", "id", "ID of SCAP action created")
      */
-    public Long scheduleBetaXccdfScanCustom(User loggedInUser, List<Integer> sids,
-                                            Map<String, Object> params, Date date)
+    public Long scheduleXccdfScanCustom(User loggedInUser, List<Integer> sids,
+                                        Map<String, Object> params, Date date)
             throws TaskomaticApiException {
-        // Validate beta feature is enabled
-        validateBetaFeatureEnabled(loggedInUser);
 
         if (sids == null || sids.isEmpty()) {
             throw new IllegalArgumentException("Server IDs list cannot be empty");
@@ -497,15 +346,73 @@ public class SystemScapHandler extends BaseHandler {
     }
 
     /**
-     * Validates that beta features are enabled for the user.
-     * @param user The logged-in user
-     * @throws TaskomaticApiException if beta features are not enabled
+     * Schedule SCAP scan with policy and action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids List of server IDs
+     * @param policyId SCAP policy ID
+     * @param date The date to schedule the action
+     * @param actionDescription Comment / action description
+     * @return ID of SCAP action created
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     *
+     * @apidoc.doc Schedule SCAP scan based on an existing SCAP policy with an action description.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param #param_desc("int", "policyId", "SCAP policy ID")
+     * @apidoc.param #param_desc("$date", "date", "The date to schedule the action")
+     * @apidoc.param #param_desc("string", "actionDescription", "Comment / action description")
+     * @apidoc.returntype #param_desc("int", "id", "ID of SCAP action created")
      */
-    private void validateBetaFeatureEnabled(User user) throws TaskomaticApiException {
-        if (!user.getBetaFeaturesEnabled()) {
-            throw new TaskomaticApiException("The redesigned SCAP integration is currently a beta feature. " +
-                "Please enable beta features in your user preferences to use this endpoint.");
+    public Long scheduleXccdfScanWithPolicy(User loggedInUser, List<Integer> sids,
+                                            Integer policyId, Date date, String actionDescription)
+            throws TaskomaticApiException {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleXccdfScanWithPolicy(loggedInUser, sids, policyId, date);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
 
+    /**
+     * Schedule SCAP scan with custom parameters and action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids List of server IDs
+     * @param params Map of SCAP parameters
+     * @param date The date to schedule the action
+     * @param actionDescription Comment / action description
+     * @return ID of SCAP action created
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     *
+     * @apidoc.doc Schedule SCAP scan with custom parameters and an action description.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param
+     *   #struct_begin("params")
+     *     #prop_desc("int", "scapContentId", "SCAP content ID (required)")
+     *     #prop_desc("string", "xccdfProfileId", "XCCDF profile ID (required)")
+     *     #prop_desc("int", "tailoringFileId", "Tailoring file ID (optional)")
+     *     #prop_desc("string", "tailoringProfileId", "Tailoring profile ID (optional)")
+     *     #prop_desc("string", "ovalFiles", "OVAL files (optional)")
+     *     #prop_desc("string", "advancedArgs", "Advanced arguments (optional)")
+     *     #prop_desc("boolean", "fetchRemoteResources", "Fetch remote resources (optional, default false)")
+     *   #struct_end()
+     * @apidoc.param #param_desc("$date", "date", "The date to schedule the action")
+     * @apidoc.param #param_desc("string", "actionDescription", "Comment / action description")
+     * @apidoc.returntype #param_desc("int", "id", "ID of SCAP action created")
+     */
+    public Long scheduleXccdfScanCustom(User loggedInUser, List<Integer> sids,
+                                        Map<String, Object> params, Date date, String actionDescription)
+            throws TaskomaticApiException {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleXccdfScanCustom(loggedInUser, sids, params, date);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
 }

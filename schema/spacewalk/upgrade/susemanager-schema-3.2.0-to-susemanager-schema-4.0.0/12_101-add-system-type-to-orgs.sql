@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- create server group for 'osimage_build_host' everywhere
 insert into rhnServerGroup ( id, name, description, group_type, org_id )
   select sequence_nextval('rhn_server_group_id_seq'), sgt.name, sgt.name, sgt.id, X.org_id

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 # Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT License.
 #

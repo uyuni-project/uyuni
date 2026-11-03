@@ -7,6 +7,8 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
  */
 
 package com.suse.manager.metrics;
@@ -83,7 +85,7 @@ public class SystemsCollector implements MultiCollector {
                 "FROM rhnServerInfo " +
                 "WHERE checkin < CURRENT_TIMESTAMP - NUMTODSINTERVAL(:checkin_threshold, 'second')";
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue();
+        long threshold = factory.getLong(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD);
         long secondsInDay = 60L * 60 * 24;
         return HibernateFactory.getSession()
                 .createNativeQuery(selectCountQuery, Tuple.class)

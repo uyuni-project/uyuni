@@ -1,7 +1,12 @@
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # coding: utf-8
 """
 Helpers for the test suite.
 """
+
 import os
 
 

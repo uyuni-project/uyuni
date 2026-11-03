@@ -1,2 +1,0 @@
-- Fix race condition when adding or removing a server to or from
-  an activation key (bsc#1268744)

@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -90,6 +92,33 @@ public class OsReleasePairTest {
         assertTrue(productOpt.isPresent());
         assertEquals(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, productOpt.get().getOsFamily());
         assertEquals("5.5", productOpt.get().getOsVersion());
+    }
+
+    @Test
+    public void testToOVALOsProductDebian() {
+        // Salt minions report the osfullname grain, "Debian GNU/Linux" on Debian
+        OsReleasePair debian13 = new OsReleasePair("Debian GNU/Linux", "13");
+        Optional<CVEAuditManagerOVAL.OVALOsProduct> productOpt = debian13.toOVALOsProduct();
+        assertTrue(productOpt.isPresent());
+        assertEquals(OsFamily.DEBIAN, productOpt.get().getOsFamily());
+        assertEquals("13", productOpt.get().getOsVersion());
+
+        OsReleasePair debian12 = new OsReleasePair("Debian", "12");
+        productOpt = debian12.toOVALOsProduct();
+        assertTrue(productOpt.isPresent());
+        assertEquals(OsFamily.DEBIAN, productOpt.get().getOsFamily());
+        assertEquals("12", productOpt.get().getOsVersion());
+
+        // Unsupported Debian release
+        OsReleasePair debian10 = new OsReleasePair("Debian GNU/Linux", "10");
+        assertFalse(debian10.toOVALOsProduct().isPresent());
+
+        // Ubuntu is not affected by the normalization
+        OsReleasePair ubuntu2404 = new OsReleasePair("Ubuntu", "24.04");
+        productOpt = ubuntu2404.toOVALOsProduct();
+        assertTrue(productOpt.isPresent());
+        assertEquals(OsFamily.UBUNTU, productOpt.get().getOsFamily());
+        assertEquals("24.04", productOpt.get().getOsVersion());
     }
 
     @Test

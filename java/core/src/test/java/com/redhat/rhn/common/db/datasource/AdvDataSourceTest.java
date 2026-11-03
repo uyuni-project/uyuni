@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -34,6 +36,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
@@ -302,6 +305,25 @@ public class AdvDataSourceTest extends BaseTestCase {
         assertNotNull(dr);
     }
 
+    @Test
+    public void testSelectModeExecutesQueryOnce() {
+        SelectMode m = ModeFactory.getMode(TEST_QUERIES, "next_adv_datasource_seq");
+        Map<String, Object> params = null;
+        DataResult<Map<String, Object>> dr = m.execute(params);
+        assertEquals(1, dr.size());
+        assertEquals(1L, dr.get(0).get("id"));
+
+        // every execution of the query advances the sequence
+        Long lastValue = HibernateFactory.getSession().doReturningWork(connection -> {
+            try (Statement stmt = connection.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT last_value FROM adv_datasource_seq")) {
+                rs.next();
+                return rs.getLong(1);
+            }
+        });
+        assertEquals(1L, lastValue);
+    }
+
 
     @BeforeEach
     public void setUp() {
@@ -317,6 +339,8 @@ public class AdvDataSourceTest extends BaseTestCase {
                         "         constraint adv_datasource_pk primary key" +
                         ");"
                         );
+                statement.execute("drop sequence if exists adv_datasource_seq");
+                statement.execute("create sequence adv_datasource_seq");
                 connection.commit();
             }
             catch (SQLException se) {
@@ -336,6 +360,7 @@ public class AdvDataSourceTest extends BaseTestCase {
             try {
                 statement = connection.createStatement();
                 forceQuery(connection, "drop table adv_datasource");
+                forceQuery(connection, "drop sequence adv_datasource_seq");
                 connection.commit();
             }
             finally {

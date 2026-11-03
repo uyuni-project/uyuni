@@ -1,5 +1,5 @@
 # Copyright (c) 2021-2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @centos7_minion
 Feature: Add the CentOS 7 distribution custom repositories

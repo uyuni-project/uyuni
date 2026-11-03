@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
@@ -35,6 +41,7 @@ type HighstateState = {
   earliest: moment.Moment;
   test: boolean;
   actionChain?: any;
+  actionDescription?: string;
 };
 
 class Highstate extends Component<HighstateProps, HighstateState> {
@@ -54,6 +61,7 @@ class Highstate extends Component<HighstateProps, HighstateState> {
       earliest: this.state.earliest,
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
       test: this.state.test,
+      actionDescription: this.state.actionDescription,
     })
       .then((data) => {
         this.setState((prevState) => {
@@ -161,8 +169,10 @@ class Highstate extends Component<HighstateProps, HighstateState> {
             <ActionSchedule
               earliest={this.state.earliest}
               actionChains={window.actionChains}
+              actionDescription={this.state.actionDescription ?? ""}
               onActionChainChanged={this.onActionChainChanged}
               onDateTimeChanged={this.onDateTimeChanged}
+              onActionDescriptionChanged={(desc) => this.setState({ actionDescription: desc })}
               systemIds={window.minions?.map((m) => m.id)}
               actionType="states.apply"
             />

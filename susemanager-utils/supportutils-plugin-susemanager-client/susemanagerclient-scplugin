@@ -3,7 +3,8 @@
 # Name:        Supportconfig Plugin for SUSE Manager Client
 # Description: Gathers important troubleshooting information
 #              about a SUSE Manager Client
-# License:     GPLv2
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+# SPDX-License-Identifier: GPL-2.0-only
 # Author:      Michael Calmer <mc@suse.de>
 # Modified:    2024 February 03
 #############################################################

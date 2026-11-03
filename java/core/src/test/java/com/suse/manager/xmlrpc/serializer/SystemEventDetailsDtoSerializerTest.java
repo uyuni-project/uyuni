@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -101,8 +103,38 @@ public class SystemEventDetailsDtoSerializerTest {
         assertTrue(xml.contains("<name>result_code</name>"));
         assertTrue(xml.contains("<i4>0</i4>"));
 
+        assertTrue(xml.contains("<name>pending_reboot</name>"));
+        assertTrue(xml.contains("<boolean>0</boolean>"));
+
         // No additional info should be present
         assertFalse(xml.contains("<name>additional_info</name>"));
+    }
+
+    /**
+     * Verify that an action waiting for a transactional reboot is reported as such
+     */
+    @Test
+    public void testSerializeSystemEventDetailDtoWaitingForReboot() {
+
+        final SystemEventDetailsDtoSerializer serializer = new SystemEventDetailsDtoSerializer();
+
+        final SystemEventDetailsDto dto = new SystemEventDetailsDto();
+
+        dto.setId(26L);
+        dto.setHistoryType(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST.getLabel());
+        dto.setHistoryTypeName("Hardware List Refresh");
+        dto.setHistoryStatus(ActionFactory.STATUS_COMPLETED.getName());
+        dto.setSummary("Hardware List Refresh scheduled by (system)");
+        dto.setPendingRebootActionId(26L);
+
+        final Writer output = new StringWriter();
+
+        serializer.serialize(dto, output, new XmlRpcSerializer());
+
+        final String xml = output.toString();
+
+        assertTrue(xml.contains("<name>pending_reboot</name>"));
+        assertTrue(xml.contains("<boolean>1</boolean>"));
     }
 
 }

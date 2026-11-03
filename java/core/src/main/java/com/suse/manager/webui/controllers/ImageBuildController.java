@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -403,7 +405,7 @@ public class ImageBuildController {
             return badRequest(response, "");
         }
 
-        Date scheduleDate = MinionActionUtils.getScheduleDate(buildRequest.getEarliest());
+        Date scheduleDate = MinionActionUtils.getScheduleDate(buildRequest);
         ActionChain actionChain = MinionActionUtils.getActionChain(buildRequest.getActionChain(), user);
 
         Long profileId = Long.parseLong(request.params("id"));
@@ -447,7 +449,7 @@ public class ImageBuildController {
             return badRequest(res, "");
         }
 
-        Date scheduleDate = MinionActionUtils.getScheduleDate(inspectRequest.getEarliest());
+        Date scheduleDate = MinionActionUtils.getScheduleDate(inspectRequest);
 
         Long imageId = Long.parseLong(req.params("id"));
 
@@ -489,7 +491,7 @@ public class ImageBuildController {
             return badRequest(res, "invalid_id");
         }
 
-        Date scheduleDate = MinionActionUtils.getScheduleDate(data.getEarliest());
+        Date scheduleDate = MinionActionUtils.getScheduleDate(data);
         return ImageStoreFactory.lookupByIdAndOrg(data.getStoreId(), user.getOrg())
                 .map(store -> {
                     try {

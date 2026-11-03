@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <rhn:listdisplay set="${requestScope.set}" button="preservation_list.jsp.deletelist">
           <rhn:set value="${current.id}" />
           <rhn:column header="preservation_list.jsp.description" style="text-align: left;">

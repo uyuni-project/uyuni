@@ -1,0 +1,2 @@
+- Periodically flush and clear the session for Errata Advisory
+  (bsc#12777714)

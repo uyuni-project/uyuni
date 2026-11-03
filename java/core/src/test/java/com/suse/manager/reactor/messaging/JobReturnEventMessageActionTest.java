@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016--2021 SUSE LLC
+ * Copyright (c) 2016--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,6 +7,8 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
  *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
@@ -65,10 +67,13 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
+import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
+import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressStatus;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.TransactionalMode;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
@@ -86,6 +91,7 @@ import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.utils.RhelUtilsTest;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
@@ -1336,6 +1342,170 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void testDryRunOfAConventionalMinionCompletesTheAction() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.NON_TRANSACTIONAL,
+                List.of("packages"), false);
+
+        executeJobReturn("state.apply.with.test.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusCompleted());
+        assertNotNull(sa.getCompletionTime());
+        assertTrue(sa.getResultMsg().endsWith("(test-mode)"));
+    }
+
+    @Test
+    public void testSuccessfulDryRunContinuationFinalizesTheTransactionalHistory() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages", "custom"), true);
+
+        executeJobReturn("state.apply.with.test.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusCompleted());
+        assertNotNull(sa.getCompletionTime());
+        assertTrue(sa.getResultMsg().endsWith("(test-mode)"));
+        assertEquals(ProgressStatus.COMPLETED, findHistory(scenario).getAfterRebootStatus());
+    }
+
+    @Test
+    public void testDryRunOfATransactionalMinionCompletesTheAction() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages"), false);
+
+        executeJobReturn("transactional.update.apply.with.test.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusCompleted());
+        assertNotNull(sa.getCompletionTime());
+        assertEquals("Transactional states previewed. No changes applied.", sa.getResultMsg());
+
+        MinionTransactionalActionHistory history = findHistory(scenario);
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+        assertNull(history.getSnapshotRefreshActionId(), "A preview must not schedule a snapshot refresh");
+    }
+
+    @Test
+    public void testDryRunWithAFailedStateIsReportedAsFailed() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages"), false);
+
+        executeJobReturn("transactional.update.apply.with.test.failure.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusFailed());
+        assertEquals(ProgressStatus.FAILED, findHistory(scenario).getPrerequisiteStatus());
+    }
+
+    @Test
+    public void testDryRunWithARenderingErrorIsReportedAsFailed() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages"), false);
+
+        executeJobReturn("transactional.update.apply.with.test.render.error.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusFailed());
+        assertTrue(sa.getResultMsg().startsWith("Rendering SLS"));
+        assertEquals(ProgressStatus.FAILED, findHistory(scenario).getPrerequisiteStatus());
+    }
+
+    @Test
+    public void testDryRunWithoutAnExplicitStateResultIsReportedAsFailed() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages"), false);
+
+        executeJobReturn("transactional.update.apply.with.test.missing.result.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusFailed());
+        assertEquals(ProgressStatus.FAILED, findHistory(scenario).getPrerequisiteStatus());
+    }
+
+    @Test
+    public void testFailedDryRunOfAMixedRequestDoesNotStartTheLivePhase() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages", "custom"), false);
+
+        executeJobReturn("transactional.update.apply.with.test.failure.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertTrue(sa.isStatusFailed());
+
+        MinionTransactionalActionHistory history = findHistory(scenario);
+        assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    public void testSuccessfulDryRunOfAMixedRequestWaitsForTheLivePhase() throws Exception {
+        DryRunScenario scenario = createDryRunScenario(TransactionalMode.TRANSACTIONAL,
+                List.of("packages", "custom"), false);
+
+        executeJobReturn("transactional.update.apply.with.test.json", scenario.actionId());
+
+        ServerAction sa = reloadServerAction(scenario);
+        assertFalse(sa.isStatusFailed());
+        assertNull(sa.getCompletionTime());
+
+        MinionTransactionalActionHistory history = findHistory(scenario);
+        assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertEquals(ProgressStatus.PENDING, history.getAfterRebootStatus());
+        assertNull(history.getSnapshotRefreshActionId(), "A preview must not schedule a snapshot refresh");
+    }
+
+    private DryRunScenario createDryRunScenario(TransactionalMode mode, List<String> mods, boolean continuation)
+            throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("abcdefg.vagrant.local");
+        minion.setTransactionalMode(mode);
+        ServerFactory.save(minion);
+
+        ApplyStatesAction action = ActionManager.scheduleApplyStates(user, List.of(minion.getId()), mods,
+                new Date(), Optional.of(true));
+
+        if (continuation) {
+            MinionTransactionalActionHistory history =
+                    MinionTransactionalActionHistory.create(minion.getId(), action.getId());
+            history.recordTransactionalStateApplied("transactional preview");
+            history.recordAfterRebootScheduled();
+            TestUtils.persist(history);
+        }
+
+        DryRunScenario scenario = new DryRunScenario(action.getId(), minion.getId());
+        TestUtils.flushAndClearSession();
+        return scenario;
+    }
+
+    private ServerAction reloadServerAction(DryRunScenario scenario) {
+        return TestUtils.reload(ActionFactory.lookupById(scenario.actionId())).getServerActions().stream()
+                .filter(sa -> scenario.serverId().equals(sa.getServerId()))
+                .findFirst()
+                .orElseThrow();
+    }
+
+    private MinionTransactionalActionHistory findHistory(DryRunScenario scenario) {
+        return TransactionalActionManager.findTransactionalActionHistory(
+                scenario.serverId(), scenario.actionId()).orElseThrow();
+    }
+
+    private void executeJobReturn(String fixture, long actionId) throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        JobReturnEvent event = JobReturnEvent.parse(getJobReturnEvent(fixture, actionId)).orElseThrow();
+        new JobReturnEventMessageAction(saltServerActionService, saltUtils)
+                .execute(new JobReturnEventMessage(event));
+    }
+
+    private record DryRunScenario(Long actionId, Long serverId) {
+    }
+
+    @Test
     public void testUpdateServerAction() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("abcdefg.vagrant.local");
@@ -1378,6 +1548,49 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // Verify the action status
         assertTrue(sa.isStatusFailed());
         context().assertIsSatisfied();
+    }
+
+    @Test
+    public void testTransactionalApplyWithChangesCompletesAction() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("transactional-minion");
+
+        ApplyStatesAction action = ActionManager.scheduleApplyStates(
+                user,
+                Collections.singletonList(minion.getId()),
+                List.of(ApplyStatesEventMessage.CHANNELS),
+                new Date());
+
+        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
+        action.addServerAction(serverAction);
+
+        JsonObject stateResult = new JsonObject();
+        JsonObject change = new JsonObject();
+        change.addProperty("new", "value");
+        stateResult.add("changes", change);
+        stateResult.addProperty("result", true);
+        stateResult.addProperty("comment", "State applied");
+        JsonObject result = new JsonObject();
+        result.add("state_|-test_|-test_|-run", stateResult);
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        saltUtils.updateServerAction(
+                serverAction,
+                0L,
+                true,
+                "n/a",
+                result,
+                Optional.of(Xor.right("transactional_update.apply")),
+                null);
+
+        assertTrue(serverAction.isStatusCompleted());
+        assertNotNull(serverAction.getCompletionTime());
     }
 
     @Test
@@ -1718,6 +1931,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
                             user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                    with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.spdx.json")),
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
+                            user.getOrg().getId()))));
+            will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0",
@@ -1732,6 +1950,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
                                     "-5.3.18-150300.59.54-default.kernel",
+                            user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/" +
+                                    "POS_Image_JeOS7.x86_64-7.0.0.spdx.json",
                             user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
@@ -1764,6 +1988,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             file = info.getImageFiles().stream().filter(f -> f.getType().equals("image")).findFirst().get();
             assertEquals("7057ea9a15784f469e03f2de045d3c73", file.getChecksum().getChecksum());
             assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0", file.getFile());
+            // check SPDX SBOM
+            file = info.getImageFiles().stream().filter(f -> f.getType().equals("sbom")).findFirst().get();
+            assertEquals("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    file.getChecksum().getChecksum());
+            assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0.spdx.json", file.getFile());
         });
         ImageInfoFactory.delete(image, saltServiceMock);
         TestUtils.flushSession();
@@ -1787,10 +2016,22 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
                             user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                    with(equal("/var/lib/Kiwi/build137/images/" +
+                            "POS_Image_JeOS7.x86_64-7.0.0-build129.spdx.json")),
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
+                            user.getOrg().getId()))));
+            will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
                                     "-build129.tar.xz",
+                            user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/" +
+                                    "POS_Image_JeOS7.x86_64-7.0.0-build129.spdx.json",
                             user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
@@ -1809,10 +2050,17 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertNotNull(info.getChecksum());
             assertEquals("7057ea9a15784f469e03f2de045d3c73",
                     info.getChecksum().getChecksum());
+            ImageFile file = info.getImageFiles().stream()
+                    .filter(f -> f.getType().equals("bundle")).findFirst().get();
             assertEquals("93321bc25fe417787f311cdcfa67dfde470e2a1e7481d4c5f8e55a6684576029",
-                    info.getImageFiles().stream().findFirst().get().getChecksum().getChecksum());
+                    file.getChecksum().getChecksum());
             assertEquals("POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz",
-                    info.getImageFiles().stream().findFirst().get().getFile());
+                    file.getFile());
+            file = info.getImageFiles().stream().filter(f -> f.getType().equals("sbom")).findFirst().get();
+            assertEquals("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                    file.getChecksum().getChecksum());
+            assertEquals("POS_Image_JeOS7-7.0.0-1/" +
+                    "POS_Image_JeOS7.x86_64-7.0.0-build129.spdx.json", file.getFile());
         });
         ImageInfoFactory.delete(image, saltServiceMock);
         TestUtils.flushSession();

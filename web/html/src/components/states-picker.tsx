@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { type ReactNode, Component } from "react";
 
 import _partition from "lodash/partition";
@@ -47,9 +53,10 @@ function channelIcon(channel) {
 type StatesPickerProps = {
   type?: string;
   matchUrl: (filter?: string) => any;
-  applyRequest?: (systems: any[]) => any;
+  applyRequest?: (systems: any[], useTransactionalUpdate: boolean) => any;
   saveRequest: (channels: any[]) => any;
   messages?: (messages: MessageType[]) => any;
+  showTransactionalUpdate?: boolean;
 };
 
 class StatesPickerState {
@@ -68,6 +75,7 @@ class StatesPickerState {
   } = undefined;
   rank?: boolean = undefined;
   messages: MessageType[] = [];
+  useTransactionalUpdate = false;
 }
 
 class StatesPicker extends Component<StatesPickerProps, StatesPickerState> {
@@ -111,7 +119,8 @@ class StatesPicker extends Component<StatesPickerProps, StatesPickerState> {
         return null;
       }
     }
-    return this.props.applyRequest?.(items);
+    const useTransactionalUpdate = Boolean(this.props.showTransactionalUpdate && this.state.useTransactionalUpdate);
+    return this.props.applyRequest?.(items, useTransactionalUpdate);
   };
 
   onUpdateRanking = (channels) => {
@@ -390,6 +399,10 @@ class StatesPicker extends Component<StatesPickerProps, StatesPickerState> {
     this.setMessages([]);
   }
 
+  toggleUseTransactionalUpdate = (event) => {
+    this.setState({ useTransactionalUpdate: event.target.checked });
+  };
+
   getCurrentAssignment = () => {
     const unchanged = this.state.channels.filter((c) => !this.state.changed.has(channelKey(c)));
     const changed = Array.from(this.state.changed.values()).map((c) => c.value);
@@ -447,6 +460,20 @@ class StatesPicker extends Component<StatesPickerProps, StatesPickerState> {
         {!this.props.messages && this.state.messages ? <Messages items={this.state.messages} /> : null}
         <SectionToolbar top="50">
           <div className="action-button-wrapper">
+            {typeof this.props.applyRequest !== "undefined" &&
+            this.props.showTransactionalUpdate &&
+            this.state.changed.size === 0 &&
+            currentAssignment.length > 0 &&
+            !this.state.rank ? (
+              <label className="checkbox-inline" style={{ marginRight: "1em" }}>
+                <input
+                  type="checkbox"
+                  checked={this.state.useTransactionalUpdate}
+                  onChange={this.toggleUseTransactionalUpdate}
+                />
+                {t("Use transactional update")}
+              </label>
+            ) : null}
             <div className="btn-group">{buttons}</div>
           </div>
         </SectionToolbar>

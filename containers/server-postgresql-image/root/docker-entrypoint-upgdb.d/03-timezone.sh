@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 POSTGRESQL=/var/lib/pgsql/data/postgresql.conf
 
 postgres_reconfig() {

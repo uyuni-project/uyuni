@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 /** Get URL parameter `paramName` as a string, or undefined if not found */
 function getUrlParam(paramName: string): string | undefined;
 /** Get URL parameter `paramName` as a number, or undefined if not found */

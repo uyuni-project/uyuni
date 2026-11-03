@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package spacewalk-utils
 #
@@ -20,7 +24,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           spacewalk-utils
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Utilities that may be run against a %{productprettyname} server
 License:        GPL-2.0-only AND GPL-3.0-or-later

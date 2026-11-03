@@ -10,6 +10,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # SUSE trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
@@ -678,7 +680,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             # pylint: disable-next=superfluous-parens
             user = cli_ask(msg=("User to add"))
             pw = cli_ask(msg=("Password to add"), password=True)
-            if not pw == cli_ask(msg=("Confirm password"), password=True):
+            if pw != cli_ask(msg=("Confirm password"), password=True):
                 self.log.error("Passwords do not match")
                 print("Passwords do not match")
                 self.exit_with_error = True
@@ -804,7 +806,6 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                     # pylint: disable-next=consider-using-f-string
                     print("Channel '{0}' is not available, skipping".format(channel))
                     self.exit_with_error = True
-                    continue
 
         self._schedule_channel_reposync(channels_to_sync)
 

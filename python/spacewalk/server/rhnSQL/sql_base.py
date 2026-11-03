@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -62,7 +64,7 @@ class SQLError(Exception):
 class SQLSchemaError(SQLError):
     def __init__(self, errno, errmsg, *args):
         self.errno = errno
-        (self.errmsg, errmsg) = errmsg.split("\n", 1)
+        self.errmsg, errmsg = errmsg.split("\n", 1)
         SQLError.__init__(self, self.errno, self.errmsg, errmsg, *args)
 
 
@@ -295,9 +297,6 @@ class Database:
         procedure.
         The return value is a (possibly modified) copy of the arguments passed
         in. see cx_Oracle's Cursor.callproc for more details"""
-        return self._procedure_class(name, None)
-
-        # pylint: disable-next=unreachable
         return self._procedure_class(name, None)
 
     def function(self, name, ret_type):

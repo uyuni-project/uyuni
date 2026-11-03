@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 CREATE TABLE suseRecurringState
 (
   rec_id            NUMERIC NOT NULL
@@ -16,5 +18,7 @@ CREATE TABLE suseRecurringState
                       REFERENCES suseRecurringAction(id)
                       ON DELETE CASCADE,
   test_mode         CHAR(1) NOT NULL
+                    DEFAULT 'N',
+  use_transactional_update CHAR(1) NOT NULL
                     DEFAULT 'N'
 );

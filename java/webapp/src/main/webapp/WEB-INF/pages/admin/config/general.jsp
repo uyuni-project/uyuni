@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -88,16 +95,6 @@
                             <html:text property="mount_point" size="32"
                                        styleClass="form-control"
                                        styleId="mount_point" />
-                        </div>
-                    </div>
-                    <div class="row hidden">
-                        <label class="col-lg-3 control-label" for="disconnected">
-                            <bean:message key="general.jsp.disconnected"/>
-                        </label>
-                        <div class="col-lg-6">
-                            <div class="checkbox">
-                                <html:checkbox property="disconnected" styleId="disconnected" />
-                            </div>
                         </div>
                     </div>
                     <div class="row">

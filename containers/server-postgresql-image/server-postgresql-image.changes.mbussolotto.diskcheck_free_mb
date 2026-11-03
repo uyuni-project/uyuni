@@ -1,0 +1,5 @@
+- Add DISKCHECKALERT_FREE_MB and DISKTHRESHOLD_FREE_MB environment
+  variables to define the disk check thresholds as available
+  space in MB
+- Read the disk check thresholds at runtime in
+  get_pgsql_disk_severity()

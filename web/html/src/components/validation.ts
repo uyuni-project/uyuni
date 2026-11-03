@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import _isNil from "lodash/isNil";
 
 // We can't infer NaN at a type level here since typeof NaN is number

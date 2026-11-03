@@ -7,6 +7,8 @@
 -- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 -- 
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
@@ -22,6 +24,7 @@ rhnActionOverview
 	type_id,
 	type_name,
 	name,
+	action_description,
     	scheduler,
 	scheduler_login,
 	earliest_action,
@@ -33,6 +36,7 @@ SELECT    A.org_id,
 	  AT.id,
 	  AT.name,
 	  A.name,
+	  A.action_description,
 	  A.scheduler,
 	  U.login,
 	  A.earliest_action,

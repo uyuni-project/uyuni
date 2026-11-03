@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -40,6 +42,8 @@ public class SystemEventDto extends BaseDto implements Serializable {
     protected String historyType;
     protected String historyTypeName;
     private String historyStatus;
+    private Long pendingRebootActionId;
+    private String actionDescription;
     protected static final Map<String, String> ACTIONTYPES;
     private boolean historyVisible;
 
@@ -194,6 +198,20 @@ public class SystemEventDto extends BaseDto implements Serializable {
     }
 
     /**
+     * @return true when this action is currently waiting for a transactional reboot
+     */
+    public boolean isPendingRebootAction() {
+        return pendingRebootActionId != null;
+    }
+
+    /**
+     * @param pendingRebootActionIdIn pending reboot action id to set
+     */
+    public void setPendingRebootActionId(Long pendingRebootActionIdIn) {
+        this.pendingRebootActionId = pendingRebootActionIdIn;
+    }
+
+    /**
      * @return if details of this event will be visible
      */
     public boolean isHistoryVisible() {
@@ -205,6 +223,20 @@ public class SystemEventDto extends BaseDto implements Serializable {
      */
     public void setHistoryVisible(boolean historyVisibleIn) {
         this.historyVisible = historyVisibleIn;
+    }
+
+    /**
+     * @return the actionDescription
+     */
+    public String getActionDescription() {
+        return actionDescription;
+    }
+
+    /**
+     * @param actionDescriptionIn the actionDescription to set
+     */
+    public void setActionDescription(String actionDescriptionIn) {
+        this.actionDescription = actionDescriptionIn;
     }
 
     @Override

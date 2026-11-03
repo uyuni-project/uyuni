@@ -9,6 +9,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -30,10 +32,10 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.download.DownloadManager;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
@@ -67,6 +69,7 @@ import java.util.Set;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 
 /**
@@ -87,7 +90,15 @@ public class ScriptRunAction extends ScriptAction {
         skipCommandScriptPerms = skipCommandScriptPermsIn;
     }
 
-    private static final SaltUtils SALT_UTILS = GlobalInstanceHolder.SALT_UTILS;
+    @Transient
+    private final transient SaltUtils saltUtils;
+
+    /**
+     * Constructor
+     */
+    public ScriptRunAction() {
+        saltUtils = GlobalInstanceHolder.SALT_UTILS;
+    }
 
     /**
      * {@inheritDoc}
@@ -140,7 +151,7 @@ public class ScriptRunAction extends ScriptAction {
     @Override
     public void onCancelAction() {
         if (allServersFinished()) {
-            FileUtils.deleteFile(SALT_UTILS.getScriptPath(getId()));
+            FileUtils.deleteFile(saltUtils.getScriptPath(getId()));
         }
     }
 
@@ -153,7 +164,7 @@ public class ScriptRunAction extends ScriptAction {
 
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
         // write script to /srv/susemanager/salt/scripts/script_<action_id>.sh
-        Path scriptFile = SALT_UTILS.getScriptPath(getId());
+        Path scriptFile = saltUtils.getScriptPath(getId());
         try {
             // make sure parent dir exists
             if (!Files.exists(scriptFile) && !Files.exists(scriptFile.getParent())) {
@@ -186,7 +197,15 @@ public class ScriptRunAction extends ScriptAction {
             pillar.put("mgr_remote_cmd_script", SALT_FS_PREFIX + SCRIPTS_DIR + "/" + scriptFile.getFileName());
             pillar.put("mgr_remote_cmd_runas", getScriptActionDetails().getUsername());
             pillar.put("mgr_remote_cmd_timeout", getScriptActionDetails().getTimeout());
-            ret.put(State.apply(List.of(SaltParameters.REMOTE_COMMANDS), Optional.of(pillar)), minions);
+            TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                    ret,
+                    List.of(SaltParameters.REMOTE_COMMANDS),
+                    Optional.of(pillar),
+                    Optional.empty(),
+                    Optional.empty(),
+                    minions,
+                    getScriptActionDetails().isUseTransactionalUpdate(),
+                    getId());
         }
         catch (IOException e) {
             String errorMsg = "Could not write script to file " + scriptFile + " - " + e;

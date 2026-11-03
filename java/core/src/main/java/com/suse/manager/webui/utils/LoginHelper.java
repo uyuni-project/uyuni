@@ -9,6 +9,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -136,7 +138,7 @@ public class LoginHelper {
         Org newUserOrg = null;
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         Boolean useOrgUnit =
-                factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT).getValue();
+                factory.getBoolean(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT);
         if (BooleanUtils.isTrue(useOrgUnit)) {
             String orgUnitString =
                     (String) request.getAttribute("REMOTE_USER_ORGUNIT");
@@ -147,7 +149,7 @@ public class LoginHelper {
         }
         if (newUserOrg == null) {
             Long defaultOrgId =
-                    factory.getLongConfiguration(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID).getValue();
+                    factory.getLong(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID);
             if (defaultOrgId != null) {
                 newUserOrg = OrgFactory.lookupById(defaultOrgId);
                 if (newUserOrg == null) {

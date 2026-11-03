@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package spacewalk-reports
 #
@@ -24,7 +28,7 @@
 %endif
 
 Name:           spacewalk-reports
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Script based reporting
 License:        GPL-2.0-only

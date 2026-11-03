@@ -11,6 +11,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -39,7 +41,7 @@ from uyuni.common.checksum import getFileChecksum
 # pylint: disable-next=ungrouped-imports
 from spacewalk.server.importlib import mpmSource
 
-initCFG("server.satellite")
+initCFG("server")
 initLOG(CFG.LOG_FILE, CFG.DEBUG)
 
 OPTIONS = None
@@ -75,7 +77,7 @@ def main():
     global debug, verbose
     parser = OptionParser(option_list=options_table)
 
-    (options, args) = parser.parse_args()
+    options, args = parser.parse_args()
 
     if args:
         for arg in args:
@@ -294,7 +296,6 @@ def process_package_data():
             # pylint: disable-next=consider-using-f-string
             (" There were %s packages found in the correct location" % len(new_ok_list))
         )
-    return
 
 
 def process_kickstart_trees():
@@ -679,7 +680,7 @@ def process_package_files():
 
                 caps = pkg_caps[f["name"]]
 
-                if not caps["checksum"] == f["checksum"]:
+                if caps["checksum"] != f["checksum"]:
                     # Package file exists, but its checksum in the DB is incorrect
                     update_packagefile_checksum_h.execute(
                         ctype=f["checksum_type"],

@@ -1,5 +1,5 @@
 # Copyright (c) 2022-2024 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 require_relative 'namespaces/actionchain'
 require_relative 'namespaces/activationkey'
@@ -8,9 +8,11 @@ require_relative 'namespaces/api'
 require_relative 'namespaces/audit'
 require_relative 'namespaces/channel'
 require_relative 'namespaces/configchannel'
+require_relative 'namespaces/hub'
 require_relative 'namespaces/image'
 require_relative 'namespaces/kickstart'
 require_relative 'namespaces/schedule'
+require_relative 'namespaces/sync_hub'
 require_relative 'namespaces/system'
 require_relative 'namespaces/user'
 require_relative 'xmlrpc_client'
@@ -22,8 +24,8 @@ require 'logger'
 class ApiTest
   # Creates objects that are used to interact with the API.
   #
-  # @param _host [String] The hostname of the Spacewalk server.
-  def initialize(_host)
+  # @param host [String] The target host ('server', 'server2', 'server3', ...).
+  def initialize(host)
     @actionchain = NamespaceActionchain.new(self)
     @activationkey = NamespaceActivationkey.new(self)
     @admin = NamespaceAdmin.new(self)
@@ -34,11 +36,13 @@ class ApiTest
     @image = NamespaceImage.new(self)
     @kickstart = NamespaceKickstart.new(self)
     @schedule = NamespaceSchedule.new(self)
+    @sync_hub = NamespaceSyncHub.new(self)
     @system = NamespaceSystem.new(self)
     @user = NamespaceUser.new(self)
     @connection = nil
     @token = nil
     @semaphore = Mutex.new
+    @host = host
 
     File.open('api.log', 'a') do |file|
       file.sync = true
@@ -62,6 +66,7 @@ class ApiTest
   attr_reader :image
   attr_reader :kickstart
   attr_reader :schedule
+  attr_reader :sync_hub
   attr_reader :system
   attr_reader :user
   attr_accessor :token
@@ -101,7 +106,8 @@ class ApiTest
       end
       @token = @connection.call('auth.login', login: 'admin', password: 'admin')
     else
-      @token = @connection.call('auth.login', login: $current_user, password: $current_password)
+      user, password = Credentials.for(@host)
+      @token = @connection.call('auth.login', login: user, password: password)
     end
   end
 
@@ -116,10 +122,11 @@ end
 class ApiTestXmlrpc < ApiTest
   # Creates a new instance of the XmlrpcClient class, and assigns it to the @connection instance variable.
   #
-  # @param host [String] The hostname of the server.
-  def initialize(host)
-    super
-    @connection = XmlrpcClient.new(host)
+  # @param host [String] The target host ('server', 'server2', 'server3', ...).
+  # @param ssl_verify [Boolean] Whether to verify SSL certificates or not.
+  def initialize(host, ssl_verify = true)
+    super(host)
+    @connection = XmlrpcClient.new(get_target(host).full_hostname, ssl_verify: ssl_verify)
   end
 
   # Returns a boolean on whether the given attribute is an XMLRPC::DateTime object or not
@@ -143,11 +150,11 @@ end
 class ApiTestHttp < ApiTest
   # It creates a new instance of the HttpClient class.
   #
-  # @param host [String] The hostname of the server.
+  # @param host [String] The target host ('server', 'server2', 'server3', ...).
   # @param ssl_verify [Boolean] Whether to verify SSL certificates or not.
   def initialize(host, ssl_verify = true)
     super(host)
-    @connection = HttpClient.new(host, ssl_verify)
+    @connection = HttpClient.new(get_target(host).full_hostname, ssl_verify)
   end
 
   # Attempts to parse a given string as a Date object, to validate it.

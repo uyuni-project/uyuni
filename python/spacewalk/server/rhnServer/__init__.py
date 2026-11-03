@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -38,7 +40,7 @@ def get(system_id, load_user=1):
         return None
     # Try to initialize the certificate object
     cert = Certificate()
-    if not cert.reload(system_id) == 0:
+    if cert.reload(system_id) != 0:
         return None
     # if invalid, stop here
     if not cert.valid():
@@ -47,7 +49,7 @@ def get(system_id, load_user=1):
     # this looks like a real server
     server = Server(None)
     # and load it up
-    if not server.loadcert(cert, load_user) == 0:
+    if server.loadcert(cert, load_user) != 0:
         return None
     # okay, it is a valid certificate
     return server
@@ -57,7 +59,7 @@ def search(server_id, username=None):
     """search for a server in the database and return the Server object"""
     log_debug(3, server_id, username)
     s = Server(None)
-    if not s.reload(server_id) == 0:
+    if s.reload(server_id) != 0:
         # pylint: disable-next=consider-using-f-string
         log_error("Reloading server id %d failed" % server_id)
         # we can't say that the server is not really found

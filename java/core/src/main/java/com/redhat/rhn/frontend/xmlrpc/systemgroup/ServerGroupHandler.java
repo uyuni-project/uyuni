@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -430,7 +432,7 @@ public class ServerGroupHandler extends BaseHandler {
     private List<Long> activeSystemsInGroup(User loggedInUser, String systemGroupName) {
         ServerGroup sg = lookup(systemGroupName, loggedInUser);
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        Long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue();
+        Long threshold = factory.getLong(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD);
         return serverGroupManager.listActiveServers(sg, threshold);
     }
 
@@ -474,7 +476,7 @@ public class ServerGroupHandler extends BaseHandler {
     public List<Long> listInactiveSystemsInGroup(User loggedInUser,
             String systemGroupName) {
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        Long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue();
+        Long threshold = factory.getLong(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD);
         return listInactiveSystemsInGroup(loggedInUser, systemGroupName,
                 threshold.intValue());
     }

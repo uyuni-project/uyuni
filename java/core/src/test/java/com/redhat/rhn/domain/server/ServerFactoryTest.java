@@ -9,6 +9,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -943,6 +945,30 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         List<Server> servers = ServerFactory.listSystemsInSsm(user);
         assertEquals(1, servers.size());
         assertEquals(serverIn, servers.get(0));
+    }
+
+    @Test
+    public void testSetWithMinionHydratesTransactionalMode() {
+        MinionServer minionIn = MinionServerFactoryTest.createTestMinionServer(user);
+        minionIn.setTransactionalMode(TransactionalMode.TRANSACTIONAL);
+        ServerFactory.save(minionIn);
+
+        Long minionId = minionIn.getId();
+        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        set.addElement(minionId, null);
+        RhnSetManager.store(set);
+
+        TestUtils.flushAndEvict(minionIn);
+
+        List<Server> servers = ServerFactory.listSystemsInSsm(user);
+        assertEquals(1, servers.size());
+
+        Server hydrated = servers.get(0);
+        assertEquals(minionId, hydrated.getId());
+
+        MinionServer hydratedMinion = hydrated.asMinionServer()
+                .orElseThrow(() -> new AssertionError("SSM query did not hydrate the minion subtype"));
+        assertEquals(TransactionalMode.TRANSACTIONAL, hydratedMinion.getTransactionalMode());
     }
 
     private ServerSnapshot generateSnapshot(Server server2) {

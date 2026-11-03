@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 09:41+0200\n"
+"POT-Creation-Date: 2026-11-01 11:56+0100\n"
 "PO-Revision-Date: 2025-03-28 15:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>\n"
@@ -19,27 +19,27 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 5.10.3\n"
 
-#: ../server/apacheAuth.py:80
+#: ../server/apacheAuth.py:82
 #, python-format
 msgid "incomplete proxy authentication token: %s"
 msgstr "neúplný token overenia proxy: %s"
 
-#: ../server/apacheAuth.py:111
+#: ../server/apacheAuth.py:113
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
 msgstr "Zaslaný podpis proxy %s nezodpovedá nášmu %s."
 
-#: ../server/apacheAuth.py:150
+#: ../server/apacheAuth.py:152
 msgid "declined proxy authentication"
 msgstr "zamietnuté overenie proxy"
 
-#: ../server/apacheRequest.py:68
+#: ../server/apacheRequest.py:70
 #, python-format
 msgid "Invalid request received (%s)."
 msgstr "Prijatá neplatná požiadavka (%s)."
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:130
+#: ../server/apacheRequest.py:132
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -48,7 +48,7 @@ msgstr ""
 "DÔLEŽITÁ SPRÁVA NASLEDUJE:\n"
 "%s"
 
-#: ../server/apacheRequest.py:160
+#: ../server/apacheRequest.py:162
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -58,12 +58,12 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:675
+#: ../server/apacheRequest.py:677
 #, python-format
 msgid "Invalid URI %s"
 msgstr "Neplatné URI %s"
 
-#: ../server/handlers/app/packages.py:220
+#: ../server/handlers/app/packages.py:222
 #, python-format
 msgid ""
 "\n"
@@ -87,27 +87,27 @@ msgstr "Neplatný kľúč sedenia"
 msgid "This server ID no longer exists"
 msgstr "Toto ID servera už neexistuje"
 
-#: ../server/importlib/userAuth.py:109
+#: ../server/importlib/userAuth.py:111
 msgid "You are not authorized to manage packages in the null org"
 msgstr "Nemáte oprávnenie spravovať balíky v null org"
 
-#: ../server/importlib/userAuth.py:115
+#: ../server/importlib/userAuth.py:117
 #, python-format
 msgid "You are not allowed to manage packages in the %s org"
 msgstr "Nemáte oprávnenie spravovať balíky v %s org"
 
 #. ok, you're a regular user who doesn't manage any channels.
 #. take a hike.
-#: ../server/importlib/userAuth.py:132
+#: ../server/importlib/userAuth.py:134
 msgid "You are not allowed to perform administrative tasks"
 msgstr "Nemáte oprávnenie vykonávať administratívne úlohy"
 
-#: ../server/importlib/userAuth.py:159
+#: ../server/importlib/userAuth.py:161
 #, python-format
 msgid "You are not allowed to manage channel %s, or that channel does not exist"
 msgstr "Nemáte oprávnenie spravovať kanál %s, alebo tento kanál neexistuje"
 
-#: ../server/importlib/userAuth.py:229
+#: ../server/importlib/userAuth.py:231
 #, python-format
 msgid ""
 "\n"
@@ -118,12 +118,12 @@ msgstr ""
 "               Na tomto serveri bol účet %s deaktivovaný.\n"
 "               Pre ďalšiu pomoc kontaktujte administrátora svojej organizácie."
 
-#: ../server/rhnChannel.py:2216
+#: ../server/rhnChannel.py:2218
 #, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr "Váš účet nemá prístup k žiadnym kanálom, ktoré zodpovedajú (vydanie='%(release)s', arch='%(arch)s')%(www_activation)s"
 
-#: ../server/rhnChannel.py:2235
+#: ../server/rhnChannel.py:2237
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Nedostatočné práva predplatného na vydanie (%s, %s"
@@ -132,11 +132,11 @@ msgstr "Nedostatočné práva predplatného na vydanie (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
+#: ../server/rhnChannel.py:2551 ../server/rhnChannel.py:2570
 msgid "System Registered but Inactive"
 msgstr "Systém je registrovaný, ale neaktívny"
 
-#: ../server/rhnChannel.py:2551
+#: ../server/rhnChannel.py:2553
 #, python-format
 msgid ""
 "\n"
@@ -151,7 +151,7 @@ msgstr ""
 "pretože sa nemohol prihlásiť k základnému kanálu.\n"
 "Požiadajte o pomoc administrátora svojej organizácie.\n"
 
-#: ../server/rhnChannel.py:2560
+#: ../server/rhnChannel.py:2562
 #, python-format
 msgid ""
 "\n"
@@ -166,7 +166,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2570
+#: ../server/rhnChannel.py:2572
 #, python-format
 msgid ""
 "\n"
@@ -182,22 +182,22 @@ msgstr ""
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
-#: ../server/rhnHandler.py:62
+#: ../server/rhnHandler.py:64
 msgid "Please run rhn_register as root on this client"
 msgstr "Prosím, spustite rhn_register ako správca systému na tomto klientovi"
 
-#: ../server/rhnHandler.py:76
+#: ../server/rhnHandler.py:78
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Služba nie je povolená pre systémový profil: \"%s\""
 
-#: ../server/rhnPackage.py:51 ../server/rhnPackage.py:97
-#: ../server/rhnPackage.py:117 ../server/rhnPackage.py:179
+#: ../server/rhnPackage.py:53 ../server/rhnPackage.py:99
+#: ../server/rhnPackage.py:119 ../server/rhnPackage.py:181
 #, python-format
 msgid "Invalid RPM package %s requested"
 msgstr "Požaduje sa neplatný balík RPM %s"
 
-#: ../server/rhnPackage.py:123
+#: ../server/rhnPackage.py:125
 msgid "Package not found"
 msgstr "Balík nebol nájdený"
 
@@ -215,181 +215,181 @@ msgstr "Token `%s' má priradený viac ako jeden základný kanál"
 msgid "Conflicting base channels"
 msgstr "Konfliktné základné kanály"
 
-#: ../server/rhnServer/server_token.py:223
+#: ../server/rhnServer/server_token.py:221
 #, python-format
 msgid "Failed to add server to group %s"
 msgstr "Zlyhalo pridanie servera do skupiny %s"
 
-#: ../server/rhnServer/server_token.py:574
+#: ../server/rhnServer/server_token.py:552
 #, python-format
 msgid "Maximum usage count of %s reached"
 msgstr "Dosiahol sa maximálny počet použití %s"
 
-#: ../server/rhnServer/server_token.py:866
+#: ../server/rhnServer/server_token.py:844
 msgid "Stacking of re-registration tokens with different base entitlements is not supported"
 msgstr "Skladanie tokenov opätovnej registrácie s rôznymi základnými oprávneniami nie je podporované"
 
-#: ../server/rhnServer/server_token.py:943
+#: ../server/rhnServer/server_token.py:917
 #, python-format
 msgid "Could not find token '%s'"
 msgstr "Nepodarilo sa nájsť token '%s'"
 
 #. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:976
+#: ../server/rhnServer/server_token.py:950
 msgid "Tokens from mismatching orgs"
 msgstr "Žetóny z nezhodujúcich sa organizácií"
 
 #. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:986
+#: ../server/rhnServer/server_token.py:960
 msgid "Kickstart session mismatch"
 msgstr "Nesúlad sedenia kickstart"
 
-#: ../server/rhnServer/server_token.py:1010
+#: ../server/rhnServer/server_token.py:984
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Skladanie tokenov opätovnej registrácie nie je podporované"
 
-#: ../server/rhnUser.py:321 ../server/rhnUser.py:324
+#: ../server/rhnUser.py:323 ../server/rhnUser.py:326
 msgid "Invalid username/password combination"
 msgstr "Neplatná kombinácia používateľského mena/hesla"
 
 #. nope, not reserved either
-#: ../server/rhnUser.py:505
+#: ../server/rhnUser.py:507
 #, python-format
 msgid "Username `%s' has not been reserved"
 msgstr "Používateľské meno `%s' nebolo rezervované"
 
 #. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:511
+#: ../server/rhnUser.py:513
 msgid "E-mail address not specified"
 msgstr "E-mailová adresa nie je uvedená"
 
-#: ../server/rhnUser.py:553
+#: ../server/rhnUser.py:555
 #, python-format
 msgid "username should be at least %d characters"
 msgstr "používateľské meno by malo mať najmenej %d znakov"
 
-#: ../server/rhnUser.py:557
+#: ../server/rhnUser.py:559
 #, python-format
 msgid "username should be less than %d characters"
 msgstr "používateľské meno by malo mať menej ako %d znakov"
 
-#: ../server/rhnUser.py:571
+#: ../server/rhnUser.py:573
 #, python-format
 msgid "username = `%s', invalid character `%s'"
 msgstr "používateľské meno = `%s', neplatný znak `%s'"
 
-#: ../server/rhnUser.py:592
+#: ../server/rhnUser.py:594
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr "Prosím, obmedzte svoju e-mailovú adresu na %s znakov"
 
-#: ../server/rhnUser.py:690
+#: ../server/rhnUser.py:692
 #, python-format
 msgid "password must be at least %d characters"
 msgstr "heslo musí mať najmenej %d znakov"
 
-#: ../server/rhnUser.py:694
+#: ../server/rhnUser.py:696
 #, python-format
 msgid "Password must be shorter than %d characters"
 msgstr "Heslo musí byť kratšie ako %d znakov"
 
-#: ../server/rhnUser.py:710
+#: ../server/rhnUser.py:712
 #, python-format
 msgid "password contains character `%s'"
 msgstr "heslo obsahuje znak `%s'"
 
-#: ../server/rhnUser.py:719
+#: ../server/rhnUser.py:721
 #, python-format
 msgid "username should be at least %d characters long"
 msgstr "používateľské meno by malo byť najmenej %d znakov dlhé"
 
-#: ../server/rhnUser.py:730
+#: ../server/rhnUser.py:732
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Nie je možné zaregistrovať používateľské mená končiace s %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
-#: ../common/rhnException.py:55
+#: ../common/rhnException.py:57
 msgid "This does not appear to be a valid username."
 msgstr "Nezdá sa, že je to platné používateľské meno."
 
-#: ../common/rhnException.py:56
+#: ../common/rhnException.py:58
 msgid "Invalid username and password combination."
 msgstr "Neplatná kombinácia používateľského mena a hesla."
 
-#: ../common/rhnException.py:57
+#: ../common/rhnException.py:59
 msgid "This login is already taken, or the password is incorrect."
 msgstr "Toto prihlasovacie meno je už obsadené, alebo je heslo nesprávne."
 
-#: ../common/rhnException.py:58
+#: ../common/rhnException.py:60
 msgid "Permission denied."
 msgstr "Prístup zamietnutý."
 
-#: ../common/rhnException.py:59
+#: ../common/rhnException.py:61
 msgid "Object not found."
 msgstr "Objekt nebol nájdený."
 
-#: ../common/rhnException.py:60
+#: ../common/rhnException.py:62
 msgid "Invalid System Digital ID."
 msgstr "Neplatné digitálne ID systému."
 
-#: ../common/rhnException.py:61
+#: ../common/rhnException.py:63
 msgid "Invalid System Credentials."
 msgstr "Neplatné prihlasovanie údaje do systému."
 
-#: ../common/rhnException.py:62
+#: ../common/rhnException.py:64
 msgid "Could not retrieve user data from database."
 msgstr "Nepodarilo získať z databázy používateľské dáta."
 
-#: ../common/rhnException.py:63
+#: ../common/rhnException.py:65
 msgid "Valid username required."
 msgstr "Vyžaduje sa platné používateľské meno."
 
-#: ../common/rhnException.py:64
+#: ../common/rhnException.py:66
 msgid "Valid password required."
 msgstr "Vyžaduje sa platné heslo."
 
-#: ../common/rhnException.py:65
+#: ../common/rhnException.py:67
 msgid "Minimum username length violation."
 msgstr "Nedodržanie minimálnej dĺžky používateľského mena."
 
-#: ../common/rhnException.py:66
+#: ../common/rhnException.py:68
 msgid "Minimum password length violation."
 msgstr "Nedodržanie minimálnej dĺžky hesla."
 
-#: ../common/rhnException.py:67
+#: ../common/rhnException.py:69
 msgid "The username contains invalid characters."
 msgstr "Používateľské meno obsahuje neplatné znaky."
 
-#: ../common/rhnException.py:68
+#: ../common/rhnException.py:70
 msgid "File not found."
 msgstr "Súbor nebol nájdený."
 
-#: ../common/rhnException.py:69
+#: ../common/rhnException.py:71
 msgid "Architecture and OS version combination is not supported."
 msgstr "Kombinácia architektúry a verzie OS nie je podporovaná."
 
-#: ../common/rhnException.py:70
+#: ../common/rhnException.py:72
 msgid "Could not retrieve system data from database."
 msgstr "Nepodarilo získať z databázy systémové dáta."
 
-#: ../common/rhnException.py:71
+#: ../common/rhnException.py:73
 msgid "Invalid arguments passed to function."
 msgstr "Funkcii boli odovzdané neplatné argumenty."
 
-#: ../common/rhnException.py:72
+#: ../common/rhnException.py:74
 msgid "Unable to retrieve requested entry."
 msgstr "Požadovanú položku sa nepodarilo získať."
 
-#: ../common/rhnException.py:73
+#: ../common/rhnException.py:75
 msgid "Could not update database entry."
 msgstr "Nepodarilo sa aktualizovať položku databázy."
 
-#: ../common/rhnException.py:74
+#: ../common/rhnException.py:76
 msgid "Unsupported server architecture."
 msgstr "Nepodporovaná architektúra servera."
 
-#: ../common/rhnException.py:76
+#: ../common/rhnException.py:78
 #, python-format
 msgid ""
 "\n"
@@ -410,15 +410,15 @@ msgstr ""
 "     \"Správa predplatného\" na aktiváciu služby pre tento systém.\n"
 "     "
 
-#: ../common/rhnException.py:85
+#: ../common/rhnException.py:87
 msgid "Record not available in the database."
 msgstr "Záznam nie je dostupný v databáze."
 
-#: ../common/rhnException.py:86
+#: ../common/rhnException.py:88
 msgid "Invalid value for entry."
 msgstr "Neplatná hodnota pre položku."
 
-#: ../common/rhnException.py:88
+#: ../common/rhnException.py:90
 #, python-format
 msgid ""
 "\n"
@@ -435,47 +435,47 @@ msgstr ""
 "     \"Správa predplatného\"vna aktiváciu služby pre tento systém.\n"
 "     "
 
-#: ../common/rhnException.py:95
+#: ../common/rhnException.py:97
 msgid "Channel error"
 msgstr "Chyba kanála"
 
-#: ../common/rhnException.py:96
+#: ../common/rhnException.py:98
 msgid "Client session token is invalid."
 msgstr "Token klientského sedenia je neplatný."
 
-#: ../common/rhnException.py:97
+#: ../common/rhnException.py:99
 msgid "Client session token has expired."
 msgstr "Platnosť tokenu klientského sedenia vypršala."
 
-#: ../common/rhnException.py:98
+#: ../common/rhnException.py:100
 msgid "You are not authorized to retrieve the requested object."
 msgstr "Nemáte oprávnenie získať požadovaný objekt."
 
-#: ../common/rhnException.py:99
+#: ../common/rhnException.py:101
 msgid "Invalid action"
 msgstr "Neplatná akcia"
 
-#: ../common/rhnException.py:101
+#: ../common/rhnException.py:103
 msgid "You are not allowed to perform administrative tasks on this system."
 msgstr "Nemáte oprávnenie vykonávať administratívne úlohy v tomto systéme."
 
-#: ../common/rhnException.py:104
+#: ../common/rhnException.py:106
 msgid "The system is already subscribed to the specified channel."
 msgstr "Systém je už prihlásený k zadanému kanálu."
 
-#: ../common/rhnException.py:105
+#: ../common/rhnException.py:107
 msgid "The system is not currently subscribed to the specified channel."
 msgstr "Systém nie je momentálne prihlásený k zadanému kanálu."
 
-#: ../common/rhnException.py:106
+#: ../common/rhnException.py:108
 msgid "The specified channel does not exist."
 msgstr "Zadaný kanál neexistuje."
 
-#: ../common/rhnException.py:107
+#: ../common/rhnException.py:109
 msgid "Invalid channel version."
 msgstr "Neplatná verzia kanála."
 
-#: ../common/rhnException.py:109
+#: ../common/rhnException.py:111
 msgid ""
 "\n"
 "     User group membership limits exceeded.\n"
@@ -495,7 +495,7 @@ msgstr ""
 "     k serveru.\n"
 "     "
 
-#: ../common/rhnException.py:119
+#: ../common/rhnException.py:121
 msgid ""
 "\n"
 "     System group membership limits exceeded.\n"
@@ -515,7 +515,7 @@ msgstr ""
 "     prihlásené k vášmu účtu.\n"
 "     "
 
-#: ../common/rhnException.py:129
+#: ../common/rhnException.py:131
 msgid ""
 "\n"
 "     Invalid architecture.\n"
@@ -529,11 +529,11 @@ msgstr ""
 "     Architektúru balíka nie je podporovaná\n"
 "     "
 
-#: ../common/rhnException.py:136
+#: ../common/rhnException.py:138
 msgid "Invalid RPM header"
 msgstr "Neplatná hlavička RPM"
 
-#: ../common/rhnException.py:138
+#: ../common/rhnException.py:140
 msgid ""
 "\n"
 "    This system is already registered as a Salt Minion. If you want to register it as a traditional client\n"
@@ -546,15 +546,15 @@ msgstr ""
 "    "
 
 #. For the uploading tools
-#: ../common/rhnException.py:144
+#: ../common/rhnException.py:146
 msgid "Invalid information uploaded to the server"
 msgstr "Na server boli nahrané neplatné informácie"
 
-#: ../common/rhnException.py:145
+#: ../common/rhnException.py:147
 msgid "Error uploading network interfaces configuration."
 msgstr "Chyba pri nahrávaní konfigurácie sieťových rozhraní."
 
-#: ../common/rhnException.py:147
+#: ../common/rhnException.py:149
 msgid ""
 "\n"
 "     Package Upload Failed due to uniqueness constraint violation.\n"
@@ -568,7 +568,7 @@ msgstr ""
 "     na serveri.\n"
 "     "
 
-#: ../common/rhnException.py:154
+#: ../common/rhnException.py:156
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -580,7 +580,7 @@ msgstr ""
 "     Pre ďalšiu pomoc kontaktujte svojho administrátora SUSE Multi-Linux Manager.\n"
 "     "
 
-#: ../common/rhnException.py:161
+#: ../common/rhnException.py:163
 msgid ""
 "\n"
 "     The activation token specified could not be found on the server.\n"
@@ -592,19 +592,19 @@ msgstr ""
 "     Prosím, skúste to znova s platným kľúčom.\n"
 "     "
 
-#: ../common/rhnException.py:166
+#: ../common/rhnException.py:168
 msgid "Too many systems registered using this registration token"
 msgstr "Pomocou tohto registračného tokenu bolo zaregistrovaných príliš veľa systémov"
 
-#: ../common/rhnException.py:167
+#: ../common/rhnException.py:169
 msgid "Token contains invalid, obsoleted or insufficient settings"
 msgstr "Token obsahuje neplatné, zastarané alebo nedostatočné nastavenia"
 
-#: ../common/rhnException.py:168
+#: ../common/rhnException.py:170
 msgid "Conflicting activation tokens"
 msgstr "Konfliktné aktivačné tokeny"
 
-#: ../common/rhnException.py:171
+#: ../common/rhnException.py:173
 msgid ""
 "\n"
 "     No matching base channel found for your system.\n"
@@ -614,7 +614,7 @@ msgstr ""
 "     Pre váš systém sa nenašiel žiadny zodpovedajúci základný kanál.\n"
 "     "
 
-#: ../common/rhnException.py:176
+#: ../common/rhnException.py:178
 msgid ""
 "\n"
 "     You do not have subscription permission to the designated channel.\n"
@@ -628,84 +628,84 @@ msgstr ""
 "     administrátora organizácie.\n"
 "     "
 
-#: ../common/rhnException.py:182
+#: ../common/rhnException.py:184
 msgid "You can not unsubscribe from base channel."
 msgstr "Nemôžete sa odhlásiť zo základného kanála."
 
-#: ../common/rhnException.py:183
+#: ../common/rhnException.py:185
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
 msgstr "Nie je možné prihlásiť sa k SUSE Multi-Linux Manager alebo Proxy kanálu."
 
 #. 80-90: server group errors
-#: ../common/rhnException.py:185
+#: ../common/rhnException.py:187
 msgid "There was an error while trying to join the system to its groups"
 msgstr "Pri pokuse o pripojenie systému k jeho skupinám sa vyskytla chyba"
 
 #. 90-100: entitlement errors
-#: ../common/rhnException.py:187
+#: ../common/rhnException.py:189
 msgid "Unable to entitle system"
 msgstr "Nie je možné priradiť oprávnenie systému"
 
 #. 100-109: e-mail and uuid related faults
-#: ../common/rhnException.py:189
+#: ../common/rhnException.py:191
 msgid "Maximum e-mail length violation."
 msgstr "Nedodržanie maximálnej dĺžky e-mailu."
 
-#: ../common/rhnException.py:190
+#: ../common/rhnException.py:192
 msgid "This system has been previously registered."
 msgstr "Tento systém bol predtým zaregistrovaný."
 
-#: ../common/rhnException.py:191
+#: ../common/rhnException.py:193
 msgid "Invalid username"
 msgstr "Neplatné používateľské meno"
 
 #. 140-159 applet errors
-#: ../common/rhnException.py:193
+#: ../common/rhnException.py:195
 msgid "Unable to look up server"
 msgstr "Server sa nepodarilo vyhľadať"
 
 #. 160-179: OSAD errors
-#: ../common/rhnException.py:195
+#: ../common/rhnException.py:197
 msgid "Required argument is missing"
 msgstr "Chýba požadovaný argument"
 
 #. 600-699: RHEL5+ EN errors
-#: ../common/rhnException.py:197
+#: ../common/rhnException.py:199
 msgid "No entitlement information tied to hardware"
 msgstr "S hardvérom nie sú spojené žiadne informácie o oprávneniach"
 
-#: ../common/rhnException.py:198
+#: ../common/rhnException.py:200
 msgid "Installation number is not entitling"
 msgstr "Inštalačné číslo nie je oprávňujúce"
 
 #. 700-799: Additional user input verification errors.
-#: ../common/rhnException.py:200
+#: ../common/rhnException.py:202
 msgid "Maximum username length violation"
 msgstr "Nedodržanie maximálnej dĺžky používateľského mena"
 
-#: ../common/rhnException.py:201
+#: ../common/rhnException.py:203
 msgid "Maximum password length violation"
 msgstr "Nedodržanie maximálnej dĺžky hesla"
 
-#: ../common/rhnException.py:202
+#: ../common/rhnException.py:204
 msgid "This user has read only API access. Action denied."
 msgstr "Tento používateľ má prístup iba na čítanie API. Akcia zamietnutá."
 
-#: ../common/rhnException.py:203
+#: ../common/rhnException.py:205
 msgid "System Name cannot be less than 1 character"
 msgstr "Názov systému nesmie mať menej ako 1 znak"
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
-#: ../common/rhnException.py:206
+#: ../common/rhnException.py:208
 msgid "SUSE Multi-Linux Manager Proxy error."
 msgstr "Chyba SUSE Multi-Linux Manager Proxy."
 
-#: ../common/rhnException.py:207
+#: ../common/rhnException.py:209
 msgid "SUSE Multi-Linux Manager Proxy unable to login."
 msgstr "SUSE Multi-Linux Manager Proxy sa nemôže prihlásiť."
 
-#: ../common/rhnException.py:210
+#: ../common/rhnException.py:212
 msgid ""
 "\n"
 "     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk Proxy Server\n"
@@ -717,15 +717,15 @@ msgstr ""
 "     v databáze.\n"
 "     "
 
-#: ../common/rhnException.py:215
+#: ../common/rhnException.py:217
 msgid "SUSE Multi-Linux Manager Proxy session token is invalid."
 msgstr "Token sedenia SUSE Multi-Linux Manager Proxy je neplatný."
 
-#: ../common/rhnException.py:216
+#: ../common/rhnException.py:218
 msgid "SUSE Multi-Linux Manager Proxy session token has expired."
 msgstr "Platnosť tokenu sedenia SUSE Multi-Linux Manager Proxy vypršala."
 
-#: ../common/rhnException.py:220
+#: ../common/rhnException.py:222
 msgid ""
 "\n"
 "      user creation is not allowed via mgr_register;\n"
@@ -737,7 +737,7 @@ msgstr ""
 "     kontaktujte svojho správcu systémov a požiadajte ho o vytvorenie účtu.\n"
 "     "
 
-#: ../common/rhnException.py:226
+#: ../common/rhnException.py:228
 msgid ""
 "\n"
 "     This SUSE Multi-Linux Manager server is not allowed to use Inter Server Sync on this server\n"
@@ -747,7 +747,7 @@ msgstr ""
 "     Tento server SUSE Multi-Linux Manager nemá povolenie na tomto serveri používať Inter Server Sync\n"
 "     "
 
-#: ../common/rhnException.py:231
+#: ../common/rhnException.py:233
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Multi-Linux Manager Server.\n"
@@ -758,141 +758,141 @@ msgstr ""
 "     "
 
 #. 3000-3999: XML dumper errors:
-#: ../common/rhnException.py:236
+#: ../common/rhnException.py:238
 msgid "Invalid datatype passed"
 msgstr "Odovzdaný neplatný dátový typ"
 
-#: ../common/rhnException.py:237
+#: ../common/rhnException.py:239
 msgid "Unable to retrieve channel"
 msgstr "Nie je možné získať kanál"
 
-#: ../common/rhnException.py:238
+#: ../common/rhnException.py:240
 msgid "Unable to retrieve package"
 msgstr "Nie je možné získať balík"
 
-#: ../common/rhnException.py:239
+#: ../common/rhnException.py:241
 msgid "Unable to retrieve erratum"
 msgstr "Nie je možné získať tlačovú chybu"
 
-#: ../common/rhnException.py:240
+#: ../common/rhnException.py:242
 msgid "File is missing"
 msgstr "Súbor chýba"
 
-#: ../common/rhnException.py:241
+#: ../common/rhnException.py:243
 msgid "Function retrieval error"
 msgstr "Chyba načítania funkcie"
 
-#: ../common/rhnException.py:242
+#: ../common/rhnException.py:244
 msgid "Function execution error"
 msgstr "Chyba vykonávania funkcie"
 
-#: ../common/rhnException.py:243
+#: ../common/rhnException.py:245
 msgid "Missing version string"
 msgstr "Chýba reťazec verzie"
 
-#: ../common/rhnException.py:244
+#: ../common/rhnException.py:246
 msgid "Invalid version string"
 msgstr "Neplatný reťazec verzie"
 
-#: ../common/rhnException.py:245
+#: ../common/rhnException.py:247
 msgid "Mismatching versions"
 msgstr "Nezhodné verzie"
 
-#: ../common/rhnException.py:246
+#: ../common/rhnException.py:248
 msgid "Invalid channel version"
 msgstr "Neplatná verzia kanála"
 
-#: ../common/rhnException.py:247
+#: ../common/rhnException.py:249
 msgid "No comps file for channel"
 msgstr "Žiadny súbor comps pre kanál"
 
-#: ../common/rhnException.py:248
+#: ../common/rhnException.py:250
 msgid "Unable to retrieve comps file"
 msgstr "Nie je možné získať súbor comps"
 
 #. 4000 - 4999: config management errors
-#: ../common/rhnException.py:250
+#: ../common/rhnException.py:252
 msgid "Configuration action missing"
 msgstr "Chýba konfiguračná akcia"
 
-#: ../common/rhnException.py:251
+#: ../common/rhnException.py:253
 msgid "File too large"
 msgstr "Súbor je príliš veľký"
 
-#: ../common/rhnException.py:252
+#: ../common/rhnException.py:254
 msgid "File contains binary data"
 msgstr "Súbor obsahuje binárne dáta"
 
-#: ../common/rhnException.py:253
+#: ../common/rhnException.py:255
 msgid "Configuration channel is not empty"
 msgstr "Konfiguračný kanál nie je prázdny"
 
-#: ../common/rhnException.py:254
+#: ../common/rhnException.py:256
 msgid "Permission error"
 msgstr "Chyba oprávnení"
 
-#: ../common/rhnException.py:255
+#: ../common/rhnException.py:257
 msgid "Content missing for configuration file"
 msgstr "Chýba obsah konfiguračného súboru"
 
-#: ../common/rhnException.py:256
+#: ../common/rhnException.py:258
 msgid "Template delimiters not specified"
 msgstr "Oddeľovače šablón nie sú uvedené"
 
-#: ../common/rhnException.py:257
+#: ../common/rhnException.py:259
 msgid "Configuration channel does not exist"
 msgstr "Konfiguračný kanál neexistuje"
 
-#: ../common/rhnException.py:258
+#: ../common/rhnException.py:260
 msgid "Configuration channel already exists"
 msgstr "Konfiguračný kanál už existuje"
 
-#: ../common/rhnException.py:259
+#: ../common/rhnException.py:261
 msgid "File missing from configuration channel"
 msgstr "Chýba súbor z konfiguračného kanála"
 
-#: ../common/rhnException.py:260
+#: ../common/rhnException.py:262
 msgid "Different revision of this file is uploaded"
 msgstr "Nahraná je iná revízia tohto súboru"
 
-#: ../common/rhnException.py:261
+#: ../common/rhnException.py:263
 msgid "File already uploaded to configuration channel"
 msgstr "Súbor už bol nahraný na konfiguračný kanál"
 
-#: ../common/rhnException.py:262
+#: ../common/rhnException.py:264
 msgid "File size exceeds remaining quota space"
 msgstr "Veľkosť súboru presahuje zostávajúci priestor kvóty"
 
-#: ../common/rhnException.py:263
+#: ../common/rhnException.py:265
 msgid "Full path of file must be specified"
 msgstr "Musí byť zadaná úplná cesta k súboru"
 
-#: ../common/rhnException.py:264
+#: ../common/rhnException.py:266
 msgid "Invalid revision number"
 msgstr "Neplatné číslo revízie"
 
-#: ../common/rhnException.py:265
+#: ../common/rhnException.py:267
 msgid "Cannot compare files of different file type"
 msgstr "Nie je možné porovnávať súbory rôznych súborových typov"
 
 #. 5100 - 5199: scap results reporting error
-#: ../common/rhnException.py:267
+#: ../common/rhnException.py:269
 msgid "SCAP results file transfer is invalid or incomplete"
 msgstr "Prenos súboru výsledkov SCAP je neplatný alebo neúplný"
 
-#: ../common/rhnException.py:268
+#: ../common/rhnException.py:270
 msgid "Error composing directory path for detailed SCAP results"
 msgstr "Chyba pri vytváraní cesty adresára pre podrobné výsledky SCAP"
 
-#: ../common/rhnException.py:269
+#: ../common/rhnException.py:271
 msgid "Error composing file path for detailed SCAP results"
 msgstr "Chyba pri vytváraní cesty súboru pre podrobné výsledky SCAP"
 
-#: ../common/rhnException.py:270
+#: ../common/rhnException.py:272
 msgid "Invalid content encoding"
 msgstr "Neplatné kódovanie obsahu"
 
-#: ../common/rhnException.py:317
+#: ../common/rhnException.py:319
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -908,7 +908,7 @@ msgstr ""
 "     podrobnosti o tom, čo ste sa pokúsili urobiť, keď sa vyskytla táto\n"
 "     chyba, a podrobnosti o tom, ako tento problém reprodukovať.\n"
 
-#: ../common/rhnException.py:368
+#: ../common/rhnException.py:370
 #, python-format
 msgid ""
 "Error Message:\n"
@@ -917,38 +917,32 @@ msgstr ""
 "Chybová správa:\n"
 "    %s\n"
 
-#: ../common/rhnException.py:370
+#: ../common/rhnException.py:372
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr "Kód triedy chyby: %s\n"
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:375
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr "Informácia o triede chýb: %s\n"
 
-#: ../common/rhnException.py:375
+#: ../common/rhnException.py:377
 #, python-format
 msgid "Explanation: %s"
 msgstr "Vysvetlenie: %s"
 
-#: ../common/rhnTB.py:220
+#: ../common/rhnTB.py:221
 #, python-format
 msgid "ERROR: %s %s: %s"
 msgstr "CHYBA: %s %s: %s"
 
-#: ../common/rhnTB.py:221
+#: ../common/rhnTB.py:222
 #, python-format
 msgid "TRACEBACK: %s"
 msgstr "TRACEBACK: %s"
 
-#: ../satellite_tools/disk_dumper/iss.py:1634
-#: ../satellite_tools/disk_dumper/iss.py:1640
-#, python-format
-msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr "formát %s by mal byť aspoň RRRRMMDD.\n"
-
-#: ../satellite_tools/messages.py:28
+#: ../satellite_tools/messages.py:30
 #, python-format
 msgid ""
 "\n"
@@ -959,7 +953,7 @@ msgstr ""
 "CHYBA: vykonanie kroku %s. Chyba je:\n"
 "%s\n"
 
-#: ../satellite_tools/messages.py:35
+#: ../satellite_tools/messages.py:37
 #, python-format
 msgid ""
 "\n"
@@ -976,7 +970,7 @@ msgstr ""
 "       že ich máte všetky a potom iteratívne znovu pripojte a znovu\n"
 "       naplňte dočasné úložisko (%s).\n"
 
-#: ../satellite_tools/messages.py:45
+#: ../satellite_tools/messages.py:47
 #, python-format
 msgid ""
 "\n"
@@ -987,7 +981,7 @@ msgstr ""
 "CHYBA: pri synchronizácii informácií sa vyskytol problém.\n"
 "       Chybová správa: %s\n"
 
-#: ../satellite_tools/messages.py:52
+#: ../satellite_tools/messages.py:54
 #, python-format
 msgid ""
 "\n"
@@ -1002,7 +996,7 @@ msgstr ""
 "       základné sieťové pripojenie a/alebo rozlíšenie názvov a skúste znova.\n"
 "       Chybová správa: %s\n"
 
-#: ../satellite_tools/messages.py:61
+#: ../satellite_tools/messages.py:63
 #, python-format
 msgid ""
 "\n"
@@ -1019,7 +1013,7 @@ msgstr ""
 "       transakciu:\n"
 "       %s\n"
 
-#: ../satellite_tools/messages.py:71
+#: ../satellite_tools/messages.py:73
 #, python-format
 msgid ""
 "\n"
@@ -1032,120 +1026,124 @@ msgstr ""
 "Obráťte sa na svoj kontakt pre SUSE Multi-Linux Manager\n"
 "%s"
 
-#: ../satellite_tools/messages.py:77
+#: ../satellite_tools/messages.py:79
 #, python-format
 msgid "  ERROR: not enough free space (%s KB) on device."
 msgstr "  CHYBA: na zariadení nie je dostatok voľného miesta (%s KB)."
 
-#: ../satellite_tools/messages.py:79
+#: ../satellite_tools/messages.py:81
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr "    %3d/%s Stiahnutie úspešné: %s (%s bajtov)"
 
-#: ../satellite_tools/messages.py:80
+#: ../satellite_tools/messages.py:82
 #, python-format
 msgid "    Extinct package:  %s"
 msgstr "    Zaniknutý balík:  %s"
 
-#: ../satellite_tools/messages.py:81
+#: ../satellite_tools/messages.py:83
 #, python-format
 msgid "   Total size: %s"
 msgstr "   Celková veľkosť: %s"
 
-#: ../satellite_tools/messages.py:83
+#: ../satellite_tools/messages.py:85
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
 msgstr "      Stiahnutých %s z %s. Odhadovaný zostávajúci čas: %s"
 
-#: ../satellite_tools/messages.py:85
+#: ../satellite_tools/messages.py:87
 #, python-format
 msgid "    Fetch unsuccessful: %s"
 msgstr "    Stiahnutie neúspešné: %s"
 
-#: ../satellite_tools/messages.py:86
+#: ../satellite_tools/messages.py:88
 #, python-format
 msgid "   RPM fetch summary: %s"
 msgstr "   Zhrnutie stiahnutia RPM: %s"
 
-#: ../satellite_tools/messages.py:87
+#: ../satellite_tools/messages.py:89
 #, python-format
 msgid "       success: %d"
 msgstr "       úspech: %d"
 
-#: ../satellite_tools/messages.py:88
+#: ../satellite_tools/messages.py:90
 #, python-format
 msgid "       failed:  %d"
 msgstr "       neúspešné:  %d"
 
-#: ../satellite_tools/messages.py:89
+#: ../satellite_tools/messages.py:91
 #, python-format
 msgid "       extinct: %d"
 msgstr "       zaniknuté: %d"
 
-#: ../satellite_tools/messages.py:91
+#: ../satellite_tools/messages.py:93
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr "   Získavanie / analyzovanie metadát *relevantných* balíkov: %s (%s)"
 
-#: ../satellite_tools/messages.py:92
+#: ../satellite_tools/messages.py:94
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
 msgstr "   Získavanie / analyzovanie dát tlačových chýb: %s (%s)"
 
-#: ../satellite_tools/messages.py:93
+#: ../satellite_tools/messages.py:95
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
 msgstr "   Získavanie / analyzovanie dát kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:94
+#: ../satellite_tools/messages.py:96
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr "   Získavanie / analyzovanie súborov stromov kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:95
+#: ../satellite_tools/messages.py:97
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
 msgstr "   Importovanie metadát *relevantných* balíkov: %s (%s)"
 
-#: ../satellite_tools/messages.py:96
+#: ../satellite_tools/messages.py:98
 msgid "   * WARNING: this may be a slow process."
 msgstr "   * UPOZORNENIE: toto môže byť pomalý proces."
 
-#: ../satellite_tools/messages.py:97
+#: ../satellite_tools/messages.py:99
 msgid "Linking packages to channels"
 msgstr "Prepojenie balíkov ku kanálom"
 
-#: ../satellite_tools/messages.py:98
+#: ../satellite_tools/messages.py:100
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
 msgstr "   Importovanie *relevantných* tlačových chýb: %s (%s)"
 
-#: ../satellite_tools/messages.py:99
+#: ../satellite_tools/messages.py:101
 msgid "   No new kickstartable tree to import"
 msgstr "   Žiadny nový strom schopný kickstart na import"
 
-#: ../satellite_tools/messages.py:100
+#: ../satellite_tools/messages.py:102
 #, python-format
 msgid "Importing kickstartable trees (%d)"
 msgstr "Importovanie stromov schopných kickstart (%d)"
 
-#: ../satellite_tools/messages.py:101
+#: ../satellite_tools/messages.py:103
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "Importované stromy schopné kickstart (%d)"
 
-#: ../satellite_tools/reposync.py:148
+#: ../satellite_tools/reposync.py:150
 msgid "+++ sending log as an email +++"
 msgstr "+++ odosielanie záznamu ako e-mail +++"
 
-#: ../satellite_tools/reposync.py:151
+#: ../satellite_tools/reposync.py:153
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s sync. správa od %s"
 
-#: ../satellite_tools/reposync.py:161
+#: ../satellite_tools/reposync.py:163
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ požadovaný e-mail, ale nie je čo +++"
+
+#, python-format
+#~ msgid "format of %s should be at least YYYYMMDD.\n"
+#~ msgstr "formát %s by mal byť aspoň RRRRMMDD.\n"
 
 #~ msgid "ISS is disabled on this server."
 #~ msgstr "Na tomto serveri je ISS zakázané."

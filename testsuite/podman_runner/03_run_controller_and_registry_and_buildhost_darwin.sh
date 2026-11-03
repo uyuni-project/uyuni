@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 set -ex
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
@@ -33,6 +38,7 @@ export PROVIDER=podman
 export SERVER=server
 export HOSTNAME=controller
 export MINION=sle_minion
+export SSHMINION=opensusessh
 export RHLIKE_MINION=rhlike_minion
 export DEBLIKE_MINION=deblike_minion
 export BUILD_SOURCES="downloadcontent.opensuse.org"

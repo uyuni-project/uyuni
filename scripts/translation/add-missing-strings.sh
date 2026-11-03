@@ -1,5 +1,9 @@
 #! /bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 GIT_ROOT="$( git -c alias.a='!pwd' a )"
 GIT_ROOT_BRAND=$GIT_ROOT
 

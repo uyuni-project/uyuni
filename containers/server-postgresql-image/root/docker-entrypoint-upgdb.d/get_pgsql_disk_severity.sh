@@ -3,9 +3,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-# Set thresholds from env vars or defaults
-DB_CRIT=${DISKTHRESHOLD:-95}
-DB_WARN=${DISKCHECKALERT:-90}
+# The thresholds are not stored in the function: /usr/bin/diskcheck.sh reads them
+# from the environment of the PostgreSQL server at every call.
 
 . /usr/lib/uyuni-helpers.sh
 MANAGER_DB_NAME=$(get_manager_db_name) || exit 1
@@ -25,25 +24,18 @@ AS
 \$\$
 DECLARE
     raw_output text;
-    usage_pct integer;
 BEGIN
     CREATE TEMP TABLE IF NOT EXISTS tmp_sys_df (content text) ON COMMIT DROP;
     TRUNCATE tmp_sys_df;
 
-    COPY tmp_sys_df FROM PROGRAM 'df --output=pcent /var/lib/pgsql/data/ | tail -1';
+    COPY tmp_sys_df FROM PROGRAM '/usr/bin/diskcheck.sh >/dev/null 2>&1; echo \$?';
     SELECT content INTO raw_output FROM tmp_sys_df;
-    
-    usage_pct := trim(both ' %' from raw_output)::integer;
 
-    RETURN CASE
-        WHEN usage_pct >= $DB_CRIT THEN 3
-        WHEN usage_pct >= $DB_WARN THEN 2
-        ELSE 0
-    END;
-EXCEPTION 
-    WHEN OTHERS THEN 
+    RETURN trim(raw_output)::integer;
+EXCEPTION
+    WHEN OTHERS THEN
         RAISE WARNING 'Disk usage check failed. Error: % (SQLSTATE: %)', SQLERRM, SQLSTATE;
-        
+
         RETURN -1;
 END;
 \$\$ LANGUAGE plpgsql;

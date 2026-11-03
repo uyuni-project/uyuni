@@ -1,5 +1,5 @@
 # Copyright (c) 2023-2024 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # Motivated by bsc#1207532 - Internal Server Error editing cobbler profiles
 # This feature is split up into 2 sections: the first section uses the web UI,

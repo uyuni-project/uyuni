@@ -8,20 +8,20 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
 package com.suse.manager.webui.utils.gson;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * JSON representation of a server id with a list of states to be applied.
  */
-public class ServerApplyStatesJson {
+public class ServerApplyStatesJson extends ScheduledRequestJson {
 
     /** Server id */
     private long id;
@@ -31,8 +31,8 @@ public class ServerApplyStatesJson {
     /** List of states to be applied */
     private List<String> states;
 
-    /** The earliest execution date */
-    private Optional<LocalDateTime> earliest = Optional.empty();
+    /** Execute through transactional-update on transactional systems */
+    private boolean useTransactionalUpdate;
 
     /**
      * @return the server id
@@ -56,9 +56,9 @@ public class ServerApplyStatesJson {
     }
 
     /**
-     * @return the date of earliest execution
+     * @return true when transactional systems should execute through transactional-update
      */
-    public Optional<LocalDateTime> getEarliest() {
-        return earliest;
+    public boolean isUseTransactionalUpdate() {
+        return useTransactionalUpdate;
     }
 }

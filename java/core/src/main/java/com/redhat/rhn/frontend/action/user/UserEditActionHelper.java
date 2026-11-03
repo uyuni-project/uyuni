@@ -8,14 +8,14 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.user;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.validation.password.PasswordPolicyCheckFail;
 import com.redhat.rhn.common.util.validation.password.PasswordValidationUtils;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -103,18 +103,16 @@ public abstract class UserEditActionHelper extends RhnAction {
     }
 
     /**
-     * If pam is configured and the loggedInUser is an org_admin (and therefore
-     * the checkbox was displayed), we need to inspect the "usepam" field on the
-     * form and set the targetUser's pam auth attribute accordingly.
+     * If the loggedInUser is an org_admin (and therefore the checkbox was
+     * displayed), we need to inspect the "usepam" field on the form and set
+     * the targetUser's pam auth attribute accordingly.
      * @param loggedInUser The user who is currently logged in
      * @param targetUser The user that will be updated
      * @param form The form containing the attribute value to use
      */
     protected void updatePamAttribute(User loggedInUser, User targetUser,
             DynaActionForm form) {
-        String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
-        if (pamAuthService != null && !pamAuthService.trim().isEmpty() &&
-                loggedInUser.hasRole(RoleFactory.ORG_ADMIN)) {
+        if (loggedInUser.hasRole(RoleFactory.ORG_ADMIN)) {
             boolean usePam = form.get("usepam") != null && (Boolean) form.get("usepam");
             targetUser.setUsePamAuthentication(usePam);
         }

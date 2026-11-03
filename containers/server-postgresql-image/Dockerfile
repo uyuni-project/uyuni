@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #!BuildTag: uyuni/server-postgresql:latest
 #!BuildName: server-postgresql
 
@@ -24,7 +25,7 @@ LABEL org.opencontainers.image.description="${PRODUCT} PostgreSQL container imag
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.3.1
+LABEL org.opencontainers.image.version=5.3.2
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-postgresql:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

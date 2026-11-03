@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import fs from "node:fs";
 import { createRequire } from "node:module";
 import path, { dirname } from "node:path";

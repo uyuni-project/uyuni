@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # AGENTS.md
 
 Behavioral guidelines for the agent running in this project. Merged with project-specific instructions as needed.

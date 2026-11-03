@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -27,11 +29,14 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressStatus;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs.Info;
@@ -56,6 +61,7 @@ import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipalLookupService;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -132,7 +138,13 @@ public class MinionActionUtils {
              .isPresent()
         );
 
-        if (!actionIsRunning && !serverAction.isStatusQueued()) {
+        boolean actionIsWaitingForReboot = !serverAction.isStatusQueued() &&
+                TransactionalActionManager.findTransactionalActionHistory(serverAction.getServerId(), actionId)
+                        .filter(history -> ProgressStatus.COMPLETED.equals(history.getPrerequisiteStatus()))
+                        .map(history -> history.isWaitingForReboot())
+                        .orElse(false);
+
+        if (!actionIsRunning && !serverAction.isStatusQueued() && !actionIsWaitingForReboot) {
             String message = "No job return event was received.";
             serverAction.fail(message);
         }
@@ -233,22 +245,15 @@ public class MinionActionUtils {
         // Select only ServerActions that are for minions and where the Action
         // should already be executed or running
         List<ServerAction> serverActions =
-            ActionFactory.pendingMinionServerActions().stream().flatMap(a -> {
-                    if (a.getEarliestAction().toInstant()
+            ActionFactory.pendingMinionServerActions().stream()
+                    .filter(serverAction -> serverAction.getParentAction().getEarliestAction().toInstant()
                             .atZone(ZoneId.systemDefault())
-                            .isBefore(now.minusHours(1))) {
-                        return a.getServerActions()
-                                .stream()
-                                .filter(sa -> sa.getServer().asMinionServer().isPresent() &&
-                                        // Do not clean up SSH push tasks
-                                        sa.getServer().getContactMethod().getLabel()
-                                        .equals("default"));
-                    }
-                    else {
-                        return Stream.empty();
-                    }
-                }
-            ).toList();
+                            .isBefore(now.minusHours(1)))
+                    .filter(serverAction -> serverAction.getServer().asMinionServer().isPresent())
+                    // Do not clean up SSH push tasks
+                    .filter(serverAction -> serverAction.getServer().getContactMethod().getLabel()
+                            .equals("default"))
+                    .toList();
 
         List<String> minionIds = serverActions.stream().flatMap(sa ->
                 sa.getServer().asMinionServer()
@@ -300,7 +305,36 @@ public class MinionActionUtils {
     public static Date getScheduleDate(Optional<LocalDateTime> earliest) {
         ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
                 .orElse(TimeZone.getDefault()).toZoneId();
-        return Date.from(earliest.orElseGet(LocalDateTime::now).atZone(zoneId).toInstant());
+        return Date.from(earliest.map(t -> t.atZone(zoneId).toInstant())
+                                 .orElseGet(Instant::now));
+    }
+
+    /**
+     * Compute the schedule date based on a ScheduledRequestJson object.
+     *
+     * @param request the scheduled request json, may be <code>null</code>
+     * @return the date to run the action
+     */
+    public static Date getScheduleDate(ScheduledRequestJson request) {
+        if (request != null) {
+            return getScheduleDate(request.getEarliest(), request.getActionDescription().orElse(null));
+        }
+        return getScheduleDate(Optional.empty());
+    }
+
+    /**
+     * Compute the schedule date and register action description in Context
+     *
+     * @param earliest the earliest date of execution
+     * @param actionDescription the action description string, may be <code>null</code>
+     * @return the date to run the action
+     */
+    public static Date getScheduleDate(Optional<LocalDateTime> earliest, String actionDescription) {
+        if (actionDescription != null && !actionDescription.isBlank()) {
+            LOG.debug("Setting actionDescription in Context: {}", actionDescription);
+            Context.getCurrentContext().setActionDescription(actionDescription);
+        }
+        return getScheduleDate(earliest);
     }
 
     /**

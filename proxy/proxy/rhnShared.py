@@ -10,6 +10,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -25,7 +27,7 @@ except ImportError:
 import socket
 import sys
 
-# global imports
+# these are global imports
 from rhn import connections
 from rhn.SSL import TimeoutException
 from rhn.SmartIO import SmartIO
@@ -184,10 +186,20 @@ class SharedHandler:
         log_debug(3, "HTTP proxy password:", "<password>")
         log_debug(3, "CA cert:", self.caChain)
 
-        try:
-            self.responseContext.getConnection().connect()
-        except socket.error as e:
-            log_error("Error opening connection", self.rhnParent, e)
+        last_error = None
+        for attempt in range(3):
+            if attempt > 0:
+                self.responseContext.setConnection(self._create_connection())
+            conn = self.responseContext.getConnection()
+            conn.connect_timeout = 10
+            try:
+                conn.connect()
+                last_error = None
+                break
+            except socket.error as e:
+                last_error = e
+        if last_error is not None:
+            log_error("Error opening connection", self.rhnParent, last_error)
             Traceback(mail=0)
             raise_with_tb(
                 rhnFault(

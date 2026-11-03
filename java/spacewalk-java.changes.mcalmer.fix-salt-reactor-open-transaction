@@ -1,0 +1,2 @@
+- Commit and close the database transaction after connecting to
+  the Salt event bus to not block database maintenance

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Insert the endpoint
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.listMigrationTargetsWithChannels', '/manager/api/system/listMigrationTargetsWithChannels', 'GET', 'A', True)

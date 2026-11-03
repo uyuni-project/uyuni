@@ -7,6 +7,8 @@
   ~ FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
   ~ along with this software; if not, see
   ~ http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+  ~
+  ~ SPDX-License-Identifier: GPL-2.0-only
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -15,12 +17,12 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>uyuni-java-parent</artifactId>
-        <version>5.3.1</version>
+        <version>5.3.2</version>
         <relativePath>../microservices/uyuni-java-parent</relativePath>
     </parent>
 
     <artifactId>spacewalk-java</artifactId>
-    <version>5.3.1</version>
+    <version>5.3.3</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -173,7 +175,7 @@
             <dependency>
                 <groupId>org.uyuni-project</groupId>
                 <artifactId>branding</artifactId>
-                <version>5.3.1</version>
+                <version>5.3.2</version>
             </dependency>
 
             <dependency>
@@ -395,17 +397,17 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>2.18.9</version>
+                <version>2.18.11</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
-                <version>2.18.9</version>
+                <version>2.18.11</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>2.18.9</version>
+                <version>2.18.11</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.angus</groupId>

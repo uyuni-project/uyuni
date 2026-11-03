@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -89,6 +91,7 @@ public enum ActionTypeEnum {
     TYPE_ROLLBACK_ROLLBACK("rollback.rollback", RollbackAction.class),
     TYPE_SCAP_XCCDF_EVAL("scap.xccdf_eval", ScapAction.class),
     TYPE_SCRIPT_RUN("script.run", ScriptRunAction.class),
+    TYPE_SNAPSHOTS_REFRESH_LIST("snapshots.refresh_list", SnapshotRefreshAction.class),
     TYPE_SUBSCRIBE_CHANNELS("channels.subscribe", SubscribeChannelsAction.class),
     TYPE_SUPPORTDATA_GET("supportdata.get", SupportDataAction.class),
     TYPE_UP2DATE_CONFIG_GET("up2date_config.get", Up2DateConfigGetAction.class),

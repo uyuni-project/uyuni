@@ -7,6 +7,8 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
  */
 package com.suse.manager.webui.controllers;
 
@@ -204,8 +206,8 @@ public class DownloadController {
     }
 
     private Object downloadMetadata(Request request, Response response, String channelLabel, String filename) {
-        String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/var/cache");
-        String prefix = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
+        String mountPoint = ConfigDefaults.get().getRepomdCacheMountPoint();
+        String prefix = ConfigDefaults.REPOMD_PATH_PREFIX;
 
         File file = Path.of(mountPoint, prefix, channelLabel, filename).toAbsolutePath().toFile();
 

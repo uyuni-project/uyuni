@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -386,9 +388,6 @@ def parse_line(line):
         converTable = {
             "proxy.http_proxy_username": str,
             "proxy.http_proxy_password": str,
-            "server.satellite.http_proxy_username": str,
-            "server.satellite.http_proxy_password": str,
-            "server.satellite.rhn_parent": str,
             "db_name": str,
             "db_user": str,
             "db_password": str,

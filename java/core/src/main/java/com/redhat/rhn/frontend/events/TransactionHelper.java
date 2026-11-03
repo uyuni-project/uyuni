@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -75,6 +77,7 @@ public abstract class TransactionHelper {
 
     private static Optional<Exception> handleTransactions(boolean commit) {
         boolean committed = false;
+        Exception applicationException = null;
 
         try {
             if (commit) {
@@ -88,7 +91,7 @@ public abstract class TransactionHelper {
         }
         catch (PersistenceException e) {
             log.error("Error while committing a transaction. Rolling back", e);
-            return of(e);
+            applicationException = e;
         }
         finally {
             try {
@@ -101,7 +104,7 @@ public abstract class TransactionHelper {
                     }
                     catch (PersistenceException e) {
                         log.error("Additional error during rollback", e);
-                        return of(e);
+                        applicationException = e;
                     }
                 }
             }
@@ -110,6 +113,6 @@ public abstract class TransactionHelper {
                 HibernateFactory.closeSession();
             }
         }
-        return empty();
+        return Optional.ofNullable(applicationException);
     }
 }

@@ -1,0 +1,1 @@
+- Do not set `pam_auth_service` in `rhn.conf` on container start

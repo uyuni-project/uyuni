@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
   SELECT 'com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleSupportDataUpload', '/manager/api/system/scheduleSupportDataUpload', 'POST', 'A', True
    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/system/scheduleSupportDataUpload' AND http_method = 'POST');

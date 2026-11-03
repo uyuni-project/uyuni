@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnPackageProvider (id, name)
     (select sequence_nextval('rhn_package_provider_id_seq'), 'Rocky Linux' from dual
     where not exists (select 1 from rhnPackageProvider where name = 'Rocky Linux'));

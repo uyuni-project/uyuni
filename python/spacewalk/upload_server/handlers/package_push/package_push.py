@@ -12,6 +12,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -22,10 +24,9 @@ import os
 import sys
 from rhn import rpclib
 
-from spacewalk.common import apache, rhnFlags
-from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common import apache
+from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
-from spacewalk.common.rhnException import rhnFault
 from spacewalk.server.importlib.importLib import InvalidArchError
 from spacewalk.server import rhnPackageUpload, rhnSQL, basePackageUpload
 
@@ -59,19 +60,6 @@ class PackagePush(basePackageUpload.BasePackageUpload):
 
         if ret != apache.OK:
             return ret
-
-        if CFG.SEND_MESSAGE_TO_ALL:
-            rhnSQL.closeDB()
-            log_debug(1, "send_message_to_all is set")
-
-            rhnFlags.set("apache-return-code", apache.HTTP_NOT_FOUND)
-            try:
-                # pylint: disable-next=unspecified-encoding
-                outage_message = open(CFG.MESSAGE_TO_ALL).read()
-            except IOError:
-                log_error("Missing outage message file")
-                outage_message = "Outage mode"
-            raise rhnFault(20001, outage_message, explain=0)
 
         # Init the database connection
         rhnSQL.initDB()

@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/hub/ping', 'POST', 'W', False)
@@ -2205,25 +2207,10 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/kickstart/cobbler/CobblerSnippetDelete.do', 'POST', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('', '/systems/ssm/audit/ScheduleXccdf.do', 'GET', 'W', True)
-    ON CONFLICT (endpoint, http_method) DO NOTHING;
-INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('', '/systems/ssm/audit/ScheduleXccdf.do', 'POST', 'W', True)
-    ON CONFLICT (endpoint, http_method) DO NOTHING;
-INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('', '/systems/ssm/audit/ScheduleXccdfConfirm.do', 'POST', 'W', True)
-    ON CONFLICT (endpoint, http_method) DO NOTHING;
-INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/systems/details/audit/XccdfDeleteConfirm.do', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/systems/details/audit/XccdfDeleteConfirm.do', 'POST', 'W', True)
-    ON CONFLICT (endpoint, http_method) DO NOTHING;
-INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('', '/systems/details/audit/ScheduleXccdf.do', 'GET', 'W', True)
-    ON CONFLICT (endpoint, http_method) DO NOTHING;
-INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('', '/systems/details/audit/ScheduleXccdf.do', 'POST', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/systems/ssm/coco/settings', 'GET', 'W', True)
@@ -2476,6 +2463,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/systems/details/history/snapshots/TagsDelete.do', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/systems/details/snapshots', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/systems/WorkWithGroup.do', 'GET', 'W', True)
@@ -5567,6 +5557,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.getScriptResults', '/manager/api/system/getScriptResults', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.getSnapshotInfo', '/manager/api/system/getSnapshotInfo', 'GET', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.getSubscribedBaseChannel', '/manager/api/system/getSubscribedBaseChannel', 'GET', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -5747,6 +5740,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleApplyStates', '/manager/api/system/scheduleApplyStates', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleApplyStatesWithTransactionalUpdate', '/manager/api/system/scheduleApplyStatesWithTransactionalUpdate', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleCertificateUpdate', '/manager/api/system/scheduleCertificateUpdate', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -5793,6 +5789,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleScriptRun', '/manager/api/system/scheduleScriptRun', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleScriptRunWithTransactionalUpdate', '/manager/api/system/scheduleScriptRunWithTransactionalUpdate', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleSnapshotRefresh', '/manager/api/system/scheduleSnapshotRefresh', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleSupportDataUpload', '/manager/api/system/scheduleSupportDataUpload', 'POST', 'A', True)
@@ -5880,9 +5882,6 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.listXccdfScans', '/manager/api/system/scap/listXccdfScans', 'GET', 'A', True)
-    ON CONFLICT (endpoint, http_method) DO NOTHING;
-INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.scheduleXccdfScan', '/manager/api/system/scap/scheduleXccdfScan', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.search.SystemSearchHandler.deviceDescription', '/manager/api/system/search/deviceDescription', 'GET', 'A', True)
@@ -6091,8 +6090,8 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.listScapContent', '/manager/api/system/scap/listScapContent', 'GET', 'A', True),
     ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.listPolicies', '/manager/api/system/scap/listPolicies', 'GET', 'A', True),
     ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.listTailoringFiles', '/manager/api/system/scap/listTailoringFiles', 'GET', 'A', True),
-    ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.scheduleBetaXccdfScanCustom', '/manager/api/system/scap/scheduleBetaXccdfScanCustom', 'POST', 'A', True),
-    ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.scheduleBetaXccdfScanWithPolicy', '/manager/api/system/scap/scheduleBetaXccdfScanWithPolicy', 'POST', 'A', True),
+    ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.scheduleXccdfScanWithPolicy', '/manager/api/system/scap/scheduleXccdfScanWithPolicy', 'POST', 'A', True),
+    ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.scheduleXccdfScanCustom', '/manager/api/system/scap/scheduleXccdfScanCustom', 'POST', 'A', True),
     ('', '/manager/api/recurringactions/policies', 'GET', 'W', True),
     ('', '/manager/audit/scap/content', 'GET', 'W', True),
     ('', '/manager/audit/scap/content/create', 'GET', 'W', True),

@@ -1,0 +1,1 @@
+- Fix proxy 403 errors under mass patching (bsc#1277719)

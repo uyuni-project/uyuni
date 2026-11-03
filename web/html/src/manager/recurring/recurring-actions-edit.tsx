@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { Component } from "react";
 
 import _isEqual from "lodash/isEqual";
@@ -139,7 +145,7 @@ class RecurringActionsEdit extends Component<Props, State> {
 
   getTypes = () => {
     let types = ["Highstate", "Custom state"];
-    if (window.betaEnabled && window.entityType === "MINION") {
+    if (window.entityType === "MINION") {
       types.push("Scap Policy");
     }
     if (window.isControlNode) {
@@ -165,9 +171,12 @@ class RecurringActionsEdit extends Component<Props, State> {
     });
   };
 
-  onClickExecute = (items) => {
+  onClickExecute = (items, useTransactionalUpdate) => {
     return this.executeCustom({
-      details: this.state.details,
+      details: {
+        ...this.state.details,
+        useTransactionalUpdate,
+      },
       memberIds: items,
     });
   };
@@ -232,6 +241,19 @@ class RecurringActionsEdit extends Component<Props, State> {
     this.setState({ details });
   };
 
+  toggleUseTransactionalUpdate = () => {
+    this.setState((state) => ({
+      details: {
+        ...state.details,
+        useTransactionalUpdate: !state.details.useTransactionalUpdate,
+      },
+    }));
+  };
+
+  hasTransactionalSystems = () => {
+    return Boolean(window.hasTransactionalSystems);
+  };
+
   render() {
     if (!this.state.details.type && this.isEdit()) {
       return false;
@@ -244,6 +266,14 @@ class RecurringActionsEdit extends Component<Props, State> {
           className="btn"
           handler={this.toggleTestState.bind(this)}
         />
+        {this.state.actionTypeDescription === "Custom state" && this.hasTransactionalSystems() && (
+          <Toggler
+            text={t("Use transactional update")}
+            value={this.state.details.useTransactionalUpdate}
+            className="btn"
+            handler={this.toggleUseTransactionalUpdate.bind(this)}
+          />
+        )}
         <AsyncButton
           action={this.onEdit}
           defaultType="btn-primary"
@@ -305,6 +335,7 @@ class RecurringActionsEdit extends Component<Props, State> {
               matchUrl={this.matchUrl}
               saveRequest={this.onSaveStates}
               applyRequest={this.onClickExecute}
+              showTransactionalUpdate={this.hasTransactionalSystems()}
             />
           </span>
         )}

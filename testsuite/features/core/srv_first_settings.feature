@@ -1,5 +1,5 @@
 # Copyright (c) 2017-2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in:
 # Almost every feature if the "admin" user fails to be created.
@@ -25,6 +25,7 @@ Feature: Very first settings
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  @long_running
   Scenario: Wait for refresh of list of products to finish
     When I wait until mgr-sync refresh is finished
 

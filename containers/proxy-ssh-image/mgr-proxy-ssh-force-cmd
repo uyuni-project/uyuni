@@ -1,8 +1,13 @@
 #!/bin/bash -fue
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 set -- $SSH_ORIGINAL_COMMAND
 cmd="$1"
 shift
 case "$cmd" in
-  '/usr/bin/scp'|'/usr/bin/ssh'|'cat') exec "$cmd" "$@" ;;
-  *) echo "ERROR: command not allowed" ;;
+  '/usr/bin/scp'|'/usr/bin/ssh'|'cat'|'/usr/bin/ssh-keygen') exec "$cmd" "$@" ;;
+  *) echo "ERROR: command not allowed" >&2; exit 1 ;;
 esac

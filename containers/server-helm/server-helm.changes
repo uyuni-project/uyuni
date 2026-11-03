@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Oct 08 01:13:06 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2
+  * Automate schema and readme generation from the values file
+  * Remove the postgresql TCP route (bsc#1270038)
+  * Add a value to change pods CIDR in the database
+  * CVE-2026-71400: Remove cobbler_api endpoint from public interface
+    (bsc#1274613, bsc#1274775)
+
+-------------------------------------------------------------------
 Wed Aug 05 13:30:17 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1

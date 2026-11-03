@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package mgr-push
 #
@@ -35,7 +39,7 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 Name:           mgr-push
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Package uploader for %{productprettyname}
 License:        GPL-2.0-only

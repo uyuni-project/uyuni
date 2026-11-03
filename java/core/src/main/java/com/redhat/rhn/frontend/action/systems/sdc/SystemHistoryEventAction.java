@@ -9,6 +9,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -30,6 +32,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.suse.manager.action.TransactionalActionManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -102,12 +106,20 @@ public class SystemHistoryEventAction extends RhnAction {
         request.setAttribute("earliestaction", af.getEarliestDate());
         request.setAttribute("actionnotes", af.getDetails(server,
                 requestContext.getCurrentUser()));
+        request.setAttribute("actionDescription", action.getActionDescription());
         request.setAttribute("failed",
                 serverAction.isStatusFailed());
         request.setAttribute("pickedup",
                 serverAction.isStatusPickedUp());
         request.setAttribute("completed",
                 serverAction.isStatusCompleted());
+        TransactionalActionManager.findTransactionalActionHistory(server.getId(), action.getId())
+                .ifPresent(history -> {
+                    request.setAttribute("transactionalProgressEntries",
+                            TransactionalActionManager.getProgressEntries(action, history));
+                    TransactionalActionManager.getPrerequisiteResult(history)
+                            .ifPresent(result -> request.setAttribute("transactionalPrerequisiteResult", result));
+                });
 
         boolean typeDistUpgradeDryRun = action.setRequestAttributeDryRun(request);
 

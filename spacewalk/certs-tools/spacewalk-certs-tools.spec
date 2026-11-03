@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package spacewalk-certs-tools
 #
@@ -32,7 +36,7 @@
 %global __python %{_bindir}/python3
 
 Name:           spacewalk-certs-tools
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        %{productprettyname} SSL Key/Cert Tool
 License:        GPL-2.0-only

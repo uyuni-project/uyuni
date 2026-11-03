@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -882,7 +884,7 @@ class GenericPackageImport(Import):
         for type, chksum in list(package["checksums"].items()):
             checksumTuple = (type, chksum)
             # pylint: disable-next=unnecessary-negation
-            if not checksumTuple in self.checksums:
+            if checksumTuple not in self.checksums:
                 self.checksums[checksumTuple] = None
 
     def _postprocessPackageNEVRA(self, package):

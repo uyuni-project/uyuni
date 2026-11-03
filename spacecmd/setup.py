@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # coding: utf-8
 """
 Setup file.
@@ -11,7 +16,7 @@ def get_version_changelog():
     Get a version from the current changelog.
     """
     changelog = None
-    version = "5.3.1"
+    version = "5.3.2"
     for fname in os.listdir(os.path.dirname(os.path.abspath(__file__))):
         if fname.endswith(".changes"):
             changelog = fname

@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -77,7 +79,7 @@ public class SystemTimeMessageTag extends TagSupport {
         Long days = (((checkInAgo / 1000) / 60) / 60) / 24;
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         boolean awol = days.intValue() >
-                factory.getIntegerConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue();
+                factory.getInteger(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD);
 
         retval.append("<table border=\"0\" cellspacing=\"0\" cellpadding=\"6\">");
 

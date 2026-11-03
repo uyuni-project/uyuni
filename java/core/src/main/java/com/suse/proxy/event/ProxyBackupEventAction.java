@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -116,7 +118,7 @@ public class ProxyBackupEventAction implements MessageAction {
         try {
             config = ProxyConfigUtils.loadFilesToProxyConfig(configPath, httpdPath, sshPath);
             if (config.getEmail() == null || config.getEmail().isEmpty()) {
-                config.setEmail(Config.get().getString("web.traceback_mail"));
+                config.setEmail(Config.get().getString("traceback_mail"));
             }
             config.setProxyPort(8022);
             configPillar = ProxyConfigUtils.proxyConfigToPillar(config).setMinion(proxy);

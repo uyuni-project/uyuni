@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Oct 07 18:31:36 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Switch default pom file to SLE 16 and Leap 16 version
+
+-------------------------------------------------------------------
 Wed Aug 05 13:49:30 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

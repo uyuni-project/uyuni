@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -47,6 +49,7 @@ import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -101,8 +104,18 @@ public class RecurringActionController {
 
     private static final Logger LOG = LogManager.getLogger(RecurringActionController.class);
     private static final Gson GSON = new GsonBuilder().create();
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     private RecurringActionController() { }
+
+    /**
+     * Set taskomatic API instance.
+     *
+     * @param taskomaticApiIn taskomatic API instance
+     */
+    public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        taskomaticApi = taskomaticApiIn;
+    }
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
@@ -307,6 +320,8 @@ public class RecurringActionController {
         }
         else if (RecurringActionType.ActionType.CUSTOMSTATE.equals(action.getActionType())) {
             dto.setTest(((RecurringState) action.getRecurringActionType()).isTestMode());
+            dto.setUseTransactionalUpdate(
+                    ((RecurringState) action.getRecurringActionType()).isUseTransactionalUpdate());
             dto.setStates(StateConfigJson.listOrderedStates(
                     ((RecurringState) action.getRecurringActionType()).getStateConfig()));
         }
@@ -462,15 +477,20 @@ public class RecurringActionController {
                 .map(RecurringStateConfig::getStateName)
                 .collect(Collectors.toList());
 
+        if (json.getScheduleName() != null && !json.getScheduleName().isBlank()) {
+            Context.getCurrentContext().setActionDescription("Recurring Action: " + json.getScheduleName());
+        }
         try {
             Action a = ActionManager.scheduleApplyStates(user,
                     minionIds, mods,
                     Optional.empty(),
                     new Date(),
                     Optional.of(json.getDetails().isTest()),
-                    true);
+                    true,
+                    false,
+                    json.getDetails().isUseTransactionalUpdate());
             ActionFactory.save(a);
-            new TaskomaticApi().scheduleActionExecution(a);
+            taskomaticApi.scheduleActionExecution(a);
         }
         catch (TaskomaticApiException e) {
             LOG.error("Rolling back transaction because of Taskomatic exception", e);
@@ -481,6 +501,9 @@ public class RecurringActionController {
         catch (NotInMaintenanceModeException e) {
             String errMsg = LocalizationService.getInstance().getMessage("recurring_action.not_in_maint_mode");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(errMsg)));
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
         return success(response);
     }
@@ -571,6 +594,7 @@ public class RecurringActionController {
         }
         else if (action.getRecurringActionType() instanceof RecurringState stateType) {
             stateType.setTestMode(details.isTest());
+            stateType.setUseTransactionalUpdate(details.isUseTransactionalUpdate());
             if (json.getRecurringActionId() == null ||
                     (json.getRecurringActionId() != null && details.getStates() != null)) {
                 Set<RecurringStateConfig> newConfig = getStateConfigFromJson(details.getStates(), action.getCreator());

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { Dialog } from "components/dialog/LegacyDialog";
 import { ModalLink } from "components/dialog/ModalLink";
 

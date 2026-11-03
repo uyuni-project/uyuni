@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -19,6 +21,8 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -76,6 +80,16 @@ public class RhnTagFunctions {
      */
     public static String getConfig(String confIn) {
         return Config.get().getString(confIn);
+    }
+
+    /**
+     * Fetch a value from the rhnConfiguration table, or its default value when no value is set
+     *
+     * @param keyIn name of a {@link RhnConfiguration.KEYS} entry
+     * @return String containing the value, or NULL when empty
+     */
+    public static String getDbConfig(String keyIn) {
+        return RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.valueOf(keyIn));
     }
 
     /**

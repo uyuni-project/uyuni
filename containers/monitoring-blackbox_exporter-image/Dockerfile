@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 
 #!BuildTag: uyuni/monitoring-blackbox_exporter:latest uyuni/monitoring-blackbox_exporter:%%blackbox_exporter_patch_version%%
 #!BuildName: monitoring-blackbox_exporter
@@ -25,7 +26,7 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 LABEL org.opencontainers.image.title="${PRODUCT} Blackbox Exporter"
 LABEL org.opencontainers.image.name=monitoring-blackbox_exporter-image
 LABEL org.opencontainers.image.description="Blackbox Exporter container image for ${PRODUCT}"
-LABEL org.opencontainers.image.version=5.3.1
+LABEL org.opencontainers.image.version=5.3.2
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"

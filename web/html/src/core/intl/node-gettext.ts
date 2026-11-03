@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 /**
  * This module is a basic placeholder stopfix for CVE-2024-21528 in `node-gettext`.
  * There is currently no patched version available, once a fix is published, please update `node-gettext` and remove

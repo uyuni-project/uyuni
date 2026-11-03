@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
@@ -28,6 +35,12 @@
         <td><bean:message key="actiondetails.jsp.notes"/>:</td>
         <td>${requestScope.actionnotes}</td>
       </tr>
+      <c:if test="${not empty requestScope.actionDescription}">
+      <tr>
+        <td><bean:message key="actions.jsp.action_description"/>:</td>
+        <td class="action-description-col"><c:out value="${requestScope.actionDescription}"/></td>
+      </tr>
+      </c:if>
     </tbody>
   </table>
 

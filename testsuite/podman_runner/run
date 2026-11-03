@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 export UYUNI_PROJECT=uyuni-project
 export UYUNI_VERSION=master
 export NO_AUTH_REGISTRY=noauthregistry.lab

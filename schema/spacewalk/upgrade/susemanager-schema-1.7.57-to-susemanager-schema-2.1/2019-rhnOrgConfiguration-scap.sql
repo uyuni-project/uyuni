@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 alter table rhnOrgConfiguration
   add scapfile_upload_enabled
       char(1) default ('N') not null

@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 # logrotation file for Spacewalk Server
 #
 
@@ -9,16 +14,6 @@
     missingok
     size 10M
 #LOGROTATE-3.8#    su root @HTTPD_GROUP@
-}
-
-/var/log/rhn/rhn_server_satellite.log {
-    rotate 5
-    copytruncate
-    compress
-    notifempty
-    missingok
-    size 10M
-    su @HTTPD_USER@ @HTTPD_GROUP@
 }
 
 /var/log/rhn/reposync.log {

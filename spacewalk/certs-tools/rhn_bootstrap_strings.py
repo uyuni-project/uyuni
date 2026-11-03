@@ -10,6 +10,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -1002,7 +1004,7 @@ master: $HOSTNAME
 server_id_use_crc: adler32
 enable_legacy_startup_events: False
 enable_fqdns_grains: False
-start_event_grains: [machine_id, saltboot_initrd, susemanager]
+start_event_grains: [machine_id, saltboot_initrd, susemanager, boot_time]
 mine_enabled: False
 EOF
     cat <<EOF >> "$SUSEMANAGER_MASTER_FILE"

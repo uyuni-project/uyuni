@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # Development labels
 java:
 - changed-files:
@@ -22,12 +26,6 @@ cobbler:
   - any-glob-to-any-file:
     - java/core/src/main/java/org/cobbler/*
     - java/core/src/main/java/org/cobbler/**/*
-
-documentation:
-- changed-files:
-  - any-glob-to-any-file:
-    - documentation/*
-    - documentation/**/*
 
 proxy:
 - changed-files:

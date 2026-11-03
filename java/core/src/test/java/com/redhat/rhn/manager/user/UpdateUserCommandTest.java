@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -20,9 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
@@ -49,8 +48,7 @@ public class UpdateUserCommandTest extends BaseTestCase {
 
     @Test
     public void testLongNames() {
-        int emailLength = UserDefaults.get().getMaxEmailLength();
-        Config.get().setString(UserDefaults.MAX_EMAIL_LENGTH, String.valueOf(5));
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.USER_EMAIL_LENGTH_MAX, 5);
 
 
         String invalidPassword = "password";
@@ -61,8 +59,6 @@ public class UpdateUserCommandTest extends BaseTestCase {
         assertCommandThrows(IllegalArgumentException.class, command);
         command.setPassword(invalidPassword);
         assertCommandThrows(IllegalArgumentException.class, command);
-        Config.get().setString(UserDefaults.MAX_EMAIL_LENGTH, String.valueOf(emailLength));
-
     }
 
     @Test
@@ -134,11 +130,11 @@ public class UpdateUserCommandTest extends BaseTestCase {
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         // = minlen
         assertPassword(StringUtils.repeat(
-                "a", factory.getIntegerConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).getValue()), command
+                "a", factory.getInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN)), command
         );
         // = maxlen
         assertPassword(StringUtils.repeat(
-                "a", factory.getIntegerConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX).getValue()), command
+                "a", factory.getInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX)), command
         );
 
         // random string
@@ -172,13 +168,7 @@ public class UpdateUserCommandTest extends BaseTestCase {
         cmd.setPassword(password);
         User user = cmd.updateUser();
         assertNotNull(user);
-
-        // can't do this if we've encrypted the passwords
-        if (!Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS)) {
-            String savedPassword = user.getPassword();
-            user.setPassword(password);
-            assertEquals(savedPassword, user.getPassword());
-        }
+        assertTrue(user.authenticate(password));
     }
 
     private void assertEmail(String email, UpdateUserCommand cmd) {

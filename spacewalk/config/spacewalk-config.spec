@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package spacewalk-config
 #
@@ -32,7 +36,7 @@
 %global prepdir %{_var}/lib/rhn/rhn-satellite-prep
 
 Name:           spacewalk-config
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        %{productprettyname} Configuration
 License:        GPL-2.0-only

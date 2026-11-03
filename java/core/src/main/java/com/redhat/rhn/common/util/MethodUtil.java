@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -38,10 +40,29 @@ public class MethodUtil {
 
     private static Logger log = LogManager.getLogger(MethodUtil.class);
 
+    // Class.getMethods() copies all Method objects on every call, cache the result per class
+    private static final ClassValue<Method[]> PUBLIC_METHODS = new ClassValue<>() {
+        @Override
+        protected Method[] computeValue(Class<?> type) {
+            return type.getMethods();
+        }
+    };
+
     /**
      * Private constructore
      */
     private MethodUtil() {
+    }
+
+    /**
+     * Returns the public methods of the given class like {@link Class#getMethods()}, but
+     * cached per class. The returned array is shared and must not be modified.
+     *
+     * @param clazz the class
+     * @return the public methods of the class
+     */
+    public static Method[] getPublicMethods(Class<?> clazz) {
+        return PUBLIC_METHODS.get(clazz);
     }
 
     /* This is insanity itself, but the reflection APIs ignore inheritance.
@@ -116,7 +137,7 @@ public class MethodUtil {
         Class<?> myClass = o.getClass();
         Method[] methods;
         try {
-            methods = myClass.getMethods();
+            methods = getPublicMethods(myClass);
         }
         catch (SecurityException e) {
             // This should _never_ happen, because the Handler classes must

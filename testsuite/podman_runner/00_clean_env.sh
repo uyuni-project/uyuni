@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 set -x
 
 if [[ "$(uname)" == "Darwin" ]]; then
@@ -25,7 +30,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
   podman machine rm --force ||:
 else
   echo "Killing old containers"
-  containers="authregistry.lab noauthregistry.lab buildhost deblike_minion rhlike_minion sle_minion server controller uyuni-db"  # opensusessh --- IGNORE ---
+  containers="authregistry.lab noauthregistry.lab buildhost deblike_minion rhlike_minion opensusessh sle_minion server controller uyuni-db"
   for i in ${containers};do
       $PODMAN_CMD kill ${i}
   done

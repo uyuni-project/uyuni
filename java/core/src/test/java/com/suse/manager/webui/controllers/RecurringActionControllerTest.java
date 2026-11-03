@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -18,9 +20,12 @@ package com.suse.manager.webui.controllers;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
@@ -43,6 +48,7 @@ import com.google.gson.GsonBuilder;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -85,11 +91,18 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         // mocking
         taskomaticMock = context().mock(TaskomaticApi.class);
         RecurringActionManager.setTaskomaticApi(taskomaticMock);
+        RecurringActionController.setTaskomaticApi(taskomaticMock);
 
         context().checking(new Expectations() { {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
             allowing(taskomaticMock).unscheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
+            allowing(taskomaticMock).scheduleActionExecution(with(any(ApplyStatesAction.class)));
         } });
+    }
+
+    @AfterEach
+    public void tearDown() {
+        RecurringActionController.setTaskomaticApi(new TaskomaticApi());
     }
 
     @Test
@@ -151,6 +164,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         assertTrue(states.contains("util.syncgrains"));
         assertTrue(states.contains("util.syncmodules"));
         assertTrue(states.contains("uptodate"));
+        assertTrue(states.contains("formulas"));
     }
 
     @Test
@@ -218,6 +232,83 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         catch (HaltException e) {
             assertEquals(400, e.statusCode());
         }
+    }
+
+    @Test
+    public void testSaveFormulasInternalStatePreservesTransactionalUpdate() throws Exception {
+        String actionName = "minion-custom-state-formulas";
+        createMinionCustomStateAction(minionServer.getId(), actionName, "formulas");
+
+        var action = listRecurringActions("MINION", minionServer.getId()).get(0);
+        var details = getDetails(action);
+
+        assertFalse(details.isUseTransactionalUpdate());
+        assertEquals(1, details.getStates().size());
+        assertTrue(details.getStates().stream().anyMatch(state -> "formulas".equals(state.getName())));
+    }
+
+    @Test
+    public void testExecuteCustomFormulasInternalStatePreservesTransactionalUpdate()
+            throws UnsupportedEncodingException {
+        String actionJsonString = "{" +
+                "'scheduleName': 'My Recurring Schedule'," +
+                "'memberIds': [" + minionServer.getId() + "]," +
+                "'details': {" +
+                    "'states': [" +
+                        "{ 'type': 'internal_state', 'name': 'formulas', 'position': 0 }" +
+                    "]," +
+                    "'type': 'hourly'," +
+                    "'test': false," +
+                    "'useTransactionalUpdate': false," +
+                    "'cronTimes': " +
+                    "  {'minute': '0'," +
+                    "   'hour': '0'," +
+                    "   'dayOfWeek': '0'," +
+                    "   'dayOfMonth': '0'" +
+                    "  }" +
+                "  }" +
+                "}";
+        var request = getPostRequestWithCsrfAndBody("/manager/api/recurringactions/custom/execute",
+                actionJsonString);
+
+        RecurringActionController.executeCustom(request, response, user);
+
+        var action = latestApplyStatesActionForMinion();
+
+        assertEquals(List.of("formulas"), action.getDetails().getMods());
+        assertFalse(action.getDetails().isUseTransactionalUpdate());
+        assertEquals("Recurring Action: My Recurring Schedule", action.getActionDescription());
+    }
+
+    @Test
+    public void testExecuteCustomFormulasInternalStateCanBeCombined() throws UnsupportedEncodingException {
+        String actionJsonString = "{" +
+                "'memberIds': [" + minionServer.getId() + "]," +
+                "'details': {" +
+                    "'states': [" +
+                        "{ 'type': 'internal_state', 'name': 'formulas', 'position': 0 }," +
+                        "{ 'type': 'internal_state', 'name': 'channels', 'position': 1 }" +
+                    "]," +
+                    "'type': 'hourly'," +
+                    "'test': false," +
+                    "'useTransactionalUpdate': true," +
+                    "'cronTimes': " +
+                    "  {'minute': '0'," +
+                    "   'hour': '0'," +
+                    "   'dayOfWeek': '0'," +
+                    "   'dayOfMonth': '0'" +
+                    "  }" +
+                "  }" +
+                "}";
+        var request = getPostRequestWithCsrfAndBody("/manager/api/recurringactions/custom/execute",
+                actionJsonString);
+
+        RecurringActionController.executeCustom(request, response, user);
+
+        var action = latestApplyStatesActionForMinion();
+
+        assertEquals(List.of("formulas", "channels"), action.getDetails().getMods());
+        assertTrue(action.getDetails().isUseTransactionalUpdate());
     }
 
     @Test
@@ -367,6 +458,14 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
     private void createOrgHighstateAction(Long orgId, String name) throws UnsupportedEncodingException {
         var saveRequest = makeSaveRequest(name, "org", of(orgId), "HIGHSTATE");
         RecurringActionController.save(saveRequest, response, user);
+    }
+
+    private ApplyStatesAction latestApplyStatesActionForMinion() {
+        return ActionFactory.listActionsForServer(user, minionServer).stream()
+                .filter(ApplyStatesAction.class::isInstance)
+                .map(ApplyStatesAction.class::cast)
+                .max((first, second) -> first.getId().compareTo(second.getId()))
+                .orElseThrow();
     }
 
     private RecurringActionDetailsDto getDetails(Map<String, Object> action) {

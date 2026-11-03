@@ -1,0 +1,3 @@
+- Serve the uyuni CA via Apache Alias instead of copying it to
+  /srv/www/htdocs/pub, so /pub/RHN-ORG-TRUSTED-SSL-CERT is served
+  directly from the projected trust anchor file.

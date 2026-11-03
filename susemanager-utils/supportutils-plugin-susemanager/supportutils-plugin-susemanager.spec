@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package supportutils-plugin-susemanager
 #
@@ -18,7 +22,7 @@
 # The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 Name:           supportutils-plugin-susemanager
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Supportconfig Plugin for %{productprettyname}
 License:        GPL-2.0-only

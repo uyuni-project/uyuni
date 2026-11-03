@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Oct 08 00:52:35 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2-0
+  * Fix maxsplit positional argument deprecation (bsc#1274654)
+  * Add AlmaLinux 8 ppc64le repositories
+  * Drop ppc64le from the Rocky Linux 8 EPEL channel, as Rocky
+    Linux 8 has no ppc64le build upstream
+
+-------------------------------------------------------------------
 Wed Aug 05 16:48:56 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

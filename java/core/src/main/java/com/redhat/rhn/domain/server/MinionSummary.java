@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -41,7 +43,7 @@ public class MinionSummary {
     public MinionSummary(MinionServer minion) {
         this(minion.getId(), minion.getMinionId(), minion.getDigitalServerId(),
                 minion.getMachineId(), minion.getContactMethodLabel().orElse(null), minion.getOs(),
-                minion.doesOsSupportsTransactionalUpdate());
+                minion.isTransactionalUpdate());
     }
 
     /**
@@ -53,11 +55,12 @@ public class MinionSummary {
      * @param machineIdIn the machine id
      * @param contactMethodLabelIn the contact method label
      * @param osIn the minion os
+     * @param transactionalModeIn the persisted observation of the transactional grain
      */
     public MinionSummary(Long serverIdIn, String minionIdIn, String digitalServerIdIn, String machineIdIn,
-            String contactMethodLabelIn, String osIn) {
+            String contactMethodLabelIn, String osIn, TransactionalMode transactionalModeIn) {
         this(serverIdIn, minionIdIn, digitalServerIdIn, machineIdIn, contactMethodLabelIn, osIn,
-            ServerConstants.SLEMICRO.equals(osIn));
+            transactionalModeIn.isTransactional(osIn));
     }
 
     /**

@@ -1,0 +1,2 @@
+- Cache the public methods of classes used to fill query results
+  to reduce CPU usage

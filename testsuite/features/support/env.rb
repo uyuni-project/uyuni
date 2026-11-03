@@ -1,5 +1,5 @@
 # Copyright (c) 2010-2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 require 'English'
 require 'fileutils'
@@ -50,10 +50,11 @@ $context = {}
 $watchdog_run_aborted = false
 
 # Other global variables
-$pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
 $pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp7o'
 $sles15sp6_terminal_mac = ENV.fetch('SLES15SP6_TERMINAL_MAC', nil)
 $sles15sp7_terminal_mac = ENV.fetch('SLES15SP7_TERMINAL_MAC', nil)
+# Build validation deploys the PXE boot minion as the SLES 15 SP7 terminal and does not set PXEBOOT_MAC
+$pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil) || $sles15sp7_terminal_mac
 $private_net = ENV.fetch('PRIVATENET', nil) if ENV['PRIVATENET']
 $mirror = ENV.fetch('MIRROR', nil)
 $server_http_proxy = ENV.fetch('SERVER_HTTP_PROXY', nil) if ENV['SERVER_HTTP_PROXY']
@@ -61,8 +62,6 @@ $custom_download_endpoint = ENV.fetch('CUSTOM_DOWNLOAD_ENDPOINT', nil) if ENV['C
 $build_sources = ENV.fetch('BUILD_SOURCES', nil) if ENV['BUILD_SOURCES']
 $no_auth_registry = ENV.fetch('NO_AUTH_REGISTRY', nil) if ENV['NO_AUTH_REGISTRY']
 $auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
-$current_user = 'admin'
-$current_password = 'admin'
 $use_salt_bundle = ENV.fetch('USE_SALT_BUNDLE', true)
 $is_external_cluster = ENV.fetch('IS_EXTERNAL_CLUSTER', false) if ENV['IS_EXTERNAL_CLUSTER']
 $create_spacewalk_pv = ENV.fetch('CREATE_VAR_SPACEWALK_PV', true) if ENV['CREATE_VAR_SPACEWALK_PV']
@@ -72,9 +71,8 @@ $default_local_storage_class = ENV.fetch('LOCAL_PATH_DEFAULT_CLASS', true) if EN
 # maximal wait before giving up
 # the tests return much before that delay in case of success
 $stdout.sync = true
-STARTTIME = Time.new.to_i
+STARTTIME = Time.now.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
-DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 # Layer 3 per-scenario watchdog ceiling (see the Around hook below). Backstop against hangs that
 # Ruby's Timeout.timeout cannot interrupt (e.g. a blocked Playwright pipe call).
 # Regular scenarios are expected to finish well under 30 min; default the ceiling to 40 min.
@@ -83,6 +81,15 @@ SCENARIO_HARD_LIMIT = ENV['SCENARIO_HARD_LIMIT'] ? ENV['SCENARIO_HARD_LIMIT'].to
 # up to ~13 h in BV) use this instead. It is 0 (watchdog disabled, rely on the external Layer 4
 # job timeout) unless explicitly set, so set it per pipeline: e.g. 3600 in CI, 50400 in BV.
 LONG_SCENARIO_HARD_LIMIT = ENV.fetch('LONG_SCENARIO_HARD_LIMIT', '9000').to_i
+# Whole-run deadline in seconds since this process started, 0 (default) disables it. Unlike the per-scenario
+# limits above it bounds the entire cucumber run, so that it fails on its own, report included, before an
+# external wall-clock limit (e.g. the `timeout` wrapping the run in the Jenkins pipeline) kills it without any.
+RUN_HARD_LIMIT = ENV.fetch('RUN_HARD_LIMIT', '0').to_i
+
+# Seconds left until the whole-run deadline (only meaningful when RUN_HARD_LIMIT is positive)
+def run_time_left
+  RUN_HARD_LIMIT - (Time.now.to_i - STARTTIME)
+end
 # Small positive wait for "is it there right now" existence gates. capybara-playwright-driver does
 # NOT support wait: 0 / wait: false: it requires wait > 0, and a 0 maps to Playwright's "disable
 # timeout" which means wait forever. Never use wait: 0 with the Playwright driver - use this instead.
@@ -91,7 +98,7 @@ $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_gh_validation = ENV['PROVIDER'].include? 'podman'
 $is_containerized_server = %w[k3s podman rke2].include? ENV.fetch('CONTAINER_RUNTIME', '')
 $is_rke2 = ENV.fetch('CONTAINER_RUNTIME', '').include? 'rke2'
-$is_transactional_server = transactional_system?('server', runs_in_container: false)
+$is_transactional_server = host_transactional?('server')
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 $beta_enabled = (ENV.fetch('BETA_ENABLED', 'False') == 'True')
@@ -120,6 +127,8 @@ def capybara_register_driver
         --disable-dev-shm-usage
         --ignore-certificate-errors
         --no-sandbox
+        --no-zygote
+        --disable-gpu
         --disable-notifications
         --window-size=2048,2048
         --js-flags=--max-old-space-size=2048
@@ -140,6 +149,19 @@ end
 # register the Playwright driver
 $capybara_driver = capybara_register_driver
 Capybara.default_driver = :playwright
+
+# When the watchdog kills the Playwright Node process, the gem's own teardown calls browser.close
+# through the dead connection, which crashes with NoMethodError (nil.value!). Silence it: there is
+# nothing left to close and the run should continue to the next scenario.
+module PlaywrightQuitGuard
+  # Quits the driver, ignoring the NoMethodError raised when the Playwright connection is already dead.
+  def quit
+    super
+  rescue NoMethodError
+    nil
+  end
+end
+Capybara::Playwright::Driver.prepend(PlaywrightQuitGuard)
 Capybara.javascript_driver = :playwright
 Capybara.default_normalize_ws = true
 Capybara.enable_aria_label = true
@@ -165,14 +187,28 @@ $code_coverage = CodeCoverage.new if $code_coverage_mode
 # Init Quality Intelligence Handler
 $quality_intelligence = QualityIntelligence.new if $quality_intelligence_mode
 
-# Define the current feature scope
+# Define the current feature scope. Also resets the active webUI session back to the
+# hub whenever the incoming scenario belongs to a different feature file than the
+# previous one. Scenarios within the same feature may intentionally carry over an
+# active peripheral session (e.g. log in on server2, then later scenarios in the same
+# feature keep acting on server2); crossing into a new feature always starts fresh from
+# the hub. Named sessions for other hosts (server2, server3, ...) are intentionally NOT
+# quit here - Capybara keeps them cached so a later scenario that switches back reuses
+# the still-logged-in browser instead of re-authenticating.
 Before do |scenario|
-  $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
+  current_feature_file = scenario.location.file
+  if $feature_scope_file && $feature_scope_file != current_feature_file
+    Capybara.session_name = :default
+    Capybara.app_host = "https://#{get_target('server').full_hostname}"
+    $current_ui_host = 'server'
+  end
+  $feature_scope_file = current_feature_file
+  $feature_scope = current_feature_file.split(%r{(\.feature|/)})[-2]
 end
 
 # Embed a screenshot after each failed scenario
 After do |scenario|
-  current_epoch = Time.new.to_i
+  current_epoch = Time.now.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
@@ -256,7 +292,8 @@ def relog_and_visit_previous_url
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       previous_url = current_url
-      step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
+      user, password = Credentials.current
+      step %(I am authorized as "#{user}" with password "#{password}")
       visit previous_url
     end
   rescue Timeout::Error
@@ -318,16 +355,23 @@ After('@scope_cobbler') do |scenario|
   end
 end
 
+# Remove the files extracted from remote hosts to be attached in the browser
+After do
+  @attach_dirs&.each { |dir| FileUtils.rm_rf(dir) }
+end
+
 AfterStep do
   next unless capybara_session_created?
 
   # has_no_css? returns immediately when the spinner is absent (the common case) and otherwise polls
   # until it disappears, so this both replaces the old wait: 0 gate and adds ~no per-step overhead.
   log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 30)
+rescue NoMethodError
+  # Playwright connection gone (browser crashed or closed mid-scenario)
 end
 
 Before do
-  current_time = Time.new
+  current_time = Time.now
   @scenario_start_time = current_time.to_i
   log "This scenario ran at: #{current_time}\n"
 end
@@ -375,6 +419,12 @@ Around do |scenario, block|
       SCENARIO_HARD_LIMIT
     end
 
+  # The whole-run deadline caps the limit, so the watchdog also fires for a scenario that would end after it
+  if RUN_HARD_LIMIT.positive?
+    limit = limit.positive? ? [limit, run_time_left].min : run_time_left
+    limit = [limit, 1].max
+  end
+
   # limit <= 0 disables the watchdog (e.g. @long_running with no LONG_SCENARIO_HARD_LIMIT set, such
   # as a 13 h product sync in BV); the external job wall-clock remains the backstop in that case.
   if limit <= 0
@@ -418,6 +468,32 @@ end
 
 Before('@skip_known_issue') do
   raise Core::Test::Result::Failed, 'This scenario is known to fail, skipping it'
+end
+
+# Smoke tests: a client whose scenarios fail slowly twice in a row (a step wait of ~500 s expired each time) is
+# dead. Skip the rest of that feature instead of spending a full wait on every remaining scenario.
+SMOKE_SLOW_FAILURE_SECONDS = 300
+SMOKE_SLOW_FAILURES_BEFORE_SKIP = 2
+$smoke_slow_failures = Hash.new(0)
+
+After do |scenario|
+  feature_file = scenario.location.file
+  next unless feature_file.include?('/smoke_tests/')
+
+  if scenario.failed?
+    elapsed = Time.now.to_i - (@scenario_start_time || Time.now.to_i)
+    $smoke_slow_failures[feature_file] += 1 if elapsed >= SMOKE_SLOW_FAILURE_SECONDS
+  elsif scenario.passed?
+    $smoke_slow_failures[feature_file] = 0
+  end
+end
+
+Before do |scenario|
+  feature_file = scenario.location.file
+  next unless $smoke_slow_failures[feature_file] >= SMOKE_SLOW_FAILURES_BEFORE_SKIP
+
+  log "Skipping: #{SMOKE_SLOW_FAILURES_BEFORE_SKIP} scenarios of this feature already failed after a long wait"
+  skip_this_scenario
 end
 
 # Create a user for each feature
@@ -474,6 +550,14 @@ Before('@server3') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['server3']
 end
 
+Before('@peripheral1') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['peripheral1']
+end
+
+Before('@peripheral2') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['peripheral2']
+end
+
 Before('@server4') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['server4']
 end
@@ -486,33 +570,55 @@ Before('@run_if_proxy_not_transactional_or_sles15sp7_minion_or_monitoring_server
   skip_this_scenario unless suse_proxy_non_transactional? || ENV.key?(ENV_VAR_BY_HOST['sles15sp7_minion']) || ENV.key?(ENV_VAR_BY_HOST['monitoring_server'])
 end
 
+# A product can be shared by several minion families, and the Setup Wizard refuses to add it
+# twice, so such a scenario is tagged @<family>_or_<family>_minion with every family that needs
+# the product, and runs as soon as one of those minions takes part in the run
+Before do |scenario|
+  scenario.source_tag_names.each do |tag|
+    families = tag[/\A@([a-z0-9]+(?:_or_[a-z0-9]+)+)_minion\z/, 1]
+    next if families.nil?
+
+    hosts = families.split('_or_').map { |family| "#{family}_minion" }
+    skip_this_scenario unless any_host_configured?(hosts)
+  end
+end
+
 Before('@sle_minion') do
-  env_var_name = get_env_var_with_fallback('sle_minion', 'SLES15SP7_MINION')
+  env_var_name = get_env_var_with_fallback('sle_minion')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
 Before('@rhlike_minion') do
-  env_var_name = get_env_var_with_fallback('rhlike_minion', 'ROCKY8_MINION')
+  env_var_name = get_env_var_with_fallback('rhlike_minion')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
 Before('@deblike_minion') do
-  env_var_name = get_env_var_with_fallback('deblike_minion', 'UBUNTU2404_MINION')
+  env_var_name = get_env_var_with_fallback('deblike_minion')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
 Before('@pxeboot_minion') do
-  mac_address = $pxeboot_mac || $sles15sp7_terminal_mac
-  skip_this_scenario unless mac_address
+  skip_this_scenario unless $pxeboot_mac
+end
+
+# Each PXE boot feature has one @pxeboot_bootstrap scenario that registers the PXE boot minion.
+# If it fails, the @pxeboot_needs_minion scenarios are skipped instead of each waiting for a minion that never came.
+After('@pxeboot_bootstrap') do |scenario|
+  add_context(:pxeboot_minion_failed, true) if scenario.failed?
+end
+
+Before('@pxeboot_needs_minion') do
+  skip_this_scenario if get_context(:pxeboot_minion_failed)
 end
 
 Before('@sshminion') do
-  env_var_name = get_env_var_with_fallback('sshminion', 'SLES15SP7_MINION')
+  env_var_name = get_env_var_with_fallback('sshminion')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
 Before('@build_host') do
-  env_var_name = get_env_var_with_fallback('build_host', 'SLES15SP7_BUILDHOST')
+  env_var_name = get_env_var_with_fallback('build_host')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
@@ -668,14 +774,6 @@ Before('@ubuntu2604_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2604_sshminion']
 end
 
-Before('@debian12_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian12_minion']
-end
-
-Before('@debian12_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian12_sshminion']
-end
-
 Before('@debian13_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian13_minion']
 end
@@ -740,20 +838,28 @@ Before('@sles160_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles160_sshminion']
 end
 
-Before('@opensuse156arm_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse156arm_minion']
+Before('@sles161_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles161_minion']
 end
 
-Before('@opensuse156arm_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse156arm_sshminion']
+Before('@sles161_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles161_sshminion']
 end
 
-Before('@opensuse160arm_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse160arm_minion']
+Before('@opensuse161arm_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse161arm_minion']
 end
 
-Before('@opensuse160arm_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse160arm_sshminion']
+Before('@opensuse161arm_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse161arm_sshminion']
+end
+
+Before('@opensuse161ppc_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse161ppc_minion']
+end
+
+Before('@opensuse161ppc_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse161ppc_sshminion']
 end
 
 Before('@sles15sp5s390_minion') do
@@ -770,14 +876,6 @@ end
 
 Before('@slemicro') do |scenario|
   skip_this_scenario unless scenario.location.file.include? 'slemicro'
-end
-
-Before('@slemicro52_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro52_minion']
-end
-
-Before('@slemicro52_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro52_sshminion']
 end
 
 Before('@slemicro53_minion') do
@@ -996,14 +1094,24 @@ Before('@rke2') do
   skip_this_scenario unless $is_rke2
 end
 
-# skip tests if the server runs on a transactional base OS
-Before('@skip_if_transactional_server') do
-  skip_this_scenario if $is_transactional_server
+# skip tests if the tagged host runs on a transactional base OS.
+# Add the host to this tag list (and to host_transactional?'s ENV_VAR_BY_HOST) when a new
+# host needs this check. NOTE: cucumber-tag-expressions only splits tokens on whitespace/parens,
+# so tags must be joined with " or ", not commas (a comma-joined string parses as one giant
+# literal tag that never matches, silently turning the hook into a no-op).
+Before('@skip_if_transactional_server or @skip_if_transactional_server2 or @skip_if_transactional_server3 or ' \
+       '@skip_if_transactional_proxy or @skip_if_transactional_proxy2 or @skip_if_transactional_proxy3') do |scenario|
+  tags = scenario.source_tag_names.select { |t| t.start_with?('@skip_if_transactional_') }
+  skip_this_scenario if tags.any? { |t| host_transactional?(t.delete_prefix('@skip_if_transactional_')) }
 end
 
-# do tests only if the server runs on a transactional base OS
-Before('@transactional_server') do
-  skip_this_scenario unless $is_transactional_server
+# do tests only if the tagged host runs on a transactional base OS.
+# Add the host to this tag list when a new host needs this check. Same " or "-joining caveat
+# as above applies.
+Before('@transactional_server or @transactional_server2 or @transactional_server3 or ' \
+       '@transactional_proxy or @transactional_proxy2 or @transactional_proxy3') do |scenario|
+  tags = scenario.source_tag_names.grep(/^@transactional_(server|proxy)\d*$/)
+  skip_this_scenario unless tags.all? { |t| host_transactional?(t.delete_prefix('@transactional_')) }
 end
 
 # only test for excessive SCC accesses if SCC access is being logged

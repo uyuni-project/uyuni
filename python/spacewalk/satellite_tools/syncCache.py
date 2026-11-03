@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -101,7 +103,7 @@ class KickstartableTreesCache(BaseCache):
 
 
 if __name__ == "__main__":
-    initCFG("server.satellite")
+    initCFG("server")
     c = PackageCache()
     pid = "package-12345"
     c.cache_set(pid, {"a": 1, "b": 2})

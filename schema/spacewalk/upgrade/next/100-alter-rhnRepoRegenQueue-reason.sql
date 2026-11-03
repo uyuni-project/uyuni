@@ -1,1 +1,0 @@
-ALTER TABLE rhnRepoRegenQueue ALTER COLUMN reason TYPE VARCHAR(256);

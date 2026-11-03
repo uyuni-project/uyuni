@@ -11,6 +11,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -23,11 +25,13 @@ from xml.sax import make_parser, SAXParseException, ContentHandler, ErrorHandler
 from uyuni.common import usix
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.server.importlib import importLib, backendLib
 
 RHEL234_REGEX = re.compile("rhel-[^-]*-[aew]s-(4|3|2.1)")
+
+# checksum types, most preferred first
+CHECKSUM_PRIORITY_LIST = ("sha512", "sha384", "sha256")
 
 # Terminology used throughout this file:
 # Item: an atomic entity from the database's perspective.
@@ -638,7 +642,7 @@ class BaseChecksummedItem(BaseItem):
             for csum in item["checksum_list"]:
                 item["checksums"][csum["type"]] = csum["value"]
             del item["checksum_list"]
-        for ctype in CFG.CHECKSUM_PRIORITY_LIST:
+        for ctype in CHECKSUM_PRIORITY_LIST:
             if ctype in item["checksums"]:
                 item["checksum_type"] = ctype
                 item["checksum"] = item["checksums"][ctype]

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- function index for rhnServer
 alter table rhnServer add column machine_id VARCHAR(256);
 

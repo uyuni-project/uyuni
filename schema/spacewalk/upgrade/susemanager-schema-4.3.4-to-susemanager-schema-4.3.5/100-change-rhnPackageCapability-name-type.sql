@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 DO $$
     BEGIN
         IF (SELECT data_type FROM information_schema.columns WHERE table_name = 'rhnpackagecapability' AND column_name = 'name') != 'text' THEN

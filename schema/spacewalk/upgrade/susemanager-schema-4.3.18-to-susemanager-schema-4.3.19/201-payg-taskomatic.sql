@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 ALTER TABLE rhntaskotask ALTER COLUMN class TYPE varchar(120);
 
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)

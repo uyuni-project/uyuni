@@ -1,6 +1,7 @@
 # Copyright (c) 2024-2026 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
+require 'securerandom'
 require 'timeout'
 require_relative 'network_utils'
 
@@ -20,22 +21,21 @@ class RemoteNode
     puts "Initializing a remote node for '#{@host}'."
     raise(NotImplementedError, "Host #{@host} is not defined as a valid host in the Test Framework.") unless ENV_VAR_BY_HOST.key? @host
 
-    unless ENV.key? ENV_VAR_BY_HOST[@host]
+    env_var = env_var_for_host(@host)
+    unless ENV.key? env_var
       warn "Host #{@host} is not defined as environment variable."
       return
     end
 
-    @target = ENV.fetch(ENV_VAR_BY_HOST[@host], nil).to_s.strip
+    @target = ENV.fetch(env_var, nil).to_s.strip
     clear_motd unless @host == 'localhost'
     out, _err, _code = ssh('echo $HOSTNAME', host: @target)
     @hostname = out.strip
     raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
 
     $named_nodes[host] = @hostname
-    uyuni_not_installed = false
-    if @host == 'server'
-      uyuni_not_installed = !ssh('which kubectl && kubectl get deployment uyuni -n ${SERVER_NAMESPACE:-uyuni}', host: @target).last.zero? && !ssh('podman container exists uyuni-server', host: @target).last.zero?
-
+    uyuni_not_installed = %w[SERVER SERVER2 SERVER3 SERVER4].include?(ENV_VAR_BY_HOST[@host]) && server_not_deployed?
+    if %w[SERVER SERVER2 SERVER3 SERVER4].include?(ENV_VAR_BY_HOST[@host])
       @has_mgrctl = ssh('which mgrctl', host: @target).last.zero? && !uyuni_not_installed
       @has_kubectl = ssh('which kubectl', host: @target).last.zero?
     end
@@ -178,7 +178,7 @@ class RemoteNode
   # @return [Array<String, Integer>] The output, error, and exit code.
   def run_local(cmd, port: @port, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false)
     out, err, code = ssh_command(cmd, @target, port: port, timeout: timeout, buffer_size: buffer_size)
-    out_nocolor = out.gsub(/\e\[([;\d]+)?m/, '')
+    out_nocolor = out.gsub(/\e\[([;\d]+)?m/, '') + err.gsub(/\e\[([;\d]+)?m/, '')
     raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out_nocolor}" if check_errors && !successcodes.include?(code)
 
     $stdout.puts "#{cmd} returned status code = #{code}.\nOutput:\n'#{out_nocolor}'" if verbose
@@ -265,13 +265,16 @@ class RemoteNode
     raise ScriptError, "Remote file #{remote_node_file} does not exist on #{@host}" unless file_exists?(remote_node_file)
 
     if @has_mgrctl
-      tmp_file = File.join('/tmp/', File.basename(remote_node_file))
+      tmp_file = File.join('/tmp/', "#{SecureRandom.hex(4)}-#{File.basename(remote_node_file)}")
       _out, code = run_local("mgrctl cp server:#{remote_node_file} #{tmp_file}", verbose: false)
       raise ScriptError, "Failed to extract #{remote_node_file} from container" unless code.zero?
 
-      success = scp_download(tmp_file, test_runner_file)
-      raise ScriptError, "Failed to extract #{tmp_file} from host" unless success
-
+      begin
+        success = scp_download(tmp_file, test_runner_file)
+        raise ScriptError, "Failed to extract #{tmp_file} from host" unless success
+      ensure
+        run_local("rm -f #{tmp_file}", check_errors: false, verbose: false)
+      end
     else
       success = scp_download(remote_node_file, test_runner_file)
     end
@@ -364,6 +367,11 @@ class RemoteNode
 
   private
 
+  # Returns true if the target runs neither a Kubernetes uyuni deployment nor the uyuni-server container.
+  def server_not_deployed?
+    !ssh('which kubectl && kubectl get deployment uyuni -n ${SERVER_NAMESPACE:-uyuni}', host: @target).last.zero? && !ssh('podman container exists uyuni-server', host: @target).last.zero?
+  end
+
   # Empties /etc/motd, or any output from run will contain the content of /etc/motd.
   # Container based nodes also run commands on their host, which keeps its own /etc/motd.
   def clear_motd
@@ -385,7 +393,7 @@ class RemoteNode
         return output.strip
       end
     else
-      %w[br0 eth0 eth1 eth1000 ens0 ens1 ens2 ens3 ens4 ens5 ens6 ens7].each do |dev|
+      %w[br0 eth0 eth1 eth1000 enp0s1 ens0 ens1 ens2 ens3 ens4 ens5 ens6 ens7].each do |dev|
         output, code = run_local("ip address show dev #{dev} | grep 'inet '", port: HOST_SSH_PORT, check_errors: false)
 
         next unless code.zero?

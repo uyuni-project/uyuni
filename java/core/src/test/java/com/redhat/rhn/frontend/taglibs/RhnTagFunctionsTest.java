@@ -8,14 +8,19 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -36,6 +41,12 @@ public class RhnTagFunctionsTest extends BaseTestCase {
     @Test
     public void testConfig() {
         assertNotNull(RhnTagFunctions.getConfig("web.version"));
+    }
+
+    @Test
+    public void testDbConfig() {
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MAX, 42);
+        assertEquals("42", RhnTagFunctions.getDbConfig("USER_LOGIN_LENGTH_MAX"));
     }
 
     @Test

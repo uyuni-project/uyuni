@@ -7,6 +7,8 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
  */
 
 package com.suse.manager.model.products.migration;
@@ -29,7 +31,8 @@ public record MigrationScheduleRequest(
     boolean dryRun,
     boolean allowVendorChange,
     Optional<LocalDateTime> earliest,
-    Optional<String> actionChain
+    Optional<String> actionChain,
+    String actionDescription
 ) {
 
     /**
@@ -37,7 +40,7 @@ public record MigrationScheduleRequest(
      * @return the earliest date of execution if one is associated with this request. "now" is returned otherwise.
      */
     public Date getEarliestDate() {
-        return MinionActionUtils.getScheduleDate(earliest);
+        return MinionActionUtils.getScheduleDate(earliest, actionDescription);
     }
 
     /**

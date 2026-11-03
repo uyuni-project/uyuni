@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 OLD_COBBLER_DIR=/var/lib/cobbler/config
 NEW_COBBLER_DIR=/var/lib/cobbler/collections
 

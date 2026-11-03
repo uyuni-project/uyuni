@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
@@ -31,6 +33,10 @@ CREATE TABLE rhnActionApplyStates
                          DEFAULT ('N') NOT NULL
                          CONSTRAINT rhn_act_apply_states_direct_ck
                              CHECK (test in ('Y','N')),
+    use_transactional_update CHAR(1)
+                         DEFAULT ('N') NOT NULL
+                         CONSTRAINT rhn_act_apply_states_use_tu_ck
+                             CHECK (use_transactional_update in ('Y','N')),
     created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
     modified         TIMESTAMPTZ

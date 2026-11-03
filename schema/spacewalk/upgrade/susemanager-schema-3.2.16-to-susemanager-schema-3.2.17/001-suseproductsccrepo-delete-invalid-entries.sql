@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 delete from suseproductsccrepository where channel_label = 'suse-openstack-cloud-6-pool-x86_64-sp1';
 delete from suseproductsccrepository where channel_label = 'suse-openstack-cloud-6-updates-x86_64-sp1';
 delete from suseproductsccrepository where channel_label = 'suse-openstack-cloud-6-debuginfo-pool-x86_64-sp1';

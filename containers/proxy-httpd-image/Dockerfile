@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #!BuildTag: uyuni/proxy-httpd:latest
 #!BuildName: proxy-httpd
 
@@ -42,7 +43,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-httpd-image
-LABEL org.opencontainers.image.version=5.3.1
+LABEL org.opencontainers.image.version=5.3.2
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-httpd:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

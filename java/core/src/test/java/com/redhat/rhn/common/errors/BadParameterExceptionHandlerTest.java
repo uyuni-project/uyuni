@@ -8,13 +8,14 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.errors;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
@@ -65,10 +66,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
         Logger log = LogManager.getLogger(BadParameterExceptionHandler.class);
         Level origLevel = log.getLevel();
         Configurator.setLevel(this.getClass().getName(), Level.OFF);
-        Config c = Config.get();
-        String mail = c.getString("web.traceback_mail");
         try {
-            c.setString("web.traceback_mail", "jesusr@redhat.com");
 
             BadParameterException ex = new BadParameterException("Invalid test parameter");
 
@@ -94,11 +92,6 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
             while (MessageQueue.getMessageCount() != 0 && tries  < 10) {
                 Thread.sleep(100);
                 tries++;
-            }
-            // don't bother resetting it if it were already missing.
-            // Blame mmccune for change getString to return freakin null.
-            if (mail != null) {
-                c.setString("web.traceback_mail", mail);
             }
             Configurator.setLevel(this.getClass().getName(), origLevel);
         }

@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ page pageEncoding="iso-8859-1" contentType="text/html;charset=utf-8" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -65,6 +72,14 @@
                 </script>
             </div>
             <input type="hidden" id="action-chain" name="action_chain" />
+        </div>
+        <div class="row">
+            <div class="col-sm-3 control-label">
+                <label for="schedule-action-description"><bean:message key="actions.jsp.action_description"/>:</label>
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="schedule_action_description" id="schedule-action-description" placeholder="e.g. Ticket #12345" maxlength="1000"/>
+            </div>
         </div>
     </div>
 </div>

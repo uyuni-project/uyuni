@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -53,13 +55,11 @@ class rhnProxyHandler(rhnHandler):
         # entitlement.
         # XXX: this needs to be moved out of the rhnServer module,
         # possibly in here
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
         select 1
         from rhnProxyInfo pi
         where pi.server_id = :server_id
-        """
-        )
+        """)
         h.execute(server_id=self.server_id)
         row = h.fetchone_dict()
         if not row:
@@ -266,7 +266,7 @@ class Proxy(rhnProxyHandler):
         # authenticate that this request is initiated from a proxy
         self.auth_system(system_id)
         ret = rhnChannel.getChannelInfoForTinyUrl(tinyurl)
-        if not ret or not "url" in ret or len(ret["url"].split("/")) != 6:
+        if not ret or "url" not in ret or len(ret["url"].split("/")) != 6:
             # pylint: disable-next=consider-using-f-string
             raise rhnFault(40, "could not find any data on tiny url '%s'" % tinyurl)
 

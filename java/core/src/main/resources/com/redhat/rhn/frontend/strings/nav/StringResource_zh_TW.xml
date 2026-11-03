@@ -1300,10 +1300,10 @@
         </context-group>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="nav.system.audit.schedule.beta" xml:space="preserve">
-          <source>Schedule</source>
+      <trans-unit id="Btrfs Snapshots" xml:space="preserve">
+        <source>Btrfs Snapshots</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/manager/systems/details/schedule-scap-scan</context>
+          <context context-type="sourcefile">/rhn/manager/systems/details/snapshots</context>
         </context-group>
       <target state="new"/>
   </trans-unit>

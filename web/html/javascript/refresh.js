@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 /**
  * Sets a refresh form hidden value and submits the form. Interpreting action
  * can then use this value to recognize that the form data needs to be 

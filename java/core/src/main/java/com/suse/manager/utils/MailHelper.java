@@ -8,6 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -144,14 +146,14 @@ public class MailHelper {
     }
 
     /**
-     * Get list of admin recipients from Config 'web.traceback_mail' property
+     * Get list of admin recipients from Config 'traceback_mail' property
      * @return A list of emails from admins as defined in the configuration
      */
     public static String[] getAdminRecipientsFromConfig() {
         Config c = Config.get();
-        return StringUtils.isBlank(c.getString("web.traceback_mail")) ?
+        return StringUtils.isBlank(c.getString("traceback_mail")) ?
                 new String[]{"root@localhost"} :
-                c.getStringArray("web.traceback_mail");
+                c.getStringArray("traceback_mail");
     }
 
     /**

@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -145,7 +147,7 @@ class SatelliteCert:
     ]
     fields_list = {"channel-families": ChannelFamily}
 
-    # datesFormat_cert = '%a %b %d %H:%M:%S %Y' ## OLD CERT FORMAT
+    # OLD CERT FORMAT: datesFormat_cert = '%a %b %d %H:%M:%S %Y'
     # pylint: disable-next=invalid-name
     datesFormat_cert = "%Y-%m-%d %H:%M:%S"
     # pylint: disable-next=invalid-name

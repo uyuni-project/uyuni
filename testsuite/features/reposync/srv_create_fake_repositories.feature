@@ -1,5 +1,5 @@
 # Copyright (c) 2015-2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in:
 # If any fake channel or repository fails to be created:
@@ -12,6 +12,8 @@ Feature: Create fake repositories for each fake child channel
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I mirror the RPM test packages locally
+    And I mirror the AppStream test packages locally
 
   Scenario: Create a fake repository for distributions using RPM
     When I follow the left menu "Software > Manage > Repositories"

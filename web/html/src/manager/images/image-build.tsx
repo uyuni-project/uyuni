@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
@@ -50,6 +56,7 @@ type State = {
     profileId?: number;
     buildHostId?: number;
     actionChain?: any;
+    actionDescription?: string;
   };
   profile: any;
   profiles: any[];
@@ -200,6 +207,15 @@ class BuildImage extends Component<Props, State> {
         actionChain,
         model,
       };
+    });
+  };
+
+  onActionDescriptionChanged = (actionDescription: string) => {
+    this.setState((prevState) => {
+      const model: State["model"] = Object.assign({}, prevState.model, {
+        actionDescription,
+      });
+      return { model };
     });
   };
 
@@ -409,9 +425,11 @@ class BuildImage extends Component<Props, State> {
             <ActionSchedule
               earliest={this.state.model.earliest}
               actionChains={window.actionChains}
+              actionDescription={this.state.model.actionDescription ?? ""}
               actionType="image.build"
               onActionChainChanged={this.onActionChainChanged}
               onDateTimeChanged={this.onDateTimeChanged}
+              onActionDescriptionChanged={this.onActionDescriptionChanged}
             />
 
             <FormGroup>

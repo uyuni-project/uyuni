@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC and contributors
+#
+# SPDX-License-Identifier: MIT
+
 #
 # spec file for package uyuni-common-libs
 #
@@ -47,7 +51,7 @@
 %endif
 
 Name:           uyuni-common-libs
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only

@@ -9,6 +9,8 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
+# SPDX-License-Identifier: GPL-2.0-only
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
@@ -93,30 +95,18 @@ class ChannelPackageSubscription(GenericPackageImport):
         self.backend.lookupChecksums(self.checksums)
 
         # Fix the package information up, and uniquify the packages too
-        with cfg_component("server") as CFG:
-            enable_nvrea = CFG.ENABLE_NVREA
         uniqdict = {}
         for package in self.batch:
             if package.ignored:
                 continue
             self._postprocessPackageNEVRA(package)
-            if not enable_nvrea:
-                # nvrea disabled, skip checksum
-                nevrao = (
-                    package["name_id"],
-                    package["evr_id"],
-                    package["package_arch_id"],
-                    package["org_id"],
-                )
-            else:
-                # As nvrea is enabled uniquify based on checksum
-                nevrao = (
-                    package["name_id"],
-                    package["evr_id"],
-                    package["package_arch_id"],
-                    package["org_id"],
-                    package["checksum_id"],
-                )
+            nevrao = (
+                package["name_id"],
+                package["evr_id"],
+                package["package_arch_id"],
+                package["org_id"],
+                package["checksum_id"],
+            )
 
             if nevrao not in uniqdict:
                 # Uniquify the channel names
@@ -553,7 +543,7 @@ class PackageImport(ChannelPackageSubscription):
             object.id = object.first_package.id
 
     def _import_signatures(self):
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             mount_point = CFG.MOUNT_POINT
         for package in self.batch:
             # skip missing files and mpm packages
@@ -593,7 +583,6 @@ class SourcePackageImport(Import):
             key = (package["org_id"], package["source_rpm_id"])
             if key not in uniqdict:
                 uniqdict[key] = package
-                continue
             else:
                 self._comparePackages(package, uniqdict[key])
                 # And invalidate it

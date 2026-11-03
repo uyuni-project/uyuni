@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 name: RuboCop
 
 on:
@@ -5,6 +9,7 @@ on:
     paths:
       - '.github/workflows/rubocop.yml'
       - 'testsuite/features/**.rb'
+      - 'testsuite/ext-tools/**.rb'
       - 'testsuite/.rubocop.yml'
       - 'testsuite/.rubocop_todo.yml'
       - 'testsuite/Gemfile'
@@ -30,4 +35,4 @@ jobs:
         gem install bundler
         bundle install
         bundle exec rubocop --version
-        bundle exec rubocop features/*
+        bundle exec rubocop features Rakefile ext-tools

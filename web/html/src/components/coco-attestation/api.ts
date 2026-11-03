@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import type { LocalizedMoment } from "utils/datetime";
 import Network, { type JsonResult } from "utils/network";
 
@@ -33,6 +39,7 @@ export type CoCoScheduleRequest = {
   actionType: typeof COCO_ATTESTATION_ACTION_TYPE;
   earliest: LocalizedMoment;
   actionChain: string | null;
+  actionDescription?: string;
 };
 
 export function getSystemCoCoSettings(serverId: number) {
