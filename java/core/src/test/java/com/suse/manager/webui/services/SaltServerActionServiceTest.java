@@ -12,6 +12,7 @@
  */
 package com.suse.manager.webui.services;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,6 +31,7 @@ import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
+import com.redhat.rhn.domain.action.config.ConfigDiffAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -149,6 +151,31 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         SaltServerActionService service = new SaltServerActionService(saltApi, saltUtils, new SaltKeyUtils(saltApi));
         ScriptRunAction.setSkipCommandScriptPerms(true);
         return service;
+    }
+
+    @Test
+    public void testConfigDiffWithError() throws Exception {
+        // reproduce bsc#1246709
+        // Show differences between profiled config files and deployed config files throws server error
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        ConfigDiffAction action = (ConfigDiffAction)
+                ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_CONFIGFILES_DIFF);
+        ServerActionFactory.addServerToAction(testMinionServer, action);
+
+        int retCode = 1;
+        boolean success = false;
+        String jsonString = """
+                {"result":false,"retcode":1,"comment":"Couldn't get lock, is another instance already running?"}
+                """;
+        JsonElement jsonResult = com.google.gson.JsonParser.parseString(jsonString);
+
+        assertDoesNotThrow(() -> saltServerActionService.handleAction(
+                action.getId(),
+                testMinionServer.getMinionId(),
+                retCode, success,
+                "", jsonResult,
+                Optional.empty(),
+                new Date()));
     }
 
     @Test

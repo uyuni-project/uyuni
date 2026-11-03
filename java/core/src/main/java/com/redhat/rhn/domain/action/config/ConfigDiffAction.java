@@ -33,6 +33,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -120,6 +121,10 @@ public class ConfigDiffAction extends ConfigAction {
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
+        if (handleError(serverAction, jsonResult)) {
+            return;
+        }
+
         handleFilesDiff(jsonResult);
         serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.diffed"));
         /*
@@ -128,6 +133,25 @@ public class ConfigDiffAction extends ConfigAction {
          * already exist on the system and action is considered as Failed even though there was no error.
          */
         serverAction.setStatusCompleted();
+    }
+
+    private boolean handleError(ServerAction serverAction, JsonElement jsonResult) {
+        try {
+            //bsc#1246709
+            JsonObject jsonObject = ((JsonObject) jsonResult);
+            if (jsonObject.size() == 3 &&
+                    jsonObject.has("result") && (!jsonObject.get("result").getAsBoolean()) &&
+                    jsonObject.has("retcode") && (jsonObject.get("retcode").getAsInt() != 0) &&
+                    jsonObject.has("comment")) {
+                serverAction.setStatusFailed();
+                serverAction.setResultMsg(jsonObject.get("comment").getAsString());
+                return true;
+            }
+        }
+        catch (Exception e) {
+            //ignore exceptions
+        }
+        return false;
     }
 
     /**

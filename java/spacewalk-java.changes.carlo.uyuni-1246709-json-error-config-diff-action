@@ -1,0 +1,1 @@
+- Fix config diff lock throwing server error (bsc#1246709)
