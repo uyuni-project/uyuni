@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 //  Password Validation with Configured Password Policy
 let passwordPolicy = {
   consecutiveCharsFlag: false,
