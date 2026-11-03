@@ -37,6 +37,9 @@ Feature: Hub access token lifecycle management
     When I invalidate the access token for "peripheral1" on hub
     Then the access token for "peripheral1" should be listed as "Invalid"
 
+  ## Known failing, bsc#1285399: after the token is invalidated the peripheral still syncs from the hub,
+  ## so no RepoMDError is logged and this scenario times out. Expected to stay red until the bug is fixed;
+  ## remove this note then.
   Scenario: Verify hub-to-peripheral communication fails after token invalidation
     When I initiate channel sync from peripheral "peripheral1"
     Then channel sync from peripheral "peripheral1" should fail with a repository access error
