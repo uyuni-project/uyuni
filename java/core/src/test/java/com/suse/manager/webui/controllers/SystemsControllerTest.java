@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -45,6 +46,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -53,6 +57,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -250,5 +256,36 @@ public class SystemsControllerTest extends BaseControllerTestCase {
         assertEquals("My description for schedule", parsed.getActionDescription().get());
     }
 
+    private static Stream<Arguments> provideValuesForFilterParser() {
+        return Stream.of(
+                Arguments.of("proxy", "proxy =", "true"),
+                Arguments.of("=proxy", "proxy =", "true"),
+                Arguments.of("!=proxy", "proxy !=", "true"),
+                Arguments.of("!=proxy", "proxy !=", "true"),
+                Arguments.of("mgr_server", "mgr_server =", "true"),
+                Arguments.of("= mgr_server", "mgr_server =", "true"),
+                Arguments.of("!= mgr_server", "mgr_server !=", "true"),
+                Arguments.of("virtual_host", "virtual_host =", "true"),
+                Arguments.of("= virtual_host", "virtual_host =", "true"),
+                Arguments.of("!= virtual_host", "virtual_host !=", "true"),
+                Arguments.of("virtual_guest", "virtual_guest =", "true"),
+                Arguments.of("= virtual_guest", "virtual_guest =", "true"),
+                Arguments.of("!= virtual_guest", "virtual_guest !=", "true"),
+                Arguments.of("physical", "virtual_guest =", "false"),
+                Arguments.of("= physical", "virtual_guest =", "false"),
+                Arguments.of("!= physical", "virtual_guest !=", "false")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideValuesForFilterParser")
+    public void testFilterParserIsProxy(String value, String expectedFilter, String expectedValue) {
+        PageControl pc = new PageControl(0, 25, "name", true, "system_kind", value);
+        var parser = SystemsController.getFilterParser(pc);
+        var actualFilter = parser.apply(Optional.of(pc));
+
+        assertEquals(String.format(" %s CAST(:filter_value AS BOOLEAN) ", expectedFilter), actualFilter.getFilter());
+        assertEquals(expectedValue, actualFilter.getValue());
+    }
 
 }

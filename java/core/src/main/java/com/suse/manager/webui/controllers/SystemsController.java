@@ -257,14 +257,23 @@ public class SystemsController {
                         control -> {
                             List<String> values = List.of("proxy", "mgr_server", "virtual_host",
                                                           "virtual_guest", "physical");
-                            if (values.contains(control.getFilterData())) {
-                                if ("physical".equals(control.getFilterData())) {
-                                    control.setFilterColumn("virtual_guest");
-                                    control.setFilterData("false");
+                            Matcher matcher = Pattern.compile("^([!=]*) *([a-z_]+)$").matcher(control.getFilterData());
+                            if (matcher.matches()) {
+                                var value = matcher.group(2);
+                                var operator = matcher.group(1);
+                                if (values.contains(value)) {
+                                    if ("physical".equals(value)) {
+                                        control.setFilterColumn("virtual_guest");
+                                        control.setFilterData(operator + "false");
+                                    }
+                                    else {
+                                        control.setFilterColumn(value);
+                                        control.setFilterData(operator + "true");
+                                    }
                                 }
                                 else {
-                                    control.setFilterColumn(control.getFilterData());
-                                    control.setFilterData("true");
+                                    // Don't filter if the value is invalid
+                                    control.setFilter(false);
                                 }
                             }
                             else {
