@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @sles161_sshminion
 Feature: Bootstrap a SLES 16.1 Salt SSH minion

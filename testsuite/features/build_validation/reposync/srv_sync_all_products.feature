@@ -799,6 +799,22 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "ubuntu-2404" have finished
 
 @susemanager
+@ubuntu2604_minion
+  Scenario: Add Ubuntu 26.04
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text, refreshing the page
+    And I wait until I do not see "Loading" text
+    And I enter "Ubuntu 26.04" as the filtered product description
+    And I select "Ubuntu 26.04" as a product
+    Then I should see the "Ubuntu 26.04" selected
+    When I open the sub-list of the product "Ubuntu 26.04"
+    Then I should see the "SUSE Multi-Linux Manager Client Tools for Ubuntu 2604 amd64" selected
+    When I click the Add Product button
+    And I wait until I see "Ubuntu 26.04" product has been added
+    And I wait until all synchronized channels for "ubuntu-2604" have finished
+
+@susemanager
 @debian13_minion
   Scenario: Add Debian 13
     Given I am authorized for the "Admin" section
