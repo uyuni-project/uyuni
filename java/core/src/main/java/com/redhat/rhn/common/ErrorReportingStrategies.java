@@ -62,7 +62,7 @@ public class ErrorReportingStrategies {
         Logger logger = getLogger(obj);
         return () -> {
             logger.error(message);
-            return new RhnRuntimeException(message);
+            throw new RhnRuntimeException(message);
         };
     }
 
