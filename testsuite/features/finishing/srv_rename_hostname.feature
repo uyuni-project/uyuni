@@ -65,7 +65,8 @@ Feature: Reconfigure the server's hostname
 
   Scenario: Do some minimal smoke test on the renamed server
     Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Details" in the content area
+    When I store the current last event id for "sle_minion"
+    And I follow "Details" in the content area
     And I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
@@ -73,11 +74,7 @@ Feature: Reconfigure the server's hostname
       date
       """
     And I click on "Schedule"
-    And I follow "Events" in the content area
-    And I follow "Pending" in the content area
-    And I wait at most 180 seconds until I do not see "Remote Command on" text, refreshing the page
-    And I follow "History" in the content area
-    And I wait until I see the event "Remote Command on" completed during last minute, refreshing the page
+    Then I wait until a new "Remote Command on" event is completed for "sle_minion"
 
   Scenario: Change hostname back and reboot server
     When I change back the server's hostname
