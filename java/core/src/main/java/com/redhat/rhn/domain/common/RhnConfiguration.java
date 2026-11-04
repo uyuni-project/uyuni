@@ -40,7 +40,7 @@ public class RhnConfiguration extends BaseDomainHelper {
     /**
      * Type of a configuration value
      */
-    public enum ValueType {
+    private enum ValueType {
         STRING,
         INTEGER,
         BOOLEAN,
@@ -51,7 +51,7 @@ public class RhnConfiguration extends BaseDomainHelper {
      * Visibility of a configuration key in the server settings UI.
      * Hidden keys are managed elsewhere and can't be changed there.
      */
-    public enum Visibility {
+    private enum Visibility {
         VISIBLE,
         HIDDEN
     }
@@ -97,7 +97,7 @@ public class RhnConfiguration extends BaseDomainHelper {
             visibility = visibilityIn;
         }
 
-        public ValueType getType() {
+        private ValueType getType() {
             return type;
         }
 
@@ -105,7 +105,7 @@ public class RhnConfiguration extends BaseDomainHelper {
             return visibility == Visibility.HIDDEN;
         }
 
-        public boolean isBoolean() {
+        private boolean isBoolean() {
             return type == ValueType.BOOLEAN;
         }
     }
