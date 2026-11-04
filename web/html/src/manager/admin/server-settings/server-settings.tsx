@@ -20,11 +20,12 @@ import { ServerSetting, ServerSettingsModel } from "./server-settings.types";
 
 const ENDPOINT = "/rhn/manager/api/admin/config/server-settings";
 
+// Fields of unmodified settings stay empty, so the default value is shown as placeholder
 const toModel = (settings: ServerSetting[]): ServerSettingsModel =>
   Object.fromEntries(
     settings.map((setting) => [
       setting.key,
-      setting.type === "BOOLEAN" ? setting.value === "true" : (setting.value ?? ""),
+      setting.type === "BOOLEAN" ? setting.value === "true" : setting.modified ? (setting.value ?? "") : "",
     ])
   );
 
@@ -39,13 +40,6 @@ export const changedValues = (settings: ServerSetting[], model: ServerSettingsMo
       .filter((setting) => setting.key in model && value(setting) !== stored[setting.key])
       .map((setting) => [setting.key, String(value(setting))])
   );
-};
-
-const defaultHint = (setting: ServerSetting) => {
-  if (setting.type === "BOOLEAN") {
-    return setting.defaultValue === "true" ? t("Default: enabled") : t("Default: disabled");
-  }
-  return setting.defaultValue ? t("Default: {value}", { value: setting.defaultValue }) : t("Default: not set");
 };
 
 type Props = {
@@ -98,12 +92,26 @@ const ServerSettings = (props: Props) => {
       })
       .catch(onError);
 
+  // Like the password policy page: show the default values, they are stored with "Save"
+  const resetAll = () => {
+    setModel(
+      Object.fromEntries(
+        settings.map((setting) => [setting.key, setting.type === "BOOLEAN" ? setting.defaultValue === "true" : ""])
+      )
+    );
+    setErrors({});
+  };
+
   // InputBase renders the hint in a list, so it needs a key
   const hint = (setting: ServerSetting) => (
     <span key="hint">
       {setting.description}
-      <br />
-      {defaultHint(setting)}
+      {setting.type === "BOOLEAN" && (
+        <>
+          <br />
+          {setting.defaultValue === "true" ? t("Default: enabled") : t("Default: disabled")}
+        </>
+      )}
       {setting.modified && (
         <Button
           id={`reset-${setting.key}`}
@@ -158,7 +166,16 @@ const ServerSettings = (props: Props) => {
           )}
           <div className="row">
             <div className="col-md-6 col-md-offset-3 offset-md-3">
-              <AsyncButton id="saveButton" className="btn-primary" text={t("Save")} action={save} />
+              <div className="btn-group">
+                <AsyncButton id="saveButton" className="btn-primary" text={t("Save")} action={save} />
+                <Button
+                  id="resetAllButton"
+                  className="btn-secondary"
+                  text={t("Reset All")}
+                  title={t("Show the default values of all settings, they are stored with Save")}
+                  handler={resetAll}
+                />
+              </div>
             </div>
           </div>
         </Panel>
