@@ -31,10 +31,13 @@ const toModel = (settings: ServerSetting[]): ServerSettingsModel =>
 /** The values which differ from the stored values, booleans as "true" or "false" */
 export const changedValues = (settings: ServerSetting[], model: ServerSettingsModel): Record<string, string> => {
   const stored = toModel(settings);
+  // InputBase replaces an unchecked (false) check box value with ""
+  const value = (setting: ServerSetting) =>
+    setting.type === "BOOLEAN" ? model[setting.key] === true : model[setting.key];
   return Object.fromEntries(
-    Object.entries(model)
-      .filter(([key, value]) => value !== stored[key])
-      .map(([key, value]) => [key, String(value)])
+    settings
+      .filter((setting) => setting.key in model && value(setting) !== stored[setting.key])
+      .map((setting) => [setting.key, String(value(setting))])
   );
 };
 
@@ -52,7 +55,7 @@ type Props = {
 const ServerSettings = (props: Props) => {
   const [settings, setSettings] = useState(props.settings);
   const [model, setModel] = useState(toModel(props.settings));
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
 
   const onResponse = (response: JsonResult<ServerSetting[]>) => {
     setSettings(response.data);
@@ -80,10 +83,17 @@ const ServerSettings = (props: Props) => {
       })
       .catch(onError);
 
+  // Keep the unsaved changes of the other settings
   const reset = (key: string) =>
     Network.post(`${ENDPOINT}/reset`, { key })
-      .then((response) => {
-        onResponse(response);
+      .then((response: JsonResult<ServerSetting[]>) => {
+        setSettings(response.data);
+        setModel((oldModel) => ({ ...oldModel, [key]: toModel(response.data)[key] }));
+        setErrors((oldErrors) => {
+          const otherErrors = { ...oldErrors };
+          delete otherErrors[key];
+          return otherErrors;
+        });
         showSuccessToastr(t("{key} reset to the default value", { key }));
       })
       .catch(onError);

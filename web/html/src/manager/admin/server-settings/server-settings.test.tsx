@@ -53,6 +53,10 @@ describe("Server settings", () => {
     });
   });
 
+  test("changedValues treats an empty boolean value as unchecked", () => {
+    expect(changedValues(settings, { REPOSYNC_TIMEOUT: "300", SYNC_SOURCE_PACKAGES: "" })).toEqual({});
+  });
+
   test("renders all settings with description and default", () => {
     render(<ServerSettings settings={settings} />);
 
@@ -84,6 +88,35 @@ describe("Server settings", () => {
       REPOSYNC_TIMEOUT: "600",
       SYNC_SOURCE_PACKAGES: "true",
     });
+  });
+
+  test("doesn't send unchanged booleans", async () => {
+    const post = jest
+      .spyOn(Network, "post")
+      .mockReturnValue(Utils.cancelable(Promise.resolve({ success: true, messages: [], data: settings })));
+    render(<ServerSettings settings={settings} />);
+
+    await type(screen.getByLabelText("REPOSYNC_TIMEOUT"), "600");
+    await click(screen.getByText("Save"));
+
+    expect(post).toHaveBeenCalledWith("/rhn/manager/api/admin/config/server-settings", { REPOSYNC_TIMEOUT: "600" });
+  });
+
+  test("keeps unsaved changes of other settings on reset", async () => {
+    const resetSettings = settings.map((setting) =>
+      setting.key === "NO_PROXY" ? { ...setting, value: null, modified: false } : setting
+    );
+    jest
+      .spyOn(Network, "post")
+      .mockReturnValue(Utils.cancelable(Promise.resolve({ success: true, messages: [], data: resetSettings })));
+    render(<ServerSettings settings={settings} />);
+
+    await type(screen.getByLabelText("REPOSYNC_TIMEOUT"), "600");
+    await click(screen.getByText("Reset to default"));
+
+    expect(screen.getByLabelText<HTMLInputElement>("REPOSYNC_TIMEOUT").value).toBe("600");
+    expect(screen.getByLabelText<HTMLInputElement>("NO_PROXY").value).toBe("");
+    expect(document.getElementById("reset-NO_PROXY")).toBeNull();
   });
 
   test("resets a setting", async () => {
