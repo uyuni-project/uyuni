@@ -43,7 +43,8 @@ Feature: Recurring Actions
     And file "/proc/sys/net/ipv4/conf/all/forwarding" should contain "1" on "sle_minion"
 
   Scenario: Edit the IP forwarding custom state recurring action
-    When I am on the "Recurring Actions" page of this "sle_minion"
+    When I store the current last event id for "sle_minion"
+    And I am on the "Recurring Actions" page of this "sle_minion"
     Then I should see a "IP forwarding custom state recurring action" text
     When I click the "IP forwarding custom state recurring action" item edit button
     And I wait until I see "Update Schedule" text
@@ -58,10 +59,11 @@ Feature: Recurring Actions
     Then I wait until I see "Schedule successfully updated" text
     And I should see a "custom_state_schedule_name_changed" text
     And I should see a "Minion" text
+    Then I wait until a new "Apply recurring states [util.syncstates] scheduled" event is completed for "sle_minion"
     When I follow "Events"
     And I follow "History"
-    Then I wait at most 420 seconds until event "Apply recurring states [util.syncstates] scheduled" is completed
-    And I wait until I see "SLS: util.syncstates" text
+    And I follow first "Apply recurring states [util.syncstates] scheduled"
+    Then I wait until I see "SLS: util.syncstates" text
 
 # This fails in github actions...
 @skip_if_github_validation
@@ -85,7 +87,8 @@ Feature: Recurring Actions
     Then I wait until I see "Schedule 'custom_state_schedule_name_changed' has been deleted." text
 
   Scenario: Create a minion Highstate Recurring Action
-    When I am on the "Recurring Actions" page of this "sle_minion"
+    When I store the current last event id for "sle_minion"
+    And I am on the "Recurring Actions" page of this "sle_minion"
     Then I should see a "No schedules created. Use Create to add a schedule" text
     When I click on "Create"
     And I wait until I see "Schedule Name" text
@@ -98,9 +101,7 @@ Feature: Recurring Actions
     Then I wait until I see "Schedule successfully created" text
     And I should see a "Minion Highstate Recurring Action" text
     And I should see a "Minion" text
-    When I follow "Events"
-    And I follow "History"
-    And I wait until I see the event "Apply highstate in test-mode scheduled" completed during last minute, refreshing the page
+    Then I wait until a new "Apply highstate in test-mode scheduled" event is completed for "sle_minion"
 
   Scenario: Edit the minion Highstate Recurring Action
     When I am on the "Recurring Actions" page of this "sle_minion"
@@ -169,7 +170,8 @@ Feature: Recurring Actions
     And I wait until I see "Software Updates Available" text, refreshing the page
 
   Scenario: Create a recurring action to apply "uptodate" state to a system group
-    When I follow the left menu "Systems > System Groups"
+    When I store the current last event id for "sle_minion"
+    And I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
     And I follow "Recurring Actions" in the content area
     Then I should see a "No schedules created. Use Create to add a schedule" text
@@ -188,9 +190,7 @@ Feature: Recurring Actions
     Then I wait until I see "Schedule successfully created" text
     And I should see a "Recurring action to keep Recurring-Action-test-group uptodate" text
     And I should see a "Group" text
-    When I am on the "Events" page of this "sle_minion"
-    And I follow "History"
-    Then I wait until I see the event "Apply recurring states [uptodate] scheduled" completed during last minute, refreshing the page
+    Then I wait until a new "Apply recurring states [uptodate] scheduled" event is completed for "sle_minion"
     When I am on the Systems overview page of this "sle_minion"
     Then I wait at most 500 seconds until I do not see "System is up to date" text, refreshing the page
 
