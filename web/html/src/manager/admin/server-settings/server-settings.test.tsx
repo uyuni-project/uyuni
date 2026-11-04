@@ -129,6 +129,25 @@ describe("Server settings", () => {
     expect(document.getElementById("reset-NO_PROXY")).toBeNull();
   });
 
+  test("reset doesn't take over changes of other settings made by someone else", async () => {
+    // another admin changed REPOSYNC_TIMEOUT in the meantime
+    const resetSettings = settings.map((setting) => {
+      if (setting.key === "NO_PROXY") {
+        return { ...setting, value: null, modified: false };
+      }
+      return setting.key === "REPOSYNC_TIMEOUT" ? { ...setting, value: "600", modified: true } : setting;
+    });
+    const post = jest
+      .spyOn(Network, "post")
+      .mockReturnValue(Utils.cancelable(Promise.resolve({ success: true, messages: [], data: resetSettings })));
+    render(<ServerSettings settings={settings} />);
+
+    await click(screen.getByText("Reset to default"));
+    await click(screen.getByText("Save"));
+
+    expect(post).toHaveBeenLastCalledWith("/rhn/manager/api/admin/config/server-settings", {});
+  });
+
   test("Reset All shows the default values and stores them with Save", async () => {
     const post = jest
       .spyOn(Network, "post")

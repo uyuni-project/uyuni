@@ -81,8 +81,12 @@ const ServerSettings = (props: Props) => {
   const reset = (key: string) =>
     Network.post(`${ENDPOINT}/reset`, { key })
       .then((response: JsonResult<ServerSetting[]>) => {
-        setSettings(response.data);
-        setModel((oldModel) => ({ ...oldModel, [key]: toModel(response.data)[key] }));
+        // Take over only the reset setting, otherwise changes of others become unsaved local changes
+        const resetSetting = response.data.find((setting) => setting.key === key);
+        if (resetSetting) {
+          setSettings((oldSettings) => oldSettings.map((setting) => (setting.key === key ? resetSetting : setting)));
+          setModel((oldModel) => ({ ...oldModel, ...toModel([resetSetting]) }));
+        }
         setErrors((oldErrors) => {
           const otherErrors = { ...oldErrors };
           delete otherErrors[key];
