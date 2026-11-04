@@ -53,6 +53,7 @@ public class SCCRepository extends BaseDomainHelper {
     private String url;
     private boolean autorefresh;
     private boolean signed = true;
+    private boolean pqcSigned = false;
     private boolean installerUpdates = false;
 
     private Set<ChannelTemplate> channelTemplates = new HashSet<>();
@@ -211,6 +212,22 @@ public class SCCRepository extends BaseDomainHelper {
     }
 
     /**
+     * @return true if repo is PQC signed
+     */
+    @Convert(converter = YesNoConverter.class)
+    @Column(name = "pqc_signed")
+    public boolean isPqcSigned() {
+        return pqcSigned;
+    }
+
+    /**
+     * @param pqcSignedIn true if repo is PQC signed
+     */
+    public void setPqcSigned(boolean pqcSignedIn) {
+        this.pqcSigned = pqcSignedIn;
+    }
+
+    /**
      * @return Return true if this is for installer updates
      */
     @Convert(converter = YesNoConverter.class)
@@ -303,6 +320,7 @@ public class SCCRepository extends BaseDomainHelper {
                 .append(getDescription(), otherSCCRepository.getDescription())
                 .append(isAutorefresh(), otherSCCRepository.isAutorefresh())
                 .append(isSigned(), otherSCCRepository.isSigned())
+                .append(isPqcSigned(), otherSCCRepository.isPqcSigned())
                 .append(isInstallerUpdates(), otherSCCRepository.isInstallerUpdates())
             .isEquals();
     }

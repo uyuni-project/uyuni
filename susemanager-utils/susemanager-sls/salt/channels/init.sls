@@ -6,6 +6,7 @@ include:
   - util.syncstates
   - certs
   - channels.gpg-keys
+  - channels.pqc-keys
 
 {%- if not salt['pillar.get']('mgr_disable_local_repos', True) %}
 {# disable at least the SUSE-Manager-Bootstrap repo #}

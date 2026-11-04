@@ -285,6 +285,7 @@ public class ControllerTestUtils {
                                                                String parentChannelLabel,
                                                                String originalChannelLabel,
                                                                boolean isGpgCheck,
+                                                               boolean isPqcCheck,
                                                                boolean isInstallerUpdates,
                                                                String archLabel,
                                                                String checksumLabel,
@@ -303,6 +304,7 @@ public class ControllerTestUtils {
         info.setGpgKeyUrl("gpgKeyUrl_" + channelLabel);
         info.setGpgKeyId("gpgKeyId");
         info.setGpgKeyFp("gpgKeyFp_" + channelLabel);
+        info.setPqcCheck(isPqcCheck);
         info.setEndOfLifeDate(endOfLifeDate);
         info.setChecksumTypeLabel(checksumLabel);
         info.setChannelProductProduct("channelProductProduct");
@@ -377,7 +379,7 @@ public class ControllerTestUtils {
                         .build();
         return createChannelInfoDetailsJson(testPeripheralUser.getOrg().getId(),
                 channelLabel, "", "",
-                true, true, "channel-s390", "sha256",
+                true, false, true, "channel-s390", "sha256",
                 createDateUtil(2096, 10, 22));
     }
 
@@ -466,6 +468,7 @@ public class ControllerTestUtils {
         checkMethod.accept(modifyInfo.getGpgKeyUrl(), ch.getGPGKeyUrl());
         checkMethod.accept(modifyInfo.getGpgKeyId(), ch.getGPGKeyId());
         checkMethod.accept(modifyInfo.getGpgKeyFp(), ch.getGPGKeyFp());
+        checkMethod.accept(modifyInfo.isPqcCheck(), ch.isPqcCheck());
         checkMethod.accept(modifyInfo.getEndOfLifeDate().toString(), ch.getEndOfLife().toString());
 
         checkMethod.accept(modifyInfo.getChannelProductProduct(), ch.getProduct().getProduct());
