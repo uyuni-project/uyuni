@@ -98,14 +98,10 @@ public class ServerSettingsServiceTest extends BaseTestCase {
     @Test
     public void testListUsesLocalizedDescription() {
         RhnConfiguration conf = factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT);
-
-        String message = conf.getTranslatedDescription();
-        String message2 = LocalizationService.getInstance().getMessage(conf.getDescriptionMessageId());
+        String message = LocalizationService.getInstance().getMessage(conf.getDescriptionMessageId());
         conf.testSetDescription("changed in the database");
-        assertEquals(message, message2);
 
-        //assertEquals(message2, getEntry(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).description());
-        //assertEquals(message, getEntry(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).description());
+        assertEquals(message, getEntry(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).description());
     }
 
     @Test

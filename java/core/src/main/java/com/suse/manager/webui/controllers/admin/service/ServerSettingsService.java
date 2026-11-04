@@ -80,7 +80,7 @@ public class ServerSettingsService {
     //CARLO: this method should "in theory" be transferred into a different "translator" object
     // this is called the "adapter" pattern (what Ricardo refers as "Mapper")
     private ServerSettingsEntry toEntry(RhnConfiguration configuration) {
-        return new ServerSettingsEntry(configuration.getUIName(), configuration.getDescription(),
+        return new ServerSettingsEntry(configuration.getUIName(), configuration.getTranslatedDescription(),
                 configuration.getUIType(), configuration.getUIValue(),
                 configuration.getUIDefaultValue(), configuration.isUIModified());
     }
