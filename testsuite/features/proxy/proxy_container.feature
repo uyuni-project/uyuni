@@ -40,18 +40,21 @@ Feature: Setup containerized proxy
 @transactional_server
   Scenario: Reboot the proxy host
     When I reboot the "proxy" host through SSH, waiting until it comes back
+    And I wait until "venv-salt-minion" service is active on "proxy"
+    And the Salt master can reach "proxy"
+
+  Scenario: Wait until the proxy host appears
+    When I wait until onboarding is completed for "proxy"
 
 @skip_if_cloud
 @transactional_proxy
   Scenario: Reboot the proxy host again to activate the registration states
     When I follow the left menu "Systems > System List > All"
-    And I wait at most 600 seconds until I see the name of "proxy", refreshing the page
     And I follow this "proxy" link
     And I wait until I see "There is a pending transaction for this system, please reboot it to activate the changes." text, refreshing the page
     And I reboot the "proxy" host through SSH, waiting until it comes back
-
-  Scenario: Wait until the proxy host appears
-    When I wait until onboarding is completed for "proxy"
+    And I wait until "venv-salt-minion" service is active on "proxy"
+    And the Salt master can reach "proxy"
 
   Scenario: Generate containerized proxy configuration
     When I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server
