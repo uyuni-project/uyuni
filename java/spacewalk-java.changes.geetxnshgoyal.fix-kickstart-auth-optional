@@ -1,2 +1,2 @@
 - Allow saving kickstart profiles without the deprecated auth
-  command (gh#uyuni-project/uyuni#6467)
+  command (gh#uyuni-project/uyuni#6467, bsc#1286150)
