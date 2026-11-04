@@ -192,6 +192,7 @@ public class RhnConfiguration extends BaseDomainHelper {
                 }
             }
             default -> {
+                // STRING and LIST accept any value
             }
         }
     }
