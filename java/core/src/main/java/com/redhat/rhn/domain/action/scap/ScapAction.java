@@ -59,8 +59,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
@@ -145,13 +143,6 @@ public class ScapAction extends Action {
         Map<String, Object> pillar = new HashMap<>(
                 ScapUtils.parseOscapParameters(scapActionDetails.getParametersContents()));
 
-        Matcher profileMatcher = Pattern.compile("--profile (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file (([\\w./-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher tailoringIdMatcher = Pattern.compile("--tailoring-profile-id (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-
         // Old parameters for backward compatibility
         String oldParameters = "eval " +
                 scapActionDetails.getParametersContents() + " " + scapActionDetails.getPath();
@@ -185,21 +176,6 @@ public class ScapAction extends Action {
         if (scapActionDetails.getOvalfiles() != null) {
             pillar.put("ovalfiles", Arrays.stream(scapActionDetails.getOvalfiles().split(","))
                     .map(String::trim).collect(toList()));
-        }
-
-        // tailoring_profile_id takes precedence over profile
-        // Both end up setting the 'profile' pillar value
-        if (tailoringIdMatcher.find()) {
-            pillar.put("profile", tailoringIdMatcher.group(1));
-        }
-        else if (profileMatcher.find()) {
-            pillar.put("profile", profileMatcher.group(1));
-        }
-
-        if (tailoringFileMatcher.find()) {
-            String tailoringPath = tailoringFileMatcher.group(1);
-            String tailoringFilename = new File(tailoringPath).getName();
-            pillar.put("tailoring_filename", tailoringFilename);
         }
 
         ret.put(State.apply(singletonList("scap.scan"),

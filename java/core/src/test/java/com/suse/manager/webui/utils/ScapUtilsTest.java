@@ -8,9 +8,7 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
+ * SPDX-License-Identifier: GPL-2.0-only
  */
 package com.suse.manager.webui.utils;
 
@@ -101,18 +99,44 @@ public class ScapUtilsTest {
 
     @Test
     public void testUnsupportedOptionsAreIgnored() {
-        Map<String, Object> parsed = ScapUtils.parseOscapParameters(PROFILE + " --results-arf /tmp/arf.xml");
-        assertFalse(parsed.containsKey("results_arf"));
+        Map<String, Object> parsed = ScapUtils.parseOscapParameters(
+                "--results-arf /tmp/arf.xml --report /tmp/report.html");
         assertTrue(parsed.isEmpty());
     }
 
     @Test
-    public void testProfileAndTailoringAreLeftToTheCaller() {
-        // Both callers map those to different pillar entries, so they are not parsed here.
+    public void testValuesAreNotTruncated() {
         Map<String, Object> parsed = ScapUtils.parseOscapParameters(
-                PROFILE + " --tailoring-file /etc/openscap/tailoring.xml --tailoring-id component");
-        assertFalse(parsed.containsKey("profile"));
-        assertFalse(parsed.containsKey("tailoring_file"));
+                "--cpe /tmp/cpe+custom.xml --reference nist:CM-6(a) --local-files /srv/scap+files");
+
+        assertEquals("/tmp/cpe+custom.xml", parsed.get("cpe"));
+        assertEquals("nist:CM-6(a)", parsed.get("reference"));
+        assertEquals("/srv/scap+files", parsed.get("local_files"));
+    }
+
+    @Test
+    public void testProfile() {
+        Map<String, Object> parsed = ScapUtils.parseOscapParameters(PROFILE);
+        assertEquals("xccdf_org.ssgproject.content_profile_cis", parsed.get("profile"));
+        assertFalse(parsed.containsKey("tailoring_filename"));
+    }
+
+    @Test
+    public void testTailoringProfileReplacesTheProfile() {
+        Map<String, Object> parsed = ScapUtils.parseOscapParameters(PROFILE +
+                " --tailoring-file /srv/tailoring-files/3/tailoring.xml --tailoring-profile-id xccdf_tailored");
+
+        assertEquals("xccdf_tailored", parsed.get("profile"));
+        assertEquals("tailoring.xml", parsed.get("tailoring_filename"));
+    }
+
+    @Test
+    public void testTailoringIdSelectsADataStreamComponent() {
+        // "tailoring_id" is the id of the tailoring file transferred from the server, it must not be
+        // overwritten by the oscap option of the same name
+        Map<String, Object> parsed = ScapUtils.parseOscapParameters(PROFILE + " --tailoring-id component");
+
+        assertEquals("component", parsed.get("tailoring_component_id"));
         assertFalse(parsed.containsKey("tailoring_id"));
     }
 
@@ -122,6 +146,8 @@ public class ScapUtilsTest {
                 "/etc/openscap/tailoring.xml", "xccdf_tailoring_profile", "--skip-rule " + RULE, true);
         Map<String, Object> parsed = ScapUtils.parseOscapParameters(parameters);
 
+        assertEquals("xccdf_tailoring_profile", parsed.get("profile"));
+        assertEquals("tailoring.xml", parsed.get("tailoring_filename"));
         assertEquals(RULE, parsed.get("skip_rule"));
         assertEquals(true, parsed.get("fetch_remote_resources"));
     }

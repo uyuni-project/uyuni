@@ -267,8 +267,10 @@ public class SystemScapHandler extends BaseHandler {
      *     #prop_desc("string", "advancedArgs", "Advanced arguments for the oscap tool (optional).
      *     Only the options selecting the rules to evaluate and the content to use are passed on:
      *     --rule, --skip-rule, --reference, --cpe, --local-files, --datastream-id, --xccdf-id,
-     *     --benchmark-id, --fetch-remote-resources and --remediate. Any other option is ignored,
-     *     the result files being written by the scan itself.")
+     *     --benchmark-id, --tailoring-id, --fetch-remote-resources and --remediate. The paths given
+     *     to --cpe and --local-files are read on the scanned system: only the XCCDF content and the
+     *     tailoring file are transferred from the server. Other options are ignored; result and
+     *     report options are set by the scan itself.")
      *     #prop_desc("boolean", "fetchRemoteResources", "Fetch remote resources (optional, default false)")
      *   #struct_end()
      * @apidoc.param #param_desc("$date", "date", "The date to schedule the action")
