@@ -237,7 +237,7 @@ end
 def refresh_page
   # A bare reload usually fires no JS prompt, so bound the wait: the Playwright driver passes
   # this straight to the modal future and value!(nil) would otherwise block forever.
-  accept_prompt(wait: Capybara.default_max_wait_time) do
+  accept_prompt(wait: REFRESH_DIALOG_WAIT) do
     execute_script 'window.location.reload()'
   end
 rescue Capybara::ModalNotFound

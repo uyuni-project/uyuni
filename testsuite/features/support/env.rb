@@ -73,6 +73,9 @@ $default_local_storage_class = ENV.fetch('LOCAL_PATH_DEFAULT_CLASS', true) if EN
 $stdout.sync = true
 STARTTIME = Time.now.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
+# Seconds a page reload waits for a "leave page" dialog that usually never appears.
+# Independent of CAPYBARA_TIMEOUT, otherwise every refresh would last that long.
+REFRESH_DIALOG_WAIT = 3
 # Layer 3 per-scenario watchdog ceiling (see the Around hook below). Backstop against hangs that
 # Ruby's Timeout.timeout cannot interrupt (e.g. a blocked Playwright pipe call).
 # Regular scenarios are expected to finish well under 30 min; default the ceiling to 40 min.
