@@ -20,7 +20,34 @@ SELECT COALESCE(
    WHERE d.datname = '$productdb'
   ), false
 ) reindex;"
-if [ "$(printf '%s' "$query" | spacewalk-sql --select-mode - | xargs)" != "f" ]; then
+
+# Wait for postgres (bsc#1287172)
+# This is needed only for podman, it is handled by helm on kubernetes
+# (Note: a better fix would be https://github.com/uyuni-project/uyuni-tools/pull/819 but it does not work with older podman
+# so it has been reverted https://github.com/uyuni-project/uyuni-tools/pull/820)
+db_timeout=${DB_STARTUP_TIMEOUT:-300}
+retries=$db_timeout
+reindex_needed=""
+last_error=""
+
+while [ "$retries" -gt 0 ]; do
+    set +e
+    output=$(printf '%s' "$query" | spacewalk-sql --select-mode - 2>&1)
+    rc=$?
+    set -e
+    if [ "$rc" -eq 0 ]; then
+        reindex_needed=$(echo "$output" | xargs)
+        break
+    fi
+    last_error="$output"
+    if [ "$retries" -eq "$db_timeout" ]; then
+        echo "Waiting for database to accept connections..."
+    fi
+    retries=$((retries - 1))
+    sleep 1
+done
+
+if [ "$reindex_needed" = "t" ]; then
     # Reindexing may not be needed for every collation change, but better be on the safe side.
     echo "Reindexing database. This may take a while, please do not cancel it!"
     # Replaced bash-only <<< with pipe
@@ -33,4 +60,11 @@ if [ "$(printf '%s' "$query" | spacewalk-sql --select-mode - | xargs)" != "f" ];
     echo "ALTER DATABASE ${productdb} REFRESH COLLATION VERSION;" | spacewalk-sql -
     echo "ALTER DATABASE ${reportdb} REFRESH COLLATION VERSION;" | spacewalk-sql --reportdb -
     set -e
+elif [ "$reindex_needed" = "f" ]; then
+    :
+else
+    echo "Error: Database is not accepting connections after ${db_timeout}s timeout. Collation check skipped." >&2
+    if [ -n "$last_error" ]; then
+        echo "Last error: $last_error" >&2
+    fi
 fi
