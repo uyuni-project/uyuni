@@ -177,8 +177,9 @@ public class RhnConfiguration extends BaseDomainHelper {
         }
         switch (key.getType()) {
             case INTEGER -> {
+                // read as Integer by some consumers, e.g. UserDefaults
                 try {
-                    Long.parseLong(val);
+                    Integer.parseInt(val);
                 }
                 catch (NumberFormatException e) {
                     result.addFieldError(key.name(), "server_settings.error.integer", key.name());

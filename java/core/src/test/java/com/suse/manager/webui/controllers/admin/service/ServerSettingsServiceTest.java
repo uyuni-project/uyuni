@@ -170,6 +170,17 @@ public class ServerSettingsServiceTest extends BaseTestCase {
     }
 
     @Test
+    public void testUpdateIntegerOutOfRangeFails() {
+        factory.resetToDefault(RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MAX);
+
+        ValidatorException e = assertThrows(ValidatorException.class, () -> service.update(Map.of(
+                RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MAX.name(), "2147483648")));
+
+        assertTrue(e.getResult().getFieldErrors().containsKey(RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MAX.name()));
+        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MAX).testGetStoredValue());
+    }
+
+    @Test
     public void testUpdateHiddenKeyFails() {
         factory.resetToDefault(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN);
 
