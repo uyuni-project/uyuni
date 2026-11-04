@@ -16,7 +16,7 @@ export const applyOverrides = (name, version, license) => {
   /**
    * Replace deprecated SPDX identifiers like "GPL-3.0" with the "-only" variant, e.g. pwstrength-bootstrap declares "(GPL-3.0 OR MIT)"
    */
-  license = license.replace(/\b((?:A|L)?GPL-\d\.\d)(?![\w.+-])/g, "$1-only");
+  license = license.replace(/\b([AL]?GPL-\d\.\d)(?![\w.+-])/g, "$1-only");
 
   /**
    * These packages delcare "BSD" without any other info in the package.json, but the license text in the repo is actually BSD-3-Clause
