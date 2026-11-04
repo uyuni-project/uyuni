@@ -346,8 +346,6 @@ public class RhnConfiguration extends BaseDomainHelper {
         return StringUtils.isNotBlank(value);
     }
 
-    //CARLO: the following 2 methods can be mocked since they are used only for testing
-
     /**
      * FOR TESTS ONLY!
      * @return the stored value without default fallback
