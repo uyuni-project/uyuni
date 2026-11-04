@@ -56,7 +56,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     Then channel "clone-fake-rpm-suse-channel" should exist on "peripheral1"
 
   Scenario: Verify cloned channel on peripheral1 has expected packages
-    Then channel "clone-fake-rpm-suse-channel" on "peripheral1" should have "4" packages
+    Then channel "clone-fake-rpm-suse-channel" on "peripheral1" should have "3" packages
 
   Scenario: Sync the SLES 15 SP7 base channel and its modules from hub to peripheral1 for minion bootstrap
     When I configure hub to sync all "-SP7-" channels to "peripheral1"

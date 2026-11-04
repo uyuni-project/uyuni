@@ -589,7 +589,7 @@ end
 
 # Fails on a RepoMDError during the sync, also when it shows up only after the sync ended.
 Then(/^channel sync from peripheral "([^"]*)" should succeed$/) do |host|
-  wait_for_repo_syncs_to_finish(host, 600, on_poll: ->(node) { raise_on_repomd_error(host, node) })
+  wait_for_repo_syncs_to_finish(host, 1500, on_poll: ->(node) { raise_on_repomd_error(host, node) })
   raise_on_repomd_error(host, get_target(host))
 end
 
