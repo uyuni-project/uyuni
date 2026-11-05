@@ -1,0 +1,2 @@
+- Create an API entry to list package orphans with pagination
+  (bsc#1286754)

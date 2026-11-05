@@ -60,7 +60,7 @@ def do_package_details(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    args, _options = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
         self.help_package_details()
@@ -233,7 +233,7 @@ def do_package_remove(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    args, _options = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
         self.help_package_remove()
@@ -272,11 +272,31 @@ def do_package_remove(self, args):
 
 def help_package_listorphans(self):
     print(_("package_listorphans: List packages that are not in a channel"))
-    print(_("usage: package_listorphans"))
+    print(_("usage: package_listorphans [LIMIT] [OFFSET]"))
+    print(
+        _(
+            "       note: when no limit nor offset are provided, all orphan packages will be listed"
+        )
+    )
 
 
 def do_package_listorphans(self, args, doreturn=False):
-    packages = self.client.channel.software.listPackagesWithoutChannel(self.session)
+    # pylint: disable-next=unused-variable
+    args, _options = parse_command_arguments(args, get_argument_parser())
+
+    if 0 == len(args):
+        packages = self.client.channel.software.listPackagesWithoutChannel(self.session)
+    elif 1 == len(args):
+        packages = self.client.channel.software.listPackagesWithoutChannel(
+            self.session, int(0), int(args[0])
+        )
+    elif 2 == len(args):
+        packages = self.client.channel.software.listPackagesWithoutChannel(
+            self.session, int(args[1]), int(args[0])
+        )
+    else:
+        self.help_package_listorphans()
+        return None
 
     packages = build_package_names(packages)
 
@@ -293,30 +313,63 @@ def do_package_listorphans(self, args, doreturn=False):
 
 def help_package_removeorphans(self):
     print(_("package_removeorphans: Remove packages that are not in a channel"))
-    print(_("usage: package_removeorphans"))
+    print(_("usage: package_removeorphans [BATCH_SIZE]"))
+    print(
+        _(
+            "       optional: BATCH_SIZE size of the batch in which orphan packages will be removed in, default 1000"
+        )
+    )
 
 
 def do_package_removeorphans(self, args):
-    packages = self.client.channel.software.listPackagesWithoutChannel(self.session)
+    # pylint: disable-next=unused-variable
+    args, _options = parse_command_arguments(args, get_argument_parser())
 
-    if not packages:
-        print(_("No orphaned packages has been found"))
-        logging.warning(_N("No orphaned packages"))
+    if 0 == len(args):
+        batch_size = 1000
+    elif 1 == len(args):
+        batch_size = int(args[0])
+    else:
+        self.help_package_removeorphans()
+        return None
+
+    package_ids = []
+    packages = self.client.channel.software.listPackagesWithoutChannel(
+        self.session, int(0), batch_size
+    )
+    package_ids.extend([p.get("id") for p in packages])
+
+    if not package_ids:
+        print(_("No orphan packages have been found"))
+        logging.warning(_N("No orphan packages"))
         return 1
 
-    print(_("Packages"))
-    print("--------")
-    print("\n".join(sorted(build_package_names(packages))))
+    offset = batch_size
+    while packages:
+        packages = self.client.channel.software.listPackagesWithoutChannel(
+            self.session, offset, batch_size
+        )
+        package_ids.extend([p.get("id") for p in packages])
+        offset += batch_size
 
-    if not self.user_confirm(_("Remove these packages [y/N]:")):
+    print(
+        _(
+            "There are %i orphan packages to be removed (use package_listorphans to see the list)"
+        )
+        % len(package_ids)
+    )
+
+    if not self.user_confirm(
+        _("Remove these %i orphan packages [y/N]:") % len(package_ids)
+    ):
         print(_("No packages were removed"))
         return 1
 
-    for package in packages:
+    for pid in package_ids:
         try:
-            self.client.packages.removePackage(self.session, package.get("id"))
+            self.client.packages.removePackage(self.session, pid)
         except xmlrpclib.Fault:
-            logging.error(_N("Failed to remove package ID %i") % package.get("id"))
+            logging.error(_N("Failed to remove package ID %i") % pid)
             return 1
 
     return 0
@@ -339,7 +392,7 @@ def do_package_listinstalledsystems(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    args, _options = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
         self.help_package_listinstalledsystems()
@@ -395,7 +448,7 @@ def do_package_listerrata(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    args, _options = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
         self.help_package_listerrata()
@@ -439,7 +492,7 @@ def do_package_listdependencies(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    args, _options = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
 
     if not args:
         self.help_package_listdependencies()
