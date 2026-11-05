@@ -37,6 +37,7 @@ public final class SysinfoParser {
 
     // Values reported when the sysinfo does not carry one
     private static final String S390_DEFAULT_CONTROL_PROGRAM = "z/VM";
+    private static final String S390_KVM_CONTROL_PROGRAM = "KVM";
     private static final String S390_UNKNOWN_OS_VERSION = "N/A";
 
     private SysinfoParser() {
@@ -136,4 +137,39 @@ public final class SysinfoParser {
         }
     }
 
+    /**
+     * Checks if a mainframe VM is running on z/VM
+     * @param sysvalues the parsed sysinfo
+     * @return true if a mainframe VM is running on z/VM
+     */
+    public static boolean isS390VmRunningOnZVM(Map<String, String> sysvalues) {
+        return sysvalues.entrySet().stream()
+                .filter(e -> e.getKey().toLowerCase().contains(SYSINFO_KEY_CONTROL_PROGRAM))
+                .map(Map.Entry::getValue)
+                .map(String::toLowerCase)
+                .anyMatch(s -> s.startsWith(S390_DEFAULT_CONTROL_PROGRAM.toLowerCase()));
+    }
+
+    /**
+     * Checks if a mainframe VM is running on KVM
+     * @param sysvalues the parsed sysinfo
+     * @return true if a mainframe VM is running on KVM
+     */
+    public static boolean isS390VmRunningOnKVM(Map<String, String> sysvalues) {
+        return sysvalues.entrySet().stream()
+                .filter(e -> e.getKey().toLowerCase().contains(SYSINFO_KEY_CONTROL_PROGRAM))
+                .map(Map.Entry::getValue)
+                .map(String::toLowerCase)
+                .anyMatch(s -> s.startsWith(S390_KVM_CONTROL_PROGRAM.toLowerCase()));
+    }
+
+    /**
+     * Checks if a mainframe is a hypervisor on a LPAR
+     * @param sysvalues the parsed sysinfo
+     * @return true if a mainframe is a hypervisor on a LPAR
+     */
+    public static boolean isS390Hypervisor(Map<String, String> sysvalues) {
+        return sysvalues.entrySet().stream()
+                .noneMatch(e -> e.getKey().toLowerCase().contains(SYSINFO_KEY_CONTROL_PROGRAM));
+    }
 }
