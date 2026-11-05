@@ -1,0 +1,2 @@
+ - Add upgrade script that retroactively corrects ownership
+   during upgrade (uyuni#12781)
