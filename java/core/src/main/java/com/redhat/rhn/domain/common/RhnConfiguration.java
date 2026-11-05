@@ -334,18 +334,17 @@ public class RhnConfiguration extends BaseDomainHelper {
     }
 
     /**
+     * @return true if the value is null and the default value would be used in getters
+     */
+    public boolean usesDefaultValue() {
+        return (null == value);
+    }
+
+    /**
      * @return true if the value differ from its default
      */
     public boolean isUIModified() {
         return StringUtils.isNotBlank(value);
-    }
-
-    /**
-     * FOR TESTS ONLY!
-     * @return the stored value without default fallback
-     */
-    public String testGetStoredValue() {
-        return value;
     }
 
     /**
@@ -355,5 +354,4 @@ public class RhnConfiguration extends BaseDomainHelper {
     public void testSetDescription(String descriptionIn) {
         description = descriptionIn;
     }
-
 }

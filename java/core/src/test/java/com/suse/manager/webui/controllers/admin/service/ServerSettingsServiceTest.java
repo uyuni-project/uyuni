@@ -15,7 +15,6 @@ package com.suse.manager.webui.controllers.admin.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -137,8 +136,8 @@ public class ServerSettingsServiceTest extends BaseTestCase {
                 RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER.name(), "false",
                 RhnConfiguration.KEYS.REPOSYNC_TIMEOUT.name(), "300"));
 
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER).testGetStoredValue());
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER).usesDefaultValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).usesDefaultValue());
     }
 
     @Test
@@ -147,7 +146,7 @@ public class ServerSettingsServiceTest extends BaseTestCase {
 
         service.update(Map.of(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT.name(), " "));
 
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).usesDefaultValue());
     }
 
     @Test
@@ -164,9 +163,9 @@ public class ServerSettingsServiceTest extends BaseTestCase {
         assertEquals(2, e.getResult().getFieldErrors().size());
         assertTrue(e.getResult().getFieldErrors().containsKey(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT.name()));
         assertTrue(e.getResult().getFieldErrors().containsKey(RhnConfiguration.KEYS.SYNC_SOURCE_PACKAGES.name()));
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_MINRATE).testGetStoredValue());
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).testGetStoredValue());
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.SYNC_SOURCE_PACKAGES).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_MINRATE).usesDefaultValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).usesDefaultValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.SYNC_SOURCE_PACKAGES).usesDefaultValue());
     }
 
     @Test
@@ -177,7 +176,7 @@ public class ServerSettingsServiceTest extends BaseTestCase {
                 RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MAX.name(), "2147483648")));
 
         assertTrue(e.getResult().getFieldErrors().containsKey(RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MAX.name()));
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MAX).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MAX).usesDefaultValue());
     }
 
     @Test
@@ -188,7 +187,7 @@ public class ServerSettingsServiceTest extends BaseTestCase {
                 service.update(Map.of(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN.name(), "1")));
 
         assertEquals("server_settings.error.hidden_key", e.getResult().getErrors().get(0).getKey());
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).usesDefaultValue());
     }
 
     @Test
@@ -205,7 +204,7 @@ public class ServerSettingsServiceTest extends BaseTestCase {
 
         service.reset(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT.name());
 
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).usesDefaultValue());
     }
 
     @Test

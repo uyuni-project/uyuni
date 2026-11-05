@@ -15,7 +15,6 @@ package com.suse.manager.webui.controllers.admin.handlers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -134,7 +133,7 @@ public class ServerSettingsControllerTest extends BaseControllerTestCase {
                 controller.resetSetting(getPostRequestWithCsrfAndBody(URL + "/reset", body), response, satAdmin));
 
         assertTrue(isSuccess(result));
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_TIMEOUT).usesDefaultValue());
     }
 
     @Test

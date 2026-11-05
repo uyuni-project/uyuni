@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.setup;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
@@ -83,9 +84,9 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         emptySettings.setPassword("");
         ProxySettingsManager.storeProxySettings(emptySettings, new RhnMockHttpServletRequest());
 
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY).testGetStoredValue());
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME).testGetStoredValue());
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY).usesDefaultValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY_USERNAME).usesDefaultValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD).usesDefaultValue());
     }
 
     @Test

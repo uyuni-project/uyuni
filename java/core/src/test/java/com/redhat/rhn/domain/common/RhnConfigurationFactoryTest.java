@@ -82,7 +82,7 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
     public void testFallbackToDefault() {
         factory.resetToDefault(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN);
 
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).usesDefaultValue());
         assertEquals(factory.getDefaultInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN),
                 factory.getInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN));
     }
@@ -96,7 +96,7 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
         assertEquals(defaultValue, factory.getDefaultInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN));
 
         factory.resetToDefault(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN);
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).usesDefaultValue());
         assertEquals(defaultValue, factory.getInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN));
     }
 
@@ -105,7 +105,7 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
         factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN,
                 factory.getDefaultString(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN));
 
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).usesDefaultValue());
     }
 
     @Test
@@ -124,7 +124,7 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
     public void testSetDefaultBooleanStoresNull() {
         // the default value is '0'
         factory.setValue(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER, false);
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER).usesDefaultValue());
 
         factory.setValue(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER, true);
         assertTrue(factory.getBoolean(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER));
@@ -136,14 +136,14 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
         assertEquals("proxy.example.com:3128", factory.getString(RhnConfiguration.KEYS.HTTP_PROXY));
 
         factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY, "");
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY).usesDefaultValue());
         assertNull(factory.getString(RhnConfiguration.KEYS.HTTP_PROXY));
     }
 
     @Test
     public void testSetBlankValueUsesDefault() {
         factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN, " ");
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).testGetStoredValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).usesDefaultValue());
         assertEquals(4, factory.getInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN));
 
         factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).setValue("");
