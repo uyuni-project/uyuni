@@ -79,6 +79,9 @@ import com.redhat.rhn.manager.channel.repo.CreateRepoCommand;
 import com.redhat.rhn.manager.channel.repo.EditRepoCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesService;
+import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesServiceImpl;
+import com.redhat.rhn.manager.errata.syncwithpackages.dto.SyncErrataWithPackagesResult;
 import com.redhat.rhn.manager.kickstart.crypto.NoSuchCryptoKeyException;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
@@ -120,6 +123,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     private static Logger log = LogManager.getLogger(ChannelSoftwareHandler.class);
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
+    private final SyncErrataWithPackagesService syncErrataWithPackagesService;
 
     /**
      * Set the {@link TaskomaticApi} instance to use, only for unit tests.
@@ -128,8 +132,21 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
      */
     public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn) {
+        this(taskomaticApiIn, xmlRpcSystemHelperIn, new SyncErrataWithPackagesServiceImpl());
+    }
+
+    /**
+     * Constructor
+     *
+     * @param taskomaticApiIn the {@link TaskomaticApi}
+     * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
+     * @param syncErrataWithPackagesServiceIn the service synchronizing errata with their packages
+     */
+    public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
+                                  SyncErrataWithPackagesService syncErrataWithPackagesServiceIn) {
         taskomaticApi = taskomaticApiIn;
         xmlRpcSystemHelper = xmlRpcSystemHelperIn;
+        syncErrataWithPackagesService = syncErrataWithPackagesServiceIn;
     }
 
     /**
@@ -1971,6 +1988,204 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
 
         return 0;
+    }
+
+    /**
+     * Synchronize errata from a source channel, together with their associated packages, into a target channel, in
+     * strict mode.
+     *
+     * @param loggedInUser the user
+     * @param sourceChannelLabel the label of the source channel
+     * @param targetChannelLabel the label of the target channel
+     * @param advisoryNames the advisory names, all errata of the source channel when empty
+     * @param async run the synchronization asynchronously
+     * @param forceRefresh refresh the newest package cache and schedule repodata regeneration
+     * @return the synchronization result
+     *
+     * @apidoc.doc Synchronize errata from a source channel to a target channel, together with the packages each erratum
+     * ships in the source channel.
+     * All provided advisory names must match an erratum in the source channel.
+     * Fails if no errata are found or if the target channel has pending errata clone jobs.
+     * (Note: Module metadata of modular channels is currently not updated)
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "sourceChannelLabel", "the label of the source channel")
+     * @apidoc.param #param_desc("string", "targetChannelLabel", "the label of the target channel")
+     * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names to synchronize. If empty,
+     * all errata from the source channel will be considered")
+     * @apidoc.param #param_desc("boolean", "async", "whether to run the synchronization asynchronously. The
+     * returned list of errata is then empty")
+     * @apidoc.param #param_desc("boolean", "forceRefresh", "regenerate the repository metadata of the target channel
+     * when it changed")
+     * @apidoc.returntype $SyncErrataWithPackagesResultSerializer
+     */
+    public SyncErrataWithPackagesResult syncErrataWithPackages(
+            User loggedInUser,
+            String sourceChannelLabel,
+            String targetChannelLabel,
+            List<String> advisoryNames,
+            boolean async,
+            boolean forceRefresh
+    ) {
+        return syncErrataWithPackages(loggedInUser, sourceChannelLabel, targetChannelLabel, advisoryNames, async,
+                forceRefresh, true);
+    }
+
+    /**
+     * Synchronize errata from a source channel, together with their associated packages, into a target channel.
+     *
+     * @param loggedInUser the user
+     * @param sourceChannelLabel the label of the source channel
+     * @param targetChannelLabel the label of the target channel
+     * @param advisoryNames the advisory names, all errata of the source channel when empty
+     * @param async run the synchronization asynchronously
+     * @param forceRefresh refresh the newest package cache and schedule repodata regeneration
+     * @param strict fail when any advisory name is unmatched
+     * @return the synchronization result
+     *
+     * @apidoc.doc Synchronize errata from a source channel to a target channel, together with the packages each erratum
+     * ships in the source channel.
+     * Fails if no errata are found or if the target channel has pending errata clone jobs.
+     * (Note: Module metadata of modular channels is currently not updated)
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "sourceChannelLabel", "the label of the source channel")
+     * @apidoc.param #param_desc("string", "targetChannelLabel", "the label of the target channel")
+     * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names to synchronize. If empty,
+     * all errata from the source channel will be considered")
+     * @apidoc.param #param_desc("boolean", "async", "whether to run the synchronization asynchronously. The
+     * returned list of errata is then empty")
+     * @apidoc.param #param_desc("boolean", "forceRefresh", "regenerate the repository metadata of the target channel
+     * when it changed")
+     * @apidoc.param #param_desc("boolean", "strict", "whether all advisory names must match")
+     * @apidoc.returntype $SyncErrataWithPackagesResultSerializer
+     */
+    public SyncErrataWithPackagesResult syncErrataWithPackages(
+            User loggedInUser,
+            String sourceChannelLabel,
+            String targetChannelLabel,
+            List<String> advisoryNames,
+            boolean async,
+            boolean forceRefresh,
+            boolean strict
+    ) {
+        return syncErrataWithPackagesService.syncFromSource(loggedInUser, sourceChannelLabel, targetChannelLabel,
+                advisoryNames, strict, async, forceRefresh);
+    }
+
+    /**
+     * Synchronize errata from a source channel that were last modified within a date range, together with their
+     * packages, into a target channel.
+     *
+     * @param loggedInUser the user
+     * @param sourceChannelLabel the label of the source channel
+     * @param targetChannelLabel the label of the target channel
+     * @param startDate the start date
+     * @param endDate the end date
+     * @param async run the synchronization asynchronously
+     * @param forceRefresh refresh the newest package cache and schedule repodata regeneration
+     * @return the synchronization result
+     *
+     * @apidoc.doc Synchronize the errata from a source channel last modified within a date range, bounds included, to
+     * a target channel, together with the packages each erratum ships in the source channel.
+     * Fails if no errata are found or if the target channel has pending errata clone jobs.
+     * (Note: Module metadata of modular channels is currently not updated)
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "sourceChannelLabel", "the label of the source channel")
+     * @apidoc.param #param_desc("string", "targetChannelLabel", "the label of the target channel")
+     * @apidoc.param #param($date, "startDate")
+     * @apidoc.param #param($date, "endDate")
+     * @apidoc.param #param_desc("boolean", "async", "whether to run the synchronization asynchronously. The
+     * returned list of errata is then empty")
+     * @apidoc.param #param_desc("boolean", "forceRefresh", "regenerate the repository metadata of the target channel
+     * when it changed")
+     * @apidoc.returntype $SyncErrataWithPackagesResultSerializer
+     */
+    public SyncErrataWithPackagesResult syncErrataWithPackages(
+            User loggedInUser,
+            String sourceChannelLabel,
+            String targetChannelLabel,
+            Date startDate,
+            Date endDate,
+            boolean async,
+            boolean forceRefresh
+    ) {
+        return syncErrataWithPackagesService.syncFromSource(loggedInUser, sourceChannelLabel, targetChannelLabel,
+                startDate, endDate, async, forceRefresh);
+    }
+
+    /**
+     * Synchronize errata, with their packages, into a target channel, from their respective source channels,
+     * in strict mode.
+     *
+     * @param loggedInUser the user
+     * @param targetChannelLabel the label of the target channel
+     * @param advisoryNames the advisory names
+     * @param async run the synchronization asynchronously
+     * @param forceRefresh refresh the newest package cache and schedule repodata regeneration
+     * @return the synchronization result
+     *
+     * @apidoc.doc Synchronize errata to a target channel, together with their packages. Errata and packages are taken
+     * from the channels the target channel was cloned from; otherwise from the errata of the target channel's
+     * organization, of your organization, or from vendor errata, with all their packages.
+     * All advisory names must match an existing erratum.
+     * Fails if no errata are found or if the target channel has pending errata clone jobs.
+     * (Note: Module metadata of modular channels is currently not updated)
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "targetChannelLabel", "the label of the target channel")
+     * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names to synchronize, must not be
+     * empty")
+     * @apidoc.param #param_desc("boolean", "async", "whether to run the synchronization asynchronously. The
+     * returned list of errata is then empty")
+     * @apidoc.param #param_desc("boolean", "forceRefresh", "regenerate the repository metadata of the target channel
+     * when it changed")
+     * @apidoc.returntype $SyncErrataWithPackagesResultSerializer
+     */
+    public SyncErrataWithPackagesResult syncErrataWithPackages(
+            User loggedInUser,
+            String targetChannelLabel,
+            List<String> advisoryNames,
+            boolean async,
+            boolean forceRefresh
+    ) {
+        return syncErrataWithPackages(loggedInUser, targetChannelLabel, advisoryNames, async, forceRefresh, true);
+    }
+
+    /**
+     * Synchronize errata, with their packages, into a target channel, from their respective source channels.
+     *
+     * @param loggedInUser the user
+     * @param targetChannelLabel the label of the target channel
+     * @param advisoryNames the advisory names
+     * @param async run the synchronization asynchronously
+     * @param forceRefresh refresh the newest package cache and schedule repodata regeneration
+     * @param strict fail when any advisory name is unmatched
+     * @return the synchronization result
+     *
+     * @apidoc.doc Synchronize errata to a target channel, together with their packages. Errata and packages are taken
+     * from the channels the target channel was cloned from; otherwise from the errata of the target channel's
+     * organization, of your organization, or from vendor errata, with all their packages.
+     * Fails if no errata are found or if the target channel has pending errata clone jobs.
+     * (Note: Module metadata of modular channels is currently not updated)
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "targetChannelLabel", "the label of the target channel")
+     * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names to synchronize, must not be
+     * empty")
+     * @apidoc.param #param_desc("boolean", "async", "whether to run the synchronization asynchronously. The
+     * returned list of errata is then empty")
+     * @apidoc.param #param_desc("boolean", "forceRefresh", "regenerate the repository metadata of the target channel
+     * when it changed")
+     * @apidoc.param #param_desc("boolean", "strict", "whether all advisory names must match")
+     * @apidoc.returntype $SyncErrataWithPackagesResultSerializer
+     */
+    public SyncErrataWithPackagesResult syncErrataWithPackages(
+            User loggedInUser,
+            String targetChannelLabel,
+            List<String> advisoryNames,
+            boolean async,
+            boolean forceRefresh,
+            boolean strict
+    ) {
+        return syncErrataWithPackagesService.syncByCriteria(loggedInUser, targetChannelLabel, advisoryNames, strict,
+                async, forceRefresh);
     }
 
     /**

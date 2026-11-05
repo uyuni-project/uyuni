@@ -56,6 +56,8 @@ import com.redhat.rhn.frontend.events.SsmUpgradePackagesAction;
 import com.redhat.rhn.frontend.events.SsmUpgradePackagesEvent;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesAction;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
+import com.redhat.rhn.frontend.events.SyncErrataWithPackagesAction;
+import com.redhat.rhn.frontend.events.SyncErrataWithPackagesEvent;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
@@ -332,6 +334,8 @@ public class MessageQueue {
                                     CloneErrataEvent.class);
         MessageQueue.registerAction(new NewCloneErrataAction(),
                                     NewCloneErrataEvent.class);
+        MessageQueue.registerAction(new SyncErrataWithPackagesAction(),
+                                    SyncErrataWithPackagesEvent.class);
         MessageQueue.registerAction(new SsmErrataAction(),
                                     SsmErrataEvent.class);
 

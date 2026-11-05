@@ -1,0 +1,2 @@
+- Add `channel.software.syncErrataWithPackages` API endpoints to
+  synchronize errata together with their packages into a channel
