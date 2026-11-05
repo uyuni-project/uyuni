@@ -369,6 +369,9 @@ const MonitoringAdmin = () => {
           <li className="js-spa">
             <a href="/rhn/manager/admin/config/password-policy?">{t("Password Policy")}</a>
           </li>
+          <li className="js-spa">
+            <a href="/rhn/manager/admin/config/server-settings?">{t("Server Settings")}</a>
+          </li>
         </ul>
       </div>
       <Panel

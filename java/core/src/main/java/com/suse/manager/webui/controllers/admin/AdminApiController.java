@@ -23,7 +23,9 @@ import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.webui.controllers.admin.handlers.MonitoringApiController;
 import com.suse.manager.webui.controllers.admin.handlers.PasswordPolicyController;
 import com.suse.manager.webui.controllers.admin.handlers.PaygApiContoller;
+import com.suse.manager.webui.controllers.admin.handlers.ServerSettingsController;
 import com.suse.manager.webui.controllers.admin.service.PasswordPolicyService;
+import com.suse.manager.webui.controllers.admin.service.ServerSettingsService;
 
 /**
  * Spark controller Admin Api.
@@ -43,5 +45,7 @@ public class AdminApiController {
 
         PasswordPolicyController passwordPolicyController = new PasswordPolicyController(new PasswordPolicyService());
         passwordPolicyController.initRoutes();
+
+        new ServerSettingsController(new ServerSettingsService()).initRoutes();
     }
 }

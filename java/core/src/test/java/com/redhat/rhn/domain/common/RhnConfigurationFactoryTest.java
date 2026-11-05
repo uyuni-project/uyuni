@@ -18,19 +18,71 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class RhnConfigurationFactoryTest extends BaseTestCase {
 
     private final RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
 
     @Test
+    public void testEveryDatabaseKeyHasAnEnumConstant() {
+        List<String> dbKeys = HibernateFactory.getSession()
+                .createNativeQuery("SELECT key FROM rhnConfiguration", String.class)
+                .stream().sorted().toList();
+        List<String> enumKeys = Arrays.stream(RhnConfiguration.KEYS.values()).map(Enum::name).sorted().toList();
+
+        assertEquals(enumKeys, dbKeys);
+    }
+
+    @Test
+    public void testListAll() {
+        List<String> keys = factory.listAll().stream().map(RhnConfiguration::getUIName).toList();
+
+        assertEquals(RhnConfiguration.KEYS.values().length, keys.size());
+        assertTrue(keys.contains(RhnConfiguration.KEYS.URLGRABBER_LOGSPEC.toString()));
+    }
+
+    @Test
+    public void testHiddenKeys() {
+        // keys with their own page or API
+        Set<RhnConfiguration.KEYS> expected = EnumSet.of(
+                RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID,
+                RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT,
+                RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES,
+                RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN,
+                RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX,
+                RhnConfiguration.KEYS.PSW_CHECK_LOWER_CHAR_FLAG,
+                RhnConfiguration.KEYS.PSW_CHECK_UPPER_CHAR_FLAG,
+                RhnConfiguration.KEYS.PSW_CHECK_DIGIT_FLAG,
+                RhnConfiguration.KEYS.PSW_CHECK_CONSECUTIVE_CHAR_FLAG,
+                RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG,
+                RhnConfiguration.KEYS.PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG,
+                RhnConfiguration.KEYS.PSW_CHECK_MAX_OCCURRENCE,
+                RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHARACTERS,
+                RhnConfiguration.KEYS.HTTP_PROXY,
+                RhnConfiguration.KEYS.HTTP_PROXY_USERNAME,
+                RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD);
+        Set<RhnConfiguration.KEYS> hidden = Arrays.stream(RhnConfiguration.KEYS.values())
+                .filter(RhnConfiguration.KEYS::isHidden)
+                .collect(Collectors.toCollection(() -> EnumSet.noneOf(RhnConfiguration.KEYS.class)));
+
+        assertEquals(expected, hidden);
+    }
+
+    @Test
     public void testFallbackToDefault() {
         factory.resetToDefault(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN);
 
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).getValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).usesDefaultValue());
         assertEquals(factory.getDefaultInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN),
                 factory.getInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN));
     }
@@ -44,7 +96,7 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
         assertEquals(defaultValue, factory.getDefaultInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN));
 
         factory.resetToDefault(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN);
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).getValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).usesDefaultValue());
         assertEquals(defaultValue, factory.getInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN));
     }
 
@@ -53,7 +105,7 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
         factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN,
                 factory.getDefaultString(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN));
 
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).getValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).usesDefaultValue());
     }
 
     @Test
@@ -68,18 +120,15 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
         assertFalse(factory.getBoolean(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT));
     }
 
-    /*
-     * disable as long as we have no boolean value to test with
     @Test
     public void testSetDefaultBooleanStoresNull() {
         // the default value is '0'
-        factory.setValue(RhnConfiguration.KEYS.DISCONNECTED, false);
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.DISCONNECTED).getValue());
+        factory.setValue(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER, false);
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER).usesDefaultValue());
 
-        factory.setValue(RhnConfiguration.KEYS.DISCONNECTED, true);
-        assertTrue(factory.getBoolean(RhnConfiguration.KEYS.DISCONNECTED));
+        factory.setValue(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER, true);
+        assertTrue(factory.getBoolean(RhnConfiguration.KEYS.REPOSYNC_NEVRA_FILTER));
     }
-    */
 
     @Test
     public void testSetEmptyValueStoresNull() {
@@ -87,14 +136,14 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
         assertEquals("proxy.example.com:3128", factory.getString(RhnConfiguration.KEYS.HTTP_PROXY));
 
         factory.setValue(RhnConfiguration.KEYS.HTTP_PROXY, "");
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY).getValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.HTTP_PROXY).usesDefaultValue());
         assertNull(factory.getString(RhnConfiguration.KEYS.HTTP_PROXY));
     }
 
     @Test
     public void testSetBlankValueUsesDefault() {
         factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN, " ");
-        assertNull(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).getValue());
+        assertTrue(factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).usesDefaultValue());
         assertEquals(4, factory.getInteger(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN));
 
         factory.getConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).setValue("");
