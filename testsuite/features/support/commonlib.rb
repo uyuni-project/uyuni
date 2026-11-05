@@ -371,10 +371,8 @@ end
 # @return [Boolean] Returns true if the host is a SUSE host, false otherwise.
 def suse_host?(name, runs_in_container: true)
   node = get_target(name)
-  return true if slemicro_host?(name, runs_in_container: runs_in_container)
-
   os_family = runs_in_container ? node.os_family : node.local_os_family
-  %w[sles opensuse opensuse-tumbleweed opensuse-leap sle-micro suse-microos opensuse-leap-micro].include? os_family
+  %w[sles opensuse opensuse-tumbleweed opensuse-leap sle-micro sl-micro suse-microos opensuse-leap-micro].include? os_family
 end
 
 # Determines if the given host name is a SLE/SL Micro host.
