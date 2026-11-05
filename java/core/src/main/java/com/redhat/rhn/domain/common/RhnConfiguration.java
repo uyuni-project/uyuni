@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -111,25 +110,19 @@ public class RhnConfiguration extends BaseDomainHelper {
     }
 
     @Id
-    @Column(name = "key", length = 64, nullable = false)
+    @Column(length = 64, nullable = false)
     @Enumerated(EnumType.STRING)
     private KEYS key;
 
-    @Column(name = "description", length = 512, nullable = false)
+    @Column(length = 512, nullable = false)
     private String description;
 
-    @Column(name = "value", length = 512)
+    @Column(length = 512)
     private String value;
 
     // the default value is managed by schema migrations only
     @Column(name = "default_value", length = 512, insertable = false, updatable = false)
     private String defaultValue;
-
-    @Column(name = "created", nullable = false, updatable = false)
-    private Date created;
-
-    @Column(name = "modified", nullable = false)
-    private Date modified;
 
     public String getDescription() {
         return description;
