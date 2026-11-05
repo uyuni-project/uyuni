@@ -1945,9 +1945,15 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     pathPrefix + basename + ".initrd",
                     pathPrefix + basename + "-5.3.18-150300.59.54-default.kernel"),
                     info.getImageFiles().stream().map(ImageFile::getFile).collect(Collectors.toSet()));
-            // the server calculates sha256 of the collected files, type is determined by the inspection
+            // the server calculates sha256 of the collected files, the filetype comes from the database
+            Map<String, String> typesByFile = info.getImageFiles().stream()
+                    .collect(Collectors.toMap(f -> Path.of(f.getFile()).getFileName().toString(),
+                            ImageFile::getType));
+            assertEquals(Map.of(
+                    basename, "image",
+                    basename + ".initrd", "initrd",
+                    basename + "-5.3.18-150300.59.54-default.kernel", "kernel"), typesByFile);
             info.getImageFiles().forEach(file -> {
-                assertEquals("file", file.getType());
                 assertEquals("sha256", file.getChecksum().getChecksumType().getLabel());
                 assertEquals(DigestUtils.sha256Hex(Path.of(file.getFile()).getFileName().toString()),
                         file.getChecksum().getChecksum());
@@ -1992,7 +1998,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(1, info.getImageFiles().size());
             ImageFile file = info.getImageFiles().iterator().next();
             assertEquals("POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz", file.getFile());
-            assertEquals("file", file.getType());
+            assertEquals("image", file.getType());
             assertEquals(DigestUtils.sha256Hex("POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz"),
                     file.getChecksum().getChecksum());
         });
@@ -2164,7 +2170,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     assertTrue(info.getPackages().isEmpty());
                     assertNull(info.getPillar());
                     // no re-tagging for failed validation
-                    assertTrue(info.getImageFiles().stream().allMatch(f -> "file".equals(f.getType())));
+                    assertTrue(info.getImageFiles().stream().allMatch(f -> "image".equals(f.getType())));
                 });
     }
 
@@ -2239,11 +2245,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         imgInfoBuild.get().setVersion("6.0.0");
         imgInfoBuild.get().setRevisionNumber(1);
 
-        // collection stores all artefacts as generic files with server side calculated checksums
+        // collection stores the artefacts with the filetype of the matched extension,
+        // with server side calculated checksums
         for (String name : List.of("POS_Image_JeOS6.x86_64-6.0.0",
                 "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default",
                 "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz")) {
-            ImageTestUtils.createImageFile(imgInfoBuild.get(), "POS_Image_JeOS6-6.0.0-1/" + name, "file");
+            ImageTestUtils.createImageFile(imgInfoBuild.get(), "POS_Image_JeOS6-6.0.0-1/" + name, "image");
         }
         imgInfoBuild.get().getImageFiles().forEach(file -> file.setChecksum(ChecksumFactory.safeCreate(
                 DigestUtils.sha256Hex(Path.of(file.getFile()).getFileName().toString()), "sha256")));

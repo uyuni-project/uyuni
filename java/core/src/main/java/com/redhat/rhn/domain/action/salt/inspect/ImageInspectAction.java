@@ -343,7 +343,8 @@ public class ImageInspectAction extends Action {
     }
 
     /**
-     * Collection stores every artefact as generic file, the inspection tells what the files really are.
+     * Collection stores the artefacts with the filetype of the matched extension, the inspection tells
+     * what the files really are (image, bundle, kernel or initrd).
      */
     private static void retagImageFiles(ImageInfo imageInfo, OSImageInspectSlsResult result) {
         Map<String, String> typesByName = new HashMap<>();

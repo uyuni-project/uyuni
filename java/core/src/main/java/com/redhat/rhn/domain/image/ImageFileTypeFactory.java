@@ -21,7 +21,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,48 +53,54 @@ public class ImageFileTypeFactory extends HibernateFactory {
     }
 
     /**
-     * Return the extensions of the file types enabled for an organization. An entry of the organization
-     * overrides the default entry with the same extension.
+     * Return the file types enabled for an organization, keyed by their extension. An entry of the
+     * organization overrides the default entry with the same extension.
      *
      * @param org the organization owning the build
-     * @return list of enabled extensions
+     * @return the enabled file types by extension
      */
-    public static List<String> lookupEnabledExtensions(Org org) {
+    public static Map<String, ImageFileType> lookupEnabledFileTypes(Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ImageFileType> criteria = builder.createQuery(ImageFileType.class);
         Root<ImageFileType> root = criteria.from(ImageFileType.class);
         criteria.where(builder.or(builder.isNull(root.get("org")), builder.equal(root.get("org"), org)));
 
-        Map<String, Boolean> enabledByExtension = new HashMap<>();
+        Map<String, ImageFileType> typesByExtension = new HashMap<>();
         List<ImageFileType> types = getSession().createQuery(criteria).getResultList();
         // defaults first, so the entries of the organization replace them
         types.stream().filter(type -> type.getOrg() == null)
-                .forEach(type -> enabledByExtension.put(type.getExtension(), type.isEnabled()));
+                .forEach(type -> typesByExtension.put(type.getExtension(), type));
         types.stream().filter(type -> type.getOrg() != null)
-                .forEach(type -> enabledByExtension.put(type.getExtension(), type.isEnabled()));
-
-        return enabledByExtension.entrySet().stream()
-                .filter(Map.Entry::getValue)
-                .map(Map.Entry::getKey)
-                .toList();
+                .forEach(type -> typesByExtension.put(type.getExtension(), type));
+        typesByExtension.values().removeIf(type -> !type.isEnabled());
+        return typesByExtension;
     }
 
     /**
      * Keep only the files which are the image itself (file named exactly as the basename, which is an
-     * uncompressed PXE/KIS image) or which have an extension enabled for the organization.
+     * uncompressed PXE/KIS image) or which have an extension enabled for the organization, mapped to the
+     * filetype of the matched extension. When several extensions match, the longest one wins.
      *
      * @param paths file paths or file names
      * @param basename the basename of the image
      * @param org the organization owning the build
-     * @return the allowed subset of the given paths, in the original order
+     * @return the allowed subset of the given paths mapped to their filetype, in the original order
      */
-    public static List<String> filterAllowedFiles(List<String> paths, String basename, Org org) {
-        List<String> extensions = lookupEnabledExtensions(org);
-        return paths.stream()
-                .filter(path -> {
-                    String fileName = Path.of(path).getFileName().toString();
-                    return fileName.equals(basename) || extensions.stream().anyMatch(fileName::endsWith);
-                })
-                .toList();
+    public static Map<String, String> filterAllowedFiles(List<String> paths, String basename, Org org) {
+        Map<String, ImageFileType> typesByExtension = lookupEnabledFileTypes(org);
+        Map<String, String> allowedFiles = new LinkedHashMap<>();
+        for (String path : paths) {
+            String fileName = Path.of(path).getFileName().toString();
+            if (fileName.equals(basename)) {
+                allowedFiles.put(path, "image");
+            }
+            else {
+                typesByExtension.entrySet().stream()
+                        .filter(entry -> fileName.endsWith(entry.getKey()))
+                        .max(Comparator.comparingInt(entry -> entry.getKey().length()))
+                        .ifPresent(entry -> allowedFiles.put(path, entry.getValue().getFiletype()));
+            }
+        }
+        return allowedFiles;
     }
 }

@@ -16,6 +16,7 @@ CREATE TABLE suseImageFileType
                   REFERENCES web_customer (id)
                   ON DELETE CASCADE,
     extension VARCHAR(64) NOT NULL,
+    filetype  VARCHAR(16) DEFAULT 'image' NOT NULL,
     comment   TEXT,
     enabled   BOOLEAN DEFAULT TRUE NOT NULL,
     CONSTRAINT suse_img_type_files_pk PRIMARY KEY (id),

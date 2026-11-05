@@ -27,6 +27,7 @@ import jakarta.persistence.Table;
 /**
  * File extension of a KIWI build artefact which is allowed to be collected. Entries without organization are
  * the defaults of the instance, an entry of an organization overrides the default for the same extension.
+ * The filetype classifies the artefact the extension identifies.
  */
 @Entity
 @Table(name = "suseImageFileType")
@@ -39,6 +40,7 @@ public class ImageFileType {
     @JoinColumn(name = "org_id")
     private Org org;
     private String extension;
+    private String filetype = "image";
     private String comment;
     private boolean enabled = true;
 
@@ -75,6 +77,21 @@ public class ImageFileType {
      */
     public void setExtension(String extensionIn) {
         extension = extensionIn;
+    }
+
+    /**
+     * @return the kind of artefact the extension identifies, one of "image", "kernel", "initrd" or "sbom"
+     */
+    public String getFiletype() {
+        return filetype;
+    }
+
+    /**
+     * @param filetypeIn the kind of artefact the extension identifies, one of "image", "kernel", "initrd"
+     *        or "sbom"
+     */
+    public void setFiletype(String filetypeIn) {
+        filetype = filetypeIn;
     }
 
     /**
