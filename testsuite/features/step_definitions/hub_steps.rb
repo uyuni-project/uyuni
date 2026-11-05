@@ -964,8 +964,10 @@ Then(/^I should not see "([^"]*)" in peripherals list on hub$/) do |host|
   fqdn = get_target(host).full_hostname
   using_server('server') do
     visit('/rhn/manager/admin/hub/peripherals')
-    # Without the table header the absence check would pass on a page that has not rendered yet
-    raise StandardError, 'Peripherals list did not load' unless page.has_content?('Peripheral FQDN', wait: DEFAULT_TIMEOUT)
+    # Without a rendered marker the absence check would pass on a page that has not loaded yet.
+    # An empty list renders no table header, only the "no entries" message.
+    raise StandardError, 'Peripherals list did not load' unless
+      page.has_content?(/Peripheral FQDN|There are no entries to show\./, wait: DEFAULT_TIMEOUT)
     raise StandardError, "#{fqdn} still appears in hub peripherals list after peripheral-side deregistration" if
       page.has_content?(fqdn, wait: 10)
   end
