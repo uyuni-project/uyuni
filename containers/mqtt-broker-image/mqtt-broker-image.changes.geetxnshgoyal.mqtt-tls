@@ -1,0 +1,2 @@
+- Add an optional TLS listener on port 8883, with client
+  certificate checking and a switch to close the plain port

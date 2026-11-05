@@ -1,0 +1,59 @@
+[
+  {
+    "id": "flow_minion_reg",
+    "type": "tab",
+    "label": "Uyuni Minion Registration Alert",
+    "disabled": false,
+    "info": "Listens for new minion registration events on the MQTT broker and formats an alert payload."
+  },
+  {
+    "id": "mqtt_conf_1",
+    "type": "uyuni-config",
+    "broker": "mosquitto",
+    "port": "1883",
+    "topicPrefix": "uyuni/+"
+  },
+  {
+    "id": "evt_reg_1",
+    "type": "uyuni-events",
+    "z": "flow_minion_reg",
+    "name": "Listen Minion Registered",
+    "server": "mqtt_conf_1",
+    "eventCategory": "systems/registered",
+    "x": 170,
+    "y": 120,
+    "wires": [["fmt_alert_1"]]
+  },
+  {
+    "id": "fmt_alert_1",
+    "type": "function",
+    "z": "flow_minion_reg",
+    "name": "Format Alert Message",
+    "func": "const minionId = msg.payload.minionId || 'Unknown System';\nmsg.payload = {\n    title: '⚠️ New Minion Registered',\n    text: `Minion ${minionId} has registered with Uyuni server.`,\n    timestamp: new Date().toISOString()\n};\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 410,
+    "y": 120,
+    "wires": [["dbg_output_1"]]
+  },
+  {
+    "id": "dbg_output_1",
+    "type": "debug",
+    "z": "flow_minion_reg",
+    "name": "Display Alert",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 640,
+    "y": 120,
+    "wires": []
+  }
+]
