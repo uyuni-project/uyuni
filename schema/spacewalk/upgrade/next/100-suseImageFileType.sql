@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS suseImageFileType
                   REFERENCES web_customer (id)
                   ON DELETE CASCADE,
     extension VARCHAR(64) NOT NULL,
+    filetype  VARCHAR(16) DEFAULT 'image' NOT NULL,
     comment   TEXT,
     enabled   BOOLEAN DEFAULT TRUE NOT NULL,
     CONSTRAINT suse_img_type_files_pk PRIMARY KEY (id),
@@ -27,26 +28,28 @@ CREATE UNIQUE INDEX IF NOT EXISTS suse_img_type_files_default_ext_uq
     ON suseImageFileType (extension)
     WHERE org_id IS NULL;
 
-INSERT INTO suseImageFileType (extension, comment) VALUES
-        ('.gce', 'Google Compute Engine image'),
-        ('.qcow2', 'QEMU Copy-On-Write disk image'),
-        ('.vmdk', 'Virtual Machine Disk format'),
-        ('.ova', 'Open Virtual Appliance format'),
-        ('.vmx', 'VMware configuration file'),
-        ('.vhd', 'Virtual Hard Disk format'),
-        ('.vhdx', 'Virtual Hard Disk v2 format'),
-        ('.vhdfixed', 'Fixed Virtual Hard Disk format'),
-        ('.vdi', 'VirtualBox Disk Image format'),
-        ('.vagrant.libvirt.box', 'Vagrant box for libvirt'),
-        ('.vagrant.virtualbox.box', 'Vagrant box for VirtualBox'),
-        ('.gz', 'Gzip compressed file'),
-        ('.bz', 'Bzip compressed file'),
-        ('.xz', 'XZ compressed file'),
-        ('.tar.xz', 'XZ compressed tarball'),
-        ('.install.iso', 'Installable ISO 9660 CD-ROM disk image'),
-        ('.iso', 'ISO 9660 CD-ROM disk image'),
-        ('.raw', 'Raw disk image'),
-        ('.squashfs', 'SquashFS file system image'),
-        ('.kernel', 'PXE boot kernel'),
-        ('.initrd', 'PXE boot initial ramdisk')
+INSERT INTO suseImageFileType (extension, filetype, comment, enabled) VALUES
+        ('.gce', 'image', 'Google Compute Engine image', TRUE),
+        ('.qcow2', 'image', 'QEMU Copy-On-Write disk image', TRUE),
+        ('.vmdk', 'image', 'Virtual Machine Disk format', TRUE),
+        ('.ova', 'image', 'Open Virtual Appliance format', TRUE),
+        ('.vmx', 'image', 'VMware configuration file', TRUE),
+        ('.vhd', 'image', 'Virtual Hard Disk format', TRUE),
+        ('.vhdx', 'image', 'Virtual Hard Disk v2 format', TRUE),
+        ('.vhdfixed', 'image', 'Fixed Virtual Hard Disk format', TRUE),
+        ('.vdi', 'image', 'VirtualBox Disk Image format', TRUE),
+        ('.vagrant.libvirt.box', 'image', 'Vagrant box for libvirt', TRUE),
+        ('.vagrant.virtualbox.box', 'image', 'Vagrant box for VirtualBox', TRUE),
+        ('.gz', 'image', 'Gzip compressed file', TRUE),
+        ('.bz', 'image', 'Bzip compressed file', TRUE),
+        ('.xz', 'image', 'XZ compressed file', TRUE),
+        ('.tar.xz', 'image', 'XZ compressed tarball', TRUE),
+        ('.install.iso', 'image', 'Installable ISO 9660 CD-ROM disk image', TRUE),
+        ('.iso', 'image', 'ISO 9660 CD-ROM disk image', TRUE),
+        ('.raw', 'image', 'Raw disk image', FALSE),
+        ('.squashfs', 'image', 'SquashFS file system image', TRUE),
+        ('.kernel', 'kernel', 'PXE boot kernel', TRUE),
+        ('.initrd', 'initrd', 'PXE boot initial ramdisk', TRUE),
+        ('.spdx.json', 'sbom', 'SPDX Software Bill of Materials (SBOM)', TRUE)
 ON CONFLICT (extension) WHERE org_id IS NULL DO NOTHING;
+

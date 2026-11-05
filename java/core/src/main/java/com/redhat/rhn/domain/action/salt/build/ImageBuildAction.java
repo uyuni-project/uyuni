@@ -326,7 +326,7 @@ public class ImageBuildAction extends Action {
 
     private void collectKiwiArtefacts(ServerAction serverAction, UpdateAuxArgs auxArgs, MinionServer minionServer,
                                       ImageInfo info, OSImageBuildImageInfoResult buildInfo) {
-        List<String> files = ImageFileTypeFactory.filterAllowedFiles(buildInfo.getFiles(),
+        Map<String, String> files = ImageFileTypeFactory.filterAllowedFiles(buildInfo.getFiles(),
                 buildInfo.getImage().getBasename(), getSchedulerUser().getOrg());
         if (files.isEmpty()) {
             serverAction.setStatusFailed();
@@ -336,7 +336,8 @@ public class ImageBuildAction extends Action {
 
         String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
         String targetPath = OSImageStoreUtils.getOSImageStorePathForImage(info) + imageDir;
-        for (String srcPath : files) {
+        for (Map.Entry<String, String> file : files.entrySet()) {
+            String srcPath = file.getKey();
             MgrUtilRunner.ExecResult collectResult = auxArgs.getSystemQuery()
                     .collectKiwiImage(minionServer, srcPath, targetPath)
                     .orElseThrow(() -> new RuntimeException("Failed to download image."));
@@ -353,7 +354,7 @@ public class ImageBuildAction extends Action {
             try (InputStream in = Files.newInputStream(Path.of(targetPath, filename))) {
                 ImageFile imagefile = new ImageFile();
                 imagefile.setFile(imageDir + filename);
-                imagefile.setType("file");
+                imagefile.setType(file.getValue());
                 imagefile.setChecksum(ChecksumFactory.safeCreate(DigestUtils.sha256Hex(in), "sha256"));
                 imagefile.setImageInfo(info);
                 info.getImageFiles().add(imagefile);

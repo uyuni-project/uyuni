@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.image;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -24,6 +25,7 @@ import com.redhat.rhn.testing.TestUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 public class ImageFileTypeFactoryTest extends BaseTestCaseWithUser {
 
@@ -31,9 +33,30 @@ public class ImageFileTypeFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDefaultExtensionsAreEnabled() {
-        List<String> extensions = ImageFileTypeFactory.lookupEnabledExtensions();
-        assertEquals(21, extensions.size());
-        assertTrue(extensions.containsAll(List.of(".xz", ".kernel", ".initrd", ".vagrant.libvirt.box")));
+        Map<String, ImageFileType> types = ImageFileTypeFactory.lookupEnabledFileTypes(user.getOrg());
+        assertEquals(21, types.size());
+        assertTrue(types.keySet().containsAll(List.of(".xz", ".kernel", ".initrd", ".vagrant.libvirt.box",
+                ".spdx.json")));
+        assertFalse(types.containsKey(".raw"));
+    }
+
+    @Test
+    public void testDefaultFiletypes() {
+        assertEquals("kernel", lookupDefaultType(".kernel").getFiletype());
+        assertEquals("initrd", lookupDefaultType(".initrd").getFiletype());
+        assertEquals("sbom", lookupDefaultType(".spdx.json").getFiletype());
+        assertFalse(lookupDefaultType(".raw").isEnabled());
+
+        ImageFileType xz = lookupDefaultType(".xz");
+        assertEquals("image", xz.getFiletype());
+        assertTrue(xz.isEnabled());
+    }
+
+    private static ImageFileType lookupDefaultType(String extension) {
+        return HibernateFactory.getSession()
+                .createQuery("FROM ImageFileType WHERE extension = :ext AND org IS NULL", ImageFileType.class)
+                .setParameter("ext", extension)
+                .uniqueResult();
     }
 
     @Test
@@ -46,18 +69,29 @@ public class ImageFileTypeFactoryTest extends BaseTestCaseWithUser {
                 "/var/lib/Kiwi/build1/images.build/" + BASENAME + ".md5",
                 "/var/lib/Kiwi/build1/images.build/" + BASENAME + ".sha256",
                 "/var/lib/Kiwi/build1/images.build/" + BASENAME + ".packages",
-                "/var/lib/Kiwi/build1/images.build/" + BASENAME + ".vagrant.libvirt.box");
+                "/var/lib/Kiwi/build1/images.build/" + BASENAME + ".raw",
+                "/var/lib/Kiwi/build1/images.build/" + BASENAME + ".vagrant.libvirt.box",
+                "/var/lib/Kiwi/build1/images.build/" + BASENAME + ".spdx.json");
 
-        // the bare basename is the uncompressed image, metadata files are not collected
-        assertEquals(List.of(files.get(0), files.get(1), files.get(2), files.get(3), files.get(7)),
-                ImageFileTypeFactory.filterAllowedFiles(files, BASENAME));
+        Map<String, String> allowed = ImageFileTypeFactory.filterAllowedFiles(files, BASENAME, user.getOrg());
+
+        // the bare basename is the uncompressed image, metadata and disabled extensions are not collected
+        assertEquals(List.of(files.get(0), files.get(1), files.get(2), files.get(3), files.get(8), files.get(9)),
+                List.copyOf(allowed.keySet()));
+        // the filetype of the matched extension is kept, the inspection refines it
+        assertEquals("image", allowed.get(files.get(0)));
+        assertEquals("image", allowed.get(files.get(1)));
+        assertEquals("image", allowed.get(files.get(2)));
+        assertEquals("kernel", allowed.get(files.get(3)));
+        assertEquals("image", allowed.get(files.get(8)));
+        assertEquals("sbom", allowed.get(files.get(9)));
     }
 
     @Test
     public void testFilterAcceptsFileNamesAndExtensions() {
-        assertEquals(List.of(BASENAME + ".qcow2", ".iso"),
+        assertEquals(Map.of(BASENAME + ".qcow2", "image", ".iso", "image"),
                 ImageFileTypeFactory.filterAllowedFiles(
-                        List.of(BASENAME + ".qcow2", BASENAME + ".txt", ".iso"), BASENAME));
+                        List.of(BASENAME + ".qcow2", BASENAME + ".txt", ".iso"), BASENAME, user.getOrg()));
     }
 
     @Test
@@ -70,6 +104,7 @@ public class ImageFileTypeFactoryTest extends BaseTestCaseWithUser {
         TestUtils.flushSession();
 
         assertEquals(List.of(BASENAME + ".gz"),
-                ImageFileTypeFactory.filterAllowedFiles(List.of(BASENAME + ".xz", BASENAME + ".gz"), BASENAME));
+                List.copyOf(ImageFileTypeFactory.filterAllowedFiles(
+                        List.of(BASENAME + ".xz", BASENAME + ".gz"), BASENAME, user.getOrg()).keySet()));
     }
 }

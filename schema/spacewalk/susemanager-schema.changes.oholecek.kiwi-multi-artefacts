@@ -1,2 +1,4 @@
 - Add suseImageFileType table with the allowed KIWI image artefact
-  extensions
+  extensions, their types and enabled state.
+- Raw disk images (`.raw`) are not collected by default as they are
+  intermediary results.
