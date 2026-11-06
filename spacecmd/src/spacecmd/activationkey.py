@@ -183,12 +183,16 @@ def complete_activationkey_removegroups(self, text, line, beg, end):
     if len(parts) == 2:
         return tab_completer(self.do_activationkey_list("", True), text)
     elif len(parts) > 2:
-        key_details = self.client.activationkey.getDetails(self.session, parts[-1])
+        key_details = self.client.activationkey.getDetails(self.session, parts[1])
+        if not key_details:
+            return None
 
         groups = []
-        for group in key_details.get("server_group_ids"):
+        server_group_ids = key_details.get("server_group_ids") or []
+        for group in server_group_ids:
             details = self.client.systemgroup.getDetails(self.session, group)
-            groups.append(details.get("name"))
+            if details and details.get("name"):
+                groups.append(details.get("name"))
         return tab_completer(groups, text)
 
     return None
