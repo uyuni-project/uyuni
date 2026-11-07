@@ -253,7 +253,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server_app.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
-| rhn_server.conf | `session_lifetime` | [`python/spacewalk/server/rhnSession.py:50`](python/spacewalk/server/rhnSession.py#L50) |
 | rhn_server.conf | `secret_key` | [`python/spacewalk/server/apacheAuth.py:94`](python/spacewalk/server/apacheAuth.py#L94) |
 | rhn_server.conf | `sync_cache_dir` | [`python/spacewalk/satellite_tools/syncCache.py:39`](python/spacewalk/satellite_tools/syncCache.py#L39) |
 | rhn_server_susemanager.conf | `scc_url` | [`java/core/src/main/java/com/suse/scc/SCCTaskManager.java:132`](java/core/src/main/java/com/suse/scc/SCCTaskManager.java#L132) |

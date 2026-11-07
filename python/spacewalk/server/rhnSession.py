@@ -28,6 +28,7 @@ from spacewalk.common.rhnConfig import CFG
 from uyuni.common.usix import raise_with_tb
 
 from . import rhnSQL
+from .db_config import DB_CFG
 
 
 class InvalidSessionError(Exception):
@@ -49,7 +50,7 @@ class Session:
     def generate(self, duration=None, web_user_id=None):
         # Grabs a session ID
         self.session_id = rhnSQL.Sequence("pxt_id_seq").next()
-        self.duration = int(duration or CFG.SESSION_LIFETIME)
+        self.duration = int(duration or DB_CFG.PUSH_SESSION_LIFETIME)
         self.web_user_id(web_user_id)
         return self
 
