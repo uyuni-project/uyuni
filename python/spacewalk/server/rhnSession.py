@@ -114,13 +114,11 @@ class Session:
         if digest != self.digest():
             raise InvalidSessionError("Bad session checksum")
 
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             select web_user_id, expires, value
               from pxtSessions
              where id = :session_id
-        """
-        )
+        """)
         h.execute(session_id=self.session_id)
 
         row = h.fetchone_dict()
@@ -133,11 +131,9 @@ class Session:
                 return self
 
             # Old session - clean it up
-            h = rhnSQL.prepare(
-                """
+            h = rhnSQL.prepare("""
                     delete from pxtSessions where id = :session_id
-            """
-            )
+            """)
             h.execute(session_id=self.session_id)
             rhnSQL.commit()
 
@@ -146,12 +142,10 @@ class Session:
     def save(self):
         expires = int(time.time()) + self.duration
 
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
                 insert into PXTSessions (id, web_user_id, expires, value)
                 values (:id, :web_user_id, :expires, :value)
-        """
-        )
+        """)
         h.execute(
             id=self.session_id, web_user_id=self.uid, expires=expires, value="RHNAPP"
         )
