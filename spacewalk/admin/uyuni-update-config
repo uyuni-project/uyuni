@@ -134,6 +134,8 @@ DB_CONFIG_KEYS = {
     "reg_error_expire_time": "SCC_REG_ERROR_EXPIRE_TIME",
     "server.susemanager.reg_batch_size": "SCC_REG_BATCH_SIZE",
     "reg_batch_size": "SCC_REG_BATCH_SIZE",
+    "server.susemanager.mirror": "SCC_MIRROR_URL",
+    "mirror": "SCC_MIRROR_URL",
 }
 
 

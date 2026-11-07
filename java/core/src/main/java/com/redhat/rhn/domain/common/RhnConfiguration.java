@@ -82,6 +82,7 @@ public class RhnConfiguration extends BaseDomainHelper {
         REPOSYNC_MINRATE(ValueType.INTEGER),
         REPOSYNC_NEVRA_FILTER(ValueType.BOOLEAN),
         SCC_FORWARD_REGISTRATION,
+        SCC_MIRROR_URL,
         SCC_REG_BATCH_SIZE,
         SCC_REG_ERROR_EXPIRE_TIME,
         SCC_URL,
