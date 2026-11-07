@@ -27,12 +27,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,6 +48,7 @@ import java.util.stream.Collectors;
  */
 public class ModulemdApi {
 
+    private static final Logger LOG = LogManager.getLogger(ModulemdApi.class);
     private static final String MOUNT_POINT_PATH = Config.get().getString(ConfigDefaults.MOUNT_POINT);
     private static final String API_EXE = "/usr/bin/mgr-libmod";
     public static final Gson GSON =
@@ -127,10 +134,24 @@ public class ModulemdApi {
      * @return the response object
      */
     private ModulemdApiResponse callSync(ModulemdApiRequest request) throws ModulemdApiException {
-        ProcessBuilder pb = new ProcessBuilder(API_EXE).redirectErrorStream(true);
+        ProcessBuilder pb = new ProcessBuilder(API_EXE);
 
         try {
             Process proc = pb.start();
+
+            // Read stderr concurrently in a dedicated thread to prevent pipe deadlock
+            // without occupying workers in the JVM common pool.
+            StringBuilder stderrBuffer = new StringBuilder();
+            Thread stderrReader = new Thread(() -> {
+                try {
+                    stderrBuffer.append(IOUtils.toString(proc.getErrorStream(), StandardCharsets.UTF_8).trim());
+                }
+                catch (IOException e) {
+                    LOG.error("Error reading mgr-libmod stderr", e);
+                }
+            }, "mgr-libmod-stderr-reader");
+            stderrReader.setDaemon(true);
+            stderrReader.start();
 
             // Write JSON to stdin
             BufferedWriter procWriter = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
@@ -142,6 +163,12 @@ public class ModulemdApi {
             ModulemdApiResponse res = GSON.fromJson(procReader, new TypeToken<ModulemdApiResponse>() { }.getType());
 
             proc.waitFor();
+            stderrReader.join();
+
+            String stderr = stderrBuffer.toString();
+            if (StringUtils.isNotBlank(stderr)) {
+                LOG.warn("mgr-libmod: {}", stderr);
+            }
 
             // Handle possible errors
             if (res.isError()) {
