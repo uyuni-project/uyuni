@@ -193,3 +193,19 @@ def test_move_config_to_db_normalizes_force_package_upload(tmp_path, written, ex
 
     move.assert_called_once_with("FORCE_PACKAGE_UPLOAD", expected)
     assert content == ""
+
+
+@pytest.mark.parametrize(
+    "name, key",
+    [
+        ("server.susemanager.bootstrap_repo_flush", "BOOTSTRAP_REPO_FLUSH"),
+        ("auto_generate_bootstrap_repo", "AUTO_GENERATE_BOOTSTRAP_REPO"),
+    ],
+)
+@pytest.mark.parametrize("written, expected", [("1.0", "1"), ("2", "1"), ("0.0", "0")])
+def test_move_config_to_db_normalizes_bootstrap_flags(
+    tmp_path, name, key, written, expected
+):
+    move, _ = run_move_config_to_db(tmp_path, f"{name} = {written}\n")
+
+    move.assert_called_once_with(key, expected)

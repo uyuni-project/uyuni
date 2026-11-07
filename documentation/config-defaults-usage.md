@@ -258,7 +258,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server_susemanager.conf | `update_host_domain` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1323`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1323) |
 | rhn_server_susemanager.conf | `fromdir` | [`java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java:893`](java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java#L893) |
 | rhn_server_susemanager.conf | `bootstrap_repo_datamodule` | [`susemanager/src/mgr-create-bootstrap-repo:431`](susemanager/src/mgr-create-bootstrap-repo#L431) |
-| rhn_server_susemanager.conf | `auto_generate_bootstrap_repo` | [`python/spacewalk/satellite_tools/reposync.py:936`](python/spacewalk/satellite_tools/reposync.py#L936) |
 | rhn_server_upload_package-push.conf | `log_file` | [`python/spacewalk/server/apacheUploadServer.py:47`](python/spacewalk/server/apacheUploadServer.py#L47) |
 | rhn_taskomatic_daemon.conf | `TASKO_LIBRARY_PATH` <sup>3</sup> | [`java/scripts/taskomatic:17`](java/scripts/taskomatic#L17) |
 | rhn_taskomatic_daemon.conf | `TASKO_RHN_CLASSPATH` <sup>3</sup> | [`java/scripts/taskomatic:14`](java/scripts/taskomatic#L14) |
