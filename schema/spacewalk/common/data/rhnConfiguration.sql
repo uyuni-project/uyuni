@@ -112,3 +112,6 @@ VALUES ('SCC_MIRROR_URL', 'URL of an internal mirror to load the repositories fr
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('TEMP_CHANNEL_TOKEN_LIFETIME', 'Lifetime in minutes of the temporary tokens to download channel content, for example for image builds', null, '60');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('TOKEN_LIFETIME', 'Default lifetime in minutes of the channel access tokens of clients and the tokens of hub peripherals', null, '525600');

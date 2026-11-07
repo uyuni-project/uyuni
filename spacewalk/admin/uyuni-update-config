@@ -138,6 +138,8 @@ DB_CONFIG_KEYS = {
     "mirror": "SCC_MIRROR_URL",
     "server.susemanager.temp_token_lifetime": "TEMP_CHANNEL_TOKEN_LIFETIME",
     "temp_token_lifetime": "TEMP_CHANNEL_TOKEN_LIFETIME",
+    "server.susemanager.token_lifetime": "TOKEN_LIFETIME",
+    "token_lifetime": "TOKEN_LIFETIME",
 }
 
 
