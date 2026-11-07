@@ -128,6 +128,17 @@ DB_CONFIG_KEYS = {
 }
 
 
+def _db_config_entry(line):
+    """
+    Return the lower case key name and the value of a rhn.conf line whose key moved
+    into the database, (None, None) for other lines
+    """
+    match = re.match(r"^\s*([\w.]+)\s*=(.*)$", line)
+    if not match or match.group(1).lower() not in DB_CONFIG_KEYS:
+        return None, None
+    return match.group(1).lower(), match.group(2).strip()
+
+
 def move_config_to_db():
     """
     Move configuration values from /etc/rhn/rhn.conf into the rhnConfiguration table
@@ -137,15 +148,28 @@ def move_config_to_db():
     with open("/etc/rhn/rhn.conf", "r", encoding="utf8") as f:
         lines = f.readlines()
 
-    remaining = []
+    # Like rhnConfig, let the most specific spelling win (server.buffer_size over
+    # buffer_size), and the last line among equally specific spellings.
+    values = {}
     for line in lines:
-        match = re.match(r"^\s*([\w.]+)\s*=(.*)$", line)
-        key = DB_CONFIG_KEYS.get(match.group(1).lower()) if match else None
-        if not key or not move_configuration(key, match.group(2).strip()):
-            remaining.append(line)
+        name, value = _db_config_entry(line)
+        if name is None:
+            continue
+        key = DB_CONFIG_KEYS[name]
+        specificity = name.count(".")
+        if specificity >= values.get(key, (-1, None))[0]:
+            values[key] = (specificity, value)
 
-    if len(remaining) == len(lines):
+    moved = {
+        key for key, (_, value) in values.items() if move_configuration(key, value)
+    }
+    if not moved:
         return
+    remaining = [
+        line
+        for line in lines
+        if DB_CONFIG_KEYS.get(_db_config_entry(line)[0]) not in moved
+    ]
     rhnSQL.commit()
     with open("/etc/rhn/rhn.conf", "w", encoding="utf8") as f:
         f.writelines(remaining)
