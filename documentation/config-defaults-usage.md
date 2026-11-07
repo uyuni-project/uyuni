@@ -256,7 +256,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `secret_key` | [`python/spacewalk/server/apacheAuth.py:94`](python/spacewalk/server/apacheAuth.py#L94) |
 | rhn_server.conf | `sync_cache_dir` | [`python/spacewalk/satellite_tools/syncCache.py:39`](python/spacewalk/satellite_tools/syncCache.py#L39) |
 | rhn_server_susemanager.conf | `fromdir` | [`java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java:893`](java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java#L893) |
-| rhn_server_susemanager.conf | `temp_token_lifetime` | [`java/core/src/main/java/com/redhat/rhn/domain/action/salt/build/ImageBuildAction.java:231`](java/core/src/main/java/com/redhat/rhn/domain/action/salt/build/ImageBuildAction.java#L231) |
 | rhn_server_susemanager.conf | `token_lifetime` | [`java/core/src/main/java/com/suse/manager/webui/utils/token/AbstractTokenBuilder.java:36`](java/core/src/main/java/com/suse/manager/webui/utils/token/AbstractTokenBuilder.java#L36) |
 | rhn_server_susemanager.conf | `token_refresh_auto_deploy` | [`java/core/src/main/java/com/redhat/rhn/taskomatic/task/TokenCleanup.java:74`](java/core/src/main/java/com/redhat/rhn/taskomatic/task/TokenCleanup.java#L74) |
 | rhn_server_susemanager.conf | `bootstrap_repo_flush` | [`susemanager/src/mgr-create-bootstrap-repo:411`](susemanager/src/mgr-create-bootstrap-repo#L411) |

@@ -60,7 +60,8 @@ public class RhnConfiguration extends BaseDomainHelper {
         SCC_FORWARD_REGISTRATION,
         SCC_REG_ERROR_EXPIRE_TIME,
         SCC_REG_BATCH_SIZE,
-        SCC_MIRROR_URL;
+        SCC_MIRROR_URL,
+        TEMP_CHANNEL_TOKEN_LIFETIME;
     }
 
     @Id

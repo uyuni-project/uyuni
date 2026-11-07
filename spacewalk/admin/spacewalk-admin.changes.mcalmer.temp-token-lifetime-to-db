@@ -1,0 +1,2 @@
+- Move `server.susemanager.temp_token_lifetime` from `rhn.conf`
+  into the database
