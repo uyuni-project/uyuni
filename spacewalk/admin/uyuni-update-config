@@ -129,6 +129,8 @@ DB_CONFIG_KEYS = {
     "scc_url": "SCC_URL",
     "server.susemanager.update_host_domain": "SCC_UPDATE_HOST_DOMAIN",
     "update_host_domain": "SCC_UPDATE_HOST_DOMAIN",
+    "server.susemanager.forward_registration": "SCC_FORWARD_REGISTRATION",
+    "forward_registration": "SCC_FORWARD_REGISTRATION",
 }
 
 
