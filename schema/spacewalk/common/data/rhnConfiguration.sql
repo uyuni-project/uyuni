@@ -109,3 +109,6 @@ VALUES ('SCC_REG_BATCH_SIZE', 'Number of systems sent to the SUSE Customer Cente
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('SCC_MIRROR_URL', 'URL of an internal mirror to load the repositories from instead of the SUSE Customer Center (SCC), when it provides them', null, null);
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('TEMP_CHANNEL_TOKEN_LIFETIME', 'Lifetime in minutes of the temporary tokens to download channel content, for example for image builds', null, '60');
