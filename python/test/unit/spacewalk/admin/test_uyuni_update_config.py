@@ -102,3 +102,51 @@ def test_main_does_not_move_config_to_db():
                 p.stop()
 
     move.assert_not_called()
+
+
+def run_move_config_to_db(tmp_path, content):
+    module = load_script()
+    rhn_conf = tmp_path / "rhn.conf"
+    rhn_conf.write_text(content, encoding="utf8")
+    real_open = open
+
+    def fake_open(path, *args, **kwargs):
+        assert path == "/etc/rhn/rhn.conf"
+        return real_open(rhn_conf, *args, **kwargs)
+
+    with patch.object(module.rhnSQL, "initDB"), patch.object(
+        module.rhnSQL, "commit"
+    ), patch.object(module, "open", fake_open, create=True), patch.object(
+        module, "move_configuration", return_value=True
+    ) as move:
+        module.move_config_to_db()
+    return move, rhn_conf.read_text(encoding="utf8")
+
+
+def test_move_config_to_db_prefers_most_specific_key(tmp_path):
+    move, content = run_move_config_to_db(
+        tmp_path,
+        "server.buffer_size = 65536\nbuffer_size = 16384\ndebug = 1\n",
+    )
+
+    move.assert_called_once_with("BUFFER_SIZE", "65536")
+    assert content == "debug = 1\n"
+
+
+def test_move_config_to_db_last_equally_specific_line_wins(tmp_path):
+    move, _ = run_move_config_to_db(
+        tmp_path,
+        "server.reposync_timeout = 100\n"
+        "server.satellite.reposync_timeout = 200\n"
+        "server.satellite.reposync_timeout = 300\n"
+        "reposync_timeout = 400\n",
+    )
+
+    move.assert_called_once_with("REPOSYNC_TIMEOUT", "300")
+
+
+def test_move_config_to_db_nothing_to_move(tmp_path):
+    move, content = run_move_config_to_db(tmp_path, "debug = 1\n")
+
+    move.assert_not_called()
+    assert content == "debug = 1\n"
