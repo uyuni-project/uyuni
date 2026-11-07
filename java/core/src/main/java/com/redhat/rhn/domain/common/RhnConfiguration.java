@@ -62,7 +62,8 @@ public class RhnConfiguration extends BaseDomainHelper {
         SCC_REG_BATCH_SIZE,
         SCC_MIRROR_URL,
         TEMP_CHANNEL_TOKEN_LIFETIME,
-        TOKEN_LIFETIME;
+        TOKEN_LIFETIME,
+        CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY;
     }
 
     @Id

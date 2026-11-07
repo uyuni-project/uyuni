@@ -118,3 +118,6 @@ VALUES ('TEMP_CHANNEL_TOKEN_LIFETIME', 'Lifetime in minutes of the temporary tok
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('TOKEN_LIFETIME', 'Default lifetime in minutes of the channel access tokens of clients and the tokens of hub peripherals', null, '525600');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY', 'Deploy the channel access tokens to the clients automatically after they are refreshed', null, 'true');

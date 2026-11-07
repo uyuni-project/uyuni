@@ -268,11 +268,6 @@ public class ConfigDefaults {
     public static final String SCAP_XCCDF_RESUME_XSL = "scap.xccdf.resume.xsl";
     private static final String DEFAULT_SCAP_XCCDF_RESUME_XSL = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
-    /**
-     * Controls if refreshed tokens get automatically deployed or not.
-     */
-    public static final String TOKEN_REFRESH_AUTO_DEPLOY = "server.susemanager.token_refresh_auto_deploy";
-
     public static final String SALT_SSH_CONNECT_TIMEOUT = "java.salt_ssh_connect_timeout";
 
     /**
