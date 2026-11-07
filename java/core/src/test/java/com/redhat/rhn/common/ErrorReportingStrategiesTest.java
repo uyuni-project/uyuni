@@ -44,7 +44,8 @@ class ErrorReportingStrategiesTest {
         LoggerContext context = (LoggerContext) LogManager.getContext(false);
 
         assertFalse(hasLogger(context, expectedLoggerName));
-        RhnRuntimeException exception = ErrorReportingStrategies.raiseAndLog(new Dummy(), testMessage).get();
+        RhnRuntimeException exception = assertThrows(RhnRuntimeException.class,
+                () -> ErrorReportingStrategies.raiseAndLog(new Dummy(), testMessage).get());
         assertTrue(exception.getMessage().contains(testMessage));
         assertTrue(hasLogger(context, expectedLoggerName));
     }
