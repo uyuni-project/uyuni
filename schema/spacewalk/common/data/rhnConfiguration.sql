@@ -85,3 +85,6 @@ VALUES ('URLGRABBER_LOGSPEC', 'urlgrabber debug logging of reposync in the form 
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('BUFFER_SIZE', 'Size in bytes of the chunks in which the server streams files like packages to clients', null, '16384');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('FORCE_PACKAGE_UPLOAD', 'Allow mgr-push to force the upload of packages which already exist on the server', null, '0');

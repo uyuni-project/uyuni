@@ -119,6 +119,8 @@ DB_CONFIG_KEYS = {
     "urlgrabber_logspec": "URLGRABBER_LOGSPEC",
     "server.buffer_size": "BUFFER_SIZE",
     "buffer_size": "BUFFER_SIZE",
+    "server.force_package_upload": "FORCE_PACKAGE_UPLOAD",
+    "force_package_upload": "FORCE_PACKAGE_UPLOAD",
 }
 
 
