@@ -88,6 +88,7 @@ public class RhnConfiguration extends BaseDomainHelper {
         SCC_URL,
         SYNC_SOURCE_PACKAGES(ValueType.BOOLEAN),
         TEMP_CHANNEL_TOKEN_LIFETIME,
+        TOKEN_LIFETIME,
         URLGRABBER_LOGSPEC(ValueType.STRING),
         BUFFER_SIZE(ValueType.INTEGER),
         FORCE_PACKAGE_UPLOAD(ValueType.BOOLEAN),
