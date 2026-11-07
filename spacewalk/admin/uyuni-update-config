@@ -130,6 +130,8 @@ DB_CONFIG_KEYS = {
     "scc_url": "SCC_URL",
     "server.susemanager.forward_registration": "SCC_FORWARD_REGISTRATION",
     "forward_registration": "SCC_FORWARD_REGISTRATION",
+    "server.susemanager.reg_error_expire_time": "SCC_REG_ERROR_EXPIRE_TIME",
+    "reg_error_expire_time": "SCC_REG_ERROR_EXPIRE_TIME",
 }
 
 

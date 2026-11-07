@@ -100,3 +100,6 @@ VALUES ('SCC_URL', 'URL of the SUSE Customer Center (SCC) API', null, 'https://s
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('SCC_FORWARD_REGISTRATION', 'Forward the registrations of clients to the SUSE Customer Center (SCC)', null, '1');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('SCC_REG_ERROR_EXPIRE_TIME', 'Hours until a failed registration of a client is sent to the SUSE Customer Center (SCC) again', null, '168');
