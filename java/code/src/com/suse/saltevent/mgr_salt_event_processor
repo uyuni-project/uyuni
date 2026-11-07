@@ -1,0 +1,9 @@
+#!/bin/sh
+# SaltEventProcessorDaemon start script
+. /etc/rhn/saltEventProcessor.conf
+
+SALTEN_PARAMS="-Dibm.dst.compatibility=true -Dfile.encoding=UTF-8 -Xms${SALTEN_INIT_MEMORY}m -Xmx${SALTEN_MAX_MEMORY}m ${SALTEN_CRASH_PARAMS} ${SALTEN_JAVA_OPTS}"
+SALTEN_CLASSPATH="${SALTEN_RHN_CLASSPATH}:${SALTEN_RHN_JARS}:${SALTEN_JARS}"
+
+# options sourced from /usr/share/rhn/config-defaults/rhn_saltEventProcessor_daemon.conf (do not touch). Add additional options to /etc/rhn/saltEventProcessor.conf
+/usr/bin/java -Djava.library.path=${SALTEN_LIBRARY_PATH} -classpath ${SALTEN_CLASSPATH} ${SALTEN_PARAMS} ${JAVA_OPTS} ${JAVA_AGENT} com.suse.saltevent.SaltEventProcessor
