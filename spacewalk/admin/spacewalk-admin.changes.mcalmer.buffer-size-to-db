@@ -1,0 +1,1 @@
+- Move `server.buffer_size` from `rhn.conf` into the database
