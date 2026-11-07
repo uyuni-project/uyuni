@@ -272,7 +272,6 @@ public class ConfigDefaults {
     /**
      * Token lifetime in seconds
      */
-    public static final String TEMP_TOKEN_LIFETIME = "server.susemanager.temp_token_lifetime";
     public static final String TOKEN_LIFETIME = "server.susemanager.token_lifetime";
     /**
      * Controls if refreshed tokens get automatically deployed or not.
