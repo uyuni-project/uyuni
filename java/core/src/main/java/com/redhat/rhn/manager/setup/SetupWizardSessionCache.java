@@ -16,8 +16,8 @@
  */
 package com.redhat.rhn.manager.setup;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 
 import org.apache.logging.log4j.LogManager;
@@ -162,7 +162,7 @@ public class SetupWizardSessionCache {
                 // 3) the "https://scc.suse.com" page (with no "/login" ending) does not refer to "myaccount.suse.com"
                 // 4) the aim here is to "ping" an external website to see whether the http proxy let us reach
                 // the external network, so the "login" ending is not strictly necessary
-                String url = Config.get().getString(ConfigDefaults.SCC_URL);
+                String url = RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.SCC_URL);
                 ret = MgrSyncUtils.verifyProxy(url);
             }
             catch (IOException e) {

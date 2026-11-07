@@ -255,7 +255,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
 | rhn_server.conf | `secret_key` | [`python/spacewalk/server/apacheAuth.py:94`](python/spacewalk/server/apacheAuth.py#L94) |
 | rhn_server.conf | `sync_cache_dir` | [`python/spacewalk/satellite_tools/syncCache.py:39`](python/spacewalk/satellite_tools/syncCache.py#L39) |
-| rhn_server_susemanager.conf | `scc_url` | [`java/core/src/main/java/com/suse/scc/SCCTaskManager.java:132`](java/core/src/main/java/com/suse/scc/SCCTaskManager.java#L132) |
 | rhn_server_susemanager.conf | `update_host_domain` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1323`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1323) |
 | rhn_server_susemanager.conf | `forward_registration` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1316`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1316) |
 | rhn_server_susemanager.conf | `reg_error_expire_time` | [`java/core/src/main/java/com/redhat/rhn/domain/scc/SCCCachingFactory.java:546`](java/core/src/main/java/com/redhat/rhn/domain/scc/SCCCachingFactory.java#L546) |
