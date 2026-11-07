@@ -256,7 +256,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `secret_key` | [`python/spacewalk/server/apacheAuth.py:94`](python/spacewalk/server/apacheAuth.py#L94) |
 | rhn_server.conf | `sync_cache_dir` | [`python/spacewalk/satellite_tools/syncCache.py:39`](python/spacewalk/satellite_tools/syncCache.py#L39) |
 | rhn_server_susemanager.conf | `update_host_domain` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1323`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1323) |
-| rhn_server_susemanager.conf | `reg_error_expire_time` | [`java/core/src/main/java/com/redhat/rhn/domain/scc/SCCCachingFactory.java:546`](java/core/src/main/java/com/redhat/rhn/domain/scc/SCCCachingFactory.java#L546) |
 | rhn_server_susemanager.conf | `reg_batch_size` | [`java/core/src/main/java/com/suse/scc/SCCSystemRegistrationManager.java:104`](java/core/src/main/java/com/suse/scc/SCCSystemRegistrationManager.java#L104) |
 | rhn_server_susemanager.conf | `fromdir` | [`java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java:893`](java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java#L893) |
 | rhn_server_susemanager.conf | `mirror` | [`java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java:1452`](java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java#L1452) |

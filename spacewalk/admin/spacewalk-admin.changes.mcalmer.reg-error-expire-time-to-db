@@ -1,0 +1,2 @@
+- Move `server.susemanager.reg_error_expire_time` from `rhn.conf`
+  into the database
