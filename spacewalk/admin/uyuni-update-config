@@ -145,6 +145,9 @@ DB_CONFIG_KEYS = {
     "server.susemanager.bootstrap_repo_flush": "BOOTSTRAP_REPO_FLUSH",
     "server.bootstrap_repo_flush": "BOOTSTRAP_REPO_FLUSH",
     "bootstrap_repo_flush": "BOOTSTRAP_REPO_FLUSH",
+    "server.susemanager.auto_generate_bootstrap_repo": "AUTO_GENERATE_BOOTSTRAP_REPO",
+    "server.auto_generate_bootstrap_repo": "AUTO_GENERATE_BOOTSTRAP_REPO",
+    "auto_generate_bootstrap_repo": "AUTO_GENERATE_BOOTSTRAP_REPO",
 }
 
 
