@@ -16,8 +16,8 @@
  */
 package com.suse.scc;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
@@ -101,9 +101,10 @@ public class SCCSystemRegistrationManager {
      */
     public void updateLastSeen(List<SCCUpdateSystemItem> updateLastSeenItems, SCCCredentials sccPrimaryCredentials) {
 
+        int batchSize = RhnConfigurationFactory.getSingleton().getInteger(RhnConfiguration.KEYS.SCC_REG_BATCH_SIZE);
         ArrayList<List<SCCUpdateSystemItem>> batches = new ArrayList<>(
                 IntStream.range(0, updateLastSeenItems.size()).boxed().collect(
-                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
+                        Collectors.groupingBy(e -> e / batchSize,
                                 Collectors.mapping(updateLastSeenItems::get, Collectors.toList())
                                 )).values());
         for (List<SCCUpdateSystemItem> batch: batches) {
@@ -127,9 +128,10 @@ public class SCCSystemRegistrationManager {
      * @param proxyUpdateLastSeen the list of  {@link SCCProxyRecord} systems to update last_seen field
      */
     public void proxyUpdateLastSeen(List<SCCProxyRecord> proxyUpdateLastSeen, SCCCredentials sccPrimaryCredentials) {
+        int batchSize = RhnConfigurationFactory.getSingleton().getInteger(RhnConfiguration.KEYS.SCC_REG_BATCH_SIZE);
         ArrayList<List<SCCProxyRecord>> batches = new ArrayList<>(
                 IntStream.range(0, proxyUpdateLastSeen.size()).boxed().collect(
-                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
+                        Collectors.groupingBy(e -> e / batchSize,
                                 Collectors.mapping(proxyUpdateLastSeen::get, Collectors.toList())
                         )).values());
         for (List<SCCProxyRecord> proxyRecordBatch: batches) {
@@ -299,9 +301,10 @@ public class SCCSystemRegistrationManager {
      * @param sccPrimaryCredentials the current primary organization credential
      */
     public void proxyRegister(List<SCCProxyRecord> proxyRecords, SCCCredentials sccPrimaryCredentials) {
+        int batchSize = RhnConfigurationFactory.getSingleton().getInteger(RhnConfiguration.KEYS.SCC_REG_BATCH_SIZE);
         ArrayList<List<SCCProxyRecord>> batches = new ArrayList<>(
                 IntStream.range(0, proxyRecords.size()).boxed().collect(
-                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
+                        Collectors.groupingBy(e -> e / batchSize,
                                 Collectors.mapping(proxyRecords::get, Collectors.toList())
                         )).values());
 
@@ -356,9 +359,10 @@ public class SCCSystemRegistrationManager {
      * @param sccPrimaryCredentials primary credential
      */
     public void virtualInfo(List<SCCVirtualizationHostJson> virtHosts, SCCCredentials sccPrimaryCredentials) {
+        int batchSize = RhnConfigurationFactory.getSingleton().getInteger(RhnConfiguration.KEYS.SCC_REG_BATCH_SIZE);
         ArrayList<List<SCCVirtualizationHostJson>> batches = new ArrayList<>(
                 IntStream.range(0, virtHosts.size()).boxed().collect(
-                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
+                        Collectors.groupingBy(e -> e / batchSize,
                                 Collectors.mapping(virtHosts::get, Collectors.toList())
                         )).values());
         for (List<SCCVirtualizationHostJson> batch: batches) {
@@ -382,9 +386,10 @@ public class SCCSystemRegistrationManager {
      * @param sccPrimaryCredentials primary credential
      */
     public void proxyVirtualInfo(List<SCCProxyRecord> proxyVirtHosts, SCCCredentials sccPrimaryCredentials) {
+        int batchSize = RhnConfigurationFactory.getSingleton().getInteger(RhnConfiguration.KEYS.SCC_REG_BATCH_SIZE);
         ArrayList<List<SCCProxyRecord>> batches = new ArrayList<>(
                 IntStream.range(0, proxyVirtHosts.size()).boxed().collect(
-                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
+                        Collectors.groupingBy(e -> e / batchSize,
                                 Collectors.mapping(proxyVirtHosts::get, Collectors.toList())
                         )).values());
 

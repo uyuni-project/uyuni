@@ -255,7 +255,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
 | rhn_server.conf | `secret_key` | [`python/spacewalk/server/apacheAuth.py:94`](python/spacewalk/server/apacheAuth.py#L94) |
 | rhn_server.conf | `sync_cache_dir` | [`python/spacewalk/satellite_tools/syncCache.py:39`](python/spacewalk/satellite_tools/syncCache.py#L39) |
-| rhn_server_susemanager.conf | `reg_batch_size` | [`java/core/src/main/java/com/suse/scc/SCCSystemRegistrationManager.java:104`](java/core/src/main/java/com/suse/scc/SCCSystemRegistrationManager.java#L104) |
 | rhn_server_susemanager.conf | `fromdir` | [`java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java:893`](java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java#L893) |
 | rhn_server_susemanager.conf | `mirror` | [`java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java:1452`](java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java#L1452) |
 | rhn_server_susemanager.conf | `temp_token_lifetime` | [`java/core/src/main/java/com/redhat/rhn/domain/action/salt/build/ImageBuildAction.java:231`](java/core/src/main/java/com/redhat/rhn/domain/action/salt/build/ImageBuildAction.java#L231) |
