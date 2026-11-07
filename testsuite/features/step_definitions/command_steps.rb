@@ -1047,13 +1047,14 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   node.run(cmd, verbose: true, check_errors: error_control.empty?)
 end
 
+# The setting is stored in the database: uyuni-update-config moves it there from rhn.conf
 When(/^I enable source package syncing$/) do
-  cmd = 'echo \'server.sync_source_packages = 1\' >> /etc/rhn/rhn.conf'
+  cmd = 'echo \'server.sync_source_packages = 1\' >> /etc/rhn/rhn.conf && /usr/sbin/uyuni-update-config --move-config-to-db'
   get_target('server').run(cmd)
 end
 
 When(/^I disable source package syncing$/) do
-  cmd = 'sed -i \'s/^server.sync_source_packages = 1.*//g\' /etc/rhn/rhn.conf'
+  cmd = 'echo \'server.sync_source_packages = 0\' >> /etc/rhn/rhn.conf && /usr/sbin/uyuni-update-config --move-config-to-db'
   get_target('server').run(cmd)
 end
 
