@@ -103,3 +103,6 @@ VALUES ('SCC_FORWARD_REGISTRATION', 'Forward the registrations of clients to the
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('SCC_REG_ERROR_EXPIRE_TIME', 'Hours until a failed registration of a client is sent to the SUSE Customer Center (SCC) again', null, '168');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('SCC_REG_BATCH_SIZE', 'Number of systems sent to the SUSE Customer Center (SCC) in one registration call', null, '200');

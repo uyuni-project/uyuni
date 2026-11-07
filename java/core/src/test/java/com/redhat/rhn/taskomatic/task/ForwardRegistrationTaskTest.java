@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
@@ -512,7 +512,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     }
 
     private void setupCreateSystems() throws Exception {
-        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, String.valueOf(batchSize));
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.SCC_REG_BATCH_SIZE, batchSize);
 
         for (SCCRegCacheItem item : getAllSCCRegCacheItems()) {
             SCCCachingFactory.deleteRegCacheItem(item);
