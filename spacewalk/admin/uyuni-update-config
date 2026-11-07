@@ -117,6 +117,8 @@ DB_CONFIG_KEYS = {
     "server.satellite.urlgrabber_logspec": "URLGRABBER_LOGSPEC",
     "server.urlgrabber_logspec": "URLGRABBER_LOGSPEC",
     "urlgrabber_logspec": "URLGRABBER_LOGSPEC",
+    "server.buffer_size": "BUFFER_SIZE",
+    "buffer_size": "BUFFER_SIZE",
 }
 
 
