@@ -17,8 +17,8 @@
 
 package com.suse.scc.registration;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
@@ -42,7 +42,8 @@ public class SCCSystemRegistrationCreateUpdateSystems implements SCCSystemRegist
 
     @Override
     public void handle(SCCSystemRegistrationContext context) {
-        final int batchSize = Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 50);
+        final int batchSize = RhnConfigurationFactory.getSingleton()
+                .getInteger(RhnConfiguration.KEYS.SCC_REG_BATCH_SIZE);
         final List<SCCRegisterSystemItem> pendingRegistrationSystems =
                 new ArrayList<>(context.getPendingRegistrationSystemsByLogin().values());
 
