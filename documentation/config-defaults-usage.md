@@ -257,7 +257,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_server.conf | `sync_cache_dir` | [`python/spacewalk/satellite_tools/syncCache.py:39`](python/spacewalk/satellite_tools/syncCache.py#L39) |
 | rhn_server_susemanager.conf | `update_host_domain` | [`java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java:1323`](java/core/src/main/java/com/redhat/rhn/common/conf/ConfigDefaults.java#L1323) |
 | rhn_server_susemanager.conf | `fromdir` | [`java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java:893`](java/core/src/main/java/com/redhat/rhn/manager/content/ContentSyncManager.java#L893) |
-| rhn_server_susemanager.conf | `token_refresh_auto_deploy` | [`java/core/src/main/java/com/redhat/rhn/taskomatic/task/TokenCleanup.java:74`](java/core/src/main/java/com/redhat/rhn/taskomatic/task/TokenCleanup.java#L74) |
 | rhn_server_susemanager.conf | `bootstrap_repo_flush` | [`susemanager/src/mgr-create-bootstrap-repo:411`](susemanager/src/mgr-create-bootstrap-repo#L411) |
 | rhn_server_susemanager.conf | `bootstrap_repo_datamodule` | [`susemanager/src/mgr-create-bootstrap-repo:431`](susemanager/src/mgr-create-bootstrap-repo#L431) |
 | rhn_server_susemanager.conf | `auto_generate_bootstrap_repo` | [`python/spacewalk/satellite_tools/reposync.py:936`](python/spacewalk/satellite_tools/reposync.py#L936) |

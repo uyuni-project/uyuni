@@ -140,6 +140,8 @@ DB_CONFIG_KEYS = {
     "temp_token_lifetime": "TEMP_CHANNEL_TOKEN_LIFETIME",
     "server.susemanager.token_lifetime": "TOKEN_LIFETIME",
     "token_lifetime": "TOKEN_LIFETIME",
+    "server.susemanager.token_refresh_auto_deploy": "CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY",
+    "token_refresh_auto_deploy": "CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY",
 }
 
 
