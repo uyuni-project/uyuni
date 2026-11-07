@@ -1,0 +1,2 @@
+- Move `server.susemanager.mirror` from `rhn.conf` into
+  the database
