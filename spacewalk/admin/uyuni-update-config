@@ -127,6 +127,8 @@ DB_CONFIG_KEYS = {
     "session_lifetime": "PUSH_SESSION_LIFETIME",
     "server.susemanager.scc_url": "SCC_URL",
     "scc_url": "SCC_URL",
+    "server.susemanager.update_host_domain": "SCC_UPDATE_HOST_DOMAIN",
+    "update_host_domain": "SCC_UPDATE_HOST_DOMAIN",
 }
 
 

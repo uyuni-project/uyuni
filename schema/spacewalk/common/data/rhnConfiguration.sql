@@ -97,3 +97,6 @@ VALUES ('PUSH_SESSION_LIFETIME', 'Lifetime in seconds of the sessions which mgr-
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('SCC_URL', 'URL of the SUSE Customer Center (SCC) API', null, 'https://scc.suse.com');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('SCC_UPDATE_HOST_DOMAIN', 'Domain of the official update server of the SUSE Customer Center (SCC)', null, '.suse.com');

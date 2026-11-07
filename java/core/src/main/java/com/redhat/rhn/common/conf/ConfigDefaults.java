@@ -247,7 +247,6 @@ public class ConfigDefaults {
     /**
      * SUSE Manager defaults
      */
-    public static final String SCC_UPDATE_HOST_DOMAIN = "server.susemanager.update_host_domain";
     public static final String FORWARD_REGISTRATION = "server.susemanager.forward_registration";
     public static final String REG_ERROR_EXPIRE_TIME = "server.susemanager.reg_error_expire_time";
     public static final String REG_BATCH_SIZE = "server.susemanager.reg_batch_size";
@@ -1342,7 +1341,7 @@ public class ConfigDefaults {
      * @return return the domain expected for the official update host
      */
     public String getOfficialUpdateHostDomain() {
-        return Config.get().getString(SCC_UPDATE_HOST_DOMAIN, ".suse.com");
+        return RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.SCC_UPDATE_HOST_DOMAIN);
     }
 
     /**
