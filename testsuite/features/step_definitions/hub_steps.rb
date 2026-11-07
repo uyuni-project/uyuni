@@ -1226,11 +1226,15 @@ RHN_CONF_PATH = '/etc/rhn/rhn.conf'.freeze
 RHN_CONF_TESTSUITE_SETTINGS = {
   'java.max_changelog_entries' => '3',
   'java.salt_presence_ping_timeout' => '6',
-  'server.susemanager.forward_registration' => '0',
-  'server.reposync_download_threads' => '2',
   'java.salt_content_staging_window' => '0.033',
   'java.salt_content_staging_advance' => '0.05',
   'java.kiwi_os_image_building_enabled' => 'true'
+}.freeze
+
+# Subset of rhn.sls / testsuite.sls settings which are stored in the rhnConfiguration table.
+DB_CONFIG_TESTSUITE_SETTINGS = {
+  'SCC_FORWARD_REGISTRATION' => '0',
+  'REPOSYNC_DOWNLOAD_THREADS' => '2'
 }.freeze
 
 When(/^I apply the testsuite configuration on the peripheral server "([^"]*)"$/) do |peripheral|
@@ -1254,6 +1258,9 @@ When(/^I apply the testsuite configuration on the peripheral server "([^"]*)"$/)
     changed = true
   end
   node.run('systemctl restart tomcat taskomatic') if changed
+
+  # The database is read on use, so these settings need no restart. Setting them again is harmless.
+  DB_CONFIG_TESTSUITE_SETTINGS.each { |key, value| set_db_config_value(node, key, value) }
 
   # mgr-sync autologin, mirroring the ~/.mgr-sync convention already used against "server"
   # elsewhere in the testsuite (see command_steps.rb).
