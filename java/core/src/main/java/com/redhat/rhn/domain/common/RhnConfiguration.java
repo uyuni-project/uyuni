@@ -81,6 +81,7 @@ public class RhnConfiguration extends BaseDomainHelper {
         REPOSYNC_TIMEOUT(ValueType.INTEGER),
         REPOSYNC_MINRATE(ValueType.INTEGER),
         REPOSYNC_NEVRA_FILTER(ValueType.BOOLEAN),
+        SCC_URL,
         SYNC_SOURCE_PACKAGES(ValueType.BOOLEAN),
         URLGRABBER_LOGSPEC(ValueType.STRING),
         BUFFER_SIZE(ValueType.INTEGER),

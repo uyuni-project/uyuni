@@ -94,3 +94,6 @@ VALUES ('PROXY_AUTH_TIMEOUT', 'Lifetime in seconds of the authentication tokens 
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('PUSH_SESSION_LIFETIME', 'Lifetime in seconds of the sessions which mgr-push gets when it logs in to upload packages', null, '1800');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('SCC_URL', 'URL of the SUSE Customer Center (SCC) API', null, 'https://scc.suse.com');
