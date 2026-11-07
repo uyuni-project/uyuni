@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
@@ -247,7 +247,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testMassUpdateSystems() throws Exception {
-        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, "5");
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.SCC_REG_BATCH_SIZE, 5);
 
         int c = 0;
         while (c < 16) {

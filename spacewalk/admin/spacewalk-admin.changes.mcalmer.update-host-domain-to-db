@@ -1,0 +1,2 @@
+- Move `server.susemanager.update_host_domain` from `rhn.conf` into
+  the database

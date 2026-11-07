@@ -232,7 +232,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.urls = [
             {
@@ -276,7 +275,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.urls = [
             {
@@ -303,11 +301,50 @@ class RepoSyncTest(unittest.TestCase):
             (("Label",), {}),
         )
 
+    def _sync_regenerating_bootstrap_repo(self, auto_generate):
+        rs = _init_reposync(self.reposync)
+        # pylint: disable-next=invalid-name
+        CFG = Mock()
+        CFG.MOUNT_POINT = "/tmp"
+        rs.urls = [
+            {
+                "source_url": ["http://none.host/bogus-url"],
+                "id": 42,
+                "metadata_signed": "N",
+                "repo_label": None,
+                "repo_type": "yum",
+            }
+        ]
+        _mock_rhnsql(self.reposync, [None, []])
+        rs = _mock_sync(self.reposync, rs)
+        rs.regenerate_bootstrap_repo = True
+        db_cfg = Mock(get_bool=Mock(return_value=auto_generate))
+        with patch("spacewalk.common.rhnConfig.CFG", CFG), patch(
+            "spacewalk.satellite_tools.reposync.DB_CFG", db_cfg
+        ):
+            rs.sync()
+        db_cfg.get_bool.assert_called_once_with("AUTO_GENERATE_BOOTSTRAP_REPO")
+        return self.reposync.subprocess.call
+
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
+    def test_sync_regenerates_bootstrap_repo(self):
+        subprocess_call = self._sync_regenerating_bootstrap_repo(True)
+        subprocess_call.assert_any_call(
+            ["/usr/sbin/mgr-create-bootstrap-repo", "--auto"]
+        )
+
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
+    def test_sync_does_not_regenerate_bootstrap_repo_when_disabled(self):
+        subprocess_call = self._sync_regenerating_bootstrap_repo(False)
+        self.assertNotIn(
+            call(["/usr/sbin/mgr-create-bootstrap-repo", "--auto"]),
+            subprocess_call.call_args_list,
+        )
+
     def _mock_cfg(self) -> Mock:
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
         return CFG
 
     def _mock_repo_plugin(self, pkg_list) -> Mock:
@@ -363,7 +400,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         exception = self.reposync.ChannelTimeoutException("anony-error")
         rs.load_plugin = Mock(return_value=Mock(side_effect=exception))
@@ -381,7 +417,6 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.load_plugin = Mock(return_value=Mock(side_effect=TypeError))
         with patch("spacewalk.common.rhnConfig.CFG", CFG):
@@ -1003,7 +1038,6 @@ class SyncTest(unittest.TestCase):
         # pylint: disable-next=invalid-name
         CFG = Mock()
         CFG.MOUNT_POINT = "/tmp"
-        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         with patch("spacewalk.common.rhnConfig.CFG", CFG):
             repo_sync.sync()
@@ -1213,7 +1247,6 @@ class RunScriptTest(unittest.TestCase):
     def test_config_parameter_channel_as_list(self):
         self.repo_sync.CFG = Mock()
         self.repo_sync.CFG.DEBUG = 3
-        self.repo_sync.CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
         self.repo_sync.main()
         self.assertEqual(self.repo_sync.reposync.RepoSync.call_count, 2)
 
@@ -1231,7 +1264,6 @@ def test_channel_exceptions():
     # pylint: disable-next=invalid-name
     CFG = Mock()
     CFG.MOUNT_POINT = "/tmp"
-    CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
     _mock_rhnsql(
         repoSync,

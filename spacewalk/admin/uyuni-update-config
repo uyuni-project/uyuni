@@ -117,7 +117,50 @@ DB_CONFIG_KEYS = {
     "server.satellite.urlgrabber_logspec": "URLGRABBER_LOGSPEC",
     "server.urlgrabber_logspec": "URLGRABBER_LOGSPEC",
     "urlgrabber_logspec": "URLGRABBER_LOGSPEC",
+    "server.buffer_size": "BUFFER_SIZE",
+    "buffer_size": "BUFFER_SIZE",
+    "server.force_package_upload": "FORCE_PACKAGE_UPLOAD",
+    "force_package_upload": "FORCE_PACKAGE_UPLOAD",
+    "server.proxy_auth_timeout": "PROXY_AUTH_TIMEOUT",
+    "proxy_auth_timeout": "PROXY_AUTH_TIMEOUT",
+    "server.session_lifetime": "PUSH_SESSION_LIFETIME",
+    "session_lifetime": "PUSH_SESSION_LIFETIME",
+    "server.susemanager.scc_url": "SCC_URL",
+    "scc_url": "SCC_URL",
+    "server.susemanager.update_host_domain": "SCC_UPDATE_HOST_DOMAIN",
+    "update_host_domain": "SCC_UPDATE_HOST_DOMAIN",
+    "server.susemanager.forward_registration": "SCC_FORWARD_REGISTRATION",
+    "forward_registration": "SCC_FORWARD_REGISTRATION",
+    "server.susemanager.reg_error_expire_time": "SCC_REG_ERROR_EXPIRE_TIME",
+    "reg_error_expire_time": "SCC_REG_ERROR_EXPIRE_TIME",
+    "server.susemanager.reg_batch_size": "SCC_REG_BATCH_SIZE",
+    "reg_batch_size": "SCC_REG_BATCH_SIZE",
+    "server.susemanager.mirror": "SCC_MIRROR_URL",
+    "mirror": "SCC_MIRROR_URL",
+    "server.susemanager.temp_token_lifetime": "TEMP_CHANNEL_TOKEN_LIFETIME",
+    "temp_token_lifetime": "TEMP_CHANNEL_TOKEN_LIFETIME",
+    "server.susemanager.token_lifetime": "TOKEN_LIFETIME",
+    "token_lifetime": "TOKEN_LIFETIME",
+    "server.susemanager.token_refresh_auto_deploy": "CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY",
+    "token_refresh_auto_deploy": "CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY",
+    "server.susemanager.bootstrap_repo_flush": "BOOTSTRAP_REPO_FLUSH",
+    "server.bootstrap_repo_flush": "BOOTSTRAP_REPO_FLUSH",
+    "bootstrap_repo_flush": "BOOTSTRAP_REPO_FLUSH",
+    "server.susemanager.auto_generate_bootstrap_repo": "AUTO_GENERATE_BOOTSTRAP_REPO",
+    "server.auto_generate_bootstrap_repo": "AUTO_GENERATE_BOOTSTRAP_REPO",
+    "auto_generate_bootstrap_repo": "AUTO_GENERATE_BOOTSTRAP_REPO",
 }
+
+
+def _db_config_entry(line):
+    """
+    Return the lower case key name and the value of a rhn.conf line whose key moved
+    into the database, (None, None) for other lines
+    """
+    match = re.match(r"^\s*([\w.]+)\s*=(.*)$", line)
+    if not match or match.group(1).lower() not in DB_CONFIG_KEYS:
+        return None, None
+    return match.group(1).lower(), match.group(2).strip()
 
 
 def move_config_to_db():
@@ -129,15 +172,28 @@ def move_config_to_db():
     with open("/etc/rhn/rhn.conf", "r", encoding="utf8") as f:
         lines = f.readlines()
 
-    remaining = []
+    # Like rhnConfig, let the most specific spelling win (server.buffer_size over
+    # buffer_size), and the last line among equally specific spellings.
+    values = {}
     for line in lines:
-        match = re.match(r"^\s*([\w.]+)\s*=(.*)$", line)
-        key = DB_CONFIG_KEYS.get(match.group(1).lower()) if match else None
-        if not key or not move_configuration(key, match.group(2).strip()):
-            remaining.append(line)
+        name, value = _db_config_entry(line)
+        if name is None:
+            continue
+        key = DB_CONFIG_KEYS[name]
+        specificity = name.count(".")
+        if specificity >= values.get(key, (-1, None))[0]:
+            values[key] = (specificity, value)
 
-    if len(remaining) == len(lines):
+    moved = {
+        key for key, (_, value) in values.items() if move_configuration(key, value)
+    }
+    if not moved:
         return
+    remaining = [
+        line
+        for line in lines
+        if DB_CONFIG_KEYS.get(_db_config_entry(line)[0]) not in moved
+    ]
     rhnSQL.commit()
     with open("/etc/rhn/rhn.conf", "w", encoding="utf8") as f:
         f.writelines(remaining)

@@ -247,11 +247,6 @@ public class ConfigDefaults {
     /**
      * SUSE Manager defaults
      */
-    public static final String SCC_URL = "server.susemanager.scc_url";
-    public static final String SCC_UPDATE_HOST_DOMAIN = "server.susemanager.update_host_domain";
-    public static final String FORWARD_REGISTRATION = "server.susemanager.forward_registration";
-    public static final String REG_ERROR_EXPIRE_TIME = "server.susemanager.reg_error_expire_time";
-    public static final String REG_BATCH_SIZE = "server.susemanager.reg_batch_size";
     public static final String SCC_BACKUP_SRV_USR = "server.susemanager.scc_backup_srv_usr";
     public static final String PRODUCT_TREE_TAG = "java.product_tree_tag";
 
@@ -272,16 +267,6 @@ public class ConfigDefaults {
      */
     public static final String SCAP_XCCDF_RESUME_XSL = "scap.xccdf.resume.xsl";
     private static final String DEFAULT_SCAP_XCCDF_RESUME_XSL = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
-
-    /**
-     * Token lifetime in seconds
-     */
-    public static final String TEMP_TOKEN_LIFETIME = "server.susemanager.temp_token_lifetime";
-    public static final String TOKEN_LIFETIME = "server.susemanager.token_lifetime";
-    /**
-     * Controls if refreshed tokens get automatically deployed or not.
-     */
-    public static final String TOKEN_REFRESH_AUTO_DEPLOY = "server.susemanager.token_refresh_auto_deploy";
 
     public static final String SALT_SSH_CONNECT_TIMEOUT = "java.salt_ssh_connect_timeout";
 
@@ -1336,14 +1321,14 @@ public class ConfigDefaults {
      * @return true if registrations should be forwarded to SCC, otherwise false
      */
     public boolean isForwardRegistrationEnabled() {
-        return Config.get().getBoolean(FORWARD_REGISTRATION);
+        return RhnConfigurationFactory.getSingleton().getBoolean(RhnConfiguration.KEYS.SCC_FORWARD_REGISTRATION);
     }
 
     /**
      * @return return the domain expected for the official update host
      */
     public String getOfficialUpdateHostDomain() {
-        return Config.get().getString(SCC_UPDATE_HOST_DOMAIN, ".suse.com");
+        return RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.SCC_UPDATE_HOST_DOMAIN);
     }
 
     /**

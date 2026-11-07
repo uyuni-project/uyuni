@@ -54,7 +54,16 @@ public class RhnConfiguration extends BaseDomainHelper {
         NO_PROXY,
         USER_LOGIN_LENGTH_MIN,
         USER_LOGIN_LENGTH_MAX,
-        USER_EMAIL_LENGTH_MAX;
+        USER_EMAIL_LENGTH_MAX,
+        SCC_URL,
+        SCC_UPDATE_HOST_DOMAIN,
+        SCC_FORWARD_REGISTRATION,
+        SCC_REG_ERROR_EXPIRE_TIME,
+        SCC_REG_BATCH_SIZE,
+        SCC_MIRROR_URL,
+        TEMP_CHANNEL_TOKEN_LIFETIME,
+        TOKEN_LIFETIME,
+        CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY;
     }
 
     @Id

@@ -934,11 +934,11 @@ class RepoSync(object):
             taskomatic.add_to_erratacache_queue(self.channel_label)
         self.update_date()
         rhnSQL.commit()
-        # pylint: disable-next=invalid-name
-        with cfg_component("server.susemanager") as CFG:
-            if CFG.AUTO_GENERATE_BOOTSTRAP_REPO and self.regenerate_bootstrap_repo:
-                log(0, "  Regenerating bootstrap repositories.")
-                subprocess.call(["/usr/sbin/mgr-create-bootstrap-repo", "--auto"])
+        if self.regenerate_bootstrap_repo and DB_CFG.get_bool(
+            "AUTO_GENERATE_BOOTSTRAP_REPO"
+        ):
+            log(0, "  Regenerating bootstrap repositories.")
+            subprocess.call(["/usr/sbin/mgr-create-bootstrap-repo", "--auto"])
 
         # update the server overview with new package / errata stats
         self.update_servers()

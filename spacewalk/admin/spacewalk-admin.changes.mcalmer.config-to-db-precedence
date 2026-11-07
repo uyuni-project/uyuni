@@ -1,0 +1,2 @@
+- Move the value of the most specific key into the database when
+  `rhn.conf` sets a key with and without component prefix

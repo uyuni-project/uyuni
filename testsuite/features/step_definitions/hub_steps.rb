@@ -1237,8 +1237,9 @@ When(/^I apply the testsuite configuration on the peripheral server "([^"]*)"$/)
   # Refresh: the node was cached before `mgradm install`, so it doesn't know about mgrctl yet
   node = get_target(peripheral, refresh: true)
 
-  # rhn.conf: idempotent key/value upsert, one sed/append per key rather than a blind append,
-  # so re-running this step (or running it against an already-configured server) is a no-op.
+  # rhn.conf: idempotent key/value upsert, one sed/append per key rather than a blind append.
+  # Keys stored in the database are moved there from rhn.conf afterwards, so a re-run writes
+  # them again, which only stores the same values.
   changed = false
   RHN_CONF_TESTSUITE_SETTINGS.each do |key, value|
     # get_variable_from_conf_file returns nil (not "") when the key is absent - String#strip!
@@ -1253,7 +1254,10 @@ When(/^I apply the testsuite configuration on the peripheral server "([^"]*)"$/)
     end
     changed = true
   end
-  node.run('systemctl restart tomcat taskomatic') if changed
+  if changed
+    node.run('/usr/sbin/uyuni-update-config --move-config-to-db')
+    node.run('systemctl restart tomcat taskomatic')
+  end
 
   # mgr-sync autologin, mirroring the ~/.mgr-sync convention already used against "server"
   # elsewhere in the testsuite (see command_steps.rb).

@@ -1,0 +1,2 @@
+- Move `server.proxy_auth_timeout` from `rhn.conf` into the
+  database

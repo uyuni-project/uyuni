@@ -29,6 +29,8 @@ import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.Comps;
 import com.redhat.rhn.domain.channel.MediaProducts;
 import com.redhat.rhn.domain.channel.Modules;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -74,11 +76,6 @@ public class DownloadController {
     private final String mountPointPath;
 
     private final CloudPaygManager cloudPaygManager;
-    private static final long EXPIRATION_TIME_MINUTES_IN_THE_FUTURE_TEMP_TOKEN = Config.get().getInt(
-            ConfigDefaults.TEMP_TOKEN_LIFETIME,
-            60
-    );
-
     /**
      * If true, check via JWT tokens that files requested by a minion are actually accessible by that minion. Turning
      * this flag to false disables the checks.
@@ -597,9 +594,11 @@ public class DownloadController {
         else {
             try {
                 Token parsedToken = new TokenParser().usingServerSecret().parse(token);
+                long tempTokenLifetime = RhnConfigurationFactory.getSingleton()
+                        .getLong(RhnConfiguration.KEYS.TEMP_CHANNEL_TOKEN_LIFETIME);
                 boolean isValid = Optional.ofNullable(parsedToken.getExpirationTime())
                         .map(exp -> {
-                            long timeDeltaSeconds = Duration.ofMinutes(EXPIRATION_TIME_MINUTES_IN_THE_FUTURE_TEMP_TOKEN)
+                            long timeDeltaSeconds = Duration.ofMinutes(tempTokenLifetime)
                                     .toSeconds();
                             long expireDeltaSeconds = exp.getEpochSecond() - NumericDate.now().getValue();
                             return expireDeltaSeconds > 0 && expireDeltaSeconds < timeDeltaSeconds;
