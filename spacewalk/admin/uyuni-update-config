@@ -142,6 +142,9 @@ DB_CONFIG_KEYS = {
     "token_lifetime": "TOKEN_LIFETIME",
     "server.susemanager.token_refresh_auto_deploy": "CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY",
     "token_refresh_auto_deploy": "CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY",
+    "server.susemanager.bootstrap_repo_flush": "BOOTSTRAP_REPO_FLUSH",
+    "server.bootstrap_repo_flush": "BOOTSTRAP_REPO_FLUSH",
+    "bootstrap_repo_flush": "BOOTSTRAP_REPO_FLUSH",
 }
 
 

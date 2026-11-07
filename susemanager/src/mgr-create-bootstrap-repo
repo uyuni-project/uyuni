@@ -22,6 +22,7 @@ from typing import List
 
 from rhn import rhnLockfile
 from spacewalk.server import rhnSQL
+from spacewalk.server.db_config import DB_CFG
 from spacewalk.common.rhnLog import initLOG, log_time, log_clean, log_debug
 from spacewalk.common.rhnConfig import cfg_component
 
@@ -411,9 +412,7 @@ def cli():
         # pylint: disable-next=redefined-outer-name,invalid-name
         with cfg_component("server.susemanager") as CFG:
             initLOG(logfile, CFG.DEBUG or 1)
-    # pylint: disable-next=invalid-name
-    with cfg_component("server.susemanager") as CFG:
-        flush = CFG.BOOTSTRAP_REPO_FLUSH
+    flush = DB_CFG.get_bool("BOOTSTRAP_REPO_FLUSH")
     if options.flush:
         flush = options.flush
     if options.noflush:
