@@ -124,3 +124,6 @@ VALUES ('CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY', 'Deploy the channel access tokens t
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('BOOTSTRAP_REPO_FLUSH', 'Remove the old content of a bootstrap repository before it is generated again', null, '0');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('AUTO_GENERATE_BOOTSTRAP_REPO', 'Generate the bootstrap repositories of synchronized products automatically', null, '1');
