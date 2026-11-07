@@ -1,0 +1,2 @@
+- Ask to enable the SCC data forwarding instead of setting
+  `forward_registration` in `rhn.conf`

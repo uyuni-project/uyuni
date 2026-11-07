@@ -147,6 +147,16 @@ def test_move_config_to_db_last_equally_specific_line_wins(tmp_path):
     move.assert_called_once_with("REPOSYNC_TIMEOUT", "400")
 
 
+def test_move_config_to_db_prefers_forward_registration_without_prefix(tmp_path):
+    move, content = run_move_config_to_db(
+        tmp_path,
+        "forward_registration = 0\nserver.susemanager.forward_registration = 1\n",
+    )
+
+    move.assert_called_once_with("SCC_FORWARD_REGISTRATION", "0")
+    assert content == ""
+
+
 def test_move_config_to_db_nothing_to_move(tmp_path):
     move, content = run_move_config_to_db(tmp_path, "debug = 1\n")
 

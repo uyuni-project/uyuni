@@ -92,7 +92,7 @@ export const getGlobalMessages = (
 
   if (sccForwardWarning) {
     const sccForwardWarningMessage = t(
-      "SUSE Multi-Linux Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
+      "SUSE Multi-Linux Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please enable the data forwarding to SCC."
     );
     messages = messages.concat({ severity: "warning", text: sccForwardWarningMessage });
   }
