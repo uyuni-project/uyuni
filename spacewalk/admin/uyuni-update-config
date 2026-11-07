@@ -128,6 +128,8 @@ DB_CONFIG_KEYS = {
     "session_lifetime": "PUSH_SESSION_LIFETIME",
     "server.susemanager.scc_url": "SCC_URL",
     "scc_url": "SCC_URL",
+    "server.susemanager.forward_registration": "SCC_FORWARD_REGISTRATION",
+    "forward_registration": "SCC_FORWARD_REGISTRATION",
 }
 
 
