@@ -247,7 +247,6 @@ public class ConfigDefaults {
     /**
      * SUSE Manager defaults
      */
-    public static final String REG_ERROR_EXPIRE_TIME = "server.susemanager.reg_error_expire_time";
     public static final String REG_BATCH_SIZE = "server.susemanager.reg_batch_size";
     public static final String SCC_BACKUP_SRV_USR = "server.susemanager.scc_backup_srv_usr";
     public static final String PRODUCT_TREE_TAG = "java.product_tree_tag";
