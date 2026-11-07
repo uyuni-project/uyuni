@@ -1,0 +1,2 @@
+- Move `server.susemanager.token_lifetime` from `rhn.conf` into
+  the database

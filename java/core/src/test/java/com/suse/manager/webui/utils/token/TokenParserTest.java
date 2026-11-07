@@ -18,9 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.testing.BaseTestCase;
+
 import org.junit.jupiter.api.Test;
 
-public class TokenParserTest {
+public class TokenParserTest extends BaseTestCase {
 
     @Test
     public void testVerifyToken() throws TokenException {

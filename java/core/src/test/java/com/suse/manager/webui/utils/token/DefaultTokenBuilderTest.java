@@ -15,6 +15,8 @@ package com.suse.manager.webui.utils.token;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.redhat.rhn.testing.BaseTestCase;
+
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -24,7 +26,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * Tests for the AbstractTokenBuilder class.
  */
-public class DefaultTokenBuilderTest {
+public class DefaultTokenBuilderTest extends BaseTestCase {
 
     @Test
     public void testDefaultValues() throws Exception {

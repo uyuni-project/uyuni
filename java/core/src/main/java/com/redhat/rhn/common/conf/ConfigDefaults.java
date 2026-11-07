@@ -269,10 +269,6 @@ public class ConfigDefaults {
     private static final String DEFAULT_SCAP_XCCDF_RESUME_XSL = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
     /**
-     * Token lifetime in seconds
-     */
-    public static final String TOKEN_LIFETIME = "server.susemanager.token_lifetime";
-    /**
      * Controls if refreshed tokens get automatically deployed or not.
      */
     public static final String TOKEN_REFRESH_AUTO_DEPLOY = "server.susemanager.token_refresh_auto_deploy";
