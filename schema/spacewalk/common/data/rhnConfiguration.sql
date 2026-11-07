@@ -88,3 +88,6 @@ VALUES ('BUFFER_SIZE', 'Size in bytes of the chunks in which the server streams 
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('FORCE_PACKAGE_UPLOAD', 'Allow mgr-push to force the upload of packages which already exist on the server', null, '0');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('PROXY_AUTH_TIMEOUT', 'Lifetime in seconds of the authentication tokens which proxies get when they log in', null, '21600');
