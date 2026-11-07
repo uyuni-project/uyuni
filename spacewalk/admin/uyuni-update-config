@@ -123,6 +123,8 @@ DB_CONFIG_KEYS = {
     "force_package_upload": "FORCE_PACKAGE_UPLOAD",
     "server.proxy_auth_timeout": "PROXY_AUTH_TIMEOUT",
     "proxy_auth_timeout": "PROXY_AUTH_TIMEOUT",
+    "server.session_lifetime": "PUSH_SESSION_LIFETIME",
+    "session_lifetime": "PUSH_SESSION_LIFETIME",
 }
 
 
