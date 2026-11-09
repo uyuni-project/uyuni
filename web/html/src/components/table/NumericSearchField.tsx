@@ -8,6 +8,8 @@ import { useState } from "react";
 
 import { DEPRECATED_Select } from "components/input";
 
+import { useId } from "utils/hooks";
+
 type Matcher = {
   label: string;
   value: string;
@@ -33,6 +35,7 @@ const decodeHTMLEntities = (str) => {
 };
 
 export const NumericSearchField = ({ name, criteria, onSearch }) => {
+  const matcherId = useId();
   let criteriaMatcher = "";
   let criteriaValue = "";
   if (criteria) {
@@ -64,7 +67,7 @@ export const NumericSearchField = ({ name, criteria, onSearch }) => {
     <div className="row">
       <div className="col-sm-6">
         <DEPRECATED_Select
-          name="matcher"
+          name={`matcher-${matcherId}`}
           placeholder={t("Matcher")}
           defaultValue={matcher}
           options={matchers}
