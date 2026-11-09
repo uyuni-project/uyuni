@@ -1177,6 +1177,22 @@ public class ContentManager {
     }
 
     /**
+     * List the hotfix channels an errata can be cloned into: the hotfix channels of all environments of
+     * the projects having a channel related to the errata as a source. A channel is related if it is in
+     * the same clone tree as a channel of the errata.
+     *
+     * @param advisoryName the advisory name of the errata
+     * @param user the user
+     * @return the hotfix channels accessible by the user
+     */
+    public List<Channel> listCompatibleHotfixChannels(String advisoryName, User user) {
+        Errata errata = Optional.ofNullable(ErrataFactory.lookupByAdvisoryAndOrg(advisoryName, user.getOrg()))
+                .or(() -> Optional.ofNullable(ErrataFactory.lookupByAdvisoryAndOrg(advisoryName, null)))
+                .orElseThrow(() -> new EntityNotExistsException(advisoryName));
+        return ContentProjectFactory.listHotfixChannelsRelatedToErrata(errata, user);
+    }
+
+    /**
      * Create the missing hotfix channels in all built {@link ContentEnvironment}s.
      * The channels are created on behalf of an active administrator of the project organization.
      */
