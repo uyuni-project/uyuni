@@ -29,4 +29,7 @@ SPDX-License-Identifier: GPL-2.0-only
   <rhn-tab name="Password Policy" acl="user_role(satellite_admin)">
     <rhn-tab-url>/rhn/manager/admin/config/password-policy</rhn-tab-url>
   </rhn-tab>
+  <rhn-tab name="Server Settings" acl="user_role(satellite_admin)">
+    <rhn-tab-url>/rhn/manager/admin/config/server-settings</rhn-tab-url>
+  </rhn-tab>
 </rhn-navi-tree>

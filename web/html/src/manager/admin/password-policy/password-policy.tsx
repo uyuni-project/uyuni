@@ -28,6 +28,44 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
         <MessagesContainer />
         <p>{t("Set up your server local users password policy.")}</p>
       </div>
+      <div className="spacewalk-content-nav">
+        <ul className="nav nav-tabs">
+          <li>
+            <a className="js-spa" href="/rhn/admin/config/GeneralConfig.do?">
+              {t("General")}
+            </a>
+          </li>
+          <li>
+            <a className="js-spa" href="/rhn/admin/config/BootstrapConfig.do?">
+              {t("Bootstrap Script")}
+            </a>
+          </li>
+          <li>
+            <a className="js-spa" href="/rhn/admin/config/Orgs.do?">
+              {t("Organizations")}
+            </a>
+          </li>
+          <li>
+            <a className="js-spa" href="/rhn/admin/config/Restart.do?">
+              {t("Restart")}
+            </a>
+          </li>
+          <li>
+            <a className="js-spa" href="/rhn/admin/config/Cobbler.do?">
+              {t("Cobbler")}
+            </a>
+          </li>
+          <li className="js-spa">
+            <a href="/rhn/manager/admin/config/monitoring?">{t("Monitoring")}</a>
+          </li>
+          <li className="active js-spa">
+            <a href="/rhn/manager/admin/config/password-policy?">{t("Password Policy")}</a>
+          </li>
+          <li className="js-spa">
+            <a href="/rhn/manager/admin/config/server-settings?">{t("Server Settings")}</a>
+          </li>
+        </ul>
+      </div>
       <Form model={policy} onChange={(model) => setPolicy({ ...model })}>
         <Panel headingLevel="h2" title={t("Password Policy Settings")}>
           {/* Minimum Length */}
