@@ -1348,6 +1348,131 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test listing the hotfix channels an errata can be cloned into
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testListCompatibleHotfixChannels() throws Exception {
+        Channel source1 = createPopulatedChannel();
+        Channel source2 = createPopulatedChannel();
+        buildProjectWithEnvironments("cplabel1", source1, "dev", "test");
+        buildProjectWithEnvironments("cplabel2", source2, "qa");
+
+        // each errata is only compatible with the project using its channel as a source
+        assertEquals(List.of("cplabel1-dev-hotfix", "cplabel1-test-hotfix"),
+                listCompatibleHotfixLabels(source1));
+        assertEquals(List.of("cplabel2-qa-hotfix"), listCompatibleHotfixLabels(source2));
+
+        // an errata in a channel which is not a source of any project
+        assertTrue(listCompatibleHotfixLabels(createPopulatedChannel()).isEmpty());
+
+        assertThrows(EntityNotExistsException.class,
+                () -> contentManager.listCompatibleHotfixChannels("does-not-exist", user));
+    }
+
+    /**
+     * Test listing the hotfix channels for a vendor errata, which has no organization
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testListCompatibleHotfixChannelsOfVendorErrata() throws Exception {
+        Channel source = createPopulatedChannel();
+        Errata vendorErrata = ErrataFactoryTest.createTestErrata(null);
+        source.addErrata(vendorErrata);
+        ChannelFactory.save(source);
+        buildProjectWithEnvironments("cplabel", source, "dev");
+
+        List<String> labels = contentManager.listCompatibleHotfixChannels(vendorErrata.getAdvisoryName(), user)
+                .stream()
+                .map(Channel::getLabel)
+                .toList();
+        assertEquals(List.of("cplabel-dev-hotfix"), labels);
+
+        // the projects of another organization are not returned
+        User anotherAdmin = UserTestUtils.createUser("Chuck", "rangers");
+        anotherAdmin.addPermanentRole(ORG_ADMIN);
+        assertTrue(contentManager.listCompatibleHotfixChannels(vendorErrata.getAdvisoryName(), anotherAdmin)
+                .isEmpty());
+    }
+
+    /**
+     * Test that the clones and the originals of the errata channels are considered as well
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testListCompatibleHotfixChannelsWithClonedSources() throws Exception {
+        Channel original = createPopulatedChannel();
+        buildProjectWithEnvironments("cporig", original, "dev");
+        buildProjectWithEnvironments("cpsibling", original, "dev");
+        // the channels in the dev environments are clones of the common source
+        Channel clone = ChannelFactory.lookupByLabel("cporig-dev-" + original.getLabel());
+        Channel siblingClone = ChannelFactory.lookupByLabel("cpsibling-dev-" + original.getLabel());
+        buildProjectWithEnvironments("cpclone", clone, "dev");
+        buildProjectWithEnvironments("cpsiblingclone", siblingClone, "dev");
+        buildProjectWithEnvironments("cpother", createPopulatedChannel(), "dev");
+        List<String> expected = List.of("cpclone-dev-hotfix", "cporig-dev-hotfix", "cpsibling-dev-hotfix",
+                "cpsiblingclone-dev-hotfix");
+
+        // errata of the original: the projects using clones of it are found as well
+        assertEquals(expected, listCompatibleHotfixLabels(original));
+
+        // errata only in a clone: the projects using the original or another clone of it are found as well
+        Errata cloneErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        clone.addErrata(cloneErrata);
+        ChannelFactory.save(clone);
+        assertEquals(expected, contentManager.listCompatibleHotfixChannels(cloneErrata.getAdvisoryName(), user)
+                .stream()
+                .map(Channel::getLabel)
+                .sorted()
+                .toList());
+    }
+
+    /**
+     * Test that a source which is detached, but not yet removed by a new build, is still considered:
+     * urgent fixes must reach the hotfix channels until the detachment is completed
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testListCompatibleHotfixChannelsWithDetachedSource() throws Exception {
+        Channel source = createPopulatedChannel();
+        buildProjectWithEnvironments("cplabel", source, "dev");
+
+        contentManager.detachSource("cplabel", SW_CHANNEL, source.getLabel(), user);
+
+        assertEquals(DETACHED, ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, source.getLabel(), user)
+                .orElseThrow().getState());
+        assertEquals(List.of("cplabel-dev-hotfix"), listCompatibleHotfixLabels(source));
+    }
+
+    private void buildProjectWithEnvironments(String projectLabel, Channel source, String... envLabels)
+            throws Exception {
+        ContentProject cp = new ContentProject(projectLabel, projectLabel, "desc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        Optional<String> predecessor = empty();
+        for (String envLabel : envLabels) {
+            contentManager.createEnvironment(projectLabel, predecessor, envLabel, envLabel, "desc", false, user);
+            predecessor = of(envLabel);
+        }
+        contentManager.attachSource(projectLabel, SW_CHANNEL, source.getLabel(), empty(), user);
+        contentManager.buildProject(projectLabel, empty(), false, user);
+        for (int i = 0; i < envLabels.length - 1; i++) {
+            contentManager.promoteProject(projectLabel, envLabels[i], false, user);
+        }
+    }
+
+    private List<String> listCompatibleHotfixLabels(Channel channelWithErrata) {
+        String advisory = channelWithErrata.getErratas().iterator().next().getAdvisoryName();
+        return contentManager.listCompatibleHotfixChannels(advisory, user).stream()
+                .map(Channel::getLabel)
+                .sorted()
+                .toList();
+    }
+
+    /**
      * Test creating the hotfix channels when building and promoting a project
      *
      * @throws Exception if anything goes wrong
