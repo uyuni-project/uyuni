@@ -1371,6 +1371,8 @@ end
 When(/^I enter "([^"]*)" hostname on grafana's host field$/) do |host|
   grafana_url = current_url
   system_name = get_system_name(host)
+  # Grafana filters on the FQDN label, but some hosts (e.g. Amazon Linux) report a short hostname
+  system_name = "#{system_name}.#{get_target('server').full_hostname.split('.', 2).last}" unless system_name.include?('.')
   updated_url = grafana_url.sub(/var-hostname=[^&]*/, "var-hostname=#{system_name}")
   visit updated_url
 end
