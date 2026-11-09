@@ -8,11 +8,18 @@
 Retrieve SUSE Multi-Linux Manager pillar data for a minion_id.
 - Adds generated SUSE Multi-Linux Manager pillar data.
 - Adds formula pillar data.
+- Adds the Content Lifecycle Management project, environment, version and
+  build message of the minion's channels under the 'clm' key.
 
 .. code-block:: yaml
 
     ext_pillar:
       - suma_minion: True
+
+    # optional: only consider these CLM projects (default: all projects)
+    clm_pillar_projects:
+      - rhel9-base
+      - sles15sp6-base
 
 """
 
@@ -187,6 +194,7 @@ def ext_pillar(minion_id, pillar, *args):
         ret = load_org_pillars(minion_id, cursor, ret)
         group_formulas, ret = load_group_pillars(minion_id, cursor, ret)
         system_formulas, ret = load_system_pillars(minion_id, cursor, ret)
+        ret = load_clm_pillar(minion_id, cursor, ret)
 
     _get_cursor(_load_db_pillar)
 
@@ -293,6 +301,79 @@ def load_system_pillars(minion_id, cursor, pillar):
             pillar = salt.utils.dictupdate.merge(pillar, row[1], strategy="recurse")
 
     return (server_formulas, pillar)
+
+
+def load_clm_pillar(minion_id, cursor, pillar):
+    """
+    Load the Content Lifecycle Management project, environment, version and
+    build message of the environment the minion's channels were built by.
+
+    Errors are logged and swallowed, so a failing CLM lookup never breaks
+    the rest of the pillar data.
+    """
+    # pylint: disable-next=undefined-variable
+    projects = __opts__.get("__master_opts__", __opts__).get("clm_pillar_projects")
+    if isinstance(projects, str):
+        projects = [projects]
+    params = {"minion_id": minion_id, "projects": list(projects) if projects else None}
+
+    clm_query = """
+        SELECT DISTINCT
+               p.label                    AS project,
+               e.label                    AS environment,
+               COALESCE(e.version, 0)     AS version,
+               h.message                  AS message,
+               (c.parent_channel IS NULL) AS is_base
+        FROM suseminioninfo AS m
+        JOIN rhnServerChannel AS sc            ON sc.server_id = m.server_id
+        JOIN rhnChannel AS c                   ON c.id = sc.channel_id
+        JOIN suseContentEnvironmentTarget AS t ON t.channel_id = sc.channel_id
+        JOIN suseContentEnvironment AS e       ON e.id = t.env_id
+        JOIN suseContentProject AS p           ON p.id = e.project_id
+        LEFT JOIN suseContentProjectHistoryEntry AS h
+               ON h.project_id = p.id AND h.version = e.version
+        WHERE m.minion_id = %(minion_id)s
+          AND (%(projects)s::text[] IS NULL OR p.label = ANY(%(projects)s::text[]))
+        ORDER BY is_base DESC, project, environment;"""
+    try:
+        cursor.execute(clm_query, params)
+        rows = cursor.fetchall()
+    except psycopg2.Error as err:
+        log.error("Error loading CLM pillar for %s: %s", minion_id, err)
+        try:
+            # leave the shared connection usable for the next pillar compile
+            cursor.connection.rollback()
+        except psycopg2.Error:
+            pass
+        return pillar
+
+    if not rows:
+        log.debug("No CLM environment found for minion %s", minion_id)
+        return pillar
+
+    environments = sorted({(row[0], row[1]) for row in rows})
+    if len(environments) > 1:
+        log.warning(
+            "Minion %s uses channels from several CLM environments %s, using %s/%s",
+            minion_id,
+            environments,
+            rows[0][0],
+            rows[0][1],
+        )
+
+    project, environment, version, message, _ = rows[0]
+    return salt.utils.dictupdate.merge(
+        pillar,
+        {
+            "clm": {
+                "project": project,
+                "environment": environment,
+                "version": int(version),
+                "message": message or "",
+            }
+        },
+        strategy="recurse",
+    )
 
 
 def formula_pillars(system_formulas, group_formulas, all_pillar):

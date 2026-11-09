@@ -7,6 +7,7 @@
 :codeauthor:    Michael Calmer <Michael.Calmer@suse.com>
 """
 
+from decimal import Decimal
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -243,3 +244,98 @@ def test_using_context_in__get_cursor():
             "port": 1234,
             "sslmode": "disable",
         }
+
+
+def test_clm_pillar():
+    """
+    Test loading the CLM project, environment, version and message
+    """
+    cursor = MagicMock()
+    cursor.fetchall.return_value = [
+        ("rhel9-base", "prod", Decimal("3"), "Security update", True)
+    ]
+    pillar = suma_minion.load_clm_pillar("minion1", cursor, {"org_id": 1})
+
+    assert pillar == {
+        "org_id": 1,
+        "clm": {
+            "project": "rhel9-base",
+            "environment": "prod",
+            "version": 3,
+            "message": "Security update",
+        },
+    }
+    assert cursor.execute.call_args[0][1] == {
+        "minion_id": "minion1",
+        "projects": None,
+    }
+
+
+def test_clm_pillar_not_in_clm():
+    """
+    Test the pillar is unchanged if the minion uses no CLM channels
+    """
+    cursor = MagicMock()
+    cursor.fetchall.return_value = []
+
+    assert suma_minion.load_clm_pillar("minion1", cursor, {"org_id": 1}) == {
+        "org_id": 1
+    }
+
+
+@pytest.mark.parametrize(
+    "opts,expected",
+    [
+        ({"clm_pillar_projects": "rhel9-base"}, ["rhel9-base"]),
+        (
+            {"clm_pillar_projects": ["rhel9-base", "sles15sp6-base"]},
+            ["rhel9-base", "sles15sp6-base"],
+        ),
+        ({"__master_opts__": {"clm_pillar_projects": ["rhel9-base"]}}, ["rhel9-base"]),
+        ({"clm_pillar_projects": []}, None),
+    ],
+)
+def test_clm_pillar_projects_filter(opts, expected):
+    """
+    Test the CLM projects configured on the master are passed to the query
+    """
+    cursor = MagicMock()
+    cursor.fetchall.return_value = []
+    with patch.object(suma_minion, "__opts__", opts):
+        suma_minion.load_clm_pillar("minion1", cursor, {})
+
+    assert cursor.execute.call_args[0][1]["projects"] == expected
+
+
+def test_clm_pillar_several_environments():
+    """
+    Test the environment of the base channel wins over child channels
+    """
+    cursor = MagicMock()
+    cursor.fetchall.return_value = [
+        ("rhel9-base", "prod", Decimal("3"), None, True),
+        ("rhel9-extras", "dev", Decimal("7"), "Add tools", False),
+    ]
+    with patch.object(suma_minion.log, "warning") as warning_mock:
+        pillar = suma_minion.load_clm_pillar("minion1", cursor, {})
+
+    assert pillar["clm"] == {
+        "project": "rhel9-base",
+        "environment": "prod",
+        "version": 3,
+        "message": "",
+    }
+    warning_mock.assert_called_once()
+
+
+def test_clm_pillar_db_error():
+    """
+    Test a failing CLM query leaves the pillar unchanged and rolls back
+    """
+    cursor = MagicMock()
+    cursor.execute.side_effect = Exception("relation does not exist")
+    with patch.object(suma_minion.psycopg2, "Error", Exception):
+        pillar = suma_minion.load_clm_pillar("minion1", cursor, {"org_id": 1})
+
+    assert pillar == {"org_id": 1}
+    cursor.connection.rollback.assert_called_once()
