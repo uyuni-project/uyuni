@@ -21,8 +21,6 @@ declare global {
   }
 }
 
-const isDark = typeof document !== "undefined" && document.body.classList.contains("theme-suse-dark");
-
 type Props = {
   mode?: string;
   minLines?: number;
@@ -58,13 +56,6 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, content = "
 
         editor.setShowPrintMargin(false);
 
-        // Set dark theme
-        if (isDark) {
-          editor.setTheme("ace/theme/monokai");
-        } else {
-          editor.setTheme("ace/theme/xcode");
-        }
-
         editor.getSession().setValue(safeContent);
         editor.on("change", () => {
           ignoreNextUpdate.current = true;
@@ -77,6 +68,19 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, content = "
       Loggerhead.error("Failed to configure Ace editor");
       Loggerhead.error(error);
     }
+    const updateTheme = () => {
+      editorRef.current?.setTheme(
+        document.body.classList.contains("theme-suse-dark") ? "ace/theme/monokai" : "ace/theme/xcode"
+      );
+    };
+    updateTheme();
+    const themeObserver = new MutationObserver(updateTheme);
+    themeObserver.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    return () => {
+      themeObserver.disconnect();
+      editorRef.current?.destroy();
+      editorRef.current = undefined;
+    };
   }, []);
 
   // Update editor value when `content` prop changes in edit mode
