@@ -17,24 +17,55 @@ import { mockNetwork } from "utils/storybook/mock-network";
 import { AddTokenButton, AddTokenMethod } from "./AddTokenButton";
 import { createAccessTokens } from "./story-fixtures";
 import { TokenTable } from "./TokenTable";
+import { CreateTokenRequest, TokenType, ValidityRequest } from "./types";
 
 type TokenTableProps = React.ComponentProps<typeof TokenTable>;
 
-const mockNetworkGet = (() => {
-  const items = createAccessTokens();
-  return Utils.cancelable(Promise.resolve({ items, total: items.length }));
-}) as typeof Network.get;
-
-const mockNetworkPost = ((url: string, data?: { valid?: boolean }) => {
-  if (url.endsWith("/validity")) {
-    return Utils.cancelable(
-      Promise.resolve({ data: data?.valid ? localizedMoment("2027-09-23T12:00:00Z").toDate() : null })
-    );
-  }
-  return Utils.cancelable(Promise.resolve({ data: "eyJhbGciOiJIUzI1NiJ9.storybook-token" }));
-}) as typeof Network.post;
-
-const mockNetworkDelete = (() => Utils.cancelable(Promise.resolve())) as typeof Network.del;
+const installTokenMocks = () => {
+  let items = createAccessTokens();
+  let nextId = Math.max(...items.map((token) => token.id)) + 1;
+  const get = (() =>
+    Utils.cancelable(
+      Promise.resolve({
+        items: items.map((token) => ({ ...token })),
+        total: items.length,
+      })
+    )) as typeof Network.get;
+  const post = ((url: string, data: CreateTokenRequest | ValidityRequest) => {
+    if (url.endsWith("/validity") && "valid" in data) {
+      const id = Number(url.split("/").slice(-2)[0]);
+      const token = items.find((item) => item.id === id);
+      const expirationDate = data.valid ? localizedMoment().add(1, "year").toDate() : null;
+      if (token) {
+        token.valid = data.valid;
+        token.expirationDate = expirationDate;
+      }
+      return Utils.cancelable(Promise.resolve({ data: expirationDate }));
+    }
+    if ("type" in data) {
+      const now = localizedMoment().toDate();
+      items.push({
+        id: nextId++,
+        serverFqdn: data.fqdn ?? "new.example.com",
+        type: data.type,
+        localizedType: data.type === TokenType.ISSUED ? "Issued" : "Consumed",
+        valid: true,
+        expirationDate: null,
+        creationDate: now,
+        modificationDate: now,
+        hubId: null,
+        peripheralId: null,
+      });
+    }
+    return Utils.cancelable(Promise.resolve({ data: "eyJhbGciOiJIUzI1NiJ9.storybook-token" }));
+  }) as typeof Network.post;
+  const del = ((url: string) => {
+    const id = Number(url.split("/").slice(-1)[0]);
+    items = items.filter((item) => item.id !== id);
+    return Utils.cancelable(Promise.resolve());
+  }) as typeof Network.del;
+  return mockNetwork({ get, post, del });
+};
 
 const TokenManagementStory = (props: TokenTableProps) => {
   const tableRef = useRef<TokenTable>(null);
@@ -58,7 +89,7 @@ const TokenManagementStory = (props: TokenTableProps) => {
 const meta = {
   title: "Compositions/Hub/TokenTable",
   component: TokenTable,
-  beforeEach: () => mockNetwork({ get: mockNetworkGet, post: mockNetworkPost, del: mockNetworkDelete }),
+  beforeEach: installTokenMocks,
   parameters: {
     layout: "fullscreen",
     docs: {

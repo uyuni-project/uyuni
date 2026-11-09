@@ -13,21 +13,27 @@ import { mockNetwork } from "utils/storybook/mock-network";
 import { PeripheralsList } from "./PeripheralsList";
 import { peripherals } from "./story-fixtures";
 
-const mockNetworkGet = ((url: string) => {
-  const criteria = new URL(url, window.location.origin).searchParams.get("q")?.toLocaleLowerCase() ?? "";
-  const items = peripherals
-    .filter((peripheral) => peripheral.fqdn.toLocaleLowerCase().includes(criteria))
-    .map((peripheral) => ({ ...peripheral }));
-
-  return Utils.cancelable(Promise.resolve({ items, total: items.length }));
-}) as typeof Network.get;
-
-const mockNetworkDelete = (() => Utils.cancelable(Promise.resolve())) as typeof Network.del;
+const installPeripheralMocks = () => {
+  let rows = peripherals.map((peripheral) => ({ ...peripheral }));
+  const get = ((url: string) => {
+    const criteria = new URL(url, window.location.origin).searchParams.get("q")?.toLocaleLowerCase() ?? "";
+    const items = rows
+      .filter((peripheral) => peripheral.fqdn.toLocaleLowerCase().includes(criteria))
+      .map((peripheral) => ({ ...peripheral }));
+    return Utils.cancelable(Promise.resolve({ items, total: items.length }));
+  }) as typeof Network.get;
+  const del = ((url: string) => {
+    const id = Number(new URL(url, window.location.origin).pathname.split("/").slice(-1)[0]);
+    rows = rows.filter((peripheral) => peripheral.id !== id);
+    return Utils.cancelable(Promise.resolve());
+  }) as typeof Network.del;
+  return mockNetwork({ get, del });
+};
 
 const meta = {
   title: "Compositions/Hub/PeripheralsList",
   component: PeripheralsList,
-  beforeEach: () => mockNetwork({ get: mockNetworkGet, del: mockNetworkDelete }),
+  beforeEach: installPeripheralMocks,
   parameters: {
     layout: "fullscreen",
     docs: {
