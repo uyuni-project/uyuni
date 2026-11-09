@@ -1784,22 +1784,17 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #array_end()
      */
     public Object[] mergeErrata(User loggedInUser, String mergeFromLabel,
-            String mergeToLabel, String startDate, String endDate) {
-
-        Channel mergeFrom = lookupChannelByLabel(loggedInUser, mergeFromLabel);
-        Channel mergeTo = lookupChannelByLabel(loggedInUser, mergeToLabel);
-
-        if (!UserManager.verifyChannelAdmin(loggedInUser, mergeTo)) {
+                                String mergeToLabel, String startDate, String endDate) {
+        try {
+            return ErrataManager.mergeErrata(loggedInUser, mergeFromLabel, mergeToLabel,
+                    startDate, endDate).toArray();
+        }
+        catch (PermissionException e) {
             throw new PermissionCheckFailureException();
         }
-
-        List<Errata> fromErrata = ErrataFactory.lookupByChannelBetweenDates(
-                loggedInUser.getOrg(), mergeFrom, startDate, endDate);
-
-        Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser,
-                new HashSet<>(fromErrata), mergeTo, mergeFrom);
-
-        return mergedErrata.toArray();
+        catch (LookupException e) {
+            throw new NoSuchChannelException();
+        }
     }
 
     /**
