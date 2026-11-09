@@ -55,13 +55,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ProxyBackupEventAction implements MessageAction {
     private static final Logger LOG = LogManager.getLogger(ProxyBackupEventAction.class);
     private static final String BRANCH_FORMULA = "formula-branch-network";
     private static final String IMAGE_SYNC_FORMULA = "formula-image-synchronize";
     private static final String SALTBOOT_GROUP_FORMULA = "saltboot-group";
+    /**
+     * Maximum length in characters of the HTML result list rendered into the
+     * migration history event details. Keeps the full details text below the
+     * 4000 characters limit of the rhnServerHistory.details column.
+     */
+    private static final int MAX_RESULT_LIST_LENGTH = 3000;
 
     private final SaltApi saltApi;
     /**
@@ -155,7 +160,7 @@ public class ProxyBackupEventAction implements MessageAction {
                         allPass ? LocalizationService.getInstance().getMessage("event.rbsmigrationsfinishedok") :
                             LocalizationService.getInstance().getMessage("event.rbsmigrationfinisederror"),
                         LocalizationService.getInstance().getMessage("event.rbsmigrationfinisheddetails",
-                                results.stream().collect(Collectors.joining("</li><li>", "<li>", "</li>"))));
+                                buildResultList(results)));
                 ServerFactory.save(proxy);
             }
             catch (SaltbootException | ProxyException e) {
@@ -191,6 +196,34 @@ public class ProxyBackupEventAction implements MessageAction {
     private boolean validMigrationFiles(List<String> copiedFiles) {
         Long numFiles = copiedFiles.stream().filter(file -> file.endsWith(".yaml")).count();
         return numFiles == 3 || numFiles == 4;
+    }
+
+    /**
+     * Joins the migration result messages into an HTML list. The list is
+     * limited to {@link #MAX_RESULT_LIST_LENGTH} characters, as the details
+     * column of the rhnServerHistory table accepts at most 4000 characters.
+     * If there are more results, they are summarized in a trailing list
+     * entry instead of being listed.
+     * @param results the individual result messages
+     * @return the HTML list of the results
+     */
+    private String buildResultList(List<String> results) {
+        StringBuilder list = new StringBuilder();
+        int listed = 0;
+        for (String result : results) {
+            String entry = "<li>" + result + "</li>";
+            if (list.length() + entry.length() > MAX_RESULT_LIST_LENGTH) {
+                break;
+            }
+            list.append(entry);
+            listed++;
+        }
+        int remaining = results.size() - listed;
+        if (remaining > 0) {
+            list.append("<li>").append(LocalizationService.getInstance()
+                    .getMessage("event.rbsmigrationmoreentries", remaining)).append("</li>");
+        }
+        return list.toString();
     }
 
     private String convertRBSToContainerized(MinionServer proxy, String fqdn) throws ProxyException, SaltbootException {
