@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 suite: test the Salt ports change check
 templates:
   - templates/salt-ports-check.yaml

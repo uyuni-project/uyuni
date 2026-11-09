@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 {{- $svc := lookup "v1" "Service" .Release.Namespace "salt" }}
 {{- if and $svc (not .Values.services.salt.allowPortsChange) }}
   {{- $wanted := dict "publish" 4505 "request" 4506 }}
