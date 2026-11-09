@@ -48,6 +48,7 @@ Feature: Setup containerized proxy
     And I wait at most 600 seconds until I see the name of "proxy", refreshing the page
     And I follow this "proxy" link
     And I wait until I see "There is a pending transaction for this system, please reboot it to activate the changes." text, refreshing the page
+    And I wait until no Salt job is running on "proxy"
     And I reboot the "proxy" host through SSH, waiting until it comes back
 
   Scenario: Wait until the proxy host appears
