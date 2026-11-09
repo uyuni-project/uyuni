@@ -11,6 +11,7 @@ require_relative 'namespaces/configchannel'
 require_relative 'namespaces/hub'
 require_relative 'namespaces/image'
 require_relative 'namespaces/kickstart'
+require_relative 'namespaces/recurring'
 require_relative 'namespaces/schedule'
 require_relative 'namespaces/sync_hub'
 require_relative 'namespaces/system'
@@ -35,6 +36,7 @@ class ApiTest
     @configchannel = NamespaceConfigchannel.new(self)
     @image = NamespaceImage.new(self)
     @kickstart = NamespaceKickstart.new(self)
+    @recurring = NamespaceRecurring.new(self)
     @schedule = NamespaceSchedule.new(self)
     @sync_hub = NamespaceSyncHub.new(self)
     @system = NamespaceSystem.new(self)
@@ -65,6 +67,7 @@ class ApiTest
   attr_reader :configchannel
   attr_reader :image
   attr_reader :kickstart
+  attr_reader :recurring
   attr_reader :schedule
   attr_reader :sync_hub
   attr_reader :system

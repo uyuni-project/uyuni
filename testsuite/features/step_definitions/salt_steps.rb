@@ -625,6 +625,25 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   get_target('server').run("chmod 644 #{dest}")
 end
 
+# The files of the formula are in upload_files/formulas/<formula>: metadata.yml and form.yml for the
+# formula metadata, init.sls for the Salt states.
+When(/^I install the custom formula "([^"]+)" on the server$/) do |formula|
+  server = get_target('server')
+  source_dir = "#{File.dirname(__FILE__)}/../upload_files/formulas/#{formula}"
+  files = { 'metadata.yml' => "/srv/formula_metadata/#{formula}", 'form.yml' => "/srv/formula_metadata/#{formula}", 'init.sls' => "/srv/salt/#{formula}" }
+
+  server.run("mkdir -p /srv/formula_metadata/#{formula} /srv/salt/#{formula}")
+  files.each do |file, dest_dir|
+    raise ScriptError, "File injection of #{file} failed on the server" unless file_inject(server, "#{source_dir}/#{file}", "#{dest_dir}/#{file}")
+
+    server.run("chmod 644 #{dest_dir}/#{file}")
+  end
+end
+
+When(/^I remove the custom formula "([^"]+)" from the server$/) do |formula|
+  get_target('server').run("rm -rf /srv/formula_metadata/#{formula} /srv/salt/#{formula}")
+end
+
 When(/^I migrate "([^"]*)" from salt-minion to venv-salt-minion$/) do |host|
   node = get_target(host)
   system_name = node.full_hostname

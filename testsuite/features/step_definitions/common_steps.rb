@@ -151,6 +151,35 @@ When(/^I wait until event "([^"]*)" is completed$/) do |event|
   step %(I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed)
 end
 
+# Event IDs only grow, so comparing them makes sure that an older event with the same summary cannot match.
+def latest_event_id(host, summary)
+  system_id = $api_test.system.retrieve_server_id(get_system_name(host))
+  $api_test.system.get_event_history(system_id, 0, 20).select { |event| event['summary'].include?(summary) }.map { |event| event['id'] }.max
+end
+
+# Waits until the system has an event with the given status and summary whose ID is greater than older_id.
+def wait_for_event_newer_than(host, status, newer, older_id, older_description)
+  system_id = $api_test.system.retrieve_server_id(get_system_name(host))
+  repeat_until_timeout(message: "No #{status} '#{newer}' event newer than #{older_description} on #{host}") do
+    events = $api_test.system.get_event_history(system_id, 0, 20)
+    break if older_id && events.any? { |event| event['summary'].include?(newer) && event['status'] == status.capitalize && event['id'] > older_id }
+
+    sleep 5
+  end
+end
+
+When(/^I wait until the system "([^"]*)" has a (completed|failed) "([^"]*)" event newer than its latest "([^"]*)" event$/) do |host, status, newer, older|
+  wait_for_event_newer_than(host, status, newer, latest_event_id(host, older), "the latest '#{older}' event")
+end
+
+When(/^I remember the latest "([^"]*)" event of "([^"]*)"$/) do |summary, host|
+  @remembered_event_id = latest_event_id(host, summary) || 0
+end
+
+When(/^I wait until the system "([^"]*)" has a (completed|failed) "([^"]*)" event newer than the remembered one$/) do |host, status, newer|
+  wait_for_event_newer_than(host, status, newer, @remembered_event_id, 'the remembered event')
+end
+
 When(/^I wait at most (\d+) seconds until the event "([^"]*)" is picked up$/) do |timeout, event|
   steps %(
     When I follow "Events"

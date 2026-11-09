@@ -82,6 +82,46 @@ When(/^I schedule a highstate for "([^"]*)" via API$/) do |host|
   $api_test.system.schedule_apply_highstate(node_id, date_high, false)
 end
 
+When(/^I schedule the script "([^"]*)" labeled "([^"]*)" with transactional update for "([^"]*)" via API$/) do |script, label, host|
+  node_id = $api_test.system.retrieve_server_id(get_system_name(host))
+  $api_test.system.schedule_script_run_with_transactional_update(node_id, label, 'root', 'root', 600, script.gsub('\n', "\n"), $api_test.date_now)
+end
+
+When(/^I schedule the states "([^"]*)" with transactional update for "([^"]*)" via API$/) do |states, host|
+  node_id = $api_test.system.retrieve_server_id(get_system_name(host))
+  $api_test.system.schedule_apply_states_with_transactional_update(node_id, states.split(','), $api_test.date_now, false)
+end
+
+When(/^I wait until the latest "([^"]*)" event of "([^"]*)" is (waiting|not waiting) for a reboot via API$/) do |summary, host, waiting|
+  node_id = $api_test.system.retrieve_server_id(get_system_name(host))
+  expected = waiting == 'waiting'
+  repeat_until_timeout(message: "The latest '#{summary}' event of #{host} is not #{waiting} for a reboot") do
+    events = $api_test.system.get_event_history(node_id, 0, 20)
+    latest = events.select { |event| event['summary'].include?(summary) }.max_by { |event| event['id'] }
+    if latest
+      details = $api_test.system.get_event_details(node_id, latest['id'])
+      break if latest['pending_reboot'] == expected && details['pending_reboot'] == expected
+    end
+
+    sleep 5
+  end
+end
+
+When(/^I create the recurring action "([^"]*)" applying the states "([^"]*)" to "([^"]*)" in 1 minute via API$/) do |name, states, host|
+  node_id = $api_test.system.retrieve_server_id(get_system_name(host))
+  output, _code = get_target('server').run('date -d "+1 minute" +"%-S %-M %-H"')
+  second, minute, hour = output.split
+  $api_test.recurring.create_custom_state(node_id, name, "#{second} #{minute} #{hour} ? * *", states.split(','))
+end
+
+When(/^I delete the recurring action "([^"]*)" of "([^"]*)" via API$/) do |name, host|
+  node_id = $api_test.system.retrieve_server_id(get_system_name(host))
+  action = $api_test.recurring.list_by_minion(node_id).find { |recurring| recurring['name'] == name }
+  raise ScriptError, "No recurring action '#{name}' for #{host}" if action.nil?
+
+  $api_test.recurring.delete(action['id'])
+end
+
 When(/^I unsubscribe "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, channel|
   system_name1 = get_system_name(host1)
   node_id1 = $api_test.system.retrieve_server_id(system_name1)

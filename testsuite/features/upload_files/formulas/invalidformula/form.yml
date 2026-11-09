@@ -1,0 +1,5 @@
+invalidformula:
+  $type: group
+  value:
+    $type: text
+    $default: test

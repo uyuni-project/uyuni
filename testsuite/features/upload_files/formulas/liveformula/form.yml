@@ -1,0 +1,5 @@
+liveformula:
+  $type: group
+  value:
+    $type: text
+    $default: test

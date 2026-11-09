@@ -148,6 +148,29 @@ class NamespaceSystem
     @test.call('system.scheduleScriptRun', sessionKey: @test.token, sid: server, username: uid, groupname: gid, timeout: timeout, script: script, earliestOccurrence: date)
   end
 
+  # Schedules a script to run through transactional-update on a transactional server.
+  #
+  # @param server [String] The server ID.
+  # @param label [String] The label of the script action.
+  # @param uid [String] The user ID of the user who will run the script.
+  # @param gid [String] The group name of the user that will run the script.
+  # @param timeout [Integer] The amount of time in seconds that the script is allowed to run before it is killed.
+  # @param script [String] The script to run.
+  # @param date [String] The date and time to run the script.
+  def schedule_script_run_with_transactional_update(server, label, uid, gid, timeout, script, date)
+    @test.call('system.scheduleScriptRunWithTransactionalUpdate', sessionKey: @test.token, label: label, sids: [server], username: uid, groupname: gid, timeout: timeout, script: script, earliestOccurrence: date)
+  end
+
+  # Schedules the application of states through transactional-update on a transactional server.
+  #
+  # @param server [String] The server ID.
+  # @param states [Array<String>] The names of the states to apply.
+  # @param date [String] The date and time to apply the states.
+  # @param test [Boolean] Determines if the states are applied in test mode or not.
+  def schedule_apply_states_with_transactional_update(server, states, date, test)
+    @test.call('system.scheduleApplyStatesWithTransactionalUpdate', sessionKey: @test.token, sids: [server], stateNames: states, earliestOccurrence: date, test: test)
+  end
+
   # Creates a Cobbler system record for a system that is not registered on the MLM server.
   #
   # @param name [String] The name of the system record.
