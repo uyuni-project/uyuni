@@ -56,7 +56,6 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
-import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.audit.OsReleasePair;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -464,7 +463,11 @@ public class ServerFactory extends HibernateFactory {
         mode.executeUpdate(params);
     }
 
-    private static void updatePermissionsForServerGroup(Long sgid) {
+    /**
+     * Updates the user permissions for a managed server group.
+     * @param sgid the server group id
+     */
+    public static void updatePermissionsForServerGroup(Long sgid) {
         CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES,
                 "update_permissions_for_server_group");
         Map<String, Object> params = new HashMap<>();
@@ -501,34 +504,12 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * Removes Servers from a server group.
-     * @param servers The servers to remove
-     * @param serverGroup The group to remove the servers from
+     * Removes servers from a server group in the database and updates the group member count.
+     * @param serverIds the ids of the servers to remove
+     * @param sgid the server group id
+     * @return true if at least one server was removed
      */
-    public static void removeServersFromGroup(Collection<Server> servers, ServerGroup serverGroup) {
-        List<Long> serverIdsToAdd = servers.stream()
-                .filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
-                .map(Server::getId).toList();
-
-        boolean serversUpdated = removeServersFromGroup(serverIdsToAdd, serverGroup.getId());
-
-        if (serversUpdated) {
-            servers.stream()
-                    .filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
-                    .forEach(s -> {
-                        s.removeGroup(serverGroup);
-                        SystemManager.updateSystemOverview(s);
-                    });
-            if (serverGroup.isManaged()) {
-                updatePermissionsForServerGroup(serverGroup.getId());
-            }
-        }
-        else {
-            throw new ServerNotInGroupException();
-        }
-    }
-
-    private static boolean removeServersFromGroup(List<Long> serverIds, Long sgid) {
+    public static boolean removeServersFromGroup(List<Long> serverIds, Long sgid) {
         WriteMode m = ModeFactory.getWriteMode(SYSTEM_QUERIES, "delete_from_servergroup");
 
         Map<String, Object> params = new HashMap<>();
@@ -541,15 +522,6 @@ public class ServerFactory extends HibernateFactory {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Removes a Server from a group.
-     * @param serverIn The server to remove
-     * @param serverGroupIn The group to remove the server from
-     */
-    public static void removeServerFromGroup(Server serverIn, ServerGroup serverGroupIn) {
-        removeServersFromGroup(Collections.singletonList(serverIn), serverGroupIn);
     }
 
     /**

@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -108,7 +109,7 @@ public class SystemUnentitler {
 
         if (entitlementServerGroup.isPresent()) {
             ServerFactory.addServerHistoryWithEntitlementEvent(server, ent, "removed system entitlement ");
-            ServerFactory.removeServerFromGroup(server, entitlementServerGroup.get());
+            SystemManager.removeServerFromGroup(server, entitlementServerGroup.get());
         }
         else {
             LOG.error("Cannot remove entitlement: {} from system: {}", ent.getLabel(), server.getId());
