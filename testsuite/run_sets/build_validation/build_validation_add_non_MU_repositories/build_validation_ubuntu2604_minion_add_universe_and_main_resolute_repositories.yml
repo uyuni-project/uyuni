@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+## Add non MU repositories for ubuntu2604 BEGIN ###
+
+- features/build_validation/add_non_MU_repositories/ubuntu2604_minion_add_resolute_universe_and_main.feature
+
+## Add non MU repositories END ###

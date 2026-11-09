@@ -1950,6 +1950,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2604-amd64-main-amd64' => 180,
   'ubuntu-2604-amd64-main-security-amd64' => 60,
   'ubuntu-2604-amd64-main-updates-amd64' => 300,
+  'ubuntu-2604-resolute-amd64' => 120,
   'uyuni-proxy-devel-tumbleweed-x86_64' => 120,
   'uyuni-proxy-stable-tumbleweed-x86_64' => 120
 }.freeze
