@@ -195,6 +195,8 @@ class Database(sql_base.Database):
 
         self.dbh = None
 
+        self._prepared_statements = {}
+
         sql_base.Database.__init__(self)
 
     def connect(self, reconnect=1):
@@ -236,6 +238,7 @@ class Database(sql_base.Database):
                     for k, v in list(dsndata.items())
                 )
             )
+            self._prepared_statements.clear()
 
             # convert all DECIMAL types to float (let Python to choose one)
             # pylint: disable-next=invalid-name
@@ -297,7 +300,18 @@ class Database(sql_base.Database):
             self.connect()  # only allow one try
 
     def prepare(self, sql, force=0, blob_map=None):
-        return Cursor(dbh=self.dbh, sql=sql, force=force, blob_map=blob_map)
+        if force:
+            for key in list(self._prepared_statements):
+                if key[0] == sql:
+                    del self._prepared_statements[key]
+            return Cursor(dbh=self.dbh, sql=sql, force=force, blob_map=blob_map)
+
+        key = (sql, frozenset((blob_map or {}).items()))
+        if key not in self._prepared_statements:
+            self._prepared_statements[key] = Cursor(
+                dbh=self.dbh, sql=sql, blob_map=blob_map
+            )
+        return self._prepared_statements[key]
 
     def execute(self, sql, *args, **kwargs):
         cursor = self.prepare(sql)
