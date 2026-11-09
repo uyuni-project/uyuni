@@ -2518,6 +2518,12 @@ class RepoSync(object):
         skipped_updates = 0
         processed_updates = 0
         batch = []
+        query = rhnSQL.prepare("""
+            SELECT p.friendly_name
+              FROM suseproducts p
+              JOIN suseproductchannel pc on p.id = pc.product_id
+             WHERE pc.channel_id = :channel_id
+        """)
 
         for notice in notices:
             e = importLib.Erratum()
@@ -2561,12 +2567,6 @@ class RepoSync(object):
             log(0, "Add Patch %s" % e["advisory"])
 
             # product name
-            query = rhnSQL.prepare("""
-                SELECT p.friendly_name
-                  FROM suseproducts p
-                  JOIN suseproductchannel pc on p.id = pc.product_id
-                 WHERE pc.channel_id = :channel_id
-                """)
             query.execute(channel_id=int(self.channel["id"]))
             try:
                 e["product"] = query.fetchone()[0]
@@ -2819,106 +2819,118 @@ class RepoSync(object):
     # pylint: disable-next=redefined-outer-name
     def import_products(self, repo):
         products = repo.get_products()
+        product_file_query = rhnSQL.prepare("""
+            select spf.id
+              from suseProductFile spf
+              join rhnpackageevr pe on pe.id = spf.evr_id
+              join rhnpackagearch pa on pa.id = spf.package_arch_id
+             where spf.name = :name
+               and spf.evr_id = LOOKUP_EVR(:epoch, :version, :release, 'rpm')
+               and spf.package_arch_id = LOOKUP_PACKAGE_ARCH(:arch)
+               and spf.vendor = :vendor
+               and spf.summary = :summary
+               and spf.description = :description
+        """)
+        get_product_file_id_query = rhnSQL.prepare(
+            "SELECT sequence_nextval('suse_prod_file_id_seq') as id FROM dual"
+        )
+        insert_product_file_query = rhnSQL.prepare("""
+            insert into suseProductFile
+                (id, name, evr_id, package_arch_id, vendor, summary, description)
+            VALUES (:id, :name, LOOKUP_EVR(:epoch, :version, :release, 'rpm'),
+                    LOOKUP_PACKAGE_ARCH(:arch), :vendor, :summary, :description)
+        """)
+        channel_package_query = rhnSQL.prepare("""
+            select p.id
+              from rhnPackage p
+              join rhnPackageProvides pp on pp.package_id = p.id
+              join rhnPackageCapability pc on pc.id = pp.capability_id
+              join rhnChannelPackage cp on cp.package_id = p.id
+             where pc.name = :product_cap
+               and pc.version = :cap_version
+               and cp.channel_id = :channel_id
+               and (p.org_id = :channel_org or (p.org_id is null and :channel_org is null))
+        """)
+        check_package_product_file_query = rhnSQL.prepare(
+            "select 1 from susePackageProductFile where package_id = :paid and prodfile_id = :prid"
+        )
+        insert_package_product_file_query = rhnSQL.prepare("""
+            insert into susePackageProductFile (package_id, prodfile_id)
+            VALUES (:package_id, :product_id)
+        """)
+
         for product in products:
-            query = rhnSQL.prepare("""
-                select spf.id
-                  from suseProductFile spf
-                  join rhnpackageevr pe on pe.id = spf.evr_id
-                  join rhnpackagearch pa on pa.id = spf.package_arch_id
-                 where spf.name = :name
-                   and spf.evr_id = LOOKUP_EVR(:epoch, :version, :release, 'rpm')
-                   and spf.package_arch_id = LOOKUP_PACKAGE_ARCH(:arch)
-                   and spf.vendor = :vendor
-                   and spf.summary = :summary
-                   and spf.description = :description
-            """)
-            query.execute(**product)
-            row = query.fetchone_dict()
+            product_file_query.execute(**product)
+            row = product_file_query.fetchone_dict()
             if not row or "id" not in row:
-                get_id_q = rhnSQL.prepare(
-                    """SELECT sequence_nextval('suse_prod_file_id_seq') as id FROM dual"""
-                )
-                get_id_q.execute()
-                row = get_id_q.fetchone_dict() or {}
+                get_product_file_id_query.execute()
+                row = get_product_file_id_query.fetchone_dict() or {}
                 if not row or "id" not in row:
                     print("no id for sequence suse_prod_file_id_seq")
                     continue
 
-                h = rhnSQL.prepare("""
-                    insert into suseProductFile
-                        (id, name, evr_id, package_arch_id, vendor, summary, description)
-                    VALUES (:id, :name, LOOKUP_EVR(:epoch, :version, :release, 'rpm'),
-                            LOOKUP_PACKAGE_ARCH(:arch), :vendor, :summary, :description)
-                """)
-                h.execute(id=row["id"], **product)
+                insert_product_file_query.execute(id=row["id"], **product)
 
             params = {
                 # pylint: disable-next=consider-using-f-string
                 "product_cap": "product(%s)" % product["name"],
                 "cap_version": product["version"] + "-" + product["release"],
                 "channel_id": int(self.channel["id"]),
+                "channel_org": self.org_id,
             }
-            if self.org_id:
-                org_statement = "and p.org_id = :channel_org"
-                params["channel_org"] = self.org_id
-            else:
-                org_statement = "and p.org_id is NULL"
 
-            query = rhnSQL.prepare(
-                # pylint: disable-next=consider-using-f-string
-                """
-                select p.id
-                  from rhnPackage p
-                  join rhnPackageProvides pp on pp.package_id = p.id
-                  join rhnPackageCapability pc on pc.id = pp.capability_id
-                  join rhnChannelPackage cp on cp.package_id = p.id
-                 where pc.name = :product_cap
-                   and pc.version = :cap_version
-                   and cp.channel_id = :channel_id
-                   %s
-            """
-                % org_statement
-            )
-
-            query.execute(**params)
-            packrow = query.fetchone_dict()
+            channel_package_query.execute(**params)
+            packrow = channel_package_query.fetchone_dict()
             if not packrow or "id" not in packrow:
                 # package not in DB
                 continue
 
-            h = rhnSQL.prepare(
-                """select 1 from susePackageProductFile where package_id = :paid and prodfile_id = :prid"""
-            )
-            h.execute(paid=packrow["id"], prid=row["id"])
-            ex = h.fetchone_dict() or None
+            check_package_product_file_query.execute(paid=packrow["id"], prid=row["id"])
+            ex = check_package_product_file_query.fetchone_dict() or None
             if not ex:
-                h = rhnSQL.prepare(
-                    """insert into susePackageProductFile (package_id, prodfile_id)
-                    VALUES (:package_id, :product_id)
-                """
+                insert_package_product_file_query.execute(
+                    package_id=packrow["id"], product_id=row["id"]
                 )
-                h.execute(package_id=packrow["id"], product_id=row["id"])
                 self.regen = True
 
     # pylint: disable-next=redefined-outer-name
     def import_susedata(self, repo):
         kwcache = {}
         susedata = repo.get_susedata()
+        package_query = rhnSQL.prepare("""
+            SELECT p.id
+              FROM rhnPackage p
+              JOIN rhnPackagename pn ON p.name_id = pn.id
+              JOIN rhnChecksumView c ON p.checksum_id = c.id
+              JOIN rhnChannelPackage cp ON p.id = cp.package_id
+             WHERE pn.name = :name
+               AND p.evr_id = LOOKUP_EVR(:epoch, :version, :release, 'rpm')
+               AND p.package_arch_id = LOOKUP_PACKAGE_ARCH(:arch)
+               AND cp.channel_id = :channel_id
+               AND c.checksum = :pkgid
+        """)
+        package_keywords_query = rhnSQL.prepare("""
+            SELECT smk.id, smk.label
+              FROM suseMdData smd
+              JOIN suseMdKeyword smk ON smk.id = smd.keyword_id
+             WHERE smd.package_id = :package_id
+               AND smd.channel_id = :channel_id
+        """)
+        keyword_query = rhnSQL.prepare("select LOOKUP_MD_KEYWORD(:label) id from dual")
+        add_keyword_query = rhnSQL.prepare("""
+            INSERT INTO suseMdData (package_id, channel_id, keyword_id)
+            VALUES(:package_id, :channel_id, :keyword_id)
+        """)
+        delete_keyword_query = rhnSQL.prepare("""
+            DELETE FROM suseMdData
+             WHERE package_id = :package_id
+               AND channel_id = :channel_id
+               AND keyword_id = :keyword_id
+        """)
+
         for package in susedata:
             # susedata exists only for package type == rpm
-            query = rhnSQL.prepare("""
-                SELECT p.id
-                  FROM rhnPackage p
-                  JOIN rhnPackagename pn ON p.name_id = pn.id
-                  JOIN rhnChecksumView c ON p.checksum_id = c.id
-                  JOIN rhnChannelPackage cp ON p.id = cp.package_id
-                 WHERE pn.name = :name
-                   AND p.evr_id = LOOKUP_EVR(:epoch, :version, :release, 'rpm')
-                   AND p.package_arch_id = LOOKUP_PACKAGE_ARCH(:arch)
-                   AND cp.channel_id = :channel_id
-                   AND c.checksum = :pkgid
-                """)
-            query.execute(
+            package_query.execute(
                 name=package["name"],
                 epoch=package["epoch"],
                 version=package["version"],
@@ -2927,7 +2939,7 @@ class RepoSync(object):
                 pkgid=package["pkgid"],
                 channel_id=int(self.channel["id"]),
             )
-            row = query.fetchone_dict() or None
+            row = package_query.fetchone_dict() or None
             if not row or "id" not in row:
                 # package not found in DB
                 continue
@@ -2939,15 +2951,10 @@ class RepoSync(object):
                 % (pkgid, int(self.channel["id"])),
             )
 
-            h = rhnSQL.prepare("""
-                SELECT smk.id, smk.label
-                  FROM suseMdData smd
-                  JOIN suseMdKeyword smk ON smk.id = smd.keyword_id
-                 WHERE smd.package_id = :package_id
-                   AND smd.channel_id = :channel_id
-            """)
-            h.execute(package_id=pkgid, channel_id=int(self.channel["id"]))
-            ret = h.fetchall_dict() or {}
+            package_keywords_query.execute(
+                package_id=pkgid, channel_id=int(self.channel["id"])
+            )
+            ret = package_keywords_query.fetchall_dict() or {}
             pkgkws = {}
             for row in ret:
                 # pylint: disable-next=consider-using-f-string
@@ -2959,11 +2966,8 @@ class RepoSync(object):
                 # pylint: disable-next=consider-using-f-string
                 log(4, "Metadata keyword: %s" % keyword)
                 if keyword not in kwcache:
-                    kw = rhnSQL.prepare(
-                        """select LOOKUP_MD_KEYWORD(:label) id from dual"""
-                    )
-                    kw.execute(label=keyword)
-                    kwid = kw.fetchone_dict()["id"]
+                    keyword_query.execute(label=keyword)
+                    kwid = keyword_query.fetchone_dict()["id"]
                     kwcache[keyword] = kwid
 
                 if keyword in pkgkws:
@@ -2975,11 +2979,7 @@ class RepoSync(object):
                         "Insert new keywordId: %s pkgId: %s channelId: %s"
                         % (kwcache[keyword], pkgid, int(self.channel["id"])),
                     )
-                    kadd = rhnSQL.prepare(
-                        """INSERT INTO suseMdData (package_id, channel_id, keyword_id)
-                                              VALUES(:package_id, :channel_id, :keyword_id)"""
-                    )
-                    kadd.execute(
+                    add_keyword_query.execute(
                         package_id=pkgid,
                         channel_id=int(self.channel["id"]),
                         keyword_id=kwcache[keyword],
@@ -3000,11 +3000,7 @@ class RepoSync(object):
                         "Delete obsolete keywordId: %s pkgId: %s channelId: %s"
                         % (kwcache[label], pkgid, int(self.channel["id"])),
                     )
-                    kdel = rhnSQL.prepare(
-                        """DELETE FROM suseMdData WHERE package_id = :package_id
-                                             AND channel_id = :channel_id AND keyword_id = :keyword_id"""
-                    )
-                    kdel.execute(
+                    delete_keyword_query.execute(
                         package_id=pkgid,
                         channel_id=int(self.channel["id"]),
                         keyword_id=kwcache[label],
