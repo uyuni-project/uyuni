@@ -1,0 +1,2 @@
+- Respect disabled modal links and await dialog confirmations
+- Show expiration information for expired Hub tokens
