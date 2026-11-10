@@ -656,6 +656,9 @@ When implementing a step, to get the FQDN of the host, use:
   STDOUT.puts get_target('sle_minion').full_hostname
 ```
 
+Note: `full_hostname` is the output of `hostname -f` on the host, except in the podman-based CI,
+where hosts have short names, so it is not fully qualified there.
+
 ### Converting between host name and target
 
 When implementing a step, to convert a step host name into a target, use:

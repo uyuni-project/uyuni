@@ -22,7 +22,15 @@ Then(/^"([^"]*)" should have a FQDN$/) do |host|
   resolution_time = end_time.to_i - initial_time.to_i
   raise ScriptError, 'cannot determine hostname' unless return_code.zero?
   raise ScriptError, "name resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
-  raise ScriptError, "hostname is not fully qualified: #{result} != #{node.full_hostname}" unless result == node.full_hostname
+
+  # Uyuni and MLM require "hostname -f" to return a FQDN on the host.
+  # The podman-based CI uses short names inside the container,
+  # so we only check that when the target is itself a FQDN (includes at least a dot).
+  # We also don't check in the case of an IP address.
+  next unless node.target.include?('.') && !node.target.match?(/\A[\d.]+\z/)
+
+  raise ScriptError, "hostname is not fully qualified: #{result}" unless result.include?('.')
+  raise ScriptError, "hostname -f returns #{result} instead of #{node.target}" unless result == node.target
 end
 
 Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
