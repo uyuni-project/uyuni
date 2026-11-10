@@ -1470,6 +1470,38 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(List.of("cplabel-dev-hotfix"), listCompatibleHotfixLabels(source));
     }
 
+    /**
+     * Test that a user who is not an organization administrator only gets the hotfix channels he can access
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testListCompatibleHotfixChannelsOfNonAdminUser() throws Exception {
+        Channel source = createPopulatedChannel();
+        buildProjectWithEnvironments("cpaccessible", source, "dev");
+        buildProjectWithEnvironments("cpdenied", source, "dev");
+
+        // a regular user can neither subscribe nor manage this hotfix channel
+        Channel denied = ChannelFactory.lookupByLabel("cpdenied-dev-hotfix");
+        denied.setGloballySubscribable(false, user.getOrg());
+
+        User regularUser = UserTestUtils.createUser("regular", user.getOrg().getId());
+        assertFalse(regularUser.hasRole(ORG_ADMIN));
+        assertTrue(ChannelFactory.isAccessibleByUser("cpaccessible-dev-hotfix", regularUser.getId()));
+        assertFalse(ChannelFactory.isAccessibleByUser("cpdenied-dev-hotfix", regularUser.getId()));
+
+        String advisory = source.getErratas().iterator().next().getAdvisoryName();
+        assertEquals(List.of("cpaccessible-dev-hotfix"),
+                contentManager.listCompatibleHotfixChannels(advisory, regularUser).stream()
+                        .map(Channel::getLabel)
+                        .toList());
+        assertEquals(Map.of("cpaccessible", List.of("cpaccessible-dev-hotfix")),
+                contentManager.listCompatibleHotfixChannelLabelsByProject(advisory, regularUser));
+
+        // the organization administrator gets both
+        assertEquals(List.of("cpaccessible-dev-hotfix", "cpdenied-dev-hotfix"), listCompatibleHotfixLabels(source));
+    }
+
     private void buildProjectWithEnvironments(String projectLabel, Channel source, String... envLabels)
             throws Exception {
         ContentProject cp = new ContentProject(projectLabel, projectLabel, "desc", user.getOrg());
