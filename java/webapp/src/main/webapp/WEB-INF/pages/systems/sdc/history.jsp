@@ -45,11 +45,10 @@ SPDX-License-Identifier: GPL-2.0-only
             <rhn:hidden name="sid" value="${param.sid}" />
             <div class="spacewalk-section-toolbar">
                 <div class="action-button-wrapper">
-                    <a class="btn btn-default"
-                       href="/rhn/systems/details/history/History.do?sid=${fn:escapeXml(param.sid)}">
+                    <button type="submit" class="btn btn-default" name="refresh">
                         <rhn:icon type="header-refresh" />
                         <bean:message key="system.event.history.refresh" />
-                    </a>
+                    </button>
                 </div>
             </div>
             <rl:list emptykey="system.event.history.noevent">
