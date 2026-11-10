@@ -1160,6 +1160,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.channel.software.sync_errata', 'W', 'If you have synced a new channel then patches')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.channel.software.sync_errata_with_packages', 'W', 'Synchronize errata with their packages into a channel')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.channel.software.sync_repo', 'W', 'Trigger immediate repo synchronization')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
