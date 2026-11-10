@@ -1274,6 +1274,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.contentmanagement.detach_source', 'W', 'Detach a Source from a Project')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.contentmanagement.list_compatible_hotfix_channel_labels_for_advisory', 'R', 'List the hotfix channels a given errata can be cloned into, grouped by content project')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.contentmanagement.list_environment_difference', 'R', 'List the difference of a Project Environment compared to its original')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)

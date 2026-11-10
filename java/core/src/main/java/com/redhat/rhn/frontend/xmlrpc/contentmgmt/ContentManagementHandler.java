@@ -1017,6 +1017,34 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
+     * List the hotfix channels a given errata can be cloned into, grouped by content project.
+     *
+     * @param loggedInUser the user
+     * @param advisoryName the advisory name
+     * @return the labels of the hotfix channels accessible by the user, by project label. The channels are sorted by
+     * the position of their environment in the project, from the first to the last.
+     *
+     * @apidoc.doc List the hotfix channels a given errata can be cloned into, grouped by content project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "advisoryName", "The errata advisory name")
+     * @apidoc.returntype
+     *  #struct_begin("CLM Project Label")
+     *      #prop_desc("array", "projectLabel", "Actual project label is the key into the struct")
+     *          #array_single("string", "hotfixChannelLabel")
+     *  #struct_end()
+     */
+    @ReadOnly
+    public Map<String, List<String>> listCompatibleHotfixChannelLabelsForAdvisory(User loggedInUser,
+                                                                                  String advisoryName) {
+        try {
+            return contentManager.listCompatibleHotfixChannelLabelsByProject(advisoryName, loggedInUser);
+        }
+        catch (EntityNotExistsException eIn) {
+            throw new EntityNotExistsFaultException(eIn);
+        }
+    }
+
+    /**
      * Validates a content project for build/promote
      *
      * The validation fails only in case of an error. Info and warning messages are ignored since the build/promote
