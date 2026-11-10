@@ -6,7 +6,6 @@
 
 import _isEmpty from "lodash/isEmpty";
 
-
 // splits the criteria into the single terms the user typed, ignoring extra whitespace
 function splitCriteria(criteria: string): string[] {
   return criteria.toLowerCase().split(/\s+/).filter(Boolean);
