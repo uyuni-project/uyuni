@@ -210,10 +210,167 @@ public class SysinfoMapperTest extends BaseTestCaseWithUser {
             VM00 UUID:            01a2b345-67cd-89e0-1f23-456789012345\n
             """;
 
+    private static final String SUMA_S390_PROC_INFO = """
+            Manufacturer:         IBM            \s
+            Type:                 8561
+            LIC Identifier:       307225ff69c39c80
+            Model:                400              LT1            \s
+            Sequence Code:        00000000000688E8
+            Plant:                02 \s
+            Model Capacity:       400              00000000
+            Capacity Adj. Ind.:   100
+            Capacity Ch. Reason:  0
+            Capacity Transient:   0
+            Type 1 Percentage:    0
+            Type 2 Percentage:    0
+            Type 3 Percentage:    0
+            Type 4 Percentage:    0
+            Type 5 Percentage:    0
+
+            CPU Topology HW:      0 0 5 2 2 12
+            CPU Topology SW:      0 0 5 2 2 12
+            CPUs Total:           71
+            CPUs Configured:      0
+            CPUs Standby:         0
+            CPUs Reserved:        71
+            CPUs G-MTID:          0
+            CPUs S-MTID:          1
+            Capability:           3085
+            Nominal Capability:   3085
+            Secondary Capability: 416
+            Adjustment 02-way:    62750
+            Adjustment 70-way:    46037
+            Adjustment 71-way:    46037
+
+            LPAR Number:          70
+            LPAR Characteristics: Shared\s
+            LPAR Name:            ZL46   \s
+            LPAR Adjustment:      84
+            LPAR CPUs Total:      6
+            LPAR CPUs Configured: 6
+            LPAR CPUs Standby:    0
+            LPAR CPUs Reserved:   0
+            LPAR CPUs Dedicated:  0
+            LPAR CPUs Shared:     6
+            LPAR CPUs G-MTID:     0
+            LPAR CPUs S-MTID:     1
+            LPAR CPUs PS-MTID:    1
+            """;
+
+    private static final String MLM_LONG_S390_SERVER_PROC_INFO = """
+            Manufacturer:         IBM            \s
+            Type:                 8561
+            LIC Identifier:       307225ff69c39c80
+            Model:                400              LT1            \s
+            Sequence Code:        00000000000688E8
+            Plant:                02 \s
+            Model Capacity:       400              00000000
+            Capacity Adj. Ind.:   100
+            Capacity Ch. Reason:  0
+            Capacity Transient:   0
+            Type 1 Percentage:    0
+            Type 2 Percentage:    0
+            Type 3 Percentage:    0
+            Type 4 Percentage:    0
+            Type 5 Percentage:    0
+
+            CPUs Total:           71
+            CPUs Configured:      0
+            CPUs Standby:         0
+            CPUs Reserved:        71
+            CPUs G-MTID:          0
+            CPUs S-MTID:          1
+            Capability:           3085
+            Nominal Capability:   3085
+            Secondary Capability: 416
+            Adjustment 02-way:    62750
+            Adjustment 70-way:    46037
+            Adjustment 71-way:    46037
+
+            LPAR Number:          65
+            LPAR Characteristics: Shared\s
+            LPAR Name:            ZL41   \s
+            LPAR Adjustment:      28
+            LPAR CPUs Total:      2
+            LPAR CPUs Configured: 2
+            LPAR CPUs Standby:    0
+            LPAR CPUs Reserved:   0
+            LPAR CPUs Dedicated:  0
+            LPAR CPUs Shared:     2
+            LPAR CPUs G-MTID:     0
+            LPAR CPUs S-MTID:     1
+            LPAR CPUs PS-MTID:    0
+
+            VM00 Name:            LONGSRV\s
+            VM00 Control Program: z/VM    7.4.0  \s
+            VM00 Adjustment:      500
+            VM00 CPUs Total:      1
+            VM00 CPUs Configured: 1
+            VM00 CPUs Standby:    0
+            VM00 CPUs Reserved:   0
+            """;
+
+    private static final String M248_SERVER_PROC_INFO = """
+            Manufacturer:         IBM            \s
+            Type:                 8561
+            LIC Identifier:       307225ff69c39c80
+            Model:                400              LT1            \s
+            Sequence Code:        00000000000688E8
+            Plant:                02 \s
+            Model Capacity:       400              00000000
+            Capacity Adj. Ind.:   100
+            Capacity Ch. Reason:  0
+            Capacity Transient:   0
+            Type 1 Percentage:    0
+            Type 2 Percentage:    0
+            Type 3 Percentage:    0
+            Type 4 Percentage:    0
+            Type 5 Percentage:    0
+
+            CPU Topology HW:      0 0 1 1 1 1
+            CPU Topology SW:      0 0 1 1 1 1
+            CPUs Total:           71
+            CPUs Configured:      0
+            CPUs Standby:         0
+            CPUs Reserved:        71
+            CPUs G-MTID:          0
+            CPUs S-MTID:          1
+            Capability:           3085
+            Nominal Capability:   3085
+            Secondary Capability: 416
+            Adjustment 02-way:    62750
+            Adjustment 70-way:    46037
+            Adjustment 71-way:    46037
+
+            LPAR Number:          70
+            LPAR Characteristics: Shared\s
+            LPAR Name:            ZL46   \s
+            LPAR Adjustment:      84
+            LPAR CPUs Total:      6
+            LPAR CPUs Configured: 6
+            LPAR CPUs Standby:    0
+            LPAR CPUs Reserved:   0
+            LPAR CPUs Dedicated:  0
+            LPAR CPUs Shared:     6
+            LPAR CPUs G-MTID:     0
+            LPAR CPUs S-MTID:     1
+            LPAR CPUs PS-MTID:    1
+
+            VM00 Name:            carlo  \s
+            VM00 Control Program: KVM/Linux      \s
+            VM00 Adjustment:      1000
+            VM00 CPUs Total:      1
+            VM00 CPUs Configured: 1
+            VM00 CPUs Standby:    0
+            VM00 CPUs Reserved:   0
+            VM00 Extended Name:   carlo
+            VM00 UUID:            24550ac9-75a8-4bb3-bf81-67265a3ff1f9
+            """;
+
     private MinionServer testServer;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         this.testServer = MinionServerFactoryTest.createTestMinionServer(user);
     }
 
@@ -226,8 +383,8 @@ public class SysinfoMapperTest extends BaseTestCaseWithUser {
     @MethodSource("allServersInfo")
     @DisplayName("mapSysinfo registers the s390 host and links the minion to it")
     public void testMapSysinfoRegistersTheHost(
-            String expectedOs, String expectedOsVersion, String expectedName, String expectedType,
-            long expectedIfls, String digitalServerId, String readValuesOutput
+            String expectedOs, String expectedOsVersion, String expectedName, String expectedType, long expectedIfls,
+            boolean expectedForeignSystem, String digitalServerId, String readValuesOutput
     ) {
         assertNull(ServerFactory.lookupForeignSystemByDigitalServerId(digitalServerId));
 
@@ -236,37 +393,43 @@ public class SysinfoMapperTest extends BaseTestCaseWithUser {
         assertTrue(error.isEmpty());
 
         Server zhost = ServerFactory.lookupForeignSystemByDigitalServerId(digitalServerId);
-        assertNotNull(zhost);
-        assertEquals(expectedName, zhost.getName());
-        assertEquals(expectedOs, zhost.getOs());
-        assertEquals(expectedType, zhost.getRelease());
-        assertEquals("Initial Registration Parameters:\nOS: " + expectedOs + "\nRelease: " + expectedOsVersion +
-                "\nCPU Arch: s390x", zhost.getDescription());
-
-        assertNotNull(zhost.getCpu());
-        assertEquals(expectedIfls, zhost.getCpu().getNrsocket());
-        assertEquals(expectedIfls, zhost.getCpu().getNrCore());
-        assertEquals(1L, zhost.getCpu().getNrThread());
-        assertEquals("s390x", zhost.getCpu().getModel());
-        assertEquals(expectedType, zhost.getCpu().getVendor());
-
         VirtualInstance guest = VirtualInstanceFactory.getInstance().lookupByGuestId(testServer.getId());
-        assertNotNull(guest);
-        assertEquals(zhost, guest.getHostSystem());
-        assertEquals(testServer, guest.getGuestSystem());
+        if (expectedForeignSystem) {
+            assertNotNull(zhost);
+            assertEquals(expectedName, zhost.getName());
+            assertEquals(expectedOs, zhost.getOs());
+            assertEquals(expectedType, zhost.getRelease());
+            assertEquals("Initial Registration Parameters:\nOS: " + expectedOs + "\nRelease: " + expectedOsVersion +
+                    "\nCPU Arch: s390x", zhost.getDescription());
+
+            assertNotNull(zhost.getCpu());
+            assertEquals(expectedIfls, zhost.getCpu().getNrsocket());
+            assertEquals(expectedIfls, zhost.getCpu().getNrCore());
+            assertEquals(1L, zhost.getCpu().getNrThread());
+            assertEquals("s390x", zhost.getCpu().getModel());
+            assertEquals(expectedType, zhost.getCpu().getVendor());
+
+            assertNotNull(guest);
+            assertEquals(zhost, guest.getHostSystem());
+            assertEquals(testServer, guest.getGuestSystem());
+        }
+        else {
+            assertNull(zhost);
+            assertNull(guest);
+        }
     }
 
     private static Stream<Arguments> allServersInfo() {
         return Stream.of(
                 Arguments.of("z/VM", "6.3.0", "IBM Mainframe z12 2827 0000000000061A23", "2827", 45L,
-                        SERVER_1_DIGITAL_SERVER_ID, SERVER_1_STATE_CHANGES_RET_READ_VALUES),
+                        true, SERVER_1_DIGITAL_SERVER_ID, SERVER_1_STATE_CHANGES_RET_READ_VALUES),
                 Arguments.of("z/VM", "7.4.0", "IBM Mainframe z15 8561 00000000000612A3", "8561", 71L,
-                        SERVER_2_DIGITAL_SERVER_ID, SERVER_2_STATE_CHANGES_RET_PROC_SYSINFO),
+                        true, SERVER_2_DIGITAL_SERVER_ID, SERVER_2_STATE_CHANGES_RET_PROC_SYSINFO),
                 // the read_values output of this host doesn't report the total number of IFLs
                 Arguments.of("KVM/Linux", "N/A", "IBM Mainframe z16 3932 00000000000987F6", "3932", 0L,
-                        SERVER_3_DIGITAL_SERVER_ID, SERVER_3_STATE_CHANGES_RET_READ_VALUES),
+                        true, SERVER_3_DIGITAL_SERVER_ID, SERVER_3_STATE_CHANGES_RET_READ_VALUES),
                 Arguments.of("KVM/Linux", "N/A", "IBM Mainframe z16 3932 00000000000987F6", "3932", 68L,
-                        SERVER_3_DIGITAL_SERVER_ID, SERVER_3_STATE_CHANGES_RET_PROC_SYSINFO)
+                        true, SERVER_3_DIGITAL_SERVER_ID, SERVER_3_STATE_CHANGES_RET_PROC_SYSINFO)
         );
     }
 
@@ -339,4 +502,34 @@ public class SysinfoMapperTest extends BaseTestCaseWithUser {
         assertNull(ServerFactory.lookupForeignSystemByDigitalServerId(SERVER_1_DIGITAL_SERVER_ID));
     }
 
+    @ParameterizedTest
+    @MethodSource("virtualizationHostTestInfo")
+    @DisplayName("testing when a minion is creating a foreign system on s390")
+    public void testCreatesForeignSystem(String sysInfoOutput) {
+        assertNull(ServerFactory.lookupForeignSystemByDigitalServerId(SUMA_S390_DIGITAL_SERVER_ID));
+
+        Optional<String> error = mapperWithCpuArch("s390x").mapSysinfo(sysInfoOutput);
+        assertTrue(error.isEmpty());
+
+        Server zhost = ServerFactory.lookupForeignSystemByDigitalServerId(SUMA_S390_DIGITAL_SERVER_ID);
+        VirtualInstance guest = VirtualInstanceFactory.getInstance().lookupByGuestId(testServer.getId());
+        //create the foreign system anyway
+        assertNotNull(zhost);
+        assertNotNull(guest);
+        assertEquals(zhost, guest.getHostSystem());
+        assertEquals(testServer, guest.getGuestSystem());
+    }
+
+    private static final String SUMA_S390_DIGITAL_SERVER_ID = "Z-00000000000688E8";
+
+    private static Stream<Arguments> virtualizationHostTestInfo() {
+        return Stream.of(
+                //suma-s390.mgr.suse.de (hypervisor KVM in a LPAR, NOT a VM, should NOT create a foreign system?)
+                Arguments.of(SUMA_S390_PROC_INFO),
+                //mlm-long-s390-server.mgr.suse.de (VM running on z/VM, should create a foreign system)
+                Arguments.of(MLM_LONG_S390_SERVER_PROC_INFO),
+                //m248.mgr.suse.de (VM running on KVM, should NOT create a foreign system?)
+                Arguments.of(M248_SERVER_PROC_INFO)
+        );
+    }
 }

@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -127,4 +128,23 @@ public class SysinfoParserTest {
         assertTrue(SysinfoParser.serverFamilyForS390Arch("1234").isEmpty());
     }
 
+    @ParameterizedTest
+    @MethodSource("runningOnS390ArchData")
+    @DisplayName("parseSysinfo correctly states if a VM is running on z/VM or KVM, or it is a hypervisor, on S390")
+    public void testRunningOnS390Arch(String readValuesOutput, boolean isExpectedHypervisor,
+                                      boolean isExpectedVmOnZVM, boolean isExpectedVmOnKVM) {
+        Map<String, String> sysvalues = SysinfoParser.parseSysinfo(readValuesOutput);
+
+        assertEquals(isExpectedHypervisor, SysinfoParser.isS390Hypervisor(sysvalues));
+        assertEquals(isExpectedVmOnZVM, SysinfoParser.isS390VmRunningOnZVM(sysvalues));
+        assertEquals(isExpectedVmOnKVM, SysinfoParser.isS390VmRunningOnKVM(sysvalues));
+    }
+
+    private static Stream<Arguments> runningOnS390ArchData() {
+        return Stream.of(
+                Arguments.of("", true, false, false), //SUMA_S390
+                Arguments.of("VM00 Control Program: z/VM    7.4.0  \s", false, true, false), //MLM_LONG_S390_SERVER
+                Arguments.of("VM00 Control Program: KVM/Linux      \s", false, false, true) //M248_SERVER
+        );
+    }
 }
