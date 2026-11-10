@@ -24,8 +24,9 @@ def generate_certificate(name, fqdn)
     name: "uyuni-#{name}",
     secret_name: "uyuni-#{name}-cert",
     fqdn: fqdn,
-    issuer_name: 'uyuni-ca-issuer',
-    issuer_kind: 'Issuer',
+    # RKE2 deploys a cluster-wide issuer instead of the namespaced 'uyuni-ca-issuer'
+    issuer_name: $is_rke2 ? 'uyuni-issuer' : 'uyuni-ca-issuer',
+    issuer_kind: $is_rke2 ? 'ClusterIssuer' : 'Issuer',
     subject: { country: 'DE', province: 'Bayern', locality: 'Nuernberg', org: 'SUSE', ou: 'SUSE', email: 'galaxy-noise@suse.de' }
   )
   _out, return_code = get_target('server').run_local("cat <<'CERT_EOF' | kubectl apply -f -\n#{certificate}\nCERT_EOF")
