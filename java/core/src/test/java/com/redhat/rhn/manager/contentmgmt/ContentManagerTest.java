@@ -84,6 +84,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -1428,6 +1429,27 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
                 .map(Channel::getLabel)
                 .sorted()
                 .toList());
+    }
+
+    /**
+     * Test that the compatible hotfix channels are grouped by project and ordered by environment
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testListCompatibleHotfixChannelLabelsByProject() throws Exception {
+        Channel original = createPopulatedChannel();
+        // the environments are created in the opposite order of their labels
+        buildProjectWithEnvironments("cpb", original, "prod", "mid", "dev");
+        buildProjectWithEnvironments("cpa", original, "dev", "test");
+        buildProjectWithEnvironments("cpother", createPopulatedChannel(), "dev");
+
+        String advisory = original.getErratas().iterator().next().getAdvisoryName();
+        Map<String, List<String>> result = contentManager.listCompatibleHotfixChannelLabelsByProject(advisory, user);
+
+        assertEquals(List.of("cpa", "cpb"), List.copyOf(result.keySet()));
+        assertEquals(List.of("cpa-dev-hotfix", "cpa-test-hotfix"), result.get("cpa"));
+        assertEquals(List.of("cpb-prod-hotfix", "cpb-mid-hotfix", "cpb-dev-hotfix"), result.get("cpb"));
     }
 
     /**
