@@ -465,6 +465,27 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Lists the SoftwareEnvironmentTargets of the given channels, fetching environments and projects in one query
+     *
+     * @param channels the channels
+     * @return the targets
+     */
+    public static List<SoftwareEnvironmentTarget> listEnvironmentTargetsByChannels(List<Channel> channels) {
+        if (channels.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return getSession().createQuery("""
+                FROM SoftwareEnvironmentTarget t
+                JOIN FETCH t.contentEnvironment e
+                JOIN FETCH e.contentProject
+                JOIN FETCH t.channel
+                WHERE t.channel IN (:channels)
+                """, SoftwareEnvironmentTarget.class)
+                .setParameter("channels", channels)
+                .list();
+    }
+
+    /**
      * Looks up SoftwareEnvironmentTarget with a given channel
      *
      * @param id the id
