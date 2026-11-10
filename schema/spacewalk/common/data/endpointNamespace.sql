@@ -6708,6 +6708,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.contentmanagement.list_compatible_hotfix_channel_labels_for_advisory' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/contentmanagement/listCompatibleHotfixChannelLabelsForAdvisory' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.contentmanagement.list_environment_difference' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/api/contentmanagement/listEnvironmentDifference' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
