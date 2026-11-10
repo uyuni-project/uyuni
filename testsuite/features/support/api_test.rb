@@ -137,11 +137,13 @@ class ApiTestXmlrpc < ApiTest
     attribute.instance_of?(XMLRPC::DateTime)
   end
 
-  # Returns the current date and time as an XMLRPC::DateTime object.
+  # Returns the current UTC date and time as an XMLRPC::DateTime object.
+  # XML-RPC dateTime carries no timezone and the server reads it as its own local time,
+  # so UTC avoids scheduling actions in the future when the controller is ahead of the server.
   #
   # @return [XMLRPC::DateTime] The current date and time as an XMLRPC::DateTime object.
   def date_now
-    now = Time.now
+    now = Time.now.utc
     XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
   end
 end
