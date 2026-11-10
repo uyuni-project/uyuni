@@ -1,0 +1,2 @@
+- Avoid duplicate initialization of Bootstrap tooltips
+- Refresh tooltip text when controls are updated
