@@ -32,6 +32,8 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -394,7 +396,7 @@ public class StatesAPI {
 
         // Add only valid states to the new revision, unmanaged packages will be skipped
         json.getPackageStates().forEach(pkgState ->
-                pkgState.convertToPackageState(server.getPackageType()).ifPresent(s -> {
+                convertToPackageState(pkgState, server.getPackageType()).ifPresent(s -> {
                     s.setStateRevision(state);
                     state.addPackageState(s);
                 })
@@ -573,6 +575,51 @@ public class StatesAPI {
     private Set<PackageStateJson> latestPackageStatesJSON(MinionServer server) {
         return convertToJSON(StateFactory.latestPackageStates(server)
                 .orElse(Collections.emptySet()));
+    }
+
+    /**
+     * Convert a {@link PackageStateJson} into a {@link PackageState} object to be persisted.
+     * shortcut: lookups and the version constraint rule belong in a Manager, move them there
+     * together with the rest of savePackages when this controller is refactored.
+     * @param json the package state coming from the UI
+     * @param type the package type (RPM or DEB)
+     * @return the PackageState, or empty if the state is not valid
+     */
+    private static Optional<PackageState> convertToPackageState(PackageStateJson json, PackageType type) {
+        Optional<PackageStates> state = json.getPackageStateId().flatMap(PackageStates::byId);
+
+        // Create the return object only if we have a valid state
+        return state.flatMap(ps -> {
+            PackageState packageState = new PackageState();
+            packageState.setPackageState(ps);
+            packageState.setName(PackageManager.lookupPackageName(json.getName()));
+            packageState.setArch(PackageFactory.lookupPackageArchByLabel(json.getArch()));
+
+            // Some package states *require* a version constraint
+            Optional<VersionConstraints> versionConstraint = json.getVersionConstraintId()
+                    .flatMap(VersionConstraints::byId);
+
+            if (PackageStates.requiresVersionConstraint(ps)) {
+                if (versionConstraint.isPresent()) {
+                    VersionConstraints vc = versionConstraint.get();
+                    if (!Arrays.asList(VersionConstraints.LATEST, VersionConstraints.ANY)
+                            .contains(vc)) {
+                        packageState.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
+                                json.getEpoch(), json.getVersion(), json.getRelease(), type));
+                    }
+                    packageState.setVersionConstraint(vc);
+                }
+                else {
+                    LOG.error("Version constraint required for {}: {}", ps, packageState.getName());
+                    return Optional.empty();
+                }
+            }
+            else {
+               packageState.setVersionConstraint(
+                       versionConstraint.orElse(VersionConstraints.LATEST));
+            }
+            return Optional.of(packageState);
+        });
     }
 
     /**
