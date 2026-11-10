@@ -6,25 +6,36 @@
 
 import _isEmpty from "lodash/isEmpty";
 
-function checkExtension(extension: any, criteria: string) {
-  const isCriteriaInLabel = extension.label && extension.label.toLowerCase().includes(criteria.toLowerCase());
+
+// splits the criteria into the single terms the user typed, ignoring extra whitespace
+function splitCriteria(criteria: string): string[] {
+  return criteria.toLowerCase().split(/\s+/).filter(Boolean);
+}
+
+// returns true, if the text contains all the terms, in any order
+function matchesAllTerms(text: string | undefined, terms: string[]) {
+  return !!text && terms.every((term) => text.toLowerCase().includes(term));
+}
+
+function checkExtension(extension: any, terms: string[]) {
+  const isCriteriaInLabel = matchesAllTerms(extension.label, terms);
   const isCriteriaInChannels =
-    !_isEmpty(extension.channels) &&
-    extension.channels.some((c) => c.summary && c.summary.toLowerCase().includes(criteria.toLowerCase()));
+    !_isEmpty(extension.channels) && extension.channels.some((c) => matchesAllTerms(c.summary, terms));
   return isCriteriaInLabel || isCriteriaInChannels;
 }
 
-// returns true, if at least one extension matches the criteria
-function extensionRecursiveIterator(extension: any, criteria: string) {
+// returns true, if at least one extension matches all the terms
+function extensionRecursiveIterator(extension: any, terms: string[]) {
   return (
-    checkExtension(extension, criteria) ||
-    (!_isEmpty(extension.extensions) && extension.extensions.some((ext) => extensionRecursiveIterator(ext, criteria)))
+    checkExtension(extension, terms) ||
+    (!_isEmpty(extension.extensions) && extension.extensions.some((ext) => extensionRecursiveIterator(ext, terms)))
   );
 }
 
 export function searchCriteriaInExtension(baseExtension: any, criteria?: string): boolean {
-  if (criteria) {
-    return extensionRecursiveIterator(baseExtension, criteria);
+  const terms = criteria ? splitCriteria(criteria) : [];
+  if (!_isEmpty(terms)) {
+    return extensionRecursiveIterator(baseExtension, terms);
   }
   return true;
 }
