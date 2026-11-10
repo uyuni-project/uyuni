@@ -112,6 +112,18 @@ When('I configure the salt bundle pillar on the RKE2 server') do
   get_target('server').run("mgrctl exec -- sh -c #{Shellwords.escape(script)}", runs_in_container: false)
 end
 
+# The podman server gets this from sumaform (server_containerized/testsuite.sls); on RKE2 the server is
+# installed by the testsuite, so the setting is applied here, after the install.
+When('I enable remote access to the Cobbler API on the RKE2 server') do
+  script = <<~SH
+    set -e
+    sed -i 's/redhat_management_permissive: false/redhat_management_permissive: true/' /etc/cobbler/settings.yaml
+    grep -q 'redhat_management_permissive: true' /etc/cobbler/settings.yaml
+    systemctl restart cobblerd
+  SH
+  get_target('server').run("mgrctl exec -- sh -c #{Shellwords.escape(script)}", runs_in_container: false)
+end
+
 Then('the setup marker file should exist on "server"') do
   server_pod = get_pod_name('server', 'server')
   cmd = "kubectl exec -n uyuni #{server_pod} -- test -f /var/spacewalk/.MANAGER_SETUP_COMPLETE && echo 'EXISTS'"
