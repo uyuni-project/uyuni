@@ -6518,6 +6518,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.channel.software.sync_errata_with_packages' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/channel/software/syncErrataWithPackages' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.channel.software.sync_repo' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/channel/software/syncRepo' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;

@@ -1,0 +1,2 @@
+- Add RBAC mapping for the
+  `channel.software.syncErrataWithPackages` API endpoint

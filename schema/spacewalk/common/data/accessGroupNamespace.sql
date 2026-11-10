@@ -412,6 +412,7 @@ INSERT INTO access.accessGroupNamespace
         'api.channel.software.list_packages_without_channel',
         'api.channel.software.clone',
         'api.channel.software.merge_errata',
+        'api.channel.software.sync_errata_with_packages',
         'api.channel.software.regenerate_needed_cache',
         'api.channel.software.regenerate_yum_cache',
         'api.channel.software.list_vendor_repo_filters',
