@@ -8,87 +8,8 @@ import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
 import { Column } from "components/table/Column";
 
-import { Utils } from "utils/functions";
-import Network from "utils/network";
-import { mockNetwork } from "utils/storybook/mock-network";
-
 import { PackageListActionScheduler } from "./PackageListActionScheduler";
-
-type PackageFixture = {
-  idCombo: string;
-  nvre: string;
-  nvrea: string;
-  packageId: number | null;
-  selectable: boolean;
-  summary: string;
-  arch: string;
-};
-
-const packages: PackageFixture[] = [
-  {
-    idCombo: "101|201|301",
-    nvre: "ptf-18102-1-1",
-    nvrea: "ptf-18102-1-1.x86_64",
-    packageId: 501,
-    selectable: true,
-    summary: "Fixes a kernel live-patching issue",
-    arch: "x86_64",
-  },
-  {
-    idCombo: "102|202|302",
-    nvre: "ptf-18134-2-1",
-    nvrea: "ptf-18134-2-1.x86_64",
-    packageId: 502,
-    selectable: true,
-    summary: "Corrects package dependency resolution",
-    arch: "x86_64",
-  },
-  {
-    idCombo: "103|203|303",
-    nvre: "ptf-18201-1-2",
-    nvrea: "ptf-18201-1-2.aarch64",
-    packageId: null,
-    selectable: false,
-    summary: "Requires a newer product service pack",
-    arch: "aarch64",
-  },
-];
-
-const selectionKey = (item: PackageFixture) => `${item.idCombo}~*~${item.nvrea}`;
-
-const mockNetworkGet = ((url: string) => {
-  const criteria = new URL(url, window.location.origin).searchParams.get("q")?.toLocaleLowerCase() ?? "";
-  const items = packages
-    .filter((item) => item.nvre.toLocaleLowerCase().includes(criteria))
-    .map((item) => ({ ...item }));
-
-  return Utils.cancelable(
-    Promise.resolve({
-      items,
-      total: items.length,
-      selectedIds: [selectionKey(packages[0])],
-    })
-  );
-}) as typeof Network.get;
-
-const mockNetworkPost = ((url: string) => {
-  if (url.endsWith("/maintenance/upcoming-windows")) {
-    return Utils.cancelable(
-      Promise.resolve({
-        data: {
-          maintenanceWindowsMultiSchedules: false,
-          maintenanceWindows: null,
-        },
-      })
-    );
-  }
-
-  if (url.endsWith("/scheduleAction")) {
-    return Utils.cancelable(Promise.resolve(731));
-  }
-
-  return Utils.cancelable(Promise.resolve({}));
-}) as typeof Network.post;
+import { type PackageFixture, installPackageMocks } from "./story-fixtures";
 
 const packageColumns = [
   <Column key="summary" columnKey="summary" header="Summary" cell={(item: PackageFixture) => item.summary} />,
@@ -98,7 +19,7 @@ const packageColumns = [
 const meta = {
   title: "Compositions/Package Management/PackageListActionScheduler",
   component: PackageListActionScheduler,
-  beforeEach: () => mockNetwork({ get: mockNetworkGet, post: mockNetworkPost }),
+  beforeEach: installPackageMocks,
   parameters: {
     layout: "fullscreen",
     docs: {
