@@ -17,7 +17,8 @@ end
 
 Then(/^the connection should redirect to the secured channel$/) do
   error = get_context(:error)
-  unless [OpenURI::HTTPRedirect, OpenSSL::SSL::SSLError, Faraday::SSLError].any? { |err_class| error.instance_of? err_class } && error.message == '302 302'
+  # Apache answers '302 302'; Traefik (RKE2) answers a permanent redirect ('301 Moved Permanently')
+  unless [OpenURI::HTTPRedirect, OpenSSL::SSL::SSLError, Faraday::SSLError].any? { |err_class| error.instance_of? err_class } && error.message.match?(/\A30[1278]\b/)
     uri_open_result = get_context(:uri_open_result)
     log("Return code: #{uri_open_result.status.first}\nURI: #{uri_open_result.base_uri}\n") unless uri_open_result.nil?
     raise ScriptError, 'The connection has not redirected to the secure channel!'
