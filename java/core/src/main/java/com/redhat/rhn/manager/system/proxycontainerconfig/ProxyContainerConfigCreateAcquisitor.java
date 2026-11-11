@@ -230,8 +230,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
                 .orElseThrow(raiseAndLog(this, "Could not find specified server named " + serverFqdn +
                         " in the organization."));
 
-        if (!allProvided(serverServer.getProxyInfo()) ||
-                isAbsent(serverServer.getProxyInfo().getSshPublicKey())) {
+        if (serverServer.getProxyInfo() == null || serverServer.getProxyInfo().getSshPublicKey() == null) {
             raiseAndLog(this, "Could not find the public SSH key for the server.").get();
         }
 
