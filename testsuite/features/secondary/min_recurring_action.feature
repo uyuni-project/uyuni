@@ -49,7 +49,7 @@ Feature: Recurring Actions
     When I click the "IP forwarding custom state recurring action" item edit button
     And I wait until I see "Update Schedule" text
     And I enter "custom_state_schedule_name_changed" as "scheduleName"
-    And I enter 1 minutes from now as "time-daily_time"
+    And I enter 3 minutes from now as "time-daily_time"
     And I uncheck "statechannel-recurring-cbox"
     And I check "Sync States-cbox"
     And I click on "Save Changes"
