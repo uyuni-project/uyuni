@@ -1,0 +1,2 @@
+- Fix deadlock in spacewalk-repo-sync when parallel workers
+  insert the same package metadata (bsc#1251988)
