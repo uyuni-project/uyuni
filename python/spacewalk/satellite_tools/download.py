@@ -141,9 +141,9 @@ class PyCurlFileObjectThread(PyCurlFileObject):
         self.parent = parent
         # Next 3 lines will not be required on having urlgrabber with proper fix
         # https://github.com/rpm-software-management/urlgrabber/pull/35
-        (url, parts) = opts.urlparser.parse(url, opts)
+        url, parts = opts.urlparser.parse(url, opts)
         # pylint: disable-next=unused-variable
-        (scheme, host, path, parm, query, frag) = parts
+        scheme, host, path, parm, query, frag = parts
         opts.find_proxy(url, scheme)
         super().__init__(url, filename, opts)
 
@@ -232,7 +232,7 @@ class DownloadThread(Thread):
 
         log2(
             0,
-            1,
+            0,
             # pylint: disable-next=consider-using-f-string
             "ERROR: Download failed: %s - %s." % (url, sys.exc_info()[1]),
             stream=sys.stderr,
@@ -282,7 +282,7 @@ class DownloadThread(Thread):
             ## BEWARE: This hack is introduced in order to support SUSE SCC channels
             ## This also needs a patched urlgrabber AFAIK
             if "authtoken" in params and params["authtoken"]:
-                (scheme, netloc, path, query, _) = urlparse.urlsplit(
+                scheme, netloc, path, query, _ = urlparse.urlsplit(
                     params["urls"][self.mirror]
                 )
                 url = urlparse.urlunsplit(
@@ -442,6 +442,7 @@ class ThreadedDownloader:
             queue.put(params)
 
     def run(self):
+        self.failed_pkgs = set()
         size = 0
         for queue in list(self.queues.values()):
             size += queue.qsize()
@@ -473,7 +474,9 @@ class ThreadedDownloader:
                     time.sleep(1)
                 break
             # accumulate all failed packages
-            self.failed_pkgs = {pkg for t in started_threads for pkg in t.failed_pkgs}
+            self.failed_pkgs.update(
+                {pkg for t in started_threads for pkg in t.failed_pkgs}
+            )
 
         # raise first detected exception if any
         if self.exception:
