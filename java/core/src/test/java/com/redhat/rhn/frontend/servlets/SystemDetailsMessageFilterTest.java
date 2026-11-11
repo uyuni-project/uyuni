@@ -29,6 +29,7 @@ import com.redhat.rhn.testing.SaltTestRootPath;
 import com.redhat.rhn.testing.UserForTest;
 import com.redhat.rhn.testing.UserForTestCaseExtension;
 
+import org.apache.struts.Globals;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ public class SystemDetailsMessageFilterTest extends BaseTestCase {
         SystemDetailsMessageFilter filter = new SystemDetailsMessageFilter();
         filter.processSystemMessages(request, server);
 
-        ActionMessages messages = (ActionMessages) request.getAttribute("org.apache.struts.action.ERROR");
+        ActionMessages messages = (ActionMessages) request.getAttribute(SystemDetailsMessageFilter.MESSAGES_KEY);
         @SuppressWarnings("unchecked")
         Iterator<ActionMessage> globalMessagesIterator = messages.get(ActionMessages.GLOBAL_MESSAGE);
 
@@ -65,6 +66,8 @@ public class SystemDetailsMessageFilterTest extends BaseTestCase {
         assertEquals(SystemDetailsMessageFilter.TRADITIONAL_STACK_MESSAGE_KEY, message.getKey());
         // Ensure only one message is present
         assertFalse(globalMessagesIterator.hasNext());
+        // The Struts error channel must stay untouched, otherwise the message leaks into the session
+        assertNull(request.getAttribute(Globals.ERROR_KEY));
     }
 
     @Test
@@ -75,7 +78,7 @@ public class SystemDetailsMessageFilterTest extends BaseTestCase {
         SystemDetailsMessageFilter filter = new SystemDetailsMessageFilter();
         filter.processSystemMessages(request, minionServer);
         ActionMessages messages =
-                ((ActionMessages) request.getAttribute("org.apache.struts.action.ERROR"));
+                ((ActionMessages) request.getAttribute(SystemDetailsMessageFilter.MESSAGES_KEY));
         assertNull(messages);
     }
 }

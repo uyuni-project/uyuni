@@ -24,8 +24,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.struts.Globals;
-import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
@@ -45,6 +43,13 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 @WebFilter("/systems/details/*")
 public class SystemDetailsMessageFilter implements Filter {
+
+    /**
+     * Request attribute holding the messages rendered by the page layout. A dedicated attribute is used instead of
+     * {@link org.apache.struts.Globals#ERROR_KEY} because Struts actions copy that one into the HTTP session, which
+     * would keep these system specific messages visible on every other page.
+     */
+    public static final String MESSAGES_KEY = "systemDetailsMessages";
 
     private static final String REBOOT_MESSAGE_KEY = "overview.jsp.transactionalupdate.reboot";
     public static final String TRADITIONAL_STACK_MESSAGE_KEY = "overview.jsp.traditionalstack.deprecated";
@@ -100,22 +105,22 @@ public class SystemDetailsMessageFilter implements Filter {
         if (!condition || isMessageAlreadyPresent(req, messageKey)) {
             return;
         }
-        ActionMessages messages = (ActionMessages) req.getAttribute(Globals.ERROR_KEY);
+        ActionMessages messages = (ActionMessages) req.getAttribute(MESSAGES_KEY);
         if (messages == null) {
-            messages = new ActionErrors();
+            messages = new ActionMessages();
         }
         messages.add(
             ActionMessages.GLOBAL_MESSAGE,
             new ActionMessage(messageKey)
         );
-        req.setAttribute(Globals.ERROR_KEY, messages);
+        req.setAttribute(MESSAGES_KEY, messages);
     }
 
     /**
      * Checks if the message is already present in the request, to avoid duplicate alerts.
      */
     private boolean isMessageAlreadyPresent(HttpServletRequest request, String messageKey) {
-        Object requestErrs = request.getAttribute(Globals.ERROR_KEY);
+        Object requestErrs = request.getAttribute(MESSAGES_KEY);
         if (requestErrs != null) {
             Iterator<ActionMessage> i = ((ActionMessages) requestErrs).get(ActionMessages.GLOBAL_MESSAGE);
             while (i.hasNext()) {

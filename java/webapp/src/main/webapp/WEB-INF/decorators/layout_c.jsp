@@ -52,6 +52,15 @@ SPDX-License-Identifier: GPL-2.0-only
               </ul>
             </div>
           </logic:messagesPresent>
+          <logic:messagesPresent name="systemDetailsMessages">
+            <div class="alert alert-warning">
+              <ul>
+              <html:messages id="message" name="systemDetailsMessages">
+                <li><c:out escapeXml="false" value="${message}"/></li>
+              </html:messages>
+              </ul>
+            </div>
+          </logic:messagesPresent>
           <html:messages id="message" message="true">
             <rhn:messages><c:out escapeXml="false" value="${message}" /></rhn:messages>
           </html:messages>
