@@ -246,7 +246,8 @@ public class ImageProfileController {
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
         return profile.map(
-                p -> result(res, ResultJson.success(ImageProfileJson.fromImageProfile(p)), new TypeToken<>() { }))
+                p -> result(res, ResultJson.success(ImageProfileJson.fromImageProfile(p,
+                        ActivationKeyFactory.lookupByToken(p.getToken()))), new TypeToken<>() { }))
                 .orElseGet(() -> result(res, ResultJson.error("not_found"), new TypeToken<>() { }));
     }
 
@@ -265,7 +266,8 @@ public class ImageProfileController {
                 ImageProfileFactory.lookupByLabelAndOrg(profileLabel, user.getOrg());
 
         return profile.map(
-                p -> json(res, ResultJson.success(ImageProfileJson.fromImageProfile(p)), new TypeToken<>() { }))
+                p -> json(res, ResultJson.success(ImageProfileJson.fromImageProfile(p,
+                        ActivationKeyFactory.lookupByToken(p.getToken()))), new TypeToken<>() { }))
                 .orElseGet(() -> result(res, ResultJson.error("not_found"), new TypeToken<>() { }));
     }
 

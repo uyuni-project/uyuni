@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.token.ActivationKey;
-import com.redhat.rhn.domain.token.ActivationKeyFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -172,19 +171,19 @@ public class ImageProfileJson {
      * Creates a JSON object from an image profile
      *
      * @param profile the image profile
+     * @param activationKey the activation key of the profile token, or null if the profile has none
      * @return the image profile json
      */
-    public static ImageProfileJson fromImageProfile(ImageProfile profile) {
+    public static ImageProfileJson fromImageProfile(ImageProfile profile, ActivationKey activationKey) {
         ImageProfileJson json = new ImageProfileJson();
         json.setProfileId(profile.getProfileId());
         json.setLabel(profile.getLabel());
         json.setImageType(profile.getImageType());
         json.setStore(profile.getTargetStore().getLabel());
 
-        if (profile.getToken() != null) {
-            ActivationKey ak = ActivationKeyFactory.lookupByToken(profile.getToken());
-            json.setActivationKey(ActivationKeyJson.fromActivationKey(ak));
-            json.setChannels(ChannelsJson.fromChannelSet(ak.getChannels()));
+        if (activationKey != null) {
+            json.setActivationKey(ActivationKeyJson.fromActivationKey(activationKey));
+            json.setChannels(ChannelsJson.fromChannelSet(activationKey.getChannels()));
         }
 
         if (profile instanceof DockerfileProfile dockerProfile) {
