@@ -51,8 +51,8 @@ Feature: Ubuntu 26.04: Universe and Main Resolute Repositories Integration
     And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
-  Scenario: Perform partial sync of python3-rpm and its dependencies into the Resolute channel
-    And I use spacewalk-repo-sync to sync channel "ubuntu-2604-resolute-amd64" including "python3-rpm librpm10 librpmbuild10 librpmio10 librpmsign10 librpm-sequoia-1 rpm-common liblua5.3-0 libfsverity0" packages
+  Scenario: Perform partial sync of python3-rpm and the distro Prometheus exporters, with dependencies, into the Resolute channel
+    And I use spacewalk-repo-sync to sync channel "ubuntu-2604-resolute-amd64" including "python3-rpm librpm10 librpmbuild10 librpmio10 librpmsign10 librpm-sequoia-1 rpm-common liblua5.3-0 libfsverity0 prometheus-node-exporter prometheus-node-exporter-collectors moreutils python3-prometheus-client" packages
     When I wait until the channel "ubuntu-2604-resolute-amd64" has been synced
     Then the channel "ubuntu-2604-resolute-amd64" should not be empty
 

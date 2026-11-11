@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+## Add non MU repositories for debian13 BEGIN ###
+
+- features/build_validation/add_non_MU_repositories/debian13_minion_add_trixie_main.feature
+
+## Add non MU repositories END ###
