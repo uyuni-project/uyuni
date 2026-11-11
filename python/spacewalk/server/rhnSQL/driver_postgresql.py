@@ -299,13 +299,10 @@ class Database(sql_base.Database):
             )
             self.connect()  # only allow one try
 
+    # pylint: disable-next=unused-argument
     def prepare(self, sql, force=0, blob_map=None):
-        if force:
-            for key in list(self._prepared_statements):
-                if key[0] == sql:
-                    del self._prepared_statements[key]
-            return Cursor(dbh=self.dbh, sql=sql, force=force, blob_map=blob_map)
-
+        # `force` is not used in any part of the code calling prepare()
+        # it's safe to ignore it here
         key = (sql, frozenset((blob_map or {}).items()))
         if key not in self._prepared_statements:
             self._prepared_statements[key] = Cursor(
