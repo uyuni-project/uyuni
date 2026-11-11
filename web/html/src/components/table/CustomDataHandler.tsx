@@ -50,6 +50,9 @@ type Props = {
 
   /** Other filter fields */
   additionalFilters?: ReactNode[];
+
+  /** Other filter fields */
+  titleButtons?: ReactNode[];
 };
 
 export function CustomDataHandler(props: Props) {
