@@ -39,7 +39,7 @@ public class SyncErrataWithPackagesEvent implements EventDatabaseMessage {
     private static final Logger LOG = LogManager.getLogger(SyncErrataWithPackagesEvent.class);
 
     private final Long targetChannelId;
-    private final Map<Long, Long> errata = new HashMap<>();
+    private final Map<Long, Long> errataIdToSourceChannelId = new HashMap<>();
     private final boolean forceRefresh;
     private final Long userId;
     private final Transaction txn;
@@ -58,7 +58,8 @@ public class SyncErrataWithPackagesEvent implements EventDatabaseMessage {
             User userIn
     ) {
         targetChannelId = targetIn.getId();
-        errataIn.forEach((e, source) -> errata.put(e.getId(), source == null ? null : source.getId()));
+        errataIn.forEach((e, source) ->
+                errataIdToSourceChannelId.put(e.getId(), source == null ? null : source.getId()));
         forceRefresh = forceRefreshIn;
         userId = userIn.getId();
         txn = HibernateFactory.getSession().getTransaction();
@@ -94,7 +95,7 @@ public class SyncErrataWithPackagesEvent implements EventDatabaseMessage {
      */
     public Map<Errata, Channel> getErrata() {
         Map<Errata, Channel> result = new LinkedHashMap<>();
-        errata.forEach((errataId, sourceId) -> {
+        errataIdToSourceChannelId.forEach((errataId, sourceId) -> {
             Errata erratum = ErrataFactory.lookupById(errataId);
             Channel source = sourceId == null ? null : ChannelFactory.lookupById(sourceId);
             if (erratum != null && (sourceId == null || source != null)) {
