@@ -28,7 +28,7 @@ Feature: Recurring Actions
     And I select "Custom state" from "actionTypeDescription"
     And I wait until I see "Configure states to execute" text
     And I check radio button "schedule-daily"
-    And I enter 1 minutes from now as "time-daily_time"
+    And I enter 3 minutes from now as "time-daily_time"
     And I check "statechannel-recurring-cbox"
     And I click on "Save Changes"
     And I wait until I see "Edit State Ranks" text
@@ -95,7 +95,7 @@ Feature: Recurring Actions
     And I enter "Minion Highstate Recurring Action" as "scheduleName"
     And I select "Highstate" from "actionTypeDescription"
     And I check radio button "schedule-daily"
-    And I enter 1 minutes from now as "time-daily_time"
+    And I enter 3 minutes from now as "time-daily_time"
     And I click on the "disabled" toggler
     And I click on "Create Schedule"
     Then I wait until I see "Schedule successfully created" text
@@ -181,7 +181,7 @@ Feature: Recurring Actions
     And I select "Custom state" from "actionTypeDescription"
     And I wait until I see "Configure states to execute" text
     And I check radio button "schedule-daily"
-    And I enter 1 minutes from now as "time-daily_time"
+    And I enter 3 minutes from now as "time-daily_time"
     And I check "Update System-cbox"
     And I click on "Save Changes"
     And I wait until I see "Edit State Ranks" text
@@ -275,7 +275,7 @@ Feature: Recurring Actions
     And I select "Custom state" from "actionTypeDescription"
     And I wait until I see "Configure states to execute" text
     And I check radio button "schedule-daily"
-    And I enter 1 minutes from now as "time-daily_time"
+    And I enter 3 minutes from now as "time-daily_time"
     And I click on the "disabled" toggler
     And I check "Package Profile Update-cbox"
     And I click on "Save Changes"
@@ -333,7 +333,7 @@ Feature: Recurring Actions
     And I wait until I see "Configure states to execute" text
     And I enter "schedule_name" as "scheduleName"
     And I check radio button "schedule-daily"
-    And I enter 1 minutes from now as "time-daily_time"
+    And I enter 3 minutes from now as "time-daily_time"
     And I click on the "disabled" toggler
     And I check "Hardware Profile Update-cbox"
     And I click on "Save Changes"
