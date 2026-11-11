@@ -26,7 +26,7 @@ import java.util.List;
  * that the erratum and its source have in common, or all packages of the erratum when it has no source.
  * Packages are never removed.
  */
-public interface SyncErrataWithPackagesService {
+public interface SyncErrataWithPackagesManager {
 
     /**
      * Synchronizes errata of a source channel by advisory name.

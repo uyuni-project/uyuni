@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesService;
+import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesManager;
 import com.redhat.rhn.manager.errata.syncwithpackages.dto.SyncErrataWithPackagesResult;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.UserForTest;
@@ -44,7 +44,7 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
     public static final String SOURCE = "source";
     public static final String TARGET = "target";
 
-    private SyncErrataWithPackagesService service;
+    private SyncErrataWithPackagesManager manager;
     private ChannelSoftwareHandler handler;
 
     @UserForTest(useClassNameForOrg = true)
@@ -52,18 +52,18 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
 
     @BeforeEach
     public void setUp() {
-        service = context.mock(SyncErrataWithPackagesService.class);
-        handler = new ChannelSoftwareHandler(null, null, service);
+        manager = context.mock(SyncErrataWithPackagesManager.class);
+        handler = new ChannelSoftwareHandler(null, null, manager);
     }
 
     /**
-     * The source channel variant by advisory names without a strict flag delegates to the service in strict mode,
+     * The source channel variant by advisory names without a strict flag delegates to the manager in strict mode,
      * passing the other parameters unchanged.
      */
     @Test
     public void testFromSourceByNamesIsStrictByDefault() {
         context.checking(new Expectations() {{
-            oneOf(service).syncFromSource(user, SOURCE, TARGET, NAMES, true, true, false);
+            oneOf(manager).syncFromSource(user, SOURCE, TARGET, NAMES, true, true, false);
             will(returnValue(RESULT));
         }});
 
@@ -71,13 +71,13 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
     }
 
     /**
-     * The source channel variant by advisory names delegates to the service with the given strict, async and
+     * The source channel variant by advisory names delegates to the manager with the given strict, async and
      * forceRefresh flags.
      */
     @Test
     public void testFromSourceByNames() {
         context.checking(new Expectations() {{
-            oneOf(service).syncFromSource(user, SOURCE, TARGET, NAMES, false, true, false);
+            oneOf(manager).syncFromSource(user, SOURCE, TARGET, NAMES, false, true, false);
             will(returnValue(RESULT));
         }});
 
@@ -85,14 +85,14 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
     }
 
     /**
-     * The source channel variant by date range delegates to the service with the given dates and flags.
+     * The source channel variant by date range delegates to the manager with the given dates and flags.
      */
     @Test
     public void testFromSourceByDates() {
         Date start = new Date(1_000L);
         Date end = new Date(2_000L);
         context.checking(new Expectations() {{
-            oneOf(service).syncFromSource(user, SOURCE, TARGET, start, end, true, false);
+            oneOf(manager).syncFromSource(user, SOURCE, TARGET, start, end, true, false);
             will(returnValue(RESULT));
         }});
 
@@ -100,13 +100,13 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
     }
 
     /**
-     * The criteria variant without a strict flag delegates to the service in strict mode, passing the other parameters
+     * The criteria variant without a strict flag delegates to the manager in strict mode, passing the other parameters
      * unchanged.
      */
     @Test
     public void testByCriteriaIsStrictByDefault() {
         context.checking(new Expectations() {{
-            oneOf(service).syncByCriteria(user, TARGET, NAMES, true, true, false);
+            oneOf(manager).syncByCriteria(user, TARGET, NAMES, true, true, false);
             will(returnValue(RESULT));
         }});
 
@@ -114,12 +114,12 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
     }
 
     /**
-     * The criteria variant delegates to the service with the given strict, async and forceRefresh flags.
+     * The criteria variant delegates to the manager with the given strict, async and forceRefresh flags.
      */
     @Test
     public void testByCriteria() {
         context.checking(new Expectations() {{
-            oneOf(service).syncByCriteria(user, TARGET, NAMES, false, true, false);
+            oneOf(manager).syncByCriteria(user, TARGET, NAMES, false, true, false);
             will(returnValue(RESULT));
         }});
 
@@ -127,13 +127,13 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
     }
 
     /**
-     * A fault raised by the service reaches the API caller unchanged.
+     * A fault raised by the manager reaches the API caller unchanged.
      */
     @Test
-    public void testServiceFaultsArePropagated() {
+    public void testManagerFaultsArePropagated() {
         FaultException fault = new FaultException(-208, "no_such_patch", "Patches not found: SUSE-2026-5678");
         context.checking(new Expectations() {{
-            oneOf(service).syncByCriteria(user, TARGET, NAMES, true, false, true);
+            oneOf(manager).syncByCriteria(user, TARGET, NAMES, true, false, true);
             will(throwException(fault));
         }});
 

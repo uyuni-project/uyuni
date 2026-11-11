@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * Tests for {@link SyncErrataWithPackagesServiceImpl}.
+ * Tests for {@link SyncErrataWithPackagesManagerImpl}.
  *
  * Tests have a common setup, then only adds what its case needs:
  * - Channel {@code source} serves packages a1, b1, c1 and {@code unlisted}, and holds errata:
@@ -67,9 +67,9 @@ import java.util.stream.IntStream;
  * Each test asserts the complete content of the target channel, so anything synchronized beyond what was expected
  * makes it fail.
  */
-public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
+public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
 
-    private final SyncErrataWithPackagesService service = new SyncErrataWithPackagesServiceImpl();
+    private final SyncErrataWithPackagesManager manager = new SyncErrataWithPackagesManagerImpl();
 
     private Package a1, a2, b1, c1, unlisted, x;
     private Channel source, middle, target;
@@ -131,7 +131,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
         assertEquals(Set.of(x), target.getPackages());
 
         // Act
-        SyncErrataWithPackagesResult result = service.syncFromSource(admin, source.getLabel(), target.getLabel(),
+        SyncErrataWithPackagesResult result = manager.syncFromSource(admin, source.getLabel(), target.getLabel(),
                 List.of(errataA.getAdvisoryName(), errataB.getAdvisoryName(), errataC.getAdvisoryName(),
                         errataD.getAdvisoryName(), errataE.getAdvisoryName(), cloneOfVInSource.getAdvisoryName()),
                 true, false, true);
@@ -177,7 +177,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
         List<String> advisoryNames = List.of(errataA.getAdvisoryName());
 
         // Act
-        SyncErrataWithPackagesResult result = service.syncFromSource(admin, source.getLabel(), target.getLabel(),
+        SyncErrataWithPackagesResult result = manager.syncFromSource(admin, source.getLabel(), target.getLabel(),
                 advisoryNames, true, false, true);
 
         // Assert 1st execution response and effects
@@ -188,7 +188,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
 
         // Repeated calls
         for (int i = 0; i < 2; i++) {
-            SyncErrataWithPackagesResult again = service.syncFromSource(admin, source.getLabel(), target.getLabel(),
+            SyncErrataWithPackagesResult again = manager.syncFromSource(admin, source.getLabel(), target.getLabel(),
                     advisoryNames, true, false, true);
 
             assertEquals(result, again);
@@ -216,7 +216,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
         assertEquals(Set.of(x), target.getPackages());
 
         // Act
-        SyncErrataWithPackagesResult result = service.syncFromSource(admin, source.getLabel(), target.getLabel(),
+        SyncErrataWithPackagesResult result = manager.syncFromSource(admin, source.getLabel(), target.getLabel(),
                 List.of(errataA.getAdvisoryName()), true, false, true);
 
         // Assert
@@ -244,7 +244,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
         assertEquals(Set.of(x, a1), target.getPackages());
 
         // Act
-        SyncErrataWithPackagesResult result = service.syncFromSource(admin, source.getLabel(), target.getLabel(),
+        SyncErrataWithPackagesResult result = manager.syncFromSource(admin, source.getLabel(), target.getLabel(),
                 List.of(), true, false, true);
 
         // Assert
@@ -268,7 +268,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
         Channel emptySource = createChannelWithPackages("emptySourceChannel", createPackage("emptySourcePackage"));
 
         FaultException e = assertThrows(FaultException.class,
-                () -> service.syncFromSource(admin, emptySource.getLabel(), target.getLabel(), List.of(), true,
+                () -> manager.syncFromSource(admin, emptySource.getLabel(), target.getLabel(), List.of(), true,
                         false, true));
 
         assertEquals(2800, e.getErrorCode());
@@ -284,7 +284,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
     @Test
     public void testSyncFromSourceWhenStrictAndNameUnmatchedThenFailsSyncingNothing() {
         FaultException e = assertThrows(FaultException.class,
-                () -> service.syncFromSource(admin, source.getLabel(), target.getLabel(),
+                () -> manager.syncFromSource(admin, source.getLabel(), target.getLabel(),
                         List.of(errataC.getAdvisoryName(), "dummy"), true, false, true));
 
         assertEquals(-208, e.getErrorCode());
@@ -302,7 +302,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
         List<String> names = IntStream.range(0, 25).mapToObj(i -> "MISSING-" + i).toList();
 
         FaultException e = assertThrows(FaultException.class,
-                () -> service.syncFromSource(admin, source.getLabel(), target.getLabel(), names, true, false, true));
+                () -> manager.syncFromSource(admin, source.getLabel(), target.getLabel(), names, true, false, true));
 
         assertEquals(-208, e.getErrorCode());
         assertEquals("Patches not found: " + String.join(", ", names.subList(0, 20)) + " and 5 more",
@@ -324,7 +324,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
         List<String> names = new ArrayList<>(List.of(errataC.getAdvisoryName()));
         IntStream.range(0, 25).mapToObj(i -> "MISSING-" + i).forEach(names::add);
 
-        SyncErrataWithPackagesResult result = service.syncFromSource(admin, source.getLabel(), target.getLabel(),
+        SyncErrataWithPackagesResult result = manager.syncFromSource(admin, source.getLabel(), target.getLabel(),
                 names, false, false, true);
 
         // Assert
@@ -342,7 +342,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
     @Test
     public void testSyncFromSourceWhenLenientButNoMatchingErratas() {
         FaultException e = assertThrows(FaultException.class,
-                () -> service.syncFromSource(admin, source.getLabel(), target.getLabel(),
+                () -> manager.syncFromSource(admin, source.getLabel(), target.getLabel(),
                         List.of("NOT-THERE"), false, false, true));
 
         assertEquals(2800, e.getErrorCode());
@@ -371,7 +371,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
         setLastModified(errataE, new Date(end.getTime() + 1));
 
         // Act
-        SyncErrataWithPackagesResult result = service.syncFromSource(admin, source.getLabel(), target.getLabel(),
+        SyncErrataWithPackagesResult result = manager.syncFromSource(admin, source.getLabel(), target.getLabel(),
                 start, end, false, true);
 
         // Assert
@@ -392,7 +392,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
     public void testSyncFromSourceByDatesWhenRangeReversedOrEmptyThenFails() {
         Date now = new Date();
         FaultException reversed = assertThrows(FaultException.class,
-                () -> service.syncFromSource(admin, source.getLabel(), target.getLabel(), now,
+                () -> manager.syncFromSource(admin, source.getLabel(), target.getLabel(), now,
                         new Date(now.getTime() - 1000), false, true));
         assertEquals(2800, reversed.getErrorCode());
         assertEquals("End date cannot be before start date", reversed.getMessage());
@@ -400,7 +400,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
         // a range long before the errata of the source were created
         Date longAgo = new Date(946_684_800_000L);
         FaultException empty = assertThrows(FaultException.class,
-                () -> service.syncFromSource(admin, source.getLabel(), target.getLabel(), longAgo,
+                () -> manager.syncFromSource(admin, source.getLabel(), target.getLabel(), longAgo,
                         new Date(longAgo.getTime() + 86_400_000L), false, true));
         assertEquals(2800, empty.getErrorCode());
         assertEquals("No erratas were found", empty.getMessage());
@@ -442,7 +442,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
         assertEquals(Set.of(x), target.getPackages());
 
         // Act
-        SyncErrataWithPackagesResult result = service.syncByCriteria(admin, target.getLabel(),
+        SyncErrataWithPackagesResult result = manager.syncByCriteria(admin, target.getLabel(),
                 List.of(errataA.getAdvisoryName(), errataB.getAdvisoryName(), errataD.getAdvisoryName(), sharedName,
                         vendorV.getAdvisoryName(), foreign.getAdvisoryName()),
                 false, false, true);
@@ -488,7 +488,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
         assertTrue(foreignClone.getPackages().isEmpty());
 
         // Act
-        SyncErrataWithPackagesResult result = service.syncByCriteria(admin, foreignClone.getLabel(),
+        SyncErrataWithPackagesResult result = manager.syncByCriteria(admin, foreignClone.getLabel(),
                 List.of(errataE.getAdvisoryName()), true, false, true);
 
         // Assert
@@ -506,11 +506,11 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
     @Test
     public void testSyncByCriteriaWhenNameUnmatchedOrNamesEmptyThenFails() {
         FaultException strict = assertThrows(FaultException.class,
-                () -> service.syncByCriteria(admin, target.getLabel(), List.of("NOT-THERE"), true, false, true));
+                () -> manager.syncByCriteria(admin, target.getLabel(), List.of("NOT-THERE"), true, false, true));
         assertEquals(-208, strict.getErrorCode());
 
         assertThrows(InvalidParameterException.class,
-                () -> service.syncByCriteria(admin, target.getLabel(), List.of(), true, false, true));
+                () -> manager.syncByCriteria(admin, target.getLabel(), List.of(), true, false, true));
         assertEquals(Set.of(errataX), target.getErratas());
         assertEquals(Set.of(x), target.getPackages());
     }
@@ -523,18 +523,18 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
     @Test
     public void testSyncFromSourceWhenChannelMissingOrUserNotAdminThenFails() {
         FaultException noTarget = assertThrows(FaultException.class,
-                () -> service.syncFromSource(admin, source.getLabel(), "no-such-channel", List.of(), true,
+                () -> manager.syncFromSource(admin, source.getLabel(), "no-such-channel", List.of(), true,
                         false, true));
         assertEquals(-210, noTarget.getErrorCode());
         assertEquals("No such channel: no-such-channel", noTarget.getMessage());
 
         FaultException noSource = assertThrows(FaultException.class,
-                () -> service.syncFromSource(admin, "no-such-channel", target.getLabel(), List.of(), true,
+                () -> manager.syncFromSource(admin, "no-such-channel", target.getLabel(), List.of(), true,
                         false, true));
         assertEquals(-210, noSource.getErrorCode());
 
         FaultException noAccess = assertThrows(FaultException.class,
-                () -> service.syncFromSource(regular, source.getLabel(), source.getLabel(), List.of(), true,
+                () -> manager.syncFromSource(regular, source.getLabel(), source.getLabel(), List.of(), true,
                         false, true));
         assertEquals(-23, noAccess.getErrorCode());
         assertEquals("User " + regular.getLogin() + " does not have access to channel " + source.getName(),
@@ -550,7 +550,7 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
         AsyncErrataCloneCounter.getInstance().addAsyncErrataCloneJob(target.getId());
         try {
             FaultException e = assertThrows(FaultException.class,
-                    () -> service.syncFromSource(admin, source.getLabel(), target.getLabel(),
+                    () -> manager.syncFromSource(admin, source.getLabel(), target.getLabel(),
                             List.of(errataC.getAdvisoryName()), true, false, true));
             assertEquals(-211, e.getErrorCode());
             assertEquals("Channel " + target.getName() + " has pending asynchronous errata clone jobs. " +
@@ -570,12 +570,12 @@ public class SyncErrataWithPackagesServiceImplTest extends BaseHandlerTestCase {
      */
     @Test
     public void testSyncFromSourceWhenAsyncThenValidatesAndSchedulesJob() {
-        assertThrows(FaultException.class, () -> service.syncFromSource(admin, source.getLabel(),
+        assertThrows(FaultException.class, () -> manager.syncFromSource(admin, source.getLabel(),
                 target.getLabel(), List.of("NOT-THERE"), true, true, true));
         assertFalse(ErrataManager.channelHasPendingAsyncCloneJobs(target));
 
         try {
-            SyncErrataWithPackagesResult result = service.syncFromSource(admin, source.getLabel(),
+            SyncErrataWithPackagesResult result = manager.syncFromSource(admin, source.getLabel(),
                     target.getLabel(), List.of(errataC.getAdvisoryName()), true, true, true);
             assertEquals(List.of(), result.erratas());
             assertTrue(ErrataManager.channelHasPendingAsyncCloneJobs(target));

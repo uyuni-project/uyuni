@@ -15,7 +15,7 @@ package com.redhat.rhn.frontend.events;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesServiceImpl;
+import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesManagerImpl;
 
 /**
  * SyncErrataWithPackagesAction
@@ -31,7 +31,7 @@ public class SyncErrataWithPackagesAction implements MessageAction {
         try {
             Channel target = msg.getTarget();
             if (target != null) {
-                new SyncErrataWithPackagesServiceImpl().syncValidated(msg.getUser(), target, msg.getErrata(),
+                new SyncErrataWithPackagesManagerImpl().syncValidated(msg.getUser(), target, msg.getErrata(),
                         msg.isForceRefresh());
             }
         }

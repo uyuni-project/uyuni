@@ -79,8 +79,8 @@ import com.redhat.rhn.manager.channel.repo.CreateRepoCommand;
 import com.redhat.rhn.manager.channel.repo.EditRepoCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
-import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesService;
-import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesServiceImpl;
+import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesManager;
+import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesManagerImpl;
 import com.redhat.rhn.manager.errata.syncwithpackages.dto.SyncErrataWithPackagesResult;
 import com.redhat.rhn.manager.kickstart.crypto.NoSuchCryptoKeyException;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -123,7 +123,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     private static Logger log = LogManager.getLogger(ChannelSoftwareHandler.class);
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
-    private final SyncErrataWithPackagesService syncErrataWithPackagesService;
+    private final SyncErrataWithPackagesManager syncErrataWithPackagesManager;
 
     /**
      * Set the {@link TaskomaticApi} instance to use, only for unit tests.
@@ -132,7 +132,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
      */
     public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn) {
-        this(taskomaticApiIn, xmlRpcSystemHelperIn, new SyncErrataWithPackagesServiceImpl());
+        this(taskomaticApiIn, xmlRpcSystemHelperIn, new SyncErrataWithPackagesManagerImpl());
     }
 
     /**
@@ -140,13 +140,13 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *
      * @param taskomaticApiIn the {@link TaskomaticApi}
      * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
-     * @param syncErrataWithPackagesServiceIn the service synchronizing errata with their packages
+     * @param syncErrataWithPackagesManagerIn the manager synchronizing errata with their packages
      */
     public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
-                                  SyncErrataWithPackagesService syncErrataWithPackagesServiceIn) {
+                                  SyncErrataWithPackagesManager syncErrataWithPackagesManagerIn) {
         taskomaticApi = taskomaticApiIn;
         xmlRpcSystemHelper = xmlRpcSystemHelperIn;
-        syncErrataWithPackagesService = syncErrataWithPackagesServiceIn;
+        syncErrataWithPackagesManager = syncErrataWithPackagesManagerIn;
     }
 
     /**
@@ -2067,7 +2067,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             boolean forceRefresh,
             boolean strict
     ) {
-        return syncErrataWithPackagesService.syncFromSource(loggedInUser, sourceChannelLabel, targetChannelLabel,
+        return syncErrataWithPackagesManager.syncFromSource(loggedInUser, sourceChannelLabel, targetChannelLabel,
                 advisoryNames, strict, async, forceRefresh);
     }
 
@@ -2108,7 +2108,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             boolean async,
             boolean forceRefresh
     ) {
-        return syncErrataWithPackagesService.syncFromSource(loggedInUser, sourceChannelLabel, targetChannelLabel,
+        return syncErrataWithPackagesManager.syncFromSource(loggedInUser, sourceChannelLabel, targetChannelLabel,
                 startDate, endDate, async, forceRefresh);
     }
 
@@ -2184,7 +2184,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             boolean forceRefresh,
             boolean strict
     ) {
-        return syncErrataWithPackagesService.syncByCriteria(loggedInUser, targetChannelLabel, advisoryNames, strict,
+        return syncErrataWithPackagesManager.syncByCriteria(loggedInUser, targetChannelLabel, advisoryNames, strict,
                 async, forceRefresh);
     }
 

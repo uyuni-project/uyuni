@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 /**
  * Orchestrates the errata synchronization: validates the request, then synchronizes or schedules the synchronization.
  */
-public class SyncErrataWithPackagesServiceImpl implements SyncErrataWithPackagesService {
+public class SyncErrataWithPackagesManagerImpl implements SyncErrataWithPackagesManager {
 
     /** Maximum number of unmatched advisory names listed in the response or in the strict mode fault. */
     private static final int MAX_MISMATCH_OUTPUT = 20;
@@ -109,9 +109,9 @@ public class SyncErrataWithPackagesServiceImpl implements SyncErrataWithPackages
     /**
      * Synchronizes errata of interest and their packages.
      * Assumes the request was already validated by one of:
-     * - {@link SyncErrataWithPackagesServiceImpl#syncFromSource(User, String, String, Date, Date, boolean, boolean)}
-     * - {@link SyncErrataWithPackagesServiceImpl#syncFromSource(User, String, String, List, boolean, boolean, boolean)}
-     * - {@link SyncErrataWithPackagesServiceImpl#syncByCriteria(User, String, List, boolean, boolean, boolean)}
+     * - {@link SyncErrataWithPackagesManagerImpl#syncFromSource(User, String, String, Date, Date, boolean, boolean)}
+     * - {@link SyncErrataWithPackagesManagerImpl#syncFromSource(User, String, String, List, boolean, boolean, boolean)}
+     * - {@link SyncErrataWithPackagesManagerImpl#syncByCriteria(User, String, List, boolean, boolean, boolean)}
      * and does not check it again.
      * @param user the user
      * @param target the target channel
