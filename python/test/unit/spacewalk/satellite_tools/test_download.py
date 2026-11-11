@@ -93,6 +93,67 @@ def test_reposync_threaded_downloader_sets_failed_pkgs():
         assert fail_pkg_name in td.failed_pkgs
 
 
+@patch("spacewalk.common.rhnConfig.initCFG", Mock())
+@patch("spacewalk.satellite_tools.download.log", Mock())  # no logging
+@patch("spacewalk.satellite_tools.download.log2", Mock())  # no logging
+def test_reposync_threaded_downloader_multi_queue_accumulates_failed_pkgs():
+    fail_pkg_name = "fail.rpm"
+    success_pkg_name = "success.rpm"
+
+    params_fail = NoKeyErrorsDict(
+        {
+            "http_headers": dict(),
+            "urls": ["http://example.com/repo1"],
+            "target_file": fail_pkg_name,
+            "ssl_ca_cert": "ca1.crt",
+            "ssl_client_cert": "client1.crt",
+            "ssl_client_key": "client1.key",
+        }
+    )
+    params_success = NoKeyErrorsDict(
+        {
+            "http_headers": dict(),
+            "urls": ["http://example.com/repo2"],
+            "target_file": success_pkg_name,
+            "ssl_ca_cert": "ca2.crt",
+            "ssl_client_cert": "client2.crt",
+            "ssl_client_key": "client2.key",
+        }
+    )
+
+    # pylint: disable-next=invalid-name
+    CFG = Mock()
+    CFG.REPOSYNC_TIMEOUT = 1
+    CFG.REPOSYNC_MINRATE = 1
+    CFG.REPOSYNC_DOWNLOAD_THREADS = 1
+
+    # pylint: disable-next=unused-argument
+    def mock_file_obj(url, filename, opts, curl, parent):
+        if filename == fail_pkg_name:
+            return None
+        return Mock()
+
+    with patch(
+        "spacewalk.satellite_tools.download.pycurl.Curl", Mock(return_value=Mock())
+    ), patch(
+        "spacewalk.satellite_tools.download.PyCurlFileObjectThread",
+        side_effect=mock_file_obj,
+    ), patch(
+        "spacewalk.satellite_tools.download.ThreadedDownloader._validate",
+        return_value=True,
+    ), patch(
+        "spacewalk.common.rhnConfig.CFG", CFG
+    ):
+        td = ThreadedDownloader(retries=0, force=True)
+        td.add(params_fail)
+        td.add(params_success)
+        td.run()
+
+        assert len(td.failed_pkgs) == 1
+        assert fail_pkg_name in td.failed_pkgs
+        assert success_pkg_name not in td.failed_pkgs
+
+
 @patch("spacewalk.satellite_tools.download.log", Mock())  # no logging
 @patch("urlgrabber.grabber.PyCurlFileObject._do_grab", Mock())  # no downloads
 @patch("urlgrabber.grabber.PyCurlFileObject.close", Mock())  # no need to close files
