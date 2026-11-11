@@ -46,16 +46,15 @@ Feature: Move a minion from a proxy to direct connection
 
   Scenario: Change from proxy to direct connection
     Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Details" in the content area
+    When I store the current last event id for "sle_minion"
+    And I follow "Details" in the content area
     And I follow "Connection" in the content area
     And I follow "Change" in the content area
     And I select "None" from "proxies"
     And I click on "Change Proxy"
     And I wait until I see "scheduled" text
-    And I follow "Events"
-    And I follow "History"
-    And I wait until I see the event "Apply states [bootstrap.set_proxy] scheduled" completed during last minute, refreshing the page
-    And I wait until I see the event "Apply states [channels] scheduled" completed during last minute, refreshing the page
+    Then I wait until a new "Apply states [bootstrap.set_proxy] scheduled" event is completed for "sle_minion"
+    And I wait until a new "Apply states [channels] scheduled" event is completed for "sle_minion"
 
   Scenario: Check direct connection
     Given I am on the Systems overview page of this "sle_minion"
@@ -64,8 +63,7 @@ Feature: Move a minion from a proxy to direct connection
     Then I should see a "This system connects directly and not through a Proxy" text
 
   Scenario: Change connection back to a proxy via SSM
-    # be sure that the old events are older than 1 minute
-    Given I wait for "120" seconds
+    Given I store the current last event id for "sle_minion"
     When I follow the left menu "Systems > System List > All"
     And I click on the clear SSM button
     And I check the "sle_minion" client
@@ -77,11 +75,8 @@ Feature: Move a minion from a proxy to direct connection
     And I wait until I see "scheduled" text
 
   Scenario: Check events on the minion
-    Given I am on the Systems overview page of this "sle_minion"
-    And I follow "Events"
-    And I follow "History"
-    And I wait until I see the event "Apply states [bootstrap.set_proxy] scheduled" completed during last minute, refreshing the page
-    And I wait until I see the event "Apply states [channels] scheduled" completed during last minute, refreshing the page
+    When I wait until a new "Apply states [bootstrap.set_proxy] scheduled" event is completed for "sle_minion"
+    And I wait until a new "Apply states [channels] scheduled" event is completed for "sle_minion"
 
   Scenario: Check registration on proxy of minion
     Given I am on the Systems overview page of this "proxy"
