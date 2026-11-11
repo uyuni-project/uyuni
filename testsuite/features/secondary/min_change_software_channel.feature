@@ -30,6 +30,9 @@ Feature: Assign child channel to a system
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
+    When I follow "scheduled" in the content area
+    And I wait until I see "1 system successfully completed this action." text, refreshing the page
+    And I am on the Systems overview page of this "sle_minion"
 
 @uyuni
   Scenario: Pre-requisite: unsubscribe from old channels
@@ -48,6 +51,9 @@ Feature: Assign child channel to a system
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
+    When I follow "scheduled" in the content area
+    And I wait until I see "1 system successfully completed this action." text, refreshing the page
+    And I am on the Systems overview page of this "sle_minion"
 
 @susemanager
   Scenario: Pre-requisite: check via API that the system is unsubscribed from old channels
