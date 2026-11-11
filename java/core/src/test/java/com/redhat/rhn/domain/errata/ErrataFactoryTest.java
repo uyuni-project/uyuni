@@ -504,8 +504,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
         // both errata share the advisory name, the lowest id wins
         assertEquals(Optional.of(vendor), ErrataFactory.lookupByAdvisoryAndChannel(vendor.getAdvisoryName(), channel));
-        assertEquals(empty(), ErrataFactory.lookupByAdvisoryAndChannel(vendor.getAdvisoryName(), other));
-        assertEquals(empty(), ErrataFactory.lookupByAdvisoryAndChannel("NOT-THERE", channel));
+        assertTrue(ErrataFactory.lookupByAdvisoryAndChannel(vendor.getAdvisoryName(), other).isEmpty());
+        assertTrue(ErrataFactory.lookupByAdvisoryAndChannel("NOT-THERE", channel).isEmpty());
     }
 
     /**
@@ -523,7 +523,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         channel.addErrata(first);
 
         assertEquals(Optional.of(first), ErrataFactory.lookupCloneInChannel(original, channel));
-        assertEquals(empty(), ErrataFactory.lookupCloneInChannel(original, other));
+        assertTrue(ErrataFactory.lookupCloneInChannel(original, other).isEmpty());
     }
 
 }
