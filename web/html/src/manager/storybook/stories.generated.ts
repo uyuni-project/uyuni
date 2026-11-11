@@ -37,6 +37,18 @@ export const components_action_ActionStatus_example_tsx = {
 };
 
 // @ts-ignore
+import components_badge_badge_example_tsx_component from "components/badge/badge.example.tsx";
+import components_badge_badge_example_tsx_raw from "components/badge/badge.example.tsx?raw";
+
+export const components_badge_badge_example_tsx = {
+  path: "components/badge/badge.example.tsx",
+  title: "badge.example.tsx",
+  groupName: "badge",
+  component: components_badge_badge_example_tsx_component,
+  raw: components_badge_badge_example_tsx_raw,
+};
+
+// @ts-ignore
 import components_datetime_DateTimePicker_example_tsx_component from "components/datetime/DateTimePicker.example.tsx";
 import components_datetime_DateTimePicker_example_tsx_raw from "components/datetime/DateTimePicker.example.tsx?raw";
 
