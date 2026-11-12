@@ -16,8 +16,8 @@ Feature: Migrate a SLES 15 SP6 Salt minion to SLES 16.1
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
-    And I wait until I see "SUSE Linux Enterprise Server 16.1 x86_64 (BETA)" text
-    And I choose "SUSE Linux Enterprise Server 16.1 x86_64 (BETA)" radio button
+    And I wait until I see "SUSE Linux Enterprise Server 16.1 x86_64" text
+    And I choose "SUSE Linux Enterprise Server 16.1 x86_64" radio button
     And I click on "Select Channels"
     When I select the channel "Custom Channel for sles161_minion"
     And I check "allowVendorChange"
