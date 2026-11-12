@@ -499,6 +499,31 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
     }
 
     /**
+     * Tests syncByCriteria by errata A when the org owns a clone of A that is missing package a2.
+     * The target channel is not a cloned channel. Errata A is found without a source channel.
+     * Expects getting the existing clone, with a1 and a2. This means a2 is added to the clone.
+     */
+    @Test
+    public void testSyncByCriteriaWhenCloneOutsideTargetMissingPackages() {
+        // Arrange
+        Errata errataAClone = createCloneErrataOf(errataA, null);
+        errataAClone.removePackage(a2);
+        Channel plain = createChannelWithPackages("plain");
+
+        // Act
+        SyncErrataWithPackagesResult result = manager.syncByCriteria(admin, plain.getLabel(),
+                List.of(errataA.getAdvisoryName()), true, false, true);
+
+        // Assert
+        assertEquals(errataAClone, getCloneOf(errataA));
+        assertEquals(Set.of(a1, a2), errataAClone.getPackages());
+        assertEquals(Set.of(a1, a2), plain.getPackages());
+        assertTrue(plain.getErratas().contains(errataAClone));
+        assertEquals(Map.of(errataAClone.getId(), ids(a1, a2)), servedByRepresentative(result));
+        assertEquals(Set.of(errataAClone), plain.getErratas());
+    }
+
+    /**
      * Tests syncByCriteria in strict mode when the advisory name is unmatched, and when the list of advisory names is
      * empty. Expects a -208 fault in the first case and an invalid parameter error in the second, and the target
      * channel unchanged: exactly X and x.
