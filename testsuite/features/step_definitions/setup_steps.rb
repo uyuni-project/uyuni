@@ -261,6 +261,33 @@ When(/^I wait (?:at most (\d+) seconds )?until onboarding is completed for "([^"
   )
 end
 
+# Transactional hosts onboard in two phases, separated by the reboot that activates the new snapshot:
+# first the refreshes, then (after the reboot) "Apply states" and fresh refreshes.
+When(/^I wait (?:at most (\d+) seconds )?until "([^"]*)" is registered and its refreshes are completed$/) do |seconds, host|
+  seconds ||= DEFAULT_TIMEOUT
+  steps %(
+    When I follow the left menu "Systems > System List > All"
+    And I wait at most #{seconds} seconds until I see the name of "#{host}", refreshing the page
+    And I follow this "#{host}" link
+    And I wait until I see "System Status" text
+  )
+  ['Hardware List Refresh', 'Package List Refresh', 'Refresh Snapshots'].each do |event|
+    step %(I wait at most #{seconds} seconds until event "#{event}" is completed)
+  end
+  step %(I store the current last event id for "#{host}")
+end
+
+When(/^I wait (?:at most (\d+) seconds )?until the registration states are applied on "([^"]*)"$/) do |seconds, host|
+  seconds ||= DEFAULT_TIMEOUT
+  steps %(
+    When I follow the left menu "Systems > System List > All"
+    And I follow this "#{host}" link
+    And I wait until I see "System Status" text
+    And I wait at most #{seconds} seconds until event "Apply states" is completed
+    And I wait until a new "Package List Refresh" event is completed for "#{host}"
+  )
+end
+
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
   command = 'spacecmd -u admin -p admin system_list'
   system_name = get_system_name(host)

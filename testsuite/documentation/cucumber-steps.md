@@ -529,6 +529,8 @@ Note that the text area variant handles the new lines characters while the other
 ```gherkin
   When I wait until onboarding is completed for "rhlike_minion"
   When I wait at most 300 seconds until onboarding is completed for "rhlike_minion"
+  When I wait until "proxy" is registered and its refreshes are completed
+  When I wait until the registration states are applied on "proxy"
   When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 ```
 
