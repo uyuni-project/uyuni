@@ -499,6 +499,21 @@ When(/^I check for failed events on history event page$/) do
   raise ScriptError, "\nFailures in event history found:\n\n#{failed_events.join("\n")}\n\n" if failed_events.any?
 end
 
+# History is sorted newest first: rows with an earlier "Product Migration" row above them predate the migration
+When(/^I check for failed events on history event page since the "([^"]*)" event$/) do |event|
+  steps '
+    When I follow "Events" in the content area
+    And I follow "History" in the content area
+    Then I should see a "System History" text
+  '
+  failed_events_xpath = "//div[@class='table-responsive']/table/tbody/tr" \
+                        "[.//*[contains(@class, 'fa-times-circle-o')]]" \
+                        "[not(preceding-sibling::tr[contains(., '#{event}')])]"
+  failed_events = all(:xpath, failed_events_xpath).map(&:text)
+
+  raise ScriptError, "\nFailures in event history found since '#{event}':\n\n#{failed_events.join("\n")}\n\n" if failed_events.any?
+end
+
 Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warning|pending|refreshing) bullet$/) do |text, bullet_type|
   item_xpath = "//ul/li[text()='#{text}']/i[contains(@class, '#{BULLET_STYLE[bullet_type]}')]"
   find(:xpath, item_xpath)

@@ -128,4 +128,4 @@ Feature: Liberate a RHEL 10 Salt minion into SUSE Liberty Linux 10
 
   Scenario: Check events history for failures on the RHEL 10 minion
     Given I am on the Systems overview page of this "rhel10_minion"
-    Then I check for failed events on history event page
+    Then I check for failed events on history event page since the "Apply highstate scheduled" event

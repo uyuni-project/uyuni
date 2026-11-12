@@ -128,4 +128,4 @@ Feature: Liberate a RHEL 8 Salt minion into SUSE Liberty Linux 8
 
   Scenario: Check events history for failures on the RHEL 8 minion
     Given I am on the Systems overview page of this "rhel8_minion"
-    Then I check for failed events on history event page
+    Then I check for failed events on history event page since the "Apply highstate scheduled" event
