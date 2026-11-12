@@ -134,6 +134,8 @@ When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)" through the interface "(
   mac = mac.tr(':', '')
   hex = (("#{mac[0..5]}fffe#{mac[6..11]}").to_i(16) ^ 0x0200000000000000).to_s(16)
   ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%#{interface}"
+  # /tmp may be cleared by a reboot, so this must run before the file injection
+  ensure_expect_on_proxy
   log "Rebooting #{ipv6}..."
   file = 'reboot-pxeboot.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
