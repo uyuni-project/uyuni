@@ -18,8 +18,6 @@ package com.suse.manager.webui.controllers.appstreams.response;
 
 import java.util.Objects;
 
-import jakarta.persistence.Tuple;
-
 
 /**
  * A response model (DTO) representing an AppStream module in the SSM context.
@@ -30,22 +28,16 @@ public class SsmAppStreamModuleResponse {
     private int systemCount;
 
     /**
-     * Constructs an SsmAppStreamModuleResponse from a JPA {@link Tuple}.
-     * <p>
-     * The tuple is expected to contain the following aliases:
-     * <ul>
-     * <li>{@code name} (String) - The name of the module.</li>
-     * <li>{@code stream} (String) - The module's stream.</li>
-     * <li>{@code systemCount} (Number) - The count of associated systems.</li>
-     * </ul>
+     * Constructor.
      *
-     * @param tuple the JPA Tuple containing the query result data.
+     * @param nameIn the module name
+     * @param streamIn the module stream
+     * @param systemCountIn the number of SSM systems with this module stream enabled
      */
-    public SsmAppStreamModuleResponse(Tuple tuple) {
-        this.name = tuple.get("name", String.class);
-        this.stream = tuple.get("stream", String.class);
-        Number count = tuple.get("systemCount", Number.class);
-        this.systemCount = (count != null) ? count.intValue() : 0;
+    public SsmAppStreamModuleResponse(String nameIn, String streamIn, int systemCountIn) {
+        name = nameIn;
+        stream = streamIn;
+        systemCount = systemCountIn;
     }
 
     public String getName() {

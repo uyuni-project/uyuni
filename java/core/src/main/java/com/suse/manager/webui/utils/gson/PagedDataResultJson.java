@@ -17,8 +17,6 @@
 
 package com.suse.manager.webui.utils.gson;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -35,16 +33,6 @@ public class PagedDataResultJson<T, K> {
     private final long total;
 
     private final Set<K> selectedIds;
-
-    /**
-     * Create an instance from a {@link DataResult}
-     *
-     * @param data the current page of data
-     * @param selectedIdsIn list of SSM selected items
-     */
-    public PagedDataResultJson(DataResult<T> data, Set<K> selectedIdsIn) {
-        this(data, data.getTotalSize(), selectedIdsIn);
-    }
 
     /**
      * Create an instance from a list and the total number of items

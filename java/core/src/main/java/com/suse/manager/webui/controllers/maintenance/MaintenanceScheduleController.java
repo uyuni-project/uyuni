@@ -315,7 +315,7 @@ public class MaintenanceScheduleController {
         }
 
         systems = pageHelper.processPageControl(systems, new HashMap<>());
-        return json(response, new PagedDataResultJson<>(systems, null), new TypeToken<>() { });
+        return json(response, new PagedDataResultJson<>(systems, systems.getTotalSize(), null), new TypeToken<>() { });
     }
 
     private class SystemAssignmentRequest {

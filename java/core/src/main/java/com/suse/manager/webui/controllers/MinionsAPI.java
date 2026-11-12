@@ -515,7 +515,8 @@ public class MinionsAPI {
         }
 
         Set<String> selectedItems = getSessionSet(request, server, SetLabels.PTF_LIST_REMOVE);
-        return json(response, new PagedDataResultJson<>(resultList, selectedItems), new TypeToken<>() { });
+        return json(response, new PagedDataResultJson<>(resultList, resultList.getTotalSize(), selectedItems),
+                new TypeToken<>() { });
     }
 
     /**
@@ -544,7 +545,8 @@ public class MinionsAPI {
         }
 
         Set<String> selectedItems = getSessionSet(request, server, SetLabels.PTF_INSTALL);
-        return json(response, new PagedDataResultJson<>(resultList, selectedItems), new TypeToken<>() { });
+        return json(response, new PagedDataResultJson<>(resultList, resultList.getTotalSize(), selectedItems),
+                new TypeToken<>() { });
     }
 
     /**
