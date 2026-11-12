@@ -4,10 +4,14 @@
 # This feature can cause server stop that would prevent running the following features.
 # This feature can cause the server to stop and prevent it from starting. That would block all the following features.
 # This feature must NOT run in parallel because it restarts the server and that would break other features running at the same time.
+#
+# Workaround: @skip_if_rke2 because the RKE2 server is a pod, without the systemd units and podman container this feature uses.
+# https://github.com/SUSE/spacewalk/issues/32668 Remove the tag once the feature supports RKE2.
 
 @scope_diskcheck
 @containerized_server
 @skip_if_github_validation
+@skip_if_rke2
 Feature: Space monitoring via Diskcheck
   In order to be warned before the server runs out of disk space
   As an administrator

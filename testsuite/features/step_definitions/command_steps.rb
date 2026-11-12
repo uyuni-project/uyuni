@@ -704,27 +704,46 @@ end
 
 When(/^the server starts mocking an IPMI host$/) do
   server = get_target('server')
-  server.run_local('podman run -d --rm --network uyuni -p [::]:623:623/udp -p [::]:9002:9002 --name fakeipmi ghcr.io/uyuni-project/uyuni/ci-fakeipmi:master', verbose: true, check_errors: true)
+  if $is_rke2
+    manifest = File.read(File.join(__dir__, '..', 'upload_files', 'fakeipmi.yaml'))
+    server.run_local("kubectl apply -n uyuni -f - <<'MANIFEST_EOF'\n#{manifest}\nMANIFEST_EOF", verbose: true, check_errors: true)
+    wait_for_deployment('server', 'fakeipmi', 'uyuni', 5)
+  else
+    server.run_local('podman run -d --rm --network uyuni -p [::]:623:623/udp -p [::]:9002:9002 --name fakeipmi ghcr.io/uyuni-project/uyuni/ci-fakeipmi:master', verbose: true, check_errors: true)
+  end
 end
 
 When(/^the server stops mocking an IPMI host$/) do
-  get_target('server').run_local('podman kill fakeipmi')
+  server = get_target('server')
+  if $is_rke2
+    server.run_local('kubectl delete -n uyuni deployment/fakeipmi service/fakeipmi --ignore-not-found')
+  else
+    server.run_local('podman kill fakeipmi')
+  end
 end
 
 When(/^the controller starts mocking a Redfish host$/) do
   # We need the controller hostname to generate its SSL certificate
   hostname = `hostname -f`.strip
 
-  if running_k3s?
+  if running_k3s? || running_rke2?
     # On kubernetes, the server has no clue about certificates
     crt_path, key_path, _ca_path = generate_certificate('controller', hostname)
+    # generate_certificate leaves the files on the server host, so download them from there, not from a container
+    server_fqdn = get_target('server').full_hostname
+    scp_download_command(key_path, '/root/controller.key', server_fqdn, port: HOST_SSH_PORT)
+    scp_download_command(crt_path, '/root/controller.crt', server_fqdn, port: HOST_SSH_PORT)
+    # scp_download_command swallows connection errors, so check that the files arrived
+    %w[/root/controller.key /root/controller.crt].each do |file|
+      raise ScriptError, "Failed to download #{file} from the server host #{server_fqdn}" unless File.file?(file)
+    end
   else
     get_target('server').run("mgr-ssl-tool --gen-server -d /root/ssl-build -p spacewalk --set-hostname #{hostname} --server-cert=controller.crt --server-key=controller.key")
     key_path, _err = get_target('server').run('ls /root/ssl-build/*/controller.key')
     crt_path, _err = get_target('server').run('ls /root/ssl-build/*/controller.crt')
+    file_extract(get_target('server'), key_path.strip, '/root/controller.key')
+    file_extract(get_target('server'), crt_path.strip, '/root/controller.crt')
   end
-  file_extract(get_target('server'), key_path.strip, '/root/controller.key')
-  file_extract(get_target('server'), crt_path.strip, '/root/controller.crt')
 
   data_dir = "#{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/data/public-catfish"
   log_file = '/tmp/redfish_mockup_server.log'
