@@ -8,8 +8,9 @@ Feature: Migrate a SLES 15 SP6 Salt minion to SLES 16.1
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Prerequisite: update OS zypper to the latest version
+  Scenario: Prerequisite: update zypper and venv-salt-minion to the latest version
     When I upgrade "zypper" on "sles15sp6_minion" using the API
+    And I upgrade "venv-salt-minion" on "sles15sp6_minion" using the API if needed
 
   Scenario: Migrate this minion to SLES 16.1
     Given I am on the Systems overview page of this "sles15sp6_minion"

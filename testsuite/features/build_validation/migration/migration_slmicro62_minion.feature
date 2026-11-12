@@ -8,8 +8,9 @@ Feature: Migrate a SL Micro 6.2 Salt minion to SLES 16.1
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Prerequisite: update OS zypper to the latest version
+  Scenario: Prerequisite: update zypper and venv-salt-minion to the latest version
     When I upgrade "zypper" on "slmicro62_minion" using the API
+    And I upgrade "venv-salt-minion" on "slmicro62_minion" using the API if needed
 
   Scenario: Prerequisite: Reboot the SLE Micro 6.2 Salt minion after updating zypper
     When I reboot the "slmicro62_minion" host through SSH, waiting until it comes back

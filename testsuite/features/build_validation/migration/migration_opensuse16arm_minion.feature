@@ -7,8 +7,9 @@ Feature: Migrate an OpenSUSE Leap 16.1 aarch64 Salt minion to SLE 16.1
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Prerequisite: update OS zypper to the latest version
+  Scenario: Prerequisite: update zypper and venv-salt-minion to the latest version
     When I upgrade "zypper" on "opensuse161arm_minion" using the API
+    And I upgrade "venv-salt-minion" on "opensuse161arm_minion" using the API if needed
 
   Scenario: Migrate this minion to SLE 16.1
     Given I am on the Systems overview page of this "opensuse161arm_minion"
