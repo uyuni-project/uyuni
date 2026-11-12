@@ -9788,7 +9788,7 @@ public class SystemHandler extends BaseHandler {
     @ReadOnly
     public Map<String, Object> getPillar(User loggedInUser, Integer systemId, String category) {
         Optional<MinionServer> opt = MinionServerFactory.lookupById(systemId.longValue());
-        if (!opt.isPresent()) {
+        if (!opt.map(s -> SystemManager.isAvailableToUser(loggedInUser, s.getId())).orElse(false)) {
             throw new NoSuchSystemException();
         }
         return opt.get().getPillarByCategory(category)
@@ -9813,7 +9813,7 @@ public class SystemHandler extends BaseHandler {
     @ReadOnly
     public Map<String, Object> getPillar(User loggedInUser, String minionId, String category) {
         Optional<MinionServer> opt = MinionServerFactory.findByMinionId(minionId);
-        if (!opt.isPresent()) {
+        if (!opt.map(s -> SystemManager.isAvailableToUser(loggedInUser, s.getId())).orElse(false)) {
             throw new NoSuchSystemException();
         }
         return opt.get().getPillarByCategory(category)
@@ -9837,6 +9837,9 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setPillar(User loggedInUser, Integer systemId, String category, Map<String, Object> pillarData) {
+        if (!SystemManager.isAvailableToUser(loggedInUser, systemId.longValue())) {
+            throw new NoSuchSystemException();
+        }
         Optional<MinionServer> opt = MinionServerFactory.lookupById(systemId.longValue());
         if (!opt.isPresent()) {
             throw new NoSuchSystemException();
@@ -9869,7 +9872,7 @@ public class SystemHandler extends BaseHandler {
      */
     public int setPillar(User loggedInUser, String minionId, String category, Map<String, Object> pillarData) {
         Optional<MinionServer> opt = MinionServerFactory.findByMinionId(minionId);
-        if (!opt.isPresent()) {
+        if (!opt.map(s -> SystemManager.isAvailableToUser(loggedInUser, s.getId())).orElse(false)) {
             throw new NoSuchSystemException();
         }
         MinionServer minion = opt.get();
