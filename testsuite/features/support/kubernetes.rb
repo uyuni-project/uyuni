@@ -99,6 +99,24 @@ def get_tftp_node_port(target)
   port
 end
 
+# Returns the port where the ReportDB is reachable from outside the server.
+# On RKE2 the reportdb service is a NodePort: a Traefik route would hide the
+# client IP from PostgreSQL (bsc#1270038), so nothing serves the ReportDB on 5432.
+#
+# @return [Integer] The external ReportDB port.
+def reportdb_external_port
+  return 5432 unless $is_rke2
+
+  cmd = "kubectl get svc reportdb -n uyuni -o jsonpath='{.spec.ports[0].nodePort}'"
+  out, code = get_target('server').run_local(cmd)
+  raise 'Failed to query ReportDB NodePort' unless code.zero?
+
+  port = out.strip.to_i
+  raise 'ReportDB service has no NodePort assigned (expected services.reportdb.type: NodePort)' if port.zero?
+
+  port
+end
+
 # Polls the Kubernetes Deployment status until all replicas are ready or a timeout is reached.
 #
 # @param target [String] The target host where the kubectl command will be run.
