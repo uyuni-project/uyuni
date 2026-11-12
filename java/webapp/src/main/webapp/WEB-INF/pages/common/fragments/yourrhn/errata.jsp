@@ -41,7 +41,7 @@ SPDX-License-Identifier: GPL-2.0-only
     </rhn:column>
 
     <rhn:column header="erratalist.jsp.updated" style="text-align: center;">
-      ${current.updateDate}
+      ${current.updateDateIsoFormat}
     </rhn:column>
 
   </rhn:listdisplay>
