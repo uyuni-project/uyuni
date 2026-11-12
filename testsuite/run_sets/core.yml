@@ -17,6 +17,7 @@
 - features/core/srv_disable_local_repos_off.feature
 - features/core/srv_organization_credentials.feature
 - features/core/srv_user_preferences.feature
+- features/core/srv_disable_scheduled_config_comparison.feature
 - features/core/srv_osimage.feature
 - features/core/srv_docker.feature
 

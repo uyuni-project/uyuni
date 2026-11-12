@@ -16,6 +16,9 @@
 
 - features/build_validation/core/srv_user_preferences.feature
 
+# the nightly configuration comparison fails on busy minions and pollutes the event history checks
+- features/build_validation/core/srv_disable_scheduled_config_comparison.feature
+
 # configuration channel and configuration file for smoke tests
 - features/build_validation/core/srv_add_configuration_channel_and_file.feature
 
