@@ -121,7 +121,7 @@ class RecurringActionsList extends Component<Props, State> {
   render() {
     const { isFilteredList } = this.props;
     const isClm = window.entityType === "CLM";
-    const disableCreate = !isFilteredList || isClm;
+    const disableCreate = !isFilteredList;
     const emptyListText = isClm
       ? "No recurring actions configured for Content Lifecycle."
       : `No schedules created.${disableCreate ? "" : " Use Create to add a schedule."}`;
@@ -245,7 +245,7 @@ class RecurringActionsList extends Component<Props, State> {
                 <Button
                   className="btn-default btn-sm"
                   title={t("Edit")}
-                  disabled={isReadOnly(row) || isClm}
+                  disabled={isReadOnly(row)}
                   icon="fa-edit"
                   handler={() => {
                     this.props.onEdit(row);

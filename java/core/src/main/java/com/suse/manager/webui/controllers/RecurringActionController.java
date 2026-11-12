@@ -39,11 +39,15 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.ScapPolicy;
 import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
@@ -53,6 +57,7 @@ import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.manager.recurringactions.StateConfigFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -91,6 +96,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.PersistenceException;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -130,6 +136,8 @@ public class RecurringActionController {
         get("/manager/api/recurringactions", asJson(withUser(RecurringActionController::listAll)));
         get("/manager/api/recurringactions/targets/:type/:id", asJson(withUser(RecurringActionController::getTargets)));
         get("/manager/api/recurringactions/:id/details", asJson(withUser(RecurringActionController::getDetails)));
+        get("/manager/api/recurringactions/clm/projects",
+                asJson(withUser(RecurringActionController::getClmProjects)));
         get("/manager/api/recurringactions/:type/:id", asJson(withUser(RecurringActionController::listByEntity)));
         get("/manager/api/recurringactions/states", asJson(withUser(RecurringActionController::getStatesConfig)));
         get("/manager/api/recurringactions/policies", asJson(withUser(RecurringActionController::listScapPolicies)));
@@ -360,6 +368,24 @@ public class RecurringActionController {
             dto.setExtraVars(HibernateFactory.getByteArrayContents(
                     ((RecurringPlaybook) action.getRecurringActionType()).getExtraVars()));
         }
+        else if (RecurringActionType.ActionType.CLM_BUILD.equals(action.getActionType())) {
+            RecurringContentBuildType buildType = (RecurringContentBuildType) action.getRecurringActionType();
+            if (buildType.getProject() != null) {
+                dto.setProjectLabel(buildType.getProject().getLabel());
+                dto.setProjectName(buildType.getProject().getName());
+            }
+        }
+        else if (RecurringActionType.ActionType.CLM_PROMOTE.equals(action.getActionType())) {
+            RecurringContentPromoteType promoteType = (RecurringContentPromoteType) action.getRecurringActionType();
+            if (promoteType.getProject() != null) {
+                dto.setProjectLabel(promoteType.getProject().getLabel());
+                dto.setProjectName(promoteType.getProject().getName());
+            }
+            if (promoteType.getEnvironment() != null) {
+                dto.setEnvironmentLabel(promoteType.getEnvironment().getLabel());
+                dto.setEnvironmentName(promoteType.getEnvironment().getName());
+            }
+        }
         return dto;
     }
     /**
@@ -454,10 +480,17 @@ public class RecurringActionController {
             HibernateFactory.getSession().detach(action);
             mapJsonToAction(json, action);
             RecurringActionManager.saveAndSchedule(action, user);
+            HibernateFactory.getSession().flush();
         }
         catch (ValidatorException e) {
             errors.add(e.getMessage()); // we assume the messages are already localized
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(e.getMessage())));
+        }
+        catch (PersistenceException e) {
+            LOG.warn("Constraint violation while saving recurring action", e);
+            HibernateFactory.rollbackTransaction();
+            String errMsg = LocalizationService.getInstance().getMessage("recurring_action.action_name_exists");
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(errMsg)));
         }
         catch (TaskomaticApiException e) {
             LOG.error("Rolling back transaction because of Taskomatic exception", e);
@@ -520,8 +553,17 @@ public class RecurringActionController {
 
     private static RecurringAction createOrGetAction(User user, RecurringActionScheduleJson json) {
         if (json.getRecurringActionId() == null) {
-            RecurringAction.TargetType type = RecurringAction.TargetType.valueOf(json.getTargetType().toUpperCase());
-            return RecurringActionManager.createRecurringAction(type, json.getActionType(), json.getTargetId(), user);
+            String typeStr = json.getTargetType();
+            RecurringAction.TargetType type;
+            if ("CLM".equalsIgnoreCase(typeStr) || "NO-ENTITY".equalsIgnoreCase(typeStr)) {
+                type = RecurringAction.TargetType.NO_ENTITY;
+            }
+            else {
+                type = RecurringAction.TargetType.valueOf(typeStr.replace("-", "_").toUpperCase());
+            }
+            long targetId = json.getTargetId() != null && json.getTargetId() != 0 ?
+                    json.getTargetId() : user.getOrg().getId();
+            return RecurringActionManager.createRecurringAction(type, json.getActionType(), targetId, user);
         }
         else {
             return RecurringActionFactory.lookupById(json.getRecurringActionId()).orElseThrow();
@@ -625,6 +667,12 @@ public class RecurringActionController {
         else if (action.getRecurringActionType() instanceof RecurringPlaybook playbookType) {
             setPlaybookDetails(playbookType, details);
         }
+        else if (action.getRecurringActionType() instanceof RecurringContentBuildType buildType) {
+            setClmBuildDetails(buildType, details, action.getCreator());
+        }
+        else if (action.getRecurringActionType() instanceof RecurringContentPromoteType promoteType) {
+            setClmPromoteDetails(promoteType, details, action.getCreator());
+        }
 
         String cron = json.getCron();
         if (StringUtils.isBlank(cron)) {
@@ -633,5 +681,67 @@ public class RecurringActionController {
                     .getCronEntry();
         }
         action.setCronExpr(cron);
+    }
+
+    private static void setClmBuildDetails(RecurringContentBuildType buildType,
+                                           RecurringActionDetailsDto details, User user) {
+        String projectLabel = details.getProjectLabel();
+        if (StringUtils.isBlank(projectLabel)) {
+            throw new ValidatorException(LocalizationService.getInstance()
+                    .getMessage("recurring_action.empty_clm_project"));
+        }
+        ContentProject project = ContentManager.lookupProject(projectLabel, user)
+                .orElseThrow(() -> new ValidatorException("Project not found: " + projectLabel));
+        buildType.setProject(project);
+    }
+
+    private static void setClmPromoteDetails(RecurringContentPromoteType promoteType,
+                                             RecurringActionDetailsDto details, User user) {
+        String projectLabel = details.getProjectLabel();
+        if (StringUtils.isBlank(projectLabel)) {
+            throw new ValidatorException(LocalizationService.getInstance()
+                    .getMessage("recurring_action.empty_clm_project"));
+        }
+        String envLabel = details.getEnvironmentLabel();
+        if (StringUtils.isBlank(envLabel)) {
+            throw new ValidatorException(LocalizationService.getInstance()
+                    .getMessage("recurring_action.empty_clm_environment"));
+        }
+        ContentProject project = ContentManager.lookupProject(projectLabel, user)
+                .orElseThrow(() -> new ValidatorException("Project not found: " + projectLabel));
+        ContentEnvironment env = ContentManager.lookupEnvironment(envLabel, projectLabel, user)
+                .orElseThrow(() -> new ValidatorException("Environment not found: " + envLabel));
+        promoteType.setProject(project);
+        promoteType.setEnvironment(env);
+    }
+
+    /**
+     * Get a list of all CLM projects and their environments for the user
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return JSON result of the API call
+     */
+    public static String getClmProjects(Request request, Response response, User user) {
+        List<ContentProject> projects = ContentManager.listProjects(user);
+        List<Map<String, Object>> result = projects.stream().map(project -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", project.getId());
+            map.put("label", project.getLabel());
+            map.put("name", project.getName());
+            List<ContentEnvironment> envs = ContentManager.listProjectEnvironments(project.getLabel(), user);
+            List<Map<String, Object>> envList = envs.stream().map(env -> {
+                Map<String, Object> envMap = new HashMap<>();
+                envMap.put("id", env.getId());
+                envMap.put("label", env.getLabel());
+                envMap.put("name", env.getName());
+                return envMap;
+            }).collect(Collectors.toList());
+            map.put("environments", envList);
+            return map;
+        }).collect(Collectors.toList());
+
+        return json(response, result, new TypeToken<>() { });
     }
 }

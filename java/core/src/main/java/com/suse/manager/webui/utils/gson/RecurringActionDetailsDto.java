@@ -58,6 +58,18 @@ public class RecurringActionDetailsDto {
     /** The policies assigned to a scap policy schedule */
     private Set<ScapPolicyJson> policies;
 
+    /** Target Content Project label for CLM actions */
+    private String projectLabel;
+
+    /** Target Content Project name for CLM actions */
+    private String projectName;
+
+    /** Target Content Environment label for CLM promote actions */
+    private String environmentLabel;
+
+    /** Target Content Environment name for CLM promote actions */
+    private String environmentName;
+
     /**
      * @return the Array containing Quartz information
      */
@@ -259,5 +271,61 @@ public class RecurringActionDetailsDto {
      */
     public void setPolicies(Set<ScapPolicyJson> policiesIn) {
         this.policies = policiesIn;
+    }
+
+    /**
+     * @return the project label
+     */
+    public String getProjectLabel() {
+        return projectLabel;
+    }
+
+    /**
+     * @param projectLabelIn the project label
+     */
+    public void setProjectLabel(String projectLabelIn) {
+        this.projectLabel = projectLabelIn;
+    }
+
+    /**
+     * @return the project name
+     */
+    public String getProjectName() {
+        return projectName;
+    }
+
+    /**
+     * @param projectNameIn the project name
+     */
+    public void setProjectName(String projectNameIn) {
+        this.projectName = projectNameIn;
+    }
+
+    /**
+     * @return the environment label
+     */
+    public String getEnvironmentLabel() {
+        return environmentLabel;
+    }
+
+    /**
+     * @param environmentLabelIn the environment label
+     */
+    public void setEnvironmentLabel(String environmentLabelIn) {
+        this.environmentLabel = environmentLabelIn;
+    }
+
+    /**
+     * @return the environment name
+     */
+    public String getEnvironmentName() {
+        return environmentName;
+    }
+
+    /**
+     * @param environmentNameIn the environment name
+     */
+    public void setEnvironmentName(String environmentNameIn) {
+        this.environmentName = environmentNameIn;
     }
 }
