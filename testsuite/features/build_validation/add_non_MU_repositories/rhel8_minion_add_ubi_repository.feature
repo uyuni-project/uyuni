@@ -14,7 +14,7 @@ Feature: Add the RHEL 8 base OS custom repositories
     And I enter "rhel8-ubi-8" as "Channel Label"
     And I select the parent channel for the "rhel8_minion" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
-    And I enter "https://www.redhat.com/security/data/fd431d51.txt" as "GPG key URL"
+    And I enter the URL of the "redhat-release-gpg-pubkey-199E2F91FD431D51.key" key provided by the server as "GPG key URL"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for RHEL 8 base OS packages created" text
 

@@ -1275,6 +1275,10 @@ When(/^I enter the "([^"]*)" hostname as the Prometheus URL$/) do |host|
   step %(I enter "http://#{node.full_hostname}:9090" as "Prometheus URL")
 end
 
+When(/^I enter the URL of the "([^"]*)" key provided by the server as "([^"]*)"$/) do |key, field|
+  fill_in(field, with: "https://#{get_target('server').full_hostname}/pub/#{key}", fill_options: { clear: :backspace })
+end
+
 When(/^I select the next maintenance window$/) do
   find(:xpath, '//select[@id=\'maintenance-window-select\']/option', match: :first).select_option
 end
