@@ -692,6 +692,14 @@ public class RecurringActionController {
         }
         ContentProject project = ContentManager.lookupProject(projectLabel, user)
                 .orElseThrow(() -> new ValidatorException("Project not found: " + projectLabel));
+        if (project.getFirstEnvironmentOpt().isEmpty()) {
+            throw new ValidatorException(LocalizationService.getInstance()
+                    .getMessage("recurring_action.clm_project_no_environments", projectLabel));
+        }
+        if (project.lookupSwSourceLeader().isEmpty()) {
+            throw new ValidatorException(LocalizationService.getInstance()
+                    .getMessage("recurring_action.clm_project_no_base_channel", projectLabel));
+        }
         buildType.setProject(project);
     }
 
@@ -711,6 +719,10 @@ public class RecurringActionController {
                 .orElseThrow(() -> new ValidatorException("Project not found: " + projectLabel));
         ContentEnvironment env = ContentManager.lookupEnvironment(envLabel, projectLabel, user)
                 .orElseThrow(() -> new ValidatorException("Environment not found: " + envLabel));
+        if (env.getNextEnvironmentOpt().isEmpty()) {
+            throw new ValidatorException(LocalizationService.getInstance()
+                    .getMessage("recurring_action.clm_environment_no_successor", envLabel));
+        }
         promoteType.setProject(project);
         promoteType.setEnvironment(env);
     }
@@ -730,12 +742,16 @@ public class RecurringActionController {
             map.put("id", project.getId());
             map.put("label", project.getLabel());
             map.put("name", project.getName());
+            map.put("hasBaseChannel", project.lookupSwSourceLeader().isPresent());
             List<ContentEnvironment> envs = ContentManager.listProjectEnvironments(project.getLabel(), user);
+            map.put("hasEnvironments", !envs.isEmpty());
             List<Map<String, Object>> envList = envs.stream().map(env -> {
                 Map<String, Object> envMap = new HashMap<>();
                 envMap.put("id", env.getId());
                 envMap.put("label", env.getLabel());
                 envMap.put("name", env.getName());
+                envMap.put("hasSuccessor", env.getNextEnvironmentOpt().isPresent());
+                env.getNextEnvironmentOpt().ifPresent(next -> envMap.put("successorName", next.getName()));
                 return envMap;
             }).collect(Collectors.toList());
             map.put("environments", envList);

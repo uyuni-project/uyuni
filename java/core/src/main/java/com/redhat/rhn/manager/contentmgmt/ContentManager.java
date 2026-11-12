@@ -368,8 +368,12 @@ public class ContentManager {
         ensureOrgAdmin(user);
         return lookupEnvironment(envLabel, projectLabel, user)
                 .map(env -> {
+                    ContentProject project = env.getContentProject();
                     removeRecurringActionsForEnvironment(env, user);
                     ContentProjectFactory.removeEnvironment(env);
+                    if (project.getFirstEnvironmentOpt().isEmpty()) {
+                        removeRecurringActionsForProject(project, user);
+                    }
                     return 1;
                 })
                 .orElseThrow(() -> new EntityNotExistsException(envLabel));
