@@ -8,12 +8,16 @@ type ClmEnvironment = {
   id: number;
   label: string;
   name: string;
+  hasSuccessor: boolean;
+  successorName?: string;
 };
 
 type ClmProject = {
   id: number;
   label: string;
   name: string;
+  hasBaseChannel: boolean;
+  hasEnvironments: boolean;
   environments: ClmEnvironment[];
 };
 
@@ -78,9 +82,9 @@ class RecurringClmPicker extends Component<Props, State> {
     const selectedProject = this.state.projects.find((p) => p.label === projectLabel);
     let environmentLabel = "";
 
-    if (this.props.actionType === "CLM_PROMOTE" && selectedProject?.environments?.length) {
-      // Default to first environment or reset
-      environmentLabel = selectedProject.environments[0].label;
+    if (this.props.actionType === "CLM_PROMOTE" && selectedProject?.environments) {
+      const promotable = selectedProject.environments.filter((env) => env.hasSuccessor);
+      environmentLabel = promotable.length ? promotable[0].label : "";
     }
 
     this.setState({
@@ -102,7 +106,7 @@ class RecurringClmPicker extends Component<Props, State> {
     const { projects, selectedProjectLabel, selectedEnvironmentLabel, loading } = this.state;
     const isPromote = actionType === "CLM_PROMOTE";
     const selectedProject = projects.find((p) => p.label === selectedProjectLabel);
-    const environments = selectedProject?.environments || [];
+    const promotableEnvironments = (selectedProject?.environments || []).filter((env) => env.hasSuccessor);
 
     return (
       <div className="form-horizontal">
@@ -116,11 +120,32 @@ class RecurringClmPicker extends Component<Props, State> {
               disabled={disabled || loading}
             >
               <option value="">{loading ? t("Loading projects...") : t("-- Select a Project --")}</option>
-              {projects.map((p) => (
-                <option key={p.label} value={p.label}>
-                  {p.name} ({p.label})
-                </option>
-              ))}
+              {projects.map((p) => {
+                let statusSuffix = "";
+                let isSelectable = true;
+
+                if (isPromote) {
+                  const hasPromotable = p.environments.some((e) => e.hasSuccessor);
+                  if (!hasPromotable) {
+                    statusSuffix = ` (${t("no promotable environments")})`;
+                    isSelectable = false;
+                  }
+                } else {
+                  if (!p.hasBaseChannel) {
+                    statusSuffix = ` (${t("no base channel")})`;
+                    isSelectable = false;
+                  } else if (!p.hasEnvironments) {
+                    statusSuffix = ` (${t("no environments")})`;
+                    isSelectable = false;
+                  }
+                }
+
+                return (
+                  <option key={p.label} value={p.label} disabled={!isSelectable && !disabled}>
+                    {p.name} ({p.label}){statusSuffix}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </FormGroup>
@@ -133,15 +158,20 @@ class RecurringClmPicker extends Component<Props, State> {
                 className="form-control"
                 value={selectedEnvironmentLabel}
                 onChange={this.handleEnvironmentChange}
-                disabled={disabled || loading || !selectedProjectLabel}
+                disabled={disabled || loading || !selectedProjectLabel || !promotableEnvironments.length}
               >
                 <option value="">{t("-- Select an Environment --")}</option>
-                {environments.map((env) => (
+                {promotableEnvironments.map((env) => (
                   <option key={env.label} value={env.label}>
-                    {env.name} ({env.label})
+                    {env.name} ({env.label}){env.successorName ? ` \u2192 ${env.successorName}` : ""}
                   </option>
                 ))}
               </select>
+              {selectedProjectLabel && !promotableEnvironments.length && (
+                <span className="help-block text-warning">
+                  {t("This project has no promotable environments (requires at least 2 lifecycle stages).")}
+                </span>
+              )}
             </div>
           </FormGroup>
         )}

@@ -93,6 +93,16 @@ public class RecurringActionJob extends RhnJavaJob {
         if (actionType instanceof RecurringContentBuildType buildType) {
             ContentProject project = buildType.getProject();
             if (project != null) {
+                if (project.getFirstEnvironmentOpt().isEmpty()) {
+                    log.warn("Skipping recurring CLM build for project '{}': " +
+                            "project has no environments configured.", project.getLabel());
+                    return;
+                }
+                if (project.lookupSwSourceLeader().isEmpty()) {
+                    log.warn("Skipping recurring CLM build for project '{}': " +
+                            "project has no base channel associated with it.", project.getLabel());
+                    return;
+                }
                 ContentManager contentManager = new ContentManager();
                 try {
                     contentManager.buildProject(project,
@@ -100,7 +110,13 @@ public class RecurringActionJob extends RhnJavaJob {
                             true, action.getCreator());
                 }
                 catch (Exception e) {
-                    log.error("Error executing recurring CLM build for project {}", project.getLabel(), e);
+                    if (e.getMessage() != null && e.getMessage().contains("already in progress")) {
+                        log.info("Build/Promote already in progress for project '{}', skipping this run.",
+                                project.getLabel());
+                    }
+                    else {
+                        log.error("Error executing recurring CLM build for project {}", project.getLabel(), e);
+                    }
                 }
             }
             else {
@@ -113,13 +129,24 @@ public class RecurringActionJob extends RhnJavaJob {
             ContentProject project = promoteType.getProject();
             ContentEnvironment env = promoteType.getEnvironment();
             if (project != null && env != null) {
+                if (env.getNextEnvironmentOpt().isEmpty()) {
+                    log.warn("Skipping recurring CLM promote for project '{}': " +
+                            "environment '{}' has no successor.", project.getLabel(), env.getLabel());
+                    return;
+                }
                 ContentManager contentManager = new ContentManager();
                 try {
                     contentManager.promoteProject(project.getLabel(), env.getLabel(), true, action.getCreator());
                 }
                 catch (Exception e) {
-                    log.error("Error executing recurring CLM promote for project {} and env {}",
-                            project.getLabel(), env.getLabel(), e);
+                    if (e.getMessage() != null && e.getMessage().contains("already in progress")) {
+                        log.info("Build/Promote already in progress for project '{}' and env '{}', skipping this run.",
+                                project.getLabel(), env.getLabel());
+                    }
+                    else {
+                        log.error("Error executing recurring CLM promote for project {} and env {}",
+                                project.getLabel(), env.getLabel(), e);
+                    }
                 }
             }
             else {

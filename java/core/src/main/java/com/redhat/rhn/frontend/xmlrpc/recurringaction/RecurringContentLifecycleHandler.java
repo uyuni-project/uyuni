@@ -68,6 +68,14 @@ public class RecurringContentLifecycleHandler extends BaseHandler {
         String projectLabel = (String) actionProps.get("project_label");
         ContentProject project = ContentManager.lookupProject(projectLabel, loggedInUser)
                 .orElseThrow(() -> new EntityNotExistsFaultException("Project not found: " + projectLabel));
+        if (project.getFirstEnvironmentOpt().isEmpty()) {
+            throw new InvalidArgsException("Cannot schedule recurring build for project '" + projectLabel +
+                    "': project has no environments configured.");
+        }
+        if (project.lookupSwSourceLeader().isEmpty()) {
+            throw new InvalidArgsException("Cannot schedule recurring build for project '" + projectLabel +
+                    "': project has no base channel associated with it.");
+        }
 
         Map<String, Object> props = new HashMap<>(actionProps);
         props.put("entity_type", "NO_ENTITY");
@@ -110,6 +118,14 @@ public class RecurringContentLifecycleHandler extends BaseHandler {
             String projectLabel = (String) actionProps.get("project_label");
             ContentProject project = ContentManager.lookupProject(projectLabel, loggedInUser)
                     .orElseThrow(() -> new EntityNotExistsFaultException("Project not found: " + projectLabel));
+            if (project.getFirstEnvironmentOpt().isEmpty()) {
+                throw new InvalidArgsException("Cannot schedule recurring build for project '" + projectLabel +
+                        "': project has no environments configured.");
+            }
+            if (project.lookupSwSourceLeader().isEmpty()) {
+                throw new InvalidArgsException("Cannot schedule recurring build for project '" + projectLabel +
+                        "': project has no base channel associated with it.");
+            }
             buildType.setProject(project);
         }
         return actionHandler.save(loggedInUser, action);
@@ -148,6 +164,10 @@ public class RecurringContentLifecycleHandler extends BaseHandler {
                 .orElseThrow(() -> new EntityNotExistsFaultException("Project not found: " + projectLabel));
         ContentEnvironment env = ContentManager.lookupEnvironment(envLabel, projectLabel, loggedInUser)
                 .orElseThrow(() -> new EntityNotExistsFaultException("Environment not found: " + envLabel));
+        if (env.getNextEnvironmentOpt().isEmpty()) {
+            throw new InvalidArgsException("Environment '" + envLabel +
+                    "' is the last environment in the project lifecycle and cannot be promoted.");
+        }
 
         Map<String, Object> props = new HashMap<>(actionProps);
         props.put("entity_type", "NO_ENTITY");
@@ -199,6 +219,10 @@ public class RecurringContentLifecycleHandler extends BaseHandler {
             String projectLabel = promoteType.getProject().getLabel();
             ContentEnvironment env = ContentManager.lookupEnvironment(envLabel, projectLabel, loggedInUser)
                     .orElseThrow(() -> new EntityNotExistsFaultException("Environment not found: " + envLabel));
+            if (env.getNextEnvironmentOpt().isEmpty()) {
+                throw new InvalidArgsException("Environment '" + envLabel +
+                        "' is the last environment in the project lifecycle and cannot be promoted.");
+            }
             promoteType.setEnvironment(env);
         }
         return actionHandler.save(loggedInUser, action);

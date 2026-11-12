@@ -22,9 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
@@ -34,6 +37,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import org.jmock.Expectations;
@@ -55,6 +59,7 @@ public class RecurringContentLifecycleHandlerTest extends JMockBaseTestCaseWithU
     private TaskomaticApi taskomaticMock;
     private ContentProject testProject;
     private ContentEnvironment testEnv;
+    private ContentEnvironment testEnv2;
 
     {
         context().setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -68,9 +73,16 @@ public class RecurringContentLifecycleHandlerTest extends JMockBaseTestCaseWithU
         testProject = new ContentProject("test-clm-proj", "Test Project", "Desc", user.getOrg());
         ContentProjectFactory.save(testProject);
 
-        testEnv = new ContentEnvironment("dev", "Development", null, testProject);
-        ContentProjectFactory.save(testEnv);
-        testProject.setFirstEnvironment(testEnv);
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        ProjectSource swSource = new SoftwareProjectSource(testProject, baseChannel);
+        testProject.addSource(swSource, java.util.Optional.empty());
+        ContentProjectFactory.save(swSource);
+
+        testEnv = new ContentEnvironment("dev", "Development", "Dev env", testProject);
+        ContentProjectFactory.insertEnvironment(testEnv, java.util.Optional.empty());
+
+        testEnv2 = new ContentEnvironment("test", "Testing", "Test env", testProject);
+        ContentProjectFactory.insertEnvironment(testEnv2, java.util.Optional.of(testEnv));
 
         taskomaticMock = context().mock(TaskomaticApi.class);
         RecurringActionManager.setTaskomaticApi(taskomaticMock);
@@ -177,5 +189,43 @@ public class RecurringContentLifecycleHandlerTest extends JMockBaseTestCaseWithU
         props.put("name", "missing-env");
         props.put("cron_expr", TEST_CRON_EXPR);
         assertThrows(InvalidArgsException.class, () -> clmHandler.createPromote(user, props));
+    }
+
+    @Test
+    public void testCreateBuildNoEnvironmentsFails() {
+        ContentProject emptyProj = new ContentProject("empty-proj", "Empty", "Desc", user.getOrg());
+        ContentProjectFactory.save(emptyProj);
+
+        assertThrows(InvalidArgsException.class, () -> clmHandler.createBuild(user, Map.of(
+                "project_label", emptyProj.getLabel(),
+                "name", "empty-build",
+                "cron_expr", TEST_CRON_EXPR
+        )));
+    }
+
+    @Test
+    public void testCreateBuildNoBaseChannelFails() {
+        ContentProject noBaseProj = new ContentProject("no-base-proj", "No Base", "Desc", user.getOrg());
+        ContentProjectFactory.save(noBaseProj);
+        ContentEnvironment env = new ContentEnvironment("dev-only", "Dev", null, noBaseProj);
+        ContentProjectFactory.save(env);
+        noBaseProj.setFirstEnvironment(env);
+
+        assertThrows(InvalidArgsException.class, () -> clmHandler.createBuild(user, Map.of(
+                "project_label", noBaseProj.getLabel(),
+                "name", "no-base-build",
+                "cron_expr", TEST_CRON_EXPR
+        )));
+    }
+
+    @Test
+    public void testCreatePromoteLastEnvironmentFails() {
+        // testEnv2 is the last environment in the pipeline (has no successor)
+        assertThrows(InvalidArgsException.class, () -> clmHandler.createPromote(user, Map.of(
+                "project_label", testProject.getLabel(),
+                "environment_label", testEnv2.getLabel(),
+                "name", "promote-last-env",
+                "cron_expr", TEST_CRON_EXPR
+        )));
     }
 }

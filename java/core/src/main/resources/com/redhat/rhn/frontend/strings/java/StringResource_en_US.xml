@@ -9596,6 +9596,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="recurring_action.empty_clm_environment" xml:space="preserve">
         <source>No Content Environment selected</source>
       </trans-unit>
+      <trans-unit id="recurring_action.clm_project_no_environments" xml:space="preserve">
+        <source>Cannot schedule recurring build for project ''{0}'': project has no environments configured.</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.clm_project_no_base_channel" xml:space="preserve">
+        <source>Cannot schedule recurring build for project ''{0}'': project has no base channel associated with it.</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.clm_environment_no_successor" xml:space="preserve">
+        <source>Environment ''{0}'' is the last environment in the project lifecycle and cannot be promoted.</source>
+      </trans-unit>
       <trans-unit id="recurring_action.action_name_exists" xml:space="preserve">
         <source>Recurring Action with given name already exists</source>
       </trans-unit>
