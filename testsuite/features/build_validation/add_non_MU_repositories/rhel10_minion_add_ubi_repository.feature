@@ -14,6 +14,7 @@ Feature: Add the RHEL 10 base OS custom repositories
     And I enter "rhel10-ubi-10" as "Channel Label"
     And I select the parent channel for the "rhel10_minion" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
+    And I enter "https://www.redhat.com/security/data/fd431d51.txt" as "GPG key URL"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for RHEL 10 base OS packages created" text
 
