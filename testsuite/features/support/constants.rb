@@ -915,7 +915,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         raspberrypios-13-pool-arm64
         raspberrypios-13-main-security-arm64
         raspberrypios-13-main-updates-arm64
-        managertools-debian13-updates-arm64
+        raspberrypios-13-raspberry-arm64
+        managertools-debian13-updates-arm64-rpi
       ],
     'sll-7-ltss' => # CHECKED
       %w[
