@@ -39,4 +39,4 @@ Feature: Migrate a SLES 16.0 Salt SSH minion to SLES 16.1
 
   Scenario: Check events history for failures on the migrated SSH minion
     Given I am on the Systems overview page of this "sles160_sshminion"
-    Then I check for failed events on history event page
+    Then I check for failed events on history event page since the "Product Migration" event

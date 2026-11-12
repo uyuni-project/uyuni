@@ -51,4 +51,4 @@ Feature: Migrate a SLE Micro 5.4 Salt minion to SLE Micro 5.5
 
   Scenario: Check events history for failures on the SLE Micro minion
     Given I am on the Systems overview page of this "slemicro54_minion"
-    Then I check for failed events on history event page
+    Then I check for failed events on history event page since the "Product Migration" event

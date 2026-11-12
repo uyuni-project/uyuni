@@ -38,4 +38,4 @@ Feature: Migrate an OpenSUSE Leap 16.1 aarch64 Salt minion to SLE 16.1
 
   Scenario: Check events history for failures on SLES minion
     Given I am on the Systems overview page of this "opensuse161arm_minion"
-    Then I check for failed events on history event page
+    Then I check for failed events on history event page since the "Product Migration" event

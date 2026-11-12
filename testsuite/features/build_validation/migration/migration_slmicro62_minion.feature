@@ -45,4 +45,4 @@ Feature: Migrate a SL Micro 6.2 Salt minion to SLES 16.1
 
   Scenario: Check events history for failures on the migrated SLES 16.1 minion
     Given I am on the Systems overview page of this "slmicro62_minion"
-    Then I check for failed events on history event page
+    Then I check for failed events on history event page since the "Product Migration" event
