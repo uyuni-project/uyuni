@@ -285,7 +285,6 @@ When(/^I wait (?:at most (\d+) seconds )?until the registration states are appli
     And I wait until I see "System Status" text
     And I wait at most #{seconds} seconds until event "Apply states" is completed
     And I wait until a new "Package List Refresh" event is completed for "#{host}"
-    And I wait until a new "Hardware List Refresh" event is completed for "#{host}"
   )
 end
 
