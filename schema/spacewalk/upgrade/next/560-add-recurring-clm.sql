@@ -37,3 +37,8 @@ CREATE TABLE IF NOT EXISTS suseRecurringContentPromote
                       REFERENCES suseContentEnvironment(id)
                       ON DELETE CASCADE
 );
+
+DROP INDEX IF EXISTS suse_rec_action_name_org_uq;
+CREATE UNIQUE INDEX suse_rec_action_name_org_uq
+    ON suseRecurringAction(name, org_id, target_type)
+    WHERE minion_id IS NULL AND group_id IS NULL AND org_id IS NOT NULL;

@@ -107,3 +107,13 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     WHERE ns.namespace = 'clm.project.list' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/contentmanagement/recurring' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
+
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/manager/api/recurringactions/clm/projects', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'clm.project.list' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/recurringactions/clm/projects' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
