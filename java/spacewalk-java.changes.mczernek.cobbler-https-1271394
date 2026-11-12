@@ -1,0 +1,2 @@
+- Add the java.kickstart_url_scheme property to enable the
+  https protocol for autoinstallation (bsc#1271394)
