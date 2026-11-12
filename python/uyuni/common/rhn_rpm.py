@@ -75,6 +75,26 @@ PGPHASHALGO = {
 }
 
 
+def _header_str(item):
+    """Return header data as a str PostgreSQL can store.
+
+    rpm < 4.15 returns string tags as bytes; newer rpm returns str and
+    surrogate-escapes bytes that are not valid UTF-8 (e.g. GBK file names),
+    which psycopg2 refuses to encode. Both drop the invalid bytes.
+    """
+    if isinstance(item, bytes):
+        return sstr(item)
+    if isinstance(item, str):
+        try:
+            item.encode("utf-8")
+        except UnicodeEncodeError:
+            return sstr(item.encode("utf-8", "surrogateescape"))
+        return item
+    if isinstance(item, list):
+        return [_header_str(i) for i in item]
+    return item
+
+
 # pylint: disable-next=invalid-name
 class RPM_Header:
     "Wrapper class for an rpm header - we need to store a flag is_source"
@@ -87,12 +107,7 @@ class RPM_Header:
         self._extract_signatures()
 
     def __getitem__(self, name):
-        item = self.hdr[name]
-        if isinstance(item, bytes):
-            item = sstr(item)
-        elif isinstance(item, list):
-            item = [sstr(i) if isinstance(i, bytes) else i for i in item]
-        return item
+        return _header_str(self.hdr[name])
 
     def __contains__(self, name):
         return True if name in self.hdr else False
@@ -104,12 +119,7 @@ class RPM_Header:
         del self.hdr[name]
 
     def __getattr__(self, name):
-        item = getattr(self.hdr, name)
-        if isinstance(item, bytes):
-            item = sstr(item)
-        elif isinstance(item, list):
-            item = [sstr(i) if isinstance(i, bytes) else i for i in item]
-        return item
+        return _header_str(getattr(self.hdr, name))
 
     def __len__(self):
         return len(self.hdr)
