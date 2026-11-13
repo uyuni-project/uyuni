@@ -1568,14 +1568,9 @@ end
 
 When(/^I create a read-only user for the ReportDB$/) do
   $reportdb_ro_user = 'test_user'
-  file = 'create_user_reportdb.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
-  success = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection in server failed' unless success
-
-  node = get_target('server')
-  node.run_local("expect -f /tmp/#{file} #{$reportdb_ro_user} #{node.has_mgrctl}")
+  # run the tool non-interactively inside the server container:
+  # no expect needed on the host, which is not available on SL Micro (e.g. RKE2 hosts)
+  get_target('server').run("uyuni-setup-reportdb-user --non-interactive --add --dbuser=#{$reportdb_ro_user} --dbpassword=linux")
 end
 
 Then(/^I should see the read-only user listed on the ReportDB user accounts$/) do
@@ -1584,14 +1579,8 @@ Then(/^I should see the read-only user listed on the ReportDB user accounts$/) d
 end
 
 When(/^I delete the read-only user for the ReportDB$/) do
-  file = 'delete_user_reportdb.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
-  success = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection in server failed' unless success
-
-  node = get_target('server')
-  node.run_local("expect -f /tmp/#{file} #{$reportdb_ro_user} #{node.has_mgrctl}")
+  # the non-interactive mode requires a password even for --delete, where it is not used
+  get_target('server').run("uyuni-setup-reportdb-user --non-interactive --delete --dbuser=#{$reportdb_ro_user} --dbpassword=unused")
 end
 
 Then(/^I shouldn't see the read-only user listed on the ReportDB user accounts$/) do
