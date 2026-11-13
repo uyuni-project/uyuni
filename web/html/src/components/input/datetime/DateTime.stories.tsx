@@ -83,7 +83,8 @@ const meta = {
     },
     disabled: {
       control: "boolean",
-      description: "Disables the date/time picker.",
+      description:
+        "Disables legacy validation and this example's Submit button. The wrapper does not forward this flag to the picker, which remains editable.",
     },
     hint: {
       control: "text",
@@ -182,16 +183,18 @@ export const WithValidation: Story = {
 };
 
 export const Disabled: Story = {
+  name: "Disabled flag limitation",
   args: {
     name: "locked_date",
-    label: "Locked date",
+    label: "Date with disabled flag",
     defaultValue: localizedMoment(),
     disabled: true,
   },
   parameters: {
     docs: {
       description: {
-        story: "Disabled date/time input that cannot be changed.",
+        story:
+          "Legacy limitation: disabled skips validation and disables Submit, but the date/time picker remains editable. Use DateTimePicker directly with disabled when editing must be prevented.",
       },
     },
   },

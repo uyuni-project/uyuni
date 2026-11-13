@@ -117,11 +117,14 @@ export const Required: Story = {
     name: "terms",
     label: "I agree to the terms of service",
     required: true,
+    validators: [(value: string) => value === "true"],
+    invalidHint: "You must accept the terms to continue",
   },
   parameters: {
     docs: {
       description: {
-        story: "⚠️ DEPRECATED - Required checkbox. Try submitting without checking to see validation.",
+        story:
+          "⚠️ DEPRECATED - Required checkbox. Check, then clear and blur the checkbox to see the acceptance error.",
       },
     },
   },

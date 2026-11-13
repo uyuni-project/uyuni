@@ -13,7 +13,6 @@ import { Button, SubmitButton } from "components/buttons";
 import { ExampleRow, StripedExampleSection } from "components/example-layout";
 import { Field, Form, OnSubmit } from "components/formik";
 
-import { Check } from "./Check";
 import { CheckInput } from "./CheckInput";
 
 type CheckInputProps = React.ComponentProps<typeof CheckInput>;
@@ -102,7 +101,7 @@ const StandaloneComponent = () => {
   return (
     <div style={{ padding: "20px" }}>
       <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
-        <Check
+        <CheckInput
           name="standalone-check"
           checked={checked}
           onChange={(newChecked) => {
@@ -140,7 +139,7 @@ const IndeterminateComponent = () => {
     <div style={{ padding: "20px" }}>
       <div style={{ display: "grid", gap: "12px", justifyItems: "start" }}>
         <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
-          <Check
+          <CheckInput
             checked={checked}
             indeterminate={indeterminate}
             onChange={(newChecked) => {
