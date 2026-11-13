@@ -27,11 +27,13 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
+import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -463,6 +465,27 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Lists the SoftwareEnvironmentTargets of the given channels, fetching environments and projects in one query
+     *
+     * @param channels the channels
+     * @return the targets
+     */
+    public static List<SoftwareEnvironmentTarget> listEnvironmentTargetsByChannels(List<Channel> channels) {
+        if (channels.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return getSession().createQuery("""
+                FROM SoftwareEnvironmentTarget t
+                JOIN FETCH t.contentEnvironment e
+                JOIN FETCH e.contentProject
+                JOIN FETCH t.channel
+                WHERE t.channel IN (:channels)
+                """, SoftwareEnvironmentTarget.class)
+                .setParameter("channels", channels)
+                .list();
+    }
+
+    /**
      * Looks up SoftwareEnvironmentTarget with a given channel
      *
      * @param id the id
@@ -491,6 +514,63 @@ public class ContentProjectFactory extends HibernateFactory {
                                     WHERE tgt.contentEnvironment = env
                                       AND tgt.hotfix = true)
                 """, ContentEnvironment.class)
+                .list();
+    }
+
+    /**
+     * List the hotfix channels accessible by a user, of all environments of the projects in the user
+     * organization, having a channel related to an errata as a source. A channel is related if it is in
+     * the same clone tree as a channel of the errata: an original or a clone, direct or indirect, of it,
+     * or of one of its originals. Sources in any state are considered, also the DETACHED ones: they stay
+     * in the built environments until the next build, and urgent fixes must still reach the hotfix channels.
+     *
+     * @param errata the errata
+     * @param user the user
+     * @return the hotfix channels
+     */
+    public static List<Channel> listHotfixChannelsRelatedToErrata(Errata errata, User user) {
+        List<Long> ids = getSession().createNativeQuery("""
+                WITH RECURSIVE
+                  originals(id) AS (
+                      SELECT ce.channel_id
+                        FROM rhnChannelErrata ce
+                       WHERE ce.errata_id = :errataId
+                      UNION
+                      SELECT cc.original_id
+                        FROM rhnChannelCloned cc
+                        JOIN originals ON cc.id = originals.id),
+                  tree(id) AS (
+                      SELECT originals.id
+                        FROM originals
+                       WHERE NOT EXISTS (SELECT 1 FROM rhnChannelCloned cc WHERE cc.id = originals.id)
+                      UNION
+                      SELECT cc.id
+                        FROM rhnChannelCloned cc
+                        JOIN tree ON cc.original_id = tree.id)
+                SELECT DISTINCT tgt.channel_id
+                  FROM suseContentProject p
+                  JOIN suseContentProjectSource src ON src.project_id = p.id
+                  JOIN suseContentEnvironment env ON env.project_id = p.id
+                  JOIN suseContentEnvironmentTarget tgt ON tgt.env_id = env.id AND tgt.hotfix
+                  JOIN suseChannelUserRoleView scur ON scur.channel_id = tgt.channel_id
+                                                   AND scur.user_id = :userId
+                                                   AND scur.deny_reason IS NULL
+                 WHERE p.org_id = :orgId
+                   AND src.channel_id IN (SELECT tree.id FROM tree)
+                """, Long.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(SoftwareProjectSource.class)
+                .addSynchronizedEntityClass(SoftwareEnvironmentTarget.class)
+                .setParameter("errataId", errata.getId())
+                .setParameter("userId", user.getId())
+                .setParameter("orgId", user.getOrg().getId())
+                .addScalar("channel_id", StandardBasicTypes.LONG)
+                .getResultList();
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return getSession().createQuery("FROM Channel WHERE id IN (:ids)", Channel.class)
+                .setParameter("ids", ids)
                 .list();
     }
 

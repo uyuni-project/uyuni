@@ -89,6 +89,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -97,6 +98,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -1174,6 +1176,49 @@ public class ContentManager {
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(env, targetChannel);
         env.addTarget(target);
         return target;
+    }
+
+    /**
+     * List the hotfix channels an errata can be cloned into: the hotfix channels of all environments of
+     * the projects having a channel related to the errata as a source. A channel is related if it is in
+     * the same clone tree as a channel of the errata.
+     *
+     * @param advisoryName the advisory name of the errata
+     * @param user the user
+     * @return the hotfix channels accessible by the user
+     */
+    public List<Channel> listCompatibleHotfixChannels(String advisoryName, User user) {
+        Errata errata = Optional.ofNullable(ErrataFactory.lookupByAdvisoryAndOrg(advisoryName, user.getOrg()))
+                .or(() -> Optional.ofNullable(ErrataFactory.lookupByAdvisoryAndOrg(advisoryName, null)))
+                .orElseThrow(() -> new EntityNotExistsException(advisoryName));
+        return ContentProjectFactory.listHotfixChannelsRelatedToErrata(errata, user);
+    }
+
+    /**
+     * List the hotfix channels an errata can be cloned into, grouped by content project.
+     * See {@link #listCompatibleHotfixChannels(String, User)} for the channels that are considered.
+     *
+     * @param advisoryName the advisory name of the errata
+     * @param user the user
+     * @return the labels of the hotfix channels accessible by the user, by project label. The projects are
+     * sorted by label, the channels by the position of their environment in the project, from the first
+     * to the last.
+     */
+    public Map<String, List<String>> listCompatibleHotfixChannelLabelsByProject(String advisoryName, User user) {
+        Map<ContentProject, List<SoftwareEnvironmentTarget>> targetsByProject =
+                ContentProjectFactory.listEnvironmentTargetsByChannels(
+                        listCompatibleHotfixChannels(advisoryName, user)).stream()
+                        .collect(groupingBy(target -> target.getContentEnvironment().getContentProject()));
+
+        Map<String, List<String>> result = new TreeMap<>();
+        targetsByProject.forEach((project, targets) -> {
+            List<ContentEnvironment> environments = project.getEnvironmentsStream().toList();
+            result.put(project.getLabel(), targets.stream()
+                    .sorted(Comparator.comparingInt(target -> environments.indexOf(target.getContentEnvironment())))
+                    .map(target -> target.getChannel().getLabel())
+                    .toList());
+        });
+        return result;
     }
 
     /**

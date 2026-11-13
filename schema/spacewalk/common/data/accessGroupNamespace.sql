@@ -478,7 +478,8 @@ INSERT INTO access.accessGroupNamespace
         'api.contentmanagement.create_project',
         'api.contentmanagement.detach_filter',
         'api.contentmanagement.detach_source',
-        'api.contentmanagement.list_environment_difference'
+        'api.contentmanagement.list_environment_difference',
+        'api.contentmanagement.list_compatible_hotfix_channel_labels_for_advisory',
         'api.contentmanagement.list_filter_criteria',
         'api.contentmanagement.list_filters',
         'api.contentmanagement.list_project_environments',
