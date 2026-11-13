@@ -101,6 +101,8 @@ public class MqttEventActionTest {
                 new ApplyStatesEventMessage(1001L, true,
                         "state1", "state2");
         mqttEventAction.execute(msg);
+        // The message constructor opens a transaction, so the event is published on commit
+        HibernateFactory.commitTransaction();
 
         assertEquals(mockPublisherService.getTopicPrefix() + "/states/applied",
                 mockPublisherService.lastTopic);
