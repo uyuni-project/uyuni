@@ -318,11 +318,13 @@ require {
     type cgroup_t;
     type tmpfs_t;
     type proc_t;
+    type container_t;
     
     class dir { search write add_name create remove_name rmdir setattr getattr mounton };
     class file { create open write append read unlink setattr getattr watch };
     class filesystem { mount getattr relabelfrom relabelto remount unmount };
     class netlink_audit_socket { nlmsg_relay };
+    class unix_stream_socket { connectto };
 }
 
 # Declare the uyuni_container_t type and associate it with standard container attributes.
@@ -341,6 +343,13 @@ allow uyuni_container_t tmpfs_t:dir mounton;
 
 # Standard lookups and attributes for the mount point
 allow uyuni_container_t tmpfs_t:dir { getattr search };
+
+# /tmp is a tmpfs: mktemp, java hsperfdata, tar and salt-master need to create there
+allow uyuni_container_t tmpfs_t:dir { add_name create remove_name rmdir setattr write };
+allow uyuni_container_t tmpfs_t:file { create open write append read unlink setattr getattr };
+
+# saline pod (container_t) talks to the salt master event socket
+allow container_t uyuni_container_t:unix_stream_socket connectto;
 
 # Allow systemd to mount/remount the proc filesystem for namespacing
 allow uyuni_container_t proc_t:filesystem { mount remount unmount };
