@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
 import { SubmitButton } from "components/buttons";
+
+import { useId } from "utils/hooks";
 
 import { Form } from "../form/Form";
 import { Password } from "./Password";
@@ -17,7 +19,10 @@ import { Password } from "./Password";
 type PasswordProps = React.ComponentProps<typeof Password>;
 
 const StatefulPasswordInForm = (args: PasswordProps) => {
-  const [model, setModel] = useState({ [args.name]: args.defaultValue || "" });
+  const instanceId = useId();
+  const name = `${args.name}-${instanceId}`;
+  const [model, setModel] = useState({ [name]: args.defaultValue || "" });
+  useEffect(() => setModel((current) => ({ ...current })), []);
 
   return (
     <Form
@@ -32,7 +37,7 @@ const StatefulPasswordInForm = (args: PasswordProps) => {
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
-      <Password {...args} />
+      <Password {...args} name={name} defaultValue="" />
       <div className="form-group">
         <div className="col-md-offset-3 offset-md-3 col-md-6">
           <SubmitButton className="btn-primary" text="Submit" disabled={args.disabled} />
@@ -66,7 +71,8 @@ const meta = {
   argTypes: {
     name: {
       control: "text",
-      description: "Name of the field to map in the form model. Used as the HTML `name` and `id` attributes.",
+      description:
+        "Name of the field to map in the form model. A unique instance suffix is added in this example for the HTML name and id.",
     },
     label: {
       control: "text",
@@ -130,7 +136,7 @@ const meta = {
       description: "Callback invoked when the input value changes. Receives the field name and new value.",
     },
   },
-  render: (args) => <StatefulPasswordInForm {...args} />,
+  render: (args) => <StatefulPasswordInForm key={JSON.stringify([args.name, args.defaultValue])} {...args} />,
 } satisfies Meta<typeof Password>;
 
 export default meta;
