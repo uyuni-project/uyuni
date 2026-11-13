@@ -53,10 +53,14 @@ const selectionKey = (item: PackageFixture) => `${item.idCombo}~*~${item.nvrea}`
 export const installPackageMocks = () => {
   const selectedIds = new Set([selectionKey(packages[0])]);
   const get = ((url: string) => {
-    const criteria = new URL(url, window.location.origin).searchParams.get("q")?.toLocaleLowerCase() ?? "";
+    const params = new URL(url, window.location.origin).searchParams;
+    const criteria = params.get("q")?.toLocaleLowerCase() ?? "";
     const items = packages
       .filter((item) => item.nvre.toLocaleLowerCase().includes(criteria))
       .map((item) => ({ ...item }));
+    if (params.get("f") === "id") {
+      return Utils.cancelable(Promise.resolve(items.filter((item) => item.selectable).map(selectionKey)));
+    }
     return Utils.cancelable(Promise.resolve({ items, total: items.length, selectedIds: [...selectedIds] }));
   }) as typeof Network.get;
   const post = ((url: string, data?: Record<string, boolean>) => {

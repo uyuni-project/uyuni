@@ -68,3 +68,19 @@ test("starts a fresh visit with the initial selection", async () => {
   expect((checkboxFor("ptf-18102-1-1") as HTMLInputElement).checked).toBe(true);
   expect((checkboxFor("ptf-18134-2-1") as HTMLInputElement).checked).toBe(false);
 });
+
+test("selects all available packages across pages without selecting unavailable packages", async () => {
+  render(<PackageListActionScheduler {...props} />);
+  await screen.findByText("ptf-18134-2-1");
+  await click(screen.getByRole("button", { name: /Select all .* across all pages/ }));
+
+  await waitFor(() => expect((checkboxFor("ptf-18134-2-1") as HTMLInputElement).checked).toBe(true));
+  expect((checkboxFor("ptf-18102-1-1") as HTMLInputElement).checked).toBe(true);
+  expect((checkboxFor("ptf-18201-1-2") as HTMLInputElement).checked).toBe(false);
+  expect((checkboxFor("ptf-18201-1-2") as HTMLInputElement).disabled).toBe(true);
+
+  await click(screen.getByRole("button", { name: "Install PTFs" }));
+  await click(await screen.findByRole("button", { name: "Back to list" }));
+  await screen.findByText("ptf-18134-2-1");
+  expect((checkboxFor("ptf-18134-2-1") as HTMLInputElement).checked).toBe(true);
+});
