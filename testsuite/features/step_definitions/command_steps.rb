@@ -1074,14 +1074,10 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   node.run(cmd, verbose: true, check_errors: error_control.empty?)
 end
 
-When(/^I enable source package syncing$/) do
-  cmd = 'echo \'server.sync_source_packages = 1\' >> /etc/rhn/rhn.conf'
-  get_target('server').run(cmd)
-end
-
-When(/^I disable source package syncing$/) do
-  cmd = 'sed -i \'s/^server.sync_source_packages = 1.*//g\' /etc/rhn/rhn.conf'
-  get_target('server').run(cmd)
+# SYNC_SOURCE_PACKAGES is read by reposync from the rhnConfiguration table, not from rhn.conf
+When(/^I (enable|disable) source package syncing$/) do |action|
+  value = action == 'enable' ? 1 : 0
+  get_target('server').run("echo \"UPDATE rhnConfiguration SET value = '#{value}' WHERE key = 'SYNC_SOURCE_PACKAGES';\" | spacewalk-sql -")
 end
 
 When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
