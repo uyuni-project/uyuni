@@ -1,0 +1,3 @@
+- Fix Content Lifecycle builds of channels with AppStream modules
+  failing after the Hibernate 7 update
+  (gh#uyuni-project/uyuni#12892)
