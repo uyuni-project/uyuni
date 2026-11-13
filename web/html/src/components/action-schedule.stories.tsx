@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
+import { useState } from "react";
+
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
@@ -11,9 +13,25 @@ import { localizedMoment } from "utils";
 
 import { ActionSchedule } from "./action-schedule";
 
+const StatefulActionSchedule = (args: React.ComponentProps<typeof ActionSchedule>) => {
+  const [description, setDescription] = useState(args.actionDescription);
+
+  return (
+    <ActionSchedule
+      {...args}
+      actionDescription={description}
+      onActionDescriptionChanged={(value) => {
+        setDescription(value);
+        args.onActionDescriptionChanged(value);
+      }}
+    />
+  );
+};
+
 const meta = {
   title: "Compositions/Scheduling/ActionSchedule",
   component: ActionSchedule,
+  render: (args) => <StatefulActionSchedule key={args.actionDescription} {...args} />,
   parameters: {
     docs: {
       description: {

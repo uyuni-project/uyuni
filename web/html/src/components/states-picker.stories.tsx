@@ -52,14 +52,22 @@ const channels = [
   },
 ];
 
-const mockNetworkGet = ((url: string) =>
-  Utils.cancelable(
+const mockNetworkGet = ((url: string) => {
+  const filter = new URL(url, window.location.origin).searchParams.get("filter")?.toLocaleLowerCase() ?? "";
+  return Utils.cancelable(
     Promise.resolve(
       url.includes("/content")
         ? "install_monitoring_agent:\n  pkg.installed:\n    - name: monitoring-agent"
-        : channels.map((channel) => ({ ...channel }))
+        : channels
+            .filter((channel) =>
+              [channel.label, channel.name, channel.description].some((value) =>
+                value.toLocaleLowerCase().includes(filter)
+              )
+            )
+            .map((channel) => ({ ...channel }))
     )
-  )) as typeof Network.get;
+  );
+}) as typeof Network.get;
 
 const StatesPickerStory = (props: StatesPickerProps) => {
   return (

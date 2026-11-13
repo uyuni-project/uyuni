@@ -46,12 +46,14 @@ const formulaData = {
   active: ["timezone", "openssh", "motd"],
 };
 
+let savedFormulas = [...formulaData.selected];
+
 const mockNetworkGet = (() =>
   Utils.cancelable(
     Promise.resolve({
       formulas: formulaData.formulas.map((formula) => ({ ...formula })),
-      selected: [...formulaData.selected],
-      active: [...formulaData.active],
+      selected: [...savedFormulas],
+      active: [...savedFormulas],
     })
   )) as typeof Network.get;
 
@@ -67,7 +69,10 @@ const FormulaSelectionStory = (props: FormulaSelectionProps) => {
 const meta = {
   title: "Compositions/Configuration/FormulaSelection",
   component: FormulaSelection,
-  beforeEach: () => mockNetwork({ get: mockNetworkGet }),
+  beforeEach: () => {
+    savedFormulas = [...formulaData.selected];
+    return mockNetwork({ get: mockNetworkGet });
+  },
   parameters: {
     layout: "fullscreen",
     docs: {
@@ -81,7 +86,8 @@ const meta = {
     dataUrl: "/storybook/formulas",
     warningMessage: "",
     addFormulaNavBar: () => undefined,
-    saveRequest: async (_component, selectedFormulas) => {
+    saveRequest: async (_component: FormulaSelection, selectedFormulas: string[]) => {
+      savedFormulas = [...selectedFormulas];
       action("formulas saved")(selectedFormulas);
     },
   },
