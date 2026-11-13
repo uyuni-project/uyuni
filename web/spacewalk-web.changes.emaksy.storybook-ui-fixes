@@ -1,0 +1,2 @@
+- Show expiration information for expired Hub tokens
+- Honor legacy modal close restrictions and clean up on unmount
