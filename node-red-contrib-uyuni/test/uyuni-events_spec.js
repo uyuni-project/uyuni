@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 SUSE LLC
+//
+// SPDX-License-Identifier: GPL-2.0-only
+
 const should = require("should");
 const helper = require("node-red-node-test-helper");
 const proxyquire = require("proxyquire").noCallThru();

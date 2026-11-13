@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: MIT
+-->
+
 # Deployment Guide — Uyuni MQTT + Node-RED Stack
 
 ## Quick Start (Podman)

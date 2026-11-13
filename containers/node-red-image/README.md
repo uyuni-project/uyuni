@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: MIT
+-->
+
 # Uyuni Node-RED Container Image
 
 A containerized [Node-RED](https://nodered.org/) automation environment pre-installed with custom [`node-red-contrib-uyuni`](../../node-red-contrib-uyuni) nodes for low-code event-driven workflow automation.

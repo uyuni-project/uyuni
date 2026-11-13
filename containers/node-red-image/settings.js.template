@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 SUSE LLC
+//
+// SPDX-License-Identifier: MIT
+
 /*
  * Node-RED settings for the Uyuni automation image.
  *

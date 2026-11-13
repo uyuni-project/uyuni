@@ -151,7 +151,9 @@ path = [
   "web/.prettier*",
   "web/README-1.png",
   "web/html/src/.babelrc",
-  "*/po/Makevars"
+  "*/po/Makevars",
+  "node-red-contrib-uyuni/package.json",
+  "node-red-contrib-uyuni/examples/*.json"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "SUSE LLC"

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 SUSE LLC
+//
+// SPDX-License-Identifier: GPL-2.0-only
+
 module.exports = function (RED) {
   function UyuniQueryNode(config) {
     RED.nodes.createNode(this, config);

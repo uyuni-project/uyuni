@@ -1,5 +1,8 @@
-# SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/mqtt-broker:latest
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
 
 ARG BASE=registry.suse.com/bci/bci-base:15.7
 FROM $BASE AS base

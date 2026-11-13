@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 # Automation stack for Uyuni: an MQTT broker and Node-RED with the Uyuni nodes
 # pre-installed.
 #

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: MIT
+-->
+
 # Uyuni MQTT broker image
 
 An [Eclipse Mosquitto](https://mosquitto.org/) broker, configured for distributing

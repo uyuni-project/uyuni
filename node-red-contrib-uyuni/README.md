@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 # node-red-contrib-uyuni
 
 Node-RED nodes for [Uyuni](https://www.uyuni-project.org/). Receive server events
