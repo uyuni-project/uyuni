@@ -1,0 +1,2 @@
+- Fix NullPointerException when generating proxy config in
+  containerized proxy chain (gh#uyuni-project/uyuni#12179)
