@@ -168,6 +168,8 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(CoCoAttestationResultSerializer.class);
         SERIALIZER_CLASSES.add(ChannelAppStreamsResponseSerializer.class);
         SERIALIZER_CLASSES.add(AppStreamModuleResponseSerializer.class);
+        SERIALIZER_CLASSES.add(SyncErrataWithPackagesResultSerializer.class);
+        SERIALIZER_CLASSES.add(SyncedErratumSerializer.class);
         SERIALIZER_CLASSES.add(AppStreamSerializer.class);
         SERIALIZER_CLASSES.add(UserNotificationSerializer.class);
         SERIALIZER_CLASSES.add(ManagerInfoJsonSerializer.class);

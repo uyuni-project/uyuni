@@ -489,5 +489,41 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
                 packages.stream().filter(Package::isPartOfRetractedPatch).collect(Collectors.toSet())
         );
     }
-}
 
+    /**
+     * An erratum is looked up by advisory name within a channel; when several share the name the lowest id wins, and
+     * other channels or unknown names give nothing.
+     */
+    @Test
+    public void testLookupByAdvisoryAndChannel() {
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel other = ChannelFactoryTest.createTestChannel(user);
+        Errata vendor = new ErrataTestBuilder().addChannel(channel).buildAndSave();
+        new ErrataTestBuilder().orgId(user.getOrg().getId()).advisory(vendor.getAdvisoryName()).addChannel(channel)
+                .buildAndSave();
+
+        // both errata share the advisory name, the lowest id wins
+        assertEquals(Optional.of(vendor), ErrataFactory.lookupByAdvisoryAndChannel(vendor.getAdvisoryName(), channel));
+        assertTrue(ErrataFactory.lookupByAdvisoryAndChannel(vendor.getAdvisoryName(), other).isEmpty());
+        assertTrue(ErrataFactory.lookupByAdvisoryAndChannel("NOT-THERE", channel).isEmpty());
+    }
+
+    /**
+     * A clone of an erratum is looked up within a channel; when several clones are held the lowest id wins, and other
+     * channels give nothing.
+     */
+    @Test
+    public void testLookupCloneInChannel() {
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel other = ChannelFactoryTest.createTestChannel(user);
+        Errata original = new ErrataTestBuilder().buildAndSave();
+        Errata first = ErrataHelper.cloneErrataFast(original, user.getOrg());
+        Errata second = ErrataHelper.cloneErrataFast(original, user.getOrg());
+        channel.addErrata(second);
+        channel.addErrata(first);
+
+        assertEquals(Optional.of(first), ErrataFactory.lookupCloneInChannel(original, channel));
+        assertTrue(ErrataFactory.lookupCloneInChannel(original, other).isEmpty());
+    }
+
+}
