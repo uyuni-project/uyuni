@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:56+0100\n"
+"POT-Creation-Date: 2026-11-13 11:59+0000\n"
 "PO-Revision-Date: 2026-08-11 09:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/spacecmd/zh_CN/>\n"
@@ -319,7 +319,7 @@ msgid "System Groups"
 msgstr "系统组"
 
 #: ../src/spacecmd/activationkey.py:1058 ../src/spacecmd/package.py:249
-#: ../src/spacecmd/package.py:307 ../src/spacecmd/softwarechannel.py:1513
+#: ../src/spacecmd/softwarechannel.py:1513
 #: ../src/spacecmd/softwarechannel.py:1626
 #: ../src/spacecmd/softwarechannel.py:1718
 #: ../src/spacecmd/softwarechannel.py:2002
@@ -426,6 +426,7 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "文件 %s 已存在，请确认是否重写文件？(y/n)"
 
 #: ../src/spacecmd/activationkey.py:1436
+#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "无法将导出的密钥保存到文件：{}"
 
@@ -1265,6 +1266,7 @@ msgid "Exporting cc %s to %s"
 msgstr "正在将 cc %s 导出到 %s"
 
 #: ../src/spacecmd/configchannel.py:1352
+#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "文件 '{}' 已存在，请确认是否重写文件？(y/n)"
 
@@ -1586,6 +1588,7 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "用法：custominfo_details KEY ..."
 
 #: ../src/spacecmd/custominfo.py:167
+#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "没有任何密钥与参数 '{}' 相匹配。"
 
@@ -3648,6 +3651,7 @@ msgstr "找不到名为 %s 的组织"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
+#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "未找到组织 '{}'"
 
@@ -3677,6 +3681,7 @@ msgid "No trust organisation found for the name %s"
 msgstr "找不到名为 %s 的信任组织"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
+#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "未找到要信任的组织 '{}'"
 
@@ -3710,6 +3715,7 @@ msgid "No trusted organisation found for the name %s"
 msgstr "找不到名为 %s 的可信组织"
 
 #: ../src/spacecmd/org.py:388
+#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "未找到可信组织 '{}'"
 
@@ -3821,12 +3827,12 @@ msgstr "配置通道：%i"
 msgid "Show the details of a software package"
 msgstr "显示软件包细节"
 
-#: ../src/spacecmd/package.py:72 ../src/spacecmd/package.py:351
-#: ../src/spacecmd/package.py:407 ../src/spacecmd/package.py:451
+#: ../src/spacecmd/package.py:72 ../src/spacecmd/package.py:404
+#: ../src/spacecmd/package.py:460 ../src/spacecmd/package.py:504
 msgid "No packages found"
 msgstr "未找到软件包"
 
-#: ../src/spacecmd/package.py:85 ../src/spacecmd/package.py:462
+#: ../src/spacecmd/package.py:85 ../src/spacecmd/package.py:515
 #, python-format
 msgid "%s is not a valid package"
 msgstr "%s 不是有效软件包"
@@ -3938,8 +3944,8 @@ msgstr "用法：package_remove PACKAGE ..."
 msgid "No packages found to remove"
 msgstr "未找到要去除的软件包"
 
-#: ../src/spacecmd/package.py:253 ../src/spacecmd/package.py:311
-#: ../src/spacecmd/softwarechannel.py:1722 ../src/spacecmd/system.py:997
+#: ../src/spacecmd/package.py:253 ../src/spacecmd/softwarechannel.py:1722
+#: ../src/spacecmd/system.py:997
 msgid "Remove these packages [y/N]:"
 msgstr "去除这些软件包 [y/N]："
 
@@ -3947,7 +3953,7 @@ msgstr "去除这些软件包 [y/N]："
 msgid "No packages has been removed"
 msgstr "未去除任何软件包"
 
-#: ../src/spacecmd/package.py:262 ../src/spacecmd/package.py:319
+#: ../src/spacecmd/package.py:262 ../src/spacecmd/package.py:372
 #, python-format
 msgid "Failed to remove package ID %i"
 msgstr "无法去除软件包 ID %i"
@@ -3957,47 +3963,76 @@ msgid "package_listorphans: List packages that are not in a channel"
 msgstr "package_listorphans：列出不在通道中的软件包"
 
 #: ../src/spacecmd/package.py:275
-msgid "usage: package_listorphans"
+#, fuzzy
+#| msgid "usage: package_listorphans"
+msgid "usage: package_listorphans [LIMIT] [OFFSET]"
 msgstr "用法：package_listorphans"
 
-#: ../src/spacecmd/package.py:295
+#: ../src/spacecmd/package.py:278
+#, fuzzy
+#| msgid "note:    When no date is provided, all errata will be merged."
+msgid "       note: when no limit nor offset are provided, all orphan packages will be listed"
+msgstr "注意：如果未提供日期，将合并所有勘误。"
+
+#: ../src/spacecmd/package.py:315
 msgid "package_removeorphans: Remove packages that are not in a channel"
 msgstr "package_removeorphans：去除不在通道中的软件包"
 
-#: ../src/spacecmd/package.py:296
-msgid "usage: package_removeorphans"
+#: ../src/spacecmd/package.py:316
+#, fuzzy
+#| msgid "usage: package_removeorphans"
+msgid "usage: package_removeorphans [BATCH_SIZE]"
 msgstr "用法：package_removeorphans"
 
-#: ../src/spacecmd/package.py:303
-msgid "No orphaned packages has been found"
+#: ../src/spacecmd/package.py:319
+msgid "       optional: BATCH_SIZE size of the batch in which orphan packages will be removed in, default 1000"
+msgstr ""
+
+#: ../src/spacecmd/package.py:343
+#, fuzzy
+#| msgid "No orphaned packages has been found"
+msgid "No orphan packages have been found"
 msgstr "未找到孤立的软件包"
 
-#: ../src/spacecmd/package.py:304
-msgid "No orphaned packages"
+#: ../src/spacecmd/package.py:344
+#, fuzzy
+#| msgid "No orphaned packages"
+msgid "No orphan packages"
 msgstr "无孤立软件包"
 
-#: ../src/spacecmd/package.py:312
+#: ../src/spacecmd/package.py:357
+#, python-format
+msgid "There are %i orphan packages to be removed (use package_listorphans to see the list)"
+msgstr ""
+
+#: ../src/spacecmd/package.py:363
+#, fuzzy, python-format
+#| msgid "Remove these packages [y/N]:"
+msgid "Remove these %i orphan packages [y/N]:"
+msgstr "去除这些软件包 [y/N]："
+
+#: ../src/spacecmd/package.py:365
 msgid "No packages were removed"
 msgstr "未去除任何软件包"
 
-#: ../src/spacecmd/package.py:330
+#: ../src/spacecmd/package.py:383
 msgid "List the systems with a package installed"
 msgstr "列出装有某个软件包的系统"
 
-#: ../src/spacecmd/package.py:386
+#: ../src/spacecmd/package.py:439
 msgid "List the errata that provide this package"
 msgstr "列出提供此软件包的勘误"
 
-#: ../src/spacecmd/package.py:434
+#: ../src/spacecmd/package.py:487
 msgid "List the dependencies for a package"
 msgstr "列出软件包的依赖项"
 
-#: ../src/spacecmd/package.py:467
+#: ../src/spacecmd/package.py:520
 #, python-format
 msgid "Package Name: %s"
 msgstr "软件包名称：%s"
 
-#: ../src/spacecmd/package.py:470
+#: ../src/spacecmd/package.py:523
 #, python-format
 msgid "Dependency: %s Type: %s Modifier: %s"
 msgstr "依赖项：%s，类型：%s，修饰符：%s"
@@ -4007,7 +4042,7 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:46
-#, fuzzy, python-format
+#, fuzzy
 #| msgid ""
 #| "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 #| "\n"
@@ -4074,7 +4109,7 @@ msgid "proxy_container_config_nossl: create a proxy system and return its config
 msgstr "proxy_container_config_nossl：创建代理系统并返回不含 SSL 证书的配置文件"
 
 #: ../src/spacecmd/proxy.py:119
-#, fuzzy, python-format
+#, fuzzy
 #| msgid ""
 #| "usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 #| "\n"
@@ -4126,7 +4161,7 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:174
-#, fuzzy, python-format
+#, fuzzy
 #| msgid ""
 #| "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 #| "\n"
@@ -4256,6 +4291,7 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "储存库 SSL 客户端密钥：%s"
 
 #: ../src/spacecmd/repo.py:116
+#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "未找到查询 '{}' 的储存库"
 
@@ -4476,6 +4512,7 @@ msgid "%s  # Systems"
 msgstr "%s  系统数"
 
 #: ../src/spacecmd/report.py:197
+#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "未找到 '{}' 的勘误"
 
@@ -4900,6 +4937,7 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "如果不提供日期，将删除所有存档的操作"
 
 #: ../src/spacecmd/schedule.py:537
+#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "您要删除 ({}) 个存档的操作吗？[y/N]"
 
@@ -4920,6 +4958,7 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "如果不提供日期，将存档所有已完成操作"
 
 #: ../src/spacecmd/schedule.py:619
+#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "您要存档 ({}) 个已完成操作吗？[y/N]"
 
@@ -6222,10 +6261,12 @@ msgid "merging errata from softwarechannel "
 msgstr "正在合并以下软件通道中的勘误 "
 
 #: ../src/spacecmd/softwarechannel.py:2900
+#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} 不包含 {} 中尚不存在的勘误"
 
 #: ../src/spacecmd/softwarechannel.py:2908
+#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "要添加到通道 {} 的勘误： "
 
@@ -6239,6 +6280,7 @@ msgid " errata to  "
 msgstr " 勘误至  "
 
 #: ../src/spacecmd/softwarechannel.py:2924
+#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "对通道 {} 执行这些更改 [y/N]："
 
@@ -8123,6 +8165,7 @@ msgstr "服务器在引导时不支持重新激活密钥"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:4968
+#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "正在引导 \"{}\"。这可能需要一段时间。"
 
@@ -8136,11 +8179,13 @@ msgstr "system_needrebootafterupdate：显示应用可用补丁后是否需要�
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5058
+#, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
 msgstr "系统 '{}' 更新后需要重引导"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5067
+#, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
 msgstr "系统 '{}' 应用可用更新后无需重引导"
 
@@ -8492,6 +8537,7 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "正在跳过公用字符串的使用：子字符串数目不同"
 
 #: ../src/spacecmd/utils.py:992
+#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "参数 {} 不是字符串类型，而是 {}。"
 
