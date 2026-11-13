@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:56+0100\n"
+"POT-Creation-Date: 2026-11-13 16:35+0000\n"
 "PO-Revision-Date: 2026-08-18 03:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>\n"
@@ -319,7 +319,7 @@ msgid "System Groups"
 msgstr "시스템 그룹"
 
 #: ../src/spacecmd/activationkey.py:1058 ../src/spacecmd/package.py:249
-#: ../src/spacecmd/package.py:307 ../src/spacecmd/softwarechannel.py:1513
+#: ../src/spacecmd/softwarechannel.py:1513
 #: ../src/spacecmd/softwarechannel.py:1626
 #: ../src/spacecmd/softwarechannel.py:1718
 #: ../src/spacecmd/softwarechannel.py:2002
@@ -426,6 +426,7 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "%s 파일이 있습니다. 파일을 덮어쓰시겠습니까? (y/n)"
 
 #: ../src/spacecmd/activationkey.py:1436
+#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "엑스포트한 키를 파일에 저장하지 못함: {}"
 
@@ -1265,6 +1266,7 @@ msgid "Exporting cc %s to %s"
 msgstr "cc %s을(를) %s(으)로 엑스포트하는 중"
 
 #: ../src/spacecmd/configchannel.py:1352
+#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "'{}' 파일이 있습니다. 덮어쓰시겠습니까? (y/n)"
 
@@ -1586,6 +1588,7 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "사용법: custominfo_details KEY ..."
 
 #: ../src/spacecmd/custominfo.py:167
+#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "'{}' 인수와 일치하는 키가 없습니다."
 
@@ -3648,6 +3651,7 @@ msgstr "이름이 %s인 조직을 찾지 못함"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
+#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "'{}' 조직을 찾지 못함"
 
@@ -3677,6 +3681,7 @@ msgid "No trust organisation found for the name %s"
 msgstr "이름이 %s인 트러스트 조직을 찾지 못함"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
+#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "트러스트 대상인 '{}' 조직을 찾지 못함"
 
@@ -3710,6 +3715,7 @@ msgid "No trusted organisation found for the name %s"
 msgstr "이름이 %s인 트러스트된 조직을 찾지 못함"
 
 #: ../src/spacecmd/org.py:388
+#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "트러스트된 조직 '{}'을(를) 찾지 못함"
 
@@ -3821,12 +3827,12 @@ msgstr "구성 채널: %i"
 msgid "Show the details of a software package"
 msgstr "소프트웨어 패키지의 세부 사항 표시"
 
-#: ../src/spacecmd/package.py:72 ../src/spacecmd/package.py:351
-#: ../src/spacecmd/package.py:407 ../src/spacecmd/package.py:451
+#: ../src/spacecmd/package.py:72 ../src/spacecmd/package.py:404
+#: ../src/spacecmd/package.py:460 ../src/spacecmd/package.py:504
 msgid "No packages found"
 msgstr "패키지를 찾을 수 없음"
 
-#: ../src/spacecmd/package.py:85 ../src/spacecmd/package.py:462
+#: ../src/spacecmd/package.py:85 ../src/spacecmd/package.py:515
 #, python-format
 msgid "%s is not a valid package"
 msgstr "%s은(는) 유효한 패키지가 아님"
@@ -3938,8 +3944,8 @@ msgstr "사용법: package_remove PACKAGE ..."
 msgid "No packages found to remove"
 msgstr "제거할 패키지를 찾지 못함"
 
-#: ../src/spacecmd/package.py:253 ../src/spacecmd/package.py:311
-#: ../src/spacecmd/softwarechannel.py:1722 ../src/spacecmd/system.py:997
+#: ../src/spacecmd/package.py:253 ../src/spacecmd/softwarechannel.py:1722
+#: ../src/spacecmd/system.py:997
 msgid "Remove these packages [y/N]:"
 msgstr "이 패키지 제거 [y/N]:"
 
@@ -3947,7 +3953,7 @@ msgstr "이 패키지 제거 [y/N]:"
 msgid "No packages has been removed"
 msgstr "패키지가 제거되지 않음"
 
-#: ../src/spacecmd/package.py:262 ../src/spacecmd/package.py:319
+#: ../src/spacecmd/package.py:262 ../src/spacecmd/package.py:372
 #, python-format
 msgid "Failed to remove package ID %i"
 msgstr "패키지 ID %i을(를) 제거하지 못함"
@@ -3957,47 +3963,76 @@ msgid "package_listorphans: List packages that are not in a channel"
 msgstr "package_listorphans: 채널에 없는 패키지 나열"
 
 #: ../src/spacecmd/package.py:275
-msgid "usage: package_listorphans"
+#, fuzzy
+#| msgid "usage: package_listorphans"
+msgid "usage: package_listorphans [LIMIT] [OFFSET]"
 msgstr "사용법: package_listorphans"
 
-#: ../src/spacecmd/package.py:295
+#: ../src/spacecmd/package.py:278
+#, fuzzy
+#| msgid "note:    When no date is provided, all errata will be merged."
+msgid "       note: when no limit nor offset are provided, all orphan packages will be listed"
+msgstr "참고: 날짜를 입력하지 않으면 모든 오류가 병합됩니다."
+
+#: ../src/spacecmd/package.py:315
 msgid "package_removeorphans: Remove packages that are not in a channel"
 msgstr "package_removeorphans: 채널에 없는 패키지 제거"
 
-#: ../src/spacecmd/package.py:296
-msgid "usage: package_removeorphans"
+#: ../src/spacecmd/package.py:316
+#, fuzzy
+#| msgid "usage: package_removeorphans"
+msgid "usage: package_removeorphans [BATCH_SIZE]"
 msgstr "사용법: package_removeorphans"
 
-#: ../src/spacecmd/package.py:303
-msgid "No orphaned packages has been found"
+#: ../src/spacecmd/package.py:319
+msgid "       optional: BATCH_SIZE size of the batch in which orphan packages will be removed in, default 1000"
+msgstr ""
+
+#: ../src/spacecmd/package.py:343
+#, fuzzy
+#| msgid "No orphaned packages has been found"
+msgid "No orphan packages have been found"
 msgstr "독립 패키지를 찾지 못함"
 
-#: ../src/spacecmd/package.py:304
-msgid "No orphaned packages"
+#: ../src/spacecmd/package.py:344
+#, fuzzy
+#| msgid "No orphaned packages"
+msgid "No orphan packages"
 msgstr "독립 패키지 없음"
 
-#: ../src/spacecmd/package.py:312
+#: ../src/spacecmd/package.py:357
+#, python-format
+msgid "There are %i orphan packages to be removed (use package_listorphans to see the list)"
+msgstr ""
+
+#: ../src/spacecmd/package.py:363
+#, fuzzy, python-format
+#| msgid "Remove these packages [y/N]:"
+msgid "Remove these %i orphan packages [y/N]:"
+msgstr "이 패키지 제거 [y/N]:"
+
+#: ../src/spacecmd/package.py:365
 msgid "No packages were removed"
 msgstr "패키지가 제거되지 않음"
 
-#: ../src/spacecmd/package.py:330
+#: ../src/spacecmd/package.py:383
 msgid "List the systems with a package installed"
 msgstr "패키지가 설치된 시스템 나열"
 
-#: ../src/spacecmd/package.py:386
+#: ../src/spacecmd/package.py:439
 msgid "List the errata that provide this package"
 msgstr "이 패키지를 제공한 오류 나열"
 
-#: ../src/spacecmd/package.py:434
+#: ../src/spacecmd/package.py:487
 msgid "List the dependencies for a package"
 msgstr "패키지 종속성 나열"
 
-#: ../src/spacecmd/package.py:467
+#: ../src/spacecmd/package.py:520
 #, python-format
 msgid "Package Name: %s"
 msgstr "패키지 이름: %s"
 
-#: ../src/spacecmd/package.py:470
+#: ../src/spacecmd/package.py:523
 #, python-format
 msgid "Dependency: %s Type: %s Modifier: %s"
 msgstr "종속성: %s 유형: %s 수정자: %s"
@@ -4007,7 +4042,6 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:46
-#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4054,7 +4088,6 @@ msgid "proxy_container_config_nossl: create a proxy system and return its config
 msgstr "proxy_container_config_nossl: 프록시 시스템을 생성하고 SSL 인증서를 제외한 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:119
-#, python-format
 msgid ""
 "usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4091,7 +4124,6 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:174
-#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4194,6 +4226,7 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "저장소 SSL 클라이언트 키:         %s"
 
 #: ../src/spacecmd/repo.py:116
+#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "'{}' 쿼리에 대한 저장소를 찾지 못함"
 
@@ -4414,6 +4447,7 @@ msgid "%s  # Systems"
 msgstr "%s  # 시스템"
 
 #: ../src/spacecmd/report.py:197
+#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "'{}'에 대한 오류를 찾지 못함"
 
@@ -4838,6 +4872,7 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "날짜가 제공되지 않으면 보관된 모든 작업이 삭제됩니다."
 
 #: ../src/spacecmd/schedule.py:537
+#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "보관된 작업({})을 삭제하시겠습니까? [예/아니요]"
 
@@ -4858,6 +4893,7 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "날짜가 제공되지 않으면 완료된 모든 작업을 보관합니다."
 
 #: ../src/spacecmd/schedule.py:619
+#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "완료된 작업({})을 보관하시겠습니까? [예/아니요]"
 
@@ -6160,10 +6196,12 @@ msgid "merging errata from softwarechannel "
 msgstr "소프트웨어 채널의 오류 병합 "
 
 #: ../src/spacecmd/softwarechannel.py:2900
+#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{}에는 {}에 없는 오류가 포함되지 않음"
 
 #: ../src/spacecmd/softwarechannel.py:2908
+#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "{} 채널에 추가할 오류: "
 
@@ -6177,6 +6215,7 @@ msgid " errata to  "
 msgstr " 오류 대상  "
 
 #: ../src/spacecmd/softwarechannel.py:2924
+#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "{} 채널에 이 변경 수행 [y/N]:"
 
@@ -8060,6 +8099,7 @@ msgstr "부트스트랩 시점에 서버는 재활성화 키를 지원하지 않
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:4968
+#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "'{}'을(를) 부트스트랩하는 중입니다. 잠시 시간이 걸릴 수 있습니다."
 
@@ -8073,11 +8113,13 @@ msgstr "system_needrebootafterupdate: 사용 가능한 패치가 적용된 경�
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5058
+#, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
 msgstr "시스템 '{}'은(는) 업데이트 후 재부팅해야 합니다."
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5067
+#, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
 msgstr "사용 가능한 업데이트를 적용한 후 시스템 '{}'을(를) 재부팅할 필요 없습니다."
 
@@ -8429,6 +8471,7 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "공통 문자열 사용 건너뛰기: 하위 문자열의 수가 다름"
 
 #: ../src/spacecmd/utils.py:992
+#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "{} 파라미터가 문자열 유형이 아니라 {}입니다."
 

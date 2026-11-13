@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:56+0100\n"
+"POT-Creation-Date: 2026-11-13 16:35+0000\n"
 "PO-Revision-Date: 2026-10-15 15:13+0000\n"
 "Last-Translator: Andrei Stepanov <adem4ik@gmail.com>\n"
 "Language-Team: Russian <https://l10n.opensuse.org/projects/uyuni/spacecmd/ru/>\n"
@@ -306,7 +306,7 @@ msgid "System Groups"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1058 ../src/spacecmd/package.py:249
-#: ../src/spacecmd/package.py:307 ../src/spacecmd/softwarechannel.py:1513
+#: ../src/spacecmd/softwarechannel.py:1513
 #: ../src/spacecmd/softwarechannel.py:1626
 #: ../src/spacecmd/softwarechannel.py:1718
 #: ../src/spacecmd/softwarechannel.py:2002
@@ -405,6 +405,7 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1436
+#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr ""
 
@@ -1171,6 +1172,7 @@ msgid "Exporting cc %s to %s"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:1352
+#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr ""
 
@@ -1467,6 +1469,7 @@ msgid "usage: custominfo_details KEY ..."
 msgstr ""
 
 #: ../src/spacecmd/custominfo.py:167
+#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr ""
 
@@ -3406,6 +3409,7 @@ msgstr ""
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
+#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr ""
 
@@ -3435,6 +3439,7 @@ msgid "No trust organisation found for the name %s"
 msgstr ""
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
+#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr ""
 
@@ -3468,6 +3473,7 @@ msgid "No trusted organisation found for the name %s"
 msgstr ""
 
 #: ../src/spacecmd/org.py:388
+#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr ""
 
@@ -3579,12 +3585,12 @@ msgstr ""
 msgid "Show the details of a software package"
 msgstr ""
 
-#: ../src/spacecmd/package.py:72 ../src/spacecmd/package.py:351
-#: ../src/spacecmd/package.py:407 ../src/spacecmd/package.py:451
+#: ../src/spacecmd/package.py:72 ../src/spacecmd/package.py:404
+#: ../src/spacecmd/package.py:460 ../src/spacecmd/package.py:504
 msgid "No packages found"
 msgstr ""
 
-#: ../src/spacecmd/package.py:85 ../src/spacecmd/package.py:462
+#: ../src/spacecmd/package.py:85 ../src/spacecmd/package.py:515
 #, python-format
 msgid "%s is not a valid package"
 msgstr ""
@@ -3696,8 +3702,8 @@ msgstr ""
 msgid "No packages found to remove"
 msgstr ""
 
-#: ../src/spacecmd/package.py:253 ../src/spacecmd/package.py:311
-#: ../src/spacecmd/softwarechannel.py:1722 ../src/spacecmd/system.py:997
+#: ../src/spacecmd/package.py:253 ../src/spacecmd/softwarechannel.py:1722
+#: ../src/spacecmd/system.py:997
 msgid "Remove these packages [y/N]:"
 msgstr ""
 
@@ -3705,7 +3711,7 @@ msgstr ""
 msgid "No packages has been removed"
 msgstr ""
 
-#: ../src/spacecmd/package.py:262 ../src/spacecmd/package.py:319
+#: ../src/spacecmd/package.py:262 ../src/spacecmd/package.py:372
 #, python-format
 msgid "Failed to remove package ID %i"
 msgstr ""
@@ -3715,47 +3721,65 @@ msgid "package_listorphans: List packages that are not in a channel"
 msgstr ""
 
 #: ../src/spacecmd/package.py:275
-msgid "usage: package_listorphans"
+msgid "usage: package_listorphans [LIMIT] [OFFSET]"
 msgstr ""
 
-#: ../src/spacecmd/package.py:295
+#: ../src/spacecmd/package.py:278
+msgid "       note: when no limit nor offset are provided, all orphan packages will be listed"
+msgstr ""
+
+#: ../src/spacecmd/package.py:315
 msgid "package_removeorphans: Remove packages that are not in a channel"
 msgstr ""
 
-#: ../src/spacecmd/package.py:296
-msgid "usage: package_removeorphans"
+#: ../src/spacecmd/package.py:316
+msgid "usage: package_removeorphans [BATCH_SIZE]"
 msgstr ""
 
-#: ../src/spacecmd/package.py:303
-msgid "No orphaned packages has been found"
+#: ../src/spacecmd/package.py:319
+msgid "       optional: BATCH_SIZE size of the batch in which orphan packages will be removed in, default 1000"
 msgstr ""
 
-#: ../src/spacecmd/package.py:304
-msgid "No orphaned packages"
+#: ../src/spacecmd/package.py:343
+msgid "No orphan packages have been found"
 msgstr ""
 
-#: ../src/spacecmd/package.py:312
+#: ../src/spacecmd/package.py:344
+msgid "No orphan packages"
+msgstr ""
+
+#: ../src/spacecmd/package.py:357
+#, python-format
+msgid "There are %i orphan packages to be removed (use package_listorphans to see the list)"
+msgstr ""
+
+#: ../src/spacecmd/package.py:363
+#, python-format
+msgid "Remove these %i orphan packages [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/package.py:365
 msgid "No packages were removed"
 msgstr ""
 
-#: ../src/spacecmd/package.py:330
+#: ../src/spacecmd/package.py:383
 msgid "List the systems with a package installed"
 msgstr ""
 
-#: ../src/spacecmd/package.py:386
+#: ../src/spacecmd/package.py:439
 msgid "List the errata that provide this package"
 msgstr ""
 
-#: ../src/spacecmd/package.py:434
+#: ../src/spacecmd/package.py:487
 msgid "List the dependencies for a package"
 msgstr ""
 
-#: ../src/spacecmd/package.py:467
+#: ../src/spacecmd/package.py:520
 #, python-format
 msgid "Package Name: %s"
 msgstr ""
 
-#: ../src/spacecmd/package.py:470
+#: ../src/spacecmd/package.py:523
 #, python-format
 msgid "Dependency: %s Type: %s Modifier: %s"
 msgstr ""
@@ -3765,7 +3789,6 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr ""
 
 #: ../src/spacecmd/proxy.py:46
-#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -3793,7 +3816,6 @@ msgid "proxy_container_config_nossl: create a proxy system and return its config
 msgstr ""
 
 #: ../src/spacecmd/proxy.py:119
-#, python-format
 msgid ""
 "usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -3816,7 +3838,6 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr ""
 
 #: ../src/spacecmd/proxy.py:174
-#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -3893,6 +3914,7 @@ msgid "Repository SSL Client Key:         %s"
 msgstr ""
 
 #: ../src/spacecmd/repo.py:116
+#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr ""
 
@@ -4093,6 +4115,7 @@ msgid "%s  # Systems"
 msgstr ""
 
 #: ../src/spacecmd/report.py:197
+#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr ""
 
@@ -4512,6 +4535,7 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr ""
 
 #: ../src/spacecmd/schedule.py:537
+#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr ""
 
@@ -4532,6 +4556,7 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr ""
 
 #: ../src/spacecmd/schedule.py:619
+#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr ""
 
@@ -5709,10 +5734,12 @@ msgid "merging errata from softwarechannel "
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2900
+#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2908
+#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr ""
 
@@ -5726,6 +5753,7 @@ msgid " errata to  "
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2924
+#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr ""
 
@@ -7465,6 +7493,7 @@ msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:4968
+#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr ""
 
@@ -7478,11 +7507,13 @@ msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5058
+#, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
 msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5067
+#, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
 msgstr ""
 
@@ -7825,6 +7856,7 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr ""
 
 #: ../src/spacecmd/utils.py:992
+#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr ""
 
