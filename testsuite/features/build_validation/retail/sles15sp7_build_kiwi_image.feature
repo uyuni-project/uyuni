@@ -11,7 +11,7 @@ Feature: Build OS image for SLES 15 SP7
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Prepare activation key for SLES 15 SP6 terminal
+  Scenario: Prepare activation key for SLES 15 SP7 terminal
     When I create an activation key including custom channels for "sles15sp7_terminal" via API
 
   @sles15sp7_buildhost
