@@ -301,7 +301,7 @@ public class PackageRefreshListAction extends PackageAction {
                                         })
                         )
                         .collect(Collectors.toMap(
-                                SaltUtils::packageToKey,
+                                e -> SaltUtils.packageToKey(e, server.getPackageType()),
                                 Function.identity(),
                                 PackageRefreshListAction::resolveDuplicatePackage
                         ));
