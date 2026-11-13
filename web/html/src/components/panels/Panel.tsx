@@ -41,7 +41,6 @@ export const Panel = (props: Props) => {
   const bodyContent = (
     <>
       <div className="panel-body">{props.children}</div>
-
       {props.footer && <div className="panel-footer">{props.footer}</div>}
     </>
   );
@@ -75,13 +74,13 @@ export const Panel = (props: Props) => {
   }, [props.onCollapsedChange]);
 
   return (
-    <div className={"panel " + (props.className ?? "panel-default")}>
-      {(headerContent || props.buttons) && (
+    <div className={"panel " + (props.className ? props.className : "panel-default")}>
+      {(props.title || props.header || props.buttons) && (
         <div
-          className="panel-heading"
           style={{
             position: "relative",
           }}
+          className="panel-heading accordion-toggle"
         >
           {props.buttons && (
             <div
