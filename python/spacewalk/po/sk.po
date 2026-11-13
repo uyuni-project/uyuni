@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:56+0100\n"
+"POT-Creation-Date: 2026-11-13 16:35+0000\n"
 "PO-Revision-Date: 2025-03-28 15:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>\n"
@@ -38,17 +38,7 @@ msgstr "zamietnuté overenie proxy"
 msgid "Invalid request received (%s)."
 msgstr "Prijatá neplatná požiadavka (%s)."
 
-#. Send the message as a fault.
-#: ../server/apacheRequest.py:132
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"DÔLEŽITÁ SPRÁVA NASLEDUJE:\n"
-"%s"
-
-#: ../server/apacheRequest.py:162
+#: ../server/apacheRequest.py:148
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -58,12 +48,13 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:677
+#: ../server/apacheRequest.py:658
 #, python-format
 msgid "Invalid URI %s"
 msgstr "Neplatné URI %s"
 
-#: ../server/handlers/app/packages.py:222
+#. pylint: disable-next=undefined-variable
+#: ../server/handlers/app/packages.py:221
 #, python-format
 msgid ""
 "\n"
@@ -118,12 +109,12 @@ msgstr ""
 "               Na tomto serveri bol účet %s deaktivovaný.\n"
 "               Pre ďalšiu pomoc kontaktujte administrátora svojej organizácie."
 
-#: ../server/rhnChannel.py:2218
+#: ../server/rhnChannel.py:2169
 #, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr "Váš účet nemá prístup k žiadnym kanálom, ktoré zodpovedajú (vydanie='%(release)s', arch='%(arch)s')%(www_activation)s"
 
-#: ../server/rhnChannel.py:2237
+#: ../server/rhnChannel.py:2188
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Nedostatočné práva predplatného na vydanie (%s, %s"
@@ -132,11 +123,11 @@ msgstr "Nedostatočné práva predplatného na vydanie (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2551 ../server/rhnChannel.py:2570
+#: ../server/rhnChannel.py:2460 ../server/rhnChannel.py:2475
 msgid "System Registered but Inactive"
 msgstr "Systém je registrovaný, ale neaktívny"
 
-#: ../server/rhnChannel.py:2553
+#: ../server/rhnChannel.py:2461
 #, python-format
 msgid ""
 "\n"
@@ -151,7 +142,7 @@ msgstr ""
 "pretože sa nemohol prihlásiť k základnému kanálu.\n"
 "Požiadajte o pomoc administrátora svojej organizácie.\n"
 
-#: ../server/rhnChannel.py:2562
+#: ../server/rhnChannel.py:2468
 #, python-format
 msgid ""
 "\n"
@@ -166,7 +157,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2572
+#: ../server/rhnChannel.py:2476
 #, python-format
 msgid ""
 "\n"
@@ -182,11 +173,11 @@ msgstr ""
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
-#: ../server/rhnHandler.py:64
+#: ../server/rhnHandler.py:59
 msgid "Please run rhn_register as root on this client"
 msgstr "Prosím, spustite rhn_register ako správca systému na tomto klientovi"
 
-#: ../server/rhnHandler.py:78
+#: ../server/rhnHandler.py:73
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Služba nie je povolená pre systémový profil: \"%s\""
@@ -201,7 +192,7 @@ msgstr "Požaduje sa neplatný balík RPM %s"
 msgid "Package not found"
 msgstr "Balík nebol nájdený"
 
-#: ../server/rhnServer/server_class.py:103
+#: ../server/rhnServer/server_class.py:102
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "Architektúra `%s' nie je podporovaná"
@@ -248,65 +239,9 @@ msgstr "Nesúlad sedenia kickstart"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Skladanie tokenov opätovnej registrácie nie je podporované"
 
-#: ../server/rhnUser.py:323 ../server/rhnUser.py:326
+#: ../server/rhnUser.py:313 ../server/rhnUser.py:316
 msgid "Invalid username/password combination"
 msgstr "Neplatná kombinácia používateľského mena/hesla"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:507
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "Používateľské meno `%s' nebolo rezervované"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:513
-msgid "E-mail address not specified"
-msgstr "E-mailová adresa nie je uvedená"
-
-#: ../server/rhnUser.py:555
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "používateľské meno by malo mať najmenej %d znakov"
-
-#: ../server/rhnUser.py:559
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "používateľské meno by malo mať menej ako %d znakov"
-
-#: ../server/rhnUser.py:573
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "používateľské meno = `%s', neplatný znak `%s'"
-
-#: ../server/rhnUser.py:594
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Prosím, obmedzte svoju e-mailovú adresu na %s znakov"
-
-#: ../server/rhnUser.py:692
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "heslo musí mať najmenej %d znakov"
-
-#: ../server/rhnUser.py:696
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "Heslo musí byť kratšie ako %d znakov"
-
-#: ../server/rhnUser.py:712
-#, python-format
-msgid "password contains character `%s'"
-msgstr "heslo obsahuje znak `%s'"
-
-#: ../server/rhnUser.py:721
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "používateľské meno by malo byť najmenej %d znakov dlhé"
-
-#: ../server/rhnUser.py:732
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "Nie je možné zaregistrovať používateľské mená končiace s %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:57
@@ -942,7 +877,7 @@ msgstr "CHYBA: %s %s: %s"
 msgid "TRACEBACK: %s"
 msgstr "TRACEBACK: %s"
 
-#: ../satellite_tools/messages.py:30
+#: ../satellite_tools/messages.py:29
 #, python-format
 msgid ""
 "\n"
@@ -953,7 +888,7 @@ msgstr ""
 "CHYBA: vykonanie kroku %s. Chyba je:\n"
 "%s\n"
 
-#: ../satellite_tools/messages.py:37
+#: ../satellite_tools/messages.py:34
 #, python-format
 msgid ""
 "\n"
@@ -970,7 +905,7 @@ msgstr ""
 "       že ich máte všetky a potom iteratívne znovu pripojte a znovu\n"
 "       naplňte dočasné úložisko (%s).\n"
 
-#: ../satellite_tools/messages.py:47
+#: ../satellite_tools/messages.py:42
 #, python-format
 msgid ""
 "\n"
@@ -981,7 +916,7 @@ msgstr ""
 "CHYBA: pri synchronizácii informácií sa vyskytol problém.\n"
 "       Chybová správa: %s\n"
 
-#: ../satellite_tools/messages.py:54
+#: ../satellite_tools/messages.py:47
 #, python-format
 msgid ""
 "\n"
@@ -996,7 +931,7 @@ msgstr ""
 "       základné sieťové pripojenie a/alebo rozlíšenie názvov a skúste znova.\n"
 "       Chybová správa: %s\n"
 
-#: ../satellite_tools/messages.py:63
+#: ../satellite_tools/messages.py:54
 #, python-format
 msgid ""
 "\n"
@@ -1013,7 +948,7 @@ msgstr ""
 "       transakciu:\n"
 "       %s\n"
 
-#: ../satellite_tools/messages.py:73
+#: ../satellite_tools/messages.py:62
 #, python-format
 msgid ""
 "\n"
@@ -1026,120 +961,170 @@ msgstr ""
 "Obráťte sa na svoj kontakt pre SUSE Multi-Linux Manager\n"
 "%s"
 
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  CHYBA: na zariadení nie je dostatok voľného miesta (%s KB)."
-
-#: ../satellite_tools/messages.py:81
+#: ../satellite_tools/messages.py:67
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr "    %3d/%s Stiahnutie úspešné: %s (%s bajtov)"
 
-#: ../satellite_tools/messages.py:82
+#: ../satellite_tools/messages.py:68
 #, python-format
 msgid "    Extinct package:  %s"
 msgstr "    Zaniknutý balík:  %s"
 
-#: ../satellite_tools/messages.py:83
+#: ../satellite_tools/messages.py:69
 #, python-format
 msgid "   Total size: %s"
 msgstr "   Celková veľkosť: %s"
 
-#: ../satellite_tools/messages.py:85
+#: ../satellite_tools/messages.py:71
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
 msgstr "      Stiahnutých %s z %s. Odhadovaný zostávajúci čas: %s"
 
-#: ../satellite_tools/messages.py:87
+#: ../satellite_tools/messages.py:73
 #, python-format
 msgid "    Fetch unsuccessful: %s"
 msgstr "    Stiahnutie neúspešné: %s"
 
-#: ../satellite_tools/messages.py:88
+#: ../satellite_tools/messages.py:74
 #, python-format
 msgid "   RPM fetch summary: %s"
 msgstr "   Zhrnutie stiahnutia RPM: %s"
 
-#: ../satellite_tools/messages.py:89
+#: ../satellite_tools/messages.py:75
 #, python-format
 msgid "       success: %d"
 msgstr "       úspech: %d"
 
-#: ../satellite_tools/messages.py:90
+#: ../satellite_tools/messages.py:76
 #, python-format
 msgid "       failed:  %d"
 msgstr "       neúspešné:  %d"
 
-#: ../satellite_tools/messages.py:91
+#: ../satellite_tools/messages.py:77
 #, python-format
 msgid "       extinct: %d"
 msgstr "       zaniknuté: %d"
 
-#: ../satellite_tools/messages.py:93
+#: ../satellite_tools/messages.py:79
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr "   Získavanie / analyzovanie metadát *relevantných* balíkov: %s (%s)"
 
-#: ../satellite_tools/messages.py:94
+#: ../satellite_tools/messages.py:80
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
 msgstr "   Získavanie / analyzovanie dát tlačových chýb: %s (%s)"
 
-#: ../satellite_tools/messages.py:95
+#: ../satellite_tools/messages.py:81
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
 msgstr "   Získavanie / analyzovanie dát kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:96
+#: ../satellite_tools/messages.py:82
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr "   Získavanie / analyzovanie súborov stromov kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:97
+#: ../satellite_tools/messages.py:83
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
 msgstr "   Importovanie metadát *relevantných* balíkov: %s (%s)"
 
-#: ../satellite_tools/messages.py:98
+#: ../satellite_tools/messages.py:84
 msgid "   * WARNING: this may be a slow process."
 msgstr "   * UPOZORNENIE: toto môže byť pomalý proces."
 
-#: ../satellite_tools/messages.py:99
+#: ../satellite_tools/messages.py:85
 msgid "Linking packages to channels"
 msgstr "Prepojenie balíkov ku kanálom"
 
-#: ../satellite_tools/messages.py:100
+#: ../satellite_tools/messages.py:86
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
 msgstr "   Importovanie *relevantných* tlačových chýb: %s (%s)"
 
-#: ../satellite_tools/messages.py:101
+#: ../satellite_tools/messages.py:87
 msgid "   No new kickstartable tree to import"
 msgstr "   Žiadny nový strom schopný kickstart na import"
 
-#: ../satellite_tools/messages.py:102
+#: ../satellite_tools/messages.py:88
 #, python-format
 msgid "Importing kickstartable trees (%d)"
 msgstr "Importovanie stromov schopných kickstart (%d)"
 
-#: ../satellite_tools/messages.py:103
+#: ../satellite_tools/messages.py:89
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "Importované stromy schopné kickstart (%d)"
 
-#: ../satellite_tools/reposync.py:150
+#: ../satellite_tools/reposync.py:151
 msgid "+++ sending log as an email +++"
 msgstr "+++ odosielanie záznamu ako e-mail +++"
 
-#: ../satellite_tools/reposync.py:153
+#: ../satellite_tools/reposync.py:154
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s sync. správa od %s"
 
-#: ../satellite_tools/reposync.py:163
+#: ../satellite_tools/reposync.py:164
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ požadovaný e-mail, ale nie je čo +++"
+
+#, python-format
+#~ msgid ""
+#~ "IMPORTANT MESSAGE FOLLOWS:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "DÔLEŽITÁ SPRÁVA NASLEDUJE:\n"
+#~ "%s"
+
+#, python-format
+#~ msgid "Username `%s' has not been reserved"
+#~ msgstr "Používateľské meno `%s' nebolo rezervované"
+
+#~ msgid "E-mail address not specified"
+#~ msgstr "E-mailová adresa nie je uvedená"
+
+#, python-format
+#~ msgid "username should be at least %d characters"
+#~ msgstr "používateľské meno by malo mať najmenej %d znakov"
+
+#, python-format
+#~ msgid "username should be less than %d characters"
+#~ msgstr "používateľské meno by malo mať menej ako %d znakov"
+
+#, python-format
+#~ msgid "username = `%s', invalid character `%s'"
+#~ msgstr "používateľské meno = `%s', neplatný znak `%s'"
+
+#, python-format
+#~ msgid "Please limit your e-mail address to %s chars"
+#~ msgstr "Prosím, obmedzte svoju e-mailovú adresu na %s znakov"
+
+#, python-format
+#~ msgid "password must be at least %d characters"
+#~ msgstr "heslo musí mať najmenej %d znakov"
+
+#, python-format
+#~ msgid "Password must be shorter than %d characters"
+#~ msgstr "Heslo musí byť kratšie ako %d znakov"
+
+#, python-format
+#~ msgid "password contains character `%s'"
+#~ msgstr "heslo obsahuje znak `%s'"
+
+#, python-format
+#~ msgid "username should be at least %d characters long"
+#~ msgstr "používateľské meno by malo byť najmenej %d znakov dlhé"
+
+#, python-format
+#~ msgid "Cannot register usernames ending with %s"
+#~ msgstr "Nie je možné zaregistrovať používateľské mená končiace s %s"
+
+#, python-format
+#~ msgid "  ERROR: not enough free space (%s KB) on device."
+#~ msgstr "  CHYBA: na zariadení nie je dostatok voľného miesta (%s KB)."
 
 #, python-format
 #~ msgid "format of %s should be at least YYYYMMDD.\n"
