@@ -39,7 +39,7 @@ def test_server_search(use_key=0):
 
 
 if __name__ == "__main__":
-    initCFG("server.xmlrpc")
+    initCFG("server")
     rhnSQL.initDB("rhnuser/rhnuser@webdev")
 
     # pylint: disable-next=using-constant-test
@@ -107,12 +107,3 @@ if __name__ == "__main__":
         )
     )
     # pprint.pprint(ret)
-
-    server_id = 1002156837
-    channels = rhnChannel.channels_for_server(server_id)
-
-    s = rhnServer.search(server_id)
-    s.change_base_channel("2.1AS-foobar")
-    print([x["label"] for x in channels])
-    print([x["label"] for x in rhnChannel.channels_for_server(server_id)])
-    rhnSQL.commit()

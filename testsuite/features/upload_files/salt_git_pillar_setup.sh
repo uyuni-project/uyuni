@@ -26,6 +26,9 @@ if [ "$1" == "setup" ]; then
 	mkdir $GIT_REPO
 	cd $GIT_REPO
 	git init
+	# the server has no global git identity, "git commit" would exit 128 without one
+	git config user.name "git_pillar test"
+	git config user.email "git_pillar@localhost"
 
 	cat << 'EOF' > top.sls
 base:

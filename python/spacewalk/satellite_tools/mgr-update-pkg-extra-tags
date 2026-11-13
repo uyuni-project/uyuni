@@ -169,7 +169,6 @@ def main(args):
         systemExit(1, 'ERROR: attempting to run more than one instance of '
                       'mgr-refresh-pkg-metadata Exiting.')
 
-    initCFG('server.satellite')
     initCFG('server.susemanager')
     rhnSQL.initDB()
 

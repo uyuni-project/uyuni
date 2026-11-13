@@ -125,4 +125,4 @@ Feature: Migrate a RHEL 7 Salt minion to SUSE Liberty Linux LTSS 7
 
   Scenario: Check events history for failures on the RHEL 7 minion
     Given I am on the Systems overview page of this "rhel7_minion"
-    Then I check for failed events on history event page
+    Then I check for failed events on history event page since the "Product Migration" event

@@ -1,0 +1,3 @@
+- Use a constant for the repository metadata directory instead of
+  the configuration options `taskomatic.repomd_path_prefix` and
+  `repomd_path_prefix`

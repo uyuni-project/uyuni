@@ -111,12 +111,11 @@ sub parse_options {
             "answer-file=s",
             "db-only",
             "scc",
-            "disconnected"
                    );
 
   my $usage = loc("usage: %s %s\n",
                   $0,
-                  "[ --help ] [ --answer-file=<filename> ] [ --skip-initial-configuration ] [ --skip-fqdn-test ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [--scc] [--disconnected]" );
+                  "[ --help ] [ --answer-file=<filename> ] [ --skip-initial-configuration ] [ --skip-fqdn-test ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [--scc]" );
 
   # Terminate if any errors were encountered parsing the command line args:
   my %opts;
@@ -653,6 +652,28 @@ sub backup_file {
     } else {
         print loc("** $dir/$file has been backed up to $file$backup_suffix\n");
     }
+}
+
+# Store configuration values in the rhnConfiguration table.
+# A value matching the default value is stored as NULL.
+sub write_db_config {
+        my $config = shift;
+        my $answers = shift;
+
+        return unless %{$config};
+
+        my $dbh = get_dbh($answers);
+        my $sth = $dbh->prepare(<<EOQ);
+UPDATE rhnConfiguration
+   SET value = CASE WHEN COALESCE(default_value, '') = ? THEN NULL ELSE ? END
+ WHERE key = ?
+EOQ
+        for my $key (sort keys %{$config}) {
+                $sth->execute($config->{$key}, $config->{$key}, $key);
+        }
+        $dbh->commit();
+        $sth->finish;
+        $dbh->disconnect();
 }
 
 # Write subset of $answers to /etc/rhn/rhn.conf.

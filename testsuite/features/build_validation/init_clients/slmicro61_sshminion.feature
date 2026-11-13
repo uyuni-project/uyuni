@@ -7,13 +7,13 @@
 @slmicro61_sshminion
 Feature: Bootstrap a SL Micro 6.1 Salt SSH minion
 
-  Scenario: Clean up sumaform leftovers on a SL Micro SSH 6.1 SSH minion
+  Scenario: Clean up sumaform leftovers on a SL Micro 6.1 Salt SSH minion
     When I perform a full salt minion cleanup on "slmicro61_sshminion"
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Bootstrap a SL Micro 6.1 SSH minion
+  Scenario: Bootstrap a SL Micro 6.1 Salt SSH minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
@@ -33,12 +33,12 @@ Feature: Bootstrap a SL Micro 6.1 Salt SSH minion
     Then I should see "proxy" short hostname
 
 @proxy
-  Scenario: Check registration on proxy of SL Micro 6.1 SSH minion
+  Scenario: Check registration on proxy of SL Micro 6.1 Salt SSH minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "slmicro61_sshminion" hostname
 
-  Scenario: Check events history for failures on SL Micro 6.1 SSH minion
+  Scenario: Check events history for failures on SL Micro 6.1 Salt SSH minion
     Given I am on the Systems overview page of this "slmicro61_sshminion"
     Then I check for failed events on history event page

@@ -40,6 +40,18 @@ Feature: Setup containerized proxy
   Scenario: Reboot the proxy host
     When I reboot the "proxy" host through SSH, waiting until it comes back
 
+@transactional_proxy
+  Scenario: Reboot the proxy host again to activate the registration states
+    When I wait at most 600 seconds until "proxy" is registered and its refreshes are completed
+    And I wait until I see "There is a pending transaction for this system, please reboot it to activate the changes." text, refreshing the page
+    And I wait until no Salt job is running on "proxy"
+    And I reboot the "proxy" host through SSH, waiting until it comes back
+
+@transactional_proxy
+  Scenario: Wait until the registration states are applied on the proxy
+    When I wait until the registration states are applied on "proxy"
+
+@skip_if_transactional_proxy
   Scenario: Wait until the proxy host appears
     When I wait until onboarding is completed for "proxy"
 

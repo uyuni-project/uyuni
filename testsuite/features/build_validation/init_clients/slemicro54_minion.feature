@@ -32,9 +32,17 @@ Feature: Bootstrap a SLE Micro 5.4 Salt minion
     When I reboot the "slemicro54_minion" host through SSH, waiting until it comes back
     Then service "venv-salt-minion" is active on "slemicro54_minion"
 
+  Scenario: Reboot the SLE Micro 5.4 minion again to activate the registration states
+    When I wait at most 600 seconds until "slemicro54_minion" is registered and its refreshes are completed
+    And I wait until I see "There is a pending transaction for this system, please reboot it to activate the changes." text, refreshing the page
+    And I wait until no Salt job is running on "slemicro54_minion"
+    And I reboot the "slemicro54_minion" host through SSH, waiting until it comes back
+
+  Scenario: Wait until the registration states are applied on the SLE Micro 5.4 minion
+    When I wait until the registration states are applied on "slemicro54_minion"
+
   Scenario: Check the new bootstrapped SLE Micro 5.4 minion in System Overview page
-    When I wait until onboarding is completed for "slemicro54_minion"
-    And I follow the left menu "Salt > Keys"
+    When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     And the Salt master can reach "slemicro54_minion"
 

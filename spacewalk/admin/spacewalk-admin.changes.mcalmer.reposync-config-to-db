@@ -1,0 +1,1 @@
+- Move the reposync settings from `rhn.conf` into the database

@@ -1,0 +1,2 @@
+- Write the global key `default_mail_from` instead of
+  `web.default_mail_from`

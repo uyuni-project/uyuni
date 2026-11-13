@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.audit.ScapManager;
 
+import com.suse.manager.webui.utils.ScapUtils;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.State;
@@ -60,8 +61,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
@@ -143,16 +142,8 @@ public class ScapAction extends Action {
      */
     private Map<LocalCall<?>, List<MinionSummary>> buildSaltCallsEnhanced(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        Map<String, Object> pillar = new HashMap<>();
-
-        Matcher profileMatcher = Pattern.compile("--profile (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher ruleMatcher = Pattern.compile("--rule (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file (([\\w./-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher tailoringIdMatcher = Pattern.compile("--tailoring-profile-id (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
+        Map<String, Object> pillar = new HashMap<>(
+                ScapUtils.parseOscapParameters(scapActionDetails.getParametersContents()));
 
         // Old parameters for backward compatibility
         String oldParameters = "eval " +
@@ -187,30 +178,6 @@ public class ScapAction extends Action {
         if (scapActionDetails.getOvalfiles() != null) {
             pillar.put("ovalfiles", Arrays.stream(scapActionDetails.getOvalfiles().split(","))
                     .map(String::trim).collect(toList()));
-        }
-
-        // tailoring_profile_id takes precedence over profile
-        // Both end up setting the 'profile' pillar value
-        if (tailoringIdMatcher.find()) {
-            pillar.put("profile", tailoringIdMatcher.group(1));
-        }
-        else if (profileMatcher.find()) {
-            pillar.put("profile", profileMatcher.group(1));
-        }
-
-        if (ruleMatcher.find()) {
-            pillar.put("rule", ruleMatcher.group(1));
-        }
-        if (tailoringFileMatcher.find()) {
-            String tailoringPath = tailoringFileMatcher.group(1);
-            String tailoringFilename = new File(tailoringPath).getName();
-            pillar.put("tailoring_filename", tailoringFilename);
-        }
-        if (scapActionDetails.getParametersContents().contains("--fetch-remote-resources")) {
-            pillar.put("fetch_remote_resources", true);
-        }
-        if (scapActionDetails.getParametersContents().contains("--remediate")) {
-            pillar.put("remediate", true);
         }
 
         ret.put(State.apply(singletonList("scap.scan"),

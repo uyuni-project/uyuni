@@ -1,0 +1,4 @@
+- Fall back to the default value for configuration values stored
+  in the database when no value is set
+- Fix storing the default organization for externally authenticated
+  users in the web UI

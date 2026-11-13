@@ -89,8 +89,9 @@ public class OVALCachingFactory extends HibernateFactory {
      * Extracts and save the list of vulnerable packages from {@code rootType}
      *
      * @param rootType the OVAL root to extract from
+     * @return the number of vulnerable package entries saved
      * */
-    public static void savePlatformsVulnerablePackages(OvalRootType rootType) {
+    public static int savePlatformsVulnerablePackages(OvalRootType rootType) {
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "add_product_vulnerable_package");
 
         OVALResourcesCache ovalResourcesCache = new OVALResourcesCache(rootType);
@@ -106,6 +107,7 @@ public class OVALCachingFactory extends HibernateFactory {
                 productVulnerablePackages.addAll(vPackage.extract()));
         }
 
+        int totalSaved = 0;
         // Write OVAL metadata in batches
         DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(1000));
         for (ProductVulnerablePackages pvp : productVulnerablePackages) {
@@ -123,6 +125,7 @@ public class OVALCachingFactory extends HibernateFactory {
                     params.put("fix_type", vp.getFixVersion().map(PackageEvr::getType).orElse(null));
 
                     batch.add(params);
+                    totalSaved++;
 
                     if (batch.size() % 1000 == 0) {
                         mode.getQuery().executeBatchUpdates(batch);
@@ -139,6 +142,8 @@ public class OVALCachingFactory extends HibernateFactory {
         }
 
         mode.getQuery().executeBatchUpdates(new DataResult<>(batch));
+
+        return totalSaved;
     }
 
     /**

@@ -8,8 +8,9 @@ Feature: Migrate a SLE Micro 5.4 Salt minion to SLE Micro 5.5
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Prerequisite: update OS zypper to the latest version
+  Scenario: Prerequisite: update zypper and venv-salt-minion to the latest version
     When I upgrade "zypper" on "slemicro54_minion" using the API
+    And I upgrade "venv-salt-minion" on "slemicro54_minion" using the API if needed
 
   Scenario: Prerequisite: Reboot the slemicro 5.4 after updating zypper
     When I reboot the "slemicro54_minion" host through SSH, waiting until it comes back
@@ -22,6 +23,7 @@ Feature: Migrate a SLE Micro 5.4 Salt minion to SLE Micro 5.5
     And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" text
     And I click on "Select Channels"
     When I select the channel "Custom Channel for slemicro55_minion"
+    And I select the channel "ManagerTools-SLE-Micro5-Pool for x86_64 5.5"
     And I check "allowVendorChange"
     And I click on "Schedule Migration"
     Then I should see a "Product Migration - Confirm" text
@@ -51,4 +53,4 @@ Feature: Migrate a SLE Micro 5.4 Salt minion to SLE Micro 5.5
 
   Scenario: Check events history for failures on the SLE Micro minion
     Given I am on the Systems overview page of this "slemicro54_minion"
-    Then I check for failed events on history event page
+    Then I check for failed events on history event page since the "Product Migration" event

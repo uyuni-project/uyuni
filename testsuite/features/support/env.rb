@@ -73,6 +73,9 @@ $default_local_storage_class = ENV.fetch('LOCAL_PATH_DEFAULT_CLASS', true) if EN
 $stdout.sync = true
 STARTTIME = Time.now.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
+# Seconds a page reload waits for a "leave page" dialog that usually never appears.
+# Independent of CAPYBARA_TIMEOUT, otherwise every refresh would last that long.
+REFRESH_DIALOG_WAIT = 3
 # Layer 3 per-scenario watchdog ceiling (see the Around hook below). Backstop against hangs that
 # Ruby's Timeout.timeout cannot interrupt (e.g. a blocked Playwright pipe call).
 # Regular scenarios are expected to finish well under 30 min; default the ceiling to 40 min.
@@ -470,6 +473,32 @@ Before('@skip_known_issue') do
   raise Core::Test::Result::Failed, 'This scenario is known to fail, skipping it'
 end
 
+# Smoke tests: a client whose scenarios fail slowly twice in a row (a step wait of ~500 s expired each time) is
+# dead. Skip the rest of that feature instead of spending a full wait on every remaining scenario.
+SMOKE_SLOW_FAILURE_SECONDS = 300
+SMOKE_SLOW_FAILURES_BEFORE_SKIP = 2
+$smoke_slow_failures = Hash.new(0)
+
+After do |scenario|
+  feature_file = scenario.location.file
+  next unless feature_file.include?('/smoke_tests/')
+
+  if scenario.failed?
+    elapsed = Time.now.to_i - (@scenario_start_time || Time.now.to_i)
+    $smoke_slow_failures[feature_file] += 1 if elapsed >= SMOKE_SLOW_FAILURE_SECONDS
+  elsif scenario.passed?
+    $smoke_slow_failures[feature_file] = 0
+  end
+end
+
+Before do |scenario|
+  feature_file = scenario.location.file
+  next unless $smoke_slow_failures[feature_file] >= SMOKE_SLOW_FAILURES_BEFORE_SKIP
+
+  log "Skipping: #{SMOKE_SLOW_FAILURES_BEFORE_SKIP} scenarios of this feature already failed after a long wait"
+  skip_this_scenario
+end
+
 # Create a user for each feature
 Before('not @no_user_creation') do |scenario|
   feature_path = scenario.location.file
@@ -820,6 +849,37 @@ Before('@sles161_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles161_sshminion']
 end
 
+# The SLES for SAP 15 minions are converted from a plain SLES 15 minion, so both variables are needed.
+# A missing SAP variable is a legitimate skip (parallel stages unset the other minions), but the SAP
+# variable set without its base one is a broken setup that would silently skip everything and pass.
+def skip_unless_sap15_base_available(sap_host, base_host)
+  return skip_this_scenario unless ENV.key?(ENV_VAR_BY_HOST[sap_host])
+
+  return if ENV.key?(ENV_VAR_BY_HOST[base_host])
+
+  raise "#{ENV_VAR_BY_HOST[sap_host]} is set but #{ENV_VAR_BY_HOST[base_host]} is not: #{sap_host} needs #{base_host} to be converted to SLES for SAP"
+end
+
+Before('@slesforsap15sp5_minion') do
+  skip_unless_sap15_base_available('slesforsap15sp5_minion', 'sles15sp5_minion')
+end
+
+Before('@slesforsap15sp6_minion') do
+  skip_unless_sap15_base_available('slesforsap15sp6_minion', 'sles15sp6_minion')
+end
+
+Before('@slesforsap15sp7_minion') do
+  skip_unless_sap15_base_available('slesforsap15sp7_minion', 'sles15sp7_minion')
+end
+
+Before('@slesforsap160_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slesforsap160_minion']
+end
+
+Before('@slesforsap161_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slesforsap161_minion']
+end
+
 Before('@opensuse161arm_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse161arm_minion']
 end
@@ -970,8 +1030,20 @@ Before('@skip_for_rhel10') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'rhel10'
 end
 
+Before('@skip_for_opensuse161') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'opensuse161'
+end
+
+Before('@skip_for_sles161') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'sles161'
+end
+
+Before('@skip_for_slesforsap161') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'slesforsap161'
+end
+
 Before('@skip_for_rhel10_like') do |scenario|
-  rhel10_minion_tags = %w[@alma10_minion @alma10_sshminion @oracle10_minion @oracle10_sshminion @rhel10_minion @rhel10_sshminion @rocky10_minion @rocky10_sshminion]
+  rhel10_minion_tags = %w[@alma10_minion @alma10_sshminion @liberty10_minion @liberty10_sshminion @oracle10_minion @oracle10_sshminion @rhel10_minion @rhel10_sshminion @rocky10_minion @rocky10_sshminion]
   skip_this_scenario if rhel10_minion_tags.any? { |tag| scenario.source_tag_names.include?(tag) }
 end
 

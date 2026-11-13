@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fakeipmi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fakeipmi
+  template:
+    metadata:
+      labels:
+        app: fakeipmi
+    spec:
+      containers:
+        - name: fakeipmi
+          image: ghcr.io/uyuni-project/uyuni/ci-fakeipmi:master
+          ports:
+            - containerPort: 623
+              protocol: UDP
+            - containerPort: 9002
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fakeipmi
+spec:
+  selector:
+    app: fakeipmi
+  ports:
+    - name: ipmi
+      port: 623
+      protocol: UDP
+    - name: console
+      port: 9002
+      protocol: TCP

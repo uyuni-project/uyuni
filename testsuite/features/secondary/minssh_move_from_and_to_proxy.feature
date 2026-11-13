@@ -52,15 +52,14 @@ Feature: Move a SSH minion from a proxy to direct connection
 
   Scenario: Change from proxy to direct connection
     Given I am on the Systems overview page of this "sshminion"
-    When I follow "Details" in the content area
+    When I store the current last event id for "sshminion"
+    And I follow "Details" in the content area
     And I follow "Connection" in the content area
     And I follow "Change" in the content area
     And I select "None" from "proxies"
     And I click on "Change Proxy"
     And I wait until I see "scheduled" text
-    And I follow "Events"
-    And I follow "History"
-    And I wait until I see the event "Apply states [channels] scheduled" completed during last minute, refreshing the page
+    Then I wait until a new "Apply states [channels] scheduled" event is completed for "sshminion"
 
   Scenario: Check direct connection
     Given I am on the Systems overview page of this "sshminion"
@@ -69,18 +68,15 @@ Feature: Move a SSH minion from a proxy to direct connection
     Then I should see a "This system connects directly and not through a Proxy" text
 
   Scenario: Change connection to a proxy
-    # be sure that the old events are older than 1 minute
-    Given I wait for "120" seconds
     Given I am on the Systems overview page of this "sshminion"
-    When I follow "Details" in the content area
+    When I store the current last event id for "sshminion"
+    And I follow "Details" in the content area
     And I follow "Connection" in the content area
     And I follow "Change" in the content area
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Change Proxy"
     And I wait until I see "scheduled" text
-    And I follow "Events"
-    And I follow "History"
-    And I wait until I see the event "Apply states [channels] scheduled" completed during last minute, refreshing the page
+    Then I wait until a new "Apply states [channels] scheduled" event is completed for "sshminion"
 
   Scenario: Check registration on proxy of minion
     Given I am on the Systems overview page of this "proxy"

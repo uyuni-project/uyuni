@@ -575,8 +575,7 @@ public class UserManager extends BaseManager {
     private static User performLoginActions(User user) {
         user.setLastLoggedIn(new Date());
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        boolean keepTempRoles = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES)
-                .getValue();
+        boolean keepTempRoles = factory.getBoolean(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES);
         if (!keepTempRoles) {
             // delete all temporary roles
             UserManager.resetTemporaryRoles(user, new HashSet<>());

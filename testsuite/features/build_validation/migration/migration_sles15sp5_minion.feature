@@ -11,14 +11,15 @@ Feature: Migrate a SLES 15 SP5 Salt minion to SLES 16.1
   Scenario: Prerequisite: update OS zypper to the latest version
     When I upgrade "zypper" on "sles15sp5_minion" using the API
     And I upgrade all packages on "sles15sp5_minion" using the API, waiting at most 1800 seconds
+    And I reboot the "sles15sp5_minion" host through SSH, waiting until it comes back
 
   Scenario: Migrate this minion to SLES 16.1
     Given I am on the Systems overview page of this "sles15sp5_minion"
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
-    And I wait until I see "SUSE Linux Enterprise Server 16.1 x86_64 (BETA)" text
-    And I choose "SUSE Linux Enterprise Server 16.1 x86_64 (BETA)" radio button
+    And I wait until I see "SUSE Linux Enterprise Server 16.1 x86_64" text
+    And I choose "SUSE Linux Enterprise Server 16.1 x86_64" radio button
     And I click on "Select Channels"
     When I select the channel "Custom Channel for sles161_minion"
     And I check "allowVendorChange"
@@ -42,4 +43,4 @@ Feature: Migrate a SLES 15 SP5 Salt minion to SLES 16.1
 
   Scenario: Check events history for failures on the migrated SLES minion
     Given I am on the Systems overview page of this "sles15sp5_minion"
-    Then I check for failed events on history event page
+    Then I check for failed events on history event page since the "Product Migration" event

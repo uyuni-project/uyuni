@@ -89,8 +89,7 @@ There are also hints about [Pitfalls](documentation/pitfalls.md) when writing co
   - [`master`](https://github.com/uyuni-project/uyuni)
 - Release (to be run against a nightly or released *tagged* version of Multi-Linux Manager):
   - [`Manager-5.1`](https://github.com/SUSE/spacewalk/tree/Manager-5.1)
-  - [`Manager-5.0`](https://github.com/SUSE/spacewalk/tree/Manager-5.0)
-  - [`Manager-4.3`](https://github.com/SUSE/spacewalk/tree/Manager-4.3)
+  - [`Manager-5.2`](https://github.com/SUSE/spacewalk/tree/Manager-5.2)
 
 ## Dummy packages used by the test suite
 

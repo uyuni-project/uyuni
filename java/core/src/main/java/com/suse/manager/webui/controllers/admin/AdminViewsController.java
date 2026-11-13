@@ -46,6 +46,7 @@ import com.suse.manager.webui.controllers.admin.beans.HubDetailsData;
 import com.suse.manager.webui.controllers.admin.beans.MigrationEntryDto;
 import com.suse.manager.webui.controllers.admin.beans.PeripheralDetailsData;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
+import com.suse.manager.webui.controllers.admin.service.ServerSettingsService;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.AccessGroupJson;
 import com.suse.manager.webui.utils.gson.AccessGroupUserJson;
@@ -102,6 +103,8 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/config/password-policy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
+        get("/manager/admin/config/server-settings",
+                withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::showServerSettings))), jade);
         get("/manager/admin/access-control",
                 withUserPreferences(withCsrfToken(withUser(AdminViewsController::accessControl))), jade);
         get("/manager/admin/access-control/create-access-group",
@@ -160,6 +163,19 @@ public class AdminViewsController {
         data.put("policy", GSON.toJson(pc));
         data.put("defaults", GSON.toJson(defaults));
         return new ModelAndView(data, "controllers/admin/templates/password-policy.jade");
+    }
+
+    /**
+     * Show server settings tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView showServerSettings(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("settings", GSON.toJson(new ServerSettingsService().list()));
+        return new ModelAndView(data, "controllers/admin/templates/server-settings.jade");
     }
 
     /**

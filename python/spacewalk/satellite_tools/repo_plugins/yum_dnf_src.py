@@ -38,6 +38,8 @@ from spacewalk.common.rhnConfig import cfg_component
 # pylint: disable-next=unused-import
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import CACHE_DIR, ContentPackage
+from spacewalk.server.db_config import DB_CFG
+from spacewalk.server.rhnLib import PACKAGE_DIR
 from spacewalk.satellite_tools.repo_plugins.yum_src import (
     ContentSource as zypper_ContentSource,
 )
@@ -51,7 +53,6 @@ from spacewalk.satellite_tools.repo_plugins.yum_src import (
 
 # pylint: disable-next=unused-import
 from urllib.parse import urlparse, urlsplit, urlunparse
-
 
 YUMSRC_CONF = "/etc/rhn/spacewalk-repo-sync/yum.conf"
 
@@ -144,11 +145,10 @@ class ContentSource(zypper_ContentSource):
 
         # read the proxy configuration
         # /etc/rhn/rhn.conf has more priority than yum.conf
-        # pylint: disable-next=invalid-name
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server"):
             # keep authtokens for mirroring
             # pylint: disable-next=invalid-name,unused-variable
-            (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
+            _scheme, _netloc, _path, query, _fragid = urlsplit(url)
             if query:
                 self.authtoken = query
 
@@ -191,14 +191,15 @@ class ContentSource(zypper_ContentSource):
             # configure network connection
             try:
                 # bytes per second
-                self.minrate = int(CFG.REPOSYNC_MINRATE)
-            except ValueError:
+                self.minrate = int(DB_CFG.REPOSYNC_MINRATE)
+            except (TypeError, ValueError):
                 self.minrate = 1000
             try:
                 # seconds
-                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
-            except ValueError:
+                self.timeout = int(DB_CFG.REPOSYNC_TIMEOUT)
+            except (TypeError, ValueError):
                 self.timeout = 300
+            self.urlgrabber_logspec = DB_CFG.URLGRABBER_LOGSPEC
 
             self.repo = self.dnfbase.repos[self.repoid]
             self.get_metadata_paths()
@@ -219,11 +220,11 @@ class ContentSource(zypper_ContentSource):
         repo.mirrorlist = self.url
         repo.baseurl = [self.url]
         # pylint: disable-next=invalid-name
-        with cfg_component("server.satellite") as CFG:
-            pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, "stage")
+        with cfg_component("server") as CFG:
+            pkgdir = os.path.join(CFG.MOUNT_POINT, PACKAGE_DIR, self.org, "stage")
         if not os.path.isdir(pkgdir):
             # pylint: disable-next=invalid-name
-            with cfg_component("server.satellite") as CFG:
+            with cfg_component("server") as CFG:
                 fileutils.makedirs(pkgdir, user=CFG.httpd_user, group=CFG.httpd_group)
         repo.pkgdir = pkgdir
         repo.sslcacert = ca_cert_file

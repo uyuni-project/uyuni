@@ -237,7 +237,7 @@ end
 def refresh_page
   # A bare reload usually fires no JS prompt, so bound the wait: the Playwright driver passes
   # this straight to the modal future and value!(nil) would otherwise block forever.
-  accept_prompt(wait: Capybara.default_max_wait_time) do
+  accept_prompt(wait: REFRESH_DIALOG_WAIT) do
     execute_script 'window.location.reload()'
   end
 rescue Capybara::ModalNotFound
@@ -296,7 +296,14 @@ def click_link_and_wait(locator = nil, force: false, **options)
       pw_page.get_by_role('link', name: locator, exact: false).first.click(force: true)
     end
   else
-    click_link(locator, **options)
+    begin
+      click_link(locator, **options)
+    rescue Playwright::Error => e
+      # The element was re-rendered (e.g. a React tab) between lookup and click: look it up again, once
+      raise unless e.message.include?('not attached to the DOM')
+
+      click_link(locator, **options)
+    end
   end
   wait_for_page_transition
 end
@@ -365,7 +372,7 @@ end
 def suse_host?(name, runs_in_container: true)
   node = get_target(name)
   os_family = runs_in_container ? node.os_family : node.local_os_family
-  %w[sles opensuse opensuse-tumbleweed opensuse-leap sle-micro suse-microos opensuse-leap-micro].include? os_family
+  %w[sles opensuse opensuse-tumbleweed opensuse-leap sle-micro sl-micro suse-microos opensuse-leap-micro].include? os_family
 end
 
 # Determines if the given host name is a SLE/SL Micro host.
@@ -937,7 +944,7 @@ end
 # This method handles the lifecycle of channel synchronization by:
 # 1 Initializing shared context variables (idempotent).
 # 2 Calculating a cumulative timeout: Sum of (channel_timeouts) + 900s flat margin.
-# 3 Polling the system until packages are downloaded and repomd.xml exists, or the timeout expires.
+# 3 Polling the system until packages are downloaded and the channel metadata exists, or the timeout expires.
 # 4 Updating a global 'channels_timeout' budget used by the step solving packages dependencies for each channel
 #
 # @param channels [String, Array<String>] A single channel name or an array of channel names.
@@ -973,13 +980,13 @@ def wait_for_channels(channels, label, host: 'server', margin: 900)
         log "#{time_spent / 60}m / #{timeout / 60}m waiting for #{label} synchronization"
       end
       sleep checking_rate
-      "channels #{channels.join(', ')} not synced: packages not downloaded or repomd.xml missing on #{host}"
+      "channels #{channels.join(', ')} not synced: packages not downloaded or metadata missing on #{host}"
     end
   rescue StandardError => e
     log "Failed channels for #{label}: #{channels}. #{e.message}"
-    missing = channels.select { |c| c.include?('custom_channel') && !repomd_present?(c, host) }
+    missing = channels.select { |c| c.include?('custom_channel') && !channel_metadata_present?(c, host) }
     unless missing.empty?
-      paths = missing.map { |c| "/var/cache/rhn/repodata/#{c}/repomd.xml" }
+      paths = missing.map { |c| "/var/cache/rhn/repodata/#{c}/#{channel_metadata_file(c)}" }
       e = e.class.new("#{e.message} (missing on #{host}: #{paths.join(', ')})")
     end
     # Cleanup: Remove failed channels from the solving queue
@@ -998,10 +1005,21 @@ end
 #
 # @param channel_name [String] the label of the channel
 # @param host [String] the target node
-# @return [Boolean] true if /var/cache/rhn/repodata/<label>/repomd.xml exists
-def repomd_present?(channel_name, host)
-  _out, code = get_target(host).run("test -f /var/cache/rhn/repodata/#{channel_name}/repomd.xml", check_errors: false)
+# @return [Boolean] true if the metadata file of the channel exists and is not empty
+def channel_metadata_present?(channel_name, host)
+  repodata = "/var/cache/rhn/repodata/#{channel_name}"
+  check = channel_metadata_file(channel_name) == 'Release' ? "test -s #{repodata}/Release && test -e #{repodata}/Packages" : "test -f #{repodata}/repomd.xml"
+  _out, code = get_target(host).run(check, check_errors: false)
   code.zero?
+end
+
+# Name of the file proving the repository metadata of a channel was generated
+#
+# @param channel_name [String] the label of the channel
+# @return [String] 'Release' for the custom channel of a Debian-based client, 'repomd.xml' otherwise
+def channel_metadata_file(channel_name)
+  client = channel_name.delete_prefix('custom_channel_')
+  channel_name.start_with?('custom_channel_') && ENV_VAR_BY_HOST.key?(client) && ENV.key?(ENV_VAR_BY_HOST[client]) && deb_host?(client) ? 'Release' : 'repomd.xml'
 end
 
 # This method checks if the channel with the given label has been fully synced
@@ -1070,8 +1088,8 @@ def channel_packages_are_downloaded?(channel_name, host = 'server')
     log "DEBUG: Found 'Sync of channel completed.' for #{channel_name} at line #{i + 1}."
     # Only custom channels are checked: that is the case that failed (metadata generated after the sync,
     # clients got a 403/404 on repomd.xml); vendor channels are not verified to always have repodata.
-    if channel_name.include?('custom_channel') && !repomd_present?(channel_name, host)
-      log "DEBUG: #{channel_name} is synced but its repomd.xml is missing on #{host}."
+    if channel_name.include?('custom_channel') && !channel_metadata_present?(channel_name, host)
+      log "DEBUG: #{channel_name} is synced but its #{channel_metadata_file(channel_name)} is missing on #{host}."
       return false
     end
     log "SUCCESS: #{channel_name} is fully synchronized."

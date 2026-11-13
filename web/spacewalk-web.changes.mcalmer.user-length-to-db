@@ -1,0 +1,2 @@
+- Remove `web.max_user_len` from `rhn_web.conf`. The limit moved
+  into the database

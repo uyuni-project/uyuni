@@ -269,7 +269,7 @@ def main():
     # Apparently we need to call initCFG and have CFG available
     # to prevent some errors accessing CFG later on during package
     # import.
-    initCFG("server.satellite")
+    initCFG("server")
     CFG.set("DEBUG", log_level)
     CFG.set("TRACEBACK_MAIL", options.traceback_mail or CFG.TRACEBACK_MAIL)
 

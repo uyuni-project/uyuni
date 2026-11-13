@@ -34,6 +34,8 @@ from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.server import rhnSQL
+from spacewalk.server.db_config import DB_CFG
+from spacewalk.server.rhnLib import PACKAGE_DIR
 from spacewalk.common import repo
 
 try:
@@ -424,7 +426,7 @@ class ContentSource:
 
         # read the proxy configuration in /etc/rhn/rhn.conf
         # pylint: disable-next=invalid-name
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
             self.authtoken = None
 
@@ -435,22 +437,20 @@ class ContentSource:
             # configure network connection
             try:
                 # bytes per second
-                self.minrate = int(CFG.REPOSYNC_MINRATE)
-            except ValueError:
+                self.minrate = int(DB_CFG.REPOSYNC_MINRATE)
+            except (TypeError, ValueError):
                 self.minrate = 1000
             try:
                 # seconds
-                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
-            except ValueError:
+                self.timeout = int(DB_CFG.REPOSYNC_TIMEOUT)
+            except (TypeError, ValueError):
                 self.timeout = 300
+            self.urlgrabber_logspec = DB_CFG.URLGRABBER_LOGSPEC
 
-            try:
-                # extended reposync nevra filter enable
-                # this will filter packages based on full nevra
-                # instead of package name only.
-                self.nevra_filter = bool(CFG.REPOSYNC_NEVRA_FILTER)
-            except (AttributeError, ValueError):
-                self.nevra_filter = False
+            # extended reposync nevra filter enable
+            # this will filter packages based on full nevra
+            # instead of package name only.
+            self.nevra_filter = DB_CFG.get_bool("REPOSYNC_NEVRA_FILTER")
 
             # SUSE vendor repositories belongs to org = NULL
             # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
@@ -458,7 +458,7 @@ class ContentSource:
             self.repo = DebRepo(
                 url,
                 root,
-                os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, "stage"),
+                os.path.join(CFG.MOUNT_POINT, PACKAGE_DIR, self.org, "stage"),
                 self.proxy_addr,
                 self.proxy_user,
                 self.proxy_pass,
@@ -658,9 +658,7 @@ class ContentSource:
         params["proxies"] = get_proxies(
             self.repo.proxy, self.repo.proxy_username, self.repo.proxy_password
         )
-        # pylint: disable-next=invalid-name
-        with cfg_component("server.satellite") as CFG:
-            params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
+        params["urlgrabber_logspec"] = self.urlgrabber_logspec
 
     @staticmethod
     def get_file(path, local_base=None):

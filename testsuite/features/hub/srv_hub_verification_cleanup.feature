@@ -37,6 +37,7 @@ Feature: Hub peripheral deregistration and state cleanup
     Then the Hub Details page on "peripheral1" should be empty
 
   Scenario: Verify peripheral1 no longer appears in hub peripherals list after peripheral-side deregistration
+    Given I am authorized for the "Admin" section on "server"
     Then I should not see "peripheral1" in peripherals list on hub
 
   Scenario: Verify previously synced channels still exist on peripheral1 after deregistration

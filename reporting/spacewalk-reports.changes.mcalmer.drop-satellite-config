@@ -1,0 +1,2 @@
+- Read the configuration of the `server` component instead of
+  `server.satellite`

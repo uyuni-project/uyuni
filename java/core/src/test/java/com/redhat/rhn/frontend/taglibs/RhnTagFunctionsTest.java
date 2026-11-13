@@ -16,8 +16,11 @@
  */
 package com.redhat.rhn.frontend.taglibs;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -38,6 +41,12 @@ public class RhnTagFunctionsTest extends BaseTestCase {
     @Test
     public void testConfig() {
         assertNotNull(RhnTagFunctions.getConfig("web.version"));
+    }
+
+    @Test
+    public void testDbConfig() {
+        RhnConfigurationFactory.getSingleton().setValue(RhnConfiguration.KEYS.USER_LOGIN_LENGTH_MAX, 42);
+        assertEquals("42", RhnTagFunctions.getDbConfig("USER_LOGIN_LENGTH_MAX"));
     }
 
     @Test

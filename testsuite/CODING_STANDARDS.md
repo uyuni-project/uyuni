@@ -73,6 +73,15 @@ Mechanical rules live in tooling, not here: RuboCop (`testsuite/.rubocop.yml`, r
 - Code loaded outside Cucumber (`Rakefile`, `ext-tools`) requires everything it calls. `ruby -c` does not catch a missing `require`.
 - Optional roles can be defined alone (only `PROXY2`) or be absent from a lookup table. Guard the nil lookup and do not gate generation on the generic role.
 
+## Licensing headers (REUSE)
+
+CI runs `reuse lint`; every file needs a copyright and an `SPDX-License-Identifier`.
+
+- Start a new `.rb`, `.feature` or script with `# Copyright (c) <year> SUSE LLC.` and `# SPDX-License-Identifier: MIT`, below any shebang. The classic copyright line is enough, so `SPDX-FileCopyrightText` is not needed. Do not write the old "Licensed under the terms of the MIT license" line.
+- A file that cannot hold comments (JSON, fixtures, binaries) gets no header. Add it to a `[[annotations]]` glob in the root `REUSE.toml`, extending an existing entry with the same license and holder. No `.license` sidecar.
+- Third-party code under `features/upload_files/` keeps its upstream license, recorded in `REUSE.toml`.
+- Run `reuse lint` from the repository root if installed. Otherwise say it was left to CI.
+
 ## Before pushing
 
 - Run `bundle exec rubocop features Rakefile ext-tools`. CI runs the same command and #12615 reached review with 14 offenses.

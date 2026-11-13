@@ -30,6 +30,7 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.server.rhnPackage import unlink_package_file
+from spacewalk.server.rhnLib import REPOMD_PATH_PREFIX
 from spacewalk.server import rhnSQL
 
 
@@ -430,7 +431,7 @@ def __rmtree_error(op, name, exc):
 
 
 def __deleteRepoData(labels):
-    directory = "/var/cache/" + CFG.repomd_path_prefix
+    directory = os.path.join(CFG.REPOMD_CACHE_MOUNT_POINT, REPOMD_PATH_PREFIX)
     for label in labels:
         if os.path.isdir(directory + "/" + label):
             # pylint: disable-next=deprecated-argument

@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2004 SUSE LLC
+# Copyright (c) 2022-2026 SUSE LLC
 # SPDX-License-Identifier: MIT
 # This feature depends on:
 # - features/secondary/srv_monitoring.feature: as this feature disables/re-enables monitoring capabilities

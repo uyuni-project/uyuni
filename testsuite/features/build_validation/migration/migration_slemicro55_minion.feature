@@ -8,8 +8,9 @@ Feature: Migrate a SLE Micro 5.5 Salt minion to SL Micro 6.2
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Prerequisite: update OS zypper to the latest version
+  Scenario: Prerequisite: update zypper and venv-salt-minion to the latest version
     When I upgrade "zypper" on "slemicro55_minion" using the API
+    And I upgrade "venv-salt-minion" on "slemicro55_minion" using the API if needed
 
   Scenario: Prerequisite: Reboot the slemicro 5.5 after updating zypper
     When I reboot the "slemicro55_minion" host through SSH, waiting until it comes back
@@ -53,4 +54,4 @@ Feature: Migrate a SLE Micro 5.5 Salt minion to SL Micro 6.2
 
   Scenario: Check events history for failures on the SLE Micro minion
     Given I am on the Systems overview page of this "slemicro55_minion"
-    Then I check for failed events on history event page
+    Then I check for failed events on history event page since the "Product Migration" event

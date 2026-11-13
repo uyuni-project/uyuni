@@ -17,29 +17,16 @@
 package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageType;
-import com.redhat.rhn.domain.state.PackageState;
-import com.redhat.rhn.domain.state.PackageStates;
-import com.redhat.rhn.domain.state.VersionConstraints;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 /**
  * JSON representation of a package state.
  */
 public class PackageStateJson {
-
-    /** Logger */
-    private static final Logger LOG = LogManager.getLogger(PackageStateJson.class);
 
     /** Name of the package */
     private final String name;
@@ -153,47 +140,6 @@ public class PackageStateJson {
      */
     public Optional<Integer> getVersionConstraintId() {
         return versionConstraintId;
-    }
-
-    /**
-     * Convert this object into a {@link PackageState} object to be persisted.
-     * @param type the package type (RPM or DEB)
-     * @return this object as a PackageState
-     */
-    public Optional<PackageState> convertToPackageState(PackageType type) {
-        Optional<PackageStates> state = getPackageStateId().flatMap(PackageStates::byId);
-
-        // Create the return object only if we have a valid state
-        return state.flatMap(ps -> {
-            PackageState packageState = new PackageState();
-            packageState.setPackageState(ps);
-            packageState.setName(PackageManager.lookupPackageName(getName()));
-            packageState.setArch(PackageFactory.lookupPackageArchByLabel(getArch()));
-
-            // Some package states *require* a version constraint
-            Optional<VersionConstraints> versionConstraint = getVersionConstraintId()
-                    .flatMap(VersionConstraints::byId);
-
-            if (PackageStates.requiresVersionConstraint(ps)) {
-                if (versionConstraint.isPresent()) {
-                    VersionConstraints vc = versionConstraint.get();
-                    if (!Arrays.asList(VersionConstraints.LATEST, VersionConstraints.ANY)
-                            .contains(vc)) {
-                        packageState.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release, type));
-                    }
-                    packageState.setVersionConstraint(vc);
-                }
-                else {
-                    LOG.error("Version constraint required for {}: {}", ps, packageState.getName());
-                    return Optional.empty();
-                }
-            }
-            else {
-               packageState.setVersionConstraint(
-                       versionConstraint.orElse(VersionConstraints.LATEST));
-            }
-            return Optional.of(packageState);
-        });
     }
 
     /**

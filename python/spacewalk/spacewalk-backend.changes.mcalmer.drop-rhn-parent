@@ -1,0 +1,3 @@
+- Remove the unused ISSv1 modules `xmlWireSource` and `connection`
+  and the configuration options `rhn_parent`, `ca_chain` and
+  `sync_to_temp`

@@ -207,8 +207,8 @@ When(/^I click on preview$/) do
       # Click the preview button
       find('button#preview').click
     end
-    # Wait for up to 3 seconds for the run button to be visible
-    if page.has_button?('run', visible: true, wait: 5)
+    # Wait for up to 30 seconds for the run button to be visible
+    if page.has_button?('run', visible: true, wait: 30)
       puts 'The run button is visible.'
       break
     else

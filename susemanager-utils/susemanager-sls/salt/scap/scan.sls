@@ -50,16 +50,40 @@ mgr_scap:
         report: report.html
         oval_results: True
         {%- if "profile" in pillar.get('mgr_scap_params') %}
-        profile: {{ pillar['mgr_scap_params']['profile'] }}
+        profile: {{ pillar['mgr_scap_params']['profile'] | json }}
         {%- endif %}
         {%- if "rule" in pillar.get('mgr_scap_params') %}
-        rule: {{ pillar['mgr_scap_params']['rule'] }}
+        rule: {{ pillar['mgr_scap_params']['rule'] | json }}
+        {%- endif %}
+        {%- if "skip_rule" in pillar.get('mgr_scap_params') %}
+        skip_rule: {{ pillar['mgr_scap_params']['skip_rule'] | json }}
+        {%- endif %}
+        {%- if "reference" in pillar.get('mgr_scap_params') %}
+        reference: {{ pillar['mgr_scap_params']['reference'] | json }}
+        {%- endif %}
+        {%- if "cpe" in pillar.get('mgr_scap_params') %}
+        cpe: {{ pillar['mgr_scap_params']['cpe'] | json }}
+        {%- endif %}
+        {%- if "local_files" in pillar.get('mgr_scap_params') %}
+        local_files: {{ pillar['mgr_scap_params']['local_files'] | json }}
+        {%- endif %}
+        {%- if "datastream_id" in pillar.get('mgr_scap_params') %}
+        datastream_id: {{ pillar['mgr_scap_params']['datastream_id'] | json }}
+        {%- endif %}
+        {%- if "xccdf_id" in pillar.get('mgr_scap_params') %}
+        xccdf_id: {{ pillar['mgr_scap_params']['xccdf_id'] | json }}
+        {%- endif %}
+        {%- if "benchmark_id" in pillar.get('mgr_scap_params') %}
+        benchmark_id: {{ pillar['mgr_scap_params']['benchmark_id'] | json }}
         {%- endif %}
         {%- if "remediate" in pillar.get('mgr_scap_params') %}
-        remediate: {{ pillar['mgr_scap_params']['remediate'] }}
+        remediate: {{ pillar['mgr_scap_params']['remediate'] | json }}
         {%- endif %}
         {%- if "fetch_remote_resources" in pillar.get('mgr_scap_params') %}
-        fetch_remote_resources: {{ pillar['mgr_scap_params']['fetch_remote_resources'] }}
+        fetch_remote_resources: {{ pillar['mgr_scap_params']['fetch_remote_resources'] | json }}
+        {%- endif %}
+        {%- if "tailoring_component_id" in pillar.get('mgr_scap_params') %}
+        tailoring_id: {{ pillar['mgr_scap_params']['tailoring_component_id'] | json }}
         {%- endif %}
         {%- if "tailoring_filename" in pillar.get('mgr_scap_params') %}
         tailoring_file: {{ scap_cache_dir }}/{{ pillar['mgr_scap_params']['tailoring_filename'] }}

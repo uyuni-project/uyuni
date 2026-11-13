@@ -1,0 +1,2 @@
+- Remove the unused classes `FileManip` and `RpmManip` from
+  `syncLib`

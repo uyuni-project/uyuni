@@ -126,7 +126,9 @@ When(/^I add "([^"]*)" calendar file as url$/) do |file|
   raise ScriptError, 'File injection failed' unless success
 
   get_target('server').run("chmod 644 #{dest}")
-  url = "https://#{get_target('server').full_hostname}/pub/" + file
+  # The server fetches the calendar itself: use localhost so that it does not depend on the
+  # server being able to reach its own public address (not possible from some containers).
+  url = "http://localhost/pub/#{file}"
   log "URL: #{url}"
   # Playwright's locator.fill waits for the element to be visible, attached, and editable
   # before typing -- this handles any React async initialization of the field without a

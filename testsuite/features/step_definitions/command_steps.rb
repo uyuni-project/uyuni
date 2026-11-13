@@ -22,7 +22,15 @@ Then(/^"([^"]*)" should have a FQDN$/) do |host|
   resolution_time = end_time.to_i - initial_time.to_i
   raise ScriptError, 'cannot determine hostname' unless return_code.zero?
   raise ScriptError, "name resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
-  raise ScriptError, "hostname is not fully qualified: #{result} != #{node.full_hostname}" unless result == node.full_hostname
+
+  # Uyuni and MLM require "hostname -f" to return a FQDN on the host.
+  # The podman-based CI uses short names inside the container,
+  # so we only check that when the target is itself a FQDN (includes at least a dot).
+  # We also don't check in the case of an IP address.
+  next unless node.target.include?('.') && !node.target.match?(/\A[\d.]+\z/)
+
+  raise ScriptError, "hostname is not fully qualified: #{result}" unless result.include?('.')
+  raise ScriptError, "hostname -f returns #{result} instead of #{node.target}" unless result == node.target
 end
 
 Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
@@ -482,7 +490,8 @@ end
 When(/^I wait until all synchronized channels have solved their dependencies(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |host|
   host ||= 'server'
   add_context('channels_failed_without_solv_file', [])
-  channels_to_wait_solv_file = get_context('channels_to_wait_solv_file').uniq
+  # The context is unset when the preceding sync step failed before registering any channel
+  channels_to_wait_solv_file = (get_context('channels_to_wait_solv_file') || []).uniq
   accumulated_timeout = get_context('channels_timeout')
   checking_rate = 10
 
@@ -695,27 +704,46 @@ end
 
 When(/^the server starts mocking an IPMI host$/) do
   server = get_target('server')
-  server.run_local('podman run -d --rm --network uyuni -p [::]:623:623/udp -p [::]:9002:9002 --name fakeipmi ghcr.io/uyuni-project/uyuni/ci-fakeipmi:master', verbose: true, check_errors: true)
+  if $is_rke2
+    manifest = File.read(File.join(__dir__, '..', 'upload_files', 'fakeipmi.yaml'))
+    server.run_local("kubectl apply -n uyuni -f - <<'MANIFEST_EOF'\n#{manifest}\nMANIFEST_EOF", verbose: true, check_errors: true)
+    wait_for_deployment('server', 'fakeipmi', 'uyuni', 5)
+  else
+    server.run_local('podman run -d --rm --network uyuni -p [::]:623:623/udp -p [::]:9002:9002 --name fakeipmi ghcr.io/uyuni-project/uyuni/ci-fakeipmi:master', verbose: true, check_errors: true)
+  end
 end
 
 When(/^the server stops mocking an IPMI host$/) do
-  get_target('server').run_local('podman kill fakeipmi')
+  server = get_target('server')
+  if $is_rke2
+    server.run_local('kubectl delete -n uyuni deployment/fakeipmi service/fakeipmi --ignore-not-found')
+  else
+    server.run_local('podman kill fakeipmi')
+  end
 end
 
 When(/^the controller starts mocking a Redfish host$/) do
   # We need the controller hostname to generate its SSL certificate
   hostname = `hostname -f`.strip
 
-  if running_k3s?
+  if running_k3s? || running_rke2?
     # On kubernetes, the server has no clue about certificates
     crt_path, key_path, _ca_path = generate_certificate('controller', hostname)
+    # generate_certificate leaves the files on the server host, so download them from there, not from a container
+    server_fqdn = get_target('server').full_hostname
+    scp_download_command(key_path, '/root/controller.key', server_fqdn, port: HOST_SSH_PORT)
+    scp_download_command(crt_path, '/root/controller.crt', server_fqdn, port: HOST_SSH_PORT)
+    # scp_download_command swallows connection errors, so check that the files arrived
+    %w[/root/controller.key /root/controller.crt].each do |file|
+      raise ScriptError, "Failed to download #{file} from the server host #{server_fqdn}" unless File.file?(file)
+    end
   else
     get_target('server').run("mgr-ssl-tool --gen-server -d /root/ssl-build -p spacewalk --set-hostname #{hostname} --server-cert=controller.crt --server-key=controller.key")
     key_path, _err = get_target('server').run('ls /root/ssl-build/*/controller.key')
     crt_path, _err = get_target('server').run('ls /root/ssl-build/*/controller.crt')
+    file_extract(get_target('server'), key_path.strip, '/root/controller.key')
+    file_extract(get_target('server'), crt_path.strip, '/root/controller.crt')
   end
-  file_extract(get_target('server'), key_path.strip, '/root/controller.key')
-  file_extract(get_target('server'), crt_path.strip, '/root/controller.crt')
 
   data_dir = "#{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/data/public-catfish"
   log_file = '/tmp/redfish_mockup_server.log'
@@ -1232,7 +1260,7 @@ When(/^I create the bootstrap repository for "([^"]*)" on (?:the server|(server2
   # proxy, proxy2 and proxy3 share the 'proxy' channel entries; the proxy's base channel follows
   # the proxy's own OS, not the server's.
   host = host_transactional?(host) ? 'proxy' : 'proxy_nontransactional' if host.match?(/^proxy\d*$/)
-  base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
+  base_channel = BASE_CHANNEL_BY_CLIENT[product][BOOTSTRAP_CLIENT_BY_CLIENT.fetch(host, host)]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   get_target(target).wait_while_process_running('mgr-create-bootstrap-repo')

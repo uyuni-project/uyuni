@@ -8,16 +8,17 @@ Feature: Migrate a SLES 15 SP6 Salt minion to SLES 16.1
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Prerequisite: update OS zypper to the latest version
+  Scenario: Prerequisite: update zypper and venv-salt-minion to the latest version
     When I upgrade "zypper" on "sles15sp6_minion" using the API
+    And I upgrade "venv-salt-minion" on "sles15sp6_minion" using the API if needed
 
   Scenario: Migrate this minion to SLES 16.1
     Given I am on the Systems overview page of this "sles15sp6_minion"
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
-    And I wait until I see "SUSE Linux Enterprise Server 16.1 x86_64 (BETA)" text
-    And I choose "SUSE Linux Enterprise Server 16.1 x86_64 (BETA)" radio button
+    And I wait until I see "SUSE Linux Enterprise Server 16.1 x86_64" text
+    And I choose "SUSE Linux Enterprise Server 16.1 x86_64" radio button
     And I click on "Select Channels"
     When I select the channel "Custom Channel for sles161_minion"
     And I check "allowVendorChange"
@@ -41,4 +42,4 @@ Feature: Migrate a SLES 15 SP6 Salt minion to SLES 16.1
 
   Scenario: Check events history for failures on the migrated SLES minion
     Given I am on the Systems overview page of this "sles15sp6_minion"
-    Then I check for failed events on history event page
+    Then I check for failed events on history event page since the "Product Migration" event

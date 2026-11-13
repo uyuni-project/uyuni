@@ -7,3 +7,6 @@ Feature: Configure salt on the server after the installation
 
   Scenario: Create pillar top sls to assign salt bundle config
     When I configure the salt bundle pillar on the RKE2 server
+
+  Scenario: Allow remote access to the Cobbler API
+    When I enable remote access to the Cobbler API on the RKE2 server

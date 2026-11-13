@@ -961,7 +961,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
      */
     public boolean checkinOverdue() {
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        Long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue();
+        Long threshold = factory.getLong(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD);
 
         return getLastCheckinDaysAgo() != null &&
                 getLastCheckinDaysAgo().compareTo(threshold) > 0;

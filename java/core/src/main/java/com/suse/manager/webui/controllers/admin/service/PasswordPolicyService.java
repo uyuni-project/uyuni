@@ -61,25 +61,19 @@ public class PasswordPolicyService {
      */
     public void savePasswordPolicy(PasswordPolicy passwordPolicyIn) {
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        List<RhnConfiguration> configs = new ArrayList<>();
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN, passwordPolicyIn.getMinLength()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX, passwordPolicyIn.getMaxLength()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_DIGIT_FLAG, passwordPolicyIn.isDigitFlag()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LOWER_CHAR_FLAG,
-                passwordPolicyIn.isLowerCharFlag()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_UPPER_CHAR_FLAG,
-                passwordPolicyIn.isUpperCharFlag()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_CONSECUTIVE_CHAR_FLAG,
-                passwordPolicyIn.isConsecutiveCharsFlag()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG,
-                passwordPolicyIn.isSpecialCharFlag()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG,
-                passwordPolicyIn.isRestrictedOccurrenceFlag()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_MAX_OCCURRENCE,
-                passwordPolicyIn.getMaxCharacterOccurrence()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHARACTERS,
-                passwordPolicyIn.getSpecialChars()));
-        factory.bulkUpdate(configs);
+        factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN, passwordPolicyIn.getMinLength());
+        factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX, passwordPolicyIn.getMaxLength());
+        factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_DIGIT_FLAG, passwordPolicyIn.isDigitFlag());
+        factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_LOWER_CHAR_FLAG, passwordPolicyIn.isLowerCharFlag());
+        factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_UPPER_CHAR_FLAG, passwordPolicyIn.isUpperCharFlag());
+        factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_CONSECUTIVE_CHAR_FLAG,
+                passwordPolicyIn.isConsecutiveCharsFlag());
+        factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG, passwordPolicyIn.isSpecialCharFlag());
+        factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG,
+                passwordPolicyIn.isRestrictedOccurrenceFlag());
+        factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_MAX_OCCURRENCE,
+                passwordPolicyIn.getMaxCharacterOccurrence());
+        factory.setValue(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHARACTERS, passwordPolicyIn.getSpecialChars());
     }
 
     private List<PasswordPolicyModelValidation> buildChecks() {
@@ -125,13 +119,6 @@ public class PasswordPolicyService {
     @FunctionalInterface
     private interface PasswordPolicyModelValidation {
         Optional<PasswordPolicyModelValidationFail> validate(PasswordPolicy policyIn);
-    }
-
-    private RhnConfiguration buildConfiguration(RhnConfiguration.KEYS keysIn, Object value) {
-        RhnConfiguration configuration = new RhnConfiguration();
-        configuration.setKey(keysIn);
-        configuration.setValue(String.valueOf(value));
-        return configuration;
     }
 
     private static class PasswordPolicyModelValidationFail {

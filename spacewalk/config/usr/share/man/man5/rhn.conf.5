@@ -37,7 +37,7 @@ As a recommendation, we suggest at least 30 GB storage per software
 channel (including Base and child channels).
 .IP
 .B Default:
-/var/satellite
+/var/spacewalk
 
 .TP
 .B "kickstart_mount_point"
@@ -48,48 +48,22 @@ Define the directory used to store the kickstart trees.
 
 .TP
 .B "repomd_cache_mount_point"
-Define the directory used to store the packages, errata, channels, kickstart trees and also store the repositories metadata
-cache information. It is generated when using Spacewalk/Red Hat Satellite on demand when the client asks for thoses files.
-These cache files are stored in
-.B /var/cache/rhn
-and the storage needs of this directory will vary greatly. We suggest at least 10GB of space in
-.B /var/cache/rhn
-on Spacewalk/Red Hat Satellite server. Very large environments will need to increase the amount of space in
-.B /var/cache/rhn
-that directory.
+Define the base directory for the generated repository metadata of the software channels
+.RB ( rhn/repodata )
+and the downloaded OVAL data
+.RB ( rhn/ovals ).
+The storage needs of this directory vary with the number and size of the channels.
+Changing it also requires adapting the
+.B XSendFilePath
+and
+.B Directory
+settings for
+.B /var/cache/rhn/repodata
+in the Apache configuration and the storage volume of the container.
 
 .IP
 .B Default:
 /var/cache
-
-.TP
-.B "server.satellite.rhn_parent"
-This parameter determines the parent RHN Classic/Red Hat Satellite whose packages will be downloaded or synced. This parameter usually points to RHN Hosted,
-.B rhn.redhat.com
-.IP
-.B Default:
-none
-
-.TP
-.B "server.satellite.http_proxy"
-This parameter determines the HTTP proxy used to download or sync packages from. Enter the IP address or HTTP Proxy FQDN address.
-.IP
-.B Default:
-none
-
-.TP
-.B "server.satellite.http_proxy_username"
-This parameter determines the HTTP proxy username.
-.IP
-.B Default:
-none
-
-.TP
-.B "server.satellite.http_proxy_password"
-This parameter determines the HTTP proxy password.
-.IP
-.B Default:
-none
 
 .TP
 .B "debug"
@@ -115,15 +89,6 @@ Valid values:
 1
 
 .TP
-.B "disconnected (boolean)"
-This parameter controls whether server is running in connected or disconnected mode.
-When running in disconnected mode, the RHN Entitlement Certificate is activated locally
-but not on remote RHN Servers.
-.IP
-.B Default:
-0
-
-.TP
 .B "enable_snapshots" (boolean)
 This parameter controls whether server is allowed to perform system snapshots.
 .IP
@@ -131,30 +96,33 @@ This parameter controls whether server is allowed to perform system snapshots.
 1
 
 .TP
-.B "enable_nvrea" (boolean)
-This parameter controls whether server will allow package uploads for same NVREA
-(Name, Version, Release, Epoch, Arch) but different vendors.
-.RS
-.IP \(bu 3
-Spacewalk Server
-.RS
-.IP \(bu 3
-\fBDefault:\fR 1
-.RE
-.IP \(bu 3
-Red Hat Satellite Server
-.RS
-.IP \(bu 3
-\fBDefault:\fR 0
-.RE
-.RE
-
-.TP
 .B "web.maximum_config_file_size" (bytes)
 This parameter controls which is the maximum allowed size for configuration files.
 .IP
 .B Default:
 32768
+
+.TP
+.B "server.buffer_size" (bytes)
+Size of the chunks in which the server streams files, like packages and repository metadata, to clients through the XMLRPC GET requests.
+Larger values can increase the download throughput on fast networks at the cost of more memory per request.
+Package downloads of Salt clients do not use this setting.
+.IP
+.B Default:
+16384
+
+.TP
+.B "server.session_lifetime" (seconds)
+Lifetime of the sessions which
+.B mgr-push
+gets when it logs in to upload packages.
+When a session expires,
+.B mgr-push
+logs in again.
+Web UI sessions do not use this setting.
+.IP
+.B Default:
+1800
 
 .TP
 .B "java.taskomatic_channel_repodata_workers" (integer)

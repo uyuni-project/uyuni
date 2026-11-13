@@ -1,0 +1,2 @@
+- Read the global keys `mount_point` and `default_mail_from`
+  instead of `web.mount_point` and `web.default_mail_from`

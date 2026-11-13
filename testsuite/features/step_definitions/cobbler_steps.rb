@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 SUSE LLC
+# Copyright (c) 2023-2026 SUSE LLC
 # SPDX-License-Identifier: MIT
 
 ### This file contains the definitions for all steps concerning Cobbler.
@@ -222,6 +222,8 @@ When(/^I start local monitoring of Cobbler$/) do
   cobbler_conf_file = '/etc/cobbler/logging_config.conf'
   cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
   get_target('server').run("rm #{cobbler_log_file}", check_errors: false)
+  # drop errors logged before this feature started (e.g. Tomcat restarts during sumaform provisioning)
+  get_target('server').run('truncate -s 0 /var/log/cobbler/cobbler.log', check_errors: false)
   _result, code = get_target('server').run("test -f #{cobbler_conf_file}.old", check_errors: false)
   if code.zero?
     get_target('server').run('systemctl restart cobblerd')

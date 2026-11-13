@@ -174,7 +174,14 @@ public class AppStreamsManager {
                 .setParameter("set_label", RhnSetDecl.SYSTEMS.getLabel())
                 .getResultList()
                 .stream()
-                .map(SsmAppStreamModuleResponse::new)
+                .map(t -> {
+                    Number count = t.get("systemCount", Number.class);
+                    return new SsmAppStreamModuleResponse(
+                            t.get("name", String.class),
+                            t.get("stream", String.class),
+                            count != null ? count.intValue() : 0
+                    );
+                })
                 .toList();
     }
 

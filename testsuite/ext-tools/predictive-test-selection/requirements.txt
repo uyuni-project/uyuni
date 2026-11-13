@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-certifi==2026.7.22
+certifi==2026.10.18
 cffi==2.1.1
 charset-normalizer==3.5.2
 contourpy==1.4.0
@@ -19,7 +19,7 @@ numpy==2.5.3
 nvidia-nccl-cu12==2.32.3
 packaging==26.3
 pandas==3.0.6
-pillow==12.3.0
+pillow==13.0.0
 psycopg2-binary==2.9.13
 pycparser==3.0
 PyGithub==2.10.0

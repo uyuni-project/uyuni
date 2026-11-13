@@ -507,10 +507,6 @@ class apacheHandler(rhnApache):
             # pylint: disable-next=consider-using-f-string
             log_debug(1, "Serving file %s" % fpath)
             req.headers_out["X-Replace-Content"] = fpath
-            # Only set a byte rate if xrepcon is active
-            byte_rate = rhnFlags.get("QOS-Max-Bandwidth")
-            if byte_rate:
-                req.headers_out["X-Replace-Content-Throttle"] = str(byte_rate)
 
         # send the headers
         req.send_http_header()

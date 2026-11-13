@@ -14,6 +14,7 @@ Feature: Add the RHEL 9 base OS custom repositories
     And I enter "rhel9-ubi-9" as "Channel Label"
     And I select the parent channel for the "rhel9_minion" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
+    And I enter the URL of the "redhat-release-gpg-pubkey-199E2F91FD431D51.key" key provided by the server as "GPG key URL"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for RHEL 9 base OS packages created" text
 
