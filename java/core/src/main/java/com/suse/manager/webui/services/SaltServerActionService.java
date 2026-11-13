@@ -193,15 +193,15 @@ public class SaltServerActionService {
      * action
      * @param stagingJobMinionServerId if action is a staging action it will
      * contain involved minionId(s)
-     * @param serverIdsIn if present, execute the action only for these servers instead of all QUEUED ones
+     * @param filterServerIds if present, execute the action only for these servers instead of all QUEUED ones
      * @return the ids of the servers that were skipped because they wait for a reboot
      */
     public Set<Long> execute(Action actionIn, boolean forcePackageListRefresh,
-            boolean isStagingJob, Optional<Long> stagingJobMinionServerId, Optional<Set<Long>> serverIdsIn) {
+            boolean isStagingJob, Optional<Long> stagingJobMinionServerId, Optional<Set<Long>> filterServerIds) {
 
         List<MinionSummary> queuedMinions = MinionServerFactory.findQueuedMinionSummaries(actionIn.getId())
                 .stream()
-                .filter(minion -> serverIdsIn.map(ids -> ids.contains(minion.getServerId())).orElse(true))
+                .filter(minion -> filterServerIds.map(ids -> ids.contains(minion.getServerId())).orElse(true))
                 .toList();
         if (CollectionUtils.isEmpty(queuedMinions)) {
             LOG.warn("Unable to find any minion that have the action id={} in status QUEUED", actionIn.getId());
@@ -212,7 +212,9 @@ public class SaltServerActionService {
         List<Long> checkedServerIds = isStagingJob ?
                 stagingJobMinionServerId.stream().toList() :
                 queuedMinions.stream().map(MinionSummary::getServerId).toList();
-        Set<Long> waitingServerIds = ServerActionFactory.findServerIdsWaitingForReboot(checkedServerIds, actionIn);
+        Set<Long> waitingServerIds = ServerActionFactory.findServerIdsWaitingForReboot(checkedServerIds, actionIn,
+                !ActionTypeEnum.TYPE_REBOOT.equalsType(actionIn.getActionType()),
+                ServerActionFactory.REBOOT_WINDOW_MINUTES);
         if (!waitingServerIds.isEmpty()) {
             LOG.info("Postponing action id={} for servers {}: waiting for a reboot", actionIn.getId(),
                     waitingServerIds);

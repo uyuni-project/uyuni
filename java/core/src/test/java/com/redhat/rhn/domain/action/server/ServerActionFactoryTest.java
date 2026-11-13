@@ -134,13 +134,18 @@ public class ServerActionFactoryTest extends BaseTestCase {
 
         // a regular action waits for the picked up reboot and for the one that is due soon
         assertEquals(Set.of(pickedUp.getServer().getId(), soon.getServer().getId()),
-                ServerActionFactory.findServerIdsWaitingForReboot(serverIds, errata));
+                ServerActionFactory.findServerIdsWaitingForReboot(serverIds, errata,
+                        !ActionTypeEnum.TYPE_REBOOT.equalsType(errata.getActionType()),
+                        ServerActionFactory.REBOOT_WINDOW_MINUTES));
         // a reboot action only waits for a picked up reboot, otherwise two queued reboots would block each other
         assertEquals(Set.of(pickedUp.getServer().getId()),
-                ServerActionFactory.findServerIdsWaitingForReboot(serverIds, otherReboot));
+                ServerActionFactory.findServerIdsWaitingForReboot(serverIds, otherReboot,
+                        !ActionTypeEnum.TYPE_REBOOT.equalsType(otherReboot.getActionType()),
+                        ServerActionFactory.REBOOT_WINDOW_MINUTES));
         // the reboot action itself is ignored
         assertTrue(ServerActionFactory.findServerIdsWaitingForReboot(List.of(pickedUp.getServer().getId()),
-                pickedUpReboot).isEmpty());
+                pickedUpReboot, !ActionTypeEnum.TYPE_REBOOT.equalsType(pickedUpReboot.getActionType()),
+                        ServerActionFactory.REBOOT_WINDOW_MINUTES).isEmpty());
     }
 
     @Test

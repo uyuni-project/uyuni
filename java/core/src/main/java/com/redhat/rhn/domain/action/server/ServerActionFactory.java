@@ -359,19 +359,21 @@ public class ServerActionFactory extends HibernateFactory {
 
     /**
      * Find the servers where the given action must wait for a reboot. This is the case when another reboot action
-     * has been picked up but is not completed yet. For actions other than a reboot, a queued reboot action
-     * that is due within {@link #REBOOT_WINDOW_MINUTES} minutes blocks as well, so the action cannot be lost
-     * by the restart.
+     * has been picked up but is not completed yet. For actions a queued reboot action
+     * that is due within "queuedWindowMinutes" minutes blocks as well, so the action cannot be lost
+     * by the restart. When queued actions should be not considered at all, set "includeQueued" to false
      * @param serverIds the ids of the servers to check
      * @param action the action that is about to be executed
+     * @param includeQueued should actions in state queued considered as well
+     * @param queuedWindowMinutes time in minutes until a queued reboot action should block scheduling action.
      * @return the ids of the servers where the action has to wait
      */
-    public static Set<Long> findServerIdsWaitingForReboot(Collection<Long> serverIds, Action action) {
+    public static Set<Long> findServerIdsWaitingForReboot(Collection<Long> serverIds, Action action,
+                                                          boolean includeQueued, long queuedWindowMinutes) {
         if (serverIds.isEmpty()) {
             return Set.of();
         }
-        boolean includeQueuedReboots = !ActionTypeEnum.TYPE_REBOOT.equalsType(action.getActionType());
-        Date queuedRebootsUntil = Date.from(Instant.now().plus(REBOOT_WINDOW_MINUTES, ChronoUnit.MINUTES));
+        Date queuedRebootsUntil = Date.from(Instant.now().plus(queuedWindowMinutes, ChronoUnit.MINUTES));
         return new HashSet<>(getSession().createQuery("""
                         SELECT sa.server.id FROM ServerAction sa
                         WHERE sa.server.id IN (:serverIds)
@@ -385,7 +387,7 @@ public class ServerActionFactory extends HibernateFactory {
                 .setParameter("actionId", action.getId())
                 .setParameter("pickedUpId", ActionFactory.STATUS_PICKED_UP.getId())
                 .setParameter("queuedId", ActionFactory.STATUS_QUEUED.getId())
-                .setParameter("includeQueued", includeQueuedReboots)
+                .setParameter("includeQueued", includeQueued)
                 .setParameter("queuedUntil", queuedRebootsUntil)
                 .list());
     }
