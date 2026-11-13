@@ -32,7 +32,7 @@ const StatefulTextInForm = (args: TextProps) => {
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
-      <Text {...args} />
+      <Text {...args} defaultValue="" />
       <div className="form-group">
         <div className="col-md-offset-3 offset-md-3 col-md-6">
           <SubmitButton className="btn-primary" text="Submit" disabled={args.disabled} />

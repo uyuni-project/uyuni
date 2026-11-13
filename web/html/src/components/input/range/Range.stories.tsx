@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
@@ -22,6 +22,9 @@ const StatefulRangeInForm = (args: RangeProps) => {
     [`${args.prefix}_end`]: args.defaultEnd || "",
   });
 
+  // Trigger legacy form validation after the fields register on mount.
+  useEffect(() => setModel((current) => ({ ...current })), []);
+
   return (
     <Form
       model={model}
@@ -35,7 +38,7 @@ const StatefulRangeInForm = (args: RangeProps) => {
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
-      <Range {...args} />
+      <Range {...args} defaultStart="" defaultEnd="" />
       <div className="form-group">
         <div className="col-md-offset-3 offset-md-3 col-md-6">
           <SubmitButton className="btn-primary" text="Submit" disabled={args.disabled} />

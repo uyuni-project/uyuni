@@ -21,7 +21,7 @@ const StatefulTextArea = (props: TextAreaProps) => {
 
   return (
     <Form model={model} onChange={(nextModel) => setModel({ ...nextModel })} title="Text area example">
-      <TextArea {...props} />
+      <TextArea {...props} defaultValue="" />
     </Form>
   );
 };

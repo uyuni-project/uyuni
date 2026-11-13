@@ -19,7 +19,7 @@ import { DateTime } from "./DateTime";
 type DateTimeProps = React.ComponentProps<typeof DateTime>;
 
 const StatefulDateTimeInForm = (args: DateTimeProps) => {
-  const [model, setModel] = useState({ [args.name]: args.defaultValue || localizedMoment() });
+  const [model, setModel] = useState<Record<string, moment.Moment>>({});
 
   return (
     <Form
