@@ -5,6 +5,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
+import { action } from "storybook/actions";
 
 import { Column } from "components/table/Column";
 
@@ -19,6 +20,21 @@ const packageColumns = [
 const meta = {
   title: "Compositions/Package Management/PackageListActionScheduler",
   component: PackageListActionScheduler,
+  decorators: [
+    (Story) => (
+      <div
+        onClickCapture={(event) => {
+          const link = event.target instanceof Element ? event.target.closest("a[href^='/rhn/']") : null;
+          if (link) {
+            event.preventDefault();
+            action("package link clicked")(link.getAttribute("href"));
+          }
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
   beforeEach: installPackageMocks,
   parameters: {
     layout: "fullscreen",
