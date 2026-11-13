@@ -101,6 +101,37 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
         testActionHasMessages(keys);
     }
 
+    /**
+     * auth (authconfig) is deprecated in newer kickstart versions, so a profile
+     * must be savable without it.
+     */
+    @Test
+    public void testSubmitWithoutAuth() {
+        setRequestPathInfo("/kickstart/KickstartOptionsEdit");
+        addRequestParameter(KickstartAdvancedOptionsAction.SUBMITTED,
+                Boolean.TRUE.toString());
+
+        // every required field except auth
+        addRequestParameter("keyboard", "keyboard");
+        addRequestParameter("keyboard_txt", "US");
+        addRequestParameter("lang", "lang");
+        addRequestParameter("lang_txt", "en_US");
+        addRequestParameter("langsupport", "langsupport");
+        addRequestParameter("langsupport_txt", "--default en_US");
+        addRequestParameter("mouse", "mouse");
+        addRequestParameter("mouse_txt", "none");
+        addRequestParameter("bootloader", "bootloader");
+        addRequestParameter("bootloader_txt", "--location mbr");
+        addRequestParameter("timezone", "timezone");
+        addRequestParameter("timezone_txt", "America/New_York");
+        addRequestParameter("rootpw", "rootpw");
+        addRequestParameter("rootpw_txt", "$1$nCCVpGg");
+
+        actionPerform();
+        String[] keys = {"kickstart.options.success"};
+        testActionHasMessages(keys);
+    }
+
     /*
      * need to test how hibernate handles cascading orphans from the
      * parent set. Page is loaded that has a ksdata with options already
