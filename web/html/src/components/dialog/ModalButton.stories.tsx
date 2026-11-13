@@ -17,6 +17,10 @@ const meta = {
   component: ModalButton,
   parameters: {
     docs: {
+      story: {
+        inline: false,
+        height: "420px",
+      },
       description: {
         component:
           "Button that launches a modal dialog. Extends the standard Button component with modal triggering functionality. Use the `target` prop to specify the modal ID, and `onClick` callback for custom actions before showing the dialog.",

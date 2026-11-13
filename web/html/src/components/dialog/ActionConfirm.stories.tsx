@@ -137,6 +137,7 @@ const DeleteServersComponent = () => {
 export const Playground: Story = {
   render: () => <DeleteServersComponent />,
   parameters: {
+    controls: { disable: true },
     docs: {
       description: {
         story:
