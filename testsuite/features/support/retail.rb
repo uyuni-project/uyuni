@@ -85,8 +85,28 @@ def retrieve_build_host_id
   build_host_id
 end
 
+# Make sure the 'expect' binary is usable on the proxy.
+# A transactional proxy does not ship it: install it in a new snapshot, which only becomes active after a reboot.
+def ensure_expect_on_proxy
+  proxy = get_target('proxy')
+  _output, return_code = proxy.run('command -v expect', check_errors: false)
+  return if return_code.zero?
+
+  raise ScriptError, "'expect' is not installed on the proxy" unless transactional_system?('proxy')
+
+  log "'expect' is missing on the proxy, installing it in a new snapshot and rebooting to activate it"
+  proxy.run('transactional-update -c -n pkg in expect', runs_in_container: false, timeout: 600)
+  proxy.run('reboot', check_errors: false, verbose: true, runs_in_container: false)
+  proxy.wait_until_offline
+  proxy.wait_until_online
+  _output, return_code = proxy.run('command -v expect', check_errors: false)
+  raise ScriptError, "'expect' is still not available on the proxy after a reboot" unless return_code.zero?
+end
+
 # determine the ipv6 and run an expect file
 def execute_expect_command_proxy(host, exp_file, context)
+  # /tmp may be cleared by the reboot, so this must run before the file injection
+  ensure_expect_on_proxy
   # convert MAC address to IPv6 link-local address
   case host
   when 'pxeboot_minion'
