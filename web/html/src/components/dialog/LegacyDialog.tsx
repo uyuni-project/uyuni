@@ -8,18 +8,6 @@ import { type ReactNode, useEffect } from "react";
 
 import { PopUp } from "../popup";
 
-// TODO: Move to popup once that gets migrated
-type Instance = JQuery & {
-  modal(...args: any[]): any;
-};
-type Modal = (...args: any[]) => Instance;
-
-declare global {
-  interface JQuery {
-    modal: Modal;
-  }
-}
-
 export function closeDialog(modalId: string) {
   const closeModalPromise = new Promise((resolve) => {
     jQuery("#" + modalId).on("hidden.bs.modal", () => resolve(undefined));

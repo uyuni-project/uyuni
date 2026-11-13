@@ -21,9 +21,20 @@ type Props = {
 };
 
 export class PopUp extends Component<Props> {
+  private handleClose = () => this.props.onClosePopUp?.();
+
   componentDidMount() {
-    if (this.props.onClosePopUp) {
-      jQuery("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
+    jQuery("#" + this.props.id).on("hidden.bs.modal", this.handleClose);
+  }
+
+  componentWillUnmount() {
+    const element = document.getElementById(this.props.id);
+    if (!element) return;
+    jQuery(element).off("hidden.bs.modal", this.handleClose);
+    if (typeof bootstrap !== "undefined") {
+      const modal = bootstrap.Modal.getInstance(element);
+      modal?.hide();
+      modal?.dispose();
     }
   }
 
@@ -41,8 +52,8 @@ export class PopUp extends Component<Props> {
     if (!closableModal) {
       bootStrapModalOptionalProps = {
         ...bootStrapModalOptionalProps,
-        "data-backdrop": "static",
-        "data-keyboard": "false",
+        "data-bs-backdrop": "static",
+        "data-bs-keyboard": "false",
       };
     }
 

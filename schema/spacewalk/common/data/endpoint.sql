@@ -3435,6 +3435,7 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/saltboot/*', 'GET', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    -- Retained for historical upgrades that insert this mapping; the route is retired.
     VALUES ('', '/manager/storybook', 'GET', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)

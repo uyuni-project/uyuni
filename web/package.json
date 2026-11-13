@@ -17,14 +17,14 @@
     "lint:production": "sort-package-json package.json --quiet && NODE_ENV=production eslint . -f codeframe --config eslint.config.js",
     "sort-package": "sort-package-json package.json --quiet",
     "storybook": "storybook dev -p 6006 --no-open --disable-telemetry",
-    "storybook:generate": "node html/src/build/storybook/generate-legacy-stories.js",
     "build-storybook": "storybook build -o storybook-static --disable-telemetry",
     "test": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=none\" BABEL_ENV=test jest --projects html/src/jest.config.js",
     "test:watch": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=none\" BABEL_ENV=test jest --watch --projects html/src/jest.config.js",
     "tsc": "tsc --project html/src/tsconfig.json",
     "postinstall": "sort-package-json package.json --quiet",
     "clean": "rm -rf node_modules && rm -rf html/src/node_modules && rm -rf dist",
-    "zip": "rm -f node_modules.tar.gz && (tar czf node_modules.tar.gz node_modules/)"
+    "zip": "rm -f node_modules.tar.gz && (tar czf node_modules.tar.gz node_modules/)",
+    "tsc:storybook": "tsc --project .storybook/tsconfig.json"
   },
   "dependencies": {
     "@babel/core": "7.26.10",

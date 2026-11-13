@@ -10,10 +10,16 @@ on:
       - master
     paths:
       - 'web/html/src/**'
+      - 'web/.storybook/**'
+      - 'web/package.json'
+      - 'web/package-lock.json'
       - '.github/workflows/frontend-typescript-compilation.yml'
   pull_request:
     paths:
       - 'web/html/src/**'
+      - 'web/.storybook/**'
+      - 'web/package.json'
+      - 'web/package-lock.json'
       - '.github/workflows/frontend-typescript-compilation.yml'
 
 permissions:
@@ -54,5 +60,11 @@ jobs:
     - name: Install production dependencies
       run: npm --prefix web ci --ignore-scripts --save=false
 
+    - name: Validate Storybook build
+      run: npm --prefix web run build-storybook
+
     - name: Compile Typescript
       run: npm --prefix web run tsc
+
+    - name: Compile Storybook Typescript
+      run: npm --prefix web run tsc:storybook
