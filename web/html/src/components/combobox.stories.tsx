@@ -4,10 +4,12 @@
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
+
+import { useId } from "utils/hooks";
 
 import { Combobox, ComboboxItem } from "./combobox";
 
@@ -21,16 +23,25 @@ const options: ComboboxItem[] = [
 
 const StatefulCombobox = (props: ComboboxProps) => {
   const [selectedId, setSelectedId] = useState(props.selectedId);
+  const [availableOptions, setAvailableOptions] = useState(props.options ?? []);
+  const optionIdPrefix = useId();
+  const nextOptionId = useRef(0);
 
   useEffect(() => setSelectedId(props.selectedId), [props.selectedId]);
+  useEffect(() => setAvailableOptions(props.options ?? []), [props.options]);
 
   return (
     <Combobox
       {...props}
       selectedId={selectedId}
+      options={availableOptions}
       onSelect={(item) => {
-        setSelectedId(item.id);
-        props.onSelect(item);
+        const selectedItem = { ...item, id: item.id ?? `${optionIdPrefix}-${nextOptionId.current++}` };
+        setAvailableOptions((current) =>
+          current.some((option) => option.id === selectedItem.id) ? current : [...current, selectedItem]
+        );
+        setSelectedId(selectedItem.id);
+        props.onSelect(selectedItem);
       }}
     />
   );
@@ -54,7 +65,7 @@ const meta = {
     selectedId: 1,
     placeholder: "Select or create an environment",
     onSelect: action("selected"),
-    onFocus: action("focused"),
+    onFocus: () => action("focused")(),
   },
   argTypes: {
     id: {
