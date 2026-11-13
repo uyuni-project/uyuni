@@ -8,11 +8,14 @@ import { useEffect, useState } from "react";
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
+import { useId } from "utils/hooks";
+
 import { TextField } from "./fields";
 
 type TextFieldProps = React.ComponentProps<typeof TextField>;
 
 const ControlledTextField = (props: TextFieldProps) => {
+  const instanceId = useId();
   const [value, setValue] = useState(props.value ?? "");
 
   useEffect(() => setValue(props.value ?? ""), [props.value]);
@@ -20,6 +23,7 @@ const ControlledTextField = (props: TextFieldProps) => {
   return (
     <TextField
       {...props}
+      id={`${props.id}-${instanceId}`}
       value={value}
       onChange={(event) => {
         setValue(event.target.value);

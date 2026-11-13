@@ -5,6 +5,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
+import { action } from "storybook/actions";
 
 import { localizedMoment } from "utils";
 
@@ -55,6 +56,21 @@ const report: AttestationReport = {
 const meta = {
   title: "Compositions/Confidential Computing/CoCoReport",
   component: CoCoReport,
+  decorators: [
+    (Story) => (
+      <div
+        onClickCapture={(event) => {
+          const link = event.target instanceof Element ? event.target.closest("a[href^='/rhn/']") : null;
+          if (link) {
+            event.preventDefault();
+            action("link clicked")(link.getAttribute("href"));
+          }
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     docs: {
       description: {

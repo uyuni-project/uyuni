@@ -73,8 +73,8 @@ const meta = {
       description: "System IDs used to load maintenance windows when supplied with actionType.",
     },
     actionType: {
-      control: "text",
-      description: "Action type used when requesting maintenance windows.",
+      control: false,
+      description: "Used together with systemIds for maintenance-window requests; not demonstrated in this example.",
     },
   },
 } satisfies Meta<typeof ActionSchedule>;
