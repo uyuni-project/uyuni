@@ -1056,6 +1056,69 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void testExecuteSkipsMinionsWaitingForReboot() throws Exception {
+        MinionServer rebootingMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer rebootingSshMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        rebootingSshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
+        MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
+
+        Action reboot = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
+        createChildServerAction(reboot, ServerAction::setStatusPickedUp, rebootingMinion, 5L);
+        createChildServerAction(reboot, ServerAction::setStatusPickedUp, rebootingSshMinion, 5L);
+        ActionFactory.save(reboot);
+
+        Action action = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
+        createChildServerAction(action, ServerAction::setStatusQueued, rebootingMinion, 5L);
+        createChildServerAction(action, ServerAction::setStatusQueued, rebootingSshMinion, 5L);
+        createChildServerAction(action, ServerAction::setStatusQueued, sshMinion, 5L);
+        ActionFactory.save(action);
+        TestUtils.flushSession();
+
+        SaltService saltServiceMock = mock(SaltService.class);
+        SaltServerActionService testService = createSaltServerActionService(saltServiceMock, saltServiceMock);
+        testService.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            // only the minion that is not rebooting gets the action, and only on the first run
+            oneOf(taskomaticMock).scheduleSSHActionExecution(action, sshMinion, false);
+            never(saltServiceMock).callAsync(
+                    with(any(LocalCall.class)), with(any(Target.class)), with(any(Optional.class)));
+        } });
+
+        Set<Long> rebootingIds = Set.of(rebootingMinion.getId(), rebootingSshMinion.getId());
+        assertEquals(rebootingIds, testService.execute(action, false, false, Optional.empty(), Optional.empty()));
+        // a retry only considers the skipped minions, so the SSH minion is not scheduled again
+        assertEquals(rebootingIds,
+                testService.execute(action, false, false, Optional.empty(), Optional.of(rebootingIds)));
+    }
+
+    @Test
+    public void testStagingJobWaitsForRebootOfStagingMinion() throws Exception {
+        MinionServer rebootingMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer stagingMinion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        Action reboot = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
+        createChildServerAction(reboot, ServerAction::setStatusPickedUp, rebootingMinion, 5L);
+        ActionFactory.save(reboot);
+
+        Action action = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
+        createChildServerAction(action, ServerAction::setStatusQueued, rebootingMinion, 5L);
+        createChildServerAction(action, ServerAction::setStatusQueued, stagingMinion, 5L);
+        ActionFactory.save(action);
+        TestUtils.flushSession();
+
+        SaltService saltServiceMock = mock(SaltService.class);
+        SaltServerActionService testService = createSaltServerActionService(saltServiceMock, saltServiceMock);
+        context().checking(new Expectations() { {
+            never(saltServiceMock).callAsync(
+                    with(any(LocalCall.class)), with(any(Target.class)), with(any(Optional.class)));
+        } });
+
+        assertEquals(Set.of(rebootingMinion.getId()),
+                testService.execute(action, false, true, Optional.of(rebootingMinion.getId()), Optional.empty()));
+    }
+
+    @Test
     public void testDoNotReExecuteDoneActions() throws Exception {
         MinionServer firstMinion = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer secondMinion = MinionServerFactoryTest.createTestMinionServer(user);

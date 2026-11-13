@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -56,6 +55,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
 
@@ -118,6 +118,7 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
                 expectations.with(a1Reloaded),
                 expectations.with(false),
                 expectations.with(false),
+                expectations.with(Optional.empty()),
                 expectations.with(Optional.empty())
             );
         });
@@ -146,31 +147,48 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void retriesLaterWhenTheMinionIsRebooting() {
-        Action reboot = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
-        ServerAction rebootSa = ActionFactoryTest.addServerAction(user, reboot, ServerAction::setStatusPickedUp);
-        Action other = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_ERRATA);
-        ServerActionTest.createServerAction(rebootSa.getServer(), other, ServerAction::setStatusQueued);
-        TestUtils.saveAndReload(reboot);
-        other = TestUtils.saveAndReload(other);
+    public void retriesLaterForServersWaitingForReboot() {
+        Action action = createActionWithQueuedServer();
+        Long serverId = getServerId(action);
+        JobDataMap triggerData = new JobDataMap();
 
-        runExecutor(other, true);
+        runExecutor(action, triggerData, Optional.empty(), Set.of(serverId), true);
+
+        assertEquals(String.valueOf(serverId), triggerData.get("reboot_wait_server_ids"));
     }
 
     @Test
-    public void doesNotRetryWhenNoMinionIsRebooting() {
-        Action other = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_ERRATA);
-        ActionFactoryTest.addServerAction(user, other, ServerAction::setStatusQueued);
-        other = TestUtils.saveAndReload(other);
+    public void doesNotRetryWhenNoServerWaitsForReboot() {
+        Action action = createActionWithQueuedServer();
 
-        runExecutor(other, false);
+        runExecutor(action, new JobDataMap(), Optional.empty(), Set.of(), false);
+    }
+
+    @Test
+    public void retryOnlyExecutesForServersWaitingForReboot() {
+        Action action = createActionWithQueuedServer();
+        Long serverId = getServerId(action);
+        JobDataMap triggerData = new JobDataMap(Map.of("reboot_wait_server_ids", String.valueOf(serverId)));
+
+        runExecutor(action, triggerData, Optional.of(Set.of(serverId)), Set.of(), false);
+    }
+
+    private Action createActionWithQueuedServer() {
+        Action action = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_ERRATA);
+        ActionFactoryTest.addServerAction(user, action, ServerAction::setStatusQueued);
+        return TestUtils.saveAndReload(action);
+    }
+
+    private static Long getServerId(Action action) {
+        return action.getServerActions().iterator().next().getServerId();
     }
 
     /**
-     * Run the executor for the action, expecting the Salt service to be called once and the job to be
-     * scheduled again only if a retry is expected.
+     * Run the executor for the action and check that the Salt service is called for the expected servers and
+     * that the job is scheduled again only if a retry is expected.
      */
-    private void runExecutor(Action action, boolean expectRetry) {
+    private void runExecutor(Action action, JobDataMap triggerData, Optional<Set<Long>> expectedServerIds,
+                             Set<Long> waitingServerIds, boolean expectRetry) {
         SaltServerActionService saltServerActionService = mock(SaltServerActionService.class);
 
         checking(expectations -> {
@@ -186,7 +204,7 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
             expectations.will(returnValue(new JobKey("dummyJob")));
 
             expectations.ignoring(trigger).getJobDataMap();
-            expectations.will(returnValue(new JobDataMap()));
+            expectations.will(returnValue(triggerData));
 
             expectations.ignoring(trigger).getKey();
             expectations.will(returnValue(new TriggerKey("dummyTrigger")));
@@ -198,8 +216,10 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
                 expectations.with(action),
                 expectations.with(false),
                 expectations.with(false),
-                expectations.with(Optional.empty())
+                expectations.with(Optional.empty()),
+                expectations.with(expectedServerIds)
             );
+            expectations.will(returnValue(waitingServerIds));
 
             try {
                 if (expectRetry) {

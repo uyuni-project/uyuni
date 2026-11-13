@@ -95,7 +95,8 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
         JobDetail jobDetail = mock(JobDetail.class);
         context().checking(new Expectations() {{
             oneOf(saltServerActionService)
-                    .execute(with(any(Action.class)), with(false), with(false), with(Optional.empty()));
+                    .execute(with(any(Action.class)), with(false), with(false), with(Optional.empty()),
+                            with(Optional.empty()));
 
             allowing(ctx).getJobDetail();
             will(returnValue(jobDetail));

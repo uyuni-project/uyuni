@@ -20,7 +20,6 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -30,14 +29,18 @@ import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.SchedulerException;
 
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Execute SUSE Manager actions via Salt.
@@ -46,6 +49,7 @@ public class MinionActionExecutor extends RhnJavaJob {
 
     public static final int MAX_RETRIES = 25;
     public static final int REBOOT_RETRY_INTERVAL = 30; // seconds
+    private static final String REBOOT_WAIT_SERVER_IDS = "reboot_wait_server_ids";
     public static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
     private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
@@ -208,20 +212,22 @@ public class MinionActionExecutor extends RhnJavaJob {
 
         log.info("Executing action: {}", actionId);
 
-        // Minions that are rebooting are skipped by the service, so run the action again for them later
-        boolean waitingForReboot = !ServerActionFactory.findServerIdsWaitingForReboot(
-                action.getServerActions().stream()
-                        .filter(ServerAction::isStatusQueued)
-                        .map(serverAction -> serverAction.getServer().getId())
-                        .toList(),
-                action).isEmpty();
+        // A retry after waiting for a reboot only executes the action for the servers that were skipped,
+        // otherwise salt-ssh minions with a still pending execution job would be scheduled again
+        JobDataMap triggerData = context.getTrigger().getJobDataMap();
+        Optional<Set<Long>> retryServerIds = Optional.ofNullable(triggerData.get(REBOOT_WAIT_SERVER_IDS))
+                .map(ids -> Arrays.stream(ids.toString().split(","))
+                        .map(Long::valueOf)
+                        .collect(Collectors.toSet()));
 
-        saltServerActionService.execute(action, forcePackageListRefresh,
-                isStagingJob, Optional.ofNullable(stagingJobMinionServerId));
+        Set<Long> waitingServerIds = saltServerActionService.execute(action, forcePackageListRefresh,
+                isStagingJob, Optional.ofNullable(stagingJobMinionServerId), retryServerIds);
 
-        if (waitingForReboot) {
+        if (!waitingServerIds.isEmpty()) {
             log.info("Action {} waits for a reboot to finish, retrying in {} seconds", actionId,
                     REBOOT_RETRY_INTERVAL);
+            triggerData.put(REBOOT_WAIT_SERVER_IDS,
+                    waitingServerIds.stream().map(String::valueOf).collect(Collectors.joining(",")));
             try {
                 TaskoQuartzHelper.rescheduleJob(context, retryCount, REBOOT_RETRY_INTERVAL);
             }
