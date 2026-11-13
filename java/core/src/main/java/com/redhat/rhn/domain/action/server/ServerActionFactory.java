@@ -32,9 +32,13 @@ import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 import org.hibernate.query.QueryFlushMode;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -62,6 +66,7 @@ public class ServerActionFactory extends HibernateFactory {
     // There was a comment "hmm 10?". Not sure what the hesitation is, but that comment was retained.
     // REMAINING_TRIES_FROM_PERL = 5L is commonly seen around with a comment like "arbitrary number from perl"
     // There is a chance both values could be merged into one, but no-one knows
+    public static final long REBOOT_WINDOW_MINUTES = 5;
     public static final Long REMAINING_TRIES = 10L;
     public static final Long REMAINING_TRIES_FROM_PERL = 5L;
 
@@ -350,6 +355,41 @@ public class ServerActionFactory extends HibernateFactory {
      */
     public static Action isRebootScheduled(Long serverId) {
         return findFirstPendingActionForServerAndActionType(serverId, "reboot.reboot").orElse(null);
+    }
+
+    /**
+     * Find the servers where the given action must wait for a reboot. This is the case when another reboot action
+     * has been picked up but is not completed yet. For actions a queued reboot action
+     * that is due within "queuedWindowMinutes" minutes blocks as well, so the action cannot be lost
+     * by the restart. When queued actions should be not considered at all, set "includeQueued" to false
+     * @param serverIds the ids of the servers to check
+     * @param action the action that is about to be executed
+     * @param includeQueued should actions in state queued considered as well
+     * @param queuedWindowMinutes time in minutes until a queued reboot action should block scheduling action.
+     * @return the ids of the servers where the action has to wait
+     */
+    public static Set<Long> findServerIdsWaitingForReboot(Collection<Long> serverIds, Action action,
+                                                          boolean includeQueued, long queuedWindowMinutes) {
+        if (serverIds.isEmpty()) {
+            return Set.of();
+        }
+        Date queuedRebootsUntil = Date.from(Instant.now().plus(queuedWindowMinutes, ChronoUnit.MINUTES));
+        return new HashSet<>(getSession().createQuery("""
+                        SELECT sa.server.id FROM ServerAction sa
+                        WHERE sa.server.id IN (:serverIds)
+                          AND sa.parentAction.id <> :actionId
+                          AND sa.parentAction.actionType.label = 'reboot.reboot'
+                          AND (sa.status.id = :pickedUpId
+                               OR (:includeQueued = true
+                                   AND sa.status.id = :queuedId
+                                   AND sa.parentAction.earliestAction < :queuedUntil))""", Long.class)
+                .setParameter("serverIds", serverIds)
+                .setParameter("actionId", action.getId())
+                .setParameter("pickedUpId", ActionFactory.STATUS_PICKED_UP.getId())
+                .setParameter("queuedId", ActionFactory.STATUS_QUEUED.getId())
+                .setParameter("includeQueued", includeQueued)
+                .setParameter("queuedUntil", queuedRebootsUntil)
+                .list());
     }
 
     private static Optional<Action> findFirstPendingActionForServerAndActionType(Long serverId,

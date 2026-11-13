@@ -43,6 +43,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 @ExtendWith(UserForTestCaseExtension.class)
@@ -106,6 +107,45 @@ public class ServerActionFactoryTest extends BaseTestCase {
         assertEquals(1, actionsForServer.size());
         actionsForServer = ServerActionFactory.listServerActionsForServer(testServer, ActionTypeEnum.TYPE_REBOOT);
         assertEquals(0, actionsForServer.size());
+    }
+
+    @Test
+    @DisplayName("findServerIdsWaitingForReboot reports picked up and soon due queued reboots")
+    void testFindServerIdsWaitingForReboot() {
+        Action pickedUpReboot = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
+        ServerAction pickedUp = ActionFactoryTest.addServerAction(user, pickedUpReboot,
+                ServerAction::setStatusPickedUp);
+
+        Action soonReboot = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
+        soonReboot.setEarliestAction(Date.from(Instant.now().plus(2, ChronoUnit.MINUTES)));
+        ServerAction soon = ActionFactoryTest.addServerAction(user, soonReboot, ServerAction::setStatusQueued);
+
+        Action laterReboot = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
+        laterReboot.setEarliestAction(Date.from(Instant.now().plus(1, ChronoUnit.HOURS)));
+        ServerAction later = ActionFactoryTest.addServerAction(user, laterReboot, ServerAction::setStatusQueued);
+
+        Action otherReboot = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
+        Action errata = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_ERRATA);
+        List.of(pickedUpReboot, soonReboot, laterReboot, otherReboot, errata).forEach(ActionFactory::save);
+        TestUtils.flushSession();
+
+        List<Long> serverIds = List.of(pickedUp.getServer().getId(), soon.getServer().getId(),
+                later.getServer().getId());
+
+        // a regular action waits for the picked up reboot and for the one that is due soon
+        assertEquals(Set.of(pickedUp.getServer().getId(), soon.getServer().getId()),
+                ServerActionFactory.findServerIdsWaitingForReboot(serverIds, errata,
+                        !ActionTypeEnum.TYPE_REBOOT.equalsType(errata.getActionType()),
+                        ServerActionFactory.REBOOT_WINDOW_MINUTES));
+        // a reboot action only waits for a picked up reboot, otherwise two queued reboots would block each other
+        assertEquals(Set.of(pickedUp.getServer().getId()),
+                ServerActionFactory.findServerIdsWaitingForReboot(serverIds, otherReboot,
+                        !ActionTypeEnum.TYPE_REBOOT.equalsType(otherReboot.getActionType()),
+                        ServerActionFactory.REBOOT_WINDOW_MINUTES));
+        // the reboot action itself is ignored
+        assertTrue(ServerActionFactory.findServerIdsWaitingForReboot(List.of(pickedUp.getServer().getId()),
+                pickedUpReboot, !ActionTypeEnum.TYPE_REBOOT.equalsType(pickedUpReboot.getActionType()),
+                        ServerActionFactory.REBOOT_WINDOW_MINUTES).isEmpty());
     }
 
     @Test

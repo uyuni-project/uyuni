@@ -29,14 +29,18 @@ import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.SchedulerException;
 
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Execute SUSE Manager actions via Salt.
@@ -44,6 +48,8 @@ import java.util.Optional;
 public class MinionActionExecutor extends RhnJavaJob {
 
     public static final int MAX_RETRIES = 25;
+    public static final int REBOOT_RETRY_INTERVAL = 30; // seconds
+    private static final String REBOOT_WAIT_SERVER_IDS = "reboot_wait_server_ids";
     public static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
     private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
@@ -200,14 +206,35 @@ public class MinionActionExecutor extends RhnJavaJob {
             if (!cloudPaygManager.hasSCCCredentials()) {
                 if (action.rejectScheduleActionIfByos()) {
                     return;
-                    }
                 }
             }
+        }
 
         log.info("Executing action: {}", actionId);
 
-        saltServerActionService.execute(action, forcePackageListRefresh,
-                isStagingJob, Optional.ofNullable(stagingJobMinionServerId));
+        // A retry after waiting for a reboot only executes the action for the servers that were skipped,
+        // otherwise salt-ssh minions with a still pending execution job would be scheduled again
+        JobDataMap triggerData = context.getTrigger().getJobDataMap();
+        Optional<Set<Long>> retryServerIds = Optional.ofNullable(triggerData.get(REBOOT_WAIT_SERVER_IDS))
+                .map(ids -> Arrays.stream(ids.toString().split(","))
+                        .map(Long::valueOf)
+                        .collect(Collectors.toSet()));
+
+        Set<Long> waitingServerIds = saltServerActionService.execute(action, forcePackageListRefresh,
+                isStagingJob, Optional.ofNullable(stagingJobMinionServerId), retryServerIds);
+
+        if (!waitingServerIds.isEmpty()) {
+            log.info("Action {} waits for a reboot to finish, retrying in {} seconds", actionId,
+                    REBOOT_RETRY_INTERVAL);
+            triggerData.put(REBOOT_WAIT_SERVER_IDS,
+                    waitingServerIds.stream().map(String::valueOf).collect(Collectors.joining(",")));
+            try {
+                TaskoQuartzHelper.rescheduleJob(context, retryCount, REBOOT_RETRY_INTERVAL);
+            }
+            catch (SchedulerException e) {
+                log.error("Error scheduling retry job for action {}.", actionId, e);
+            }
+        }
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;

@@ -163,7 +163,7 @@ public class SaltServerActionService {
     }
 
     /**
-     * Execute a given {@link Action} via salt.
+     * Execute a given {@link Action} via salt for all QUEUED minions.
      *
      * @param actionIn the action to execute
      * @param forcePackageListRefresh add metadata to force a package list
@@ -172,14 +172,59 @@ public class SaltServerActionService {
      * action
      * @param stagingJobMinionServerId if action is a staging action it will
      * contain involved minionId(s)
+     * @return the ids of the servers that were skipped because they wait for a reboot
+     * @see #execute(Action, boolean, boolean, Optional, Optional)
      */
-    public void execute(Action actionIn, boolean forcePackageListRefresh,
+    public Set<Long> execute(Action actionIn, boolean forcePackageListRefresh,
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
+        return execute(actionIn, forcePackageListRefresh, isStagingJob, stagingJobMinionServerId, Optional.empty());
+    }
 
-        List<MinionSummary> allMinions = MinionServerFactory.findQueuedMinionSummaries(actionIn.getId());
-        if (CollectionUtils.isEmpty(allMinions)) {
+    /**
+     * Execute a given {@link Action} via salt.
+     *
+     * Minions that have to wait for a reboot are skipped and stay QUEUED, because Salt forgets queued jobs
+     * when the minion restarts. The caller is expected to execute the action again for them later.
+     *
+     * @param actionIn the action to execute
+     * @param forcePackageListRefresh add metadata to force a package list
+     * refresh
+     * @param isStagingJob whether the action is a staging of packages
+     * action
+     * @param stagingJobMinionServerId if action is a staging action it will
+     * contain involved minionId(s)
+     * @param filterServerIds if present, execute the action only for these servers instead of all QUEUED ones
+     * @return the ids of the servers that were skipped because they wait for a reboot
+     */
+    public Set<Long> execute(Action actionIn, boolean forcePackageListRefresh,
+            boolean isStagingJob, Optional<Long> stagingJobMinionServerId, Optional<Set<Long>> filterServerIds) {
+
+        List<MinionSummary> queuedMinions = MinionServerFactory.findQueuedMinionSummaries(actionIn.getId())
+                .stream()
+                .filter(minion -> filterServerIds.map(ids -> ids.contains(minion.getServerId())).orElse(true))
+                .toList();
+        if (CollectionUtils.isEmpty(queuedMinions)) {
             LOG.warn("Unable to find any minion that have the action id={} in status QUEUED", actionIn.getId());
-            return;
+            return Set.of();
+        }
+
+        // A staging job only targets the staging minion, so only this one has to wait
+        List<Long> checkedServerIds = isStagingJob ?
+                stagingJobMinionServerId.stream().toList() :
+                queuedMinions.stream().map(MinionSummary::getServerId).toList();
+        Set<Long> waitingServerIds = ServerActionFactory.findServerIdsWaitingForReboot(checkedServerIds, actionIn,
+                !ActionTypeEnum.TYPE_REBOOT.equalsType(actionIn.getActionType()),
+                ServerActionFactory.REBOOT_WINDOW_MINUTES);
+        if (!waitingServerIds.isEmpty()) {
+            LOG.info("Postponing action id={} for servers {}: waiting for a reboot", actionIn.getId(),
+                    waitingServerIds);
+        }
+        List<MinionSummary> allMinions = queuedMinions.stream()
+                .filter(minion -> isStagingJob ? waitingServerIds.isEmpty() :
+                        !waitingServerIds.contains(minion.getServerId()))
+                .toList();
+        if (allMinions.isEmpty()) {
+            return waitingServerIds;
         }
 
         // split minions into regular and salt-ssh
@@ -209,6 +254,7 @@ public class SaltServerActionService {
                 }
             }
         }
+        return waitingServerIds;
     }
 
     private void executeForRegularMinions(Action actionIn, boolean forcePackageListRefresh,
