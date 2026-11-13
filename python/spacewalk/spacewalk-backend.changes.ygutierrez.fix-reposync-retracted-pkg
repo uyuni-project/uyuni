@@ -1,0 +1,1 @@
+- Fix reposync handling of failed package downloads (bsc#1288728)

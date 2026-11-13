@@ -349,10 +349,45 @@ class RepoSyncTest(unittest.TestCase):
         plugin = self._mock_repo_plugin(packs)
 
         with patch("spacewalk.common.rhnConfig.CFG", self._mock_cfg()):
-            rs.import_packages(plugin, None, "unused-url-string", None)
+            ret = rs.import_packages(plugin, None, "unused-url-string", None)
 
         # repository plugin returned 1 package that failed to download
         # multiprocessing.Pool.apply_async shouldn't be called
+        apply_async_mock = pool.return_value.__enter__.return_value.apply_async
+        self.assertFalse(apply_async_mock.called)
+        self.assertEqual(ret, 1)
+
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.reposync.log2", Mock())
+    @patch("spacewalk.satellite_tools.reposync.os", os)
+    @patch("spacewalk.satellite_tools.reposync.log", Mock())
+    @patch("spacewalk.satellite_tools.reposync.ThreadedDownloader")
+    @patch("spacewalk.satellite_tools.reposync.multiprocessing.Pool")
+    def test_import_packages_raises_rhnfault_when_fail_set_and_download_fails(
+        self, pool, downloader
+    ):
+        """
+        When fail option is set and downloader fails to download packages
+        Then RepoSync.import_packages should raise rhnFault before importing
+        """
+        rs = _init_reposync(self.reposync)
+        rs.fail = True
+        _mock_rhnsql(self.reposync, [None, []])
+
+        fail_pkg_name = "failed.rpm"
+        downloader.return_value.failed_pkgs = [fail_pkg_name]
+
+        packs = self._mock_packages_list([fail_pkg_name])
+        plugin = self._mock_repo_plugin(packs)
+
+        with patch("spacewalk.common.rhnConfig.CFG", self._mock_cfg()):
+            with self.assertRaises(self.reposync.rhnFault) as ctx:
+                rs.import_packages(plugin, None, "unused-url-string", None)
+            self.assertIn(
+                "Failed to download 1 packages and fail option is set",
+                str(ctx.exception),
+            )
+
         apply_async_mock = pool.return_value.__enter__.return_value.apply_async
         self.assertFalse(apply_async_mock.called)
 

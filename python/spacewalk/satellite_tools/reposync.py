@@ -1536,6 +1536,12 @@ class RepoSync(object):
 
         if downloader.failed_pkgs:
             log(0, "Filtering packages that failed to download")
+            failed_packages += len(downloader.failed_pkgs)
+            if self.fail:
+                raise rhnFault(
+                    50,
+                    f"Failed to download {len(downloader.failed_pkgs)} packages and fail option is set.",
+                )
             to_process = [
                 i
                 for i in to_process
@@ -1728,8 +1734,9 @@ class RepoSync(object):
             try:
                 # check if package was downloaded
                 if not os.path.exists(stage_path):
-                    # pylint: disable-next=broad-exception-raised
-                    raise Exception
+                    raise rhnFault(
+                        50, f"Staged package file does not exist: {stage_path}"
+                    )
 
                 pack.load_checksum_from_header()
 
@@ -1811,7 +1818,7 @@ class RepoSync(object):
                 failed_packages += 1
                 e = str(sys.exc_info()[1])
                 if e:
-                    log2(0, 1, e, stream=sys.stderr)
+                    log2(0, 0, e, stream=sys.stderr)
                 log2(0, 1, traceback.format_exc(), stream=sys.stderr)
                 if fail:
                     raise
