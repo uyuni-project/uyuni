@@ -16,10 +16,15 @@ import { peripherals } from "./story-fixtures";
 const installPeripheralMocks = () => {
   let rows = peripherals.map((peripheral) => ({ ...peripheral }));
   const get = ((url: string) => {
-    const criteria = new URL(url, window.location.origin).searchParams.get("q")?.toLocaleLowerCase() ?? "";
+    const params = new URL(url, window.location.origin).searchParams;
+    const criteria = params.get("q")?.toLocaleLowerCase() ?? "";
     const items = rows
       .filter((peripheral) => peripheral.fqdn.toLocaleLowerCase().includes(criteria))
       .map((peripheral) => ({ ...peripheral }));
+    if (params.get("sc") === "fqdn") {
+      const direction = params.get("s") === "-1" ? -1 : 1;
+      items.sort((a, b) => direction * a.fqdn.localeCompare(b.fqdn));
+    }
     return Utils.cancelable(Promise.resolve({ items, total: items.length }));
   }) as typeof Network.get;
   const del = ((url: string) => {

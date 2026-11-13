@@ -4,7 +4,10 @@
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
+import { useEffect, useState } from "react";
+
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
+import { action } from "storybook/actions";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
@@ -31,6 +34,32 @@ const mockNetworkPost = (() =>
     })
   )) as typeof Network.post;
 
+const StatefulMigration = (args: React.ComponentProps<typeof MigrateSlavesForm>) => {
+  const [revision, setRevision] = useState(0);
+
+  useEffect(() => {
+    const original = window.pageRenderers;
+    const replacement = {
+      ...original,
+      spaengine: {
+        ...original?.spaengine,
+        navigate: (url: string) => {
+          action("navigated")(url);
+          setRevision((current) => current + 1);
+        },
+      },
+    };
+    window.pageRenderers = replacement;
+    return () => {
+      if (window.pageRenderers === replacement) {
+        window.pageRenderers = original;
+      }
+    };
+  }, []);
+
+  return <MigrateSlavesForm key={`${args.migrateFrom}-${revision}`} {...args} />;
+};
+
 const meta = {
   title: "Compositions/Hub/MigrateSlavesForm",
   component: MigrateSlavesForm,
@@ -38,9 +67,13 @@ const meta = {
   parameters: {
     layout: "fullscreen",
     docs: {
+      story: {
+        inline: false,
+        height: "900px",
+      },
       description: {
         component:
-          "Migrates legacy ISS slaves to peripheral servers. The representative entries cover a ready server, an optional unselected server that still needs a token, and a disabled server. Submitting the selected entry opens a locally mocked partial-result dialog.",
+          "Migrates legacy ISS slaves to peripheral servers. The representative entries cover a ready server, an optional unselected server that still needs a token, and a disabled server. Submitting the selected entry opens a locally mocked partial-result dialog. Close and Cancel log navigation and restart the example.",
       },
     },
   },
@@ -66,7 +99,7 @@ const meta = {
   },
   render: (args) => (
     <div style={{ width: "100%", maxWidth: "1400px", minHeight: "800px", padding: "24px" }}>
-      <MigrateSlavesForm key={args.migrateFrom} {...args} />
+      <StatefulMigration {...args} />
     </div>
   ),
 } satisfies Meta<typeof MigrateSlavesForm>;
