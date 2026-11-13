@@ -9437,13 +9437,6 @@ também pode atribuir ou tomar os privilégios do administrador de uma organiza�
         </context-group>
         <target>Ativar Suporte ao Solaris</target>
       </trans-unit>
-      <trans-unit id="general.jsp.disconnected" xml:space="preserve">
-        <source>Disconnected @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ Desconectado</target>
-      </trans-unit>
       <trans-unit id="general.jsp.monitoring_backend" xml:space="preserve">
         <source>Enable Monitoring</source>
         <context-group name="ctx">

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:56+0100\n"
+"POT-Creation-Date: 2026-11-13 16:35+0000\n"
 "PO-Revision-Date: 2025-10-05 15:59+0000\n"
 "Last-Translator: Ferdinan Rizky Budiarto <ferdinan.rizky@yahoo.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/id/>\n"
@@ -37,17 +37,7 @@ msgstr "autentikasi proksi ditolak"
 msgid "Invalid request received (%s)."
 msgstr "Permintaan tidak valid diterima (%s)."
 
-#. Send the message as a fault.
-#: ../server/apacheRequest.py:132
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"PESAN PENTING BERIKUT:\n"
-"%s"
-
-#: ../server/apacheRequest.py:162
+#: ../server/apacheRequest.py:148
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -57,12 +47,13 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:677
+#: ../server/apacheRequest.py:658
 #, python-format
 msgid "Invalid URI %s"
 msgstr "URI “%s” Tidak Sah"
 
-#: ../server/handlers/app/packages.py:222
+#. pylint: disable-next=undefined-variable
+#: ../server/handlers/app/packages.py:221
 #, python-format
 msgid ""
 "\n"
@@ -117,12 +108,12 @@ msgstr ""
 "               Akun %s telah dinonaktifkan pada server ini.\n"
 "               Silakan hubungi administrator Organisasi Anda untuk bantuan lebih lanjut."
 
-#: ../server/rhnChannel.py:2218
+#: ../server/rhnChannel.py:2169
 #, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr "Akun Anda tidak memiliki akses ke saluran apa pun yang cocok (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 
-#: ../server/rhnChannel.py:2237
+#: ../server/rhnChannel.py:2188
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Hak langganan untuk rilis (%s, %s) tidak mencukupi"
@@ -131,11 +122,11 @@ msgstr "Hak langganan untuk rilis (%s, %s) tidak mencukupi"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2551 ../server/rhnChannel.py:2570
+#: ../server/rhnChannel.py:2460 ../server/rhnChannel.py:2475
 msgid "System Registered but Inactive"
 msgstr "Sistem Terdaftar tetapi Tidak Aktif"
 
-#: ../server/rhnChannel.py:2553
+#: ../server/rhnChannel.py:2461
 #, python-format
 msgid ""
 "\n"
@@ -150,7 +141,7 @@ msgstr ""
 "karena tidak dapat berlangganan ke saluran dasar.\n"
 "Silakan hubungi administrator organisasi Anda untuk bantuan.\n"
 
-#: ../server/rhnChannel.py:2562
+#: ../server/rhnChannel.py:2468
 #, python-format
 msgid ""
 "\n"
@@ -165,7 +156,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2572
+#: ../server/rhnChannel.py:2476
 #, python-format
 msgid ""
 "\n"
@@ -181,11 +172,11 @@ msgstr ""
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
-#: ../server/rhnHandler.py:64
+#: ../server/rhnHandler.py:59
 msgid "Please run rhn_register as root on this client"
 msgstr "Silakan jalankan rhn_register sebagai root pada klien ini"
 
-#: ../server/rhnHandler.py:78
+#: ../server/rhnHandler.py:73
 #, fuzzy, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Layanan tidak diaktifkan untuk profil sistem: \"%s\""
@@ -201,7 +192,7 @@ msgstr "Paket RPM %s tidak valid diminta"
 msgid "Package not found"
 msgstr "Paket tidak ditemukan"
 
-#: ../server/rhnServer/server_class.py:103
+#: ../server/rhnServer/server_class.py:102
 #, fuzzy, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "Arsitektur '%s' tidak didukung"
@@ -253,67 +244,10 @@ msgstr "Ketidakcocokan sesi kickstart"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Penumpukan token pendaftaran ulang tidak didukung"
 
-#: ../server/rhnUser.py:323 ../server/rhnUser.py:326
+#: ../server/rhnUser.py:313 ../server/rhnUser.py:316
 #, fuzzy
 msgid "Invalid username/password combination"
 msgstr "Kombinasi nama pengguna/kata sandi tidak valid"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:507
-#, fuzzy, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "Nama pengguna '%s' belum dicadangkan"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:513
-#, fuzzy
-msgid "E-mail address not specified"
-msgstr "Alamat e-mail tidak ditentukan"
-
-#: ../server/rhnUser.py:555
-#, fuzzy, python-format
-msgid "username should be at least %d characters"
-msgstr "nama pengguna harus setidaknya %d karakter"
-
-#: ../server/rhnUser.py:559
-#, fuzzy, python-format
-msgid "username should be less than %d characters"
-msgstr "nama pengguna harus kurang dari %d karakter"
-
-#: ../server/rhnUser.py:573
-#, fuzzy, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "username = '%s', karakter '%s' tidak valid"
-
-#: ../server/rhnUser.py:594
-#, fuzzy, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Batasi alamat e-mail Anda ke %s chars"
-
-#: ../server/rhnUser.py:692
-#, fuzzy, python-format
-msgid "password must be at least %d characters"
-msgstr "kata sandi harus setidaknya %d karakter"
-
-#: ../server/rhnUser.py:696
-#, fuzzy, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "Kata sandi harus lebih pendek dari karakter %d"
-
-#: ../server/rhnUser.py:712
-#, fuzzy, python-format
-msgid "password contains character `%s'"
-msgstr "kata sandi berisi karakter '%s'"
-
-#: ../server/rhnUser.py:721
-#, fuzzy, python-format
-msgid "username should be at least %d characters long"
-msgstr "username harus setidaknya %d karakter panjang"
-
-#: ../server/rhnUser.py:732
-#, fuzzy, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "Tidak dapat mendaftarkan nama pengguna yang diakhiri dengan %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:57
@@ -1017,7 +951,7 @@ msgstr "GALAT: %s %s: %s"
 msgid "TRACEBACK: %s"
 msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
 
-#: ../satellite_tools/messages.py:30
+#: ../satellite_tools/messages.py:29
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1027,7 +961,7 @@ msgstr ""
 "GALAT: menjalankan langkah %s. Galat adalah:\n"
 "%s"
 
-#: ../satellite_tools/messages.py:37
+#: ../satellite_tools/messages.py:34
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1043,7 +977,7 @@ msgstr ""
 "       bahwa Anda memiliki mereka semua, dan kemudian berulang-ulang dan mengisi kembali\n"
 "       repositori sementara (%s)."
 
-#: ../satellite_tools/messages.py:47
+#: ../satellite_tools/messages.py:42
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1053,7 +987,7 @@ msgstr ""
 "GALAT: ada masalah sinkronisasi informasi.\n"
 "       Pesan galat: %s"
 
-#: ../satellite_tools/messages.py:54
+#: ../satellite_tools/messages.py:47
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1067,7 +1001,7 @@ msgstr ""
 "       konektivitas jaringan dasar, dan/atau resolusi nama, dan coba lagi.\n"
 "       Pesan galat: %s"
 
-#: ../satellite_tools/messages.py:63
+#: ../satellite_tools/messages.py:54
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1083,7 +1017,7 @@ msgstr ""
 "       Transaksi:\n"
 "       %s"
 
-#: ../satellite_tools/messages.py:73
+#: ../satellite_tools/messages.py:62
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -1095,125 +1029,176 @@ msgstr ""
 "Silakan hubungi kontak SUSE Manager Anda\n"
 "%s"
 
-#: ../satellite_tools/messages.py:79
-#, fuzzy, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "GALAT: tidak cukup ruang kosong (%s KB) pada perangkat."
-
-#: ../satellite_tools/messages.py:81
+#: ../satellite_tools/messages.py:67
 #, fuzzy, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr "%3d/%s Fetch berhasil: %s (%s bytes)"
 
-#: ../satellite_tools/messages.py:82
+#: ../satellite_tools/messages.py:68
 #, fuzzy, python-format
 msgid "    Extinct package:  %s"
 msgstr "Paket punah: %s"
 
-#: ../satellite_tools/messages.py:83
+#: ../satellite_tools/messages.py:69
 #, fuzzy, python-format
 msgid "   Total size: %s"
 msgstr "Total ukuran: %s"
 
-#: ../satellite_tools/messages.py:85
+#: ../satellite_tools/messages.py:71
 #, fuzzy, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
 msgstr "Diunduh %s dari %s. Perkiraan sisa waktu: %s"
 
-#: ../satellite_tools/messages.py:87
+#: ../satellite_tools/messages.py:73
 #, fuzzy, python-format
 msgid "    Fetch unsuccessful: %s"
 msgstr "Fetch gagal: %s"
 
-#: ../satellite_tools/messages.py:88
+#: ../satellite_tools/messages.py:74
 #, fuzzy, python-format
 msgid "   RPM fetch summary: %s"
 msgstr "Ringkasan pengambilan RPM: %s"
 
-#: ../satellite_tools/messages.py:89
+#: ../satellite_tools/messages.py:75
 #, fuzzy, python-format
 msgid "       success: %d"
 msgstr "sukses: %d"
 
-#: ../satellite_tools/messages.py:90
+#: ../satellite_tools/messages.py:76
 #, fuzzy, python-format
 msgid "       failed:  %d"
 msgstr "Impor yang gagal (%d)"
 
-#: ../satellite_tools/messages.py:91
+#: ../satellite_tools/messages.py:77
 #, fuzzy, python-format
 msgid "       extinct: %d"
 msgstr "punah: %d"
 
-#: ../satellite_tools/messages.py:93
+#: ../satellite_tools/messages.py:79
 #, fuzzy, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr "Mengambil / mem-parsing *relevan* metadata paket: %s (%s)"
 
-#: ../satellite_tools/messages.py:94
+#: ../satellite_tools/messages.py:80
 #, fuzzy, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
 msgstr "Mengambil / mengurai data errata: %s (%s)"
 
-#: ../satellite_tools/messages.py:95
+#: ../satellite_tools/messages.py:81
 #, fuzzy, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
 msgstr "Mengambil / mengurai data kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:96
+#: ../satellite_tools/messages.py:82
 #, fuzzy, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr "Mengambil / mengurai berkas pohon kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:97
+#: ../satellite_tools/messages.py:83
 #, fuzzy, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
 msgstr "Mengimpor metadata paket *relevant*: %s (%s)"
 
-#: ../satellite_tools/messages.py:98
+#: ../satellite_tools/messages.py:84
 #, fuzzy
 msgid "   * WARNING: this may be a slow process."
 msgstr "* PERINGATAN: ini mungkin proses yang lambat."
 
-#: ../satellite_tools/messages.py:99
+#: ../satellite_tools/messages.py:85
 #, fuzzy
 msgid "Linking packages to channels"
 msgstr "Menautkan paket ke saluran"
 
-#: ../satellite_tools/messages.py:100
+#: ../satellite_tools/messages.py:86
 #, fuzzy, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
 msgstr "Mengimpor *relevan* errata: %s (%s)"
 
-#: ../satellite_tools/messages.py:101
+#: ../satellite_tools/messages.py:87
 #, fuzzy
 msgid "   No new kickstartable tree to import"
 msgstr "Tidak ada pohon kickstartable baru untuk mengimpor"
 
-#: ../satellite_tools/messages.py:102
+#: ../satellite_tools/messages.py:88
 #, fuzzy, python-format
 msgid "Importing kickstartable trees (%d)"
 msgstr "Mengimpor pohon kickstartable (%d)"
 
-#: ../satellite_tools/messages.py:103
+#: ../satellite_tools/messages.py:89
 #, fuzzy, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "Pohon kickstartable impor (%d)"
 
-#: ../satellite_tools/reposync.py:150
+#: ../satellite_tools/reposync.py:151
 #, fuzzy
 msgid "+++ sending log as an email +++"
 msgstr "+++ mengirim log sebagai email +++"
 
-#: ../satellite_tools/reposync.py:153
+#: ../satellite_tools/reposync.py:154
 #, fuzzy, python-format
 msgid "%s sync. report from %s"
 msgstr "Sinkronisasi %s. laporan dari %s"
 
-#: ../satellite_tools/reposync.py:163
+#: ../satellite_tools/reposync.py:164
 #, fuzzy
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
+
+#, python-format
+#~ msgid ""
+#~ "IMPORTANT MESSAGE FOLLOWS:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "PESAN PENTING BERIKUT:\n"
+#~ "%s"
+
+#, fuzzy, python-format
+#~ msgid "Username `%s' has not been reserved"
+#~ msgstr "Nama pengguna '%s' belum dicadangkan"
+
+#, fuzzy
+#~ msgid "E-mail address not specified"
+#~ msgstr "Alamat e-mail tidak ditentukan"
+
+#, fuzzy, python-format
+#~ msgid "username should be at least %d characters"
+#~ msgstr "nama pengguna harus setidaknya %d karakter"
+
+#, fuzzy, python-format
+#~ msgid "username should be less than %d characters"
+#~ msgstr "nama pengguna harus kurang dari %d karakter"
+
+#, fuzzy, python-format
+#~ msgid "username = `%s', invalid character `%s'"
+#~ msgstr "username = '%s', karakter '%s' tidak valid"
+
+#, fuzzy, python-format
+#~ msgid "Please limit your e-mail address to %s chars"
+#~ msgstr "Batasi alamat e-mail Anda ke %s chars"
+
+#, fuzzy, python-format
+#~ msgid "password must be at least %d characters"
+#~ msgstr "kata sandi harus setidaknya %d karakter"
+
+#, fuzzy, python-format
+#~ msgid "Password must be shorter than %d characters"
+#~ msgstr "Kata sandi harus lebih pendek dari karakter %d"
+
+#, fuzzy, python-format
+#~ msgid "password contains character `%s'"
+#~ msgstr "kata sandi berisi karakter '%s'"
+
+#, fuzzy, python-format
+#~ msgid "username should be at least %d characters long"
+#~ msgstr "username harus setidaknya %d karakter panjang"
+
+#, fuzzy, python-format
+#~ msgid "Cannot register usernames ending with %s"
+#~ msgstr "Tidak dapat mendaftarkan nama pengguna yang diakhiri dengan %s"
+
+#, fuzzy, python-format
+#~ msgid "  ERROR: not enough free space (%s KB) on device."
+#~ msgstr "GALAT: tidak cukup ruang kosong (%s KB) pada perangkat."
 
 #, fuzzy, python-format
 #~ msgid "format of %s should be at least YYYYMMDD.\n"

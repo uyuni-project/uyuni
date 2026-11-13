@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:56+0100\n"
+"POT-Creation-Date: 2026-11-13 16:35+0000\n"
 "PO-Revision-Date: 2025-08-27 17:59+0000\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive68@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/backend/pt_BR/>\n"
@@ -41,17 +41,7 @@ msgstr "autenticação de proxy recusada"
 msgid "Invalid request received (%s)."
 msgstr "Solicitação inválida recebida (%s)."
 
-#. Send the message as a fault.
-#: ../server/apacheRequest.py:132
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"SEGUINTE MENSAGEM IMPORTANTE:\n"
-"%s"
-
-#: ../server/apacheRequest.py:162
+#: ../server/apacheRequest.py:148
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -61,12 +51,13 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:677
+#: ../server/apacheRequest.py:658
 #, python-format
 msgid "Invalid URI %s"
 msgstr "URI %s inválida"
 
-#: ../server/handlers/app/packages.py:222
+#. pylint: disable-next=undefined-variable
+#: ../server/handlers/app/packages.py:221
 #, python-format
 msgid ""
 "\n"
@@ -122,12 +113,12 @@ msgstr ""
 "               A conta %s foi desativada neste servidor.\n"
 "               Entre em contato com o administrador da organização para obter mais ajuda."
 
-#: ../server/rhnChannel.py:2218
+#: ../server/rhnChannel.py:2169
 #, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr "Sua conta não tem acesso a nenhum canal correspondente (release ='%(release)s', arch='%(arch)s')%(www_activation)s"
 
-#: ../server/rhnChannel.py:2237
+#: ../server/rhnChannel.py:2188
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Permissões de assinatura insuficientes para liberação (%s, %s"
@@ -136,11 +127,11 @@ msgstr "Permissões de assinatura insuficientes para liberação (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2551 ../server/rhnChannel.py:2570
+#: ../server/rhnChannel.py:2460 ../server/rhnChannel.py:2475
 msgid "System Registered but Inactive"
 msgstr "Sistema Registrado, mas Inativo"
 
-#: ../server/rhnChannel.py:2553
+#: ../server/rhnChannel.py:2461
 #, python-format
 msgid ""
 "\n"
@@ -155,7 +146,7 @@ msgstr ""
 "porque não pôde ser inscrito em um canal base.\n"
 "Entre em contato com o administrador da organização para obter assistência.\n"
 
-#: ../server/rhnChannel.py:2562
+#: ../server/rhnChannel.py:2468
 #, python-format
 msgid ""
 "\n"
@@ -170,7 +161,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2572
+#: ../server/rhnChannel.py:2476
 #, python-format
 msgid ""
 "\n"
@@ -186,11 +177,11 @@ msgstr ""
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
-#: ../server/rhnHandler.py:64
+#: ../server/rhnHandler.py:59
 msgid "Please run rhn_register as root on this client"
 msgstr "Execute rhn_register como root neste cliente"
 
-#: ../server/rhnHandler.py:78
+#: ../server/rhnHandler.py:73
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Serviço não ativado para o perfil do sistema: \"%s\""
@@ -205,7 +196,7 @@ msgstr "Pacote RPM inválido %s solicitado"
 msgid "Package not found"
 msgstr "Pacote não encontrado"
 
-#: ../server/rhnServer/server_class.py:103
+#: ../server/rhnServer/server_class.py:102
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "A arquitetura `%s' não é suportada"
@@ -252,65 +243,9 @@ msgstr "Incompatibilidade de sessão do Kickstart"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "O empilhamento de tokens de re-registro não é suportado"
 
-#: ../server/rhnUser.py:323 ../server/rhnUser.py:326
+#: ../server/rhnUser.py:313 ../server/rhnUser.py:316
 msgid "Invalid username/password combination"
 msgstr "Combinação de nome de usuário/senha inválido"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:507
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "O nome de usuário `%s 'não foi reservado"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:513
-msgid "E-mail address not specified"
-msgstr "Endereço de email não especificado"
-
-#: ../server/rhnUser.py:555
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "o nome de usuário deve ter pelo menos %d caracteres"
-
-#: ../server/rhnUser.py:559
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "o nome de usuário deve ter menos de %d caracteres"
-
-#: ../server/rhnUser.py:573
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "nome de usuário = `%s', caractere inválido`%s'"
-
-#: ../server/rhnUser.py:594
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Limite seu endereço de e-mail a %s caracteres"
-
-#: ../server/rhnUser.py:692
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "a senha deve ter pelo menos %d caracteres"
-
-#: ../server/rhnUser.py:696
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "A senha deve ter menos de %d caracteres"
-
-#: ../server/rhnUser.py:712
-#, python-format
-msgid "password contains character `%s'"
-msgstr "a senha contém o caractere `%s '"
-
-#: ../server/rhnUser.py:721
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "o nome de usuário deve ter pelo menos %d caracteres"
-
-#: ../server/rhnUser.py:732
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "Não é possível registrar nomes de usuário que terminem com %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:57
@@ -977,7 +912,7 @@ msgstr "ERRO: %s %s: %s"
 msgid "TRACEBACK: %s"
 msgstr "RASTREAR: %s"
 
-#: ../satellite_tools/messages.py:30
+#: ../satellite_tools/messages.py:29
 #, python-format
 msgid ""
 "\n"
@@ -988,7 +923,7 @@ msgstr ""
 "ERRO: executando a etapa %s. O erro é:\n"
 "%s\n"
 
-#: ../satellite_tools/messages.py:37
+#: ../satellite_tools/messages.py:34
 #, python-format
 msgid ""
 "\n"
@@ -1005,7 +940,7 @@ msgstr ""
 "    que você tem todos, e então remontar e repovoar iterativamente\n"
 "    o repositório temporário (%s).\n"
 
-#: ../satellite_tools/messages.py:47
+#: ../satellite_tools/messages.py:42
 #, python-format
 msgid ""
 "\n"
@@ -1016,7 +951,7 @@ msgstr ""
 "ERRO: Teve um problema sincronizando as informações.\n"
 "     Mensagem de erro: %s\n"
 
-#: ../satellite_tools/messages.py:54
+#: ../satellite_tools/messages.py:47
 #, python-format
 msgid ""
 "\n"
@@ -1031,7 +966,7 @@ msgstr ""
 "     conectividade básica de rede e / ou resolução de nomes e tente novamente.\n"
 "     Mensagem de erro: %s\n"
 
-#: ../satellite_tools/messages.py:63
+#: ../satellite_tools/messages.py:54
 #, python-format
 msgid ""
 "\n"
@@ -1048,7 +983,7 @@ msgstr ""
 "     transação:\n"
 "     %s\n"
 
-#: ../satellite_tools/messages.py:73
+#: ../satellite_tools/messages.py:62
 #, fuzzy, python-format
 #| msgid ""
 #| "\n"
@@ -1066,120 +1001,170 @@ msgstr ""
 "Entre em contato com seu contato do SUSE Manager\n"
 "%s"
 
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  ERRO: sem espaço suficiente (%s KB) no dispostivo."
-
-#: ../satellite_tools/messages.py:81
+#: ../satellite_tools/messages.py:67
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr "    %3d/%s Busca bem sucedida: %s (%s bytes)"
 
-#: ../satellite_tools/messages.py:82
+#: ../satellite_tools/messages.py:68
 #, python-format
 msgid "    Extinct package:  %s"
 msgstr "    Pacote extinto:  %s"
 
-#: ../satellite_tools/messages.py:83
+#: ../satellite_tools/messages.py:69
 #, python-format
 msgid "   Total size: %s"
 msgstr "   Tamanho total: %s"
 
-#: ../satellite_tools/messages.py:85
+#: ../satellite_tools/messages.py:71
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
 msgstr "      Baixado %s de %s. Tempo restante estimado: %s"
 
-#: ../satellite_tools/messages.py:87
+#: ../satellite_tools/messages.py:73
 #, python-format
 msgid "    Fetch unsuccessful: %s"
 msgstr "    Busca mal sucedida: %s"
 
-#: ../satellite_tools/messages.py:88
+#: ../satellite_tools/messages.py:74
 #, python-format
 msgid "   RPM fetch summary: %s"
 msgstr "   Busca de sumário RPM: %s"
 
-#: ../satellite_tools/messages.py:89
+#: ../satellite_tools/messages.py:75
 #, python-format
 msgid "       success: %d"
 msgstr "       sucesso: %d"
 
-#: ../satellite_tools/messages.py:90
+#: ../satellite_tools/messages.py:76
 #, python-format
 msgid "       failed:  %d"
 msgstr "       falhou:  %d"
 
-#: ../satellite_tools/messages.py:91
+#: ../satellite_tools/messages.py:77
 #, python-format
 msgid "       extinct: %d"
 msgstr "       extinto: %d"
 
-#: ../satellite_tools/messages.py:93
+#: ../satellite_tools/messages.py:79
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr "   Recuperando/analisando metadados do pacote *relevantes*: %s (%s)"
 
-#: ../satellite_tools/messages.py:94
+#: ../satellite_tools/messages.py:80
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
 msgstr "   Recuperando/analisando dados de erratas: %s (%s)"
 
-#: ../satellite_tools/messages.py:95
+#: ../satellite_tools/messages.py:81
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
 msgstr "   Recuperando/analisando dados do kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:96
+#: ../satellite_tools/messages.py:82
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr "   Recuperando/analisando arquivos da árvore do kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:97
+#: ../satellite_tools/messages.py:83
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
 msgstr "   Importando metadados *relevantes* do pacote: %s (%s)"
 
-#: ../satellite_tools/messages.py:98
+#: ../satellite_tools/messages.py:84
 msgid "   * WARNING: this may be a slow process."
 msgstr "   * AVISO: este pode ser um processo lento."
 
-#: ../satellite_tools/messages.py:99
+#: ../satellite_tools/messages.py:85
 msgid "Linking packages to channels"
 msgstr "Vinculando pacotes aos canais"
 
-#: ../satellite_tools/messages.py:100
+#: ../satellite_tools/messages.py:86
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
 msgstr "   Importando errata *relevante*: %s (%s)"
 
-#: ../satellite_tools/messages.py:101
+#: ../satellite_tools/messages.py:87
 msgid "   No new kickstartable tree to import"
 msgstr "   Nenhuma nova árvore kickstartable para importar"
 
-#: ../satellite_tools/messages.py:102
+#: ../satellite_tools/messages.py:88
 #, python-format
 msgid "Importing kickstartable trees (%d)"
 msgstr "Importando árvores kickstartable (%d)"
 
-#: ../satellite_tools/messages.py:103
+#: ../satellite_tools/messages.py:89
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "Árvores kickstartable importadas (%d)"
 
-#: ../satellite_tools/reposync.py:150
+#: ../satellite_tools/reposync.py:151
 msgid "+++ sending log as an email +++"
 msgstr "+++ enviar log como um email +++"
 
-#: ../satellite_tools/reposync.py:153
+#: ../satellite_tools/reposync.py:154
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s sincronizado. relatório de %s"
 
-#: ../satellite_tools/reposync.py:163
+#: ../satellite_tools/reposync.py:164
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ email solicitado, mas não há nada para enviar +++"
+
+#, python-format
+#~ msgid ""
+#~ "IMPORTANT MESSAGE FOLLOWS:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "SEGUINTE MENSAGEM IMPORTANTE:\n"
+#~ "%s"
+
+#, python-format
+#~ msgid "Username `%s' has not been reserved"
+#~ msgstr "O nome de usuário `%s 'não foi reservado"
+
+#~ msgid "E-mail address not specified"
+#~ msgstr "Endereço de email não especificado"
+
+#, python-format
+#~ msgid "username should be at least %d characters"
+#~ msgstr "o nome de usuário deve ter pelo menos %d caracteres"
+
+#, python-format
+#~ msgid "username should be less than %d characters"
+#~ msgstr "o nome de usuário deve ter menos de %d caracteres"
+
+#, python-format
+#~ msgid "username = `%s', invalid character `%s'"
+#~ msgstr "nome de usuário = `%s', caractere inválido`%s'"
+
+#, python-format
+#~ msgid "Please limit your e-mail address to %s chars"
+#~ msgstr "Limite seu endereço de e-mail a %s caracteres"
+
+#, python-format
+#~ msgid "password must be at least %d characters"
+#~ msgstr "a senha deve ter pelo menos %d caracteres"
+
+#, python-format
+#~ msgid "Password must be shorter than %d characters"
+#~ msgstr "A senha deve ter menos de %d caracteres"
+
+#, python-format
+#~ msgid "password contains character `%s'"
+#~ msgstr "a senha contém o caractere `%s '"
+
+#, python-format
+#~ msgid "username should be at least %d characters long"
+#~ msgstr "o nome de usuário deve ter pelo menos %d caracteres"
+
+#, python-format
+#~ msgid "Cannot register usernames ending with %s"
+#~ msgstr "Não é possível registrar nomes de usuário que terminem com %s"
+
+#, python-format
+#~ msgid "  ERROR: not enough free space (%s KB) on device."
+#~ msgstr "  ERRO: sem espaço suficiente (%s KB) no dispostivo."
 
 #, python-format
 #~ msgid "format of %s should be at least YYYYMMDD.\n"
