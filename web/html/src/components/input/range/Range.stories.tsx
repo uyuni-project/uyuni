@@ -134,7 +134,7 @@ const meta = {
       description: "HTML title attribute for the input elements (suffixed with 'start' and 'end').",
     },
   },
-  render: (args) => <StatefulRangeInForm {...args} />,
+  render: (args) => <StatefulRangeInForm key={`${args.prefix}-${args.defaultStart}-${args.defaultEnd}`} {...args} />,
 } satisfies Meta<typeof Range>;
 
 export default meta;
