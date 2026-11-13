@@ -8,15 +8,19 @@
 
 import "font-awesome/css/font-awesome.css";
 import "manager/polyfills";
+import "jquery-ui/ui/widgets/sortable";
 
 import type { Decorator, Preview } from "@storybook/react-webpack5";
 import suseDarkTheme from "branding/css/suse-dark.scss?lazy";
 import suseLightTheme from "branding/css/suse-light.scss?lazy";
 import uyuniTheme from "branding/css/uyuni.scss?lazy";
 import jQueryImport from "jquery";
+import ReactModal from "react-modal";
 
 import { t } from "core/intl";
 import Loggerhead from "core/log/loggerhead";
+
+import { initializeTooltips } from "components/tooltips";
 
 const jQuery = jQueryImport as unknown as JQueryStatic;
 
@@ -102,6 +106,8 @@ type StorybookGlobal = typeof globalThis & {
   t: typeof t;
   jQuery: JQueryStatic;
   Loggerhead: Loggerhead;
+  handleSst: () => void;
+  bootstrap: typeof import("bootstrap");
 };
 
 const storybookWindow = window as StorybookWindow;
@@ -123,6 +129,14 @@ storybookWindow.$ = jQuery;
 
 storybookGlobal.t = t;
 storybookGlobal.jQuery = jQuery;
+// The application shell installs the sticky section-toolbar handler. Storybook has no sticky page shell,
+// but components should still be able to run their normal mount effect.
+storybookGlobal.handleSst ??= () => undefined;
+
+// Import and register Bootstrap after jQuery is available so jQuery plugins can be registered
+const bootstrapReady = import("bootstrap").then((bootstrapImport) => {
+  storybookGlobal.bootstrap = bootstrapImport;
+});
 
 const loggerHead = new Loggerhead("", (headers) => headers);
 loggerHead.info = console.info.bind(console, "[Loggerhead] INFO:");
@@ -132,9 +146,21 @@ loggerHead.error = console.error.bind(console, "[Loggerhead] ERROR:");
 storybookGlobal.Loggerhead = loggerHead;
 
 // Mirror the JSP app shell: exactly one branded stylesheet is active and components render below `.new-theme`.
+let tooltipsInitialized = false;
 const withUyuniTheme: Decorator = (Story, context) => {
   const theme = isThemeName(context.globals.theme) ? context.globals.theme : "uyuni";
   setTheme(theme);
+
+  // Autodocs renders outside storybook-root. Hide the active background while
+  // keeping ReactModal's portal available to assistive technologies.
+  const appElement = document.getElementById(context.viewMode === "docs" ? "storybook-docs" : "storybook-root");
+  if (appElement) ReactModal.setAppElement(appElement);
+
+  // The global loader has loaded Bootstrap; initialize tooltips after the story mounts.
+  if (!tooltipsInitialized) {
+    tooltipsInitialized = true;
+    setTimeout(() => initializeTooltips(), 0);
+  }
 
   return (
     <div className={`theme-${theme} new-theme`}>
@@ -144,8 +170,14 @@ const withUyuniTheme: Decorator = (Story, context) => {
 };
 
 const preview: Preview = {
-  // Default to Autodocs for real CSF stories; generated legacy wrappers opt out with `!autodocs`.
+  // Default to Autodocs for native stories; generated legacy wrappers opt out with `!autodocs`.
   tags: ["autodocs"],
+  loaders: [
+    async () => {
+      await bootstrapReady;
+      return {};
+    },
+  ],
   decorators: [withUyuniTheme],
   globalTypes: {
     theme: {
@@ -179,7 +211,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ["Components", "Manager", "Legacy Example Stories"],
+        order: ["Components", "Compositions", "Deprecated", "Manager", "Legacy Example Stories"],
         method: "alphabetical",
       },
     },
