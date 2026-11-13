@@ -170,7 +170,7 @@ const withUyuniTheme: Decorator = (Story, context) => {
 };
 
 const preview: Preview = {
-  // Default to Autodocs for native stories; generated legacy wrappers opt out with `!autodocs`.
+  // Generate Autodocs for all component stories.
   tags: ["autodocs"],
   loaders: [
     async () => {
@@ -211,7 +211,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ["Components", "Compositions", "Deprecated", "Manager", "Legacy Example Stories"],
+        order: ["Components", "Compositions", "Deprecated"],
         method: "alphabetical",
       },
     },
