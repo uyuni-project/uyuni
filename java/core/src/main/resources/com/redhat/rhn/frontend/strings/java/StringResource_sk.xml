@@ -8659,10 +8659,6 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
         <source>Invalid action type</source>
         <target>Neplatný typ akcie</target>
       </trans-unit>
-      <trans-unit id="api.org.pamAuthNotConfigured" xml:space="preserve">
-        <source>The server is not configured to support PAM authentication. Refer to the reference guide for instructions on how to set up PAM.</source>
-        <target>Server nie je nakonfigurovaný na podporu overovania PAM. Inštrukcie na nastavenie PAM nájdete v referenčnej príručke.</target>
-      </trans-unit>
       <trans-unit id="api.org.migrationtosameorg" xml:space="preserve">
         <source>User cannot migrate a system where the origination and destination organizations are the same.  Org Id: {0}, System Id: {1}.</source>
         <target>Používateľ nemôže migrovať systém, v ktorom sú pôvodná a cieľová organizácia rovnaké.  Org Id: {0}, Systém Id: {1}.</target>
@@ -12257,6 +12253,45 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>Apply formulas assigned to the target system</source>
         <target state="translated">Použiť vzorce priradené k cieľovému systému</target>
       </trans-unit>
-    </body>
+    <trans-unit id="Server Settings" xml:space="preserve">
+        <source>Server Settings</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="server_settings.error.unknown_key" xml:space="preserve">
+        <source>Unknown server setting {0}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+          <context context-type="paramnotes">Unknown server setting KEY_NAME.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="server_settings.error.hidden_key" xml:space="preserve">
+        <source>The server setting {0} can't be changed on this page.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+          <context context-type="paramnotes">The server setting KEY_NAME can't be changed on this page.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="server_settings.error.integer" xml:space="preserve">
+        <source>The value of {0} must be an integer.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+          <context context-type="paramnotes">The value of KEY_NAME must be an integer.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="server_settings.error.boolean" xml:space="preserve">
+        <source>The value of {0} must be true or false.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+          <context context-type="paramnotes">The value of KEY_NAME must be true or false.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
