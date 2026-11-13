@@ -140,7 +140,7 @@ const meta = {
       description: "Callback invoked when the input value changes. Receives the field name and new value.",
     },
   },
-  render: (args) => <StatefulTextInForm {...args} />,
+  render: (args) => <StatefulTextInForm key={`${args.name}-${args.defaultValue}`} {...args} />,
 } satisfies Meta<typeof Text>;
 
 export default meta;
