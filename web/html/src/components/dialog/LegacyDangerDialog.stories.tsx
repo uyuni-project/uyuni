@@ -20,6 +20,7 @@ const meta = {
   component: DangerDialog,
   parameters: {
     docs: {
+      story: { inline: false, height: "420px" },
       description: {
         component: `
 **⚠️ DEPRECATED - Do not use in new code**
@@ -38,6 +39,8 @@ The new DangerDialog component uses React state management with better performan
     submitText: "Delete",
     submitIcon: "fa-trash",
     closableModal: true,
+    onConfirm: undefined,
+    onConfirmAsync: undefined,
   },
   argTypes: {
     id: {
