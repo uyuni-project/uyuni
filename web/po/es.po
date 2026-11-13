@@ -3,16 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/range/Range.tsx:58
-#: ../html/src/components/input/range/Range.tsx:59
-#: ../html/src/components/input/range/Range.tsx:71
-#: ../html/src/components/input/range/Range.tsx:72
 #: ../html/src/core/intl/index.test.tsx:17
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:56+0100\n"
+"POT-Creation-Date: 2026-11-13 11:59+0000\n"
 "PO-Revision-Date: 2025-08-07 10:59+0000\n"
 "Last-Translator: Javier Llorente <javier@opensuse.org>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -30,6 +26,16 @@ msgstr "restante"
 #: ../html/javascript/spacewalk-essentials.js:450
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "No se admite el navegador Internet Explorer. Se recomienda Firefox, Chrome o Edge"
+
+#: ../html/src/components/CoCoScansList.tsx:86
+#: ../html/src/components/package/PackageListActionScheduler.tsx:93
+#: ../html/src/components/product-migration/utils.tsx:101
+#: ../html/src/manager/appstreams/appstreams.tsx:67
+#: ../html/src/manager/state/highstate.tsx:71
+#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:66
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:79
+msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
+msgstr ""
 
 #: ../html/src/components/CoCoScansList.tsx:93
 #: ../html/src/components/package/PackageListActionScheduler.tsx:100
@@ -90,6 +96,10 @@ msgstr ""
 #: ../html/src/components/FormulaForm.tsx:30
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Se ha guardado la fórmula. No es necesario aplicar el estado alto en esta fórmula."
+
+#: ../html/src/components/FormulaForm.tsx:144
+msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
+msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:175
 msgid "Please input required fields: {fields}"
@@ -292,6 +302,10 @@ msgstr "Crear proyecto"
 #, fuzzy
 msgid "Attestations"
 msgstr "Reiniciar"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:47
+msgid "No attestation report available. Schedule an execution to create one."
+msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:54
 #, fuzzy
@@ -529,7 +543,8 @@ msgstr "Crear un filtro nuevo"
 #: ../html/src/components/hub/ModalEditButton.tsx:104
 #: ../html/src/components/large-text-attachment.tsx:201
 #: ../html/src/components/panels/CreatorPanel.tsx:128
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:126
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:164
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:212
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:224
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:21
 #: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:104
@@ -1928,6 +1943,14 @@ msgstr "Nombre de paquete"
 msgid "Items {from} - {to} of {total}"
 msgstr "Elementos {0} - {1} de {2}"
 
+#: ../html/src/components/pagination.tsx:145
+msgid ""
+"{total, plural,\n"
+"            one {<dropdown></dropdown> of # page}\n"
+"            other {<dropdown></dropdown> of # pages}\n"
+"        }"
+msgstr ""
+
 #: ../html/src/components/picker/recurring-event-picker.tsx:62
 msgid "Sunday"
 msgstr ""
@@ -1990,6 +2013,10 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:487
 msgid "Custom Quartz format:"
+msgstr ""
+
+#: ../html/src/components/picker/recurring-event-picker.tsx:497
+msgid "e.g. \"0 15 2 ? * 7\""
 msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:516
@@ -2578,6 +2605,14 @@ msgstr ""
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr ""
 
+#: ../html/src/core/intl/index.example.tsx:29
+msgid ""
+"Always use plural forms for numbers: {fooCount, plural,\n"
+"            one {only one item}\n"
+"            other {{fooCount} items}\n"
+"          }."
+msgstr ""
+
 #: ../html/src/core/intl/index.test.tsx:15
 msgid "foo"
 msgstr ""
@@ -2904,43 +2939,65 @@ msgid "Set up monitoring for your {productName} server."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:343
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:35
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:140
 msgid "General"
 msgstr "Generales"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:348
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:40
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:145
 msgid "Bootstrap Script"
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:353
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:45
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:150
 msgid "Organizations"
 msgstr "Organizaciones"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:358
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:155
 msgid "Restart"
 msgstr "Reiniciar"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:363
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:55
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:160
 msgid "Cobbler"
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:367
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:376
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:388
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:379
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:391
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:59
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:164
 msgid "Monitoring"
 msgstr "Supervisión"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:370
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:62
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:167
 #, fuzzy
 #| msgid "Password"
 msgid "Password Policy"
 msgstr "Contraseña"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:399
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:373
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:170
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:175
+#, fuzzy
+msgid "Server Settings"
+msgstr "Reiniciar"
+
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:402
 #, fuzzy
 msgid "Restarting"
 msgstr "Reiniciar"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:400
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:403
 msgid " Tomcat and Taskomatic is needed for the configuration changes to take effect."
 msgstr " Se necesitan Tomcat y Taskomatic para que surtan efecto los cambios en la configuración."
 
@@ -3007,11 +3064,11 @@ msgid "Hub Details"
 msgstr "Detalles del filtro"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:86
-msgid "No hub is currently configured for this server. "
+msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:95
-msgid "This server is currently registered as peripheral of hub {fqdn}. "
+msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:114
@@ -3035,7 +3092,7 @@ msgid "{fqdn} - Peripheral Details"
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:57
-msgid "The server {fqdn} is currently registered as peripheral of this hub. "
+msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:30
@@ -3097,63 +3154,63 @@ msgstr ""
 msgid "Set up your server local users password policy."
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:32
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:70
 #, fuzzy
 #| msgid "Provider Settings"
 msgid "Password Policy Settings"
 msgstr "Configuración de proveedor"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:35
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:73
 msgid "Min Password Length"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:44
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:82
 msgid "Max Password Length"
 msgstr ""
 
 #. Require Digits
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:62
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:100
 msgid "Require Digits"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:103
 msgid "Require Lowercase Characters"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:72
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:110
 msgid "Require Uppercase Characters"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:79
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:117
 msgid "Restrict Consecutive Characters"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:86
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:124
 msgid "Require Special Characters"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:96
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:134
 msgid "Allowed Special Characters"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:105
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
 msgid "Restrict Characters Occurrences"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:112
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:150
 msgid "Max Characters Occurrences"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:130
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:168
 msgid "Password Policy Changed"
 msgstr ""
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:140
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:178
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:14
 msgid "Reset"
 msgstr "Restablecer"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:147
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:185
 #, fuzzy
 #| msgid "Provider Settings"
 msgid "Password Policy Reset to Default"
@@ -3185,12 +3242,6 @@ msgstr "Editando propiedades.."
 #, fuzzy
 msgid "Last Status Update"
 msgstr "Fecha de inicio"
-
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:56
-#, fuzzy
-#| msgid "Edit"
-msgid "Edit "
-msgstr "Editar"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:71
 msgid "Editing ssh connection data.."
@@ -3247,6 +3298,55 @@ msgstr "Eliminar proyecto"
 msgid "Are you sure you want to delete connection"
 msgstr "¿Confirma que quiere eliminar el proyecto"
 
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:68
+msgid "Some values are invalid."
+msgstr ""
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:76
+#, fuzzy
+#| msgid "Server self monitoring"
+msgid "Server settings saved"
+msgstr "Autosupervisión del servidor"
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:95
+msgid "{key} reset to the default value"
+msgstr ""
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:116
+msgid "Default: enabled"
+msgstr ""
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:116
+#, fuzzy
+#| msgid "Disabled"
+msgid "Default: disabled"
+msgstr "Desactivada"
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:123
+#, fuzzy
+#| msgid "Provider Settings"
+msgid "Reset to default"
+msgstr "Configuración de proveedor"
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:131
+#, fuzzy
+msgid "Server Configuration - Server Settings"
+msgstr "Canales de configuración"
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:134
+msgid "Change the server settings which are stored in the database."
+msgstr ""
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:216
+#, fuzzy
+#| msgid "Select All"
+msgid "Reset All"
+msgstr "Seleccionar todo"
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:217
+msgid "Show the default values of all settings, they are stored with Save"
+msgstr ""
+
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:159
 msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr ""
@@ -3286,6 +3386,10 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:316
 msgid "Selected channels were scheduled successfully for syncing."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.tsx:325
+msgid "The following channel installations for \"{product}\" failed. Please check log files."
 msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:356
@@ -3341,22 +3445,6 @@ msgstr "Canales"
 #: ../html/src/manager/admin/setup/products/products.tsx:679
 msgid "Recommended"
 msgstr ""
-
-#: ../html/src/manager/admin/setup/products/products.tsx:860
-#, fuzzy
-#| msgid " channels synced"
-msgid " channels sync failed"
-msgstr " canales sincronizados"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:868
-#, fuzzy
-#| msgid " channels synced"
-msgid " channels sync in progress"
-msgstr " canales sincronizados"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:876
-msgid " channels synced"
-msgstr " canales sincronizados"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:900
 msgid "To enable this product, the parent product should be selected first"
@@ -3643,13 +3731,15 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
-msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:57
 msgid "Affected, patches available in a Product Migration target"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:65
@@ -3687,11 +3777,15 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
-msgid "The client is affected by a vulnerability for which a patch has been released,"
+msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:93
 msgid "Affected, partial patch available in assigned channel"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:101
@@ -3816,11 +3910,6 @@ msgstr "Error al programar la tarea en Taskomatic. Revise los registros."
 msgid "An unexpected error occurred."
 msgstr "Se ha producido un error al guardar."
 
-#: ../html/src/manager/audit/scap/create-scap-content.tsx:97
-#, fuzzy
-msgid "Edit SCAP Content"
-msgstr "Eliminar proyecto"
-
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:114
 msgid "SCAP Datastream File"
 msgstr ""
@@ -3847,15 +3936,6 @@ msgstr ""
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:139
 msgid "Upload the XCCDF file (*-xccdf.xml)"
 msgstr ""
-
-#: ../html/src/manager/audit/scap/create-scap-content.tsx:151
-#: ../html/src/manager/audit/scap/create-scap-policy.tsx:319
-#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:145
-#: ../html/src/manager/images/image-profile-edit.tsx:501
-#: ../html/src/manager/images/image-store-edit.tsx:218
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:205
-msgid "Update"
-msgstr "Actualizar"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:131
 #, fuzzy
@@ -3900,25 +3980,23 @@ msgstr ""
 msgid "Back to List"
 msgstr "Volver a la lista"
 
+#: ../html/src/manager/audit/scap/create-scap-policy.tsx:319
+#: ../html/src/manager/images/image-profile-edit.tsx:501
+#: ../html/src/manager/images/image-store-edit.tsx:218
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:205
+msgid "Update"
+msgstr "Actualizar"
+
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:89
 #, fuzzy
 msgid "An error occurred while saving the tailoring file."
 msgstr "Error al programar la tarea en Taskomatic. Revise los registros."
-
-#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:100
-#, fuzzy
-msgid "Edit Tailoring File"
-msgstr "Nombre del filtro"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:119
 #, fuzzy
 #| msgid "Create a new filter"
 msgid "Current File"
 msgstr "Crear un filtro nuevo"
-
-#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:128
-msgid "Replace File (optional)"
-msgstr ""
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:48
 #, fuzzy
@@ -5224,19 +5302,19 @@ msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:16
 #, fuzzy
-msgid "If you typed this address into your browser, double-check the spelling and capitalization."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgstr "Si ha escrito esta dirección en el navegador, revise la ortografía y la mayusculación. Si la ha copiado, es posible que esté desactualizada."
 
 #: ../html/src/manager/errors/not-found.tsx:22
-msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:29
-msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:36
-msgid "If you feel you've reached this page in error, please contact us with details of how you received "
+msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgstr ""
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:35
@@ -5436,12 +5514,6 @@ msgid "Create additional custom info keys"
 msgstr ""
 
 #: ../html/src/manager/images/image-profile-edit.tsx:523
-#, fuzzy
-#| msgid "Image Profile"
-msgid "Edit Image Profile: '"
-msgstr "Perfil Imagen"
-
-#: ../html/src/manager/images/image-profile-edit.tsx:523
 #: ../html/src/manager/images/image-profiles.tsx:153
 #: ../html/src/manager/images/image-profiles.tsx:154
 msgid "Create Image Profile"
@@ -5510,12 +5582,6 @@ msgstr "¿Confirma que quiere eliminar los perfiles seleccionados? (se seleccion
 #: ../html/src/manager/images/image-store-edit.tsx:171
 msgid "Use credentials"
 msgstr ""
-
-#: ../html/src/manager/images/image-store-edit.tsx:240
-#, fuzzy
-#| msgid "Target Image Store"
-msgid "Edit Image Store: '"
-msgstr "Almacenar Imagen Destino"
 
 #: ../html/src/manager/images/image-store-edit.tsx:240
 msgid "Create Image Store"
@@ -5605,34 +5671,13 @@ msgstr ""
 msgid "Go to event"
 msgstr "Ir al suceso"
 
-#: ../html/src/manager/images/image-view-overview.tsx:62
-msgid " is queued"
-msgstr ""
-
 #: ../html/src/manager/images/image-view-overview.tsx:69
 msgid "In progress"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:74
-#, fuzzy
-#| msgid " channels synced"
-msgid " in progress"
-msgstr " canales sincronizados"
-
 #: ../html/src/manager/images/image-view-overview.tsx:81
 msgid "Successful"
 msgstr ""
-
-#: ../html/src/manager/images/image-view-overview.tsx:86
-#, fuzzy
-msgid " is successful"
-msgstr "Se eliminó el filtro correctamente"
-
-#: ../html/src/manager/images/image-view-overview.tsx:98
-#, fuzzy
-#| msgid " channels synced"
-msgid " has failed"
-msgstr " canales sincronizados"
 
 #: ../html/src/manager/images/image-view-overview.tsx:105
 #: ../html/src/manager/images/image-view-overview.tsx:106
@@ -5652,12 +5697,6 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:540
 msgid "Built externally"
 msgstr ""
-
-#: ../html/src/manager/images/image-view-overview.tsx:140
-#, fuzzy
-#| msgid "Status"
-msgid " Status"
-msgstr "Estado"
 
 #: ../html/src/manager/images/image-view-overview.tsx:145
 msgid "Picked Up"
@@ -5705,6 +5744,12 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:360
 msgid "Edit store"
 msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.tsx:475
+#: ../html/src/manager/images/image-view.tsx:807
+#, fuzzy
+msgid "Instance Details for \"{name}\""
+msgstr "Detalles de ejemplar para «{0}»"
 
 #: ../html/src/manager/images/image-view-overview.tsx:530
 #: ../html/src/manager/images/image-view-overview.tsx:531
@@ -6175,6 +6220,10 @@ msgstr "Mostrar lista de sistemas"
 msgid "Current Schedule"
 msgstr "Memoria actual"
 
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:123
+msgid "Url \"{url}\" is invalid"
+msgstr ""
+
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:148
 #, fuzzy
 msgid "Calendar data"
@@ -6269,27 +6318,12 @@ msgstr ""
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:54
-#, fuzzy
-#| msgid "scheduled"
-msgid "schedule"
-msgstr "planificado"
-
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:35
 msgid "No schedules created. Use Create to add a schedule."
 msgstr ""
 
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:92
 msgid "This will remove the schedule from all the systems assigned to it."
-msgstr ""
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:150
-#, fuzzy
-msgid "successfully"
-msgstr "Se eliminó el filtro correctamente"
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:183
-msgid "Error when deleting the "
 msgstr ""
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:196
@@ -6477,6 +6511,11 @@ msgstr "Cambios"
 #, fuzzy
 msgid "Save the current Playbook"
 msgstr "Crear un filtro nuevo"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:191
+#, fuzzy
+msgid "Playbook \"{name}\""
+msgstr "Nombre del filtro"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:200
 msgid "Schedule Playbook Execution"
@@ -6912,11 +6951,6 @@ msgstr ""
 msgid "Registry URL"
 msgstr "Sistema no registrado"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:338
-#, fuzzy
-msgid "e.g., "
-msgstr "p. ej., SLE12"
-
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:345
 #, fuzzy
 #| msgid "contains"
@@ -7006,7 +7040,7 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
-msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:37
@@ -7026,7 +7060,7 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:33
-msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:38
@@ -7789,15 +7823,6 @@ msgstr "Cargando el programador.."
 msgid "Base Channel:"
 msgstr "Canal de base"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:139
-#, fuzzy
-msgid "${defaultChannelName}"
-msgstr "Nombre del canal"
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:149
-msgid "${this.getDefaultBase().name}"
-msgstr ""
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:159
 msgid "Child Channels:"
 msgstr ""
@@ -7893,10 +7918,6 @@ msgstr ""
 #| msgid "No Change"
 msgid "Don't change"
 msgstr "Ningún cambio"
-
-#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:132
-msgid " (No system to disable)"
-msgstr ""
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:141
 #, fuzzy
@@ -8691,20 +8712,80 @@ msgstr ""
 msgid "Resource not found."
 msgstr ""
 
-#: ../html/src/utils/network.ts:112
-msgid "HTTP Error code "
-msgstr ""
+#, fuzzy
+#~| msgid "Edit"
+#~ msgid "Edit "
+#~ msgstr "Editar"
+
+#, fuzzy
+#~| msgid " channels synced"
+#~ msgid " channels sync failed"
+#~ msgstr " canales sincronizados"
+
+#, fuzzy
+#~| msgid " channels synced"
+#~ msgid " channels sync in progress"
+#~ msgstr " canales sincronizados"
+
+#~ msgid " channels synced"
+#~ msgstr " canales sincronizados"
+
+#, fuzzy
+#~ msgid "Edit SCAP Content"
+#~ msgstr "Eliminar proyecto"
+
+#, fuzzy
+#~ msgid "Edit Tailoring File"
+#~ msgstr "Nombre del filtro"
+
+#, fuzzy
+#~| msgid "Image Profile"
+#~ msgid "Edit Image Profile: '"
+#~ msgstr "Perfil Imagen"
+
+#, fuzzy
+#~| msgid "Target Image Store"
+#~ msgid "Edit Image Store: '"
+#~ msgstr "Almacenar Imagen Destino"
+
+#, fuzzy
+#~| msgid " channels synced"
+#~ msgid " in progress"
+#~ msgstr " canales sincronizados"
+
+#, fuzzy
+#~ msgid " is successful"
+#~ msgstr "Se eliminó el filtro correctamente"
+
+#, fuzzy
+#~| msgid " channels synced"
+#~ msgid " has failed"
+#~ msgstr " canales sincronizados"
+
+#, fuzzy
+#~| msgid "Status"
+#~ msgid " Status"
+#~ msgstr "Estado"
+
+#, fuzzy
+#~| msgid "scheduled"
+#~ msgid "schedule"
+#~ msgstr "planificado"
+
+#, fuzzy
+#~ msgid "successfully"
+#~ msgstr "Se eliminó el filtro correctamente"
+
+#, fuzzy
+#~ msgid "e.g., "
+#~ msgstr "p. ej., SLE12"
+
+#, fuzzy
+#~ msgid "${defaultChannelName}"
+#~ msgstr "Nombre del canal"
 
 #~ msgid "Toggle section visibility"
 #~ msgstr "Conmutar visibilidad de sección"
-
-#, fuzzy
-#~ msgid "Instance Details for \"{name}\""
-#~ msgstr "Detalles de ejemplar para «{0}»"
-
-#, fuzzy
-#~ msgid "Playbook \"{name}\""
-#~ msgstr "Nombre del filtro"
 
 #, fuzzy
 #~ msgid "Edit the ranking of the states by dragging them."
@@ -8727,9 +8808,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Page {current} of {total}"
 #~ msgstr "Página {0} de {1}"
-
-#~ msgid "Select All"
-#~ msgstr "Seleccionar todo"
 
 #~ msgid "items per page"
 #~ msgstr "elementos por página"
@@ -9157,10 +9235,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Remove nodes"
 #~ msgstr "Quitar"
-
-#, fuzzy
-#~ msgid "Configuration override"
-#~ msgstr "Canales de configuración"
 
 #, fuzzy
 #~ msgid "End"

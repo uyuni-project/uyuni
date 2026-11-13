@@ -3,16 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/range/Range.tsx:58
-#: ../html/src/components/input/range/Range.tsx:59
-#: ../html/src/components/input/range/Range.tsx:71
-#: ../html/src/components/input/range/Range.tsx:72
 #: ../html/src/core/intl/index.test.tsx:17
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:56+0100\n"
+"POT-Creation-Date: 2026-11-13 11:59+0000\n"
 "PO-Revision-Date: 2026-08-11 09:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/zh_CN/>\n"
@@ -30,6 +26,16 @@ msgstr "剩余"
 #: ../html/javascript/spacewalk-essentials.js:450
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "不支持 Internet Explorer 浏览器。请尝试使用 Firefox、Chrome 或 Edge"
+
+#: ../html/src/components/CoCoScansList.tsx:86
+#: ../html/src/components/package/PackageListActionScheduler.tsx:93
+#: ../html/src/components/product-migration/utils.tsx:101
+#: ../html/src/manager/appstreams/appstreams.tsx:67
+#: ../html/src/manager/state/highstate.tsx:71
+#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:66
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:79
+msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
+msgstr "操作已成功添加到操作链 <link>\"{name}\"</link>。"
 
 #: ../html/src/components/CoCoScansList.tsx:93
 #: ../html/src/components/package/PackageListActionScheduler.tsx:100
@@ -88,6 +94,10 @@ msgstr "无扫描记录"
 #: ../html/src/components/FormulaForm.tsx:30
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "公式已保存。无需对此公式应用 highstate。"
+
+#: ../html/src/components/FormulaForm.tsx:144
+msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
+msgstr "检测到多个组公式。每个系统上仅可使用 \"{name}\" 的一个公式！"
 
 #: ../html/src/components/FormulaForm.tsx:175
 msgid "Please input required fields: {fields}"
@@ -271,6 +281,10 @@ msgstr "创建重复性"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:38
 msgid "Attestations"
 msgstr "认证"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:47
+msgid "No attestation report available. Schedule an execution to create one."
+msgstr "无可用认证报告。请安排执行以创建报告。"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:54
 msgid "Attestation"
@@ -504,7 +518,8 @@ msgstr "选择日程安排"
 #: ../html/src/components/hub/ModalEditButton.tsx:104
 #: ../html/src/components/large-text-attachment.tsx:201
 #: ../html/src/components/panels/CreatorPanel.tsx:128
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:126
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:164
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:212
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:224
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:21
 #: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:104
@@ -1816,6 +1831,18 @@ msgstr "软件包名称"
 msgid "Items {from} - {to} of {total}"
 msgstr "第 {from} - {to} 项，共 {total} 项"
 
+#: ../html/src/components/pagination.tsx:145
+msgid ""
+"{total, plural,\n"
+"            one {<dropdown></dropdown> of # page}\n"
+"            other {<dropdown></dropdown> of # pages}\n"
+"        }"
+msgstr ""
+"{total, plural,\n"
+"            one {第 <dropdown></dropdown> 页，共 # 页}\n"
+"            other {第 <dropdown></dropdown> 页，共 # 页}\n"
+"        }"
+
 #: ../html/src/components/picker/recurring-event-picker.tsx:62
 msgid "Sunday"
 msgstr "星期日"
@@ -1879,6 +1906,10 @@ msgstr "天数限制为 28，使所有月份都可使用重复性日程安排"
 #: ../html/src/components/picker/recurring-event-picker.tsx:487
 msgid "Custom Quartz format:"
 msgstr "自定义 Quartz 格式："
+
+#: ../html/src/components/picker/recurring-event-picker.tsx:497
+msgid "e.g. \"0 15 2 ? * 7\""
+msgstr "例如 \"0 15 2 ? * 7\""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:516
 msgid "Select a Schedule"
@@ -2417,6 +2448,18 @@ msgstr "需要此通道"
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "请参见 <link>Format.JS 文档</link>了解消息语法。"
 
+#: ../html/src/core/intl/index.example.tsx:29
+msgid ""
+"Always use plural forms for numbers: {fooCount, plural,\n"
+"            one {only one item}\n"
+"            other {{fooCount} items}\n"
+"          }."
+msgstr ""
+"数字表述统一使用复数形式：{fooCount, plural,\n"
+"            one {仅 1 项}\n"
+"            other {{fooCount} 项}\n"
+"          }。"
+
 #: ../html/src/core/intl/index.test.tsx:15
 msgid "foo"
 msgstr "foo"
@@ -2706,40 +2749,63 @@ msgid "Set up monitoring for your {productName} server."
 msgstr "为您的 {productName} 服务器设置监控。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:343
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:35
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:140
 msgid "General"
 msgstr "常规"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:348
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:40
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:145
 msgid "Bootstrap Script"
 msgstr "引导脚本"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:353
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:45
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:150
 msgid "Organizations"
 msgstr "组织"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:358
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:155
 msgid "Restart"
 msgstr "重启"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:363
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:55
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:160
 msgid "Cobbler"
 msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:367
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:376
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:388
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:379
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:391
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:59
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:164
 msgid "Monitoring"
 msgstr "监控"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:370
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:62
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:167
 msgid "Password Policy"
 msgstr "口令策略"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:399
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:373
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:170
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:175
+#, fuzzy
+#| msgid "Settings"
+msgid "Server Settings"
+msgstr "设置"
+
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:402
 msgid "Restarting"
 msgstr "重启"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:400
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:403
 msgid " Tomcat and Taskomatic is needed for the configuration changes to take effect."
 msgstr " 需有 Tomcat 和 Taskomatic 才能使配置更改生效。"
 
@@ -2799,13 +2865,13 @@ msgid "Hub Details"
 msgstr "中心详情"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:86
-msgid "No hub is currently configured for this server. "
-msgstr "目前未为此服务器配置中心。 "
+msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
+msgstr "此服务器目前未配置 Hub。将此服务器配置为外设后，请刷新此页面以查看 Hub 详细信息"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:95
 #, fuzzy
 #| msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgid "This server is currently registered as peripheral of hub {fqdn}. "
+msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
 msgstr "此服务器目前注册为中心 {fqdn} 的外围。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:114
@@ -2831,7 +2897,7 @@ msgstr "{fqdn} - 外围详细信息"
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:57
 #, fuzzy
 #| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgid "The server {fqdn} is currently registered as peripheral of this hub. "
+msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
 msgstr "服务器 {fqdn} 目前注册为此中心的外围。 "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:30
@@ -2891,61 +2957,61 @@ msgstr "服务器配置 - 口令策略"
 msgid "Set up your server local users password policy."
 msgstr "设置服务器本地用户口令策略。"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:32
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:70
 msgid "Password Policy Settings"
 msgstr "口令策略设置"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:35
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:73
 msgid "Min Password Length"
 msgstr "口令长度下限"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:44
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:82
 msgid "Max Password Length"
 msgstr "口令长度上限"
 
 #. Require Digits
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:62
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:100
 msgid "Require Digits"
 msgstr "需要包含数字"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:103
 msgid "Require Lowercase Characters"
 msgstr "需要包含小写字母"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:72
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:110
 msgid "Require Uppercase Characters"
 msgstr "需要包含大写字母"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:79
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:117
 msgid "Restrict Consecutive Characters"
 msgstr "限制连续的字符"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:86
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:124
 msgid "Require Special Characters"
 msgstr "需要包含特殊字符"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:96
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:134
 msgid "Allowed Special Characters"
 msgstr "允许使用的特殊字符"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:105
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
 msgid "Restrict Characters Occurrences"
 msgstr "限制重复的字符"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:112
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:150
 msgid "Max Characters Occurrences"
 msgstr "重复字符数上限"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:130
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:168
 msgid "Password Policy Changed"
 msgstr "口令策略已更改"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:140
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:178
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:14
 msgid "Reset"
 msgstr "重置"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:147
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:185
 msgid "Password Policy Reset to Default"
 msgstr "口令策略已重置为默认值"
 
@@ -2972,10 +3038,6 @@ msgstr "正在编辑属性..."
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:28
 msgid "Last Status Update"
 msgstr "上次状态更新"
-
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:56
-msgid "Edit "
-msgstr "编辑 "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:71
 msgid "Editing ssh connection data.."
@@ -3027,6 +3089,56 @@ msgstr "删除 PAYG 连接"
 msgid "Are you sure you want to delete connection"
 msgstr "您确定要删除连接吗"
 
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:68
+msgid "Some values are invalid."
+msgstr ""
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:76
+#, fuzzy
+#| msgid "Server self monitoring"
+msgid "Server settings saved"
+msgstr "服务器自我监控"
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:95
+msgid "{key} reset to the default value"
+msgstr ""
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:116
+msgid "Default: enabled"
+msgstr ""
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:116
+#, fuzzy
+#| msgid "Disabled"
+msgid "Default: disabled"
+msgstr "已禁用"
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:123
+#, fuzzy
+#| msgid "Password Policy Reset to Default"
+msgid "Reset to default"
+msgstr "口令策略已重置为默认值"
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:131
+#, fuzzy
+#| msgid "Server Configuration - Password Policy"
+msgid "Server Configuration - Server Settings"
+msgstr "服务器配置 - 口令策略"
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:134
+msgid "Change the server settings which are stored in the database."
+msgstr ""
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:216
+#, fuzzy
+#| msgid "Select All"
+msgid "Reset All"
+msgstr "全选"
+
+#: ../html/src/manager/admin/server-settings/server-settings.tsx:217
+msgid "Show the default values of all settings, they are stored with Save"
+msgstr ""
+
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:159
 msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr "从 SUSE Customer Center 刷新产品目录"
@@ -3067,6 +3179,10 @@ msgstr "以下产品安装失败。请检查日志文件。"
 #: ../html/src/manager/admin/setup/products/products.tsx:316
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "已成功安排同步选定的通道。"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:325
+msgid "The following channel installations for \"{product}\" failed. Please check log files."
+msgstr "\"{product}\" 的下列通道安装失败。请查看日志文件。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:356
 msgid "A refresh of the product data is currently running in the background. Please try again later."
@@ -3121,18 +3237,6 @@ msgstr "通道"
 #: ../html/src/manager/admin/setup/products/products.tsx:679
 msgid "Recommended"
 msgstr "推荐"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:860
-msgid " channels sync failed"
-msgstr " 通道同步失败"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:868
-msgid " channels sync in progress"
-msgstr " 通道同步正在进行"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:876
-msgid " channels synced"
-msgstr " 通道已同步"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:900
 msgid "To enable this product, the parent product should be selected first"
@@ -3413,14 +3517,16 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "受影响，通道中有可用补丁，但未指派"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
-msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr "该客户端受到某个漏洞的影响，我们已针对它提供了一个补丁，"
+msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
+msgstr "客户端存在漏洞且已有对应补丁，但提供该补丁的通道未分配给此客户端。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:57
 msgid "Affected, patches available in a Product Migration target"
 msgstr "受影响，产品迁移目标中有可用补丁"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
+msgstr "客户端存在漏洞且已有对应补丁，但应用补丁需要将产品升级至更新版本。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:65
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:66
@@ -3456,12 +3562,16 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "受影响，相关通道中未提供补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
-msgid "The client is affected by a vulnerability for which a patch has been released,"
-msgstr "该客户端受到某个漏洞的影响，已针对该漏洞发布补丁，"
+msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
+msgstr "客户端存在漏洞且对应补丁已发布，但在相关通道中未找到该补丁。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:93
 msgid "Affected, partial patch available in assigned channel"
 msgstr "受影响，指派的通道中提供了局部补丁"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
+msgstr "客户端存在漏洞且已有对应补丁，但应用该补丁仅能更新部分存在漏洞的软件包。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:101
 msgid "Unknown, CVE metadata not available"
@@ -3580,10 +3690,6 @@ msgstr "上载 SCAP 内容时发生错误。"
 msgid "An unexpected error occurred."
 msgstr "发生意外错误。"
 
-#: ../html/src/manager/audit/scap/create-scap-content.tsx:97
-msgid "Edit SCAP Content"
-msgstr "编辑 SCAP 内容"
-
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:114
 msgid "SCAP Datastream File"
 msgstr "SCAP 数据流文件"
@@ -3609,15 +3715,6 @@ msgstr "XCCDF 文件"
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:139
 msgid "Upload the XCCDF file (*-xccdf.xml)"
 msgstr "上载 XCCDF 文件 (*-xccdf.xml)"
-
-#: ../html/src/manager/audit/scap/create-scap-content.tsx:151
-#: ../html/src/manager/audit/scap/create-scap-policy.tsx:319
-#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:145
-#: ../html/src/manager/images/image-profile-edit.tsx:501
-#: ../html/src/manager/images/image-store-edit.tsx:218
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:205
-msgid "Update"
-msgstr "更新"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:131
 msgid "SCAP Content is required"
@@ -3656,21 +3753,20 @@ msgstr "这需要连接互联网并占用大量内存。在应用前，请确保
 msgid "Back to List"
 msgstr "返回列表"
 
+#: ../html/src/manager/audit/scap/create-scap-policy.tsx:319
+#: ../html/src/manager/images/image-profile-edit.tsx:501
+#: ../html/src/manager/images/image-store-edit.tsx:218
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:205
+msgid "Update"
+msgstr "更新"
+
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:89
 msgid "An error occurred while saving the tailoring file."
 msgstr "保存剪裁文件时发生错误。"
 
-#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:100
-msgid "Edit Tailoring File"
-msgstr "编辑剪裁文件"
-
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:119
 msgid "Current File"
 msgstr "当前文件"
-
-#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:128
-msgid "Replace File (optional)"
-msgstr "替换文件（可选）"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:48
 msgid "SCAP content has been deleted."
@@ -4914,23 +5010,23 @@ msgstr "未找到您请求的页面 {currentUrl}。"
 #: ../html/src/manager/errors/not-found.tsx:16
 #, fuzzy
 #| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgid "If you typed this address into your browser, double-check the spelling and capitalization."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgstr "如果您是手动在浏览器中输入的地址，请核对拼写和大小写。"
 
 #: ../html/src/manager/errors/not-found.tsx:22
 #, fuzzy
 #| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
 msgstr "如果您是通过链接跳转至此，则表明链接可能不正确或已过期。请单击浏览器的后退按钮 "
 
 #: ../html/src/manager/errors/not-found.tsx:29
-msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
-msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置 "
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置。请使用顶部（或左侧）导航栏找到所需的页面；如果您要查找文档，请务必更新书签。"
 
 #: ../html/src/manager/errors/not-found.tsx:36
 #, fuzzy
 #| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgid "If you feel you've reached this page in error, please contact us with details of how you received "
+msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgstr "如果您认为误进入此页面，请联系我们并详细说明访问路径 "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:35
@@ -5128,10 +5224,6 @@ msgid "Create additional custom info keys"
 msgstr "创建更多自定义信息键"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:523
-msgid "Edit Image Profile: '"
-msgstr "编辑映像配置文件：'"
-
-#: ../html/src/manager/images/image-profile-edit.tsx:523
 #: ../html/src/manager/images/image-profiles.tsx:153
 #: ../html/src/manager/images/image-profiles.tsx:154
 msgid "Create Image Profile"
@@ -5197,10 +5289,6 @@ msgstr "您确定要删除选定的配置文件吗？（已选择 {count} 个配
 #: ../html/src/manager/images/image-store-edit.tsx:171
 msgid "Use credentials"
 msgstr "使用身份凭证"
-
-#: ../html/src/manager/images/image-store-edit.tsx:240
-msgid "Edit Image Store: '"
-msgstr "编辑映像存储区：'"
 
 #: ../html/src/manager/images/image-store-edit.tsx:240
 msgid "Create Image Store"
@@ -5284,29 +5372,13 @@ msgstr "已排队"
 msgid "Go to event"
 msgstr "转到事件"
 
-#: ../html/src/manager/images/image-view-overview.tsx:62
-msgid " is queued"
-msgstr " 已排队"
-
 #: ../html/src/manager/images/image-view-overview.tsx:69
 msgid "In progress"
 msgstr "正在进行"
 
-#: ../html/src/manager/images/image-view-overview.tsx:74
-msgid " in progress"
-msgstr " 正在进行"
-
 #: ../html/src/manager/images/image-view-overview.tsx:81
 msgid "Successful"
 msgstr "成功"
-
-#: ../html/src/manager/images/image-view-overview.tsx:86
-msgid " is successful"
-msgstr " 成功"
-
-#: ../html/src/manager/images/image-view-overview.tsx:98
-msgid " has failed"
-msgstr " 失败"
 
 #: ../html/src/manager/images/image-view-overview.tsx:105
 #: ../html/src/manager/images/image-view-overview.tsx:106
@@ -5326,10 +5398,6 @@ msgstr "无信息"
 #: ../html/src/manager/images/image-view.tsx:540
 msgid "Built externally"
 msgstr "已在外部构建"
-
-#: ../html/src/manager/images/image-view-overview.tsx:140
-msgid " Status"
-msgstr " 状态"
 
 #: ../html/src/manager/images/image-view-overview.tsx:145
 msgid "Picked Up"
@@ -5377,6 +5445,11 @@ msgstr "编辑配置文件"
 #: ../html/src/manager/images/image-view-overview.tsx:360
 msgid "Edit store"
 msgstr "编辑存储区"
+
+#: ../html/src/manager/images/image-view-overview.tsx:475
+#: ../html/src/manager/images/image-view.tsx:807
+msgid "Instance Details for \"{name}\""
+msgstr "\"{name}\" 的实例详细信息"
 
 #: ../html/src/manager/images/image-view-overview.tsx:530
 #: ../html/src/manager/images/image-view-overview.tsx:531
@@ -5840,6 +5913,10 @@ msgstr "搜索系统"
 msgid "Current Schedule"
 msgstr "当前日程安排"
 
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:123
+msgid "Url \"{url}\" is invalid"
+msgstr "URL \"{url}\" 无效"
+
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:148
 msgid "Calendar data"
 msgstr "日历数据"
@@ -5927,10 +6004,6 @@ msgstr "以下是当前用户可使用的维护日程安排列表。"
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr "以下是当前用户可使用的维护日历列表。"
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:54
-msgid "schedule"
-msgstr "日程安排"
-
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:35
 msgid "No schedules created. Use Create to add a schedule."
 msgstr "未创建日程安排。请使用 \"创建\" 添加日程安排。"
@@ -5938,14 +6011,6 @@ msgstr "未创建日程安排。请使用 \"创建\" 添加日程安排。"
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:92
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr "这会从指派到该项的所有系统中去除日程安排。"
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:150
-msgid "successfully"
-msgstr "成功"
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:183
-msgid "Error when deleting the "
-msgstr "删除以下项时出错： "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:196
 msgid "Calendar successfully refreshed"
@@ -6119,6 +6184,10 @@ msgstr "选择其他剧本"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:181
 msgid "Save the current Playbook"
 msgstr "保存当前剧本"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:191
+msgid "Playbook \"{name}\""
+msgstr "剧本 \"{name}\""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:200
 msgid "Schedule Playbook Execution"
@@ -6519,10 +6588,6 @@ msgstr "高级"
 msgid "Registry URL"
 msgstr "仓库 URL"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:338
-msgid "e.g., "
-msgstr "例如 "
-
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:345
 msgid "Containers Tag"
 msgstr "容器标记"
@@ -6610,8 +6675,8 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr "安装程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
-msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
-msgstr "以下程序临时修复 (PTF) 现可安装在此系统上。 "
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
+msgstr "以下程序临时修复 (PTF) 可安装至此系统。此类软件包仅用于解决特定已知问题。请先按照客户支持提供的说明操作，然后再进行安装。"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:37
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -6630,8 +6695,8 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr "去除程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:33
-msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
-msgstr "此系统上目前已安装以下程序临时修复 (PTF)。 "
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
+msgstr "该系统目前已安装以下程序临时修复 (PTF)。可选中需要去除的 PTF 并单击下方 \"去除 PTF\" 以安排去除操作。请注意，去除任何非过时的 PTF 将导致安装该 PTF 所包含软件包的最新版本。"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:38
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -7338,14 +7403,6 @@ msgstr "正在加载子通道..."
 msgid "Base Channel:"
 msgstr "基础通道："
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:139
-msgid "${defaultChannelName}"
-msgstr "${defaultChannelName}"
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:149
-msgid "${this.getDefaultBase().name}"
-msgstr "${this.getDefaultBase().name}"
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:159
 msgid "Child Channels:"
 msgstr "子通道："
@@ -7431,10 +7488,6 @@ msgstr "（{count} 个 AppStream）"
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:129
 msgid "Don't change"
 msgstr "不更改"
-
-#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:132
-msgid " (No system to disable)"
-msgstr " （无可禁用的系统）"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:141
 msgid "Enable "
@@ -8205,82 +8258,92 @@ msgstr "授权错误，请重新加载页面或重试注销/登录。"
 msgid "Resource not found."
 msgstr "未找到资源。"
 
-#: ../html/src/utils/network.ts:112
-msgid "HTTP Error code "
-msgstr "HTTP 错误代码 "
+#~ msgid "No hub is currently configured for this server. "
+#~ msgstr "目前未为此服务器配置中心。 "
+
+#~ msgid "Edit "
+#~ msgstr "编辑 "
+
+#~ msgid " channels sync failed"
+#~ msgstr " 通道同步失败"
+
+#~ msgid " channels sync in progress"
+#~ msgstr " 通道同步正在进行"
+
+#~ msgid " channels synced"
+#~ msgstr " 通道已同步"
+
+#~ msgid "The client is affected by a vulnerability and we have a patch for it,"
+#~ msgstr "该客户端受到某个漏洞的影响，我们已针对它提供了一个补丁，"
+
+#~ msgid "The client is affected by a vulnerability for which a patch has been released,"
+#~ msgstr "该客户端受到某个漏洞的影响，已针对该漏洞发布补丁，"
+
+#~ msgid "Edit SCAP Content"
+#~ msgstr "编辑 SCAP 内容"
+
+#~ msgid "Edit Tailoring File"
+#~ msgstr "编辑剪裁文件"
+
+#~ msgid "Replace File (optional)"
+#~ msgstr "替换文件（可选）"
+
+#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+#~ msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置 "
+
+#~ msgid "Edit Image Profile: '"
+#~ msgstr "编辑映像配置文件：'"
+
+#~ msgid "Edit Image Store: '"
+#~ msgstr "编辑映像存储区：'"
+
+#~ msgid " is queued"
+#~ msgstr " 已排队"
+
+#~ msgid " in progress"
+#~ msgstr " 正在进行"
+
+#~ msgid " is successful"
+#~ msgstr " 成功"
+
+#~ msgid " has failed"
+#~ msgstr " 失败"
+
+#~ msgid " Status"
+#~ msgstr " 状态"
+
+#~ msgid "schedule"
+#~ msgstr "日程安排"
+
+#~ msgid "successfully"
+#~ msgstr "成功"
+
+#~ msgid "Error when deleting the "
+#~ msgstr "删除以下项时出错： "
+
+#~ msgid "e.g., "
+#~ msgstr "例如 "
+
+#~ msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
+#~ msgstr "以下程序临时修复 (PTF) 现可安装在此系统上。 "
+
+#~ msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
+#~ msgstr "此系统上目前已安装以下程序临时修复 (PTF)。 "
+
+#~ msgid "${defaultChannelName}"
+#~ msgstr "${defaultChannelName}"
+
+#~ msgid "${this.getDefaultBase().name}"
+#~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid " (No system to disable)"
+#~ msgstr " （无可禁用的系统）"
+
+#~ msgid "HTTP Error code "
+#~ msgstr "HTTP 错误代码 "
 
 #~ msgid "Toggle section visibility"
 #~ msgstr "切换部分可见性"
-
-#~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-#~ msgstr "操作已成功添加到操作链 <link>\"{name}\"</link>。"
-
-#~ msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
-#~ msgstr "检测到多个组公式。每个系统上仅可使用 \"{name}\" 的一个公式！"
-
-#~ msgid "No attestation report available. Schedule an execution to create one."
-#~ msgstr "无可用认证报告。请安排执行以创建报告。"
-
-#~ msgid ""
-#~ "{total, plural,\n"
-#~ "            one {<dropdown></dropdown> of # page}\n"
-#~ "            other {<dropdown></dropdown> of # pages}\n"
-#~ "        }"
-#~ msgstr ""
-#~ "{total, plural,\n"
-#~ "            one {第 <dropdown></dropdown> 页，共 # 页}\n"
-#~ "            other {第 <dropdown></dropdown> 页，共 # 页}\n"
-#~ "        }"
-
-#~ msgid "e.g. \"0 15 2 ? * 7\""
-#~ msgstr "例如 \"0 15 2 ? * 7\""
-
-#~ msgid ""
-#~ "Always use plural forms for numbers: {fooCount, plural,\n"
-#~ "            one {only one item}\n"
-#~ "            other {{fooCount} items}\n"
-#~ "          }."
-#~ msgstr ""
-#~ "数字表述统一使用复数形式：{fooCount, plural,\n"
-#~ "            one {仅 1 项}\n"
-#~ "            other {{fooCount} 项}\n"
-#~ "          }。"
-
-#~ msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
-#~ msgstr "此服务器目前未配置 Hub。将此服务器配置为外设后，请刷新此页面以查看 Hub 详细信息"
-
-#~ msgid "The following channel installations for \"{product}\" failed. Please check log files."
-#~ msgstr "\"{product}\" 的下列通道安装失败。请查看日志文件。"
-
-#~ msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
-#~ msgstr "客户端存在漏洞且已有对应补丁，但提供该补丁的通道未分配给此客户端。"
-
-#~ msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-#~ msgstr "客户端存在漏洞且已有对应补丁，但应用补丁需要将产品升级至更新版本。"
-
-#~ msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
-#~ msgstr "客户端存在漏洞且对应补丁已发布，但在相关通道中未找到该补丁。"
-
-#~ msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-#~ msgstr "客户端存在漏洞且已有对应补丁，但应用该补丁仅能更新部分存在漏洞的软件包。"
-
-#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
-#~ msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置。请使用顶部（或左侧）导航栏找到所需的页面；如果您要查找文档，请务必更新书签。"
-
-#~ msgid "Instance Details for \"{name}\""
-#~ msgstr "\"{name}\" 的实例详细信息"
-
-#~ msgid "Url \"{url}\" is invalid"
-#~ msgstr "URL \"{url}\" 无效"
-
-#~ msgid "Playbook \"{name}\""
-#~ msgstr "剧本 \"{name}\""
-
-#~ msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
-#~ msgstr "以下程序临时修复 (PTF) 可安装至此系统。此类软件包仅用于解决特定已知问题。请先按照客户支持提供的说明操作，然后再进行安装。"
-
-#~ msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
-#~ msgstr "该系统目前已安装以下程序临时修复 (PTF)。可选中需要去除的 PTF 并单击下方 \"去除 PTF\" 以安排去除操作。请注意，去除任何非过时的 PTF 将导致安装该 PTF 所包含软件包的最新版本。"
 
 #~ msgid "Paste a PEM certificate"
 #~ msgstr "粘贴 PEM 证书"
@@ -8314,9 +8377,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "({selectedCount} selected)"
 #~ msgstr "（已选择 {selectedCount} 项）"
-
-#~ msgid "Select All"
-#~ msgstr "全选"
 
 #~ msgid "items per page"
 #~ msgstr "项每页"
