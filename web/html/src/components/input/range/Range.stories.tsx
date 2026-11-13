@@ -91,7 +91,7 @@ const meta = {
     },
     required: {
       control: "boolean",
-      description: "Marks both fields as required. Shows validation errors when empty.",
+      description: "Requires at least one endpoint. Use a validator when both endpoints must be filled.",
     },
     disabled: {
       control: "boolean",
@@ -189,13 +189,18 @@ export const Required: Story = {
     prefix: "score",
     label: "Score range",
     required: true,
+    validators: [
+      (values: Record<string, string>) =>
+        Object.values(values).length === 2 && Object.values(values).every((value) => value.trim().length > 0),
+    ],
     invalidHint: "Both start and end values are required",
     hint: "Enter minimum and maximum scores",
   },
   parameters: {
     docs: {
       description: {
-        story: "Required range input. Try submitting without filling both fields to see validation.",
+        story:
+          "Both endpoints are required in this example. Fill only one endpoint and blur a field to see the validation error.",
       },
     },
   },

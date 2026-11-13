@@ -17,7 +17,7 @@ import { Radio } from "./Radio";
 type RadioProps = React.ComponentProps<typeof Radio>;
 
 const StatefulRadioInForm = (args: RadioProps) => {
-  const [model, setModel] = useState({ [args.name || "radio"]: args.defaultValue || "" });
+  const [model, setModel] = useState<Record<string, string>>({});
 
   return (
     <Form
@@ -32,7 +32,9 @@ const StatefulRadioInForm = (args: RadioProps) => {
       divClass="col-md-12"
       formDirection="form-horizontal"
     >
-      <Radio {...args} />
+      <fieldset disabled={args.disabled}>
+        <Radio {...args} />
+      </fieldset>
       <div className="form-group">
         <div className="col-md-offset-3 offset-md-3 col-md-6">
           <SubmitButton className="btn-primary" text="Submit" disabled={args.disabled} />
@@ -109,7 +111,7 @@ const meta = {
     },
     disabled: {
       control: "boolean",
-      description: "Disables all radio buttons in the group.",
+      description: "Disables the whole group through this example's fieldset, including the custom option.",
     },
     hint: {
       control: "text",
@@ -192,13 +194,15 @@ export const Required: Story = {
     name: "action",
     label: "Action to perform",
     items: actionOptions,
+    defaultValue: "",
     required: true,
     invalidHint: "Please select an action",
   },
   parameters: {
     docs: {
       description: {
-        story: "Required radio group. Try submitting without selecting an option to see the validation error.",
+        story:
+          "Required radio group with no initial selection. Focus and leave an option to show the error, then select an action to submit.",
       },
     },
   },

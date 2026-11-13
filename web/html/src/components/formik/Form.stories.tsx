@@ -334,8 +334,14 @@ const ServerConfigComponent = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <Form initialValues={initialValues} onSubmit={onSubmit} labelClass="col-md-3" divClass="col-md-6">
-        {({ isSubmitting, values }) => (
+      <Form
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        validate={({ ports }) => (ports.length > 0 ? {} : { ports: "At least one port is required" })}
+        labelClass="col-md-3"
+        divClass="col-md-6"
+      >
+        {({ isSubmitting, values, errors }) => (
           <>
             <Field name="name" label="Server Name" required validate={(value) => (value ? "" : "Name is required")} />
 
@@ -347,8 +353,14 @@ const ServerConfigComponent = () => {
               name="ports"
               label="Ports"
               defaultNewItemValue=""
-              validate={(value) => (value && value.length > 0 ? "" : "At least one port is required")}
+              validate={(value) => (value.trim() ? "" : "Port is required")}
             />
+
+            {typeof errors.ports === "string" && (
+              <p className="text-danger" role="alert">
+                {errors.ports}
+              </p>
+            )}
 
             <Field
               name="environment"
