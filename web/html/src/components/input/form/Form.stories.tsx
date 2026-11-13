@@ -107,6 +107,7 @@ const SimpleFormComponent = () => {
 export const Playground: Story = {
   render: () => <SimpleFormComponent />,
   parameters: {
+    controls: { disable: true },
     docs: {
       description: {
         story:

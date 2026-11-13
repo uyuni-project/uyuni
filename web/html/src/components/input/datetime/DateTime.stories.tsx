@@ -157,7 +157,8 @@ export const Required: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Required date/time field. Try submitting without selecting a date to see validation.",
+        story:
+          "Prepopulated required date/time field. The legacy picker cannot represent an empty value, so this example cannot demonstrate an empty-field error.",
       },
     },
   },

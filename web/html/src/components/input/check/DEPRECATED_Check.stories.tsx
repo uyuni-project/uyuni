@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
 import { SubmitButton } from "components/buttons";
+
+import { useId } from "utils/hooks";
 
 import { Form } from "../form/Form";
 import { DEPRECATED_Check } from "./DEPRECATED_Check";
@@ -17,7 +19,10 @@ import { DEPRECATED_Check } from "./DEPRECATED_Check";
 type DEPRECATED_CheckProps = React.ComponentProps<typeof DEPRECATED_Check>;
 
 const StatefulCheckInForm = (args: DEPRECATED_CheckProps) => {
-  const [model, setModel] = useState({ [args.name]: args.defaultValue || false });
+  const instanceId = useId();
+  const name = `${args.name}-${instanceId}`;
+  const [model, setModel] = useState({ [name]: args.defaultValue || false });
+  useEffect(() => setModel((current) => ({ ...current })), []);
 
   return (
     <Form
@@ -29,7 +34,7 @@ const StatefulCheckInForm = (args: DEPRECATED_CheckProps) => {
       onSubmit={() => action("form submitted")(model)}
       divClass="col-md-12"
     >
-      <DEPRECATED_Check {...args} />
+      <DEPRECATED_Check {...args} name={name} defaultValue="" />
       <div className="form-group">
         <div className="col-md-offset-3 offset-md-3 col-md-6">
           <SubmitButton className="btn-primary" text="Submit" disabled={args.disabled} />
@@ -94,7 +99,7 @@ This component uses the old form context and will be removed in a future release
       description: "CSS class for the input element.",
     },
   },
-  render: (args) => <StatefulCheckInForm {...args} />,
+  render: (args) => <StatefulCheckInForm key={JSON.stringify([args.name, args.defaultValue])} {...args} />,
 } satisfies Meta<DEPRECATED_CheckProps>;
 
 export default meta;
