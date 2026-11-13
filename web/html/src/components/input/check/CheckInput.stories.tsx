@@ -144,6 +144,7 @@ const IndeterminateComponent = () => {
             indeterminate={indeterminate}
             onChange={(newChecked) => {
               setChecked(newChecked);
+              setIndeterminate(false);
               action("changed")(newChecked);
             }}
           />

@@ -107,6 +107,8 @@ const meta = {
     isClearable: true,
     disabled: false,
     isLoading: false,
+    paginate: false,
+    onBlur: () => action("blurred")(),
   },
   argTypes: {
     options: {
@@ -180,8 +182,9 @@ const meta = {
       description: "Cache loaded async options to avoid redundant requests.",
     },
     paginate: {
-      control: "boolean",
-      description: "Enable pagination for async options loading.",
+      control: false,
+      description:
+        "Pagination requires a loader returning { options, hasMore }. This example's array-based loader does not support pagination.",
     },
     defaultValueOption: {
       control: false,
