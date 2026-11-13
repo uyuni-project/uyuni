@@ -176,9 +176,21 @@ public class SaltServerActionService {
     public void execute(Action actionIn, boolean forcePackageListRefresh,
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
 
-        List<MinionSummary> allMinions = MinionServerFactory.findQueuedMinionSummaries(actionIn.getId());
-        if (CollectionUtils.isEmpty(allMinions)) {
+        List<MinionSummary> queuedMinions = MinionServerFactory.findQueuedMinionSummaries(actionIn.getId());
+        if (CollectionUtils.isEmpty(queuedMinions)) {
             LOG.warn("Unable to find any minion that have the action id={} in status QUEUED", actionIn.getId());
+            return;
+        }
+
+        // Salt forgets queued jobs when the minion restarts, so wait for a running reboot to finish.
+        // The skipped minions stay QUEUED and the caller is expected to retry later.
+        Set<Long> rebootingServerIds = ServerActionFactory.findServerIdsWaitingForReboot(
+                queuedMinions.stream().map(MinionSummary::getServerId).toList(), actionIn);
+        List<MinionSummary> allMinions = queuedMinions.stream()
+                .filter(minion -> !rebootingServerIds.contains(minion.getServerId()))
+                .toList();
+        if (allMinions.isEmpty()) {
+            LOG.info("Postponing action id={}: all target minions are rebooting", actionIn.getId());
             return;
         }
 
@@ -199,14 +211,21 @@ public class SaltServerActionService {
                 sshMinionSummaries.stream().map(MinionSummary::getServerId).collect(Collectors.toList()));
 
         if (!sshPushMinions.isEmpty()) {
+            List<Long> scheduledServerIds = new ArrayList<>();
             for (MinionServer sshMinion : sshPushMinions) {
                 try {
                     taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion, forcePackageListRefresh);
+                    scheduledServerIds.add(sshMinion.getId());
                 }
                 catch (TaskomaticApiException e) {
                     LOG.error("Couldn't schedule SSH action id={} minion={}",
                             actionIn.getId(), sshMinion.getMinionId(), e);
                 }
+            }
+            // Do not leave scheduled minions QUEUED, otherwise a retry would schedule them again
+            if (!scheduledServerIds.isEmpty()) {
+                ServerActionFactory.updateServerActions(actionIn, scheduledServerIds,
+                        ActionFactory.STATUS_PICKED_UP);
             }
         }
     }

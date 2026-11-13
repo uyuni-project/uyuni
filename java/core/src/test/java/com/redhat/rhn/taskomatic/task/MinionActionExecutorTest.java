@@ -17,6 +17,7 @@
 
 package com.redhat.rhn.taskomatic.task;
 
+import static org.jmock.AbstractExpectations.any;
 import static org.jmock.AbstractExpectations.returnValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -26,6 +27,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -42,6 +44,8 @@ import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
 import org.quartz.TriggerKey;
 import org.quartz.impl.JobExecutionContextImpl;
 import org.quartz.spi.OperableTrigger;
@@ -139,5 +143,83 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
         assertTrue(sa2.isStatusFailed());
         assertEquals(expectedMessage, sa2.getResultMsg());
         assertEquals(-1, sa2.getResultCode());
+    }
+
+    @Test
+    public void retriesLaterWhenTheMinionIsRebooting() {
+        Action reboot = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
+        ServerAction rebootSa = ActionFactoryTest.addServerAction(user, reboot, ServerAction::setStatusPickedUp);
+        Action other = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_ERRATA);
+        ServerActionTest.createServerAction(rebootSa.getServer(), other, ServerAction::setStatusQueued);
+        TestUtils.saveAndReload(reboot);
+        other = TestUtils.saveAndReload(other);
+
+        runExecutor(other, true);
+    }
+
+    @Test
+    public void doesNotRetryWhenNoMinionIsRebooting() {
+        Action other = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_ERRATA);
+        ActionFactoryTest.addServerAction(user, other, ServerAction::setStatusQueued);
+        other = TestUtils.saveAndReload(other);
+
+        runExecutor(other, false);
+    }
+
+    /**
+     * Run the executor for the action, expecting the Salt service to be called once and the job to be
+     * scheduled again only if a retry is expected.
+     */
+    private void runExecutor(Action action, boolean expectRetry) {
+        SaltServerActionService saltServerActionService = mock(SaltServerActionService.class);
+
+        checking(expectations -> {
+            expectations.ignoring(jobDetail).getJobDataMap();
+            expectations.will(returnValue(new JobDataMap(Map.of(
+                "action_id", String.valueOf(action.getId()),
+                "user_id", String.valueOf(user.getId()),
+                "staging_job", String.valueOf(false),
+                "force_pkg_list_refresh", String.valueOf(false)
+            ))));
+
+            expectations.ignoring(jobDetail).getKey();
+            expectations.will(returnValue(new JobKey("dummyJob")));
+
+            expectations.ignoring(trigger).getJobDataMap();
+            expectations.will(returnValue(new JobDataMap()));
+
+            expectations.ignoring(trigger).getKey();
+            expectations.will(returnValue(new TriggerKey("dummyTrigger")));
+
+            expectations.ignoring(trigger).getJobKey();
+            expectations.will(returnValue(new JobKey("dummyJob")));
+
+            expectations.oneOf(saltServerActionService).execute(
+                expectations.with(action),
+                expectations.with(false),
+                expectations.with(false),
+                expectations.with(Optional.empty())
+            );
+
+            try {
+                if (expectRetry) {
+                    expectations.oneOf(scheduler).scheduleJob(expectations.with(any(Trigger.class)));
+                    expectations.will(returnValue(new Date()));
+                }
+                else {
+                    expectations.never(scheduler).scheduleJob(expectations.with(any(Trigger.class)));
+                }
+            }
+            catch (SchedulerException e) {
+                throw new IllegalStateException(e);
+            }
+        });
+
+        JobExecutionContext context = new JobExecutionContextImpl(scheduler, firedBundle, job);
+
+        new MinionActionExecutor(saltServerActionService, new TestCloudPaygManagerBuilder().build())
+                .execute(context);
+
+        context().assertIsSatisfied();
     }
 }
