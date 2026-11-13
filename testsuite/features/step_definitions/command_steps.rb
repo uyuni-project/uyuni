@@ -1557,22 +1557,20 @@ Then(/^there should be a user allowed to create roles on the ReportDB$/) do
   users_and_permissions, return_code = get_target('server').run(reportdb_server_query('\\du'))
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 
-  # extract only the line for the suma user
-  suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)/]
-  raise ScriptError, 'ReportDB admin user pythia_susemanager doesn\'t have the required permissions' unless
-    ['Create role'].all? { |permission| suma_user_permissions.include? permission }
+  # extract only the line for the ReportDB admin user
+  # (pythia_susemanager on podman, pythia on RKE2: read it from the configuration)
+  reportdb_admin_user = get_variable_from_conf_file('server', '/etc/rhn/rhn.conf', 'report_db_user')
+  admin_permissions = users_and_permissions[/^\s*#{Regexp.escape(reportdb_admin_user)}\s*\|(.*)$/, 1]
+  raise ScriptError, "ReportDB admin user #{reportdb_admin_user} not found in the role list" if admin_permissions.nil?
+  raise ScriptError, "ReportDB admin user #{reportdb_admin_user} doesn't have the required permissions" unless
+    admin_permissions.include?('Create role')
 end
 
 When(/^I create a read-only user for the ReportDB$/) do
   $reportdb_ro_user = 'test_user'
-  file = 'create_user_reportdb.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
-  success = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection in server failed' unless success
-
-  node = get_target('server')
-  node.run_local("expect -f /tmp/#{file} #{$reportdb_ro_user} #{node.has_mgrctl}")
+  # run the tool non-interactively inside the server container:
+  # no expect needed on the host, which is not available on SL Micro (e.g. RKE2 hosts)
+  get_target('server').run("uyuni-setup-reportdb-user --non-interactive --add --dbuser=#{$reportdb_ro_user} --dbpassword=linux")
 end
 
 Then(/^I should see the read-only user listed on the ReportDB user accounts$/) do
@@ -1581,14 +1579,8 @@ Then(/^I should see the read-only user listed on the ReportDB user accounts$/) d
 end
 
 When(/^I delete the read-only user for the ReportDB$/) do
-  file = 'delete_user_reportdb.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
-  success = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection in server failed' unless success
-
-  node = get_target('server')
-  node.run_local("expect -f /tmp/#{file} #{$reportdb_ro_user} #{node.has_mgrctl}")
+  # the non-interactive mode requires a password even for --delete, where it is not used
+  get_target('server').run("uyuni-setup-reportdb-user --non-interactive --delete --dbuser=#{$reportdb_ro_user} --dbpassword=unused")
 end
 
 Then(/^I shouldn't see the read-only user listed on the ReportDB user accounts$/) do
@@ -1600,7 +1592,7 @@ When(/^I connect to the ReportDB with read-only user from external machine$/) do
   node = get_target('server')
 
   # connection from the controller to the reportdb in the server
-  $reportdb_ro_conn = PG.connect(host: node.public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_ro_user, password: 'linux')
+  $reportdb_ro_conn = PG.connect(host: node.public_ip, port: reportdb_external_port, dbname: 'reportdb', user: $reportdb_ro_user, password: 'linux')
 end
 
 Then(/^I should be able to query the ReportDB$/) do
@@ -1643,7 +1635,7 @@ Then(/^I should be able to connect to the ReportDB with the ReportDB admin user$
   # connection from the controller to the reportdb in the server
   reportdb_admin_conn = nil
   begin
-    reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
+    reportdb_admin_conn = PG.connect(host: node.public_ip, port: reportdb_external_port, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
     raise SystemCallError, 'Couldn\'t connect to ReportDB with admin from external machine' unless reportdb_admin_conn.status.zero?
   ensure
     # Close the communication
@@ -1658,7 +1650,7 @@ Then(/^I should not be able to connect to product database with the ReportDB adm
   reportdb_admin_conn = nil
   begin
     assert_raises(PG::ConnectionBad, PG::InsufficientPrivilege, PG::InvalidAuthorizationSpecification) do
-      reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
+      reportdb_admin_conn = PG.connect(host: node.public_ip, port: reportdb_external_port, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
       reportdb_admin_conn.exec('select * from rhnserver;')
     end
   ensure
