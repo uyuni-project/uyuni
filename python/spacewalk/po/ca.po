@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:56+0100\n"
+"POT-Creation-Date: 2026-11-13 11:57+0000\n"
 "PO-Revision-Date: 2025-07-10 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/>\n"
@@ -35,17 +35,7 @@ msgstr "s'ha rebutjat l'autenticació d'intermediari"
 msgid "Invalid request received (%s)."
 msgstr "Es va rebre una petició no vàlida (%s)."
 
-#. Send the message as a fault.
-#: ../server/apacheRequest.py:132
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"MISSATGE IMPORTANT SEGÜENT:\n"
-"%s"
-
-#: ../server/apacheRequest.py:162
+#: ../server/apacheRequest.py:148
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -55,12 +45,13 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:677
+#: ../server/apacheRequest.py:658
 #, python-format
 msgid "Invalid URI %s"
 msgstr "L'URI %s no és vàlid"
 
-#: ../server/handlers/app/packages.py:222
+#. pylint: disable-next=undefined-variable
+#: ../server/handlers/app/packages.py:221
 #, python-format
 msgid ""
 "\n"
@@ -115,12 +106,12 @@ msgstr ""
 "               El compte %s s'ha desactivat en aquest servidor.\n"
 "               Poseu-vos en contacte amb l'administrador de l'organització per obtenir més ajuda."
 
-#: ../server/rhnChannel.py:2218
+#: ../server/rhnChannel.py:2169
 #, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr "El compte no té accés a cap canal que coincideixi (release=%(release)s, arch=%(arch)s)%(www_activation)s"
 
-#: ../server/rhnChannel.py:2237
+#: ../server/rhnChannel.py:2188
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Permisos de subscripció insuficients per al llançament (%s, %s"
@@ -129,11 +120,11 @@ msgstr "Permisos de subscripció insuficients per al llançament (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2551 ../server/rhnChannel.py:2570
+#: ../server/rhnChannel.py:2460 ../server/rhnChannel.py:2475
 msgid "System Registered but Inactive"
 msgstr "Sistema registrat però inactiu"
 
-#: ../server/rhnChannel.py:2553
+#: ../server/rhnChannel.py:2461
 #, python-format
 msgid ""
 "\n"
@@ -148,7 +139,7 @@ msgstr ""
 "perquè no es podia subscriure a un canal de base.\n"
 "Poseu-vos en contacte amb l'administrador de la vostra organització per obtenir ajuda.\n"
 
-#: ../server/rhnChannel.py:2562
+#: ../server/rhnChannel.py:2468
 #, python-format
 msgid ""
 "\n"
@@ -163,7 +154,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2572
+#: ../server/rhnChannel.py:2476
 #, python-format
 msgid ""
 "\n"
@@ -179,11 +170,11 @@ msgstr ""
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
-#: ../server/rhnHandler.py:64
+#: ../server/rhnHandler.py:59
 msgid "Please run rhn_register as root on this client"
 msgstr "Si us plau, executeu rhn_register com a arrel en aquest client."
 
-#: ../server/rhnHandler.py:78
+#: ../server/rhnHandler.py:73
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Servei no habilitat per al perfil del sistema: \"%s\""
@@ -198,7 +189,7 @@ msgstr "S'ha sol·licitat el paquet RPM %s no vàlid."
 msgid "Package not found"
 msgstr "Paquet no trobat"
 
-#: ../server/rhnServer/server_class.py:103
+#: ../server/rhnServer/server_class.py:102
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "L'arquitectura %s no és compatible."
@@ -245,65 +236,9 @@ msgstr "La sessió de Kickstart no coincideix"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "No s'admet l'apilament de testimonis de reregistre."
 
-#: ../server/rhnUser.py:323 ../server/rhnUser.py:326
+#: ../server/rhnUser.py:313 ../server/rhnUser.py:316
 msgid "Invalid username/password combination"
 msgstr "Combinació de nom d'usuari i contrasenya no vàlida"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:507
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "El nom d'usuari %s no s'ha reservat."
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:513
-msgid "E-mail address not specified"
-msgstr "Adreça de correu electrònic no especificada"
-
-#: ../server/rhnUser.py:555
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "El nom d'usuari ha de tenir com a mínim %d caràcters."
-
-#: ../server/rhnUser.py:559
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "El nom d'usuari ha de tenir menys de %d caràcters."
-
-#: ../server/rhnUser.py:573
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "nom d'usuari = %s, caràcter no vàlid: %s"
-
-#: ../server/rhnUser.py:594
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Limiteu l'adreça de correu electrònic a %s caràcters."
-
-#: ../server/rhnUser.py:692
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "la contrasenya ha de tenir com a mínim %d caràcters"
-
-#: ../server/rhnUser.py:696
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "La contrasenya ha de tenir menys de %d caràcters."
-
-#: ../server/rhnUser.py:712
-#, python-format
-msgid "password contains character `%s'"
-msgstr "la contrasenya conté el caràcter %s"
-
-#: ../server/rhnUser.py:721
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "El nom d'usuari ha de tenir com a mínim %d caràcters."
-
-#: ../server/rhnUser.py:732
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "No es poden registrar els noms d'usuari que acaben en %s."
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:57
@@ -939,7 +874,7 @@ msgstr "ERROR: %s %s: %s"
 msgid "TRACEBACK: %s"
 msgstr "TRAÇABILITAT: %s"
 
-#: ../satellite_tools/messages.py:30
+#: ../satellite_tools/messages.py:29
 #, python-format
 msgid ""
 "\n"
@@ -950,7 +885,7 @@ msgstr ""
 "ERROR: s'executa el pas %s. L'error és aquest:\n"
 "%s\n"
 
-#: ../satellite_tools/messages.py:37
+#: ../satellite_tools/messages.py:34
 #, python-format
 msgid ""
 "\n"
@@ -967,7 +902,7 @@ msgstr ""
 "       que les tingueu totes i després torneu a muntar i repoblar iterativament\n"
 "       el dipòsit temporal (%s).\n"
 
-#: ../satellite_tools/messages.py:47
+#: ../satellite_tools/messages.py:42
 #, python-format
 msgid ""
 "\n"
@@ -978,7 +913,7 @@ msgstr ""
 "ERROR: hi ha hagut un problema en sincronitzar la informació.\n"
 "       Missatge d'error: %s\n"
 
-#: ../satellite_tools/messages.py:54
+#: ../satellite_tools/messages.py:47
 #, python-format
 msgid ""
 "\n"
@@ -993,7 +928,7 @@ msgstr ""
 "       la connectivitat bàsica de xarxa i / o la resolució de noms i torneu-ho a provar.\n"
 "       Missatge d'error: %s\n"
 
-#: ../satellite_tools/messages.py:63
+#: ../satellite_tools/messages.py:54
 #, python-format
 msgid ""
 "\n"
@@ -1010,7 +945,7 @@ msgstr ""
 "       transacció:\n"
 "       %s\n"
 
-#: ../satellite_tools/messages.py:73
+#: ../satellite_tools/messages.py:62
 #, python-format
 msgid ""
 "\n"
@@ -1023,120 +958,170 @@ msgstr ""
 "Poseu-vos en contacte amb el gestor de MultiLinux de SUSE.\n"
 "%s"
 
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  ERROR: no hi ha prou espai lliure (%s KB) al dispositiu."
-
-#: ../satellite_tools/messages.py:81
+#: ../satellite_tools/messages.py:67
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr "    %3d/%s Obtenció correcta: %s (%s bytes)"
 
-#: ../satellite_tools/messages.py:82
+#: ../satellite_tools/messages.py:68
 #, python-format
 msgid "    Extinct package:  %s"
 msgstr "    Paquet extingit: %s"
 
-#: ../satellite_tools/messages.py:83
+#: ../satellite_tools/messages.py:69
 #, python-format
 msgid "   Total size: %s"
 msgstr "   Mida total: %s"
 
-#: ../satellite_tools/messages.py:85
+#: ../satellite_tools/messages.py:71
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
 msgstr "      S'ha baixat %s de %s. Temps restant estimat: %s"
 
-#: ../satellite_tools/messages.py:87
+#: ../satellite_tools/messages.py:73
 #, python-format
 msgid "    Fetch unsuccessful: %s"
 msgstr "    L'obtenció no s'ha fet correctament: %s"
 
-#: ../satellite_tools/messages.py:88
+#: ../satellite_tools/messages.py:74
 #, python-format
 msgid "   RPM fetch summary: %s"
 msgstr "   Resum de l'obtenció d'RPM: %s"
 
-#: ../satellite_tools/messages.py:89
+#: ../satellite_tools/messages.py:75
 #, python-format
 msgid "       success: %d"
 msgstr "       correcte: %d"
 
-#: ../satellite_tools/messages.py:90
+#: ../satellite_tools/messages.py:76
 #, python-format
 msgid "       failed:  %d"
 msgstr "       ha fallat:  %d"
 
-#: ../satellite_tools/messages.py:91
+#: ../satellite_tools/messages.py:77
 #, python-format
 msgid "       extinct: %d"
 msgstr "       extingit: %d"
 
-#: ../satellite_tools/messages.py:93
+#: ../satellite_tools/messages.py:79
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr "   Recuperant / analitzant les metadades del paquet *rellevant*: %s (%s)"
 
-#: ../satellite_tools/messages.py:94
+#: ../satellite_tools/messages.py:80
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
 msgstr "   Recuperant / analitzant dades d'errates: %s (%s)"
 
-#: ../satellite_tools/messages.py:95
+#: ../satellite_tools/messages.py:81
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
 msgstr "   Recuperant / analitzant les dades de Kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:96
+#: ../satellite_tools/messages.py:82
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr "   Recuperant / analitzant els fitxers de l'arbre de Kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:97
+#: ../satellite_tools/messages.py:83
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
 msgstr "   Importació de metadades del paquet *rellevant*: %s (%s)"
 
-#: ../satellite_tools/messages.py:98
+#: ../satellite_tools/messages.py:84
 msgid "   * WARNING: this may be a slow process."
 msgstr "   * ADVERTÈNCIA: aquest pot ser un procés lent."
 
-#: ../satellite_tools/messages.py:99
+#: ../satellite_tools/messages.py:85
 msgid "Linking packages to channels"
 msgstr "Enllaç de paquets a canals"
 
-#: ../satellite_tools/messages.py:100
+#: ../satellite_tools/messages.py:86
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
 msgstr "   Important errates *rellevants*: %s (%s)"
 
-#: ../satellite_tools/messages.py:101
+#: ../satellite_tools/messages.py:87
 msgid "   No new kickstartable tree to import"
 msgstr "   No hi ha cap arbre de taula d'inici nou per importar."
 
-#: ../satellite_tools/messages.py:102
+#: ../satellite_tools/messages.py:88
 #, python-format
 msgid "Importing kickstartable trees (%d)"
 msgstr "Importació d'arbres de taules d'inici (%d)"
 
-#: ../satellite_tools/messages.py:103
+#: ../satellite_tools/messages.py:89
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "Arbres de taules d'inici importats (%d)"
 
-#: ../satellite_tools/reposync.py:150
+#: ../satellite_tools/reposync.py:151
 msgid "+++ sending log as an email +++"
 msgstr "+++ enviament de registre com a correu electrònic +++"
 
-#: ../satellite_tools/reposync.py:153
+#: ../satellite_tools/reposync.py:154
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "Informe de sincronització de %s de %s"
 
-#: ../satellite_tools/reposync.py:163
+#: ../satellite_tools/reposync.py:164
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ correu electrònic sol·licitat, però no hi ha res per enviar +++"
+
+#, python-format
+#~ msgid ""
+#~ "IMPORTANT MESSAGE FOLLOWS:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "MISSATGE IMPORTANT SEGÜENT:\n"
+#~ "%s"
+
+#, python-format
+#~ msgid "Username `%s' has not been reserved"
+#~ msgstr "El nom d'usuari %s no s'ha reservat."
+
+#~ msgid "E-mail address not specified"
+#~ msgstr "Adreça de correu electrònic no especificada"
+
+#, python-format
+#~ msgid "username should be at least %d characters"
+#~ msgstr "El nom d'usuari ha de tenir com a mínim %d caràcters."
+
+#, python-format
+#~ msgid "username should be less than %d characters"
+#~ msgstr "El nom d'usuari ha de tenir menys de %d caràcters."
+
+#, python-format
+#~ msgid "username = `%s', invalid character `%s'"
+#~ msgstr "nom d'usuari = %s, caràcter no vàlid: %s"
+
+#, python-format
+#~ msgid "Please limit your e-mail address to %s chars"
+#~ msgstr "Limiteu l'adreça de correu electrònic a %s caràcters."
+
+#, python-format
+#~ msgid "password must be at least %d characters"
+#~ msgstr "la contrasenya ha de tenir com a mínim %d caràcters"
+
+#, python-format
+#~ msgid "Password must be shorter than %d characters"
+#~ msgstr "La contrasenya ha de tenir menys de %d caràcters."
+
+#, python-format
+#~ msgid "password contains character `%s'"
+#~ msgstr "la contrasenya conté el caràcter %s"
+
+#, python-format
+#~ msgid "username should be at least %d characters long"
+#~ msgstr "El nom d'usuari ha de tenir com a mínim %d caràcters."
+
+#, python-format
+#~ msgid "Cannot register usernames ending with %s"
+#~ msgstr "No es poden registrar els noms d'usuari que acaben en %s."
+
+#, python-format
+#~ msgid "  ERROR: not enough free space (%s KB) on device."
+#~ msgstr "  ERROR: no hi ha prou espai lliure (%s KB) al dispositiu."
 
 #, python-format
 #~ msgid "format of %s should be at least YYYYMMDD.\n"

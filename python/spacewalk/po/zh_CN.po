@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:56+0100\n"
+"POT-Creation-Date: 2026-11-13 11:57+0000\n"
 "PO-Revision-Date: 2025-11-14 09:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/backend/zh_CN/>\n"
@@ -44,17 +44,7 @@ msgstr "已拒绝代理身份验证"
 msgid "Invalid request received (%s)."
 msgstr "收到的请求无效 (%s)。"
 
-#. Send the message as a fault.
-#: ../server/apacheRequest.py:132
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"重要消息如下：\n"
-"%s"
-
-#: ../server/apacheRequest.py:162
+#: ../server/apacheRequest.py:148
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -64,12 +54,13 @@ msgstr ""
 "%s：%s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:677
+#: ../server/apacheRequest.py:658
 #, python-format
 msgid "Invalid URI %s"
 msgstr "无效的 URI %s"
 
-#: ../server/handlers/app/packages.py:222
+#. pylint: disable-next=undefined-variable
+#: ../server/handlers/app/packages.py:221
 #, python-format
 msgid ""
 "\n"
@@ -124,12 +115,12 @@ msgstr ""
 "               已在此服务器上停用 %s 帐户。\n"
 "               请联系您的组织管理员取得更多帮助。"
 
-#: ../server/rhnChannel.py:2218
+#: ../server/rhnChannel.py:2169
 #, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr "您的帐户无权访问与 (release='%(release)s', arch='%(arch)s')%(www_activation)s 匹配的任何通道"
 
-#: ../server/rhnChannel.py:2237
+#: ../server/rhnChannel.py:2188
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "订阅权限不足，无法获取发行版 (%s, %s"
@@ -138,11 +129,11 @@ msgstr "订阅权限不足，无法获取发行版 (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2551 ../server/rhnChannel.py:2570
+#: ../server/rhnChannel.py:2460 ../server/rhnChannel.py:2475
 msgid "System Registered but Inactive"
 msgstr "系统已注册但处于非活动状态"
 
-#: ../server/rhnChannel.py:2553
+#: ../server/rhnChannel.py:2461
 #, python-format
 msgid ""
 "\n"
@@ -157,7 +148,7 @@ msgstr ""
 "因为它无法订阅基础通道。\n"
 "请联系您的组织管理员以取得帮助。\n"
 
-#: ../server/rhnChannel.py:2562
+#: ../server/rhnChannel.py:2468
 #, python-format
 msgid ""
 "\n"
@@ -172,7 +163,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2572
+#: ../server/rhnChannel.py:2476
 #, python-format
 msgid ""
 "\n"
@@ -188,11 +179,11 @@ msgstr ""
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
-#: ../server/rhnHandler.py:64
+#: ../server/rhnHandler.py:59
 msgid "Please run rhn_register as root on this client"
 msgstr "请在此客户端中以 root 身份运行 rhn_register"
 
-#: ../server/rhnHandler.py:78
+#: ../server/rhnHandler.py:73
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "未为系统配置文件启用服务：\"%s\""
@@ -207,7 +198,7 @@ msgstr "请求的 RPM 软件包 %s 无效"
 msgid "Package not found"
 msgstr "找不到软件包"
 
-#: ../server/rhnServer/server_class.py:103
+#: ../server/rhnServer/server_class.py:102
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "不支持体系结构 `%s'"
@@ -254,65 +245,9 @@ msgstr "Kickstart 会话不匹配"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "不支持堆叠重新注册令牌"
 
-#: ../server/rhnUser.py:323 ../server/rhnUser.py:326
+#: ../server/rhnUser.py:313 ../server/rhnUser.py:316
 msgid "Invalid username/password combination"
 msgstr "无效的用户名/口令组合"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:507
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "未保留用户名 `%s'"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:513
-msgid "E-mail address not specified"
-msgstr "未指定电子邮件地址"
-
-#: ../server/rhnUser.py:555
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "用户名应至少为 %d 个字符"
-
-#: ../server/rhnUser.py:559
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "用户名应小于 %d 个字符"
-
-#: ../server/rhnUser.py:573
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "用户名 = `%s'，字符 `%s' 无效"
-
-#: ../server/rhnUser.py:594
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "请将您的电子邮件地址限制为 %s 个字符"
-
-#: ../server/rhnUser.py:692
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "口令必须至少为 %d 个字符"
-
-#: ../server/rhnUser.py:696
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "口令必须短于 %d 个字符"
-
-#: ../server/rhnUser.py:712
-#, python-format
-msgid "password contains character `%s'"
-msgstr "口令包含字符 `%s'"
-
-#: ../server/rhnUser.py:721
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "用户名长度应至少为 %d 个字符"
-
-#: ../server/rhnUser.py:732
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "无法注册以 %s 结尾的用户名"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:57
@@ -948,7 +883,7 @@ msgstr "错误：%s %s：%s"
 msgid "TRACEBACK: %s"
 msgstr "回溯：%s"
 
-#: ../satellite_tools/messages.py:30
+#: ../satellite_tools/messages.py:29
 #, python-format
 msgid ""
 "\n"
@@ -959,7 +894,7 @@ msgstr ""
 "错误：正在执行步骤 %s。错误为：\n"
 "%s\n"
 
-#: ../satellite_tools/messages.py:37
+#: ../satellite_tools/messages.py:34
 #, python-format
 msgid ""
 "\n"
@@ -976,7 +911,7 @@ msgstr ""
 "       ISO，确保不缺少任何 ISO，然后以交互方式\n"
 "       重新装入并重新填充临时储存库 (%s)。\n"
 
-#: ../satellite_tools/messages.py:47
+#: ../satellite_tools/messages.py:42
 #, python-format
 msgid ""
 "\n"
@@ -987,7 +922,7 @@ msgstr ""
 "错误：同步信息时出现问题。\n"
 "       错误消息：%s\n"
 
-#: ../satellite_tools/messages.py:54
+#: ../satellite_tools/messages.py:47
 #, python-format
 msgid ""
 "\n"
@@ -1002,7 +937,7 @@ msgstr ""
 "       基本网络连接和/或名称解析，然后重试。\n"
 "       错误消息：%s\n"
 
-#: ../satellite_tools/messages.py:63
+#: ../satellite_tools/messages.py:54
 #, python-format
 msgid ""
 "\n"
@@ -1019,7 +954,7 @@ msgstr ""
 "       父通道：\n"
 "       %s\n"
 
-#: ../satellite_tools/messages.py:73
+#: ../satellite_tools/messages.py:62
 #, python-format
 msgid ""
 "\n"
@@ -1032,120 +967,170 @@ msgstr ""
 "请联系您的 SUSE Multi-Linux Manager 联系人\n"
 "%s"
 
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  错误：设备上的可用空间不足 (%s KB)。"
-
-#: ../satellite_tools/messages.py:81
+#: ../satellite_tools/messages.py:67
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr "    %3d/%s 提取成功：%s（%s 字节）"
 
-#: ../satellite_tools/messages.py:82
+#: ../satellite_tools/messages.py:68
 #, python-format
 msgid "    Extinct package:  %s"
 msgstr "    软件包不存在：%s"
 
-#: ../satellite_tools/messages.py:83
+#: ../satellite_tools/messages.py:69
 #, python-format
 msgid "   Total size: %s"
 msgstr "   总大小：%s"
 
-#: ../satellite_tools/messages.py:85
+#: ../satellite_tools/messages.py:71
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
 msgstr "      已下载 %s，共 %s。估计剩余时间：%s"
 
-#: ../satellite_tools/messages.py:87
+#: ../satellite_tools/messages.py:73
 #, python-format
 msgid "    Fetch unsuccessful: %s"
 msgstr "    提取失败：%s"
 
-#: ../satellite_tools/messages.py:88
+#: ../satellite_tools/messages.py:74
 #, python-format
 msgid "   RPM fetch summary: %s"
 msgstr "   RPM 提取摘要：%s"
 
-#: ../satellite_tools/messages.py:89
+#: ../satellite_tools/messages.py:75
 #, python-format
 msgid "       success: %d"
 msgstr "       成功：%d"
 
-#: ../satellite_tools/messages.py:90
+#: ../satellite_tools/messages.py:76
 #, python-format
 msgid "       failed:  %d"
 msgstr "       失败：%d"
 
-#: ../satellite_tools/messages.py:91
+#: ../satellite_tools/messages.py:77
 #, python-format
 msgid "       extinct: %d"
 msgstr "       不存在：%d"
 
-#: ../satellite_tools/messages.py:93
+#: ../satellite_tools/messages.py:79
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr "   正在检索/分析 *相关的* 软件包元数据：%s (%s)"
 
-#: ../satellite_tools/messages.py:94
+#: ../satellite_tools/messages.py:80
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
 msgstr "   正在检索/分析勘误数据：%s (%s)"
 
-#: ../satellite_tools/messages.py:95
+#: ../satellite_tools/messages.py:81
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
 msgstr "   正在检索/分析 kickstart 数据：%s (%s)"
 
-#: ../satellite_tools/messages.py:96
+#: ../satellite_tools/messages.py:82
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr "   正在检索/分析 kickstart 树文件：%s (%s)"
 
-#: ../satellite_tools/messages.py:97
+#: ../satellite_tools/messages.py:83
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
 msgstr "   正在导入 *相关的* 软件包元数据：%s (%s)"
 
-#: ../satellite_tools/messages.py:98
+#: ../satellite_tools/messages.py:84
 msgid "   * WARNING: this may be a slow process."
 msgstr "   * 警告：此过程可能需要较长时间。"
 
-#: ../satellite_tools/messages.py:99
+#: ../satellite_tools/messages.py:85
 msgid "Linking packages to channels"
 msgstr "将软件包链接到通道"
 
-#: ../satellite_tools/messages.py:100
+#: ../satellite_tools/messages.py:86
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
 msgstr "   正在导入 *相关的* 勘误：%s (%s)"
 
-#: ../satellite_tools/messages.py:101
+#: ../satellite_tools/messages.py:87
 msgid "   No new kickstartable tree to import"
 msgstr "   没有可导入的新 kickstart 树"
 
-#: ../satellite_tools/messages.py:102
+#: ../satellite_tools/messages.py:88
 #, python-format
 msgid "Importing kickstartable trees (%d)"
 msgstr "正在导入 kickstart 树 (%d)"
 
-#: ../satellite_tools/messages.py:103
+#: ../satellite_tools/messages.py:89
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "已导入 kickstart 树 (%d)"
 
-#: ../satellite_tools/reposync.py:150
+#: ../satellite_tools/reposync.py:151
 msgid "+++ sending log as an email +++"
 msgstr "+++ 正在以电子邮件形式发送日志 +++"
 
-#: ../satellite_tools/reposync.py:153
+#: ../satellite_tools/reposync.py:154
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s 同步报告，来自 %s"
 
-#: ../satellite_tools/reposync.py:163
+#: ../satellite_tools/reposync.py:164
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
+
+#, python-format
+#~ msgid ""
+#~ "IMPORTANT MESSAGE FOLLOWS:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "重要消息如下：\n"
+#~ "%s"
+
+#, python-format
+#~ msgid "Username `%s' has not been reserved"
+#~ msgstr "未保留用户名 `%s'"
+
+#~ msgid "E-mail address not specified"
+#~ msgstr "未指定电子邮件地址"
+
+#, python-format
+#~ msgid "username should be at least %d characters"
+#~ msgstr "用户名应至少为 %d 个字符"
+
+#, python-format
+#~ msgid "username should be less than %d characters"
+#~ msgstr "用户名应小于 %d 个字符"
+
+#, python-format
+#~ msgid "username = `%s', invalid character `%s'"
+#~ msgstr "用户名 = `%s'，字符 `%s' 无效"
+
+#, python-format
+#~ msgid "Please limit your e-mail address to %s chars"
+#~ msgstr "请将您的电子邮件地址限制为 %s 个字符"
+
+#, python-format
+#~ msgid "password must be at least %d characters"
+#~ msgstr "口令必须至少为 %d 个字符"
+
+#, python-format
+#~ msgid "Password must be shorter than %d characters"
+#~ msgstr "口令必须短于 %d 个字符"
+
+#, python-format
+#~ msgid "password contains character `%s'"
+#~ msgstr "口令包含字符 `%s'"
+
+#, python-format
+#~ msgid "username should be at least %d characters long"
+#~ msgstr "用户名长度应至少为 %d 个字符"
+
+#, python-format
+#~ msgid "Cannot register usernames ending with %s"
+#~ msgstr "无法注册以 %s 结尾的用户名"
+
+#, python-format
+#~ msgid "  ERROR: not enough free space (%s KB) on device."
+#~ msgstr "  错误：设备上的可用空间不足 (%s KB)。"
 
 #, python-format
 #~ msgid "format of %s should be at least YYYYMMDD.\n"

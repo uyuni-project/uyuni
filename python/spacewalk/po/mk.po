@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:56+0100\n"
+"POT-Creation-Date: 2026-11-13 11:57+0000\n"
 "PO-Revision-Date: 2026-01-09 07:04+0000\n"
 "Last-Translator: \"Kristijan \\\"Fremen\\\" Velkovski\" <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/mk/>\n"
@@ -37,17 +37,7 @@ msgstr "одбиена автентикација со прокси"
 msgid "Invalid request received (%s)."
 msgstr "Примено неважечко барање (%s)."
 
-#. Send the message as a fault.
-#: ../server/apacheRequest.py:132
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"СЛЕДИ ВАЖНА ПОРАКА:\n"
-"%s"
-
-#: ../server/apacheRequest.py:162
+#: ../server/apacheRequest.py:148
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -57,12 +47,13 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:677
+#: ../server/apacheRequest.py:658
 #, python-format
 msgid "Invalid URI %s"
 msgstr "Невалиден URI %s"
 
-#: ../server/handlers/app/packages.py:222
+#. pylint: disable-next=undefined-variable
+#: ../server/handlers/app/packages.py:221
 #, python-format
 msgid ""
 "\n"
@@ -117,12 +108,12 @@ msgstr ""
 "               %s корисникот е деактивиран на овој сервер.\n"
 "               Молиме контактирајте го Орг администраторот за помош."
 
-#: ../server/rhnChannel.py:2218
+#: ../server/rhnChannel.py:2169
 #, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr "Вашиот акаунт нема пристап до ниеден канал со параметрите (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 
-#: ../server/rhnChannel.py:2237
+#: ../server/rhnChannel.py:2188
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Недоволни дозволи за претплата за издание (%s, %s"
@@ -131,11 +122,11 @@ msgstr "Недоволни дозволи за претплата за изда�
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2551 ../server/rhnChannel.py:2570
+#: ../server/rhnChannel.py:2460 ../server/rhnChannel.py:2475
 msgid "System Registered but Inactive"
 msgstr "Системот е регистраран али неактивен"
 
-#: ../server/rhnChannel.py:2553
+#: ../server/rhnChannel.py:2461
 #, python-format
 msgid ""
 "\n"
@@ -150,7 +141,7 @@ msgstr ""
 "затоа што неможење да се because it could not be претплати на основен канал.\n"
 "Молиме контактирајте го орг администраторот за помош.\n"
 
-#: ../server/rhnChannel.py:2562
+#: ../server/rhnChannel.py:2468
 #, python-format
 msgid ""
 "\n"
@@ -165,7 +156,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2572
+#: ../server/rhnChannel.py:2476
 #, python-format
 msgid ""
 "\n"
@@ -181,11 +172,11 @@ msgstr ""
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
-#: ../server/rhnHandler.py:64
+#: ../server/rhnHandler.py:59
 msgid "Please run rhn_register as root on this client"
 msgstr "Ве молиме извршете го rhn_register како root на овој клиент"
 
-#: ../server/rhnHandler.py:78
+#: ../server/rhnHandler.py:73
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Сервисот не е овозможен за системскиот профил: \"%s\""
@@ -200,7 +191,7 @@ msgstr "Се бара невалиден RPM пакет %s"
 msgid "Package not found"
 msgstr "Пакетот не е најден"
 
-#: ../server/rhnServer/server_class.py:103
+#: ../server/rhnServer/server_class.py:102
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "Архитектурата \"%s\" не е поддржана"
@@ -247,65 +238,9 @@ msgstr "Несовпаѓање на почетната сесија"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Редење на токени за пререгистрација не е поддржано"
 
-#: ../server/rhnUser.py:323 ../server/rhnUser.py:326
+#: ../server/rhnUser.py:313 ../server/rhnUser.py:316
 msgid "Invalid username/password combination"
 msgstr "Невалидна комбинација на корисничко име и лозинка"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:507
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "Корисничкото име `%s' не е резервирано"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:513
-msgid "E-mail address not specified"
-msgstr "Адресата на е-мејл не е укажана"
-
-#: ../server/rhnUser.py:555
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "корисничкото име треба да содржи најмалку %d карактери"
-
-#: ../server/rhnUser.py:559
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "корисничкото име треба да биде помало од %d карактери"
-
-#: ../server/rhnUser.py:573
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "корисничко име = `%s', невалиден карактер `%s'"
-
-#: ../server/rhnUser.py:594
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Ограничете ја вашата e-mail адреса на %s карактери"
-
-#: ../server/rhnUser.py:692
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "лозинката мора да содржи најмалку %d карактери"
-
-#: ../server/rhnUser.py:696
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "Лозинката мора да биде пократка од %d карактери"
-
-#: ../server/rhnUser.py:712
-#, python-format
-msgid "password contains character `%s'"
-msgstr "лозинката содржи карактер `%s'"
-
-#: ../server/rhnUser.py:721
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "корисничкото име треба да има најмалку %d карактери"
-
-#: ../server/rhnUser.py:732
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "Не може да се регистрираат кориснички имиња што завршуваат на %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:57
@@ -863,7 +798,7 @@ msgstr ""
 msgid "TRACEBACK: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:30
+#: ../satellite_tools/messages.py:29
 #, python-format
 msgid ""
 "\n"
@@ -871,7 +806,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:37
+#: ../satellite_tools/messages.py:34
 #, python-format
 msgid ""
 "\n"
@@ -882,7 +817,7 @@ msgid ""
 "       the temporary repository (%s).\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:47
+#: ../satellite_tools/messages.py:42
 #, python-format
 msgid ""
 "\n"
@@ -890,7 +825,7 @@ msgid ""
 "       Error message: %s\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:54
+#: ../satellite_tools/messages.py:47
 #, python-format
 msgid ""
 "\n"
@@ -900,7 +835,7 @@ msgid ""
 "       Error message: %s\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:63
+#: ../satellite_tools/messages.py:54
 #, python-format
 msgid ""
 "\n"
@@ -911,7 +846,7 @@ msgid ""
 "       %s\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:73
+#: ../satellite_tools/messages.py:62
 #, python-format
 msgid ""
 "\n"
@@ -920,120 +855,166 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr ""
-
-#: ../satellite_tools/messages.py:81
+#: ../satellite_tools/messages.py:67
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:82
+#: ../satellite_tools/messages.py:68
 #, python-format
 msgid "    Extinct package:  %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:83
+#: ../satellite_tools/messages.py:69
 #, python-format
 msgid "   Total size: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:85
+#: ../satellite_tools/messages.py:71
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:87
+#: ../satellite_tools/messages.py:73
 #, python-format
 msgid "    Fetch unsuccessful: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:88
+#: ../satellite_tools/messages.py:74
 #, python-format
 msgid "   RPM fetch summary: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:89
+#: ../satellite_tools/messages.py:75
 #, python-format
 msgid "       success: %d"
 msgstr "       успех: %d"
 
-#: ../satellite_tools/messages.py:90
+#: ../satellite_tools/messages.py:76
 #, python-format
 msgid "       failed:  %d"
 msgstr "       неуспех:  %d"
 
-#: ../satellite_tools/messages.py:91
+#: ../satellite_tools/messages.py:77
 #, python-format
 msgid "       extinct: %d"
 msgstr ""
 
-#: ../satellite_tools/messages.py:93
+#: ../satellite_tools/messages.py:79
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:94
+#: ../satellite_tools/messages.py:80
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:95
+#: ../satellite_tools/messages.py:81
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:96
+#: ../satellite_tools/messages.py:82
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:97
+#: ../satellite_tools/messages.py:83
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:98
+#: ../satellite_tools/messages.py:84
 msgid "   * WARNING: this may be a slow process."
 msgstr ""
 
-#: ../satellite_tools/messages.py:99
+#: ../satellite_tools/messages.py:85
 msgid "Linking packages to channels"
 msgstr ""
 
-#: ../satellite_tools/messages.py:100
+#: ../satellite_tools/messages.py:86
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:101
+#: ../satellite_tools/messages.py:87
 msgid "   No new kickstartable tree to import"
 msgstr ""
 
-#: ../satellite_tools/messages.py:102
+#: ../satellite_tools/messages.py:88
 #, python-format
 msgid "Importing kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:103
+#: ../satellite_tools/messages.py:89
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:150
+#: ../satellite_tools/reposync.py:151
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:153
+#: ../satellite_tools/reposync.py:154
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:163
+#: ../satellite_tools/reposync.py:164
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
+
+#, python-format
+#~ msgid ""
+#~ "IMPORTANT MESSAGE FOLLOWS:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "СЛЕДИ ВАЖНА ПОРАКА:\n"
+#~ "%s"
+
+#, python-format
+#~ msgid "Username `%s' has not been reserved"
+#~ msgstr "Корисничкото име `%s' не е резервирано"
+
+#~ msgid "E-mail address not specified"
+#~ msgstr "Адресата на е-мејл не е укажана"
+
+#, python-format
+#~ msgid "username should be at least %d characters"
+#~ msgstr "корисничкото име треба да содржи најмалку %d карактери"
+
+#, python-format
+#~ msgid "username should be less than %d characters"
+#~ msgstr "корисничкото име треба да биде помало од %d карактери"
+
+#, python-format
+#~ msgid "username = `%s', invalid character `%s'"
+#~ msgstr "корисничко име = `%s', невалиден карактер `%s'"
+
+#, python-format
+#~ msgid "Please limit your e-mail address to %s chars"
+#~ msgstr "Ограничете ја вашата e-mail адреса на %s карактери"
+
+#, python-format
+#~ msgid "password must be at least %d characters"
+#~ msgstr "лозинката мора да содржи најмалку %d карактери"
+
+#, python-format
+#~ msgid "Password must be shorter than %d characters"
+#~ msgstr "Лозинката мора да биде пократка од %d карактери"
+
+#, python-format
+#~ msgid "password contains character `%s'"
+#~ msgstr "лозинката содржи карактер `%s'"
+
+#, python-format
+#~ msgid "username should be at least %d characters long"
+#~ msgstr "корисничкото име треба да има најмалку %d карактери"
+
+#, python-format
+#~ msgid "Cannot register usernames ending with %s"
+#~ msgstr "Не може да се регистрираат кориснички имиња што завршуваат на %s"
 
 #~ msgid "ISS is disabled on this server."
 #~ msgstr "ISS е исклучен на овој сервер."

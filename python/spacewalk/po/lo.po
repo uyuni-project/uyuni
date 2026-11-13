@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:56+0100\n"
+"POT-Creation-Date: 2026-11-13 11:57+0000\n"
 "PO-Revision-Date: 2026-08-28 17:18+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/backend/lo/>\n"
@@ -37,17 +37,7 @@ msgstr "ປະຕິເສດການຢືນຢັນຕົວຕົນພຣ
 msgid "Invalid request received (%s)."
 msgstr "ໄດ້ຮັບຄຳຮ້ອງຂໍທີ່ບໍ່ຖືກຕ້ອງ (%s)."
 
-#. Send the message as a fault.
-#: ../server/apacheRequest.py:132
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"ຂໍ້ຄວາມສຳຄັນມີດັ່ງນີ້:\n"
-"%s"
-
-#: ../server/apacheRequest.py:162
+#: ../server/apacheRequest.py:148
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -57,12 +47,13 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:677
+#: ../server/apacheRequest.py:658
 #, python-format
 msgid "Invalid URI %s"
 msgstr "URI %s ບໍ່ຖືກຕ້ອງ"
 
-#: ../server/handlers/app/packages.py:222
+#. pylint: disable-next=undefined-variable
+#: ../server/handlers/app/packages.py:221
 #, python-format
 msgid ""
 "\n"
@@ -117,12 +108,12 @@ msgstr ""
 "               ບັນຊີ %s ຖືກປິດການໃຊ້ງານໃນເຊີເວີນີ້ແລ້ວ.\n"
 "               ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບອົງກອນຂອງທ່ານເພື່ອຂໍຄວາມຊ່ວຍເຫຼືອເພີ່ມເຕີມ."
 
-#: ../server/rhnChannel.py:2218
+#: ../server/rhnChannel.py:2169
 #, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr "ບັນຊີຂອງທ່ານບໍ່ສາມາດເຂົ້າເຖິງຊ່ອງທາງໃດໆທີ່ກົງກັບ (ລຸ້ນ='%(release)s', ສະຖາປັດຕະຍະກຳ='%(arch)s')%(www_activation)s"
 
-#: ../server/rhnChannel.py:2237
+#: ../server/rhnChannel.py:2188
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "ສິດການສະໝັກໃຊ້ບໍ່ພຽງພໍສຳລັບລຸ້ນ (%s, %s)"
@@ -131,11 +122,11 @@ msgstr "ສິດການສະໝັກໃຊ້ບໍ່ພຽງພໍສຳ
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2551 ../server/rhnChannel.py:2570
+#: ../server/rhnChannel.py:2460 ../server/rhnChannel.py:2475
 msgid "System Registered but Inactive"
 msgstr "ລະບົບລົງທະບຽນແລ້ວ ແຕ່ຍັງບໍ່ທັນເຮັດວຽກ"
 
-#: ../server/rhnChannel.py:2553
+#: ../server/rhnChannel.py:2461
 #, python-format
 msgid ""
 "\n"
@@ -150,7 +141,7 @@ msgstr ""
 "ເນື່ອງຈາກບໍ່ສາມາດສະໝັກໃຊ້ຊ່ອງທາງຫຼັກ (base channel) ໄດ້.\n"
 "ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບອົງກອນຂອງທ່ານເພື່ອຂໍຄວາມຊ່ວຍເຫຼືອ.\n"
 
-#: ../server/rhnChannel.py:2562
+#: ../server/rhnChannel.py:2468
 #, python-format
 msgid ""
 "\n"
@@ -165,7 +156,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2572
+#: ../server/rhnChannel.py:2476
 #, python-format
 msgid ""
 "\n"
@@ -181,11 +172,11 @@ msgstr ""
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
-#: ../server/rhnHandler.py:64
+#: ../server/rhnHandler.py:59
 msgid "Please run rhn_register as root on this client"
 msgstr "ກະລຸນາເປີດໃຊ້ງານ rhn_register ດ້ວຍສິດ root ໃນເຄື່ອງລູກຂ່າຍນີ້"
 
-#: ../server/rhnHandler.py:78
+#: ../server/rhnHandler.py:73
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "ບໍລິການບໍ່ໄດ້ເປີດໃຊ້ງານສຳລັບໂປຣໄຟລ໌ລະບົບ: \"%s\""
@@ -200,7 +191,7 @@ msgstr "ມີການຮ້ອງຂໍແພັກເກດ RPM %s ທີ່�
 msgid "Package not found"
 msgstr "ບໍ່ພົບແພັກເກດ"
 
-#: ../server/rhnServer/server_class.py:103
+#: ../server/rhnServer/server_class.py:102
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "ບໍ່ຮອງຮັບສະຖາປັດຕະຍະກຳ `%s'"
@@ -247,65 +238,9 @@ msgstr "ເຊດຊັນ Kickstart ບໍ່ກົງກັນ"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "ບໍ່ຮອງຮັບການຊ້ອນກັນຂອງໂທເຄັນການລົງທະບຽນໃໝ່"
 
-#: ../server/rhnUser.py:323 ../server/rhnUser.py:326
+#: ../server/rhnUser.py:313 ../server/rhnUser.py:316
 msgid "Invalid username/password combination"
 msgstr "ຊື່ຜູ້ໃຊ້ ແລະ ລະຫັດຜ່ານ ບໍ່ຖືກຕ້ອງ"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:507
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "ຊື່ຜູ້ໃຊ້ `%s' ບໍ່ໄດ້ຖືກຈອງໄວ້"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:513
-msgid "E-mail address not specified"
-msgstr "ບໍ່ໄດ້ລະບຸທີ່ຢູ່ອີເມລ"
-
-#: ../server/rhnUser.py:555
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "ຊື່ຜູ້ໃຊ້ຄວນມີຢ່າງໜ້ອຍ %d ຕົວອັກສອນ"
-
-#: ../server/rhnUser.py:559
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "ຊື່ຜູ້ໃຊ້ຄວນມີໜ້ອຍກວ່າ %d ຕົວອັກສອນ"
-
-#: ../server/rhnUser.py:573
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "ຊື່ຜູ້ໃຊ້ = `%s', ມີຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງ `%s'"
-
-#: ../server/rhnUser.py:594
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "ກະລຸນາຈຳກັດທີ່ຢູ່ອີເມລຂອງທ່ານບໍ່ໃຫ້ເກີນ %s ຕົວອັກສອນ"
-
-#: ../server/rhnUser.py:692
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ %d ຕົວອັກສອນ"
-
-#: ../server/rhnUser.py:696
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "ລະຫັດຜ່ານຕ້ອງສັ້ນກວ່າ %d ຕົວອັກສອນ"
-
-#: ../server/rhnUser.py:712
-#, python-format
-msgid "password contains character `%s'"
-msgstr "ລະຫັດຜ່ານມີຕົວອັກສອນ `%s'"
-
-#: ../server/rhnUser.py:721
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "ຊື່ຜູ້ໃຊ້ຄວນມີຄວາມຍາວຢ່າງໜ້ອຍ %d ຕົວອັກສອນ"
-
-#: ../server/rhnUser.py:732
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "ບໍ່ສາມາດລົງທະບຽນຊື່ຜູ້ໃຊ້ທີ່ລົງທ້າຍດ້ວຍ %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:57
@@ -941,7 +876,7 @@ msgstr "ຂໍ້ຜິດພາດ: %s %s: %s"
 msgid "TRACEBACK: %s"
 msgstr "TRACEBACK: %s"
 
-#: ../satellite_tools/messages.py:30
+#: ../satellite_tools/messages.py:29
 #, python-format
 msgid ""
 "\n"
@@ -952,7 +887,7 @@ msgstr ""
 "ຂໍ້ຜິດພາດ: ໃນຂະນະທີ່ກຳລັງປະຕິບັດຂັ້ນຕອນ %s. ຂໍ້ຜິດພາດຄື:\n"
 "%s\n"
 
-#: ../satellite_tools/messages.py:37
+#: ../satellite_tools/messages.py:34
 #, python-format
 msgid ""
 "\n"
@@ -969,7 +904,7 @@ msgstr ""
 "       ແລ້ວຈຶ່ງທຳການ mount ແລະ ຈັດຕັ້ງຄັງເກັບ\n"
 "       ຂໍ້ມູນຊົ່ວຄາວໃໝ່ (%s).\n"
 
-#: ../satellite_tools/messages.py:47
+#: ../satellite_tools/messages.py:42
 #, python-format
 msgid ""
 "\n"
@@ -980,7 +915,7 @@ msgstr ""
 "ຂໍ້ຜິດພາດ: ມີບັນຫາໃນການຊິງຄ໌ (synchronizing) ຂໍ້ມູນ.\n"
 "       ຂໍ້ຄວາມຜິດພາດ: %s\n"
 
-#: ../satellite_tools/messages.py:54
+#: ../satellite_tools/messages.py:47
 #, python-format
 msgid ""
 "\n"
@@ -995,7 +930,7 @@ msgstr ""
 "       ການເຊື່ອມຕໍ່ເຄືອຂ່າຍພື້ນຖານ, ແລະ/ຫຼື ການແປງຊື່ (name resolution), ແລ້ວລອງໃໝ່.\n"
 "       ຂໍ້ຄວາມຜິດພາດ: %s\n"
 
-#: ../satellite_tools/messages.py:63
+#: ../satellite_tools/messages.py:54
 #, python-format
 msgid ""
 "\n"
@@ -1012,7 +947,7 @@ msgstr ""
 "       ລາຍການນີ້:\n"
 "       %s\n"
 
-#: ../satellite_tools/messages.py:73
+#: ../satellite_tools/messages.py:62
 #, python-format
 msgid ""
 "\n"
@@ -1025,120 +960,170 @@ msgstr ""
 "ກະລຸນາຕິດຕໍ່ຜູ້ຮັບຜິດຊອບ SUSE Multi-Linux Manager ຂອງທ່ານ\n"
 "%s"
 
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  ຂໍ້ຜິດພາດ: ພື້ນທີ່ຫວ່າງໃນອຸປະກອນບໍ່ພຽງພໍ (%s KB)."
-
-#: ../satellite_tools/messages.py:81
+#: ../satellite_tools/messages.py:67
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr "    %3d/%s ດຶງຂໍ້ມູນສຳເລັດ: %s (%s ໄບຕ໌)"
 
-#: ../satellite_tools/messages.py:82
+#: ../satellite_tools/messages.py:68
 #, python-format
 msgid "    Extinct package:  %s"
 msgstr "    ແພັກເກດທີ່ໝົດອາຍຸ:  %s"
 
-#: ../satellite_tools/messages.py:83
+#: ../satellite_tools/messages.py:69
 #, python-format
 msgid "   Total size: %s"
 msgstr "   ຂະໜາດທັງໝົດ: %s"
 
-#: ../satellite_tools/messages.py:85
+#: ../satellite_tools/messages.py:71
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
 msgstr "      ດາວໂຫຼດແລ້ວ %s ຈາກ %s. ເວລາທີ່ຄາດວ່າຍັງເຫຼືອ: %s"
 
-#: ../satellite_tools/messages.py:87
+#: ../satellite_tools/messages.py:73
 #, python-format
 msgid "    Fetch unsuccessful: %s"
 msgstr "    ດຶງຂໍ້ມູນບໍ່ສຳເລັດ: %s"
 
-#: ../satellite_tools/messages.py:88
+#: ../satellite_tools/messages.py:74
 #, python-format
 msgid "   RPM fetch summary: %s"
 msgstr "   ສະຫຼຸບການດຶງຂໍ້ມູນ RPM: %s"
 
-#: ../satellite_tools/messages.py:89
+#: ../satellite_tools/messages.py:75
 #, python-format
 msgid "       success: %d"
 msgstr "       ສຳເລັດ: %d"
 
-#: ../satellite_tools/messages.py:90
+#: ../satellite_tools/messages.py:76
 #, python-format
 msgid "       failed:  %d"
 msgstr "       ຫຼົ້ມເຫຼວ:  %d"
 
-#: ../satellite_tools/messages.py:91
+#: ../satellite_tools/messages.py:77
 #, python-format
 msgid "       extinct: %d"
 msgstr "       ໝົດອາຍຸ: %d"
 
-#: ../satellite_tools/messages.py:93
+#: ../satellite_tools/messages.py:79
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr "   ກຳລັງດຶງ / ວິເຄາະ ຂໍ້ມູນເມຕາຂອງແພັກເກດທີ່ *ກ່ຽວຂ້ອງ*: %s (%s)"
 
-#: ../satellite_tools/messages.py:94
+#: ../satellite_tools/messages.py:80
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
 msgstr "   ກຳລັງດຶງ / ວິເຄາະ ຂໍ້ມູນ errata: %s (%s)"
 
-#: ../satellite_tools/messages.py:95
+#: ../satellite_tools/messages.py:81
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
 msgstr "   ກຳລັງດຶງ / ວິເຄາະ ຂໍ້ມູນ kickstart: %s (%s)"
 
-#: ../satellite_tools/messages.py:96
+#: ../satellite_tools/messages.py:82
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr "   ກຳລັງດຶງ / ວິເຄາະ ໄຟລ໌ kickstart tree: %s (%s)"
 
-#: ../satellite_tools/messages.py:97
+#: ../satellite_tools/messages.py:83
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
 msgstr "   ກຳລັງນຳເຂົ້າຂໍ້ມູນເມຕາຂອງແພັກເກດທີ່ *ກ່ຽວຂ້ອງ*: %s (%s)"
 
-#: ../satellite_tools/messages.py:98
+#: ../satellite_tools/messages.py:84
 msgid "   * WARNING: this may be a slow process."
 msgstr "   * ຄຳເຕືອນ: ຂັ້ນຕອນນີ້ອາດຈະໃຊ້ເວລາດົນ."
 
-#: ../satellite_tools/messages.py:99
+#: ../satellite_tools/messages.py:85
 msgid "Linking packages to channels"
 msgstr "ກຳລັງເຊື່ອມໂຍງແພັກເກດກັບຊ່ອງທາງ"
 
-#: ../satellite_tools/messages.py:100
+#: ../satellite_tools/messages.py:86
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
 msgstr "   ກຳລັງນຳເຂົ້າ errata ທີ່ *ກ່ຽວຂ້ອງ*: %s (%s)"
 
-#: ../satellite_tools/messages.py:101
+#: ../satellite_tools/messages.py:87
 msgid "   No new kickstartable tree to import"
 msgstr "   ບໍ່ມີ kickstartable tree ໃໝ່ທີ່ຈະນຳເຂົ້າ"
 
-#: ../satellite_tools/messages.py:102
+#: ../satellite_tools/messages.py:88
 #, python-format
 msgid "Importing kickstartable trees (%d)"
 msgstr "ກຳລັງນຳເຂົ້າ kickstartable trees (%d)"
 
-#: ../satellite_tools/messages.py:103
+#: ../satellite_tools/messages.py:89
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "ນຳເຂົ້າ kickstartable trees ສຳເລັດ (%d)"
 
-#: ../satellite_tools/reposync.py:150
+#: ../satellite_tools/reposync.py:151
 msgid "+++ sending log as an email +++"
 msgstr "+++ ກຳລັງສົ່ງລັອກ (log) ຜ່ານອີເມລ +++"
 
-#: ../satellite_tools/reposync.py:153
+#: ../satellite_tools/reposync.py:154
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "ລາຍງານການຊິງຄ໌ %s ຈາກ %s"
 
-#: ../satellite_tools/reposync.py:163
+#: ../satellite_tools/reposync.py:164
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ ມີການຮ້ອງຂໍອີເມລ, ແຕ່ບໍ່ມີຂໍ້ມູນທີ່ຈະສົ່ງ +++"
+
+#, python-format
+#~ msgid ""
+#~ "IMPORTANT MESSAGE FOLLOWS:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "ຂໍ້ຄວາມສຳຄັນມີດັ່ງນີ້:\n"
+#~ "%s"
+
+#, python-format
+#~ msgid "Username `%s' has not been reserved"
+#~ msgstr "ຊື່ຜູ້ໃຊ້ `%s' ບໍ່ໄດ້ຖືກຈອງໄວ້"
+
+#~ msgid "E-mail address not specified"
+#~ msgstr "ບໍ່ໄດ້ລະບຸທີ່ຢູ່ອີເມລ"
+
+#, python-format
+#~ msgid "username should be at least %d characters"
+#~ msgstr "ຊື່ຜູ້ໃຊ້ຄວນມີຢ່າງໜ້ອຍ %d ຕົວອັກສອນ"
+
+#, python-format
+#~ msgid "username should be less than %d characters"
+#~ msgstr "ຊື່ຜູ້ໃຊ້ຄວນມີໜ້ອຍກວ່າ %d ຕົວອັກສອນ"
+
+#, python-format
+#~ msgid "username = `%s', invalid character `%s'"
+#~ msgstr "ຊື່ຜູ້ໃຊ້ = `%s', ມີຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງ `%s'"
+
+#, python-format
+#~ msgid "Please limit your e-mail address to %s chars"
+#~ msgstr "ກະລຸນາຈຳກັດທີ່ຢູ່ອີເມລຂອງທ່ານບໍ່ໃຫ້ເກີນ %s ຕົວອັກສອນ"
+
+#, python-format
+#~ msgid "password must be at least %d characters"
+#~ msgstr "ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ %d ຕົວອັກສອນ"
+
+#, python-format
+#~ msgid "Password must be shorter than %d characters"
+#~ msgstr "ລະຫັດຜ່ານຕ້ອງສັ້ນກວ່າ %d ຕົວອັກສອນ"
+
+#, python-format
+#~ msgid "password contains character `%s'"
+#~ msgstr "ລະຫັດຜ່ານມີຕົວອັກສອນ `%s'"
+
+#, python-format
+#~ msgid "username should be at least %d characters long"
+#~ msgstr "ຊື່ຜູ້ໃຊ້ຄວນມີຄວາມຍາວຢ່າງໜ້ອຍ %d ຕົວອັກສອນ"
+
+#, python-format
+#~ msgid "Cannot register usernames ending with %s"
+#~ msgstr "ບໍ່ສາມາດລົງທະບຽນຊື່ຜູ້ໃຊ້ທີ່ລົງທ້າຍດ້ວຍ %s"
+
+#, python-format
+#~ msgid "  ERROR: not enough free space (%s KB) on device."
+#~ msgstr "  ຂໍ້ຜິດພາດ: ພື້ນທີ່ຫວ່າງໃນອຸປະກອນບໍ່ພຽງພໍ (%s KB)."
 
 #, python-format
 #~ msgid "format of %s should be at least YYYYMMDD.\n"
