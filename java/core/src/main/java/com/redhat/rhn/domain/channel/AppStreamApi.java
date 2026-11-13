@@ -23,7 +23,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
@@ -55,8 +54,7 @@ public class AppStreamApi {
     private String rpm;
 
     @ManyToOne
-    @JoinColumn(name = "module_id")
-    @MapsId("id")
+    @JoinColumn(name = "module_id", insertable = false, updatable = false)
     private AppStream appStream;
 
     public Long getId() {
