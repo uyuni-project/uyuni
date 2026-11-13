@@ -8971,13 +8971,6 @@ administrator privileges.</source>
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="general.jsp.disconnected" xml:space="preserve">
-        <source>Disconnected @@PRODUCT_NAME@@</source>
-        <target>@@PRODUCT_NAME@@ বিচ্ছিন্ন করা হয়েছে</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="general.jsp.monitoring_backend" xml:space="preserve">
         <source>Enable Monitoring</source>
         <target>Monitoring সক্রিয় করুন</target>
