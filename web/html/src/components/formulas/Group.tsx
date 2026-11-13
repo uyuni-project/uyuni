@@ -25,7 +25,6 @@ type Props = {
 
 const Group = (props: Props) => {
   const [visible, setVisible] = useState(props.sectionsExpanded !== SectionState.Collapsed);
-
   useEffect(() => {
     if (props.sectionsExpanded !== SectionState.Mixed) {
       setVisible(props.sectionsExpanded !== SectionState.Collapsed);

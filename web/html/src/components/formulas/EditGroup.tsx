@@ -204,7 +204,7 @@ type EditPrimitiveGroupProps = {
  */
 class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  simpleWrapper = (name, required, element, i, help = null) => {
+  simpleWrapper = (name, required, element, i, help = null, isLastItem = false) => {
     return (
       <>
         <div className="col-lg-4 offset-lg-3">{element}</div>
@@ -219,7 +219,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
             minItems={this.props.element.$minItems!}
             currentLength={this.props.value.length}
             handleRemoveItem={() => this.props.handleRemoveItem(i)}
-          />
+          /> */}
         </div>
       </>
     );
