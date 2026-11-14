@@ -13,6 +13,7 @@
 package com.suse.manager.webui.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -1133,6 +1134,28 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertStateApplyWithPillar("ansible.runplaybook", "playbook_path", "/path/to/myplaybook.yml", saltCall);
         assertStateApplyWithPillar("ansible.runplaybook", "rundir", "/path/to", saltCall);
         assertStateApplyWithPillar("ansible.runplaybook", "inventory_path", "/path/to/my/hosts", saltCall);
+        assertStateApplyWithPillar("ansible.runplaybook", "check", false, saltCall);
+    }
+
+    @Test
+    public void testAnsiblePlaybookActionInTestMode() throws Exception {
+        MinionServer controlNode = MinionServerFactoryTest.createTestMinionServer(user);
+
+        PlaybookAction action = (PlaybookAction) ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_PLAYBOOK);
+        PlaybookActionDetails details = new PlaybookActionDetails();
+        details.setPlaybookPath("/path/to/myplaybook.yml");
+        details.setTestMode(true);
+        action.setDetails(details);
+
+        ServerActionFactory.addServerToAction(controlNode, action);
+
+        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(action,
+                Collections.singletonList(new MinionSummary(controlNode)));
+
+        LocalCall<?> saltCall = result.keySet().iterator().next();
+        assertStateApplyWithPillar("ansible.runplaybook", "check", true, saltCall);
+        // Salt's test mode would only report the playbook as set to execute
+        assertFalse(((Map<String, Object>) saltCall.getPayload().get("kwarg")).containsKey("test"));
     }
 
     private static class MinionListMatcher extends BaseMatcher<MinionList> {
