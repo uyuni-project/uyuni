@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-13 16:35+0000\n"
+"POT-Creation-Date: 2026-11-14 12:10+0100\n"
 "PO-Revision-Date: 2026-08-27 05:53+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/spacecmd/lo/>\n"
@@ -426,7 +426,6 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "ໄຟລ໌ %s ມີຢູ່ແລ້ວ, ຢືນຢັນການຂຽນທັບ? (y/n)"
 
 #: ../src/spacecmd/activationkey.py:1436
-#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "ບັນທຶກຄີທີ່ສົ່ງອອກລົງໄຟລ໌ບໍ່ສຳເລັດ: {}"
 
@@ -1227,7 +1226,6 @@ msgid "Exporting cc %s to %s"
 msgstr "ກຳລັງສົ່ງອອກ cc %s ໄປຍັງ %s"
 
 #: ../src/spacecmd/configchannel.py:1352
-#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "ໄຟລ໌ '{}' ມີຢູ່ແລ້ວ, ຢືນຢັນການຂຽນທັບ? (y/n)"
 
@@ -1530,7 +1528,6 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "ວິທີໃຊ້: custominfo_details KEY ..."
 
 #: ../src/spacecmd/custominfo.py:167
-#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "ບໍ່ມີຄີໃດກົງກັບ '{}'."
 
@@ -3534,7 +3531,6 @@ msgstr "ບໍ່ພົບອົງກອນທີ່ຊື່ %s"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
-#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "ບໍ່ພົບອົງກອນ '{}'"
 
@@ -3564,7 +3560,6 @@ msgid "No trust organisation found for the name %s"
 msgstr "ບໍ່ພົບອົງກອນທີ່ເຊື່ອຖືໄດ້ສຳລັບຊື່ %s"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
-#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "ບໍ່ພົບອົງກອນ '{}' ທີ່ຈະສ້າງຄວາມເຊື່ອຖື"
 
@@ -3598,7 +3593,6 @@ msgid "No trusted organisation found for the name %s"
 msgstr "ບໍ່ພົບອົງກອນທີ່ເຊື່ອຖືໄດ້ສຳລັບຊື່ %s"
 
 #: ../src/spacecmd/org.py:388
-#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "ບໍ່ພົບອົງກອນທີ່ເຊື່ອຖືໄດ້ '{}'"
 
@@ -3925,7 +3919,7 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config: ສ້າງລະບົບພຣັອກຊີ ແລະ ສົ່ງຄືນໄຟລ໌ການຕັ້ງຄ່າຂອງມັນ"
 
 #: ../src/spacecmd/proxy.py:46
-#, fuzzy
+#, fuzzy, python-format
 #| msgid ""
 #| "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 #| "\n"
@@ -3992,7 +3986,7 @@ msgid "proxy_container_config_nossl: create a proxy system and return its config
 msgstr "proxy_container_config_nossl: ສ້າງລະບົບພຣັອກຊີ ແລະ ສົ່ງຄືນໄຟລ໌ການຕັ້ງຄ່າໂດຍບໍ່ໃຊ້ໃບຢັ້ງຢືນ SSL"
 
 #: ../src/spacecmd/proxy.py:119
-#, fuzzy
+#, fuzzy, python-format
 #| msgid ""
 #| "usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 #| "\n"
@@ -4041,6 +4035,7 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert: ສ້າງລະບົບພຣັອກຊີ ແລະ ສົ່ງຄືນໄຟລ໌ການຕັ້ງຄ່າຂອງມັນ"
 
 #: ../src/spacecmd/proxy.py:174
+#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4117,7 +4112,6 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "SSL Client Key ຂອງຄັງເກັບ:         %s"
 
 #: ../src/spacecmd/repo.py:116
-#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "ບໍ່ພົບຄັງເກັບສຳລັບຄຳຄົ້ນຫາ '{}'"
 
@@ -4323,7 +4317,6 @@ msgid "%s  # Systems"
 msgstr "%s  # ລະບົບ"
 
 #: ../src/spacecmd/report.py:197
-#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "ບໍ່ພົບ Errata ສຳລັບ '{}'"
 
@@ -4748,7 +4741,6 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "ຖ້າບໍ່ລະບຸວັນທີ ມັນຈະລຶບການກະທຳທີ່ເກັບຖາວອນທັງໝົດ"
 
 #: ../src/spacecmd/schedule.py:537
-#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "ທ່ານຕ້ອງການລຶບ ({}) ການກະທຳທີ່ເກັບຖາວອນຫຼືບໍ່? [y/N]"
 
@@ -4769,7 +4761,6 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "ຖ້າບໍ່ລະບຸວັນທີ ມັນຈະເກັບຖາວອນການກະທຳທີ່ສຳເລັດທັງໝົດ"
 
 #: ../src/spacecmd/schedule.py:619
-#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "ທ່ານຕ້ອງການເກັບຖາວອນ ({}) ການກະທຳທີ່ສຳເລັດຫຼືບໍ່? [y/N]"
 
@@ -5987,12 +5978,10 @@ msgid "merging errata from softwarechannel "
 msgstr "ກຳລັງຮວມ Errata ຈາກຊ່ອງທາງຊອບແວ "
 
 #: ../src/spacecmd/softwarechannel.py:2900
-#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} ບໍ່ມີ Errata ໃໝ່ທີ່ຍັງບໍ່ມີໃນ {}"
 
 #: ../src/spacecmd/softwarechannel.py:2908
-#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "errata ທີ່ຈະເພີ່ມເຂົ້າໃນຊ່ອງທາງ {}: "
 
@@ -6006,7 +5995,6 @@ msgid " errata to  "
 msgstr " Errata ໄປຫາ  "
 
 #: ../src/spacecmd/softwarechannel.py:2924
-#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "ດຳເນີນການປ່ຽນແປງເຫຼົ່ານີ້ກັບຊ່ອງທາງ {} [y/N]:"
 
@@ -7885,7 +7873,6 @@ msgstr "ເຊີເວີບໍ່ຮອງຮັບຄີເປີດການ
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:4968
-#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "ກຳລັງບູດສະແຕຣັບ '{}'. ອາດຈະໃຊ້ເວລາບຶດໜຶ່ງ."
 
@@ -7899,13 +7886,11 @@ msgstr "system_needrebootafterupdate: ສະແດງໃຫ້ເຫັນວ່
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5058
-#, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
 msgstr "ລະບົບ '{}' ຈຳເປັນຕ້ອງຣີບູດຫຼັງຈາກການອັບເດດ"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5067
-#, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
 msgstr "ບໍ່ຈຳເປັນຕ້ອງຣີບູດລະບົບ '{}' ຫຼັງຈາກນຳໃຊ້ການອັບເດດທີ່ມີຢູ່"
 
@@ -8257,7 +8242,6 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "ຂ້າມການໃຊ້ຂໍ້ຄວາມທົ່ວໄປ: ຈຳນວນຂໍ້ຄວາມຍ່ອຍແຕກຕ່າງກັນ"
 
 #: ../src/spacecmd/utils.py:992
-#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "ພາຣາມິເຕີ {} ບໍ່ແມ່ນປະເພດ String, ແຕ່ແມ່ນ {}."
 

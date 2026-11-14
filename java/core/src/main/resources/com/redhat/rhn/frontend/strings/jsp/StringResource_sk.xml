@@ -5447,7 +5447,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="ssm.overview.misc.scap" xml:space="preserve">
         <source>&lt;a href="/rhn/manager/systems/ssm/audit/schedule-scap-scan"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
-        <target state="needs-adaptation">&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Auditovať&lt;/a&gt; systémy s OpenSCAP</target>
+        <target state="translated">&lt;a href="/rhn/manager/systems/ssm/audit/schedule-scap-scan"&gt;Auditovať&lt;/a&gt; systémy s OpenSCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -29584,17 +29584,17 @@ given channel.</source>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="actions.jsp.action_description" xml:space="preserve">
+      <trans-unit id="actions.jsp.action_description" xml:space="preserve">
         <source>Comment / Reason</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="pkg.lock.message.lockmissingpkg" xml:space="preserve">
         <source>Failed to lock selected packages. Can't find one of the packages to lock.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

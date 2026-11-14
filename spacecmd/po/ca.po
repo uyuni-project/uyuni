@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-13 16:35+0000\n"
-"PO-Revision-Date: 2026-10-02 15:13+0000\n"
+"POT-Creation-Date: 2026-11-14 12:10+0100\n"
+"PO-Revision-Date: 2026-11-13 21:13+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacecmd/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.10\n"
+"X-Generator: Weblate 2026.11.2\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -426,7 +426,6 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "El fitxer %s existeix, confirmeu la sobreescriptura del fitxer? (s/n)"
 
 #: ../src/spacecmd/activationkey.py:1436
-#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "No s'han pogut desar les claus exportades al fitxer: {}"
 
@@ -1266,7 +1265,6 @@ msgid "Exporting cc %s to %s"
 msgstr "S'està exportant el cc %s a %s"
 
 #: ../src/spacecmd/configchannel.py:1352
-#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "El fitxer «{}» existeix, confirmeu la sobreescriptura del fitxer? (s/n)"
 
@@ -1588,7 +1586,6 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "ús: clau custominfodetails..."
 
 #: ../src/spacecmd/custominfo.py:167
-#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "No hi ha cap clau que coincideixi amb l'argument «{}»."
 
@@ -3651,7 +3648,6 @@ msgstr "No s'ha trobat cap organització per al nom %s"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
-#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "No s'ha trobat l'organització «{}»"
 
@@ -3681,7 +3677,6 @@ msgid "No trust organisation found for the name %s"
 msgstr "No s'ha trobat cap organització de confiança per al nom %s"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
-#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "No s'ha trobat l'organització «{}» per a la qual confiar"
 
@@ -3715,7 +3710,6 @@ msgid "No trusted organisation found for the name %s"
 msgstr "No s'ha trobat cap organització de confiança per al nom %s"
 
 #: ../src/spacecmd/org.py:388
-#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "No s'ha trobat l'organització de confiança «{}»"
 
@@ -3963,53 +3957,42 @@ msgid "package_listorphans: List packages that are not in a channel"
 msgstr "packagelistorphans: Llista els paquets que no estan en un canal"
 
 #: ../src/spacecmd/package.py:275
-#, fuzzy
-#| msgid "usage: package_listorphans"
 msgid "usage: package_listorphans [LIMIT] [OFFSET]"
-msgstr "ús: packagelistorphans"
+msgstr "ús: package_listorphans [LIMIT] [OFFSET]"
 
 #: ../src/spacecmd/package.py:278
-#, fuzzy
-#| msgid "note:    When no date is provided, all errata will be merged."
 msgid "       note: when no limit nor offset are provided, all orphan packages will be listed"
-msgstr "Nota: Quan no es proporcioni cap data, tots els errata es fusionaran."
+msgstr "       nota: quan no s'especifiquen ni límit ni desplaçament, es llistaran tots els paquets orfes"
 
 #: ../src/spacecmd/package.py:315
 msgid "package_removeorphans: Remove packages that are not in a channel"
 msgstr "packageremoveorphans: Elimina els paquets que no estan en un canal"
 
 #: ../src/spacecmd/package.py:316
-#, fuzzy
-#| msgid "usage: package_removeorphans"
 msgid "usage: package_removeorphans [BATCH_SIZE]"
-msgstr "ús: packageremoveorphans"
+msgstr "ús: package_removeorphans [MIDA_DEL_LOT]"
 
 #: ../src/spacecmd/package.py:319
 msgid "       optional: BATCH_SIZE size of the batch in which orphan packages will be removed in, default 1000"
-msgstr ""
+msgstr "       opcional: BATCH_SIZE, mida del lot en què s'eliminaran els paquets orfes; valor per defecte: 1000"
 
 #: ../src/spacecmd/package.py:343
-#, fuzzy
-#| msgid "No orphaned packages has been found"
 msgid "No orphan packages have been found"
 msgstr "No s'ha trobat cap paquet orfe"
 
 #: ../src/spacecmd/package.py:344
-#, fuzzy
-#| msgid "No orphaned packages"
 msgid "No orphan packages"
 msgstr "No hi ha paquets orfes"
 
 #: ../src/spacecmd/package.py:357
 #, python-format
 msgid "There are %i orphan packages to be removed (use package_listorphans to see the list)"
-msgstr ""
+msgstr "Hi ha %i paquets orfes per eliminar (useu package_listorphans per veure'n la llista)"
 
 #: ../src/spacecmd/package.py:363
-#, fuzzy, python-format
-#| msgid "Remove these packages [y/N]:"
+#, python-format
 msgid "Remove these %i orphan packages [y/N]:"
-msgstr "Elimina aquests paquets [y/N]:"
+msgstr "Voleu eliminar aquests %i paquets orfes [s/N]:"
 
 #: ../src/spacecmd/package.py:365
 msgid "No packages were removed"
@@ -4042,6 +4025,7 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxycontainerconfig: crea un sistema proxy i retorna el seu fitxer de configuració"
 
 #: ../src/spacecmd/proxy.py:46
+#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4088,6 +4072,7 @@ msgid "proxy_container_config_nossl: create a proxy system and return its config
 msgstr "proxy_container_config_nossl: crea un sistema d'intermediari i retorna el fitxer de configuració sense certificat SSL"
 
 #: ../src/spacecmd/proxy.py:119
+#, python-format
 msgid ""
 "usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4124,6 +4109,7 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxycontainerconfiggeneratecert: crea un sistema proxy i retorna el seu fitxer de configuració"
 
 #: ../src/spacecmd/proxy.py:174
+#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4226,7 +4212,6 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "Clau del client SSL del repositori: %s"
 
 #: ../src/spacecmd/repo.py:116
-#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "No s'ha trobat cap repositori per a la consulta «{}»"
 
@@ -4447,7 +4432,6 @@ msgid "%s  # Systems"
 msgstr "%s   Sistemes"
 
 #: ../src/spacecmd/report.py:197
-#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "No s'ha trobat cap errata per a «{}»"
 
@@ -4872,7 +4856,6 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "Si no es proporciona cap data, es suprimiran totes les accions arxivades"
 
 #: ../src/spacecmd/schedule.py:537
-#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "Voleu suprimir ({}) accions arxivades? [s/N]"
 
@@ -4893,7 +4876,6 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "Si no es proporciona cap data, s'arxivaran totes les accions completades"
 
 #: ../src/spacecmd/schedule.py:619
-#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "Voleu arxivar ({}) accions completades? [s/N]"
 
@@ -5582,6 +5564,8 @@ msgid ""
 "Patches already cloned in the organization are reused as they are, so\n"
 "changes to the original patches since then, are not included."
 msgstr ""
+"Els pedaços que ja s'han clonat a l'organització es reutilitzen tal com estan; per tant, \n"
+"els canvis que s'hagin fet als pedaços originals des d'aleshores no s'hi inclouen."
 
 #: ../src/spacecmd/softwarechannel.py:1143
 msgid ""
@@ -6173,12 +6157,10 @@ msgid "merging errata from softwarechannel "
 msgstr "fusionant errata des del canal de programari "
 
 #: ../src/spacecmd/softwarechannel.py:2900
-#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} no conté cap errata que no estigui present a {}"
 
 #: ../src/spacecmd/softwarechannel.py:2908
-#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "errata a afegir al canal {}: "
 
@@ -6192,7 +6174,6 @@ msgid " errata to  "
 msgstr " errata a  "
 
 #: ../src/spacecmd/softwarechannel.py:2924
-#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "Realitza aquests canvis al canal {} [y/N]:"
 
@@ -8076,7 +8057,6 @@ msgstr "El servidor no admet claus de reactivació en temps d'arrencada"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:4968
-#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "S'està arrencant «{}». Això pot trigar una estona."
 
@@ -8090,13 +8070,11 @@ msgstr "system_needrebootafterupdate: mostra si caldria reiniciar si s'apliquess
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5058
-#, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
 msgstr "Cal reiniciar el sistema {} després de l'actualització"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5067
-#, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
 msgstr "No cal reiniciar el sistema {} després d'aplicar-hi les actualitzacions disponibles"
 
@@ -8448,7 +8426,6 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "S'omet l'ús de cadenes comunes: el nombre de subcadenes difereix"
 
 #: ../src/spacecmd/utils.py:992
-#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "El paràmetre {} no és un tipus de cadena, sinó {}."
 

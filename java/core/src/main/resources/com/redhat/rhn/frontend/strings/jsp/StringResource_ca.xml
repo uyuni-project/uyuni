@@ -5432,7 +5432,7 @@ Secció "Roles" de la pestanya "Detalls" en els perfils dels usuaris individuals
       </trans-unit>
       <trans-unit id="ssm.overview.misc.scap" xml:space="preserve">
         <source>&lt;a href="/rhn/manager/systems/ssm/audit/schedule-scap-scan"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
-        <target state="needs-adaptation">lt;a href""/rhn/systems/ssm/audit/ScheduleXccdf.do"gt;Auditlt;/agt; sistemes amb OpenSCAP</target>
+        <target state="translated">&lt;a href="/rhn/manager/systems/ssm/audit/schedule-scap-scan"&gt;Audita&lt;/a&gt; els sistemes amb OpenSCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -29827,17 +29827,17 @@ lt;/pgt;
         </context-group>
         <target state="translated">Usa una actualització transaccional</target>
       </trans-unit>
-    <trans-unit id="actions.jsp.action_description" xml:space="preserve">
+      <trans-unit id="actions.jsp.action_description" xml:space="preserve">
         <source>Comment / Reason</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Comentari / Motiu</target>
+      </trans-unit>
       <trans-unit id="pkg.lock.message.lockmissingpkg" xml:space="preserve">
         <source>Failed to lock selected packages. Can't find one of the packages to lock.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">No s'han pogut blocar els paquets seleccionats. No es pot trobar un dels paquets que s'han de blocar.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
