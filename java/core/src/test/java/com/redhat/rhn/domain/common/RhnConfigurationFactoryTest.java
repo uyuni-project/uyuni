@@ -70,7 +70,8 @@ public class RhnConfigurationFactoryTest extends BaseTestCase {
                 RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHARACTERS,
                 RhnConfiguration.KEYS.HTTP_PROXY,
                 RhnConfiguration.KEYS.HTTP_PROXY_USERNAME,
-                RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD);
+                RhnConfiguration.KEYS.HTTP_PROXY_PASSWORD,
+                RhnConfiguration.KEYS.SCC_URL);
         Set<RhnConfiguration.KEYS> hidden = Arrays.stream(RhnConfiguration.KEYS.values())
                 .filter(RhnConfiguration.KEYS::isHidden)
                 .collect(Collectors.toCollection(() -> EnumSet.noneOf(RhnConfiguration.KEYS.class)));
