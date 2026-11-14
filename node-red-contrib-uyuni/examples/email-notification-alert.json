@@ -1,0 +1,57 @@
+[
+  {
+    "id": "flow_email_alert",
+    "type": "tab",
+    "label": "Uyuni Email Notification Alert",
+    "disabled": false,
+    "info": "Sends an email alert whenever Salt states are applied to a system in Uyuni."
+  },
+  {
+    "id": "mqtt_conf_1",
+    "type": "uyuni-config",
+    "broker": "mosquitto",
+    "port": "1883",
+    "topicPrefix": "uyuni/+"
+  },
+  {
+    "id": "evt_state_applied",
+    "type": "uyuni-events",
+    "z": "flow_email_alert",
+    "name": "Listen States Applied",
+    "server": "mqtt_conf_1",
+    "eventCategory": "states/applied",
+    "x": 160,
+    "y": 140,
+    "wires": [["fmt_email_msg"]]
+  },
+  {
+    "id": "fmt_email_msg",
+    "type": "function",
+    "z": "flow_email_alert",
+    "name": "Format Email Payload",
+    "func": "const serverId = msg.payload.serverId || 'Unknown System';\nconst stateNames = Array.isArray(msg.payload.stateNames) ? msg.payload.stateNames.join(', ') : 'All States';\n\nmsg.topic = `[Uyuni Alert] States Applied on Server ID ${serverId}`;\nmsg.payload = `Hello Administrator,\\n\\nSalt states were successfully applied on Uyuni Server ID: ${serverId}.\\n\\nApplied States: ${stateNames}\\nDirect Call: ${msg.payload.directCall}\\nForce Package Refresh: ${msg.payload.forcePackageListRefresh}\\nTimestamp: ${new Date().toISOString()}\\n\\nRegards,\\nUyuni Automation Subsystem`;\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 140,
+    "wires": [["dbg_email_out"]]
+  },
+  {
+    "id": "dbg_email_out",
+    "type": "debug",
+    "z": "flow_email_alert",
+    "name": "Email Message Preview",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 670,
+    "y": 140,
+    "wires": []
+  }
+]
