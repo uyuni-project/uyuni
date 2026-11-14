@@ -3118,8 +3118,26 @@
         </context-group>
         </trans-unit>
       <!-- Descriptions of the server settings (rhnConfiguration) -->
+      <trans-unit id="server_settings.description.AUTO_GENERATE_BOOTSTRAP_REPO" xml:space="preserve">
+        <source>Generate the bootstrap repositories of synchronized products automatically</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.BOOTSTRAP_REPO_FLUSH" xml:space="preserve">
+        <source>Remove the old content of a bootstrap repository before it is generated again</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="server_settings.description.BUFFER_SIZE" xml:space="preserve">
         <source>Size in bytes of the chunks in which the server streams files like packages to clients</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY" xml:space="preserve">
+        <source>Deploy the channel access tokens to the clients automatically after they are refreshed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
         </context-group>
@@ -3172,6 +3190,30 @@
           <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="server_settings.description.SCC_FORWARD_REGISTRATION" xml:space="preserve">
+        <source>Forward the registrations of clients to the SUSE Customer Center (SCC)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.SCC_MIRROR_URL" xml:space="preserve">
+        <source>URL of an internal mirror to load the repositories from instead of the SUSE Customer Center (SCC), when it provides them</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.SCC_REG_BATCH_SIZE" xml:space="preserve">
+        <source>Number of systems sent to the SUSE Customer Center (SCC) in one registration call</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.SCC_REG_ERROR_EXPIRE_TIME" xml:space="preserve">
+        <source>Hours until a failed registration of a client is sent to the SUSE Customer Center (SCC) again</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="server_settings.description.SYNC_SOURCE_PACKAGES" xml:space="preserve">
         <source>Synchronize source packages with reposync</source>
         <context-group name="ctx">
@@ -3180,6 +3222,18 @@
       </trans-unit>
       <trans-unit id="server_settings.description.SYSTEM_CHECKIN_THRESHOLD" xml:space="preserve">
         <source>Number of days before reporting a system as inactive</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.TEMP_CHANNEL_TOKEN_LIFETIME" xml:space="preserve">
+        <source>Lifetime in minutes of the temporary tokens to download channel content, for example for image builds</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.TOKEN_LIFETIME" xml:space="preserve">
+        <source>Default lifetime in minutes of the channel access tokens of clients and the tokens of hub peripherals</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
         </context-group>
