@@ -70,12 +70,21 @@ def _run(
         cmd.append(str(signature_file))
     cmd.append(str(signed_file))
 
-    return subprocess.run(
+    # Decode stdout ourselves. GPG --status-fd can emit OpenPGP notation
+    # payloads (NOTATION_DATA) that are not valid UTF-8. Using encoding="utf-8"
+    # without errors="replace" raises UnicodeDecodeError and aborts Deb
+    # repository sync even when the signature itself is valid.
+    completed = subprocess.run(
         cmd,
         stdout=subprocess.PIPE,
         stderr=subprocess.DEVNULL,
-        encoding="utf-8",
         check=False,  # checked by caller
+    )
+    stdout = completed.stdout
+    if isinstance(stdout, bytes):
+        stdout = stdout.decode("utf-8", errors="replace")
+    return subprocess.CompletedProcess(
+        completed.args, completed.returncode, stdout, completed.stderr
     )
 
 
