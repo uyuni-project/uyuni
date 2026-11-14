@@ -123,6 +123,7 @@ DB_CONFIG_KEYS = {
     "force_package_upload": "FORCE_PACKAGE_UPLOAD",
     "server.proxy_auth_timeout": "PROXY_AUTH_TIMEOUT",
     "proxy_auth_timeout": "PROXY_AUTH_TIMEOUT",
+    "server.app.session_lifetime": "PUSH_SESSION_LIFETIME",
     "server.session_lifetime": "PUSH_SESSION_LIFETIME",
     "session_lifetime": "PUSH_SESSION_LIFETIME",
 }
@@ -137,6 +138,23 @@ def _db_config_entry(line):
     if not match or match.group(1).lower() not in DB_CONFIG_KEYS:
         return None, None
     return match.group(1).lower(), match.group(2).strip()
+
+
+def normalize_flag(value):
+    """
+    Return the canonical 1 or 0 for a flag written as number (1.0, 01, 2) or as
+    word (yes, off), as the database readers recognize only 1 and true.
+    Other values are returned unchanged.
+    """
+    try:
+        return "1" if float(value) else "0"
+    except ValueError:
+        pass
+    if value.lower() in ("y", "yes", "true", "on"):
+        return "1"
+    if value.lower() in ("n", "no", "false", "off"):
+        return "0"
+    return value
 
 
 def move_config_to_db():
@@ -159,6 +177,10 @@ def move_config_to_db():
         specificity = name.count(".")
         if key not in values or specificity <= values[key][0]:
             values[key] = (specificity, value)
+
+    if "FORCE_PACKAGE_UPLOAD" in values:
+        specificity, value = values["FORCE_PACKAGE_UPLOAD"]
+        values["FORCE_PACKAGE_UPLOAD"] = (specificity, normalize_flag(value))
 
     moved = {
         key for key, (_, value) in values.items() if move_configuration(key, value)

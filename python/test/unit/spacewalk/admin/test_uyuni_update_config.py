@@ -16,6 +16,8 @@ import importlib.util
 import os
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from spacewalk.server.rhnUser import check_password
 
 SCRIPT = os.path.join(
@@ -150,3 +152,34 @@ def test_move_config_to_db_nothing_to_move(tmp_path):
 
     move.assert_not_called()
     assert content == "debug = 1\n"
+
+
+def test_move_config_to_db_moves_server_app_session_lifetime(tmp_path):
+    move, content = run_move_config_to_db(
+        tmp_path, "server.app.session_lifetime = 600\ndebug = 1\n"
+    )
+
+    move.assert_called_once_with("PUSH_SESSION_LIFETIME", "600")
+    assert content == "debug = 1\n"
+
+
+@pytest.mark.parametrize(
+    "written, expected",
+    [
+        ("1.0", "1"),
+        ("01", "1"),
+        ("2", "1"),
+        ("0.0", "0"),
+        ("0", "0"),
+        ("yes", "1"),
+        ("off", "0"),
+        ("maybe", "maybe"),
+    ],
+)
+def test_move_config_to_db_normalizes_force_package_upload(tmp_path, written, expected):
+    move, content = run_move_config_to_db(
+        tmp_path, f"server.force_package_upload = {written}\n"
+    )
+
+    move.assert_called_once_with("FORCE_PACKAGE_UPLOAD", expected)
+    assert content == ""

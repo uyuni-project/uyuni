@@ -1,2 +1,2 @@
 - Move `server.force_package_upload` from `rhn.conf` into the
-  database
+  database and store it as 1 or 0
