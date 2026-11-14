@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-14 12:10+0100\n"
-"PO-Revision-Date: 2026-11-13 21:13+0000\n"
-"Last-Translator: David Medina <medipas@gmail.com>\n"
+"PO-Revision-Date: 2026-11-14 15:14+0000\n"
+"Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacecmd/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
@@ -3992,7 +3992,7 @@ msgstr "Hi ha %i paquets orfes per eliminar (useu package_listorphans per veure'
 #: ../src/spacecmd/package.py:363
 #, python-format
 msgid "Remove these %i orphan packages [y/N]:"
-msgstr "Voleu eliminar aquests %i paquets orfes [s/N]:"
+msgstr "Voleu eliminar aquests %i paquets orfes [y/N]:"
 
 #: ../src/spacecmd/package.py:365
 msgid "No packages were removed"
