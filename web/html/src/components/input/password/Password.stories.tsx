@@ -22,6 +22,7 @@ const StatefulPasswordInForm = (args: PasswordProps) => {
   const instanceId = useId();
   const name = `${args.name}-${instanceId}`;
   const [model, setModel] = useState({ [name]: args.defaultValue || "" });
+  // Validate the seeded model once: InputBase skips initial validation when the field already exists.
   useEffect(() => setModel((current) => ({ ...current })), []);
 
   return (

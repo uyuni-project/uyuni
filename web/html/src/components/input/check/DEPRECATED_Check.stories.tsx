@@ -22,6 +22,7 @@ const StatefulCheckInForm = (args: DEPRECATED_CheckProps) => {
   const instanceId = useId();
   const name = `${args.name}-${instanceId}`;
   const [model, setModel] = useState({ [name]: args.defaultValue || false });
+  // Validate the seeded model once: InputBase skips initial validation when the field already exists.
   useEffect(() => setModel((current) => ({ ...current })), []);
 
   return (

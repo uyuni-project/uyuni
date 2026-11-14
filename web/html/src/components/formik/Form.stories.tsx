@@ -104,6 +104,7 @@ const SimpleFormComponent = () => {
 export const Playground: Story = {
   render: () => <SimpleFormComponent />,
   parameters: {
+    controls: { disable: true },
     docs: {
       description: {
         story: "Simple Formik form with text and email fields. Try submitting invalid data to see validation errors.",
