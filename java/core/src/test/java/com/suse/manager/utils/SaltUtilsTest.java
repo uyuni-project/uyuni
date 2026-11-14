@@ -84,7 +84,7 @@ public class SaltUtilsTest extends BaseTestCaseWithUser {
             "\"arch\": \"x86_64\"" +
         "}";
         Pkg.Info atomInfo = Json.GSON.fromJson(atomJson, new TypeToken<Pkg.Info>() { }.getType());
-        assertEquals("atom-1.42.0-0.1.x86_64", SaltUtils.packageToKey("atom", atomInfo));
+        assertEquals("atom-1.42.0-0.1.x86_64", SaltUtils.packageToKey("atom", atomInfo, PackageType.RPM));
 
 
         // initramfs-tools package, Debian style, from database
@@ -111,7 +111,26 @@ public class SaltUtilsTest extends BaseTestCaseWithUser {
         "}";
         Pkg.Info initramfsToolsInfo = Json.GSON.fromJson(initramfsToolsJson, new TypeToken<Pkg.Info>() { }.getType());
         assertEquals("initramfs-tools-0.130ubuntu3.8.all",
-                SaltUtils.packageToKey("initramfs-tools", initramfsToolsInfo));
+                SaltUtils.packageToKey("initramfs-tools", initramfsToolsInfo, PackageType.DEB));
+
+        // RPM package with an empty release, which Salt omits and the database stores as "0"
+        var noReleaseName = new PackageName();
+        noReleaseName.setName("no-release");
+
+        var noReleaseIp = new InstalledPackage();
+        noReleaseIp.setName(noReleaseName);
+        noReleaseIp.setEvr(new PackageEvr("0", "7.12", "0", PackageType.RPM));
+        noReleaseIp.setArch(x86Arch);
+
+        var noReleaseJson = "{" +
+            "\"install_date_time_t\": 1772536489," +
+            "\"epoch\": \"0\"," +
+            "\"version\": \"7.12\"," +
+            "\"arch\": \"x86_64\"" +
+        "}";
+        Pkg.Info noReleaseInfo = Json.GSON.fromJson(noReleaseJson, new TypeToken<Pkg.Info>() { }.getType());
+        assertEquals(SaltUtils.packageToKey(noReleaseIp),
+                SaltUtils.packageToKey("no-release", noReleaseInfo, PackageType.RPM));
     }
 
     @Test
