@@ -7,6 +7,7 @@
 
 from spacewalk.common import gpgverify
 import os
+import subprocess
 import textwrap
 import pytest
 
@@ -117,3 +118,36 @@ def test_verify_file_short_circuit(
         gpgverify.verify_file(signed_file="foo", short_circuit=short_circuit)[0]
         == expected
     )
+
+
+def test_run_decodes_non_utf8_notation_data(monkeypatch, tmp_path):
+    """GPG notation payloads can contain non-UTF-8 bytes (issue #12034)."""
+    signed = tmp_path / "Release"
+    signed.write_text("Origin: test\n")
+
+    raw = (
+        b"[GNUPG:] GOODSIG E6266D4AC0962C7D Datadog, Inc. APT key\n"
+        b"[GNUPG:] NOTATION_NAME salt@notations.openpgp.org\n"
+        b"[GNUPG:] NOTATION_DATA \xef\xa4%0B\xa2%00\xc5\xca\\ZR\x9e:v\xfd\n"
+    )
+
+    def mock_subprocess_run(*args, **kwargs):
+        assert kwargs.get("encoding") is None
+        return subprocess.CompletedProcess(args[0], 0, raw, b"")
+
+    monkeypatch.setattr(gpgverify.subprocess, "run", mock_subprocess_run)
+
+    completed = gpgverify._run(
+        signed_file=signed, signature_file=None, keyring=None
+    )
+
+    assert isinstance(completed.stdout, str)
+    signatures = gpgverify.parse_signatures(completed.stdout)
+    assert signatures == [
+        gpgverify.Signature(
+            keyid="E6266D4AC0962C7D",
+            fingerprint="",
+            status="GOOD",
+            username="Datadog, Inc. APT key",
+        )
+    ]

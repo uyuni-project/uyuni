@@ -1,0 +1,2 @@
+- Fix Deb repository GPG verification failing on non-UTF-8
+  notation data in gpg status output
