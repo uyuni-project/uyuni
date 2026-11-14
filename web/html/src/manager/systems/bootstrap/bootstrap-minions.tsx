@@ -16,10 +16,12 @@ import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
 
+import { ActivationKeyOption, formatActivationKeyLabel } from "./activation-key-option";
+
 // See java/core/src/main/resources/com/suse/manager/webui/templates/minion/bootstrap.jade
 declare global {
   interface Window {
-    availableActivationKeys?: any;
+    availableActivationKeys?: ActivationKeyOption[];
     proxies?: any;
   }
 }
@@ -117,9 +119,7 @@ class ErrorDetailsDialog extends Component<ErrorDetailsDialogProps> {
     return (
       <Dialog
         id="show-error-details"
-        // TODO: If you touch this file, please resolve this linter error
-        // eslint-disable-next-line eqeqeq, no-eq-null
-        isOpen={this.props.error != null}
+        isOpen={this.props.error !== null}
         title={title}
         className="modal-xs"
         onClose={this.props.onDialogClose}
@@ -132,7 +132,7 @@ class ErrorDetailsDialog extends Component<ErrorDetailsDialogProps> {
 
 type Props = {
   proxies: any[];
-  availableActivationKeys: any[];
+  availableActivationKeys: ActivationKeyOption[];
   ansibleInventoryId: number | null;
   targetHost: string | null;
 };
@@ -596,11 +596,16 @@ class BootstrapMinions extends Component<Props, State> {
                 <option key="none" value="">
                   {t("None")}
                 </option>
-                {this.props.availableActivationKeys
-                  .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+                {(this.props.availableActivationKeys || [])
+                  .slice()
+                  .sort((a, b) =>
+                    formatActivationKeyLabel(a)
+                      .toLowerCase()
+                      .localeCompare(formatActivationKeyLabel(b).toLowerCase())
+                  )
                   .map((k) => (
-                    <option key={k} value={k}>
-                      {k}
+                    <option key={k.key} value={k.key}>
+                      {formatActivationKeyLabel(k)}
                     </option>
                   ))}
               </select>
@@ -706,8 +711,8 @@ export const renderer = (id) => {
 
   return SpaRenderer.renderNavigationReact(
     <BootstrapMinions
-      availableActivationKeys={window.availableActivationKeys}
-      proxies={window.proxies}
+      availableActivationKeys={window.availableActivationKeys || []}
+      proxies={window.proxies || []}
       ansibleInventoryId={ansibleInventoryId}
       targetHost={targetHost}
     />,
