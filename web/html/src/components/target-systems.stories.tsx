@@ -9,6 +9,8 @@ import { action } from "storybook/actions";
 
 import { Column } from "components/table/Column";
 
+import { withLocalNavigation } from "utils/storybook/local-navigation";
+
 import { TargetSystems } from "./target-systems";
 
 type StorySystem = {
@@ -26,21 +28,7 @@ const systems: StorySystem[] = [
 const meta = {
   title: "Compositions/System Information/TargetSystems",
   component: TargetSystems,
-  decorators: [
-    (Story) => (
-      <div
-        onClickCapture={(event) => {
-          const link = event.target instanceof Element ? event.target.closest("a[href^='/rhn/']") : null;
-          if (link) {
-            event.preventDefault();
-            action("link clicked")(link.getAttribute("href"));
-          }
-        }}
-      >
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [withLocalNavigation(action("link clicked"), "a[href^='/rhn/']")],
   parameters: {
     docs: {
       description: {

@@ -9,6 +9,7 @@ import { action } from "storybook/actions";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { withLocalNavigation } from "utils/storybook/local-navigation";
 import { mockNetwork } from "utils/storybook/mock-network";
 
 import { PoliciesPicker } from "./policies-picker";
@@ -63,21 +64,7 @@ const PoliciesPickerStory = (props: PoliciesPickerProps) => {
 const meta = {
   title: "Compositions/Compliance/PoliciesPicker",
   component: PoliciesPicker,
-  decorators: [
-    (Story) => (
-      <div
-        onClickCapture={(event) => {
-          const link = event.target instanceof Element ? event.target.closest("a[href^='/rhn/']") : null;
-          if (link) {
-            event.preventDefault();
-            action("link clicked")(link.getAttribute("href"));
-          }
-        }}
-      >
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [withLocalNavigation(action("link clicked"), "a[href^='/rhn/']")],
   beforeEach: () => mockNetwork({ get: mockNetworkGet }),
   parameters: {
     docs: {

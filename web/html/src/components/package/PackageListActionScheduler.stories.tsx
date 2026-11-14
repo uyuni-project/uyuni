@@ -9,6 +9,8 @@ import { action } from "storybook/actions";
 
 import { Column } from "components/table/Column";
 
+import { withLocalNavigation } from "utils/storybook/local-navigation";
+
 import { PackageListActionScheduler } from "./PackageListActionScheduler";
 import { type PackageFixture, installPackageMocks } from "./story-fixtures";
 
@@ -20,21 +22,7 @@ const packageColumns = [
 const meta = {
   title: "Compositions/Package Management/PackageListActionScheduler",
   component: PackageListActionScheduler,
-  decorators: [
-    (Story) => (
-      <div
-        onClickCapture={(event) => {
-          const link = event.target instanceof Element ? event.target.closest("a[href^='/rhn/']") : null;
-          if (link) {
-            event.preventDefault();
-            action("package link clicked")(link.getAttribute("href"));
-          }
-        }}
-      >
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [withLocalNavigation(action("package link clicked"), "a[href^='/rhn/']")],
   beforeEach: installPackageMocks,
   parameters: {
     layout: "fullscreen",
