@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,9 +18,9 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 
@@ -30,7 +31,6 @@ import org.quartz.JobExecutionContext;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -55,10 +55,9 @@ public class TokenCleanup extends RhnJavaJob {
             log.debug("start token cleanup");
         }
         try {
-            Stream<MinionServer> changedMinions = MinionServerFactory.listMinions().stream().flatMap(minionServer -> {
+            List<String> changedMinionIds = MinionServerFactory.listMinions().stream().flatMap(minionServer -> {
                 try {
                     if (AccessTokenFactory.refreshTokens(minionServer, Collections.emptySet())) {
-                        // TODO schedule state.apply channels to refresh channels on minion ?
                         MinionPillarManager.INSTANCE.generatePillar(minionServer, false, Collections.emptySet());
                         return Stream.of(minionServer);
                     }
@@ -70,16 +69,17 @@ public class TokenCleanup extends RhnJavaJob {
                     log.error("error refreshing access tokens for minion {}", minionServer.getMinionId(), e);
                     return Stream.empty();
                 }
-            });
+            }).map(MinionServer::getMinionId).toList();
 
-            List<String> changedMinionIds = changedMinions.map(MinionServer::getMinionId).collect(Collectors.toList());
-            if (Config.get().getBoolean(ConfigDefaults.TOKEN_REFRESH_AUTO_DEPLOY)) {
+            boolean autoDeploy = RhnConfigurationFactory.getSingleton()
+                    .getBoolean(RhnConfiguration.KEYS.CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY);
+            if (autoDeploy) {
                 SALT_API.deployChannels(changedMinionIds);
             }
             else {
                 if (log.isWarnEnabled()) {
                     log.warn("The following minions got channel tokens changed and need them deployed before the " +
-                            "old one expires: {}", changedMinionIds.stream().collect(Collectors.joining(", ")));
+                            "old one expires: {}", String.join(", ", changedMinionIds));
                 }
             }
             AccessTokenFactory.cleanupUnusedExpired();

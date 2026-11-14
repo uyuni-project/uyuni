@@ -31,6 +31,8 @@ import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.cloudpayg.PaygProductFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.RemoteCredentials;
@@ -155,9 +157,6 @@ public class ContentSyncManager {
     // File to parse this system's UUID from
     private static final File UUID_FILE = new File("/etc/zypp/credentials.d/SCCcredentials");
     private static String uuid;
-
-    // Mirror URL read from rhn.conf
-    public static final String MIRROR_CFG_KEY = "server.susemanager.mirror";
 
     // SCC JSON files location in rhn.conf
     public static final String RESOURCE_PATH = "server.susemanager.fromdir";
@@ -1454,7 +1453,7 @@ public class ContentSyncManager {
 
         // check if a mirror url is specified
         if (StringUtils.isBlank(mirrorUrl)) {
-            mirrorUrl = Config.get().getString(MIRROR_CFG_KEY);
+            mirrorUrl = RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.SCC_MIRROR_URL);
             if (StringUtils.isBlank(mirrorUrl)) {
                 return defaultUrl;
             }

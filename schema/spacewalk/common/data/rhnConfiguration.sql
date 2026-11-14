@@ -82,3 +82,45 @@ VALUES ('SYNC_SOURCE_PACKAGES', 'Synchronize source packages with reposync', nul
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('URLGRABBER_LOGSPEC', 'urlgrabber debug logging of reposync in the form level,filename (for example 1,-)', null, null);
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('BUFFER_SIZE', 'Size in bytes of the chunks in which the server streams files like packages to clients', null, '16384');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('FORCE_PACKAGE_UPLOAD', 'Allow mgr-push to force the upload of packages which already exist on the server', null, '0');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('PROXY_AUTH_TIMEOUT', 'Lifetime in seconds of the authentication tokens which proxies get when they log in', null, '21600');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('PUSH_SESSION_LIFETIME', 'Lifetime in seconds of the sessions which mgr-push gets when it logs in to upload packages', null, '1800');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('SCC_URL', 'URL of the SUSE Customer Center (SCC) API', null, 'https://scc.suse.com');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('SCC_FORWARD_REGISTRATION', 'Forward the registrations of clients to the SUSE Customer Center (SCC)', null, '1');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('SCC_REG_ERROR_EXPIRE_TIME', 'Hours until a failed registration of a client is sent to the SUSE Customer Center (SCC) again', null, '168');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('SCC_REG_BATCH_SIZE', 'Number of systems sent to the SUSE Customer Center (SCC) in one registration call', null, '200');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('SCC_MIRROR_URL', 'URL of an internal mirror to load the repositories from instead of the SUSE Customer Center (SCC), when it provides them', null, null);
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('TEMP_CHANNEL_TOKEN_LIFETIME', 'Lifetime in minutes of the temporary tokens to download channel content, for example for image builds', null, '60');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('TOKEN_LIFETIME', 'Default lifetime in minutes of the channel access tokens of clients and the tokens of hub peripherals', null, '525600');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY', 'Deploy the channel access tokens to the clients automatically after they are refreshed', null, 'true');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('BOOTSTRAP_REPO_FLUSH', 'Remove the old content of a bootstrap repository before it is generated again', null, '0');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('AUTO_GENERATE_BOOTSTRAP_REPO', 'Generate the bootstrap repositories of synchronized products automatically', null, '1');

@@ -1,0 +1,2 @@
+- Move `server.session_lifetime` and
+  `server.app.session_lifetime` from `rhn.conf` into the database

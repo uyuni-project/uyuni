@@ -22,12 +22,12 @@ from typing import List
 
 from rhn import rhnLockfile
 from spacewalk.server import rhnSQL
+from spacewalk.server.db_config import DB_CFG
 from spacewalk.common.rhnLog import initLOG, log_time, log_clean, log_debug
 from spacewalk.common.rhnConfig import cfg_component
 
 # pylint: disable-next=unused-import
 from uyuni.common import usix, rhnLib
-
 
 sys.path.append("/usr/share/susemanager")
 sys.path.append("/srv/susemanager")
@@ -41,8 +41,7 @@ BETA = None
 logfile = "/var/log/rhn/mgr-create-bootstrap-repo/mgr-create-bootstrap-repo.log"
 UYUNI = None
 
-_sql_synced_proucts = rhnSQL.Statement(
-    """
+_sql_synced_proucts = rhnSQL.Statement("""
    SELECT sp.product_id id, ct.root_product_id
      FROM suseProducts sp
      JOIN suseChannelTemplate ct ON ct.product_id = sp.id
@@ -50,8 +49,7 @@ LEFT JOIN rhnChannel c ON ct.channel_label = c.label
     WHERE ct.mandatory = 'Y'
  GROUP BY sp.id, ct.root_product_id
    HAVING COUNT(c.label) = COUNT(ct.mandatory)
-"""
-)
+""")
 
 _sql_find_root_channel_label = """
 SELECT label
@@ -411,9 +409,7 @@ def cli():
         # pylint: disable-next=redefined-outer-name,invalid-name
         with cfg_component("server.susemanager") as CFG:
             initLOG(logfile, CFG.DEBUG or 1)
-    # pylint: disable-next=invalid-name
-    with cfg_component("server.susemanager") as CFG:
-        flush = CFG.BOOTSTRAP_REPO_FLUSH
+    flush = DB_CFG.get_bool("BOOTSTRAP_REPO_FLUSH")
     if options.flush:
         flush = options.flush
     if options.noflush:
@@ -864,7 +860,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             )
         ):
             rel_path = os.path.relpath(file_path, start=destdirtmp)
-            (l_path, ext) = rel_path.rsplit(".", 1)
+            l_path, ext = rel_path.rsplit(".", 1)
             if ext:
                 dg = hashlib.sha256()
                 with open(file_path, "rb") as pkg_fh:
@@ -873,7 +869,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                         if not buff:
                             break
                         dg.update(buff)
-                (l_path, arch) = l_path.rsplit("." if ext == "rpm" else "_", 1)
+                l_path, arch = l_path.rsplit("." if ext == "rpm" else "_", 1)
                 # pylint: disable-next=unspecified-encoding
                 with open(
                     # pylint: disable-next=consider-using-f-string

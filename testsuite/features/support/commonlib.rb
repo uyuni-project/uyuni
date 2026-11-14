@@ -682,6 +682,17 @@ def reportdb_server_query(query)
   "echo \"#{query}\" | spacewalk-sql --reportdb --select-mode -"
 end
 
+# Sets the value of a server setting which is stored in the rhnConfiguration table.
+# The settings moved there from rhn.conf are read from the database, so the file is not used.
+#
+# @param node [RemoteNode] The server to change the setting on.
+# @param key [String] The key of the setting, for example 'SYNC_SOURCE_PACKAGES'.
+# @param value [String, nil] The new value. nil removes the value, so the default value is used.
+def set_db_config_value(node, key, value)
+  sql_value = value.nil? ? 'NULL' : "'#{value}'"
+  node.run("echo \"UPDATE rhnConfiguration SET value = #{sql_value} WHERE key = '#{key}';\" | spacewalk-sql -")
+end
+
 # Runs a single-value query (no double quotes in it) against the reportdb of a server.
 #
 # @param query [String] The SQL query, returning one row with one column.

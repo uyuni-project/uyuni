@@ -1,0 +1,2 @@
+- Move the value of the key without component prefix into the
+  database when `rhn.conf` sets a key with and without prefix

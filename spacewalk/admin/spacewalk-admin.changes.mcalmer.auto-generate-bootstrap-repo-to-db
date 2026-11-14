@@ -1,0 +1,2 @@
+- Move `server.susemanager.auto_generate_bootstrap_repo` from
+  `rhn.conf` into the database
