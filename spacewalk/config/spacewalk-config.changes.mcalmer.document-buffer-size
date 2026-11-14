@@ -1,1 +1,2 @@
-- Document `server.buffer_size` in the `rhn.conf` man page
+- Move `server.buffer_size` into the database and drop it from
+  the `rhn.conf` man page

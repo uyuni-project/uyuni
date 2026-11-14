@@ -1,0 +1,3 @@
+- Show the buffer size, the forced package upload, the proxy
+  authentication timeout and the mgr-push session lifetime in
+  the server settings

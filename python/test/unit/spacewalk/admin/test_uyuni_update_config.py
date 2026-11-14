@@ -16,6 +16,8 @@ import importlib.util
 import os
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from spacewalk.server.rhnUser import check_password
 
 SCRIPT = os.path.join(
@@ -102,3 +104,82 @@ def test_main_does_not_move_config_to_db():
                 p.stop()
 
     move.assert_not_called()
+
+
+def run_move_config_to_db(tmp_path, content):
+    module = load_script()
+    rhn_conf = tmp_path / "rhn.conf"
+    rhn_conf.write_text(content, encoding="utf8")
+    real_open = open
+
+    def fake_open(path, *args, **kwargs):
+        assert path == "/etc/rhn/rhn.conf"
+        return real_open(rhn_conf, *args, **kwargs)
+
+    with patch.object(module.rhnSQL, "initDB"), patch.object(
+        module.rhnSQL, "commit"
+    ), patch.object(module, "open", fake_open, create=True), patch.object(
+        module, "move_configuration", return_value=True
+    ) as move:
+        module.move_config_to_db()
+    return move, rhn_conf.read_text(encoding="utf8")
+
+
+def test_move_config_to_db_prefers_key_without_prefix(tmp_path):
+    move, content = run_move_config_to_db(
+        tmp_path,
+        "buffer_size = 16384\nserver.buffer_size = 65536\ndebug = 1\n",
+    )
+
+    move.assert_called_once_with("BUFFER_SIZE", "16384")
+    assert content == "debug = 1\n"
+
+
+def test_move_config_to_db_last_equally_specific_line_wins(tmp_path):
+    move, _ = run_move_config_to_db(
+        tmp_path,
+        "server.satellite.reposync_timeout = 100\n"
+        "reposync_timeout = 200\n"
+        "server.reposync_timeout = 300\n"
+        "reposync_timeout = 400\n",
+    )
+
+    move.assert_called_once_with("REPOSYNC_TIMEOUT", "400")
+
+
+def test_move_config_to_db_nothing_to_move(tmp_path):
+    move, content = run_move_config_to_db(tmp_path, "debug = 1\n")
+
+    move.assert_not_called()
+    assert content == "debug = 1\n"
+
+
+def test_move_config_to_db_moves_server_app_session_lifetime(tmp_path):
+    move, content = run_move_config_to_db(
+        tmp_path, "server.app.session_lifetime = 600\ndebug = 1\n"
+    )
+
+    move.assert_called_once_with("PUSH_SESSION_LIFETIME", "600")
+    assert content == "debug = 1\n"
+
+
+@pytest.mark.parametrize(
+    "written, expected",
+    [
+        ("1.0", "1"),
+        ("01", "1"),
+        ("2", "1"),
+        ("0.0", "0"),
+        ("0", "0"),
+        ("yes", "1"),
+        ("off", "0"),
+        ("maybe", "maybe"),
+    ],
+)
+def test_move_config_to_db_normalizes_force_package_upload(tmp_path, written, expected):
+    move, content = run_move_config_to_db(
+        tmp_path, f"server.force_package_upload = {written}\n"
+    )
+
+    move.assert_called_once_with("FORCE_PACKAGE_UPLOAD", expected)
+    assert content == ""

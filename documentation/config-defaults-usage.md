@@ -252,11 +252,7 @@ reference is listed. Line numbers refer to the state of the
 | rhn_search_daemon.conf | `JAVA_OPTS` <sup>3</sup> | [`search-server/spacewalk-search/src/config/rhn-search:19`](search-server/spacewalk-search/src/config/rhn-search#L19) |
 | rhn_server_app.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
-| rhn_server.conf | `buffer_size` | [`python/spacewalk/server/apacheRequest.py:330`](python/spacewalk/server/apacheRequest.py#L330) |
-| rhn_server.conf | `force_package_upload` | [`python/spacewalk/server/rhnPackageUpload.py:73`](python/spacewalk/server/rhnPackageUpload.py#L73) |
-| rhn_server.conf | `proxy_auth_timeout` | [`python/spacewalk/server/handlers/xmlrpc/proxy.py:176`](python/spacewalk/server/handlers/xmlrpc/proxy.py#L176) |
 | rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
-| rhn_server.conf | `session_lifetime` | [`python/spacewalk/server/rhnSession.py:50`](python/spacewalk/server/rhnSession.py#L50) |
 | rhn_server.conf | `secret_key` | [`python/spacewalk/server/apacheAuth.py:94`](python/spacewalk/server/apacheAuth.py#L94) |
 | rhn_server.conf | `sync_cache_dir` | [`python/spacewalk/satellite_tools/syncCache.py:39`](python/spacewalk/satellite_tools/syncCache.py#L39) |
 | rhn_server_susemanager.conf | `scc_url` | [`java/core/src/main/java/com/suse/scc/SCCTaskManager.java:132`](java/core/src/main/java/com/suse/scc/SCCTaskManager.java#L132) |

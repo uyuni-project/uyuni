@@ -305,7 +305,7 @@ sub populate_initial_configs {
     }
 
   my %rhnopt = ();
-  for my $key (qw/product_name web.version web.subscribe_proxy_channel force_package_upload
+  for my $key (qw/product_name web.version web.subscribe_proxy_channel
           web.l10n_resourcebundles web.default_mail_from/) {
     if (defined($answers->{$key})) {
       $rhnopt{$key} = $answers->{$key};
@@ -349,6 +349,7 @@ sub populate_initial_configs {
   $dbconfig{'HTTP_PROXY'} = $answers->{'rhn-http-proxy'} if defined $answers->{'rhn-http-proxy'};
   $dbconfig{'HTTP_PROXY_USERNAME'} = $answers->{'rhn-http-proxy-username'} if defined $answers->{'rhn-http-proxy-username'};
   $dbconfig{'HTTP_PROXY_PASSWORD'} = $answers->{'rhn-http-proxy-password'} if defined $answers->{'rhn-http-proxy-password'};
+  $dbconfig{'FORCE_PACKAGE_UPLOAD'} = $answers->{'force_package_upload'} if defined $answers->{'force_package_upload'};
   Spacewalk::Setup::write_db_config(\%dbconfig, $answers);
 
     foreach my $opt_name (qw/session_swap_secret session_secret/) {

@@ -31,6 +31,7 @@ from uyuni.common.rhn_rpm import get_header_byte_range
 
 # pylint: disable-next=ungrouped-imports
 from spacewalk.server import rhnSQL
+from spacewalk.server.db_config import DB_CFG
 from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib import (
     importLib,
@@ -72,9 +73,8 @@ def _authenticate(authobj, channels, null_org, force):
         if force:
             raise rhnFault(4, "Cannot force push nullorg content", explain=0)
 
-    with cfg_component("server") as CFG:
-        if force and not CFG.FORCE_PACKAGE_UPLOAD:
-            raise rhnFault(55, "Package Upload Failed", explain=0)
+    if force and not DB_CFG.get_bool("FORCE_PACKAGE_UPLOAD"):
+        raise rhnFault(55, "Package Upload Failed", explain=0)
 
     authobj.authzOrg(params)
     if channels:

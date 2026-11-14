@@ -82,3 +82,15 @@ VALUES ('SYNC_SOURCE_PACKAGES', 'Synchronize source packages with reposync', nul
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('URLGRABBER_LOGSPEC', 'urlgrabber debug logging of reposync in the form level,filename (for example 1,-)', null, null);
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('BUFFER_SIZE', 'Size in bytes of the chunks in which the server streams files like packages to clients', null, '16384');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('FORCE_PACKAGE_UPLOAD', 'Allow mgr-push to force the upload of packages which already exist on the server', null, '0');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('PROXY_AUTH_TIMEOUT', 'Lifetime in seconds of the authentication tokens which proxies get when they log in', null, '21600');
+
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('PUSH_SESSION_LIFETIME', 'Lifetime in seconds of the sessions which mgr-push gets when it logs in to upload packages', null, '1800');
