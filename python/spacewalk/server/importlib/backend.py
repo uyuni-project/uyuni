@@ -2524,7 +2524,9 @@ class Backend:
             return
 
         h = rhnSQL.prepare("select " + lookup + "(:name) from dual")
-        for k in list(hash.keys()):
+        # Sorted to insert new names in the same order in every
+        # concurrent transaction, which prevents deadlocks (bsc#1251988)
+        for k in sorted(hash.keys()):
             h.execute(name=k)
             # saving id
             hash[k] = h.fetchone_dict().popitem()[1]
