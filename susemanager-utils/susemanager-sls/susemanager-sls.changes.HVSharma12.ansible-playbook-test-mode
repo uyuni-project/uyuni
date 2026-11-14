@@ -1,0 +1,2 @@
+- Fix the test mode of Ansible playbooks: run them in check mode
+  instead of skipping them (gh#uyuni-project/uyuni#8271)

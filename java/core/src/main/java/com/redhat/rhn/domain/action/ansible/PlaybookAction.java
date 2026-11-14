@@ -113,9 +113,9 @@ public class PlaybookAction extends Action {
         pillarData.put("rundir", rundir);
         pillarData.put("flush_cache", details.isFlushCache());
         pillarData.put("extra_vars", details.getExtraVarsContents());
-        return State.apply(singletonList(SaltParameters.ANSIBLE_RUNPLAYBOOK),
-                Optional.of(pillarData), Optional.of(true),
-                Optional.of(details.isTestMode()));
+        // Salt's own test mode would skip the playbook; Ansible's check mode runs it without changes
+        pillarData.put("check", details.isTestMode());
+        return State.apply(singletonList(SaltParameters.ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData));
     }
 
     /**
