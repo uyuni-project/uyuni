@@ -198,25 +198,25 @@ export const WithValidation: Story = {
 };
 
 const MultipleValidatorsComponent = () => {
-  const [apiKey, setApiKey] = useState("abc123xyz789");
+  const [referenceCode, setReferenceCode] = useState("abc123xyz789");
 
   return (
     <div style={{ padding: "20px" }}>
       <div style={{ marginBottom: "15px" }}>
-        <strong>API Key:</strong> <code>{apiKey}</code>
+        <strong>Reference code:</strong> <code>{referenceCode}</code>
       </div>
       <ModalEditButton
-        buttonLabel="Regenerate"
-        buttonIcon="fa-key"
-        modalTitle="Set New API Key"
-        fieldLabel="API Key"
-        placeholder="Enter API key"
-        value={apiKey}
+        buttonLabel="Edit reference"
+        buttonIcon="fa-pencil"
+        modalTitle="Set Reference Code"
+        fieldLabel="Reference code"
+        placeholder="Enter reference code"
+        value={referenceCode}
         validators={[(value: string) => value.length >= 12, (value: string) => /^[a-zA-Z0-9]+$/.test(value)]}
-        invalidHint="API key must be at least 12 alphanumeric characters"
+        invalidHint="Reference code must be at least 12 alphanumeric characters"
         onSave={(newValue) => {
-          setApiKey(newValue);
-          action("api key updated")(newValue);
+          setReferenceCode(newValue);
+          action("reference code updated")(newValue);
         }}
       />
     </div>
