@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-13 16:35+0000\n"
-"PO-Revision-Date: 2026-10-23 16:27+0000\n"
+"POT-Creation-Date: 2026-11-13 11:59+0000\n"
+"PO-Revision-Date: 2026-11-01 15:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -130,7 +130,7 @@ msgstr "Bez názvu"
 #: ../html/src/components/action-schedule.test.tsx:77
 #: ../html/src/components/action-schedule.tsx:324
 msgid "Comment / Reason:"
-msgstr ""
+msgstr "Komentár / Dôvod:"
 
 #: ../html/src/components/action-schedule.tsx:57
 msgid "new action chain"
@@ -157,10 +157,8 @@ msgid "Add to:"
 msgstr "Pridať k:"
 
 #: ../html/src/components/action-schedule.tsx:332
-#, fuzzy
-#| msgid "e.g. 12345"
 msgid "e.g. Ticket #12345"
-msgstr "napr. 12345"
+msgstr "napr. Tiket #12345"
 
 #: ../html/src/components/action-schedule.tsx:344
 msgid "Loading the scheduler..."
@@ -796,32 +794,28 @@ msgstr "Vzorce"
 
 #: ../html/src/components/formulas/EditGroup.tsx:177
 msgid "Max number of items reached"
-msgstr ""
+msgstr "Bol dosiahnutý maximálny počet položiek"
 
 #: ../html/src/components/formulas/EditGroup.tsx:266
 #: ../html/src/components/formulas/EditGroup.tsx:337
 #: ../html/src/components/formulas/EditGroup.tsx:513
 msgid "No items added yet. Use"
-msgstr ""
+msgstr "Zatiaľ neboli pridané žiadne položky. Použite"
 
 #: ../html/src/components/formulas/EditGroup.tsx:266
 #: ../html/src/components/formulas/EditGroup.tsx:337
 #: ../html/src/components/formulas/EditGroup.tsx:513
-#, fuzzy
-#| msgid "Created on"
 msgid "to create one."
-msgstr "Vytvorené dňa"
+msgstr "na vytvorenie jedného."
 
 #: ../html/src/components/formulas/EditGroup.tsx:361
 #: ../html/src/components/formulas/EditGroup.tsx:496
 msgid "Min number of items reached"
-msgstr ""
+msgstr "Bol dosiahnutý minimálny počet položiek"
 
 #: ../html/src/components/formulas/EditGroup.tsx:416
-#, fuzzy
-#| msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgid "This field is used as a 'key' identifier in the resulting pillar data. It must be unique across all items in this group and should not be changed once set."
-msgstr "Toto pole sa používa ako 'kľúčový' identifikátor vo výsledných pilierových údajoch."
+msgstr "Toto pole sa používa ako 'kľúčový' identifikátor vo výsledných pilierových údajoch. Musí byť jedinečný pre všetky položky v tejto skupine a po nastavení by sa nemal meniť."
 
 #: ../html/src/components/formulas/PasswordInput.tsx:76
 msgid "Generate new password"
