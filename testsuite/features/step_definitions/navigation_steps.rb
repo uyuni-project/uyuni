@@ -1527,3 +1527,19 @@ Given(/^"([^"]*)" is not already registered$/) do |host|
   system_name = get_system_name(host)
   pending if $api_test.system.search_by_name(system_name).any?
 end
+
+When(/^I drag the ranking item "([^"]*)" below "([^"]*)"$/) do |item, target|
+  item_xpath = "//div[contains(@class, 'list-group-item')][contains(@data-id, '#{item}')]"
+  target_xpath = "//div[contains(@class, 'list-group-item')][contains(@data-id, '#{target}')]"
+  # jQuery UI sortable reacts to real mouse movements, so Capybara's drag_to is not enough
+  page.driver.with_playwright_page do |playwright_page|
+    source_box = playwright_page.locator("xpath=#{item_xpath}").bounding_box
+    target_box = playwright_page.locator("xpath=#{target_xpath}").bounding_box
+    playwright_page.mouse.move(source_box['x'] + (source_box['width'] / 2), source_box['y'] + (source_box['height'] / 2))
+    playwright_page.mouse.down
+    playwright_page.mouse.move(target_box['x'] + (target_box['width'] / 2), target_box['y'] + (target_box['height'] * 0.8), steps: 15)
+    playwright_page.mouse.up
+  end
+  below_xpath = "#{target_xpath}/following-sibling::div[contains(@data-id, '#{item}')]"
+  raise ScriptError, "'#{item}' is not below '#{target}' in the ranking list" unless page.has_xpath?(below_xpath, wait: 5)
+end
