@@ -60,6 +60,12 @@ $PODMAN_CMD exec server bash -c "set -xe;npm --prefix web ci --ignore-scripts --
 $PODMAN_CMD exec server bash -c "rctomcat restart"
 $PODMAN_CMD exec server bash -c "rctaskomatic restart"
 
+# Python backend: install the code and the configuration defaults from the checkout.
+# rhn.conf is skipped: it is a template, filled in when the RPM is built.
+$PODMAN_CMD exec server bash -c "for d in common server upload_server satellite_tools; do rsync -a --include='*/' --include='*.py' --exclude='*' /python/spacewalk/\$d/ /usr/lib/python3.13/site-packages/spacewalk/\$d/; done"
+$PODMAN_CMD exec server bash -c "cp /python/spacewalk/rhn-conf/rhn_server*.conf /usr/share/rhn/config-defaults/"
+$PODMAN_CMD exec server bash -c "systemctl restart apache2"
+
 # Create the first user with the new code, as the released code may not work with the new schema.
 # 07_server_setup.sh skips this step by passing an empty ADMIN_PASS to 00-mgrSetup.sh.
 timeout 360 bash -c "until $PODMAN_CMD exec server curl -kfs https://localhost/rhn/Login.do > /dev/null 2>&1; do sleep 5; done"
