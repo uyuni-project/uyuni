@@ -266,6 +266,51 @@ Feature: Recurring Actions
     When I click on "Back"
     Then I should see a "Schedules" text
 
+  Scenario: Enable IP forwarding through a custom state recurring action on a system group
+    When I store the current last event id for "sle_minion"
+    And I follow the left menu "Systems > System Groups"
+    And I follow "Recurring-Action-test-group"
+    And I follow "Recurring Actions" in the content area
+    And I click on "Create"
+    And I wait until I see "Schedule Name" text
+    And I enter "Group IP forwarding custom state recurring action" as "scheduleName"
+    And I select "Custom state" from "actionTypeDescription"
+    And I wait until I see "Configure states to execute" text
+    And I check radio button "schedule-daily"
+    And I enter 3 minutes from now as "time-daily_time"
+    And I check "statechannel-recurring-cbox"
+    And I click on "Save Changes"
+    And I wait until I see "Edit State Ranks" text
+    And I click on "Confirm"
+    And I click on "Create Schedule"
+    Then I wait until I see "Schedule successfully created" text
+    And I should see a "Group IP forwarding custom state recurring action" text
+    And I should see a "Group" text
+    When I wait until a new "Apply recurring states [manager_org_1.statechannel-recurring]" event is completed for "sle_minion"
+    Then file "/proc/sys/net/ipv4/conf/all/forwarding" should contain "1" on "sle_minion"
+
+@skip_if_github_validation
+  Scenario: Cleanup: Disable IP forwarding after the group custom state recurring action
+    When I follow the left menu "Salt > Remote Commands"
+    Then I should see a "Remote Commands" text in the content area
+    When I enter command "echo 0 > /proc/sys/net/ipv4/conf/all/forwarding"
+    And I enter target "sle_minion"
+    And I click on preview
+    And I click on run
+    Then I should see "sle_minion" hostname
+    And I wait until I see "show response" text
+    And file "/proc/sys/net/ipv4/conf/all/forwarding" should contain "0" on "sle_minion"
+
+  Scenario: Cleanup: Delete the group Custom state Recurring Action
+    When I follow the left menu "Systems > System Groups"
+    And I follow "Recurring-Action-test-group"
+    And I follow "Recurring Actions" in the content area
+    Then I should see a "Group IP forwarding custom state recurring action" text
+    When I click the "Group IP forwarding custom state recurring action" item delete button
+    And I wait until I see "Delete Recurring Action Schedule" text
+    And I click on the red confirmation button
+    Then I wait until I see "Schedule 'Group IP forwarding custom state recurring action' has been deleted." text
+
   Scenario: Create a yourorg Recurring Action
     When I follow the left menu "Home > My Organization > Recurring Actions"
     Then I should see a "No schedules created. Use Create to add a schedule" text
