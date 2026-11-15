@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-14 12:10+0100\n"
-"PO-Revision-Date: 2026-11-14 15:13+0000\n"
+"PO-Revision-Date: 2026-11-15 19:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>\n"
 "Language: sk\n"
@@ -3970,28 +3970,24 @@ msgstr "package_removeorphans: Odstrániť balíky, ktoré nie sú v kanáli"
 
 #: ../src/spacecmd/package.py:316
 msgid "usage: package_removeorphans [BATCH_SIZE]"
-msgstr "použitie: package_removeorphans [VEĽKOSŤ_SIZE]"
+msgstr "použitie: package_removeorphans [VEĽKOSŤ_BATCH]"
 
 #: ../src/spacecmd/package.py:319
 msgid "       optional: BATCH_SIZE size of the batch in which orphan packages will be removed in, default 1000"
-msgstr ""
+msgstr "       voliteľné: VEĽKOSŤ_DÁVKY veľkosť dávky, v ktorej budú odstránené osirelé balíky; predvolená hodnota je 1000"
 
 #: ../src/spacecmd/package.py:343
-#, fuzzy
-#| msgid "No orphaned packages has been found"
 msgid "No orphan packages have been found"
 msgstr "Neboli nájdené žiadne osirelé balíky"
 
 #: ../src/spacecmd/package.py:344
-#, fuzzy
-#| msgid "No orphaned packages"
 msgid "No orphan packages"
 msgstr "Žiadne osirelé balíky"
 
 #: ../src/spacecmd/package.py:357
 #, python-format
 msgid "There are %i orphan packages to be removed (use package_listorphans to see the list)"
-msgstr ""
+msgstr "Existuje %i osirelých balíkov, ktoré treba odstrániť (použite package_listorphans na zobrazenie zoznamu)"
 
 #: ../src/spacecmd/package.py:363
 #, python-format
