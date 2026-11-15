@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-14 12:10+0100\n"
-"PO-Revision-Date: 2026-11-14 15:13+0000\n"
+"PO-Revision-Date: 2026-11-15 19:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -3027,21 +3027,19 @@ msgstr "Naozaj chcete vymazať pripojenie"
 
 #: ../html/src/manager/admin/server-settings/server-settings.tsx:68
 msgid "Some values are invalid."
-msgstr ""
+msgstr "Niektoré hodnoty sú neplatné."
 
 #: ../html/src/manager/admin/server-settings/server-settings.tsx:76
-#, fuzzy
-#| msgid "Server self monitoring"
 msgid "Server settings saved"
-msgstr "Vlastné monitorovanie servera"
+msgstr "Nastavenia servera uložené"
 
 #: ../html/src/manager/admin/server-settings/server-settings.tsx:95
 msgid "{key} reset to the default value"
-msgstr ""
+msgstr "{key} vrátiť na predvolenú hodnotu"
 
 #: ../html/src/manager/admin/server-settings/server-settings.tsx:116
 msgid "Default: enabled"
-msgstr ""
+msgstr "Predvolené: povolené"
 
 #: ../html/src/manager/admin/server-settings/server-settings.tsx:116
 #, fuzzy
