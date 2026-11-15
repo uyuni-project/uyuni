@@ -1568,9 +1568,10 @@ end
 
 When(/^I create a read-only user for the ReportDB$/) do
   $reportdb_ro_user = 'test_user'
+  $reportdb_ro_password = 'linux'
   # run the tool non-interactively inside the server container:
   # no expect needed on the host, which is not available on SL Micro (e.g. RKE2 hosts)
-  get_target('server').run("uyuni-setup-reportdb-user --non-interactive --add --dbuser=#{$reportdb_ro_user} --dbpassword=linux")
+  get_target('server').run("uyuni-setup-reportdb-user --non-interactive --add --dbuser=#{$reportdb_ro_user} --dbpassword=#{$reportdb_ro_password}")
 end
 
 Then(/^I should see the read-only user listed on the ReportDB user accounts$/) do
@@ -1592,7 +1593,7 @@ When(/^I connect to the ReportDB with read-only user from external machine$/) do
   node = get_target('server')
 
   # connection from the controller to the reportdb in the server
-  $reportdb_ro_conn = PG.connect(host: node.public_ip, port: reportdb_external_port, dbname: 'reportdb', user: $reportdb_ro_user, password: 'linux')
+  $reportdb_ro_conn = PG.connect(host: node.public_ip, port: reportdb_external_port, dbname: 'reportdb', user: $reportdb_ro_user, password: $reportdb_ro_password)
 end
 
 Then(/^I should be able to query the ReportDB$/) do
