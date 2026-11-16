@@ -46,6 +46,8 @@ export enum RecurringActionType {
   HIGHSTATE = "HIGHSTATE",
   PLAYBOOK = "PLAYBOOK",
   SCAPPOLICY = "SCAPPOLICY",
+  CLM_BUILD = "CLM_BUILD",
+  CLM_PROMOTE = "CLM_PROMOTE",
 }
 
 type RecurringActionsDetailsProps = {
@@ -191,7 +193,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
                     data.targetType,
                     data.targetId,
                     data.targetAccessible,
-                    data.projectLabel ?? data.project_label
+                    data.projectLabel ?? data.project_label ?? details.projectLabel
                   )}
                 </td>
               </tr>
@@ -210,6 +212,57 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
                 <td>{t("Quartz format string")}:</td>
                 <td>{data.cron}</td>
               </tr>
+            </tbody>
+          </table>
+        </div>
+      </BootstrapPanel>
+    );
+  }
+
+  showClmDetails() {
+    const { details } = this.state;
+    if (!details || !details.projectLabel) {
+      return null;
+    }
+    const isBuild = this.props.data.actionType === RecurringActionType.CLM_BUILD;
+    const projectUrl = `/rhn/manager/contentmanagement/project/${details.projectLabel}`;
+
+    return (
+      <BootstrapPanel title={t("Content Lifecycle Details")}>
+        <div className="table-responsive">
+          <table className="table">
+            <tbody>
+              <tr>
+                <td>{t("Content Project")}:</td>
+                <td>
+                  <a href={projectUrl}>
+                    {details.projectName || details.projectLabel} ({details.projectLabel})
+                  </a>
+                </td>
+              </tr>
+              {isBuild ? (
+                <tr>
+                  <td>{t("Target Environment")}:</td>
+                  <td>{details.environmentName ? `${details.environmentName} (${details.environmentLabel})` : "-"}</td>
+                </tr>
+              ) : (
+                <>
+                  <tr>
+                    <td>{t("Source Environment")}:</td>
+                    <td>
+                      {details.environmentName ? `${details.environmentName} (${details.environmentLabel})` : "-"}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{t("Target Environment")}:</td>
+                    <td>
+                      {details.nextEnvironmentName
+                        ? `${details.nextEnvironmentName} (${details.nextEnvironmentLabel})`
+                        : "-"}
+                    </td>
+                  </tr>
+                </>
+              )}
             </tbody>
           </table>
         </div>
@@ -243,6 +296,11 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
   }
 
   render() {
+    const isClm =
+      window.entityType === "CLM" ||
+      this.props.data.actionType === RecurringActionType.CLM_BUILD ||
+      this.props.data.actionType === RecurringActionType.CLM_PROMOTE;
+
     const buttons = [
       <div className="btn-group pull-right" key="buttons-right">
         <Button
@@ -258,7 +316,13 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
           disabled={isReadOnly(this.props.data)}
           title={t("Edit")}
           className="btn-default"
-          handler={() => this.props.onEdit(this.props.data)}
+          handler={() =>
+            this.props.onEdit({
+              ...this.props.data,
+              projectLabel: this.props.data.projectLabel ?? this.state.details?.projectLabel,
+              environmentLabel: this.props.data.environmentLabel ?? this.state.details?.environmentLabel,
+            })
+          }
         />
         <ModalButton
           text={t("Delete")}
@@ -272,9 +336,15 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
     ];
 
     return (
-      <TopPanel title={this.props.data.scheduleName} icon="spacewalk-icon-salt" helpUrl="" button={buttons}>
+      <TopPanel
+        title={this.props.data.scheduleName}
+        icon={isClm ? "spacewalk-icon-lifecycle" : "spacewalk-icon-salt"}
+        helpUrl=""
+        button={buttons}
+      >
         {this.state.messages ? <Messages items={this.state.messages} /> : null}
         {this.showScheduleDetails(this.props.data)}
+        {isClm ? this.showClmDetails() : null}
         <DeleteDialog
           id="delete-modal"
           title={t("Delete Recurring Action Schedule")}

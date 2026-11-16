@@ -373,6 +373,10 @@ public class RecurringActionController {
             if (buildType.getProject() != null) {
                 dto.setProjectLabel(buildType.getProject().getLabel());
                 dto.setProjectName(buildType.getProject().getName());
+                buildType.getProject().getFirstEnvironmentOpt().ifPresent(firstEnv -> {
+                    dto.setEnvironmentLabel(firstEnv.getLabel());
+                    dto.setEnvironmentName(firstEnv.getName());
+                });
             }
         }
         else if (RecurringActionType.ActionType.CLM_PROMOTE.equals(action.getActionType())) {
@@ -384,6 +388,10 @@ public class RecurringActionController {
             if (promoteType.getEnvironment() != null) {
                 dto.setEnvironmentLabel(promoteType.getEnvironment().getLabel());
                 dto.setEnvironmentName(promoteType.getEnvironment().getName());
+                promoteType.getEnvironment().getNextEnvironmentOpt().ifPresent(nextEnv -> {
+                    dto.setNextEnvironmentLabel(nextEnv.getLabel());
+                    dto.setNextEnvironmentName(nextEnv.getName());
+                });
             }
         }
         return dto;

@@ -70,6 +70,12 @@ public class RecurringActionDetailsDto {
     /** Target Content Environment name for CLM promote actions */
     private String environmentName;
 
+    /** Target Content Successor Environment label for CLM promote actions */
+    private String nextEnvironmentLabel;
+
+    /** Target Content Successor Environment name for CLM promote actions */
+    private String nextEnvironmentName;
+
     /**
      * @return the Array containing Quartz information
      */
@@ -327,5 +333,33 @@ public class RecurringActionDetailsDto {
      */
     public void setEnvironmentName(String environmentNameIn) {
         this.environmentName = environmentNameIn;
+    }
+
+    /**
+     * @return the next environment label
+     */
+    public String getNextEnvironmentLabel() {
+        return nextEnvironmentLabel;
+    }
+
+    /**
+     * @param nextEnvironmentLabelIn the next environment label
+     */
+    public void setNextEnvironmentLabel(String nextEnvironmentLabelIn) {
+        this.nextEnvironmentLabel = nextEnvironmentLabelIn;
+    }
+
+    /**
+     * @return the next environment name
+     */
+    public String getNextEnvironmentName() {
+        return nextEnvironmentName;
+    }
+
+    /**
+     * @param nextEnvironmentNameIn the next environment name
+     */
+    public void setNextEnvironmentName(String nextEnvironmentNameIn) {
+        this.nextEnvironmentName = nextEnvironmentNameIn;
     }
 }
