@@ -54,5 +54,8 @@ jobs:
     - name: Install production dependencies
       run: npm --prefix web ci --ignore-scripts --save=false
 
+    - name: Validate Storybook build
+      run: npm --prefix web run build-storybook
+
     - name: Compile Typescript
       run: npm --prefix web run tsc
