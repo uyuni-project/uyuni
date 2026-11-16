@@ -364,6 +364,10 @@ Then(/^I should get the new activation key "([^"]*)"$/) do |activation_key|
   raise ScriptError unless $api_test.activationkey.verified?(activation_key)
 end
 
+Then(/^the activation key "([^"]*)" should not exist$/) do |activation_key|
+  raise ScriptError, "Activation key #{activation_key} still exists" if $api_test.activationkey.verified?(activation_key)
+end
+
 When(/^I delete the activation key "([^"]*)"$/) do |activation_key|
   raise ScriptError unless $api_test.activationkey.delete(activation_key)
   raise ScriptError if $api_test.activationkey.verified?(activation_key)
