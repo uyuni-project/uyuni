@@ -35,6 +35,20 @@ Feature: API "channel" namespace and sub-namespaces
     And I delete the software channel with label "foobar"
     Then "foobar" should not get listed with a call of listSoftwareChannels
 
+  Scenario: Deleting a base channel deletes the activation keys using it
+    When I create the following channels:
+      | LABEL         | NAME          | SUMMARY       | ARCH           | PARENT |
+      | ak-del-parent | ak-del-parent | ak-del-parent | channel-x86_64 |        |
+    And I create an activation key with id "ak-del-base", description "ak-del-base", base channel "ak-del-parent"
+    And I create an activation key with id "ak-del-keep", description "ak-del-keep"
+    Then I should get the new activation key "1-ak-del-base"
+    When I delete the software channel with label "ak-del-parent"
+    Then the activation key "1-ak-del-base" should not exist
+    And I should get the new activation key "1-ak-del-keep"
+
+  Scenario: Cleanup: delete the activation key kept after the base channel removal
+    When I delete the activation key "1-ak-del-keep"
+
   Scenario: Check last synchronization of a synced channel
     Then channel "fake-child-channel-i586" should have attribute "yumrepo_last_sync" that is a date
 
