@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -9,10 +9,6 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
  * SPDX-License-Identifier: GPL-2.0-only
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.manager.api;
@@ -23,28 +19,21 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * Custom {@link Date} serializer to output Date objects in iso8601 format
  */
 public class DateSerializer implements JsonSerializer<Date> {
 
-    private final DateFormat dateFormat;
-
-    /**
-     * Initialize dateFormat and set timezone to UTC
-     */
-    public DateSerializer() {
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    }
+    private static final DateTimeFormatter DATE_FORMAT =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC);
 
     @Override
     public JsonElement serialize(Date date, Type type, JsonSerializationContext context) {
-        return new JsonPrimitive(dateFormat.format(date));
+        return new JsonPrimitive(DATE_FORMAT.format(Instant.ofEpochMilli(date.getTime())));
     }
 }
