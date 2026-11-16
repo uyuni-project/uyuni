@@ -5,9 +5,11 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
+import { action } from "storybook/actions";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { withLocalNavigation } from "utils/storybook/local-navigation";
 import { mockNetwork } from "utils/storybook/mock-network";
 
 import { PeripheralsList } from "./PeripheralsList";
@@ -38,6 +40,7 @@ const installPeripheralMocks = () => {
 const meta = {
   title: "Compositions/Hub/PeripheralsList",
   component: PeripheralsList,
+  decorators: [withLocalNavigation(action("link clicked"), "a[href^='/rhn/']")],
   beforeEach: installPeripheralMocks,
   parameters: {
     layout: "fullscreen",

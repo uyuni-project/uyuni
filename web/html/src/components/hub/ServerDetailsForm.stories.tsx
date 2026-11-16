@@ -5,9 +5,11 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
+import { action } from "storybook/actions";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { withLocalNavigation } from "utils/storybook/local-navigation";
 import { mockNetwork } from "utils/storybook/mock-network";
 
 import { ServerDetailsForm } from "./ServerDetailsForm";
@@ -23,6 +25,7 @@ const mockNetworkDelete = (() => Utils.cancelable(Promise.resolve())) as typeof 
 const meta = {
   title: "Compositions/Hub/ServerDetailsForm",
   component: ServerDetailsForm,
+  decorators: [withLocalNavigation(action("link clicked"), "a[href^='/rhn/']")],
   beforeEach: () => mockNetwork({ post: mockNetworkPost, del: mockNetworkDelete }),
   parameters: {
     layout: "fullscreen",

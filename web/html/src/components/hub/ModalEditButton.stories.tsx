@@ -297,7 +297,7 @@ const InlineEditingComponent = () => {
               <td>
                 <div style={{ display: "flex", gap: "5px" }}>
                   <ModalEditButton
-                    buttonLabel=""
+                    buttonLabel={`Edit name for ${item.name}`}
                     buttonIcon="fa-edit"
                     modalTitle={`Edit ${item.name}`}
                     fieldLabel="Server Name"
@@ -305,7 +305,7 @@ const InlineEditingComponent = () => {
                     onSave={(newValue) => updateItemName(item.id, newValue)}
                   />
                   <ModalEditButton
-                    buttonLabel=""
+                    buttonLabel={`Edit description for ${item.name}`}
                     buttonIcon="fa-pencil"
                     modalTitle="Edit Description"
                     fieldLabel="Description"
