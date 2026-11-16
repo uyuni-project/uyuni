@@ -60,7 +60,7 @@ Then(/^the clock from "([^"]*)" should be exact$/) do |host|
 end
 
 Then(/^it should be possible to reach the test packages$/) do
-  url = 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/x86_64/orion-dummy-1.1-1.1.x86_64.rpm'
+  url = test_packages_base_url('Updates/rpm/x86_64/orion-dummy-1.1-1.1.x86_64.rpm')
   get_target('server').run("curl --insecure --location #{url} --output /dev/null")
 end
 
