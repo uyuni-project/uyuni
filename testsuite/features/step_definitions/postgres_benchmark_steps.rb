@@ -1,5 +1,6 @@
-# Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
 
 ### Step definitions for PostgreSQL database storage benchmark workloads.
 
@@ -9,6 +10,9 @@ require 'shellwords'
 require 'time'
 
 UYUNI_BENCH_PG_DEFAULT_RESULTS_PARENT = '/tmp/uyuni-bench/results/postgres'.freeze
+# The dataset must exceed the container memory by this factor for reads to reach storage.
+UYUNI_BENCH_PG_DISK_BOUND_HEADROOM = 1.2
+BYTES_PER_MIB = 1024 * 1024
 
 # Storage backend label stored in the benchmark summary.
 def postgres_benchmark_storage_backend
@@ -25,9 +29,7 @@ end
 def postgres_benchmark_db_name
   name = ENV.fetch('UYUNI_BENCH_PG_DB', 'uyuni_bench_pgbench').strip
   forbidden = %w[susemanager reportdb postgres template0 template1]
-  if forbidden.include?(name.downcase) || !name.match?(/\A[a-zA-Z0-9_]+\z/)
-    raise ScriptError, "Invalid or prohibited benchmark database name: #{name.inspect}"
-  end
+  raise ScriptError, "Invalid or prohibited benchmark database name: #{name.inspect}" if forbidden.include?(name.downcase) || !name.match?(/\A[a-zA-Z0-9_]+\z/)
 
   name
 end
@@ -188,10 +190,52 @@ def parse_pgbench_output(output)
   metrics
 end
 
+# Shell command printing the dataset size, shared_buffers and the memory visible to the database container.
+def postgres_benchmark_cache_profile_command(db)
+  query = "SELECT pg_database_size(current_database()) || ' ' || pg_size_bytes(current_setting('shared_buffers'))"
+  psql = "psql -U \"${POSTGRES_USER:-postgres}\" -d #{Shellwords.escape(db)} -Atc #{Shellwords.escape(query)}"
+  cgroup_limit = 'cat /sys/fs/cgroup/memory.max 2>/dev/null || cat /sys/fs/cgroup/memory/memory.limit_in_bytes 2>/dev/null || echo max'
+  [
+    "echo \"pg_sizes=$(#{psql})\"",
+    "echo \"cgroup_memory_limit=$(#{cgroup_limit})\"",
+    "awk '/^MemTotal:/ {print \"memtotal_kb=\" $2}' /proc/meminfo"
+  ].join(' && ')
+end
+
+# Compare the pgbench dataset size with the memory available for caching it.
+# When the dataset fits in memory, read-only results reflect the cache instead of the storage backend.
+def parse_postgres_benchmark_cache_profile(output, scale)
+  values = output.lines.filter_map { |line| line.strip.split('=', 2) if line.include?('=') }.to_h
+  db_size, shared_buffers = values.fetch('pg_sizes', '').split.map { |value| Integer(value, exception: false) }
+  memtotal_kb = Integer(values.fetch('memtotal_kb', ''), exception: false)
+  raise ScriptError, "Unable to read the benchmark cache profile from: #{output.inspect}" unless db_size && shared_buffers && memtotal_kb
+
+  cgroup_limit = Integer(values.fetch('cgroup_memory_limit', ''), exception: false)
+  memory = [memtotal_kb * 1024, cgroup_limit].compact.min
+  {
+    database_size_bytes: db_size,
+    shared_buffers_bytes: shared_buffers,
+    memory_limit_bytes: memory,
+    read_only_cache_bound: db_size <= memory,
+    minimum_disk_bound_scale: (memory * UYUNI_BENCH_PG_DISK_BOUND_HEADROOM / db_size.fdiv(scale)).ceil
+  }.freeze
+end
+
+# Log the dataset size against the available memory and warn when reads cannot reach storage.
+def log_postgres_benchmark_cache_profile(profile)
+  log "Benchmark dataset: #{profile[:database_size_bytes] / BYTES_PER_MIB} MiB, " \
+      "memory available for caching: #{profile[:memory_limit_bytes] / BYTES_PER_MIB} MiB, " \
+      "shared_buffers: #{profile[:shared_buffers_bytes] / BYTES_PER_MIB} MiB"
+  return unless profile[:read_only_cache_bound]
+
+  log 'WARNING: the dataset fits in memory, so the read-only benchmark measures the cache rather than storage. ' \
+      "Set UYUNI_BENCH_PG_SCALE to at least #{profile[:minimum_disk_bound_scale]} for disk-bound reads."
+end
+
 Given('the database benchmark inputs are valid') do
   @postgres_benchmark_results = {}
 
-  log "PostgreSQL storage benchmark settings:"
+  log 'PostgreSQL storage benchmark settings:'
   log "  Database: #{postgres_benchmark_db_name}"
   log "  Scale factor: #{postgres_benchmark_scale}"
   log "  Clients: #{postgres_benchmark_clients}"
@@ -231,6 +275,16 @@ When('I initialize the pgbench benchmark database schema') do
   raise ScriptError, "Failed to initialize pgbench schema in #{db} (exit code: #{code})" unless code.zero?
 
   log "Initialized pgbench schema in #{db} with scale #{scale} in #{elapsed.round(2)}s"
+
+  profile_output, profile_code = postgres_benchmark_run_in_db_pod(
+    postgres_benchmark_cache_profile_command(db),
+    verbose: false,
+    check_errors: false
+  )
+  raise ScriptError, "Unable to measure the pgbench dataset size in #{db} (exit code: #{profile_code})" unless profile_code.zero?
+
+  @postgres_benchmark_cache_profile = parse_postgres_benchmark_cache_profile(profile_output, scale)
+  log_postgres_benchmark_cache_profile(@postgres_benchmark_cache_profile)
 end
 
 When('I run the read-write transaction benchmark') do
@@ -307,6 +361,7 @@ When('I run the read-only transaction benchmark') do
 
   @postgres_benchmark_results[:read_only] = {
     workload: 'read_only_select',
+    cache_bound: @postgres_benchmark_cache_profile&.dig(:read_only_cache_bound),
     started_at: started_at.iso8601,
     finished_at: finished_at.iso8601,
     duration_seconds: elapsed.round(3),
@@ -333,6 +388,7 @@ Then('the database benchmark result report should exist and be valid') do
     results_dir: postgres_benchmark_results_dir,
     database_name: postgres_benchmark_db_name,
     scale_factor: postgres_benchmark_scale,
+    cache_profile: @postgres_benchmark_cache_profile,
     results: @postgres_benchmark_results
   }
 

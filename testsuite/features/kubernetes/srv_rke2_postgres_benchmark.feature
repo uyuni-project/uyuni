@@ -1,5 +1,6 @@
-# Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
 
 @rke2
 @long_running
