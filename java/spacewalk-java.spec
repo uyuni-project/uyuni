@@ -73,7 +73,7 @@ Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{
 BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{apache_commons_discovery}
 BuildRequires:  %{apache_commons_validator}
-BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
+BuildRequires:  google-gson
 BuildRequires:  angus-activation
 BuildRequires:  angus-mail-core
 BuildRequires:  ant
@@ -86,7 +86,7 @@ BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
 BuildRequires:  apache-commons-fileupload2-core
 BuildRequires:  apache-commons-fileupload2-jakarta-servlet6
-BuildRequires:  apache-commons-io >= 2.11.0
+BuildRequires:  apache-commons-io
 BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-logging
@@ -160,7 +160,7 @@ BuildRequires:  xmlsec
 Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
 Requires:       %{apache_commons_discovery}
-Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
+Requires:       google-gson
 Requires:       /sbin/unix2_chkpwd
 Requires:       angus-activation
 Requires:       angus-mail-core
