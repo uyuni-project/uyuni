@@ -618,8 +618,10 @@ Then(/^the server log should not contain "([^"]*)" errors$/) do |component|
   errors =
     records.select do |record|
       # While the database container stops and restarts, the salt-event-notification-poller thread in the server container
-      # is interrupted mid-query or while waiting on the JDBC connection pool
-      is_transient_db_restart = record.include?('An SQLException was provoked by the following failure: java.lang.InterruptedException')
+      # is interrupted mid-query or while waiting on the JDBC connection pool, and new connections fail
+      # while the "db" host is unresolvable
+      is_transient_db_restart = record.include?('An SQLException was provoked by the following failure: java.lang.InterruptedException') ||
+                                (record.include?('Connections could not be acquired from the underlying database') && record.include?('UnknownHostException: db'))
 
       !is_transient_db_restart &&
         record.match?(/exception/i) &&
@@ -2154,7 +2156,12 @@ Then(/^I check the uyuni server (has started|is running|has stopped)$/) do |stat
     if ['has started', 'is running'].include? status
       break if code.zero? && running == 'true' && health == 'healthy'
     elsif status == 'has stopped'
-      break if code.nonzero? || running != 'true'
+      db_out, db_err, db_code = ssh_command("podman inspect -f '{{.State.Running}}' uyuni-db", node.full_hostname)
+      # Only a confirmed stop or a missing container counts: an SSH or inspect failure does not prove a container is down
+      missing = /no such (object|container)/i
+      server_stopped = (code.zero? && running == 'false') || res_err.to_s.match?(missing)
+      db_stopped = (db_code.zero? && db_out.strip == 'false') || db_err.to_s.match?(missing)
+      break if server_stopped || db_stopped
     end
     sleep 6
     "return code: #{code};  stdout: #{res_out};  stderr: #{res_err}"
