@@ -370,6 +370,9 @@ public class ContentManager {
                 .map(env -> {
                     ContentProject project = env.getContentProject();
                     removeRecurringActionsForEnvironment(env, user);
+                    if (env.getNextEnvironmentOpt().isEmpty() && env.getPrevEnvironmentOpt().isPresent()) {
+                        removeRecurringActionsForEnvironment(env.getPrevEnvironmentOpt().get(), user);
+                    }
                     ContentProjectFactory.removeEnvironment(env);
                     if (project.getFirstEnvironmentOpt().isEmpty()) {
                         removeRecurringActionsForProject(project, user);
