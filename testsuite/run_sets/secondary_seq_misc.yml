@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# Secondary family 'seq_misc'. See run_sets/secondary.yml and secondary_parallelizable.yml for the legacy full sets.
+# WORKAROUND:
+# srv_restart_postgres.feature stays disabled until https://bugzilla.suse.com/show_bug.cgi?id=1218947 gets addressed
+
+- features/secondary/srv_restart.feature
+- features/secondary/min_timezone.feature
+- features/secondary/min_ansible_control_node.feature
+- features/secondary/min_move_from_and_to_proxy.feature
+- features/secondary/minssh_move_from_and_to_proxy.feature
+- features/secondary/srv_logfile.feature

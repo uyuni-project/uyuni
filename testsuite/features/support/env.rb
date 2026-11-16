@@ -175,7 +175,8 @@ Capybara.automatic_label_click = true
 # on the first download. Setting it both fixes that and gives the driver a directory to auto-save to.
 Capybara.save_path = ENV.fetch('DOWNLOAD_DIR', '/tmp/downloads')
 Capybara.app_host = "https://#{ENV.fetch('SERVER', nil)}"
-Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
+# CAPYBARA_PORT_OFFSET keeps concurrent parallel_cucumber runs (one per secondary family) on distinct ports.
+Capybara.server_port = 8888 + ENV.fetch('CAPYBARA_PORT_OFFSET', 0).to_i + ENV['TEST_ENV_NUMBER'].to_i
 $stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
 # enable minitest assertions in steps
