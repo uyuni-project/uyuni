@@ -281,7 +281,7 @@ public class ScapAuditController {
             // Step 2: Create ID-based directory and write file
             tailoringDir = createEntityDirectory(tailoringFilesDir, tailoringFile.getId());
             writeFileToDirectory(tailoringDir, fileItem.getName(), fileItem.getInputStream());
-            return result(response, ResultJson.success());
+            return result(response, ResultJson.success(), new TypeToken<>() { });
         }
         catch (Exception e) {
             // Rollback: Delete DB entry and directory if file write failed
@@ -367,7 +367,7 @@ public class ScapAuditController {
             tailoringFile.setName(name);
             description.ifPresent(tailoringFile::setDescription);
             ScapFactory.saveTailoringFile(tailoringFile);
-            return result(response, ResultJson.success());
+            return result(response, ResultJson.success(), new TypeToken<>() { });
         }
         catch (Exception e) {
             // Rollback: Delete new file if it was created
@@ -414,7 +414,7 @@ public class ScapAuditController {
                 }
                 deletedCount++;
             }
-            return result(res, ResultJson.success(deletedCount));
+            return result(res, ResultJson.success(deletedCount), new TypeToken<>() { });
         }
         catch (JsonParseException e) {
             LOG.error("Invalid JSON in delete tailoring file request", e);
@@ -675,7 +675,7 @@ public class ScapAuditController {
 
             String validationError = validatePolicyFields(policyJson);
             if (validationError != null) {
-                return result(res, ResultJson.error(validationError));
+                return result(res, ResultJson.error(validationError), new TypeToken<>() { });
             }
 
             ScapPolicy scapPolicy = new ScapPolicy();
@@ -685,14 +685,15 @@ public class ScapAuditController {
 
             ScapFactory.saveScapPolicy(scapPolicy);
 
-            return result(res, ResultJson.success(scapPolicy.getId()));
+            return result(res, ResultJson.success(scapPolicy.getId()), new TypeToken<>() { });
         }
         catch (IllegalArgumentException e) {
-            return result(res, ResultJson.error(e.getMessage()));
+            return result(res, ResultJson.error(e.getMessage()), new TypeToken<>() { });
         }
         catch (Exception e) {
             LOG.error("Error creating SCAP policy", e);
-            return result(res, ResultJson.error("Failed to create SCAP policy: " + e.getMessage()));
+            return result(res, ResultJson.error("Failed to create SCAP policy: " + e.getMessage()),
+                new TypeToken<>() { });
         }
     }
 
@@ -709,12 +710,12 @@ public class ScapAuditController {
             ScapPolicyJson policyJson = GSON.fromJson(req.body(), ScapPolicyJson.class);
 
             if (policyJson.getId() == null) {
-                return result(res, ResultJson.error("Policy ID is required"));
+                return result(res, ResultJson.error("Policy ID is required"), new TypeToken<>() { });
             }
 
             String validationError = validatePolicyFields(policyJson);
             if (validationError != null) {
-                return result(res, ResultJson.error(validationError));
+                return result(res, ResultJson.error(validationError), new TypeToken<>() { });
             }
 
             ScapPolicy scapPolicy = ScapFactory.lookupScapPolicyByIdAndOrg(policyJson.getId(), user.getOrg())
@@ -724,14 +725,15 @@ public class ScapAuditController {
 
             ScapFactory.saveScapPolicy(scapPolicy);
 
-            return result(res, ResultJson.success(scapPolicy.getId()));
+            return result(res, ResultJson.success(scapPolicy.getId()), new TypeToken<>() { });
         }
         catch (IllegalArgumentException e) {
-            return result(res, ResultJson.error(e.getMessage()));
+            return result(res, ResultJson.error(e.getMessage()), new TypeToken<>() { });
         }
         catch (Exception e) {
             LOG.error("Error updating SCAP policy", e);
-            return result(res, ResultJson.error("Failed to update SCAP policy: " + e.getMessage()));
+            return result(res, ResultJson.error("Failed to update SCAP policy: " + e.getMessage()),
+                new TypeToken<>() { });
         }
     }
 
@@ -751,7 +753,7 @@ public class ScapAuditController {
             List<ScapPolicy> scapPolicies = ScapFactory.lookupScapPoliciesByIds(ids, user.getOrg());
 
             if (scapPolicies.size() < ids.size()) {
-                return result(res, ResultJson.error("One or more SCAP policies not found"));
+                return result(res, ResultJson.error("One or more SCAP policies not found"), new TypeToken<>() { });
             }
 
             int deletedCount = 0;
@@ -760,14 +762,15 @@ public class ScapAuditController {
                 deletedCount++;
             }
 
-            return result(res, ResultJson.success(deletedCount));
+            return result(res, ResultJson.success(deletedCount), new TypeToken<>() { });
         }
         catch (IllegalArgumentException e) {
-            return result(res, ResultJson.error(e.getMessage()));
+            return result(res, ResultJson.error(e.getMessage()), new TypeToken<>() { });
         }
         catch (Exception e) {
             LOG.error("Error deleting SCAP policies", e);
-            return result(res, ResultJson.error("Failed to delete SCAP policies: " + e.getMessage()));
+            return result(res, ResultJson.error("Failed to delete SCAP policies: " + e.getMessage()),
+                new TypeToken<>() { });
         }
     }
 
@@ -787,7 +790,7 @@ public class ScapAuditController {
         params.put("policy_id", policyId);
 
         List<ScapPolicyScanHistory> history = m.execute(params);
-        return success(res, ResultJson.success(history));
+        return success(res, ResultJson.success(history), new TypeToken<>() { });
     }
     /**
      * Resolves the profile title from the SCAP content XML file.
@@ -876,7 +879,7 @@ public class ScapAuditController {
 
             String validationError = reqData.validate();
             if (validationError != null) {
-                return result(res, ResultJson.error(validationError));
+                return result(res, ResultJson.error(validationError), new TypeToken<>() { });
             }
 
             Date earliest = MinionActionUtils.getScheduleDate(reqData);
@@ -920,14 +923,16 @@ public class ScapAuditController {
         }
         catch (TaskomaticApiException e) {
             LOG.error("Taskomatic API error scheduling SCAP scan", e);
-            return result(res, ResultJson.error("Failed to schedule SCAP scan: Taskomatic is down"));
+            return result(res, ResultJson.error("Failed to schedule SCAP scan: Taskomatic is down"),
+                    new TypeToken<>() { });
         }
         catch (IllegalArgumentException e) {
-            return result(res, ResultJson.error(e.getMessage()));
+            return result(res, ResultJson.error(e.getMessage()), new TypeToken<>() { });
         }
         catch (Exception e) {
             LOG.error("Error scheduling SCAP scan", e);
-            return result(res, ResultJson.error("Failed to schedule SCAP scan: " + e.getMessage()));
+            return result(res, ResultJson.error("Failed to schedule SCAP scan: " + e.getMessage()),
+                    new TypeToken<>() { });
         }
     }
 
@@ -1024,7 +1029,7 @@ public class ScapAuditController {
             Optional<ScapContent> scapContent = ScapFactory.lookupScapContentById(Long.valueOf(idParam));
 
             if (scapContent.isEmpty()) {
-                return result(res, ResultJson.error("SCAP content not found"));
+                return result(res, ResultJson.error("SCAP content not found"), new TypeToken<>() { });
             }
 
             return handleScapContentUpload(items, res, scapContent.get());
@@ -1071,10 +1076,11 @@ public class ScapAuditController {
 
             if (successfullyDeleted.isEmpty() && !scapContentList.isEmpty()) {
                 return result(res,
-                        ResultJson.error("Could not delete content. Items might be in use by a policy."));
+                        ResultJson.error("Could not delete content. Items might be in use by a policy."),
+                        new TypeToken<>() { });
             }
 
-            return result(res, ResultJson.success());
+            return result(res, ResultJson.success(), new TypeToken<>() { });
 
 
         }
@@ -1113,7 +1119,7 @@ public class ScapAuditController {
             // Validate files
             String validationError = validateScapContentFiles(scapItemOpt, xccdfItemOpt, existingContent, isCreate);
             if (validationError != null) {
-                return result(res, ResultJson.error(validationError));
+                return result(res, ResultJson.error(validationError), new TypeToken<>() { });
             }
 
             // Get file names
@@ -1145,7 +1151,7 @@ public class ScapAuditController {
             deleteFileIfExists(oldDsPath);
             deleteFileIfExists(oldXccdfPath);
 
-            return result(res, ResultJson.success());
+            return result(res, ResultJson.success(), new TypeToken<>() { });
 
         }
         catch (Exception e) {
@@ -1554,7 +1560,7 @@ public class ScapAuditController {
             data.put("created", custom.getCreated());
             data.put("modified", custom.getModified());
 
-            return success(response, ResultJson.success(data));
+            return success(response, ResultJson.success(data), new TypeToken<>() { });
         }
 
         return json(response, HttpStatus.SC_NOT_FOUND,
@@ -1604,7 +1610,8 @@ public class ScapAuditController {
             ScapFactory.saveCustomRemediation(identifier, benchmarkId, scriptType,
                     remediationContent, user.getOrg(), user);
 
-            return success(response, ResultJson.success("Custom remediation saved successfully"));
+            return success(response, ResultJson.success("Custom remediation saved successfully"),
+                    new TypeToken<>() { });
         }
         catch (IllegalArgumentException e) {
             return badRequest(response, e.getMessage());
@@ -1637,7 +1644,8 @@ public class ScapAuditController {
                     scriptType, user.getOrg());
 
             if (deleted) {
-                return result(response, ResultJson.success("Custom remediation deleted successfully"));
+                return result(response, ResultJson.success("Custom remediation deleted successfully"),
+                            new TypeToken<>() { });
             }
 
             return json(response, HttpStatus.SC_NOT_FOUND,
@@ -1665,12 +1673,12 @@ public class ScapAuditController {
             body = GSON.fromJson(request.body(), ApplyRemediationJson.class);
         }
         catch (JsonParseException e) {
-            return result(response, ResultJson.error("Invalid JSON request body"));
+            return result(response, ResultJson.error("Invalid JSON request body"), new TypeToken<>() { });
         }
 
         String validationError = validateRemediationBody(body);
         if (validationError != null) {
-            return result(response, ResultJson.error(validationError));
+            return result(response, ResultJson.error(validationError), new TypeToken<>() { });
         }
 
         Date earliestDate = MinionActionUtils.getScheduleDate(body);
@@ -1678,7 +1686,8 @@ public class ScapAuditController {
             Server server = SystemManager.lookupByIdAndUser(body.getServerId(), user);
             if (server == null) {
                 response.status(HttpStatus.SC_NOT_FOUND);
-                return result(response, ResultJson.error("Server not found or access denied"));
+                return result(response, ResultJson.error("Server not found or access denied"),
+                            new TypeToken<>() { });
             }
 
             ScriptType scriptType = ScriptType.fromValue(body.getScriptType());
@@ -1691,7 +1700,7 @@ public class ScapAuditController {
                 successMessage = "Salt remediation scheduled successfully";
             }
             else {
-                return result(response, ResultJson.error("Invalid script type"));
+                return result(response, ResultJson.error("Invalid script type"), new TypeToken<>() { });
             }
 
             taskomaticApi.scheduleActionExecution(action);
@@ -1699,15 +1708,17 @@ public class ScapAuditController {
                 "actionId", action.getId(),
                 "message", successMessage
             );
-            return result(response, ResultJson.success(result));
+            return result(response, ResultJson.success(result), new TypeToken<>() { });
         }
         catch (TaskomaticApiException e) {
             LOG.error("Failed to schedule remediation action", e);
-            return result(response, ResultJson.error("Failed to schedule remediation: " + e.getMessage()));
+            return result(response, ResultJson.error("Failed to schedule remediation: " + e.getMessage()),
+                    new TypeToken<>() { });
         }
         catch (Exception e) {
             LOG.error("Error applying remediation", e);
-            return result(response, ResultJson.error("Failed to apply remediation: " + e.getMessage()));
+            return result(response, ResultJson.error("Failed to apply remediation: " + e.getMessage()),
+                    new TypeToken<>() { });
         }
         finally {
             Context.getCurrentContext().setActionDescription(null);

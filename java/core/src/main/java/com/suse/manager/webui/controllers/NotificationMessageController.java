@@ -155,7 +155,7 @@ public class NotificationMessageController {
      */
     public String dataUnread(Request request, Response response, User user) {
         var data = getJSONNotificationMessages(UserNotificationFactory.listUnreadByUser(user));
-        return success(response, ResultJson.success(data));
+        return success(response, ResultJson.success(data), new TypeToken<>() { });
     }
 
     /**
@@ -168,7 +168,7 @@ public class NotificationMessageController {
      */
     public String dataAll(Request request, Response response, User user) {
         var data = getJSONNotificationMessages(UserNotificationFactory.listAllByUser(user));
-        return success(response, ResultJson.success(data));
+        return success(response, ResultJson.success(data), new TypeToken<>() { });
     }
 
     /**
@@ -247,7 +247,7 @@ public class NotificationMessageController {
         action.execute(new RegisterMinionEventMessage(minionId, Optional.empty()));
 
         String resultMessage = LOCALIZER.getMessage("notification.onboardingfailed.action.success", minionId);
-        return success(response, ResultJson.successMessage(resultMessage));
+        return success(response, ResultJson.successMessage(resultMessage), new TypeToken<>() { });
     }
 
     private String retryReposync(Response response, User user, long channelId) {
@@ -262,7 +262,7 @@ public class NotificationMessageController {
             taskomatic.scheduleSingleRepoSync(channel, user);
 
             String message = LOCALIZER.getMessage("notification.channelsyncfailed.action.success", channel.getLabel());
-            return success(response, ResultJson.successMessage(message));
+            return success(response, ResultJson.successMessage(message), new TypeToken<>() { });
         }
         catch (TaskomaticApiException ex) {
             LOGGER.error("Failed to restart reposync for the channel {}", channel.getLabel(), ex);
