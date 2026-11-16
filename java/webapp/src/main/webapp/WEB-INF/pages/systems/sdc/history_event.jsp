@@ -85,7 +85,7 @@ SPDX-License-Identifier: GPL-2.0-only
         <div class="col-sm-2">
           <strong><bean:message key="system.event.details"/></strong>
         </div>
-        <div class="col-sm-10">
+        <div class="col-sm-10 action-details-col">
           <c:out value="${requestScope.actionnotes}" escapeXml="false"/><!-- already html-escaped in backend -->
           <c:if test="${!requestScope.completed && requestScope.typeDistUpgradeDryRun}">
             <bean:message key="system.event.spmigration.notification"/><br>

@@ -63,3 +63,8 @@ pre code {
   max-height: 340px;
   overflow-y: scroll;
 }
+
+.action-details-col pre {
+  overflow: auto;
+  max-height: 600px;
+}
