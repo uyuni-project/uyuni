@@ -23,10 +23,10 @@ import static spark.Spark.notFound;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.RhnRuntimeException;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -161,7 +161,7 @@ public class Router implements SparkApplication {
                 new ProxyConfigurationController(systemManager);
 
         try {
-            URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+            URI url = new URI(RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.SCC_URL));
             SCCEndpoints sccEndpoints = new SCCEndpoints(ContentSyncManager.getUUID(), url);
             sccEndpoints.initRoutes(jade);
         }

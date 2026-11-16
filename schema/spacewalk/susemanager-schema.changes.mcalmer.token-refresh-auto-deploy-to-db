@@ -1,0 +1,2 @@
+- Add `CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY` to the rhnConfiguration
+  table

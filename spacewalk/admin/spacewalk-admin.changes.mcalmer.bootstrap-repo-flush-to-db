@@ -1,0 +1,2 @@
+- Move `server.susemanager.bootstrap_repo_flush` from `rhn.conf`
+  into the database

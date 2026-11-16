@@ -17,8 +17,8 @@
 
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 
@@ -60,7 +60,7 @@ public class SCCContentSyncSource implements ContentSyncSource {
     @Override
     public SCCWebClient getClient(String uuid, Path loggingDir, boolean skipOwner) throws ContentSyncSourceException {
         try {
-            URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+            URI url = new URI(RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.SCC_URL));
 
             String username = credentials.getUsername();
             String password = credentials.getPassword();

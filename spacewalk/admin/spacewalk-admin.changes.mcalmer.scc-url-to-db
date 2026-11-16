@@ -1,0 +1,2 @@
+- Move `server.susemanager.scc_url` from `rhn.conf` into
+  the database

@@ -44,6 +44,7 @@ from spacewalk.common.rhnException import (
     redirectException,
 )  # to catch redirect exception
 from spacewalk.common.rhnTranslate import _
+from spacewalk.server.db_config import DB_CFG
 
 # pylint: disable-next=ungrouped-imports
 from uyuni.common.rhnLib import setHeaderValue
@@ -303,6 +304,9 @@ class apacheRequest:
             log_debug(1, "Serving file %s" % fpath)
             self.req.headers_out["X-Replace-Content"] = fpath
 
+        # read once, the output iterator runs after the request handler returned
+        buffer_size = DB_CFG.BUFFER_SIZE
+
         # send the headers
         self.req.send_http_header()
 
@@ -311,17 +315,17 @@ class apacheRequest:
             read = 0
             while read < response_size:
                 # We check the size here in case we're not asked for the entire file.
-                if read + CFG.BUFFER_SIZE > response_size:
+                if read + buffer_size > response_size:
                     # pylint: disable-next=unused-variable
-                    to_read = read + CFG.BUFFER_SIZE - response_size
+                    to_read = read + buffer_size - response_size
                 else:
-                    to_read = CFG.BUFFER_SIZE
-                buf = response.read(CFG.BUFFER_SIZE)
+                    to_read = buffer_size
+                buf = response.read(buffer_size)
                 if not buf:
                     break
                 try:
                     self.req.write(buf)
-                    read = read + CFG.BUFFER_SIZE
+                    read = read + buffer_size
                 except IOError:
                     if xrepcon:
                         # We're talking to a proxy, so don't bother to report
@@ -332,10 +336,10 @@ class apacheRequest:
         else:
             if "wsgi.file_wrapper" in self.req.headers_in:
                 self.req.output = self.req.headers_in["wsgi.file_wrapper"](
-                    response, CFG.BUFFER_SIZE
+                    response, buffer_size
                 )
             else:
-                self.req.output = iter(lambda: response.read(CFG.BUFFER_SIZE), "")
+                self.req.output = iter(lambda: response.read(buffer_size), "")
 
         return success_response
 

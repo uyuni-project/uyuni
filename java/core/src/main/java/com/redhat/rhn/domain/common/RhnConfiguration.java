@@ -81,8 +81,22 @@ public class RhnConfiguration extends BaseDomainHelper {
         REPOSYNC_TIMEOUT(ValueType.INTEGER),
         REPOSYNC_MINRATE(ValueType.INTEGER),
         REPOSYNC_NEVRA_FILTER(ValueType.BOOLEAN),
+        SCC_FORWARD_REGISTRATION(ValueType.BOOLEAN),
+        SCC_MIRROR_URL(ValueType.STRING),
+        SCC_REG_BATCH_SIZE(ValueType.INTEGER),
+        SCC_REG_ERROR_EXPIRE_TIME(ValueType.INTEGER),
+        SCC_URL(ValueType.STRING, Visibility.HIDDEN),
         SYNC_SOURCE_PACKAGES(ValueType.BOOLEAN),
-        URLGRABBER_LOGSPEC(ValueType.STRING);
+        TEMP_CHANNEL_TOKEN_LIFETIME(ValueType.INTEGER),
+        TOKEN_LIFETIME(ValueType.INTEGER),
+        CHANNEL_TOKEN_REFRESH_AUTO_DEPLOY(ValueType.BOOLEAN),
+        URLGRABBER_LOGSPEC(ValueType.STRING),
+        BUFFER_SIZE(ValueType.INTEGER),
+        FORCE_PACKAGE_UPLOAD(ValueType.BOOLEAN),
+        PROXY_AUTH_TIMEOUT(ValueType.INTEGER),
+        PUSH_SESSION_LIFETIME(ValueType.INTEGER),
+        BOOTSTRAP_REPO_FLUSH(ValueType.BOOLEAN),
+        AUTO_GENERATE_BOOTSTRAP_REPO(ValueType.BOOLEAN);
 
         private final ValueType type;
         private final Visibility visibility;

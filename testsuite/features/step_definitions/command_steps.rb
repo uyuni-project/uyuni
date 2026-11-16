@@ -1074,14 +1074,13 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   node.run(cmd, verbose: true, check_errors: error_control.empty?)
 end
 
+# The setting is stored in the database. Disabling uses the default value, which is 0.
 When(/^I enable source package syncing$/) do
-  cmd = 'echo \'server.sync_source_packages = 1\' >> /etc/rhn/rhn.conf'
-  get_target('server').run(cmd)
+  set_db_config_value(get_target('server'), 'SYNC_SOURCE_PACKAGES', '1')
 end
 
 When(/^I disable source package syncing$/) do
-  cmd = 'sed -i \'s/^server.sync_source_packages = 1.*//g\' /etc/rhn/rhn.conf'
-  get_target('server').run(cmd)
+  set_db_config_value(get_target('server'), 'SYNC_SOURCE_PACKAGES', nil)
 end
 
 When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|

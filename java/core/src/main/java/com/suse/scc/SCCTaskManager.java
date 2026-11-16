@@ -13,8 +13,8 @@
 
 package com.suse.scc;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
@@ -131,7 +131,7 @@ public class SCCTaskManager {
     }
 
     protected String getUrlStandardCase() {
-        return Config.get().getString(ConfigDefaults.SCC_URL);
+        return RhnConfigurationFactory.getSingleton().getString(RhnConfiguration.KEYS.SCC_URL);
     }
 
     protected String getUrlPeripheralCase(IssHub hub) {

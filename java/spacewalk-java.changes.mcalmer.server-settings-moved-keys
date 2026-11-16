@@ -1,0 +1,3 @@
+- Show the settings moved from `rhn_server.conf` and
+  `rhn_server_susemanager.conf` into the database in the server
+  settings
