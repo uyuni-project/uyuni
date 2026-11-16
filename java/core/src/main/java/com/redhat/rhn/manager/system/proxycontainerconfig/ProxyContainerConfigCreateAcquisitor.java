@@ -18,7 +18,6 @@
 package com.redhat.rhn.manager.system.proxycontainerconfig;
 
 import static com.redhat.rhn.common.ErrorReportingStrategies.raiseAndLog;
-import static com.suse.utils.Predicates.allProvided;
 import static com.suse.utils.Predicates.isAbsent;
 
 import com.redhat.rhn.common.RhnRuntimeException;
