@@ -611,6 +611,16 @@ After('@pxeboot_bootstrap') do |scenario|
   add_context(:pxeboot_minion_failed, true) if scenario.failed?
 end
 
+# A PXE boot feature can first check its OS image (@pxeboot_image_check). If the image is missing,
+# the @pxeboot_bootstrap and @pxeboot_needs_minion scenarios are skipped: no reboot, no wait for the minion.
+After('@pxeboot_image_check') do |scenario|
+  add_context(:pxeboot_minion_failed, true) if scenario.failed?
+end
+
+Before('@pxeboot_bootstrap') do
+  skip_this_scenario if get_context(:pxeboot_minion_failed)
+end
+
 Before('@pxeboot_needs_minion') do
   skip_this_scenario if get_context(:pxeboot_minion_failed)
 end
