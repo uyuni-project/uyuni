@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-14 12:10+0100\n"
-"PO-Revision-Date: 2026-11-15 19:13+0000\n"
+"PO-Revision-Date: 2026-11-16 21:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -3042,34 +3042,28 @@ msgid "Default: enabled"
 msgstr "Predvolené: povolené"
 
 #: ../html/src/manager/admin/server-settings/server-settings.tsx:116
-#, fuzzy
-#| msgid "Disabled"
 msgid "Default: disabled"
-msgstr "Zakázané"
+msgstr "Predvolené: zakázané"
 
 #: ../html/src/manager/admin/server-settings/server-settings.tsx:123
 msgid "Reset to default"
 msgstr "Obnoviť predvolené nastavenie"
 
 #: ../html/src/manager/admin/server-settings/server-settings.tsx:131
-#, fuzzy
-#| msgid "Server Configuration - Password Policy"
 msgid "Server Configuration - Server Settings"
-msgstr "Konfigurácia servera - Pravidlá pre heslá"
+msgstr "Konfigurácia servera - Nastavenia servera"
 
 #: ../html/src/manager/admin/server-settings/server-settings.tsx:134
 msgid "Change the server settings which are stored in the database."
-msgstr ""
+msgstr "Zmeniť nastavenia servera, ktoré sú uložené v databáze."
 
 #: ../html/src/manager/admin/server-settings/server-settings.tsx:216
-#, fuzzy
-#| msgid "Select All"
 msgid "Reset All"
-msgstr "Vybrať všetko"
+msgstr "Vrátiť späť všetko"
 
 #: ../html/src/manager/admin/server-settings/server-settings.tsx:217
 msgid "Show the default values of all settings, they are stored with Save"
-msgstr ""
+msgstr "Zobraziť predvolené hodnoty všetkých nastavení; tieto sú uložené pomocou Uložiť"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:159
 msgid "Refresh the product catalog from SUSE Customer Center"
