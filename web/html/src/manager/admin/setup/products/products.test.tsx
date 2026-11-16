@@ -94,6 +94,22 @@ describe("Testing searchCriteriaInExtension", () => {
     expect(searchCriteriaInExtension(extension, criteriaChannel2)).toBeTruthy();
     expect(searchCriteriaInExtension(extension, criteriaWrong)).toBeFalsy();
   });
+
+  test("check criteria with omitted or reordered parts", () => {
+    expect(searchCriteriaInExtension(extension, "suse asd")).toBeTruthy();
+    expect(searchCriteriaInExtension(extension, "asd suse")).toBeTruthy();
+    expect(searchCriteriaInExtension(extension, "extension 3 channel 2")).toBeTruthy();
+    expect(searchCriteriaInExtension(extension, "extension 3 channel 4")).toBeFalsy();
+  });
+
+  test("check criteria with surrounding and repeated whitespace", () => {
+    expect(searchCriteriaInExtension(extension, "  base   1  ")).toBeTruthy();
+    expect(searchCriteriaInExtension(extension, "   ")).toBeTruthy();
+  });
+
+  test("terms have to match the same label or channel summary", () => {
+    expect(searchCriteriaInExtension(extension, "asd extension")).toBeFalsy();
+  });
 });
 
 describe("product request error handling", () => {

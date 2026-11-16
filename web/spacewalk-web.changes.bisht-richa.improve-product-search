@@ -1,0 +1,2 @@
+- Improved product search to support matching products when
+  some words in the product name are omitted or reordered.
