@@ -245,6 +245,23 @@ namespace :utils do
     end
   end
 
+  desc 'Check that the secondary family run sets cover the legacy secondary sets exactly once'
+  task :check_secondary_sets do
+    load_set = ->(file) { YAML.load_file(file) || [] }
+    legacy = load_set.call('run_sets/secondary.yml') + load_set.call('run_sets/secondary_parallelizable.yml')
+    families = Dir.glob('run_sets/secondary_{seq,par}_*.yml')
+    seen = Hash.new { |h, k| h[k] = [] }
+    families.each { |file| load_set.call(file).each { |feature| seen[feature] << File.basename(file) } }
+    errors = []
+    errors.concat((legacy - seen.keys).map { |feature| "missing from every family: #{feature}" })
+    errors.concat((seen.keys - legacy).map { |feature| "not in a legacy secondary set: #{feature}" })
+    seen.each { |feature, files| errors << "in several families (#{files.join(', ')}): #{feature}" if files.length > 1 }
+    seen.each_key { |feature| errors << "no such file: #{feature}" unless File.exist?(feature) }
+    fail "Secondary family sets are inconsistent:\n  #{errors.join("\n  ")}" unless errors.empty?
+
+    puts "OK: #{seen.length} features in #{families.length} family sets"
+  end
+
   desc 'Filter set test'
   task :filter_secondary, [:filter_yaml, :input1_yaml, :input2_yaml, :output_yaml] do |_t, args|
     filter_yaml = args[:filter_yaml]

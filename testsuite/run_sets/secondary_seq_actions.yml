@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# Secondary family 'seq_actions'. See run_sets/secondary.yml and secondary_parallelizable.yml for the legacy full sets.
+
+- features/secondary/min_action_chain.feature
+- features/secondary/minssh_action_chain.feature
+- features/secondary/allcli_action_chain.feature
+- features/secondary/min_docker_api.feature
+- features/secondary/min_recurring_action.feature
+- features/secondary/min_recurring_action_custom_states.feature
+- features/secondary/min_change_software_channel.feature
+- features/secondary/min_retracted_patches.feature

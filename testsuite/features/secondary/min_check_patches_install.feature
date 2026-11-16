@@ -12,6 +12,8 @@ Feature: Display patches
     And I refresh the metadata for "sle_minion"
     And I install old package "andromeda-dummy-1.0" on this "sle_minion"
     And I install old package "virgo-dummy-1.0" on this "sle_minion"
+    And I refresh packages list via spacecmd on "sle_minion"
+    And I wait until refresh package list on "sle_minion" is finished
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -26,7 +28,7 @@ Feature: Display patches
     Then I should see a "andromeda-dummy-6789" link
     When I enter "virgo-dummy" as the filtered synopsis
     And I click on the filter button
-    And I wait until I see "virgo-dummy" text
+    And I wait until I see "virgo-dummy" text, refreshing the page
     Then I should see a "virgo-dummy-3456" link
 
   Scenario: Check SLES release 6789 patches

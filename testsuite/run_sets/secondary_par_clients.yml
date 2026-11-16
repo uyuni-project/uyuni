@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# Secondary family 'par_clients'. See run_sets/secondary.yml and secondary_parallelizable.yml for the legacy full sets.
+
+- features/secondary/allcli_overview_systems_details.feature
+- features/secondary/allcli_config_channel.feature
+- features/secondary/min_rhlike_salt_install_package_and_patch.feature
+- features/secondary/min_rhlike_monitoring.feature
+- features/secondary/minssh_salt_install_package_and_patch.feature
+- features/secondary/minssh_ansible_control_node.feature
+- features/secondary/min_deblike_monitoring.feature
+- features/secondary/min_deblike_salt_install_with_staging.feature
+- features/secondary/min_deblike_salt_install_package_and_patch.feature
+- features/secondary/min_bootstrap_negative.feature
+- features/secondary/min_salt_formulas.feature
+- features/secondary/min_salt_formulas_advanced.feature
+- features/secondary/min_salt_openscap_audit.feature
+- features/secondary/min_salt_user_states.feature
+- features/secondary/min_salt_minion_details.feature
+- features/secondary/min_salt_pkgset_beacon.feature
+- features/secondary/min_monitoring.feature
+- features/secondary/min_cve_id_new_syntax.feature
+- features/secondary/min_project_lotus.feature
