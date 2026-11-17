@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.TimeZone;
@@ -154,5 +155,36 @@ public class TimeConversionTest {
     public void testDateFromLocalDateStringRejectsOtherFormats() {
         assertThrows(DateTimeParseException.class, () -> TimeConversion.dateFromLocalDateString("22/11/2021"));
         assertThrows(NullPointerException.class, () -> TimeConversion.dateFromLocalDateString(null));
+    }
+
+    @Test
+    public void testDateFromLocalDateTimeStringUsesGivenPattern() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        DateTimeFormatter clockHour = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm:ss");
+
+        assertEquals(Instant.parse("2024-03-05T00:30:00Z"),
+                TimeConversion.dateFromLocalDateTimeString(clockHour, "2024-03-05 00:30:00").toInstant());
+        // with kk, 24 is midnight at the start of the same day
+        assertEquals(Instant.parse("2024-03-05T00:30:00Z"),
+                TimeConversion.dateFromLocalDateTimeString(clockHour, "2024-03-05 24:30:00").toInstant());
+    }
+
+    @Test
+    public void testDateFromLocalDateTimeStringIgnoresFractionalSeconds() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
+        DateTimeFormatter clockHour = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm:ss");
+
+        Date parsed = TimeConversion.dateFromLocalDateTimeString(clockHour, "2024-03-05 12:38:09.123456");
+
+        assertEquals(Instant.parse("2024-03-05T07:08:09Z"), parsed.toInstant());
+    }
+
+    @Test
+    public void testDateFromLocalDateTimeStringRejectsOtherFormats() {
+        DateTimeFormatter clockHour = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm:ss");
+
+        assertThrows(DateTimeParseException.class,
+                () -> TimeConversion.dateFromLocalDateTimeString(clockHour, "2024-03-05"));
+        assertThrows(NullPointerException.class, () -> TimeConversion.dateFromLocalDateTimeString(clockHour, null));
     }
 }

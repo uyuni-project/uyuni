@@ -64,8 +64,7 @@ public final class TimeConversion {
      * @throws NullPointerException if value is null
      */
     public static Date dateFromDbDateTimeString(String value) {
-        LocalDateTime local = LocalDateTime.from(DB_DATE_TIME_FORMATTER.parse(value, new ParsePosition(0)));
-        return Date.from(local.atZone(ZoneId.systemDefault()).withLaterOffsetAtOverlap().toInstant());
+        return dateFromLocalDateTimeString(DB_DATE_TIME_FORMATTER, value);
     }
 
     /**
@@ -92,6 +91,22 @@ public final class TimeConversion {
     public static Date dateFromLocalDateString(String value) {
         LocalDate local = LocalDate.from(LOCAL_DATE_FORMATTER.parse(value, new ParsePosition(0)));
         return Date.from(local.atStartOfDay().atZone(ZoneId.systemDefault()).withLaterOffsetAtOverlap().toInstant());
+    }
+
+    /**
+     * Parses a local date and time with the given formatter in the JVM default time zone.
+     * As {@code SimpleDateFormat.parse(String)} did, text after the pattern (e.g. fractional seconds) is ignored
+     * and a local time repeated at the end of daylight saving time resolves to the later instant.
+     *
+     * @param formatter the formatter, its pattern must contain a date and a time
+     * @param value the text to parse
+     * @return the parsed date
+     * @throws DateTimeParseException if value does not start with a date and time matching the formatter
+     * @throws NullPointerException if value is null
+     */
+    public static Date dateFromLocalDateTimeString(DateTimeFormatter formatter, String value) {
+        LocalDateTime local = LocalDateTime.from(formatter.parse(value, new ParsePosition(0)));
+        return Date.from(local.atZone(ZoneId.systemDefault()).withLaterOffsetAtOverlap().toInstant());
     }
 
     // java.sql.Date.toInstant() throws UnsupportedOperationException, getTime() works for every Date
