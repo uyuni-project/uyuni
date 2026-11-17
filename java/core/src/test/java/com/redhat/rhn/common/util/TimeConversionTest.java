@@ -25,6 +25,7 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class TimeConversionTest {
@@ -186,5 +187,25 @@ public class TimeConversionTest {
         assertThrows(DateTimeParseException.class,
                 () -> TimeConversion.dateFromLocalDateTimeString(clockHour, "2024-03-05"));
         assertThrows(NullPointerException.class, () -> TimeConversion.dateFromLocalDateTimeString(clockHour, null));
+    }
+
+    @Test
+    public void testTimeZoneShortNameDependsOnDaylightSavingTime() {
+        TimeZone berlin = TimeZone.getTimeZone("Europe/Berlin");
+        Date winter = Date.from(Instant.parse("2024-01-15T12:00:00Z"));
+        Date summer = Date.from(Instant.parse("2024-07-15T12:00:00Z"));
+
+        assertEquals("CET", TimeConversion.timeZoneShortName(berlin, winter, Locale.US));
+        assertEquals("CEST", TimeConversion.timeZoneShortName(berlin, summer, Locale.US));
+        assertEquals("MEZ", TimeConversion.timeZoneShortName(berlin, winter, Locale.GERMAN));
+        assertEquals("MESZ", TimeConversion.timeZoneShortName(berlin, summer, Locale.GERMAN));
+    }
+
+    @Test
+    public void testTimeZoneShortNameKeepsLegacyIds() {
+        // java.time would write -05:00 for this id
+        Date summer = Date.from(Instant.parse("2024-07-15T12:00:00Z"));
+
+        assertEquals("EST", TimeConversion.timeZoneShortName(TimeZone.getTimeZone("EST"), summer, Locale.US));
     }
 }

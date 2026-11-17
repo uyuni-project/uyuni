@@ -18,6 +18,7 @@
 package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.context.Context;
@@ -27,17 +28,14 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 
 import org.apache.commons.text.WordUtils;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.DecimalStyle;
 import java.util.Collections;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -128,9 +126,7 @@ public enum ViewHelper {
         Context ctx = Context.getCurrentContext();
         Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
         TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
-        DateFormat tzFormat = new SimpleDateFormat("z", locale);
-        tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
-        return tzFormat.format(new Date());
+        return TimeConversion.timeZoneShortName(timezone, new Date(), locale);
     }
 
     /**
@@ -197,9 +193,7 @@ public enum ViewHelper {
     public String getServerTimeZone() {
         Locale locale = Locale.getDefault();
         TimeZone timezone = TimeZone.getDefault();
-        DateFormat tzFormat = new SimpleDateFormat("z", locale);
-        tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
-        return tzFormat.format(new Date());
+        return TimeConversion.timeZoneShortName(timezone, new Date(), locale);
     }
 
     /**
