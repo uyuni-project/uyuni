@@ -236,11 +236,17 @@
           "required": []
         },
         "replicas": {
-          "default": "0",
+          "default": 0,
           "description": "Number the confidential computing pods replicas",
           "minimum": 0,
-          "required": [],
-          "title": "replicas"
+          "title": "replicas",
+          "type": "integer",
+          "x-rancher-question": {
+            "group": "Advanced",
+            "label": "Confidential Computing Attestation Replicas",
+            "min": 0,
+            "order": 540
+          }
         },
         "tag": {
           "default": "null",
@@ -271,10 +277,16 @@
           "required": []
         },
         "enable": {
-          "default": "false",
+          "default": true,
           "description": "Deploys the internal dababase if set to true. Setting to false is not supported yet.",
           "title": "enable",
-          "type": "boolean"
+          "type": "boolean",
+          "x-rancher-question": {
+            "group": "Advanced",
+            "label": "Deploy PostgreSQL",
+            "order": 600,
+            "show_subquestion_if": true
+          }
         },
         "image": {
           "default": "null",
@@ -310,7 +322,12 @@
           "default": "10.42.0.0/16",
           "description": "Network IP range to allow plain text connections from, usually the cluster pods CIDR The default has been adjusted with rke2's pods CIDR default.",
           "required": [],
-          "title": "podsCIDR"
+          "title": "podsCIDR",
+          "x-rancher-question": {
+            "label": "Pods CIDR",
+            "order": 610,
+            "subquestion_of": "db.enable"
+          }
         },
         "report": {
           "$ref": "#/definitions/dbConnectionConfig",
@@ -337,16 +354,26 @@
       "title": "db"
     },
     "enableMonitoring": {
-      "default": "true",
+      "default": true,
       "description": "Create the ingress or gateway routes for Prometheus exporters if true.",
       "title": "enableMonitoring",
-      "type": "boolean"
+      "type": "boolean",
+      "x-rancher-question": {
+        "group": "Advanced",
+        "label": "Expose Monitoring Endpoints",
+        "order": 390
+      }
     },
     "exposeJavaDebug": {
-      "default": "false",
+      "default": false,
       "description": "Expose ports 8001, 8002, and 8003 for Java debugging if true",
       "title": "exposeJavaDebug",
-      "type": "boolean"
+      "type": "boolean",
+      "x-rancher-question": {
+        "group": "Advanced",
+        "label": "Expose Java Debug Ports",
+        "order": 840
+      }
     },
     "gateway": {
       "additionalProperties": false,
@@ -356,13 +383,24 @@
           "default": "",
           "description": "Name of the gateway class to use. For rke2 with traefik, it is likely to be \"traefik\".",
           "required": [],
-          "title": "class"
+          "title": "class",
+          "x-rancher-question": {
+            "label": "Gateway Class",
+            "order": 310,
+            "subquestion_of": "gateway.enable"
+          }
         },
         "enable": {
-          "default": "false",
+          "default": false,
           "description": "If enabled, Gateway API 1.4 resources will be deployed instead of the ingress ones. Note that TCPRoute is used and is still in alpha2 stage.",
           "title": "enable",
-          "type": "boolean"
+          "type": "boolean",
+          "x-rancher-question": {
+            "group": "General",
+            "label": "Use Gateway API",
+            "order": 300,
+            "show_subquestion_if": true
+          }
         },
         "listeners": {
           "additionalProperties": false,
@@ -386,7 +424,12 @@
           "default": "",
           "description": "Name of the Gateway to use. If left empty an uyuni-gateway will be created.",
           "required": [],
-          "title": "name"
+          "title": "name",
+          "x-rancher-question": {
+            "label": "Gateway Name",
+            "order": 320,
+            "subquestion_of": "gateway.enable"
+          }
         }
       },
       "required": [],
@@ -400,7 +443,13 @@
           "default": "null",
           "description": "Fully qualified name the server will answer as.",
           "required": [],
-          "title": "fqdn"
+          "title": "fqdn",
+          "x-rancher-question": {
+            "group": "General",
+            "label": "Server FQDN",
+            "order": 100,
+            "type": "string"
+          }
         }
       },
       "required": [
@@ -418,10 +467,15 @@
           "required": []
         },
         "enable": {
-          "default": "false",
+          "default": false,
           "description": "Define a hub API deployment with one replica if set to true.",
           "title": "enable",
-          "type": "boolean"
+          "type": "boolean",
+          "x-rancher-question": {
+            "group": "Advanced",
+            "label": "Enable Hub XML-RPC API",
+            "order": 520
+          }
         },
         "image": {
           "default": "null",
@@ -513,7 +567,13 @@
           "default": "traefik",
           "description": "Specify the ingress class name to use.",
           "required": [],
-          "title": "class"
+          "title": "class",
+          "x-rancher-question": {
+            "group": "General",
+            "label": "Ingress Class",
+            "order": 380,
+            "show_if": "gateway.enable=false"
+          }
         },
         "type": {
           "default": "traefik",
@@ -523,7 +583,14 @@
             ""
           ],
           "required": [],
-          "title": "type"
+          "title": "type",
+          "x-rancher-question": {
+            "empty_option_label": "Custom ingress",
+            "group": "General",
+            "label": "Ingress Type",
+            "order": 370,
+            "show_if": "gateway.enable=false"
+          }
         }
       },
       "required": [],
@@ -543,20 +610,37 @@
         "Never"
       ],
       "required": [],
-      "title": "pullPolicy"
+      "title": "pullPolicy",
+      "x-rancher-question": {
+        "group": "General",
+        "label": "Image Pull Policy",
+        "order": 220
+      }
     },
     "registrySecret": {
       "default": "",
       "description": "name of secret to use to pull the images from the registry with authentication. Leave empty for no authentication. To create the secret, see: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/",
       "required": [],
-      "title": "registrySecret"
+      "title": "registrySecret",
+      "x-rancher-question": {
+        "description": "Name of the secret used to pull the images from a registry with authentication. Leave empty for no authentication. Once selected, it can only be cleared by editing the values YAML.",
+        "group": "General",
+        "label": "Registry Pull Secret",
+        "order": 230,
+        "type": "secret"
+      }
     },
     "repository": {
       "$schema": "https://json-schema.org/draft-07/schema#",
       "default": "registry.opensuse.org/uyuni",
       "description": "The default repository with the path where to find all the images.",
       "required": [],
-      "title": "Server values"
+      "title": "Server values",
+      "x-rancher-question": {
+        "group": "General",
+        "label": "Image Repository",
+        "order": 200
+      }
     },
     "saline": {
       "additionalProperties": false,
@@ -568,10 +652,15 @@
           "required": []
         },
         "enable": {
-          "default": "false",
+          "default": false,
           "description": "Define a saline deployment with one replica if set to true.",
           "title": "enable",
-          "type": "boolean"
+          "type": "boolean",
+          "x-rancher-question": {
+            "group": "Advanced",
+            "label": "Enable Saline",
+            "order": 530
+          }
         },
         "image": {
           "default": "null",
@@ -630,13 +719,23 @@
           "default": "",
           "description": "Name of an AppArmor profile to use for the server pod.",
           "required": [],
-          "title": "apparmorProfile"
+          "title": "apparmorProfile",
+          "x-rancher-question": {
+            "label": "AppArmor Profile",
+            "order": 810,
+            "subquestion_of": "server.superPrivileged"
+          }
         },
         "email": {
           "default": "admin@uyuni.lab.org",
           "description": "Email used for the notifications sent by the server.",
           "required": [],
-          "title": "email"
+          "title": "email",
+          "x-rancher-question": {
+            "group": "General",
+            "label": "Notification Email",
+            "order": 110
+          }
         },
         "extraVolumeMounts": {
           "description": "Additional mounts for the server container.",
@@ -682,13 +781,25 @@
               "default": "",
               "description": "Name of the PVC to use for the mirror volume.",
               "required": [],
-              "title": "claimName"
+              "title": "claimName",
+              "x-rancher-question": {
+                "description": "Existing PVC to mount as the server.susemanager.fromdir mirror. Leave empty for none. Once selected, it can only be cleared by editing the values YAML.",
+                "group": "Advanced",
+                "label": "Mirror Volume Claim",
+                "order": 770,
+                "type": "pvc"
+              }
             },
             "hostPath": {
               "default": "",
               "description": "Path on the node to mount as mirror.",
               "required": [],
-              "title": "hostPath"
+              "title": "hostPath",
+              "x-rancher-question": {
+                "group": "Advanced",
+                "label": "Mirror Host Path",
+                "order": 780
+              }
             }
           },
           "required": [],
@@ -713,19 +824,37 @@
           "default": "",
           "description": "Name of a basic-auth secret with the organization mirroring credentials to set up on the server.",
           "required": [],
-          "title": "sccSecret"
+          "title": "sccSecret",
+          "x-rancher-question": {
+            "description": "Name of a basic-auth secret with the organization mirroring credentials to set up on the server. Leave empty for none. Once selected, it can only be cleared by editing the values YAML.",
+            "group": "General",
+            "label": "SCC Credentials Secret",
+            "order": 130,
+            "type": "secret"
+          }
         },
         "selinuxType": {
           "default": "",
           "description": "Name of the SELinux type to use for the server pod.",
           "required": [],
-          "title": "selinuxType"
+          "title": "selinuxType",
+          "x-rancher-question": {
+            "label": "SELinux Type",
+            "order": 820,
+            "subquestion_of": "server.superPrivileged"
+          }
         },
         "superPrivileged": {
-          "default": "false",
+          "default": false,
           "description": "Set to true to run on a cluster with selinux or AppArmor enforced.",
           "title": "superPrivileged",
-          "type": "boolean"
+          "type": "boolean",
+          "x-rancher-question": {
+            "group": "General",
+            "label": "Super Privileged Server",
+            "order": 800,
+            "show_subquestion_if": "false"
+          }
         },
         "systemdLogLevel": {
           "default": "",
@@ -742,7 +871,13 @@
             ""
           ],
           "required": [],
-          "title": "systemdLogLevel"
+          "title": "systemdLogLevel",
+          "x-rancher-question": {
+            "empty_option_label": "Default",
+            "group": "Advanced",
+            "label": "Systemd Log Level",
+            "order": 830
+          }
         },
         "tag": {
           "default": "null",
@@ -833,7 +968,12 @@
             "LoadBalancer"
           ],
           "required": [],
-          "title": "type"
+          "title": "type",
+          "x-rancher-question": {
+            "group": "General",
+            "label": "Service Type",
+            "order": 400
+          }
         }
       },
       "required": [],
@@ -849,7 +989,12 @@
       "default": "",
       "description": "The default tag to use for all the images, can be overridden By default the tag will be the appVersion of the Chart.",
       "required": [],
-      "title": "tag"
+      "title": "tag",
+      "x-rancher-question": {
+        "group": "General",
+        "label": "Image Tag",
+        "order": 210
+      }
     },
     "tftp": {
       "additionalProperties": false,
@@ -861,16 +1006,27 @@
           "required": []
         },
         "enable": {
-          "default": "false",
+          "default": false,
           "description": "Define a TFTP server deployment with one replica if set to true",
           "title": "enable",
-          "type": "boolean"
+          "type": "boolean",
+          "x-rancher-question": {
+            "group": "Advanced",
+            "label": "Enable TFTP Server",
+            "order": 500,
+            "show_subquestion_if": true
+          }
         },
         "hostNetwork": {
-          "default": "false",
+          "default": false,
           "description": "Use the host network to bypass the Kubernetes network layers. This may be needed if not using a LoadBalancer for the TFTP server. Note that this may be more complex to manage on multi-node clusters.",
           "title": "hostNetwork",
-          "type": "boolean"
+          "type": "boolean",
+          "x-rancher-question": {
+            "label": "Use Host Network",
+            "order": 510,
+            "subquestion_of": "tftp.enable"
+          }
         },
         "image": {
           "default": "null",
@@ -920,7 +1076,12 @@
       "default": "Etc/UTC",
       "description": "The time zone to set in the containers",
       "required": [],
-      "title": "timezone"
+      "title": "timezone",
+      "x-rancher-question": {
+        "group": "General",
+        "label": "Time Zone",
+        "order": 120
+      }
     },
     "volumes": {
       "additionalProperties": false,
@@ -1034,7 +1195,14 @@
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "x-rancher-question": {
+            "description": "Storage class used for all the volume claims. Leave empty to use the cluster default. Once selected, it can only be cleared by editing the values YAML.",
+            "group": "General",
+            "label": "Default Storage Class",
+            "order": 700,
+            "type": "storageclass"
+          }
         },
         "var-cache": {
           "$ref": "#/definitions/volumeConfig",
