@@ -53,6 +53,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
@@ -119,6 +123,9 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
 
         com.redhat.rhn.domain.rhnpackage.Package pkg1 = PackageManagerTest.addPackageToChannel("pkg1", channel);
         pkg1.setVendor(null);
+        // build_time holds the GMT wall clock (see headerSource.py), Hibernate writes it in the JVM time zone
+        LocalDateTime buildTimeGmt = LocalDateTime.of(2024, 3, 5, 7, 8, 9);
+        pkg1.setBuildTime(Date.from(buildTimeGmt.atZone(ZoneId.systemDefault()).toInstant()));
 
         PackageProvides prov1 = new PackageProvides();
         PackageCapability provCap = PackageCapabilityTest.createTestCapability("capProv1");
@@ -204,6 +211,9 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         try (FileInputStream fin = new FileInputStream(primaryXmlGz);
                 InputStream gzipStream = new GZIPInputStream(fin)) {
             String primaryXmlStr = TestUtils.readAll(gzipStream);
+            long buildTimeSeconds = buildTimeGmt.toEpochSecond(ZoneOffset.UTC);
+            TestUtils.assertContains(primaryXmlStr,
+                    "<time file=\"" + buildTimeSeconds + "\" build=\"" + buildTimeSeconds + "\"/>");
 
             primaryXmlStr = cleanupPrimaryXml(primaryXmlStr);
 
