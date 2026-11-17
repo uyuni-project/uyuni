@@ -30,7 +30,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.junit.jupiter.api.Test;
 
-import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -114,7 +115,8 @@ public class SCCRegisterUpdateSystemItemTest {
     private final TypeToken<Map<String, List<SCCUpdateSystemItem>>> updateSystemTypeToken = new TypeToken<>() { };
     private static final String SYSTEMS_KEY = "systems";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+    private final DateTimeFormatter dateFormat =
+            DateTimeFormatter.ofPattern(DATE_FORMAT).withZone(ZoneId.systemDefault());
 
     @Test
     public void ensureRegularCreateRequestParsingWorks() {
@@ -125,7 +127,7 @@ public class SCCRegisterUpdateSystemItemTest {
         assertEquals(3, createRequestToRegisterSystem.get(SYSTEMS_KEY).size());
         for (SCCRegisterSystemItem jsonItem : createRequestToRegisterSystem.get(SYSTEMS_KEY)) {
             assertFalse(jsonItem.isOnlyLastSeenAt());
-            assertEquals("2025-03-01", dateFormat.format(jsonItem.getLastSeenAt()));
+            assertEquals("2025-03-01", dateFormat.format(jsonItem.getLastSeenAt().toInstant()));
         }
     }
 
@@ -156,7 +158,7 @@ public class SCCRegisterUpdateSystemItemTest {
         assertEquals(3, lastSeenRequestRegisterSystem.get(SYSTEMS_KEY).size());
         for (SCCRegisterSystemItem jsonItem : lastSeenRequestRegisterSystem.get(SYSTEMS_KEY)) {
             assertTrue(jsonItem.isOnlyLastSeenAt());
-            assertNotEquals("2025-03-01", dateFormat.format(jsonItem.getLastSeenAt()));
+            assertNotEquals("2025-03-01", dateFormat.format(jsonItem.getLastSeenAt().toInstant()));
         }
     }
 }

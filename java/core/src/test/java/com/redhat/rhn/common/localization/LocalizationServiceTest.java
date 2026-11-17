@@ -32,7 +32,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -195,8 +194,7 @@ public class LocalizationServiceTest extends BaseTestCase {
 
         // Here we test converting a Pacific Standard Time date from the RHN
         // Database format to the standard Java format + timezone in GMT.
-        Date dt = new SimpleDateFormat(LocalizationService.RHN_DB_DATEFORMAT +
-                " z").parse("2004-12-10 13:20:00 PST");
+        Date dt = Date.from(Instant.parse("2004-12-10T21:20:00Z")); // 2004-12-10 13:20:00 PST
 
         DateFormat df = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
