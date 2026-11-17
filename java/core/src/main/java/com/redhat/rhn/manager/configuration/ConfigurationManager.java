@@ -28,6 +28,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -77,7 +78,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.InputStream;
 import java.sql.Types;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -1119,9 +1119,7 @@ public class ConfigurationManager extends BaseManager {
         //          'YYYY-MM-DD HH24:MI:SS'
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.WEEK_OF_YEAR, -1);
-        SimpleDateFormat format = new SimpleDateFormat();
-        format.applyPattern("yyyy-MM-dd HH:mm:ss");
-        params.put("date", format.format(cal.getTime()));
+        params.put("date", TimeConversion.localDateTimeStringFromDate(cal.getTime()));
 
         SelectMode m = ModeFactory.getMode(CONFIG_QUERIES, "recent_config_deploy_actions_for_user");
         return m.execute(params);

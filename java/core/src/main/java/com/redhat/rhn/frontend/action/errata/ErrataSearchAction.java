@@ -19,6 +19,7 @@ package com.redhat.rhn.frontend.action.errata;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.action.BaseSearchAction;
 import com.redhat.rhn.frontend.action.common.DateRangePicker;
@@ -49,7 +50,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TimeZone;
 
 import jakarta.servlet.http.HttpServletRequest;
 import redstone.xmlrpc.XmlRpcClient;
@@ -449,13 +449,7 @@ public class ErrataSearchAction extends BaseSearchAction {
     }
 
     private String getDateString(Date date) {
-        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-        cal.setTime(date);
-        String dateFmt = "yyyy-MM-dd HH:mm:ss";
-        java.text.SimpleDateFormat sdf =
-            new java.text.SimpleDateFormat(dateFmt);
-        sdf.setTimeZone(TimeZone.getDefault());
-        return sdf.format(cal.getTime());
+        return TimeConversion.localDateTimeStringFromDate(date);
     }
 
     protected String preprocessSearchString(String searchstring, String mode) {

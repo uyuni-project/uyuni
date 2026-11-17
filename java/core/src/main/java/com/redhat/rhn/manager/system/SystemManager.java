@@ -37,6 +37,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
@@ -148,7 +149,6 @@ import java.net.IDN;
 import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.Types;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -3302,12 +3302,11 @@ public class SystemManager extends BaseManager {
                                                                 Integer offset, Integer limit) {
         final SelectMode m = ModeFactory.getMode("System_queries", "system_events_history");
 
-        final SimpleDateFormat formatter = new SimpleDateFormat(LocalizationService.RHN_DB_DATEFORMAT);
-
         final Map<String, Object> params = new HashMap<>();
         params.put("sid", server.getId());
         params.put("oid", org.getId());
-        params.put("date", earliestDate != null ? formatter.format(earliestDate) : "1970-01-01 00:00:00");
+        params.put("date", earliestDate != null ?
+                TimeConversion.localDateTimeStringFromDate(earliestDate) : "1970-01-01 00:00:00");
         params.put("limit", limit);
         params.put("offset", offset);
 
