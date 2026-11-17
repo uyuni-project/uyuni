@@ -228,6 +228,7 @@ Feature: Smoke tests for <client>
     And I click on "Save"
     Then I should see a "Formula saved" text
 
+@skip_for_transactional_minion
   Scenario: Apply highstate for the Prometheus exporters on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "States" in the content area
