@@ -88,4 +88,20 @@ public class ViewHelperDateTest {
         assertThrows(ParseException.class, () -> ViewHelper.getDateFromISOString("2024-03-05T07:08:09.123Z"));
         assertThrows(ParseException.class, () -> ViewHelper.getDateFromISOString("2024-03-05 07:08:09Z"));
     }
+
+    @Test
+    public void testRenderTimezoneUsesContextTimeZone() {
+        Context.getCurrentContext().setLocale(Locale.US);
+        Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("Asia/Kolkata"));
+
+        assertEquals("IST", ViewHelper.getInstance().renderTimezone());
+    }
+
+    @Test
+    public void testGetServerTimeZoneUsesServerTimeZone() {
+        Locale.setDefault(Locale.US);
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
+
+        assertEquals("IST", ViewHelper.getInstance().getServerTimeZone());
+    }
 }

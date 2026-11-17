@@ -25,6 +25,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Standard conversions between {@link Date} and their string representations.
@@ -107,6 +109,20 @@ public final class TimeConversion {
     public static Date dateFromLocalDateTimeString(DateTimeFormatter formatter, String value) {
         LocalDateTime local = LocalDateTime.from(formatter.parse(value, new ParsePosition(0)));
         return Date.from(local.atZone(ZoneId.systemDefault()).withLaterOffsetAtOverlap().toInstant());
+    }
+
+    /**
+     * Returns the short name of a time zone at the given date, e.g. CET or CEST for Europe/Berlin, as
+     * {@code SimpleDateFormat} wrote it for the {@code z} pattern. java.time names some zones differently
+     * (e.g. EST as -05:00), so the name comes from {@link TimeZone}.
+     *
+     * @param timeZone the time zone
+     * @param date the date, which decides between the standard and the daylight saving time name
+     * @param locale the locale of the name
+     * @return the short name of the time zone
+     */
+    public static String timeZoneShortName(TimeZone timeZone, Date date, Locale locale) {
+        return timeZone.getDisplayName(timeZone.inDaylightTime(date), TimeZone.SHORT, locale);
     }
 
     // java.sql.Date.toInstant() throws UnsupportedOperationException, getTime() works for every Date
