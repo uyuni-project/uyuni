@@ -38,6 +38,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,7 +49,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import redstone.xmlrpc.XmlRpcClient;
@@ -543,12 +545,9 @@ public class SystemSearchHelper {
     }
 
     protected static String formatDateString(Date d) {
-        String dateFormat = "yyyyMMddHHmm";
-        java.text.SimpleDateFormat sdf =
-              new java.text.SimpleDateFormat(dateFormat);
         // Lucene uses GMT for indexing
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        return sdf.format(d);
+        return DateTimeFormatter.ofPattern("yyyyMMddHHmm").withZone(ZoneId.of("GMT"))
+                .format(Instant.ofEpochMilli(d.getTime()));
     }
 
     /**
