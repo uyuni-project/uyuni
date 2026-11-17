@@ -1817,8 +1817,18 @@ class RepoSync(object):
             except Exception:
                 failed_packages += 1
                 e = str(sys.exc_info()[1])
+                pkg_name = (
+                    os.path.basename(stage_path)
+                    if stage_path and isinstance(stage_path, str)
+                    else getattr(pack, "name", None)
+                )
+
+                msg = "ERROR: Failed to import package"
+                if isinstance(pkg_name, str):
+                    msg = f"{msg} {pkg_name}"
                 if e:
-                    log2(0, 0, e, stream=sys.stderr)
+                    msg = f"{msg}: {e}"
+                log2(0, 0, msg, stream=sys.stderr)
                 log2(0, 1, traceback.format_exc(), stream=sys.stderr)
                 if fail:
                     raise

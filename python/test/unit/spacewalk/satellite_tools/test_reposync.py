@@ -392,6 +392,57 @@ class RepoSyncTest(unittest.TestCase):
         self.assertFalse(apply_async_mock.called)
 
     @patch("spacewalk.common.rhnConfig.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.reposync.log2")
+    @patch("spacewalk.satellite_tools.reposync.cfg_component")
+    @patch("spacewalk.satellite_tools.reposync.SQLBackend", Mock())
+    @patch("spacewalk.satellite_tools.reposync.log", Mock())
+    def test_import_package_batch_logs_error_when_package_fails(
+        self, cfg_comp_mock, log2_mock
+    ):
+        """
+        When package staging or import fails during import_package_batch
+        Then an explanatory error message should be logged via log2
+        """
+        self.reposync.rhnSQL.closeDB = Mock()
+        cfg_mock = Mock()
+        cfg_mock.MOUNT_POINT = "/tmp"
+        cfg_comp_mock.return_value.__enter__.return_value = cfg_mock
+
+        fail_pkg_name = "failed.rpm"
+        fail_stage_path = f"/tmp/{fail_pkg_name}"
+        pack = Mock()
+        pack.path = fail_stage_path
+        pack.name = "failed"
+
+        to_process = [(pack, True, False)]
+        to_disassociate = {}
+
+        with patch(
+            "spacewalk.satellite_tools.reposync.os.path.exists", return_value=False
+        ):
+            _, failed_packages, _, processed = (
+                self.reposync.RepoSync.import_package_batch(
+                    to_process,
+                    to_disassociate,
+                    False,
+                    0,
+                    1,
+                    False,
+                    1,
+                    False,
+                    100,
+                )
+            )
+
+        self.assertEqual(failed_packages, 1)
+        self.assertEqual(processed[0], (pack, False, False))
+        expected_msg = (
+            f"ERROR: Failed to import package {fail_pkg_name}: "
+            f"Staged package file does not exist: {fail_stage_path}"
+        )
+        log2_mock.assert_any_call(0, 0, expected_msg, stream=sys.stderr)
+
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     @patch("spacewalk.satellite_tools.reposync.send_error_mail")
     def test_sync_raises_channel_timeout(self, send_error_mail):
         rs = self._create_mocked_reposync()
