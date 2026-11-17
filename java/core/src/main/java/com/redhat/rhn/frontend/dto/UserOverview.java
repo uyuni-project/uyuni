@@ -197,7 +197,6 @@ public class UserOverview extends BaseDto {
         if (lastLoggedIn == null) {
             return "";
         }
-        // return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a z").format(lastLoggedIn);
         return LocalizationService.getInstance().formatDate(lastLoggedIn);
     }
 
