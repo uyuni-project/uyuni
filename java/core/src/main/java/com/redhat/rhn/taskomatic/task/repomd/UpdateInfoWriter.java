@@ -18,6 +18,7 @@
 package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.frontend.dto.Bug;
 import com.redhat.rhn.frontend.dto.CVE;
@@ -29,8 +30,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import org.xml.sax.SAXException;
 
 import java.io.Writer;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -124,15 +123,13 @@ public class UpdateInfoWriter extends RepomdWriter {
         handler.addElementWithCharacters("title", sanitize(0L, erratum.getAdvisorySynopsis()));
         handler.addElementWithCharacters("severity", sanitize(0L, erratum.getSeverity()));
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
         attr.clear();
-        attr.addAttribute("date", df.format(erratum.getIssueDateObj()));
+        attr.addAttribute("date", TimeConversion.localDateTimeStringFromDate(erratum.getIssueDateObj()));
         handler.startElement("issued", attr);
         handler.endElement("issued");
 
         attr.clear();
-        attr.addAttribute("date", df.format(erratum.getUpdateDateObj()));
+        attr.addAttribute("date", TimeConversion.localDateTimeStringFromDate(erratum.getUpdateDateObj()));
         handler.startElement("updated", attr);
         handler.endElement("updated");
 

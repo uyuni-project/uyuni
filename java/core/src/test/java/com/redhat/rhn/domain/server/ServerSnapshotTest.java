@@ -25,6 +25,9 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +35,15 @@ import java.util.Set;
  * Test class for ServerSnapshot
  */
 public class ServerSnapshotTest extends BaseTestCaseWithUser {
+
+    @Test
+    public void testGetName() {
+        ServerSnapshot snapshot = new ServerSnapshot();
+        LocalDateTime created = LocalDateTime.of(2024, 3, 5, 7, 8, 9, 123_000_000);
+        snapshot.setCreated(Date.from(created.atZone(ZoneId.systemDefault()).toInstant()));
+
+        assertEquals("2024-03-05 07:08:09", snapshot.getName());
+    }
 
     @Test
     public void testRollbackGroups() throws Exception {

@@ -21,6 +21,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
@@ -41,8 +42,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -345,8 +344,7 @@ public class ServerSnapshot extends BaseDomainHelper {
      * @return Returns date in format yyyy-MM-dd HH:mm:ss so it can be used as a name
      */
     public String getName() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return dateFormat.format(this.getCreated());
+        return TimeConversion.localDateTimeStringFromDate(getCreated());
     }
 
     /**

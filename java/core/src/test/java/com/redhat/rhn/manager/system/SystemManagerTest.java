@@ -168,6 +168,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1923,6 +1925,21 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("Event 2", allEvents.get(6).getSummary());
         assertEquals("Package Install", allEvents.get(7).getHistoryTypeName());
         assertEquals("Event 3", allEvents.get(8).getSummary());
+    }
+
+    @Test
+    public void testSystemEventHistoryEarliestDate() throws Exception {
+        final Server server = ServerTestUtils.createTestSystem(user);
+        createHistoryEntry(server, "Event 1");
+        final Org org = user.getOrg();
+        final Date yesterday = Date.from(Instant.now().minus(1, ChronoUnit.DAYS));
+        final Date tomorrow = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
+
+        final List<SystemEventDto> allEvents = SystemManager.systemEventHistory(server, org, null, null, null);
+        assertFalse(allEvents.isEmpty());
+
+        assertEquals(allEvents, SystemManager.systemEventHistory(server, org, yesterday, null, null));
+        assertTrue(SystemManager.systemEventHistory(server, org, tomorrow, null, null).isEmpty());
     }
 
     @Test
