@@ -21,8 +21,10 @@ import com.redhat.rhn.frontend.html.HtmlTag;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DecimalStyle;
 
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.tagext.TagSupport;
@@ -181,8 +183,9 @@ public class DateTimePickerTag extends TagSupport {
         if (data.isLatin()) {
             group.setAttribute("data-is-am-pm", "");
         }
-        DateFormat isoFmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        group.setAttribute("data-value", isoFmt.format(data.getDate()));
+        DateTimeFormatter isoFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mmZ")
+                .withDecimalStyle(DecimalStyle.ofDefaultLocale()).withZone(ZoneId.systemDefault());
+        group.setAttribute("data-value", isoFmt.format(Instant.ofEpochMilli(data.getDate().getTime())));
 
         out.append(group.render());
 
