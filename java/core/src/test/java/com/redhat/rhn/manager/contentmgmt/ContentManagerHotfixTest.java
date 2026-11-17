@@ -1,0 +1,384 @@
+/*
+ * Copyright (c) 2026 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+package com.redhat.rhn.manager.contentmgmt;
+
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.toSet;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
+import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.ErrataTestBuilder;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageTest;
+import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.BaseHandlerTestCase;
+import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
+import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
+import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.errata.syncwithpackages.dto.SyncedErratumWithPackages;
+import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+
+/**
+ * Tests cloning an erratum into CLM hotfix channels with {@link ContentManager}.
+ *
+ * Common setup: channel {@code source} serves packages pkgA, pkgC and pkgS and holds two vendor errata:
+ * - {@code errata}, declaring pkgA and pkgB (pkgB is not served by {@code source})
+ * - {@code other}, declaring pkgC
+ * pkgS belongs to no erratum.
+ * Projects using {@code source}:
+ * - "cp" with environments dev, test and prod
+ * - "cp2" with environment dev
+ * Project "cpother" uses an unrelated source
+ * Every environment has a hotfix channel.
+ */
+public class ContentManagerHotfixTest extends BaseHandlerTestCase {
+
+    private static final String CP_DEV_HOTFIX = "cp-dev-hotfix";
+    private static final String CP_TEST_HOTFIX = "cp-test-hotfix";
+    private static final String CP_PROD_HOTFIX = "cp-prod-hotfix";
+    private static final String CP2_DEV_HOTFIX = "cp2-dev-hotfix";
+    private static final String CPOTHER_DEV_HOTFIX = "cpother-dev-hotfix";
+    public static final String DEV = "dev";
+    public static final String CP_PROJECT_LABEL = "cp";
+
+    private final ContentManager contentManager = new ContentManager();
+
+    private Package pkgA, pkgB, pkgC;
+    private Channel source;
+    private Errata errata, other;
+
+    /**
+     * Builds the setup described in the class documentation.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @BeforeEach
+    public void setUp() throws Exception {
+        contentManager.setModulemdApi(new MockModulemdApi());
+
+        pkgA = PackageTest.createTestPackage(admin.getOrg(), "pkgA");
+        pkgB = PackageTest.createTestPackage(admin.getOrg(), "pkgB");
+        pkgC = PackageTest.createTestPackage(admin.getOrg(), "pkgC");
+        Package pkgS = PackageTest.createTestPackage(admin.getOrg(), "pkgS");
+        source = createChannelWithPackages(admin, pkgA, pkgC, pkgS);
+        errata = new ErrataTestBuilder().addPackages(pkgA, pkgB).addChannel(source).buildAndSave();
+        other = new ErrataTestBuilder().addPackages(pkgC).addChannel(source).buildAndSave();
+
+        buildProjectWithEnvironments(admin, CP_PROJECT_LABEL, source, DEV, "test", "prod");
+        buildProjectWithEnvironments(admin, "cp2", source, DEV);
+        buildProjectWithEnvironments(admin, "cpother",
+                createChannelWithPackages(admin, PackageTest.createTestPackage(admin.getOrg(), "cpother-pkg")), DEV);
+    }
+
+    /**
+     * Tests cloning into one hotfix channel. Initially it has no erratas. After executing
+     * {@link ContentManager#cloneIntoHotfixChannel}, expects the channel to hold a clone of
+     * {@code errata} and serving all its packages.
+     * The hotfix channels of the other environments and of the other projects get nothing.
+     * Repeating the call changes nothing.
+     */
+    @Test
+    public void testCloneIntoHotfixChannel() {
+        Org org = admin.getOrg();
+        assertTrue(lookupChannel(org, CP_DEV_HOTFIX).getErratas().isEmpty());
+
+        SyncedErratumWithPackages syncedErratumWithPackages =
+                contentManager.cloneIntoHotfixChannel(admin, errata.getAdvisoryName(), CP_DEV_HOTFIX);
+
+        Errata clone = getCloneOf(org, errata);
+        assertEquals(clone.getId(), syncedErratumWithPackages.errata().getId());
+        assertEquals(ids(List.of(pkgA, pkgB)), ids(syncedErratumWithPackages.packages()));
+
+        assertChannelHasErratasAndPackages(org, CP_DEV_HOTFIX, Set.of(clone.getId()), ids(List.of(pkgA, pkgB)));
+        assertTrue(lookupChannel(org, CP_TEST_HOTFIX).getErratas().isEmpty());
+        assertTrue(lookupChannel(org, CP2_DEV_HOTFIX).getErratas().isEmpty());
+
+        // idempotency check
+        assertEquals(syncedErratumWithPackages,
+                contentManager.cloneIntoHotfixChannel(admin, errata.getAdvisoryName(), CP_DEV_HOTFIX));
+        assertEquals(clone.getId(), getCloneOf(org, errata).getId());
+        assertChannelHasErratasAndPackages(org, CP_DEV_HOTFIX, Set.of(clone.getId()), ids(List.of(pkgA, pkgB)));
+    }
+
+    /**
+     * Tests cloning into hotfix channels of several environments and projects at once: each holds the same clone
+     * of {@code errata}, a label given twice is cloned into once, the hotfix channels not given are not changed.
+     */
+    @Test
+    public void testCloneIntoHotfixChannels() {
+        Org org = admin.getOrg();
+        Set<String> hotfixLabels = Set.of(CP_DEV_HOTFIX, CP_PROD_HOTFIX, CP2_DEV_HOTFIX);
+        hotfixLabels.forEach(label -> assertTrue(lookupChannel(org, label).getErratas().isEmpty()));
+
+        Map<String, SyncedErratumWithPackages> syncedErratumWithPackages = contentManager.cloneIntoHotfixChannels(admin,
+                errata.getAdvisoryName(), List.of(CP_PROD_HOTFIX, CP2_DEV_HOTFIX, CP_DEV_HOTFIX, CP_DEV_HOTFIX));
+
+        assertEquals(hotfixLabels, syncedErratumWithPackages.keySet());
+        Errata clone = getCloneOf(org, errata);
+        for (String label : hotfixLabels) {
+            assertEquals(clone.getId(), syncedErratumWithPackages.get(label).errata().getId());
+            assertChannelHasErratasAndPackages(org, label, Set.of(clone.getId()), ids(List.of(pkgA, pkgB)));
+        }
+        assertTrue(lookupChannel(org, CP_TEST_HOTFIX).getErratas().isEmpty());
+    }
+
+    /**
+     * Tests cloning errata one after the other: a hotfix channel keeps what it already holds, and a hotfix
+     * channel does not get the errata of the hotfix channel of the previous environment it was cloned from.
+     */
+    @Test
+    public void testCloneKeepsHotfixContent() {
+        Org org = admin.getOrg();
+
+        contentManager.cloneIntoHotfixChannel(admin, other.getAdvisoryName(), CP_DEV_HOTFIX);
+        contentManager.cloneIntoHotfixChannel(admin, errata.getAdvisoryName(), CP_DEV_HOTFIX);
+        contentManager.cloneIntoHotfixChannel(admin, errata.getAdvisoryName(), CP_TEST_HOTFIX);
+
+        Long cloneOfErrata = getCloneOf(org, errata).getId();
+        Long cloneOfOther = getCloneOf(org, other).getId();
+        assertChannelHasErratasAndPackages(org, CP_DEV_HOTFIX, Set.of(cloneOfErrata, cloneOfOther),
+                ids(List.of(pkgA, pkgB, pkgC)));
+        assertChannelHasErratasAndPackages(org, CP_TEST_HOTFIX, Set.of(cloneOfErrata), ids(List.of(pkgA, pkgB)));
+    }
+
+    /**
+     * Tests that invalid requests are rejected, without cloning {@code errata} into the valid hotfix channel of
+     * the request.
+     */
+    @Test
+    public void testCloneIntoInvalidChannels() {
+        String advisoryName = "does-not-exist";
+        String regularChannel =
+                ContentManager.lookupEnvironment(DEV, CP_PROJECT_LABEL, admin).orElseThrow().getTargets()
+                        .stream()
+                        .flatMap(t -> t.asSoftwareTarget().stream())
+                        .filter(t -> !t.isHotfix())
+                        .findFirst().orElseThrow()
+                        .getChannel().getLabel();
+        String unrelated = new ErrataTestBuilder().addPackages(pkgA)
+                .addChannel(createChannelWithPackages(admin, pkgA)).buildAndSave().getAdvisoryName();
+        String advisory = errata.getAdvisoryName();
+
+        // no hotfix channel labels
+        assertThrows(InvalidParameterException.class, () ->
+                contentManager.cloneIntoHotfixChannels(admin, advisory, List.of()));
+        // not hotfix channel
+        assertThrows(InvalidChannelException.class, () ->
+                contentManager.cloneIntoHotfixChannel(admin, advisory, regularChannel));
+        assertThrows(InvalidChannelException.class, () ->
+                contentManager.cloneIntoHotfixChannel(admin, advisory, source.getLabel()));
+        // source doesn't have the erratum
+        assertThrows(InvalidChannelException.class, () ->
+                contentManager.cloneIntoHotfixChannels(admin, advisory, List.of(CPOTHER_DEV_HOTFIX, CP_DEV_HOTFIX)));
+        assertThrows(InvalidChannelException.class, () ->
+                contentManager.cloneIntoHotfixChannels(admin, advisory, List.of(CP_DEV_HOTFIX, CPOTHER_DEV_HOTFIX)));
+        // channel does not exist
+        assertThrows(NoSuchChannelException.class, () ->
+                contentManager.cloneIntoHotfixChannels(admin, advisory, List.of(CP_DEV_HOTFIX, advisoryName)));
+        // erratum is in no project source
+        assertThrows(InvalidChannelException.class, () ->
+                contentManager.cloneIntoHotfixChannel(admin, unrelated, CP_DEV_HOTFIX));
+        // advisory does not exist
+        assertThrows(EntityNotExistsException.class, () ->
+                contentManager.cloneIntoHotfixChannel(admin, advisoryName, CP_DEV_HOTFIX));
+        // user is not a channel administrator
+        assertThrows(PermissionCheckFailureException.class, () ->
+                contentManager.cloneIntoHotfixChannel(regular, advisory, CP_DEV_HOTFIX));
+
+        assertTrue(lookupChannel(admin.getOrg(), CP_DEV_HOTFIX).getErratas().isEmpty());
+    }
+
+    /**
+     * Tests organizations are isolated: another organization with a project using a channel holding
+     * {@code errata} gets its own clone of {@code errata} in its own hotfix channel, the hotfix channel of the
+     * first organization gets nothing, and neither organization can clone into the hotfix channels of the other.
+     */
+    @Test
+    public void testCloneIntoHotfixChannelOfAnotherOrg() {
+        String hotfixLabel = "o2-dev-hotfix";
+        User otherAdmin = new UserTestUtils.UserBuilder().orgAdmin(true).build();
+        Org otherOrg = otherAdmin.getOrg();
+        otherOrg.addRole(RoleFactory.CHANNEL_ADMIN);
+        Channel otherSource = createChannelWithPackages(otherAdmin, pkgA);
+        otherSource.addErrata(errata);
+        buildProjectWithEnvironments(otherAdmin, "o2", otherSource, DEV);
+        String advisory = errata.getAdvisoryName();
+
+        assertThrows(NoSuchChannelException.class, () ->
+                contentManager.cloneIntoHotfixChannel(admin, advisory, hotfixLabel));
+        assertThrows(NoSuchChannelException.class, () ->
+                contentManager.cloneIntoHotfixChannel(otherAdmin, advisory, CP_DEV_HOTFIX));
+        assertTrue(lookupChannel(otherOrg, hotfixLabel).getErratas().isEmpty());
+
+        SyncedErratumWithPackages synced = contentManager.cloneIntoHotfixChannel(otherAdmin, advisory, hotfixLabel);
+
+        Errata clone = getCloneOf(otherOrg, errata);
+        assertEquals(clone.getId(), synced.errata().getId());
+        assertEquals(ids(List.of(pkgA, pkgB)), ids(synced.packages()));
+        assertChannelHasErratasAndPackages(otherOrg, hotfixLabel, Set.of(clone.getId()), ids(List.of(pkgA, pkgB)));
+        assertTrue(lookupChannel(admin.getOrg(), CP_DEV_HOTFIX).getErratas().isEmpty());
+    }
+
+    // Utility methods
+
+    /**
+     * Creates a content project with a chain of environments, attaches a software channel source, builds the
+     * first environment and promotes it down to the last one, so every environment has a hotfix channel
+     * labeled {@code <projectLabel>-<envLabel>-hotfix}.
+     *
+     * @param user the user, whose organization owns the project
+     * @param projectLabel the project label
+     * @param projectSource the software channel source of the project
+     * @param envLabels the environment labels, from the first to the last
+     */
+    private void buildProjectWithEnvironments(User user, String projectLabel, Channel projectSource,
+                                              String... envLabels) {
+        ContentProjectFactory.save(new ContentProject(projectLabel, projectLabel, "desc", user.getOrg()));
+        Optional<String> predecessor = empty();
+        for (String envLabel : envLabels) {
+            contentManager.createEnvironment(projectLabel, predecessor, envLabel, envLabel, "desc", false, user);
+            predecessor = of(envLabel);
+        }
+        contentManager.attachSource(projectLabel, SW_CHANNEL, projectSource.getLabel(), empty(), user);
+        contentManager.buildProject(projectLabel, empty(), false, user);
+        for (int i = 0; i < envLabels.length - 1; i++) {
+            contentManager.promoteProject(projectLabel, envLabels[i], false, user);
+        }
+    }
+
+    /**
+     * Returns the hotfix channel of an environment, asserting there is exactly one.
+     *
+     * @param env the environment
+     * @return the hotfix channel
+     */
+    private static Channel getHotfixChannel(ContentEnvironment env) {
+        List<Channel> hotfixChannels = env.getTargets().stream()
+                .flatMap(target -> target.asSoftwareTarget().stream())
+                .filter(SoftwareEnvironmentTarget::isHotfix)
+                .map(SoftwareEnvironmentTarget::getChannel)
+                .toList();
+        assertEquals(1, hotfixChannels.size(), "hotfix channels of " + env.getLabel());
+        return hotfixChannels.get(0);
+    }
+
+    /**
+     * Returns a channel of an organization, read from the database.
+     *
+     * @param org the organization owning the channel
+     * @param label the channel label
+     * @return the channel
+     */
+    private static Channel lookupChannel(Org org, String label) {
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        return ChannelFactory.lookupByLabel(org, label);
+    }
+
+    /**
+     * Asserts channel holds given erratas and packages.
+     *
+     * @param org the organization owning the channel
+     * @param label the channel label
+     * @param errataIds the ids of the expected errata
+     * @param packageIds the ids of the expected packages
+     */
+    private static void assertChannelHasErratasAndPackages(
+            Org org,
+            String label,
+            Set<Long> errataIds,
+            Set<Long> packageIds
+    ) {
+        Channel channel = lookupChannel(org, label);
+        assertEquals(errataIds, ids(channel.getErratas(), Errata::getId), label + " errata");
+        assertEquals(packageIds, ids(channel.getPackages(), Package::getId), label + " packages");
+    }
+
+    /**
+     * Returns the ids of entities.
+     *
+     * @param entities the entities
+     * @param id the id getter
+     * @param <T> the entity type
+     * @return the ids
+     */
+    private static <T> Set<Long> ids(Collection<T> entities, Function<T, Long> id) {
+        return entities.stream().map(id).collect(toSet());
+    }
+
+    /**
+     * Returns the ids of packages.
+     *
+     * @param packages the packages
+     * @return the ids
+     */
+    private static Set<Long> ids(List<Package> packages) {
+        return ids(packages, Package::getId);
+    }
+
+    /**
+     * Returns the clone of an erratum owned by an organization, asserting there is exactly one.
+     *
+     * @param org the organization owning the clone
+     * @param original the original erratum
+     * @return the clone
+     */
+    private Errata getCloneOf(Org org, Errata original) {
+        List<Errata> clones = ErrataFactory.lookupErrataByOriginal(org, original);
+        assertEquals(1, clones.size(), "clones of " + original.getAdvisoryName());
+        return clones.get(0);
+    }
+
+    /**
+     * Creates a channel of the organization of the user, serving the given packages.
+     *
+     * @param user the user, whose organization owns the channel
+     * @param packages the packages the channel serves
+     * @return the channel
+     */
+    private Channel createChannelWithPackages(User user, Package... packages) {
+        Channel channel = TestUtils.reload(ChannelFactoryTest.createTestChannel(user, false));
+        channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
+        channel.addPackages(List.of(packages));
+        return ChannelFactory.save(channel);
+    }
+
+}
