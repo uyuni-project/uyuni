@@ -1,8 +1,6 @@
 # Copyright (c) 2021-2026 SUSE LLC
 # SPDX-License-Identifier: MIT
 
-#TODO: follow-up card https://github.com/SUSE/spacewalk/issues/32517
-@skip_if_github_validation
 @scope_ansible
 @scope_salt_ssh
 @sshminion
@@ -117,4 +115,3 @@ Feature: Operate an Ansible control node in SSH minion
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled" is completed
-
