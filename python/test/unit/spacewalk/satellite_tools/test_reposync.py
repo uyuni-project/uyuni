@@ -361,7 +361,7 @@ class RepoSyncTest(unittest.TestCase):
     @patch("spacewalk.satellite_tools.reposync.os", os)
     @patch("spacewalk.satellite_tools.reposync.log", Mock())
     @patch("spacewalk.satellite_tools.reposync.ThreadedDownloader")
-    @patch("spacewalk.satellite_tools.reposync.multiprocessing.Pool", Mock())
+    @patch("spacewalk.satellite_tools.reposync.multiprocessing.Pool", MagicMock())
     def test_import_packages_skips_duplicate_entries(self, downloader):
         """
         When the repository lists the same package twice
