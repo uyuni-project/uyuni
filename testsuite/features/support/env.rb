@@ -1008,6 +1008,10 @@ Before('@skip_for_ubuntu') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'ubuntu'
 end
 
+Before('@skip_for_raspios13') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'raspios13'
+end
+
 Before('@skip_for_amazon2023') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'amazon2023'
 end
