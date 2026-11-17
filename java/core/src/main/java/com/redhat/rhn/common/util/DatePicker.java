@@ -19,9 +19,10 @@ package com.redhat.rhn.common.util;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.DynaActionForm;
 
-import java.text.DateFormat;
 import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
+import java.time.chrono.IsoChronology;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.FormatStyle;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -582,11 +583,10 @@ public class DatePicker {
     private void analyzeDateFormat() {
         // HACK: This checks whether the am/pm indicator is
         // in the default date format for this locale
-        SimpleDateFormat sdf =
-            (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT,
-                    DateFormat.SHORT, locale);
-        String pattern = sdf.toPattern();
-        isLatin = (pattern.indexOf('a') >= 0);
+        String pattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT,
+                FormatStyle.SHORT, IsoChronology.INSTANCE, locale);
+        // java.time writes some am/pm locales (e.g. zh_TW) with the day period 'B' instead of 'a'
+        isLatin = (pattern.indexOf('a') >= 0 || pattern.indexOf('B') >= 0);
         // HACK: check whether month or date comes first
         isDayBeforeMonth = pattern.indexOf('d') < pattern.indexOf('M');
     }

@@ -17,17 +17,20 @@
 package com.redhat.rhn.frontend.taglibs;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DecimalStyle;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
@@ -204,18 +207,34 @@ public class FormatDateTag extends TagSupport {
         String fmtDate;
         // use spacewalk defaults if the formatter is not customized
         if (isFormatCustomized()) {
-            DateFormat fmt = getFormatter();
-            fmt.setTimeZone(LocalizationService.getInstance().determineTimeZone());
+            TimeZone timeZone = LocalizationService.getInstance().determineTimeZone();
             if (getPattern() != null) {
-                SimpleDateFormat simplefmt = (SimpleDateFormat) fmt;
-                simplefmt.applyPattern(pattern);
+                fmtDate = formatWithPattern(timeZone);
             }
-            fmtDate = fmt.format(value);
+            else {
+                DateFormat fmt = getFormatter();
+                fmt.setTimeZone(timeZone);
+                fmtDate = fmt.format(value);
+            }
         }
         else {
             fmtDate = LocalizationService.getInstance().formatDate(getValue());
         }
         return fmtDate;
+    }
+
+    private String formatWithPattern(TimeZone timeZone) {
+        // the locale getFormatter() uses: the user locale for a type, else the one of DateFormat.getInstance()
+        boolean typed = DATE.equalsIgnoreCase(getType()) || TIME.equalsIgnoreCase(getType()) ||
+                BOTH.equalsIgnoreCase(getType());
+        Locale formatLocale = typed ? getBestLocale() : Locale.getDefault(Locale.Category.FORMAT);
+        if (LocalizationService.RHN_CUSTOM_DATEFORMAT.equals(pattern)) {
+            return TimeConversion.localDateTimeWithZoneNameString(value, timeZone, formatLocale);
+        }
+        // shortcut: a few pattern letters differ from SimpleDateFormat (e.g. u, or z for EST),
+        // no JSP sets its own pattern today, compare the output when one does
+        return DateTimeFormatter.ofPattern(pattern, formatLocale).withDecimalStyle(DecimalStyle.of(formatLocale))
+                .withZone(timeZone.toZoneId()).format(Instant.ofEpochMilli(value.getTime()));
     }
 
     /**
