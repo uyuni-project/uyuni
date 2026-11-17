@@ -122,10 +122,10 @@ def test_reposync_threaded_downloader_multi_queue_accumulates_failed_pkgs():
     )
 
     # pylint: disable-next=invalid-name
-    CFG = Mock()
-    CFG.REPOSYNC_TIMEOUT = 1
-    CFG.REPOSYNC_MINRATE = 1
-    CFG.REPOSYNC_DOWNLOAD_THREADS = 1
+    DB_CFG = Mock()
+    DB_CFG.REPOSYNC_TIMEOUT = 1
+    DB_CFG.REPOSYNC_MINRATE = 1
+    DB_CFG.REPOSYNC_DOWNLOAD_THREADS = 1
 
     # pylint: disable-next=unused-argument
     def mock_file_obj(url, filename, opts, curl, parent):
@@ -142,7 +142,7 @@ def test_reposync_threaded_downloader_multi_queue_accumulates_failed_pkgs():
         "spacewalk.satellite_tools.download.ThreadedDownloader._validate",
         return_value=True,
     ), patch(
-        "spacewalk.common.rhnConfig.CFG", CFG
+        "spacewalk.satellite_tools.download.DB_CFG", DB_CFG
     ):
         td = ThreadedDownloader(retries=0, force=True)
         td.add(params_fail)

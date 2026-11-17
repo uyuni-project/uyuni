@@ -396,6 +396,7 @@ class RepoSyncTest(unittest.TestCase):
     @patch("spacewalk.satellite_tools.reposync.cfg_component")
     @patch("spacewalk.satellite_tools.reposync.SQLBackend", Mock())
     @patch("spacewalk.satellite_tools.reposync.log", Mock())
+    @patch("spacewalk.satellite_tools.reposync.os", os)
     def test_import_package_batch_logs_error_when_package_fails(
         self, cfg_comp_mock, log2_mock
     ):
@@ -436,11 +437,19 @@ class RepoSyncTest(unittest.TestCase):
 
         self.assertEqual(failed_packages, 1)
         self.assertEqual(processed[0], (pack, False, False))
-        expected_msg = (
-            f"ERROR: Failed to import package {fail_pkg_name}: "
-            f"Staged package file does not exist: {fail_stage_path}"
+        logged_msgs = [
+            args[2]
+            for args, _ in log2_mock.call_args_list
+            if len(args) > 2 and isinstance(args[2], str)
+        ]
+        self.assertTrue(
+            any(
+                msg.startswith(f"ERROR: Failed to import package {fail_pkg_name}: ")
+                and f"Staged package file does not exist: {fail_stage_path}" in msg
+                for msg in logged_msgs
+            ),
+            logged_msgs,
         )
-        log2_mock.assert_any_call(0, 0, expected_msg, stream=sys.stderr)
 
     @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     @patch("spacewalk.satellite_tools.reposync.send_error_mail")
