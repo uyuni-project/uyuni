@@ -281,9 +281,28 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static void addToChannel(Errata errata, Channel chan, User user,
                                       Set<Package> packages) {
+        addToChannel(errata, chan, user, packages, true);
+    }
+
+    /**
+     * Add an errata to a channel but only push a small set of packages
+     * along with it
+     *
+     * @param errata errata to add
+     * @param chan channel to add it to
+     * @param user the user doing the adding
+     * @param packages the packages to add
+     * @param performPostActions true if you want to refresh newest package
+     * cache and schedule repomd regeneration. False only if you're going to do those
+     * things yourself.
+     */
+    public static void addToChannel(Errata errata, Channel chan, User user,
+                                      Set<Package> packages, boolean performPostActions) {
         chan.addErrata(errata);
         addErrataPackagesToChannel(errata, chan, user, packages);
-        ChannelManager.refreshWithNewestPackages(chan, "java::addErrataPackagesToChannel");
+        if (performPostActions) {
+            ChannelManager.refreshWithNewestPackages(chan, "java::addErrataPackagesToChannel");
+        }
     }
 
     /**
@@ -752,6 +771,69 @@ public class ErrataFactory extends HibernateFactory {
                 .setParameter("start_date", startDate, StandardBasicTypes.STRING)
                 .setParameter("end_date", endDate, StandardBasicTypes.STRING)
                 .list();
+    }
+
+    /**
+     * Lists the errata of a channel last modified within the given dates, bounds included, sorted by id.
+     * @param channel the channel
+     * @param startDate the start date
+     * @param endDate the end date
+     * @return A list of Errata objects
+     */
+    public static List<Errata> listByChannelLastModifiedBetween(Channel channel, Date startDate, Date endDate) {
+        return HibernateFactory.getSession()
+                .createQuery("""
+                        FROM Errata AS e
+                        WHERE :channel MEMBER OF e.channels
+                        AND e.lastModified BETWEEN :start_date AND :end_date
+                        ORDER BY e.id
+                        """, Errata.class)
+                .setParameter("channel", channel)
+                .setParameter("start_date", startDate)
+                .setParameter("end_date", endDate)
+                .list();
+    }
+
+    /**
+     * Looks up the erratum of a channel with the given advisory name. When several match, the one with the
+     * lowest id is returned.
+     * @param advisoryName the advisory name
+     * @param channel the channel
+     * @return the erratum, if any
+     */
+    public static Optional<Errata> lookupByAdvisoryAndChannel(String advisoryName, Channel channel) {
+        return HibernateFactory.getSession()
+                .createQuery("""
+                        FROM Errata AS e
+                        WHERE :channel MEMBER OF e.channels
+                        AND e.advisoryName = :advisoryName
+                        ORDER BY e.id
+                        """, Errata.class)
+                .setParameter("channel", channel)
+                .setParameter("advisoryName", advisoryName, StandardBasicTypes.STRING)
+                .setMaxResults(1)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * Looks up a clone of the given erratum in a channel. When several match, the one with the lowest id
+     * is returned.
+     * @param original the original erratum
+     * @param channel the channel
+     * @return the clone, if any
+     */
+    public static Optional<Errata> lookupCloneInChannel(Errata original, Channel channel) {
+        return HibernateFactory.getSession()
+                .createQuery("""
+                        FROM ClonedErrata AS c
+                        WHERE c.original = :original
+                        AND :channel MEMBER OF c.channels
+                        ORDER BY c.id
+                        """, Errata.class)
+                .setParameter("original", original)
+                .setParameter("channel", channel)
+                .setMaxResults(1)
+                .uniqueResultOptional();
     }
 
     /**
