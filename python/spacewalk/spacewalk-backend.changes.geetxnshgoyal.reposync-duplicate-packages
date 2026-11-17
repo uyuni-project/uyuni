@@ -1,0 +1,3 @@
+- Import a package only once when the repository metadata lists
+  it twice, instead of failing the channel sync
+  (gh#uyuni-project/uyuni#12925)

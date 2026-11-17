@@ -1418,11 +1418,17 @@ class RepoSync(object):
         # pylint: disable-next=invalid-name
         with cfg_component("server.susemanager") as CFG:
             mount_point = CFG.MOUNT_POINT
+        seen_checksums = set()
         for pack in packages:
             if pack.arch not in self.arches:
                 # skip packages with incompatible architecture
                 skipped += 1
                 continue
+            # Some repositories list the same package twice; import it only once
+            if pack.checksum:
+                if (pack.checksum_type, pack.checksum) in seen_checksums:
+                    continue
+                seen_checksums.add((pack.checksum_type, pack.checksum))
             epoch = ""
             if pack.epoch and pack.epoch != "0":
                 # pylint: disable-next=consider-using-f-string
@@ -1729,7 +1735,7 @@ class RepoSync(object):
                 # check if package was downloaded
                 if not os.path.exists(stage_path):
                     # pylint: disable-next=broad-exception-raised
-                    raise Exception
+                    raise Exception(f"Package file not found: {stage_path}")
 
                 pack.load_checksum_from_header()
 
