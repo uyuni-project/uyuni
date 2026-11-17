@@ -234,7 +234,7 @@ class DownloadThread(Thread):
 
         log2(
             0,
-            1,
+            0,
             # pylint: disable-next=consider-using-f-string
             "ERROR: Download failed: %s - %s." % (url, sys.exc_info()[1]),
             stream=sys.stderr,
@@ -445,6 +445,7 @@ class ThreadedDownloader:
             queue.put(params)
 
     def run(self):
+        self.failed_pkgs = set()
         size = 0
         for queue in list(self.queues.values()):
             size += queue.qsize()
@@ -476,7 +477,9 @@ class ThreadedDownloader:
                     time.sleep(1)
                 break
             # accumulate all failed packages
-            self.failed_pkgs = {pkg for t in started_threads for pkg in t.failed_pkgs}
+            self.failed_pkgs.update(
+                {pkg for t in started_threads for pkg in t.failed_pkgs}
+            )
 
         # raise first detected exception if any
         if self.exception:
