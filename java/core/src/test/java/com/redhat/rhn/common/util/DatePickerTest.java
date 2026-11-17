@@ -48,6 +48,11 @@ public class DatePickerTest  {
         p = makePicker(Locale.GERMAN);
         assertFalse(p.isLatin());
         assertTrue(p.isDayBeforeMonth());
+
+        // 12-hour clock with day periods (上午/下午)
+        p = makePicker(Locale.TAIWAN);
+        assertTrue(p.isLatin());
+        assertFalse(p.isDayBeforeMonth());
     }
 
     @Test
