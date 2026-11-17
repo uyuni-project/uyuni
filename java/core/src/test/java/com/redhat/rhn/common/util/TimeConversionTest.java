@@ -208,4 +208,14 @@ public class TimeConversionTest {
 
         assertEquals("EST", TimeConversion.timeZoneShortName(TimeZone.getTimeZone("EST"), summer, Locale.US));
     }
+
+    @Test
+    public void testLocalDateTimeWithZoneNameString() {
+        TimeZone berlin = TimeZone.getTimeZone("Europe/Berlin");
+
+        assertEquals("2010-04-01 15:04:24 CEST", TimeConversion.localDateTimeWithZoneNameString(
+                Date.from(Instant.parse("2010-04-01T13:04:24Z")), berlin, Locale.US));
+        assertEquals("2010-01-01 13:00:00 CET", TimeConversion.localDateTimeWithZoneNameString(
+                Date.from(Instant.parse("2010-01-01T12:00:00Z")), berlin, Locale.US));
+    }
 }

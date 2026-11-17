@@ -15,8 +15,6 @@ package com.redhat.rhn.common.util;
 
 import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
 
-import com.redhat.rhn.common.localization.LocalizationService;
-
 import java.text.ParsePosition;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -24,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.DecimalStyle;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -34,11 +33,14 @@ import java.util.TimeZone;
  */
 public final class TimeConversion {
 
+    /** Pattern of the date strings produced by the queries with {@code TO_CHAR(..., 'YYYY-MM-DD HH24:MI:SS')}. */
+    public static final String DB_DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
     private static final DateTimeFormatter LOCAL_DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private static final DateTimeFormatter DB_DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern(LocalizationService.RHN_DB_DATEFORMAT);
+            DateTimeFormatter.ofPattern(DB_DATE_TIME_PATTERN);
 
     private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -55,7 +57,7 @@ public final class TimeConversion {
     }
 
     /**
-     * Parses a date in {@link LocalizationService#RHN_DB_DATEFORMAT} in the JVM default time zone, as produced by
+     * Parses a date in {@link #DB_DATE_TIME_PATTERN} in the JVM default time zone, as produced by
      * {@code TO_CHAR(..., 'YYYY-MM-DD HH24:MI:SS')} or by {@code java.sql.Timestamp.toString()}.
      * As {@code SimpleDateFormat.parse(String)} did, text after the pattern (e.g. fractional seconds) is ignored
      * and a local time repeated at the end of daylight saving time resolves to the later instant.
@@ -123,6 +125,21 @@ public final class TimeConversion {
      */
     public static String timeZoneShortName(TimeZone timeZone, Date date, Locale locale) {
         return timeZone.getDisplayName(timeZone.inDaylightTime(date), TimeZone.SHORT, locale);
+    }
+
+    /**
+     * Formats a date as {@code yyyy-MM-dd HH:mm:ss} followed by the short time zone name, e.g.
+     * {@code 2010-04-01 15:04:24 CEST}, as {@code SimpleDateFormat} did for {@code yyyy-MM-dd HH:mm:ss z}.
+     *
+     * @param date the date to format, also accepts {@code java.sql.Date} and {@code java.sql.Timestamp}
+     * @param timeZone the time zone to format the date in
+     * @param locale the locale of the digits and of the time zone name
+     * @return the formatted date
+     */
+    public static String localDateTimeWithZoneNameString(Date date, TimeZone timeZone, Locale locale) {
+        String dateTime = LOCAL_DATE_TIME_FORMATTER.withDecimalStyle(DecimalStyle.of(locale))
+                .withZone(timeZone.toZoneId()).format(instantFromDate(date));
+        return dateTime + " " + timeZoneShortName(timeZone, date, locale);
     }
 
     // java.sql.Date.toInstant() throws UnsupportedOperationException, getTime() works for every Date
