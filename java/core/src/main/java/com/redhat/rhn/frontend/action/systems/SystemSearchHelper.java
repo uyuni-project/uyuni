@@ -38,13 +38,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -542,12 +538,6 @@ public class SystemSearchHelper {
                 });
         log.info("returning {} system ids as the inverted results", invertedIds.size());
         return invertedIds;
-    }
-
-    protected static String formatDateString(Date d) {
-        // Lucene uses GMT for indexing
-        return DateTimeFormatter.ofPattern("yyyyMMddHHmm").withZone(ZoneId.of("GMT"))
-                .format(Instant.ofEpochMilli(d.getTime()));
     }
 
     /**

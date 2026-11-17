@@ -103,60 +103,6 @@ public class DateTimePickerTag extends TagSupport {
     }
 
     /**
-     * The date picker uses a strange date format.
-     * The is a bug open about that:
-     * https://github.com/eternicode/bootstrap-datepicker/issues/182
-     *
-     * @param format a standard format like the one described in
-     *   http://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
-     * @return a format like the one described in
-     *   http://bootstrap-datepicker.readthedocs.org/en/latest/options.html
-     */
-    private String toDatepickerFormat(String format) {
-        return format
-            .replaceAll("(^|[^M])MM([^M]|$)", "$1mm$2")
-            .replaceAll("(^|[^M])M([^M]|$)", "$1m$2")
-            .replaceAll("MMMM+", "MM")
-            .replace("MMM", "M")
-            .replaceAll("DD+", "dd")
-            .replace("D", "d")
-            .replaceAll("EEEE+", "DD")
-            .replaceAll("E+", "D")
-            .replaceAll("(^|[^y])y{1,3}([^y]|$)", "$1yy$2")
-            .replaceAll("yyyy+", "yyyy");
-    }
-
-    /**
-     * The time picker uses the PHP time format
-     *
-     * @param format a standard format like the one described in
-     *   http://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
-     * @return a format like the one described in
-     *   http://php.net/manual/en/function.date.php
-     *
-     */
-    private String toPhpTimeFormat(String format) {
-        return format
-            .replaceAll("a+", "a")
-            .replaceAll("(^|[^H])H([^H]|$)", "$1G$2")
-            .replaceAll("HH+", "H")
-            .replaceAll("(^|[^h])h([^h]|$)", "$1g$2")
-            .replaceAll("hh+", "h")
-            // k (1-24) not supported, convert to the 0-23 format
-            .replaceAll("kk+", "H")
-            .replace("k", "G")
-            // K (0-11) not supported, convert to the 1-12 format
-            .replaceAll("KK+", "h")
-            .replace("K", "g")
-            .replaceAll("m+", "i")
-            .replaceAll("s+", "s")
-            // ignore others
-            .replaceAll("z+", "")
-            .replaceAll("Z+", "")
-            .replaceAll("X+", "");
-    }
-
-    /**
      * Convert day java.util.Calendar constants
      * to an index usable by the javascript picker.
      *
