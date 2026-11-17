@@ -102,4 +102,57 @@ public class TimeConversionTest {
                 () -> TimeConversion.dateFromDbDateTimeString("2024-03-05T07:08:09"));
         assertThrows(NullPointerException.class, () -> TimeConversion.dateFromDbDateTimeString(null));
     }
+
+    @Test
+    public void testLocalDateStringFromDateUsesDefaultZone() {
+        Date date = Date.from(Instant.parse("2024-03-05T20:00:00Z"));
+
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        assertEquals("2024-03-05", TimeConversion.localDateStringFromDate(date));
+
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
+        assertEquals("2024-03-06", TimeConversion.localDateStringFromDate(date));
+    }
+
+    @Test
+    public void testDateFromLocalDateStringReturnsStartOfDayInDefaultZone() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
+
+        Date parsed = TimeConversion.dateFromLocalDateString("2021-11-22");
+
+        assertEquals(Instant.parse("2021-11-21T18:30:00Z"), parsed.toInstant());
+    }
+
+    @Test
+    public void testDateFromLocalDateStringIgnoresTrailingText() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+
+        Date parsed = TimeConversion.dateFromLocalDateString("2021-11-22T10:00:00");
+
+        assertEquals(Instant.parse("2021-11-22T00:00:00Z"), parsed.toInstant());
+    }
+
+    @Test
+    public void testDateFromLocalDateStringSkipsMissingMidnight() {
+        TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
+        // daylight saving time started at midnight on 2018-11-04, the day began at 01:00 (-02:00)
+        Date parsed = TimeConversion.dateFromLocalDateString("2018-11-04");
+
+        assertEquals(Instant.parse("2018-11-04T03:00:00Z"), parsed.toInstant());
+    }
+
+    @Test
+    public void testDateFromLocalDateStringResolvesRepeatedMidnightToLaterInstant() {
+        TimeZone.setDefault(TimeZone.getTimeZone("America/Havana"));
+        // daylight saving time ended at 01:00 on 1991-10-13: midnight happened at 04:00Z and at 05:00Z
+        Date parsed = TimeConversion.dateFromLocalDateString("1991-10-13");
+
+        assertEquals(Instant.parse("1991-10-13T05:00:00Z"), parsed.toInstant());
+    }
+
+    @Test
+    public void testDateFromLocalDateStringRejectsOtherFormats() {
+        assertThrows(DateTimeParseException.class, () -> TimeConversion.dateFromLocalDateString("22/11/2021"));
+        assertThrows(NullPointerException.class, () -> TimeConversion.dateFromLocalDateString(null));
+    }
 }
