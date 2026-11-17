@@ -34,8 +34,6 @@ import java.text.Collator;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DecimalStyle;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -64,7 +62,7 @@ public class LocalizationService {
      * DateFormat used by RHN database queries. Useful for converting RHN dates
      * into java.util.Dates so they can be formatted based on Locale.
      */
-    public static final String RHN_DB_DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String RHN_DB_DATEFORMAT = TimeConversion.DB_DATE_TIME_PATTERN;
     public static final String RHN_CUSTOM_DATEFORMAT = "yyyy-MM-dd HH:mm:ss z";
     private static final String DOC_FOLDER = "/usr/share/susemanager/www/htdocs/docs";
 
@@ -460,12 +458,8 @@ public class LocalizationService {
      * @return String representation of given date for set timezone
      */
     public String formatCustomDate(Date date) {
-        // RHN_CUSTOM_DATEFORMAT, with the default locale digits and the zone name as SimpleDateFormat wrote them
-        TimeZone tz = determineTimeZone();
-        Locale locale = Locale.getDefault(Locale.Category.FORMAT);
-        String dateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withDecimalStyle(DecimalStyle.of(locale))
-                .withZone(tz.toZoneId()).format(Instant.ofEpochMilli(date.getTime()));
-        return dateTime + " " + TimeConversion.timeZoneShortName(tz, date, locale);
+        return TimeConversion.localDateTimeWithZoneNameString(date, determineTimeZone(),
+                Locale.getDefault(Locale.Category.FORMAT));
     }
 
     /**
