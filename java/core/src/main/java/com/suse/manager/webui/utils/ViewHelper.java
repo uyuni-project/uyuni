@@ -29,8 +29,12 @@ import org.apache.commons.text.WordUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.DecimalStyle;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -53,6 +57,9 @@ public enum ViewHelper {
     INSTANCE;
 
     private static final RenderUtils RENDER_UTILS = GlobalInstanceHolder.RENDER_UTILS;
+    private static final DateTimeFormatter ISO_MINUTES_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mmXXX");
+    private static final DateTimeFormatter ISO_SECONDS_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
 
     ViewHelper() { }
 
@@ -154,9 +161,7 @@ public enum ViewHelper {
         Context ctx = Context.getCurrentContext();
         Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
         TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
-        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
-        isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
-        return isoFormat.format(date);
+        return formatIso(ISO_MINUTES_FORMATTER, date.getTime(), locale, timezone);
     }
 
     /**
@@ -180,9 +185,7 @@ public enum ViewHelper {
     public String getServerTime() {
         Locale locale = Locale.getDefault();
         TimeZone timezone = TimeZone.getDefault();
-        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale);
-        isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
-        return isoFormat.format(new Date());
+        return formatIso(ISO_SECONDS_FORMATTER, System.currentTimeMillis(), locale, timezone);
     }
 
     /**
@@ -208,9 +211,7 @@ public enum ViewHelper {
     public static String formatDateTimeToISO(Date dateIn) {
         Locale locale = Locale.getDefault();
         TimeZone timezone = TimeZone.getDefault();
-        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale);
-        isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
-        return isoFormat.format(dateIn);
+        return formatIso(ISO_SECONDS_FORMATTER, dateIn.getTime(), locale, timezone);
     }
 
     /**
@@ -221,7 +222,18 @@ public enum ViewHelper {
      * @throws ParseException
      */
     public static Date getDateFromISOString(String dateIn) throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse(dateIn);
+        try {
+            return Date.from(Instant.from(ISO_SECONDS_FORMATTER.parse(dateIn, new ParsePosition(0))));
+        }
+        catch (DateTimeParseException e) {
+            throw new ParseException(e.getMessage(), e.getErrorIndex());
+        }
+    }
+
+    // like SimpleDateFormat, writes the digits of the locale (e.g. Bengali digits for bn_IN)
+    private static String formatIso(DateTimeFormatter formatter, long epochMillis, Locale locale, TimeZone timezone) {
+        return formatter.withDecimalStyle(DecimalStyle.of(locale)).withZone(timezone.toZoneId())
+                .format(Instant.ofEpochMilli(epochMillis));
     }
 
     /**
