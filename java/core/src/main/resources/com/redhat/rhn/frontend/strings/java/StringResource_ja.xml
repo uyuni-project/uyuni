@@ -12237,56 +12237,56 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">&lt;strong&gt;周辺機器サーバ&lt;/strong&gt; タイプが適用されました。</target>
       </trans-unit>
-      <trans-unit id="snapshots.refresh_list" xml:space="preserve">
+      <trans-unit id="snapshots.refresh_list" xml:space="preserve" approved="yes">
         <source>Refresh Snapshots</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">スナップショットの更新</target>
       </trans-unit>
-      <trans-unit id="internal_state.formulas" xml:space="preserve">
+      <trans-unit id="internal_state.formulas" xml:space="preserve" approved="yes">
         <source>Apply formulas assigned to the target system</source>
-        <target state="new"/>
+        <target state="final">ターゲットシステムに割り当てられた式を適用する</target>
       </trans-unit>
-    <trans-unit id="Server Settings" xml:space="preserve">
+      <trans-unit id="Server Settings" xml:space="preserve">
         <source>Server Settings</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="server_settings.error.unknown_key" xml:space="preserve">
         <source>Unknown server setting {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
           <context context-type="paramnotes">Unknown server setting KEY_NAME.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="server_settings.error.hidden_key" xml:space="preserve">
         <source>The server setting {0} can't be changed on this page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
           <context context-type="paramnotes">The server setting KEY_NAME can't be changed on this page.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="server_settings.error.integer" xml:space="preserve">
         <source>The value of {0} must be an integer.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
           <context context-type="paramnotes">The value of KEY_NAME must be an integer.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="server_settings.error.boolean" xml:space="preserve">
         <source>The value of {0} must be true or false.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
           <context context-type="paramnotes">The value of KEY_NAME must be true or false.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
