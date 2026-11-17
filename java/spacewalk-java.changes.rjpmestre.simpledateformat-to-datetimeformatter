@@ -1,0 +1,2 @@
+- Use thread-safe date formatting to avoid corrupted dates in
+  web UI and Hub responses under concurrent requests
