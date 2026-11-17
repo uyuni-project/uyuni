@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-14 12:10+0100\n"
-"PO-Revision-Date: 2026-08-19 05:12+0000\n"
+"PO-Revision-Date: 2026-11-17 14:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.11.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:431
 msgid "remaining"
@@ -120,7 +120,7 @@ msgstr "名前なし"
 #: ../html/src/components/action-schedule.test.tsx:77
 #: ../html/src/components/action-schedule.tsx:324
 msgid "Comment / Reason:"
-msgstr ""
+msgstr "コメント/理由:"
 
 #: ../html/src/components/action-schedule.tsx:57
 msgid "new action chain"
@@ -147,10 +147,8 @@ msgid "Add to:"
 msgstr "以下に追加:"
 
 #: ../html/src/components/action-schedule.tsx:332
-#, fuzzy
-#| msgid "e.g. 12345"
 msgid "e.g. Ticket #12345"
-msgstr "例: 12345"
+msgstr "例: チケット#12345"
 
 #: ../html/src/components/action-schedule.tsx:344
 msgid "Loading the scheduler..."
@@ -2137,10 +2135,8 @@ msgstr "並べ替え"
 
 #: ../html/src/components/states-picker.tsx:474
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:271
-#, fuzzy
-#| msgid "Registration date:"
 msgid "Use transactional update"
-msgstr "登録日:"
+msgstr "トランザクション更新を使用する"
 
 #: ../html/src/components/states-picker.tsx:491
 msgid "Search in states"
@@ -2339,10 +2335,8 @@ msgid "Item id"
 msgstr "項目ID"
 
 #: ../html/src/components/table/search.example.tsx:56
-#, fuzzy
-#| msgid "System name"
 msgid "Item name"
-msgstr "システム名"
+msgstr "項目名"
 
 #: ../html/src/components/target-systems.tsx:32
 msgid "Target Systems"
@@ -2817,8 +2811,6 @@ msgid "No hub is currently configured for this server. "
 msgstr "このサーバには現在ハブが設定されていません。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:95
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgstr "このサーバは現在、ハブ {fqdn} の周辺機器として登録されています。 "
 
@@ -2843,8 +2835,6 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - 周辺機器の詳細"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:57
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgstr "サーバ {fqdn} は現在、このハブの周辺機器として登録されています。 "
 
@@ -3546,7 +3536,7 @@ msgstr "不明パッチステータス"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:247
 msgid "OVAL audit not supported for this system's OS"
-msgstr ""
+msgstr "このシステムのOSでは、OVAL監査はサポートされていません"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:249
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
@@ -4249,10 +4239,8 @@ msgid "Create a new filter"
 msgstr "新しいフィルタの作成"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:191
-#, fuzzy
-#| msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
 msgid "This filter cannot be deleted because it is currently in use by one or more projects"
-msgstr "このアクセストークンは削除できません。現在、周辺機器 {fqdn} によって使用されています"
+msgstr "このフィルタは現在、1つ以上のプロジェクトで使用されているため、削除できません"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:198
 msgid "Filter deleted successfully"
@@ -4263,14 +4251,10 @@ msgid "Bear in mind that all the associated projects need to be rebuilt after a 
 msgstr "フィルタを更新した場合、その後に関連する全てのプロジェクトを再構築する必要があることに注意してください"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:97
-#, fuzzy
-#| msgid "Use a manual filter"
 msgid "Manual Filter"
-msgstr "手動フィルタを使用する"
+msgstr "手動フィルタ"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:102
-#, fuzzy
-#| msgid "Use a template"
 msgid "Use Template"
 msgstr "テンプレートを使用する"
 
@@ -4793,10 +4777,8 @@ msgid "Create New Filter"
 msgstr "新しいフィルタの作成"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:38
-#, fuzzy
-#| msgid "Edit Filter {name}"
 msgid "Edit {name}"
-msgstr "フィルタ{name}の編集"
+msgstr "{name}の編集"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:85
 msgid "Filters"
@@ -4976,14 +4958,10 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "リクエストされたページ{currentUrl}が見つかりませんでした。"
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr "このアドレスをご使用のブラウザに入力したら、スペリングや大文字の使い方に誤りがないかを再度確認してください。"
 
 #: ../html/src/manager/errors/not-found.tsx:22
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr "リンクをたどっている場合、リンクが正しくないか、古くなっている可能性があります。戻るボタンをクリックしてください。 "
 
@@ -4992,8 +4970,6 @@ msgid "If you used a bookmark, the page may have moved to a different location s
 msgstr "ブックマークを使用している場合は、ブックマークの作成後に異なる場所に移動している場合もあります。 "
 
 #: ../html/src/manager/errors/not-found.tsx:36
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr "このページが間違って表示されたと判断する場合は、受け取った状況の詳細を弊社にご報告ください。 "
 
@@ -5631,20 +5607,16 @@ msgid "Images"
 msgstr "イメージ"
 
 #: ../html/src/manager/images/image-view.tsx:536
-#, fuzzy
-#| msgid "sync failed"
 msgid "Inspect failed"
-msgstr "同期が失敗しました"
+msgstr "検査が失敗しました"
 
 #: ../html/src/manager/images/image-view.tsx:545
 msgid "Building"
 msgstr "構築しています"
 
 #: ../html/src/manager/images/image-view.tsx:550
-#, fuzzy
-#| msgid " failed"
 msgid "Build failed"
-msgstr " 失敗"
+msgstr "構築に失敗しました"
 
 #: ../html/src/manager/images/image-view.tsx:553
 msgid "Unknown"
@@ -7676,78 +7648,60 @@ msgstr "レポーティングデータベースパスワードの生成"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:63
 #: ../html/src/manager/systems/details/snapshots.tsx:66
-#, fuzzy
-#| msgid "Unable to perform action."
 msgid "Unable to load snapshot information."
-msgstr "動作を実行できません。"
+msgstr "スナップショット情報を読み込めません。"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:93
-#, fuzzy
-#| msgid "Remediation has been "
 msgid "The action has been "
-msgstr "修復されました "
+msgstr "動作が実行されました "
 
 #: ../html/src/manager/systems/details/snapshots.tsx:114
-#, fuzzy
-#| msgid "Refresh Data"
 msgid "Refresh Snapshots"
-msgstr "データの更新"
+msgstr "スナップショットの更新"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:118
 msgid "Btrfs Snapshots"
-msgstr ""
+msgstr "Btrfsスナップショット"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:131
-#, fuzzy
-#| msgid "No streams available"
 msgid "No snapshots available."
-msgstr "利用可能なストリームがありません"
+msgstr "利用可能なスナップショットがありません"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:135
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:142
-#, fuzzy
-#| msgid "Inactive"
 msgid "active"
-msgstr "無効"
+msgstr "有効"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:147
 msgid "default"
-msgstr ""
+msgstr "デフォルト"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:156
 msgid "Pre #"
-msgstr ""
+msgstr "プレ#"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:160
-#, fuzzy
-#| msgid "Datetime"
 msgid "Date"
-msgstr "日時"
+msgstr "日付"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:164
-#, fuzzy
-#| msgid "Used by Schedule"
 msgid "Used Space"
-msgstr "スケジュールで使用済み"
+msgstr "使用済み容量"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:168
-#, fuzzy
-#| msgid "Clear Menu"
 msgid "Cleanup"
-msgstr "メニューの消去"
+msgstr "クリーンアップ"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:170
-#, fuzzy
-#| msgid "User"
 msgid "Userdata"
-msgstr "ユーザ"
+msgstr "ユーザデータ"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:197
 msgid "Unable to schedule snapshot refresh."
-msgstr ""
+msgstr "スナップショットの更新をスケジュールできません。"
 
 #: ../html/src/manager/systems/list-filter.tsx:10
 msgid "Manager Server"
