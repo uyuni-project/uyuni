@@ -44,7 +44,7 @@ import org.junit.jupiter.api.Test;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -273,7 +273,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
         Date result = getResult((String) route.handle(req, res), Date.class);
 
-        assertEquals(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse("2022-04-01T12:00:05Z"), result);
+        assertEquals(Date.from(Instant.parse("2022-04-01T12:00:05Z")), result);
     }
 
     /**

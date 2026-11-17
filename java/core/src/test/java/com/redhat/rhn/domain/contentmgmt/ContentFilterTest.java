@@ -45,13 +45,12 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * Tests for {@link ContentFilter}
@@ -425,20 +424,18 @@ public class ContentFilterTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testPackageByBuildDate() throws Exception {
-        var df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-        df.setTimeZone(TimeZone.getDefault());
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "build_date",
                 "2022-05-12T01:34:49+00:00");
         ContentFilter filter = contentManager.createFilter("greatereq-filter", DENY, PACKAGE, criteria, user);
 
         Package pack = PackageTest.createTestPackage(user.getOrg());
 
-        pack.setBuildTime(df.parse("2022-05-12T01:34:49+00:00"));
+        pack.setBuildTime(Date.from(OffsetDateTime.parse("2022-05-12T01:34:49+00:00").toInstant()));
         assertTrue(filter.test(pack));
-        pack.setBuildTime(df.parse("2022-05-07T21:49:36+00:00"));
+        pack.setBuildTime(Date.from(OffsetDateTime.parse("2022-05-07T21:49:36+00:00").toInstant()));
         assertFalse(filter.test(pack));
 
-        pack.setBuildTime(df.parse("2022-05-12T01:34:49+00:00"));
+        pack.setBuildTime(Date.from(OffsetDateTime.parse("2022-05-12T01:34:49+00:00").toInstant()));
         criteria.setMatcher(FilterCriteria.Matcher.GREATER);
         assertFalse(filter.test(pack));
 

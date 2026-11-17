@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -84,7 +85,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -1016,9 +1016,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         List<PackageDto> list = handler.listAllPackages(admin, chan.getLabel());
         assertEquals(1, list.size());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startDate = sdf.parse("2004-08-20 08:00:00");
-        Date endDate = sdf.parse("3004-08-20 08:00:00");
+        Date startDate = TimeConversion.dateFromDbDateTimeString("2004-08-20 08:00:00");
+        Date endDate = TimeConversion.dateFromDbDateTimeString("3004-08-20 08:00:00");
 
         list = handler.listAllPackages(admin, chan.getLabel(), startDate);
         assertEquals(1, list.size());
