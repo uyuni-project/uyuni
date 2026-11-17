@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -65,5 +66,40 @@ public class TimeConversionTest {
     @Test
     public void testLocalDateTimeStringFromDateRejectsNull() {
         assertThrows(NullPointerException.class, () -> TimeConversion.localDateTimeStringFromDate(null));
+    }
+
+    @Test
+    public void testDateFromDbDateTimeStringUsesDefaultZone() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
+
+        Date parsed = TimeConversion.dateFromDbDateTimeString("2021-06-25 00:56:01");
+
+        assertEquals(Instant.parse("2021-06-24T19:26:01Z"), parsed.toInstant());
+    }
+
+    @Test
+    public void testDateFromDbDateTimeStringIgnoresFractionalSeconds() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        // java.sql.Timestamp.toString() format, reaches the DTO setters when a query selects a raw timestamp
+        Date parsed = TimeConversion.dateFromDbDateTimeString("2021-06-25 00:56:01.123456");
+
+        assertEquals(Instant.parse("2021-06-25T00:56:01Z"), parsed.toInstant());
+    }
+
+    @Test
+    public void testDateFromDbDateTimeStringResolvesRepeatedLocalTimeToLaterInstant() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
+        // 02:56 happens twice on 2021-10-31: at 00:56Z (CEST) and at 01:56Z (CET)
+        Date parsed = TimeConversion.dateFromDbDateTimeString("2021-10-31 02:56:12");
+
+        assertEquals(Instant.parse("2021-10-31T01:56:12Z"), parsed.toInstant());
+    }
+
+    @Test
+    public void testDateFromDbDateTimeStringRejectsOtherFormats() {
+        assertThrows(DateTimeParseException.class, () -> TimeConversion.dateFromDbDateTimeString("2024-03-05"));
+        assertThrows(DateTimeParseException.class,
+                () -> TimeConversion.dateFromDbDateTimeString("2024-03-05T07:08:09"));
+        assertThrows(NullPointerException.class, () -> TimeConversion.dateFromDbDateTimeString(null));
     }
 }
