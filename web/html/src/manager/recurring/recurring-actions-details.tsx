@@ -169,7 +169,9 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
             <tbody>
               <tr>
                 <td>{t("State:")}</td>
-                <td>{data.active ? t("Active") : <b>{t("Inactive")}</b>}</td>
+                <td>
+                  {(details.active !== undefined ? details.active : data.active) ? t("Active") : <b>{t("Inactive")}</b>}
+                </td>
               </tr>
               {data.test === "true" && (
                 <tr>
@@ -209,6 +211,23 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
               }
               {this.getExecutionText(details)}
               <tr>
+                <td>{t("Next execution")}:</td>
+                <td>
+                  {(details.active !== undefined ? details.active : data.active) ? (
+                    details.nextExecution ? (
+                      `${details.nextExecution} ${window.timezone}`
+                    ) : (
+                      "-"
+                    )
+                  ) : (
+                    <span className="text-muted">
+                      {t("None (schedule is inactive)")}
+                      {details.nextExecution ? ` - would be ${details.nextExecution} ${window.timezone}` : ""}
+                    </span>
+                  )}
+                </td>
+              </tr>
+              <tr>
                 <td>{t("Quartz format string")}:</td>
                 <td>{data.cron}</td>
               </tr>
@@ -227,46 +246,152 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
     const isBuild = this.props.data.actionType === RecurringActionType.CLM_BUILD;
     const projectUrl = `/rhn/manager/contentmanagement/project/${details.projectLabel}`;
 
+    const rows: { label: string; value: any }[] = [
+      {
+        label: t("Content Project") + ":",
+        value: (
+          <a href={projectUrl}>
+            {details.projectName || details.projectLabel} ({details.projectLabel})
+          </a>
+        ),
+      },
+    ];
+
+    if (isBuild) {
+      rows.push({
+        label: t("Target Environment") + ":",
+        value: details.environmentName ? `${details.environmentName} (${details.environmentLabel})` : "-",
+      });
+      rows.push({
+        label: t("Deployed Version") + ":",
+        value:
+          typeof details.targetEnvironmentVersion === "number"
+            ? `v${details.targetEnvironmentVersion}`
+            : t("not built"),
+      });
+    } else {
+      rows.push({
+        label: t("Source Environment") + ":",
+        value: (
+          <>
+            {details.environmentName ? `${details.environmentName} (${details.environmentLabel}) ` : "-"}
+            {typeof details.sourceEnvironmentVersion === "number" && (
+              <span className="text-muted">(v{details.sourceEnvironmentVersion})</span>
+            )}
+          </>
+        ),
+      });
+      rows.push({
+        label: t("Target Environment") + ":",
+        value: (
+          <>
+            {details.nextEnvironmentName ? `${details.nextEnvironmentName} (${details.nextEnvironmentLabel}) ` : "-"}
+            {typeof details.targetEnvironmentVersion === "number" && (
+              <span className="text-muted">(v{details.targetEnvironmentVersion})</span>
+            )}
+          </>
+        ),
+      });
+
+      let statusContent: any;
+      if (
+        typeof details.sourceEnvironmentVersion === "number" &&
+        typeof details.targetEnvironmentVersion === "number"
+      ) {
+        if (details.sourceEnvironmentVersion === details.targetEnvironmentVersion) {
+          statusContent = (
+            <span className="text-success">
+              <i className="fa fa-check" /> {t("In sync (version {v})", { v: details.targetEnvironmentVersion })}
+            </span>
+          );
+        } else if (details.sourceEnvironmentVersion > details.targetEnvironmentVersion) {
+          statusContent = (
+            <span className="text-info">
+              <i className="fa fa-arrow-circle-right" />{" "}
+              {t("Ready to promote ({count} version(s) ahead)", {
+                count: details.sourceEnvironmentVersion - details.targetEnvironmentVersion,
+              })}
+            </span>
+          );
+        } else {
+          statusContent = t("Up to date");
+        }
+      } else {
+        statusContent = t("Not built yet");
+      }
+
+      rows.push({
+        label: t("Status") + ":",
+        value: statusContent,
+      });
+
+      if (details.targetEnvironmentModified) {
+        rows.push({
+          label: t("Last Promoted") + ":",
+          value: `${details.targetEnvironmentModified} ${window.timezone}`,
+        });
+      }
+    }
+
     return (
       <BootstrapPanel title={t("Content Lifecycle Details")}>
-        <div className="table-responsive">
-          <table className="table">
-            <tbody>
-              <tr>
-                <td>{t("Content Project")}:</td>
-                <td>
-                  <a href={projectUrl}>
-                    {details.projectName || details.projectLabel} ({details.projectLabel})
-                  </a>
-                </td>
-              </tr>
-              {isBuild ? (
-                <tr>
-                  <td>{t("Target Environment")}:</td>
-                  <td>{details.environmentName ? `${details.environmentName} (${details.environmentLabel})` : "-"}</td>
-                </tr>
-              ) : (
-                <>
-                  <tr>
-                    <td>{t("Source Environment")}:</td>
-                    <td>
-                      {details.environmentName ? `${details.environmentName} (${details.environmentLabel})` : "-"}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>{t("Target Environment")}:</td>
-                    <td>
-                      {details.nextEnvironmentName
-                        ? `${details.nextEnvironmentName} (${details.nextEnvironmentLabel})`
-                        : "-"}
-                    </td>
-                  </tr>
-                </>
-              )}
-            </tbody>
-          </table>
-        </div>
+        <Table data={rows} identifier={(row) => row.label} hideHeaderFooter="both">
+          <Column columnKey="label" cell={(row) => row.label} />
+          <Column columnKey="value" cell={(row) => row.value} />
+        </Table>
       </BootstrapPanel>
+    );
+  }
+
+  showClmBuildHistory() {
+    const { details } = this.state;
+    if (!details?.buildHistory?.length) {
+      return null;
+    }
+
+    return (
+      <div className="row">
+        <h3>{t("Recent project builds for {name}", { name: this.props.data.targetName })}</h3>
+        <Table
+          identifier={(item) => item.version}
+          selectable={false}
+          data={details.buildHistory}
+          hideHeaderFooter="both"
+        >
+          <Column
+            header={t("Version")}
+            columnKey="version"
+            cell={(row) => (
+              <>
+                <strong>v{row.version}</strong>
+                {row.current && <span className="label label-info">{t("Current")}</span>}
+              </>
+            )}
+          />
+          <Column header={t("Build Date")} columnKey="created" cell={(row) => `${row.created} ${window.timezone}`} />
+          <Column
+            header={t("Trigger Type")}
+            columnKey="automated"
+            cell={(row) =>
+              row.automated ? (
+                <span className="label label-primary">
+                  <i className="fa fa-clock-o" /> {t("Automated")}
+                </span>
+              ) : (
+                <span className="label label-default">
+                  <i className="fa fa-user" /> {t("Manual")}
+                </span>
+              )
+            }
+          />
+          <Column header={t("User")} columnKey="userName" cell={(row) => row.userName || "-"} />
+          <Column
+            header={t("Message")}
+            columnKey="message"
+            cell={(row) => <span style={{ whiteSpace: "pre-wrap" }}>{row.message || "-"}</span>}
+          />
+        </Table>
+      </div>
     );
   }
 
@@ -345,6 +470,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
         {this.state.messages ? <Messages items={this.state.messages} /> : null}
         {this.showScheduleDetails(this.props.data)}
         {isClm ? this.showClmDetails() : null}
+        {this.props.data.actionType === RecurringActionType.CLM_BUILD ? this.showClmBuildHistory() : null}
         <DeleteDialog
           id="delete-modal"
           title={t("Delete Recurring Action Schedule")}
