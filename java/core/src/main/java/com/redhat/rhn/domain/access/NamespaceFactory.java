@@ -20,7 +20,6 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.gson.NamespaceJson;
 
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -185,18 +184,7 @@ public class NamespaceFactory extends HibernateFactory {
             return "%";
         }
 
-        String escaped = StringEscapeUtils.escapeJava(input);
-        StringBuilder result = new StringBuilder(escaped.length());
-
-        for (int i = 0; i < escaped.length(); i++) {
-            char c = escaped.charAt(i);
-            if (c == '%' || c == '_') {
-                result.append('\\'); // Escape SQL LIKE special characters
-            }
-            result.append(c);
-        }
-
-        // Translate wildcard '*' to '%' to be used with LIKE
-        return result.toString().replace("*", "%");
+        // Hibernate adds ESCAPE '' on PostgreSQL, so '_' is left as a wildcard: it also matches itself
+        return input.replace("*", "%");
     }
 }

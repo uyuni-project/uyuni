@@ -1,0 +1,2 @@
+- Fix saving RBAC permissions for namespaces containing
+  underscores, such as activation keys (bsc#1290589)

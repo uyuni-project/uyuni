@@ -17,6 +17,8 @@
 
 package com.redhat.rhn.domain.access;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
@@ -53,6 +55,15 @@ public class NamespaceFactoryTest extends BaseTestCase {
         // feel free to modify and/or complete it
         Set<Namespace.AccessMode> arg1 = new HashSet<>();
         NamespaceFactory.find("", arg1);
+    }
+
+    @Test
+    public void testFindNamespaceWithUnderscore() {
+        List<Namespace> found = NamespaceFactory.find("systems.activation_keys.list", Set.of(Namespace.AccessMode.R));
+
+        assertEquals(1, found.size());
+        assertEquals("systems.activation_keys.list", found.get(0).getNamespace());
+        assertEquals(Namespace.AccessMode.R, found.get(0).getAccessMode());
     }
 
     @Test
