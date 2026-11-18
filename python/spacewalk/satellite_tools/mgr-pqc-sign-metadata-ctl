@@ -12,6 +12,7 @@ PQC_DEFAULT_KEYS_DIR="/root/.pqkeys"
 PQC_DEFAULT_PRIVATE_KEY_FILE="$PQC_DEFAULT_KEYS_DIR/mgr-pqc-priv.pem"
 PQC_DEFAULT_PUBLIC_KEY_FILE="$PQC_DEFAULT_KEYS_DIR/mgr-pqc-pub.pem"
 PQC_DEFAULT_CERTIFICATE_FILE="$PQC_DEFAULT_KEYS_DIR/mgr-pqc-cert.pem"
+PQC_DEFAULT_CERTIFICATE_DAYS=3650
 
 RHN_CONF="/etc/rhn/rhn.conf"
 PQC_DEFAULT_CERTIFICATE_SUBJECT="/CN=Multi-Linux Manager Custom PQC Key/O=Multi-Linux Manager"
@@ -73,7 +74,7 @@ function generate_pqc_key_pair_certificate {
 
     #certificate
     export ENV_PQC_KEY_PWD="$PQC_PRIVATE_KEY_PASSWD"
-    /usr/bin/openssl x509 -new -key $PQC_PRIVATE_KEY_FILE -passin env:ENV_PQC_KEY_PWD -subj "${PQC_CERTIFICATE_SUBJECT}" > $PQC_CERTIFICATE_FILE
+    /usr/bin/openssl x509 -new -key $PQC_PRIVATE_KEY_FILE -passin env:ENV_PQC_KEY_PWD -days $PQC_CERTIFICATE_DAYS -subj "${PQC_CERTIFICATE_SUBJECT}" > $PQC_CERTIFICATE_FILE
     unset ENV_PQC_KEY_PWD
 
     chmod 444 $PQC_CERTIFICATE_FILE
@@ -417,6 +418,15 @@ function check_absolute_file_path {
     fi
 }
 
+function check_valid_days {
+    NUMBER_OF_DAYS="$1"
+    # Validate that DAYS is a positive integer (1 or greater, no spaces, signs, or decimals)
+    if [[ ! "$NUMBER_OF_DAYS" =~ ^[1-9][0-9]*$ ]]; then
+        echo "Error: Invalid validity period in days: '$NUMBER_OF_DAYS'. Expected a positive integer." >&2
+        exit 1
+    fi
+}
+
 function usage {
     echo "Usage: mgr-pqc-sign-metadata-ctl [generate-key [options] | enable | disable | check-channels | check-config | regen-metadata]"
     echo "  generate-key    Generates PQC keys and certificate and enables PQC signing of repository metadata."
@@ -429,6 +439,8 @@ function usage {
     echo "                         (default: $PQC_DEFAULT_PUBLIC_KEY_FILE)"
     echo "                   -c|--cert <pqc_certificate_filename> Certificate file name (absolute path)"
     echo "                         (default: $PQC_DEFAULT_CERTIFICATE_FILE)"
+    echo "                   -d|--days <certificate_validity_days> Certificate validity in days"
+    echo "                         (default: $PQC_DEFAULT_CERTIFICATE_DAYS)"
     echo "  enable          Enable PQC signing of repository metadata."
     echo "  disable         Disable PQC signing of repository metadata."
     echo "  check-channels  Check if the cached channels repodata is signed."
@@ -441,6 +453,7 @@ PQC_CERTIFICATE_SUBJECT=$PQC_DEFAULT_CERTIFICATE_SUBJECT
 PQC_PRIVATE_KEY_FILE=$PQC_DEFAULT_PRIVATE_KEY_FILE
 PQC_PUBLIC_KEY_FILE=$PQC_DEFAULT_PUBLIC_KEY_FILE
 PQC_CERTIFICATE_FILE=$PQC_DEFAULT_CERTIFICATE_FILE
+PQC_CERTIFICATE_DAYS=$PQC_DEFAULT_CERTIFICATE_DAYS
 
 if [ -n "$1" ]; then
 
@@ -487,6 +500,17 @@ if [ -n "$1" ]; then
                         shift 2
                     else
                         echo "Error: -c|--cert requires a certificate filename argument." >&2
+                        usage
+                        exit 1
+                    fi
+                    ;;
+                -d|--days)
+                    if [[ -n "$2" && "$2" != -* ]]; then
+                        PQC_CERTIFICATE_DAYS="$2"
+                        check_valid_days "$2"
+                        shift 2
+                    else
+                        echo "Error: -d|--days requires positive integer argument." >&2
                         usage
                         exit 1
                     fi
