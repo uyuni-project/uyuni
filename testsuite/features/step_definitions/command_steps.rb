@@ -589,12 +589,15 @@ Then(/^the taskomatic logs should not contain errors$/) do
 end
 
 Then(/^the logs messages should not contain SELinux denials$/) do
-  output, error, code = get_target('server').run('ausearch -m AVC,USER_AVC | audit2why', runs_in_container: false, check_errors: false)
-  no_matches = code == 1 && output.empty? && error.strip == '<no matches>'
-  unless no_matches
-    raise ScriptError, "SELinux audit query failed on server host (status #{code}):\n#{output}#{error}" unless code.zero? && error.empty?
-    raise ScriptError, "SELinux errors on server host:\n#{output}" unless output.empty?
-  end
+  server = get_target('server')
+  # Without a terminal, ausearch reads stdin instead of the audit logs and never returns: --input-logs forces the logs.
+  # Query ausearch alone, as the exit code of a pipe into audit2why is always 0, even without matches
+  _output, error, code = server.run('ausearch --input-logs -m AVC,USER_AVC', runs_in_container: false, check_errors: false, separated_results: true)
+  next if code == 1 && error.strip == '<no matches>'
+  raise ScriptError, "SELinux audit query failed on server host (status #{code}):\n#{error}" unless code.zero?
+
+  explanation, _code = server.run('ausearch --input-logs -m AVC,USER_AVC | audit2why', runs_in_container: false, check_errors: false)
+  raise ScriptError, "SELinux errors on server host:\n#{explanation}"
 end
 
 Then(/^the log messages should not contain out of memory errors$/) do
