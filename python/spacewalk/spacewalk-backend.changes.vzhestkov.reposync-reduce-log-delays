@@ -1,0 +1,1 @@
+- Avoid delays on calling log functions in reposync
