@@ -39,6 +39,7 @@ Feature: Hub reportdb aggregation from peripheral servers
     When I schedule the reporting update task on "hub"
     Then I should see a "FINISHED" text
 
+  @sle_minion
   Scenario: Verify hub reportdb contains one row per peripheral
     Given "sle_minion" is registered on "peripheral1"
     Then the hub reportdb should contain one row per peripheral
@@ -51,24 +52,29 @@ Feature: Hub reportdb aggregation from peripheral servers
     And I schedule the reporting update task on "hub"
     Then the hub reportdb "system" table should have a newer synced_date than remembered
 
+  @sle_minion
   Scenario: Verify hub reportdb has a system row for sle_minion of peripheral1
     Given "sle_minion" is registered on "peripheral1"
     Then the hub reportdb system table should contain a row for "sle_minion" of "peripheral1"
 
   # The scenarios below always run and are idempotent: they leave the hub without sle_minion data
+  @sle_minion
   Scenario: Cleanup: remove sle_minion from peripheral1
     When I delete "sle_minion" system using the api from "peripheral1"
     And I perform a full salt minion cleanup on "sle_minion"
     Then I should not see "sle_minion" registered on "peripheral1"
 
+  @sle_minion
   Scenario: Cleanup: refresh reporting on peripheral1 after removing sle_minion
     Given I am authorized for the "Admin" section on "peripheral1"
     When I schedule the reporting update task on "peripheral1"
     Then I should see a "FINISHED" text
 
+  @sle_minion
   Scenario: Cleanup: refresh hub reporting after removing sle_minion
     When I schedule the reporting update task on "hub"
     Then I should see a "FINISHED" text
 
+  @sle_minion
   Scenario: Verify sle_minion is gone from the hub reportdb system table
     Then the hub reportdb system table should not contain a row for "sle_minion" of "peripheral1"

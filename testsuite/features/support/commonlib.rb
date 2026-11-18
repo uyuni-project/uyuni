@@ -1485,5 +1485,6 @@ def hub_reportdb_system_rows(minion_host, peripheral_host)
   peripheral = systems_registered_as(peripheral_host, on: 'server').first
   raise StandardError, "#{peripheral_host} is not registered on hub" if peripheral.nil?
 
-  reportdb_value("SELECT count(*) FROM system WHERE mgm_id = #{peripheral['id']} AND profile_name = '#{get_system_name(minion_host)}';").to_i
+  # Integer() raises on an empty result, so a failed query is not read as zero rows
+  Integer(reportdb_value("SELECT count(*) FROM system WHERE mgm_id = #{peripheral['id']} AND profile_name = '#{get_system_name(minion_host)}';"))
 end

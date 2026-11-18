@@ -928,6 +928,8 @@ Then(/^I should not see "([^"]*)" registered on hub$/) do |minion_host|
 end
 
 Given(/^"([^"]*)" is registered on "([^"]*)"$/) do |minion_host, server_host|
+  # A host without its environment variable has no system name to search for
+  skip_this_scenario if get_target(minion_host).full_hostname.nil?
   skip_this_scenario if systems_registered_as(minion_host, on: server_host).empty?
 end
 
