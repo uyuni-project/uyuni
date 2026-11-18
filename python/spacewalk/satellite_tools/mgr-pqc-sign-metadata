@@ -89,6 +89,16 @@ function sign_metadata {
     unset ENV_PQC_KEY_PWD
 }
 
+function check_expired_certificate {
+    #check the certificate is not expiring in the next 24 hours
+    if ! /usr/bin/openssl x509 -in "$PQC_CERTIFICATE_FILE" -noout -checkend 86400 >/dev/null; then
+        echo "WARNING PQC Certificate ($PQC_CERTIFICATE_FILE) is expired!"
+        CERTIFICATE_DATES=$(openssl x509 -in "$PQC_CERTIFICATE_FILE" -noout -dates)
+        echo "$CERTIFICATE_DATES"
+        exit 1
+    fi
+}
+
 function read_from_config_file {
     source $SIGNING_CONF
 
@@ -119,19 +129,8 @@ function read_from_config_file {
 function usage {
     echo ""
     echo "Usage: mgr-pqc-sign-metadata <input_file_to_sign>"
-    echo "                             [[-c|-cert] <pqc_certificate>] "
-    echo "                             [[-p|-priv] <pqc_private_key>] "
-    echo "                             [[-o|-out] <pqc_signature_file>]"
-    echo ""
-    echo "Mandatory Argument:"
     echo "  <input_file_to_sign>           File to sign"
     echo "Optional Arguments:"
-    echo "  -c,--cert <pqc_certificate>    PQC public certificate."
-    echo "                                 (default: $PQC_DEFAULT_CERTIFICATE_FILE)"
-    echo "  -p,--priv <pqc_private_key>    PQC private key."
-    echo "                                 (default: $PQC_DEFAULT_PRIVATE_KEY_FILE)"
-    echo "  -o,--out <pqc_signature_file>  PQC signature filename."
-    echo "                                 (default: <input_file_to_sign>.$PQC_SIGNATURE_EXTENSION)"
     echo "  -h,--help                      Show this help message."
     echo ""
 }
@@ -154,22 +153,6 @@ shift $(( 1 > $# ? $# : 1))
 while [[ $# -gt 0 ]]; do
     opt="$1"
     case $opt in
-        -c|--cert)
-            PQC_CERTIFICATE_FILE="$2"
-            shift $(( 2 > $# ? $# : 2))
-            ;;
-        -p|--priv)
-            PQC_PRIVATE_KEY_FILE="$2"
-            shift $(( 2 > $# ? $# : 2))
-            ;;
-        -i|--in)
-            PDC_FILE_TO_SIGN="$2"
-            shift $(( 2 > $# ? $# : 2))
-            ;;
-        -o|--out)
-            PDC_SIGNATURE_FILE="$2"
-            shift $(( 2 > $# ? $# : 2))
-            ;;
          -h|--help)
             usage
             exit 0
@@ -190,6 +173,8 @@ check_arguments
 
 #compute signature file name if not provided
 [ -z "$PDC_SIGNATURE_FILE" ] && PDC_SIGNATURE_FILE="$PDC_FILE_TO_SIGN.$PQC_SIGNATURE_EXTENSION"
+
+check_expired_certificate
 
 #sign
 sign_metadata
