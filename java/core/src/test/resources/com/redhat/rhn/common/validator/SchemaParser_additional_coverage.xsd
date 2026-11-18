@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/1999/XMLSchema">
+    <attribute name="ignoredNoSimpleType"/>
+
+    <attribute name="doubleExplicitBoundsField">
+        <simpleType baseType="double">
+            <minInclusive value="-1.5"/>
+            <maxInclusive value="42.25"/>
+        </simpleType>
+    </attribute>
+
+    <attribute name="floatExplicitBoundsField">
+        <simpleType baseType="float">
+            <minInclusive value="1.25"/>
+            <maxInclusive value="99.5"/>
+        </simpleType>
+    </attribute>
+
+    <attribute name="explicitOptionalFalse">
+        <simpleType baseType="string">
+            <optional value="false"/>
+            <minLength value="1"/>
+        </simpleType>
+    </attribute>
+
+    <attribute name="illegalOptionalValue">
+        <simpleType baseType="string">
+            <optional value="definitely-not-boolean"/>
+            <minLength value="1"/>
+        </simpleType>
+    </attribute>
+</schema>
