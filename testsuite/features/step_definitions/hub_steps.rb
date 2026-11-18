@@ -919,8 +919,68 @@ Then(/^I should see "([^"]*)" registered on "([^"]*)"$/) do |minion_host, server
   raise StandardError, "#{minion_host} not found on #{server_host}" if systems_registered_as(minion_host, on: server_host).empty?
 end
 
+Then(/^I should not see "([^"]*)" registered on "([^"]*)"$/) do |minion_host, server_host|
+  raise StandardError, "#{minion_host} unexpectedly found on #{server_host}" unless systems_registered_as(minion_host, on: server_host).empty?
+end
+
 Then(/^I should not see "([^"]*)" registered on hub$/) do |minion_host|
   raise StandardError, "#{minion_host} unexpectedly found on hub" unless systems_registered_as(minion_host, on: 'server').empty?
+end
+
+Given(/^"([^"]*)" is registered on "([^"]*)"$/) do |minion_host, server_host|
+  skip_this_scenario if systems_registered_as(minion_host, on: server_host).empty?
+end
+
+# Counts the rows of the hub reportdb system table that belong to a system managed by a peripheral.
+# The mgm_id of a peripheral is the id of its system record on the hub.
+def hub_reportdb_system_rows(minion_host, peripheral_host)
+  peripheral = systems_registered_as(peripheral_host, on: 'server').first
+  raise StandardError, "#{peripheral_host} is not registered on hub" if peripheral.nil?
+
+  reportdb_value("SELECT count(*) FROM system WHERE mgm_id = #{peripheral['id']} AND profile_name = '#{get_system_name(minion_host)}';").to_i
+end
+
+# The "not contain" check is only meaningful after a "contain" check passed for the same system, so it skips otherwise.
+Then(/^the hub reportdb system table should (contain|not contain) a row for "([^"]*)" of "([^"]*)"$/) do |expectation, minion_host, peripheral_host|
+  seen_key = "reportdb_row_seen_#{minion_host}_#{peripheral_host}"
+  skip_this_scenario if expectation == 'not contain' && !get_context(seen_key)
+
+  rows = hub_reportdb_system_rows(minion_host, peripheral_host)
+  raise StandardError, "Expected no hub reportdb row for #{minion_host} of #{peripheral_host}, found #{rows}" if expectation == 'not contain' && rows.positive?
+  raise StandardError, "No hub reportdb row for #{minion_host} of #{peripheral_host}" if expectation == 'contain' && rows.zero?
+
+  add_context(seen_key, true) if expectation == 'contain'
+end
+
+# Adds the SLES15-SP7 product through the Products UI of the hub, unless its pool channel is already there.
+# Steps are those of the "Synchronize SLES 15 SP7 product" scenario of reposync/srv_sync_products.feature.
+When(/^I add the SLES15-SP7 product on the hub unless it is already synced$/) do
+  next if api_client_for('server').channel.channel_verified?('sle-product-sles15-sp7-pool-x86_64')
+  raise ScriptError, 'SLES15-SP7 not synced on hub and no SCC credentials to add it' unless $scc_credentials
+
+  step 'I refresh SCC'
+  using_server('server') do
+    steps %(
+      Given I am authorized for the "Admin" section
+      When I follow the left menu "Admin > Setup Wizard > Products"
+      And I wait until I do not see "currently running" text
+      And I wait until I do not see "Loading" text
+      And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
+      And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" text
+      And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
+      And I open the sub-list of the product "Basesystem Module 15 SP7 x86_64"
+      And I open the sub-list of the product "Desktop Applications Module 15 SP7 x86_64"
+      And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" if present
+      When I select "SUSE Linux Enterprise Server 15 SP7 x86_64" as a product
+      And I select "Desktop Applications Module 15 SP7 x86_64" as a product
+      And I select "Development Tools Module 15 SP7 x86_64" as a product
+      And I select "Python 3 Module 15 SP7 x86_64" as a product
+      And I select "Containers Module 15 SP7 x86_64" as a product
+      And I click the Add Product button
+      And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" product has been added
+      Then the SLE15 SP7 product should be added
+    )
+  end
 end
 
 Then(/^I should see "([^"]*)" in hub system list as "(Salt Minion|Foreign)" type$/) do |host, expected_type|

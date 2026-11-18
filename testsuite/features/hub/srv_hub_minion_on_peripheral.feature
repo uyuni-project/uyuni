@@ -2,17 +2,28 @@
 # SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in:
-# If minion registration on the peripheral server fails:
-# - features/hub/srv_hub_outage_resilience.feature
+# If minion registration on the peripheral server fails, or if the SLES15-SP7 channels are
+# missing on peripheral1 (the prerequisite scenarios below fail loudly instead of skipping):
+# - features/hub/srv_hub_reporting.feature
 
 @scope_hub
-@hub_full_topology
+@hub_server_to_server
 @peripheral1
 @sle_minion
-Feature: Hub full topology - minion managed via peripheral server
+Feature: Hub - minion managed via peripheral server
   In order to verify end-to-end content delivery in a hub topology
   As an authorized user
   I want to register a peripheral, sync channels, and manage minions through the peripheral (plan B-01..B-04)
+
+  Scenario: Pre-requisite: deregister sle_minion from the hub
+    When I delete "sle_minion" system using the api from "server"
+    And I perform a full salt minion cleanup on "sle_minion"
+    Then "sle_minion" should not be registered
+
+  Scenario: Pre-requisite: SLES15-SP7 channels are present on peripheral1
+    Then channel "sle-product-sles15-sp7-pool-x86_64" should exist on "peripheral1"
+    And channel "managertools-sle15-pool-x86_64-sp7" should exist on "peripheral1"
+    And channel "managertools-sle15-updates-x86_64-sp7" should exist on "peripheral1"
 
   Scenario: Create activation key on peripheral1 peripheral with hub-synced channel
     Given I am authorized for the "Admin" section on "peripheral1"

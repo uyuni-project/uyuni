@@ -20,7 +20,7 @@ Feature: Hub access token lifecycle management
     Then I should see "peripheral1" in peripherals list
 
   Scenario: Pre-requisite: assign SLES15-SP7 channels from hub to peripheral1
-    ## Requires the SLES15-SP7 product to already be synced on the hub (build_validation phase)
+    ## Requires the SLES15-SP7 product to be synced on the hub (see srv_hub_prerequisites.feature)
     When I configure hub to sync all "sles15-sp7" channels to "peripheral1"
     ## Let the initial sync finish, otherwise the later token invalidation races with it
     And I wait at most 1500 seconds until all channel syncs have finished on "peripheral1"
