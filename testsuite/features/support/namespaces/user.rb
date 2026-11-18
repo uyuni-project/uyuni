@@ -17,6 +17,19 @@ class NamespaceUser
     @test.call('user.listUsers', sessionKey: @test.token)
   end
 
+  # Checks whether a user exists, without iterating over all users of the organization.
+  #
+  # @param user [String] The username of the user.
+  # @return [Boolean] True if user.getDetails finds the user, false on a 'no such user' fault.
+  def exists?(user)
+    @test.call('user.getDetails', sessionKey: @test.token, login: user)
+    true
+  rescue SystemCallError => e
+    raise unless e.message.match?(/no such user/i)
+
+    false
+  end
+
   # Lists the roles of a user.
   #
   # @param user [String] The username of the user.
