@@ -17,6 +17,7 @@
 package com.suse.manager.webui.utils.gson;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -75,6 +76,24 @@ public class RecurringActionDetailsDto {
 
     /** Target Content Successor Environment name for CLM promote actions */
     private String nextEnvironmentName;
+
+    /** Whether the recurring action schedule is active */
+    private boolean active;
+
+    /** Next scheduled execution timestamp of the trigger */
+    private Date nextExecution;
+
+    /** Current deployed version in source environment */
+    private Long sourceEnvironmentVersion;
+
+    /** Current deployed version in target environment */
+    private Long targetEnvironmentVersion;
+
+    /** Timestamp when target environment was last modified/promoted */
+    private Date targetEnvironmentModified;
+
+    /** Recent build history for CLM build schedules */
+    private List<ClmBuildHistoryDto> buildHistory;
 
     /**
      * @return the Array containing Quartz information
@@ -361,5 +380,89 @@ public class RecurringActionDetailsDto {
      */
     public void setNextEnvironmentName(String nextEnvironmentNameIn) {
         this.nextEnvironmentName = nextEnvironmentNameIn;
+    }
+
+    /**
+     * @return true if the recurring action is active
+     */
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * @param activeIn whether active
+     */
+    public void setActive(boolean activeIn) {
+        this.active = activeIn;
+    }
+
+    /**
+     * @return the next execution timestamp
+     */
+    public Date getNextExecution() {
+        return nextExecution;
+    }
+
+    /**
+     * @param nextExecutionIn the next execution timestamp
+     */
+    public void setNextExecution(Date nextExecutionIn) {
+        this.nextExecution = nextExecutionIn;
+    }
+
+    /**
+     * @return the source environment version
+     */
+    public Long getSourceEnvironmentVersion() {
+        return sourceEnvironmentVersion;
+    }
+
+    /**
+     * @param sourceEnvironmentVersionIn the source environment version
+     */
+    public void setSourceEnvironmentVersion(Long sourceEnvironmentVersionIn) {
+        this.sourceEnvironmentVersion = sourceEnvironmentVersionIn;
+    }
+
+    /**
+     * @return the target environment version
+     */
+    public Long getTargetEnvironmentVersion() {
+        return targetEnvironmentVersion;
+    }
+
+    /**
+     * @param targetEnvironmentVersionIn the target environment version
+     */
+    public void setTargetEnvironmentVersion(Long targetEnvironmentVersionIn) {
+        this.targetEnvironmentVersion = targetEnvironmentVersionIn;
+    }
+
+    /**
+     * @return the target environment modified timestamp
+     */
+    public Date getTargetEnvironmentModified() {
+        return targetEnvironmentModified;
+    }
+
+    /**
+     * @param targetEnvironmentModifiedIn the target environment modified timestamp
+     */
+    public void setTargetEnvironmentModified(Date targetEnvironmentModifiedIn) {
+        this.targetEnvironmentModified = targetEnvironmentModifiedIn;
+    }
+
+    /**
+     * @return the build history list
+     */
+    public List<ClmBuildHistoryDto> getBuildHistory() {
+        return buildHistory;
+    }
+
+    /**
+     * @param buildHistoryIn the build history list
+     */
+    public void setBuildHistory(List<ClmBuildHistoryDto> buildHistoryIn) {
+        this.buildHistory = buildHistoryIn;
     }
 }

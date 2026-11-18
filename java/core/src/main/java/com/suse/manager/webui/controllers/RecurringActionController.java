@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.audit.ScapPolicy;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
@@ -66,6 +67,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.maintenance.NotInMaintenanceModeException;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.PageControlHelper;
+import com.suse.manager.webui.utils.gson.ClmBuildHistoryDto;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.RecurringActionDetailsDto;
 import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
@@ -83,7 +85,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.quartz.CronExpression;
 
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -333,6 +337,16 @@ public class RecurringActionController {
         dto.setCreatorLogin(action.getCreator().getLogin());
         dto.setType(picker.getStatus());
         dto.setCronTimes(cronTimes);
+        dto.setActive(action.isActive());
+        try {
+            CronExpression cron = new CronExpression(action.getCronExpr());
+            dto.setNextExecution(cron.getNextValidTimeAfter(new Date()));
+        }
+        catch (ParseException e) {
+            LOG.warn("Invalid cron expression for recurring action {}: {}",
+                    action.getId(), action.getCronExpr());
+        }
+
         if (RecurringActionType.ActionType.HIGHSTATE.equals(action.getActionType())) {
             dto.setTest(((RecurringHighstate) action.getRecurringActionType()).isTestMode());
         }
@@ -370,13 +384,36 @@ public class RecurringActionController {
         }
         else if (RecurringActionType.ActionType.CLM_BUILD.equals(action.getActionType())) {
             RecurringContentBuildType buildType = (RecurringContentBuildType) action.getRecurringActionType();
-            if (buildType.getProject() != null) {
-                dto.setProjectLabel(buildType.getProject().getLabel());
-                dto.setProjectName(buildType.getProject().getName());
-                buildType.getProject().getFirstEnvironmentOpt().ifPresent(firstEnv -> {
+            ContentProject project = buildType.getProject();
+            if (project != null) {
+                dto.setProjectLabel(project.getLabel());
+                dto.setProjectName(project.getName());
+                project.getFirstEnvironmentOpt().ifPresent(firstEnv -> {
                     dto.setEnvironmentLabel(firstEnv.getLabel());
                     dto.setEnvironmentName(firstEnv.getName());
+                    dto.setTargetEnvironmentVersion(firstEnv.getVersion());
                 });
+
+                Long currentVer = project.getFirstEnvironmentOpt().map(ContentEnvironment::getVersion).orElse(null);
+                List<ClmBuildHistoryDto> history = project.getHistoryEntries().stream()
+                        .sorted(Comparator.comparing(ContentProjectHistoryEntry::getVersion).reversed())
+                        .limit(10)
+                        .map(entry -> {
+                            ClmBuildHistoryDto hDto = new ClmBuildHistoryDto();
+                            hDto.setVersion(entry.getVersion());
+                            hDto.setCreated(entry.getCreated());
+                            hDto.setMessage(entry.getMessage());
+                            if (entry.getUser() != null) {
+                                hDto.setUserName(entry.getUser().getLogin());
+                            }
+                            boolean isAuto = entry.getMessage() != null &&
+                                    entry.getMessage().contains("recurring action");
+                            hDto.setAutomated(isAuto);
+                            hDto.setCurrent(currentVer != null && currentVer.equals(entry.getVersion()));
+                            return hDto;
+                        })
+                        .collect(Collectors.toList());
+                dto.setBuildHistory(history);
             }
         }
         else if (RecurringActionType.ActionType.CLM_PROMOTE.equals(action.getActionType())) {
@@ -386,16 +423,22 @@ public class RecurringActionController {
                 dto.setProjectName(promoteType.getProject().getName());
             }
             if (promoteType.getEnvironment() != null) {
-                dto.setEnvironmentLabel(promoteType.getEnvironment().getLabel());
-                dto.setEnvironmentName(promoteType.getEnvironment().getName());
-                promoteType.getEnvironment().getNextEnvironmentOpt().ifPresent(nextEnv -> {
+                ContentEnvironment srcEnv = promoteType.getEnvironment();
+                dto.setEnvironmentLabel(srcEnv.getLabel());
+                dto.setEnvironmentName(srcEnv.getName());
+                dto.setSourceEnvironmentVersion(srcEnv.getVersion());
+
+                srcEnv.getNextEnvironmentOpt().ifPresent(nextEnv -> {
                     dto.setNextEnvironmentLabel(nextEnv.getLabel());
                     dto.setNextEnvironmentName(nextEnv.getName());
+                    dto.setTargetEnvironmentVersion(nextEnv.getVersion());
+                    dto.setTargetEnvironmentModified(nextEnv.getModified());
                 });
             }
         }
         return dto;
     }
+
     /**
      * Processes a GET request to get a list of all the scap policies
      *
