@@ -199,12 +199,42 @@ function do_enable_pqc_metadata_signing {
     export_pqc_public_certificate_to_http_pub_dir
 }
 
+function check_signing_config_file {
+    source $SIGNING_CONF
+
+    #check for variables to exists AND not to be empty
+    if [[ -n "${!PQC_SIGNING_CONF_PRIVATE_KEY_PASSWD_ENTRY:-}" ]]; then
+      echo "OK. PQC password is present in config $SIGNING_CONF."
+    else
+      echo "ERROR. Unable to find PQC password in config file $SIGNING_CONF" >&2
+    fi
+
+    if [[ -n "${!PQC_SIGNING_CONF_PRIVATE_KEY_FILE_ENTRY:-}" ]]; then
+      echo "OK. PQC private key file name is present in config $SIGNING_CONF."
+    else
+      echo "ERROR. Unable to find PQC private key file in config file $SIGNING_CONF" >&2
+    fi
+
+    if [[ -n "${!PQC_SIGNING_CONF_PUBLIC_KEY_FILE_ENTRY:-}" ]]; then
+      echo "OK. PQC public key file name is present in config $SIGNING_CONF."
+    else
+      echo "ERROR. Unable to find PQC public key file in config file $SIGNING_CONF" >&2
+    fi
+
+    if [[ -n "${!PQC_SIGNING_CONF_CERTIFICATE_FILE_ENTRY:-}" ]]; then
+      echo "OK. PQC certificate file name is present in config $SIGNING_CONF."
+    else
+      echo "ERROR. Unable to find PQC certificate key file in config file $SIGNING_CONF" >&2
+    fi
+}
 
 function do_check_pqc_metadata_signing {
     # check PQC sign metadata entry in rhn.conf
     if is_pqc_metadata_signing_enabled; then
         echo "Metadata PQC signing is enabled in ${RHN_CONF}."
         echo
+
+        check_signing_config_file
 
         # check salt key export file
         if [ -f "$PQC_SALT_EXPORT_CERTIFICATE_FILE" ]; then
