@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-14 12:10+0100\n"
-"PO-Revision-Date: 2026-11-17 14:13+0000\n"
+"PO-Revision-Date: 2026-11-18 05:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -5608,7 +5608,7 @@ msgstr "イメージ"
 
 #: ../html/src/manager/images/image-view.tsx:536
 msgid "Inspect failed"
-msgstr "検査が失敗しました"
+msgstr "検査に失敗しました"
 
 #: ../html/src/manager/images/image-view.tsx:545
 msgid "Building"
@@ -7665,7 +7665,7 @@ msgstr "Btrfsスナップショット"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:131
 msgid "No snapshots available."
-msgstr "利用可能なスナップショットがありません"
+msgstr "利用可能なスナップショットがありません。"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:135
 msgid "#"
