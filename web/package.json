@@ -24,7 +24,8 @@
     "tsc": "tsc --project html/src/tsconfig.json",
     "postinstall": "sort-package-json package.json --quiet",
     "clean": "rm -rf node_modules && rm -rf html/src/node_modules && rm -rf dist",
-    "zip": "rm -f node_modules.tar.gz && (tar czf node_modules.tar.gz node_modules/)"
+    "zip": "rm -f node_modules.tar.gz && (tar czf node_modules.tar.gz node_modules/)",
+    "tsc:storybook": "tsc --project .storybook/tsconfig.json"
   },
   "dependencies": {
     "@babel/core": "7.26.10",
