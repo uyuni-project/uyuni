@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-14 12:10+0100\n"
-"PO-Revision-Date: 2026-11-18 05:13+0000\n"
+"PO-Revision-Date: 2026-11-18 08:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -2812,7 +2812,7 @@ msgstr "このサーバには現在ハブが設定されていません。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:95
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr "このサーバは現在、ハブ {fqdn} の周辺機器として登録されています。 "
+msgstr "このサーバは現在、ハブ{fqdn}の周辺機器として登録されています。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:114
 msgid "Successfully scheduled a channels synchronization."
@@ -2836,7 +2836,7 @@ msgstr "{fqdn} - 周辺機器の詳細"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:57
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr "サーバ {fqdn} は現在、このハブの周辺機器として登録されています。 "
+msgstr "サーバ{fqdn}は現在、このハブの周辺機器として登録されています。 "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:30
 msgid "Peripherals Configuration"
