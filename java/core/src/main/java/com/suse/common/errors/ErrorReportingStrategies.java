@@ -15,9 +15,11 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common;
+package com.suse.common.errors;
 
 import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
+
+import com.redhat.rhn.common.RhnRuntimeException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

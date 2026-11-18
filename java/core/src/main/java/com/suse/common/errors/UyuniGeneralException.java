@@ -15,7 +15,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common;
+package com.suse.common.errors;
 
 import java.io.Serializable;
 import java.util.List;

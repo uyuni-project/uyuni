@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
-package com.redhat.rhn.common;
+package com.suse.common.errors;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;

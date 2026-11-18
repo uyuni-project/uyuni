@@ -21,11 +21,11 @@ import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.UyuniError;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
+import com.suse.common.errors.UyuniError;
 import com.suse.proxy.update.ProxyConfigUpdateContext;
 
 import org.jmock.Expectations;

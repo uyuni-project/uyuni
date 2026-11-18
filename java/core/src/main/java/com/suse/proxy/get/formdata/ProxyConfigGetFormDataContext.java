@@ -17,12 +17,12 @@
 
 package com.suse.proxy.get.formdata;
 
-import com.redhat.rhn.common.UyuniErrorReport;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
+import com.suse.common.errors.UyuniErrorReport;
 import com.suse.proxy.model.ProxyConfig;
 
 import java.util.ArrayList;

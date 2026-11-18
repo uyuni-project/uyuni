@@ -14,7 +14,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.common;
+package com.suse.common.errors;
 
 import java.util.List;
 

@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
-package com.redhat.rhn.common;
+package com.suse.common.errors;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

@@ -14,7 +14,6 @@
 package com.suse.proxy.update;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.UyuniErrorReport;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -24,6 +23,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
+import com.suse.common.errors.UyuniErrorReport;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.proxy.ProxyContainerImagesEnum;
 import com.suse.proxy.RegistryUrl;
