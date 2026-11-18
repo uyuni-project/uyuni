@@ -109,6 +109,45 @@ Given(/^I mirror the AppStream test packages locally$/) do
   mirror_repo_locally(get_target('server'), test_packages_base_url('Appstream/rhlike'), '/srv/www/htdocs/pub/TestRepoAppStream')
 end
 
+DEB_TEST_REPO_DIR = '/srv/www/htdocs/pub/TestRepoDebUpdates'.freeze
+
+# Lists the package files (relative paths) of the flat Debian repository in dir on the server.
+def deb_repo_package_files(server, dir)
+  files, = server.run("sed -n 's/^Filename: //p' #{dir}/Packages | sed 's#^\\./##'")
+  files.split("\n")
+end
+
+# Downloads all Debian packages and index files from base_url into dest on the server.
+# Same approach as mirror_repo_locally, for a flat Debian repository: the package list comes from Packages.
+def mirror_deb_repo_locally(server, base_url, dest)
+  _out, rc = server.run("test -f #{dest}/Packages", check_errors: false)
+  return if rc.zero?
+
+  tmp = "#{dest}.tmp"
+  server.run("rm -rf #{tmp} && mkdir -p #{tmp}")
+  download_hrefs(server, base_url, tmp, %w[Release Release.gpg Release.key Packages Packages.gz])
+  download_hrefs(server, base_url, tmp, deb_repo_package_files(server, tmp))
+  server.run("rm -rf #{dest} && mv #{tmp} #{dest}")
+end
+
+# On podman, sumaform puts the Debian test repository on the server; on RKE2 the testsuite installs the server, so it must do it.
+Given(/^I mirror the Debian test packages locally$/) do
+  mirror_deb_repo_locally(get_target('server'), test_packages_base_url('Updates/deb'), DEB_TEST_REPO_DIR)
+end
+
+# Fails early if the Debian test repository is missing or empty:
+# a reposync against it would otherwise report "Sync completed" with 0 packages.
+Then(/^the Debian test packages should be available on the server$/) do
+  server = get_target('server')
+  server.run('curl -sf -o /dev/null http://localhost/pub/TestRepoDebUpdates/Release')
+  files = deb_repo_package_files(server, DEB_TEST_REPO_DIR)
+  raise ScriptError, "No package listed in #{DEB_TEST_REPO_DIR}/Packages" if files.empty?
+
+  list = files.map { |file| "'#{file}'" }.join(' ')
+  missing, = server.run("cd #{DEB_TEST_REPO_DIR} && for f in #{list}; do test -f \"$f\" || echo \"$f\"; done")
+  raise ScriptError, "Missing Debian test packages in #{DEB_TEST_REPO_DIR}: #{missing.split.join(', ')}" unless missing.strip.empty?
+end
+
 Then(/^it should be possible to use the HTTP proxy$/) do
   url = 'https://www.suse.com'
   # Proxy Password: P4$$w/ord With%and&

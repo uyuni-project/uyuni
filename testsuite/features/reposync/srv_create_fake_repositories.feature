@@ -129,6 +129,8 @@ Feature: Create fake repositories for each fake child channel
 
 @deblike_minion
   Scenario: Create a fake repository for Debian-like
+    Given I mirror the Debian test packages locally
+    And the Debian test packages should be available on the server
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "fake-debian-repo" as "label"
