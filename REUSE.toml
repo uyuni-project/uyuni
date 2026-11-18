@@ -149,7 +149,6 @@ path = [
   "schema/spacewalk/update-messages.txt",
   "spacewalk/setup/salt/*.conf",
   "web/.prettier*",
-  "web/README-1.png",
   "web/html/src/.babelrc",
   "*/po/Makevars"
 ]
