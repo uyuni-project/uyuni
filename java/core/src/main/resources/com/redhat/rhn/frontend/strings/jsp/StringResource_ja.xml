@@ -5433,7 +5433,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit approved="yes" id="ssm.overview.misc.scap" xml:space="preserve">
         <source>&lt;a href="/rhn/manager/systems/ssm/audit/schedule-scap-scan"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
-        <target state="final">OpenSCAPでシステムの &lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;監査&lt;/a&gt; を行ないます</target>
+        <target state="final">OpenSCAPを使用してシステムを&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;監査&lt;/a&gt;する</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
