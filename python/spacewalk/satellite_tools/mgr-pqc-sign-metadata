@@ -8,11 +8,16 @@ set -e
 
 PQC_MIN_OPENSSL_VER="3.5.0"
 PQC_SIGNATURE_EXTENSION="p7s"
-PQC_CUSTOM_KEYS_DIR="/root/.pqkeys"
-PQC_CUSTOM_PRIVATE_KEY_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-priv.pem"
-PQC_CUSTOM_PUBLIC_KEY_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-pub.pem"
-PQC_CUSTOM_CERTIFICATE_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-cert.pem"
+PQC_DEFAULT_KEYS_DIR="/root/.pqkeys"
+PQC_DEFAULT_PRIVATE_KEY_FILE="$PQC_DEFAULT_KEYS_DIR/mgr-pqc-priv.pem"
+PQC_DEFAULT_PUBLIC_KEY_FILE="$PQC_DEFAULT_KEYS_DIR/mgr-pqc-pub.pem"
+PQC_DEFAULT_CERTIFICATE_FILE="$PQC_DEFAULT_KEYS_DIR/mgr-pqc-cert.pem"
 
+SIGNING_CONF="/etc/rhn/signing.conf"
+PQC_SIGNING_CONF_PRIVATE_KEY_PASSWD_ENTRY="PQCPASS"
+PQC_SIGNING_CONF_PRIVATE_KEY_FILE_ENTRY="PQCPRIVKEYFILE"
+PQC_SIGNING_CONF_PUBLIC_KEY_FILE_ENTRY="PQCPUBKEYFILE"
+PQC_SIGNING_CONF_CERTIFICATE_FILE_ENTRY="PQCCERTFILE"
 
 function check_openssl_available {
     if command -v /usr/bin/openssl >&2>/dev/null; then
@@ -79,7 +84,36 @@ function check_arguments {
 
 function sign_metadata {
     #sign
-    /usr/bin/openssl cms -sign -signer "$PQC_CERTIFICATE_FILE" -inkey "$PQC_PRIVATE_KEY_FILE" -md sha512 -in "$PDC_FILE_TO_SIGN" -outform DER -nocerts -out "$PDC_SIGNATURE_FILE"
+    export ENV_PQC_KEY_PWD="$PQC_PRIVATE_KEY_PASSWD"
+    /usr/bin/openssl cms -sign -signer "$PQC_CERTIFICATE_FILE" -inkey "$PQC_PRIVATE_KEY_FILE" -md sha512 -in "$PDC_FILE_TO_SIGN" -outform DER -nocerts -out "$PDC_SIGNATURE_FILE" -passin env:ENV_PQC_KEY_PWD
+    unset ENV_PQC_KEY_PWD
+}
+
+function read_from_config_file {
+    source $SIGNING_CONF
+
+    #check for variables to exists AND not to be empty
+    if [[ -z "${!PQC_SIGNING_CONF_PRIVATE_KEY_PASSWD_ENTRY:-}" ]]; then
+      echo "Unable to find PQC password in config file $SIGNING_CONF" >&2
+      exit 1
+    fi
+    if [[ -z "${!PQC_SIGNING_CONF_PRIVATE_KEY_FILE_ENTRY:-}" ]]; then
+      echo "Unable to find PQC private key file in config file $SIGNING_CONF" >&2
+      exit 1
+    fi
+    if [[ -z "${!PQC_SIGNING_CONF_PUBLIC_KEY_FILE_ENTRY:-}" ]]; then
+      echo "Unable to find PQC public key file in config file $SIGNING_CONF" >&2
+      exit 1
+    fi
+    if [[ -z "${!PQC_SIGNING_CONF_CERTIFICATE_FILE_ENTRY:-}" ]]; then
+      echo "Unable to find PQC certificate key file in config file $SIGNING_CONF" >&2
+      exit 1
+    fi
+
+    PQC_PRIVATE_KEY_PASSWD="${!PQC_SIGNING_CONF_PRIVATE_KEY_PASSWD_ENTRY}"
+    PQC_PRIVATE_KEY_FILE="${!PQC_SIGNING_CONF_PRIVATE_KEY_FILE_ENTRY}"
+    PQC_PUBLIC_KEY_FILE="${!PQC_SIGNING_CONF_PUBLIC_KEY_FILE_ENTRY}"
+    PQC_CERTIFICATE_FILE="${!PQC_SIGNING_CONF_CERTIFICATE_FILE_ENTRY}"
 }
 
 function usage {
@@ -93,9 +127,9 @@ function usage {
     echo "  <input_file_to_sign>           File to sign"
     echo "Optional Arguments:"
     echo "  -c,--cert <pqc_certificate>    PQC public certificate."
-    echo "                                 (default: $PQC_CUSTOM_CERTIFICATE_FILE)"
+    echo "                                 (default: $PQC_DEFAULT_CERTIFICATE_FILE)"
     echo "  -p,--priv <pqc_private_key>    PQC private key."
-    echo "                                 (default: $PQC_CUSTOM_PRIVATE_KEY_FILE)"
+    echo "                                 (default: $PQC_DEFAULT_PRIVATE_KEY_FILE)"
     echo "  -o,--out <pqc_signature_file>  PQC signature filename."
     echo "                                 (default: <input_file_to_sign>.$PQC_SIGNATURE_EXTENSION)"
     echo "  -h,--help                      Show this help message."
@@ -110,8 +144,8 @@ check_openssl_available
 check_openssl_min_version
 
 #defaults
-PQC_PRIVATE_KEY_FILE=$PQC_CUSTOM_PRIVATE_KEY_FILE
-PQC_CERTIFICATE_FILE=$PQC_CUSTOM_CERTIFICATE_FILE
+PQC_PRIVATE_KEY_FILE=$PQC_DEFAULT_PRIVATE_KEY_FILE
+PQC_CERTIFICATE_FILE=$PQC_DEFAULT_CERTIFICATE_FILE
 
 PDC_FILE_TO_SIGN="$1"
 shift $(( 1 > $# ? $# : 1))
@@ -147,6 +181,9 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+# read info from config file
+read_from_config_file
 
 #check arguments validity
 check_arguments
