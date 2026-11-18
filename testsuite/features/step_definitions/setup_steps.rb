@@ -79,7 +79,8 @@ When(/^I view the subscription list for "([^"]*)"$/) do |user|
   end
 end
 
-When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
+# Selects or deselects ('select' or 'deselect') a product on the Products page.
+def set_product_selection(select, product)
   # the product checkbox is a tri-state widget: selecting a parent whose subtree isn't
   # entirely selected yet legitimately leaves it "indeterminate" rather than fully checked,
   # so Capybara's #set click-and-verify (which waits for a plain checked=true/false) never
@@ -97,6 +98,10 @@ When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
 
     sleep 1
   end
+end
+
+When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
+  set_product_selection(select, product)
 end
 
 Then(/^I should see that the "(.*?)" product is partially selected$/) do |product|
@@ -145,13 +150,18 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_i)
 end
 
-When(/^I open the sub-list of the product "(.*?)"((?: if present)?)$/) do |product, if_present|
+# Opens the sub-list of a product; a missing product is an error unless if_present is true.
+def open_product_sublist(product, if_present: false)
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
   begin
     find(:xpath, xpath).click
   rescue Capybara::ElementNotFound
-    raise ScriptError, "xpath: #{xpath} not found" if if_present.empty?
+    raise ScriptError, "xpath: #{xpath} not found" unless if_present
   end
+end
+
+When(/^I open the sub-list of the product "(.*?)"((?: if present)?)$/) do |product, if_present|
+  open_product_sublist(product, if_present: !if_present.empty?)
 end
 
 When(/^I select the addon "(.*?)"$/) do |addon|
@@ -176,7 +186,8 @@ Then(/^I should see the "(.*?)" selected$/) do |product|
   end
 end
 
-When(/^I wait until I see "(.*?)" product has been added$/) do |product|
+# Waits until the Products page shows the product as installed.
+def wait_until_product_added(product)
   repeat_until_timeout(message: "Couldn't find the installed product #{product} in the list") do
     xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
     begin
@@ -189,11 +200,21 @@ When(/^I wait until I see "(.*?)" product has been added$/) do |product|
   end
 end
 
-When(/^I click the Add Product button$/) do
+When(/^I wait until I see "(.*?)" product has been added$/) do |product|
+  wait_until_product_added(product)
+end
+
+# Clicks the Add Product button of the Products page.
+def click_add_product_button
   raise ScriptError, 'xpath: button#addProducts not found' unless find('button#addProducts').click
 end
 
-Then(/^the SLE15 (SP4|SP5|SP6|SP7) product should be added$/) do |sp_version|
+When(/^I click the Add Product button$/) do
+  click_add_product_button
+end
+
+# Checks with mgr-sync that the SLE15 product of the given service pack and its main channels are synced.
+def assert_sle15_product_added(sp_version)
   output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
   log "Products list:\n#{output}"
   match = "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
@@ -204,6 +225,10 @@ Then(/^the SLE15 (SP4|SP5|SP6|SP7) product should be added$/) do |sp_version|
 
   match = "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"
   raise ScriptError, "Not included:\n #{match}" unless output.include? match
+end
+
+Then(/^the SLE15 (SP4|SP5|SP6|SP7) product should be added$/) do |sp_version|
+  assert_sle15_product_added(sp_version)
 end
 
 When(/^I click the channel list of product "(.*?)"$/) do |product|

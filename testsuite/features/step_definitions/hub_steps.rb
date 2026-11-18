@@ -953,33 +953,39 @@ Then(/^the hub reportdb system table should (contain|not contain) a row for "([^
 end
 
 # Adds the SLES15-SP7 product through the Products UI of the hub, unless its pool channel is already there.
-# Steps are those of the "Synchronize SLES 15 SP7 product" scenario of reposync/srv_sync_products.feature.
+# Mirrors the "Synchronize SLES 15 SP7 product" scenario of reposync/srv_sync_products.feature, with the Ruby helpers behind its steps.
 When(/^I add the SLES15-SP7 product on the hub unless it is already synced$/) do
   next if api_client_for('server').channel.channel_verified?('sle-product-sles15-sp7-pool-x86_64')
   raise ScriptError, 'SLES15-SP7 not synced on hub and no SCC credentials to add it' unless $scc_credentials
 
-  step 'I refresh SCC'
+  refresh_scc
   using_server('server') do
-    steps %(
-      Given I am authorized for the "Admin" section
-      When I follow the left menu "Admin > Setup Wizard > Products"
-      And I wait until I do not see "currently running" text
-      And I wait until I do not see "Loading" text
-      And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
-      And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" text
-      And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
-      And I open the sub-list of the product "Basesystem Module 15 SP7 x86_64"
-      And I open the sub-list of the product "Desktop Applications Module 15 SP7 x86_64"
-      And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" if present
-      When I select "SUSE Linux Enterprise Server 15 SP7 x86_64" as a product
-      And I select "Desktop Applications Module 15 SP7 x86_64" as a product
-      And I select "Development Tools Module 15 SP7 x86_64" as a product
-      And I select "Python 3 Module 15 SP7 x86_64" as a product
-      And I select "Containers Module 15 SP7 x86_64" as a product
-      And I click the Add Product button
-      And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" product has been added
-      Then the SLE15 SP7 product should be added
-    )
+    login_as_user('admin', 'admin')
+    follow_left_menu('Admin > Setup Wizard > Products')
+    raise ScriptError, "Text 'currently running' found" unless has_no_text?('currently running', wait: DEFAULT_TIMEOUT)
+    raise ScriptError, "Text 'Loading' found" unless has_no_text?('Loading', wait: DEFAULT_TIMEOUT)
+
+    filter_products_by_description('SUSE Linux Enterprise Server 15 SP7')
+    raise ScriptError, 'SLES 15 SP7 not found in the products list' unless check_text?('SUSE Linux Enterprise Server 15 SP7 x86_64', timeout: DEFAULT_TIMEOUT)
+
+    sublists = [
+      'SUSE Linux Enterprise Server 15 SP7 x86_64',
+      'Basesystem Module 15 SP7 x86_64',
+      'Desktop Applications Module 15 SP7 x86_64'
+    ]
+    sublists.each { |product| open_product_sublist(product) }
+    open_product_sublist('SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64', if_present: true)
+    products = [
+      'SUSE Linux Enterprise Server 15 SP7 x86_64',
+      'Desktop Applications Module 15 SP7 x86_64',
+      'Development Tools Module 15 SP7 x86_64',
+      'Python 3 Module 15 SP7 x86_64',
+      'Containers Module 15 SP7 x86_64'
+    ]
+    products.each { |product| set_product_selection('select', product) }
+    click_add_product_button
+    wait_until_product_added('SUSE Linux Enterprise Server 15 SP7 x86_64')
+    assert_sle15_product_added('SP7')
   end
 end
 

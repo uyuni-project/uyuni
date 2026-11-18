@@ -448,7 +448,7 @@ end
 #
 
 # Menu path link
-When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
+def follow_left_menu(menu_path)
   # split menu levels separated by '>' character
   menu_levels = menu_path.split('>').map(&:strip)
 
@@ -484,6 +484,10 @@ When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
   end
   # finally go to the target page
   find_and_wait_click(:xpath, target_link_path).click
+end
+
+When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
+  follow_left_menu(menu_path)
 end
 
 #
@@ -638,7 +642,8 @@ end
 
 # login, logout steps
 
-Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
+# Logs the web UI in as the given user, on the server the browser currently points at.
+def login_as_user(user, passwd)
   # Record the identity for whichever host the web UI is currently pointed at, so
   # API/spacecmd calls against that same host authenticate as the right user.
   Credentials.login_as(user, passwd)
@@ -694,6 +699,10 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   click_button_and_wait('Sign In', match: :first)
 
   step 'I should be logged in'
+end
+
+Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
+  login_as_user(user, passwd)
 end
 
 Given(/^I am authorized$/) do
@@ -1034,8 +1043,13 @@ When(/^I enter "([^"]*)" as the filtered channel name$/) do |input|
   find('input[placeholder=\'Filter by Channel Name: \']').set(input)
 end
 
-When(/^I enter "([^"]*)" as the filtered product description$/) do |input|
+# Types the text in the description filter of the Products page.
+def filter_products_by_description(input)
   find('input[name=\'product-description-filter\']').set(input)
+end
+
+When(/^I enter "([^"]*)" as the filtered product description$/) do |input|
+  filter_products_by_description(input)
 end
 
 When(/^I enter "([^"]*)" as the filtered XCCDF result type$/) do |input|
