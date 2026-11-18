@@ -16,9 +16,7 @@
     "../html/src/lib.es5.d.ts",
     "../html/src/object.d.ts"
   ],
-  "exclude": [
-    "../html/src/storybook/generated/**/*"
-  ],
+  "exclude": [],
   "compilerOptions": {
     "moduleResolution": "bundler",
     "types": [
