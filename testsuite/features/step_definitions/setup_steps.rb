@@ -79,27 +79,6 @@ When(/^I view the subscription list for "([^"]*)"$/) do |user|
   end
 end
 
-# Selects or deselects ('select' or 'deselect') a product on the Products page.
-def set_product_selection(select, product)
-  # the product checkbox is a tri-state widget: selecting a parent whose subtree isn't
-  # entirely selected yet legitimately leaves it "indeterminate" rather than fully checked,
-  # so Capybara's #set click-and-verify (which waits for a plain checked=true/false) never
-  # resolves and Playwright raises "Clicking the checkbox did not change its state"; click it
-  # directly and poll until it joins/leaves the selection (checked or indeterminate) instead
-  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  desired_selected = (select == 'select')
-  checkbox = find(:xpath, xpath)
-  indeterminate = page.evaluate_script("document.getElementById('#{checkbox[:id]}').indeterminate")
-  checkbox.click unless (checkbox.checked? || indeterminate) == desired_selected
-  repeat_until_timeout(message: "checkbox for product #{product} did not reach '#{select}' state") do
-    checkbox = find(:xpath, xpath)
-    indeterminate = page.evaluate_script("document.getElementById('#{checkbox[:id]}').indeterminate")
-    break if (checkbox.checked? || indeterminate) == desired_selected
-
-    sleep 1
-  end
-end
-
 When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
   set_product_selection(select, product)
 end
@@ -150,16 +129,6 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_i)
 end
 
-# Opens the sub-list of a product; a missing product is an error unless if_present is true.
-def open_product_sublist(product, if_present: false)
-  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
-  begin
-    find(:xpath, xpath).click
-  rescue Capybara::ElementNotFound
-    raise ScriptError, "xpath: #{xpath} not found" unless if_present
-  end
-end
-
 When(/^I open the sub-list of the product "(.*?)"((?: if present)?)$/) do |product, if_present|
   open_product_sublist(product, if_present: !if_present.empty?)
 end
@@ -186,45 +155,12 @@ Then(/^I should see the "(.*?)" selected$/) do |product|
   end
 end
 
-# Waits until the Products page shows the product as installed.
-def wait_until_product_added(product)
-  repeat_until_timeout(message: "Couldn't find the installed product #{product} in the list") do
-    xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
-    begin
-      product_class = find(:xpath, xpath)[:class]
-      break if !product_class.nil? && product_class.include?('product-installed')
-    rescue Capybara::ElementNotFound => e
-      log e
-    end
-    sleep 1
-  end
-end
-
 When(/^I wait until I see "(.*?)" product has been added$/) do |product|
   wait_until_product_added(product)
 end
 
-# Clicks the Add Product button of the Products page.
-def click_add_product_button
-  raise ScriptError, 'xpath: button#addProducts not found' unless find('button#addProducts').click
-end
-
 When(/^I click the Add Product button$/) do
   click_add_product_button
-end
-
-# Checks with mgr-sync that the SLE15 product of the given service pack and its main channels are synced.
-def assert_sle15_product_added(sp_version)
-  output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
-  log "Products list:\n#{output}"
-  match = "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
-  raise ScriptError, "Not included:\n #{match}" unless output.include? match
-
-  match = "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"
-  raise ScriptError, "Not included:\n #{match}" unless output.include? match
-
-  match = "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"
-  raise ScriptError, "Not included:\n #{match}" unless output.include? match
 end
 
 Then(/^the SLE15 (SP4|SP5|SP6|SP7) product should be added$/) do |sp_version|

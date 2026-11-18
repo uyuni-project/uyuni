@@ -931,15 +931,6 @@ Given(/^"([^"]*)" is registered on "([^"]*)"$/) do |minion_host, server_host|
   skip_this_scenario if systems_registered_as(minion_host, on: server_host).empty?
 end
 
-# Counts the rows of the hub reportdb system table that belong to a system managed by a peripheral.
-# The mgm_id of a peripheral is the id of its system record on the hub.
-def hub_reportdb_system_rows(minion_host, peripheral_host)
-  peripheral = systems_registered_as(peripheral_host, on: 'server').first
-  raise StandardError, "#{peripheral_host} is not registered on hub" if peripheral.nil?
-
-  reportdb_value("SELECT count(*) FROM system WHERE mgm_id = #{peripheral['id']} AND profile_name = '#{get_system_name(minion_host)}';").to_i
-end
-
 # The "not contain" check is only meaningful after a "contain" check passed for the same system, so it skips otherwise.
 Then(/^the hub reportdb system table should (contain|not contain) a row for "([^"]*)" of "([^"]*)"$/) do |expectation, minion_host, peripheral_host|
   seen_key = "reportdb_row_seen_#{minion_host}_#{peripheral_host}"

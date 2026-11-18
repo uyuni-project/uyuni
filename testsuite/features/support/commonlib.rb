@@ -1458,3 +1458,32 @@ end
 def any_host_configured?(host_keys)
   host_keys.any? { |host_key| ENV_VAR_BY_HOST.key?(host_key) && ENV.key?(ENV_VAR_BY_HOST[host_key]) }
 end
+
+# Refreshes the SCC data of the server with mgr-sync.
+def refresh_scc
+  refresh_timeout = 600
+  get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync refresh', timeout: refresh_timeout)
+end
+
+# Checks with mgr-sync that the SLE15 product of the given service pack and its main channels are synced.
+def assert_sle15_product_added(sp_version)
+  output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
+  log "Products list:\n#{output}"
+  match = "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
+  raise ScriptError, "Not included:\n #{match}" unless output.include? match
+
+  match = "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"
+  raise ScriptError, "Not included:\n #{match}" unless output.include? match
+
+  match = "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"
+  raise ScriptError, "Not included:\n #{match}" unless output.include? match
+end
+
+# Counts the rows of the hub reportdb system table that belong to a system managed by a peripheral.
+# The mgm_id of a peripheral is the id of its system record on the hub.
+def hub_reportdb_system_rows(minion_host, peripheral_host)
+  peripheral = systems_registered_as(peripheral_host, on: 'server').first
+  raise StandardError, "#{peripheral_host} is not registered on hub" if peripheral.nil?
+
+  reportdb_value("SELECT count(*) FROM system WHERE mgm_id = #{peripheral['id']} AND profile_name = '#{get_system_name(minion_host)}';").to_i
+end

@@ -394,12 +394,6 @@ When(/^I remove the mgr-sync cache file$/) do
   $command_output, _code = get_target('server').run('rm -f ~/.mgr-sync')
 end
 
-# Refreshes the SCC data of the server with mgr-sync.
-def refresh_scc
-  refresh_timeout = 600
-  get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync refresh', timeout: refresh_timeout)
-end
-
 When(/^I refresh SCC$/) do
   refresh_scc
 end
