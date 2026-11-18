@@ -8,7 +8,8 @@
 set -e
 
 function usage {
-    echo "Usage: mgr-sign-metadata-ctl [enable <keyid> | disable | check-config | check-channels]"
+    echo "Usage: mgr-sign-metadata-ctl [generate-key | enable <keyid> | disable | check-config | check-channels]"
+    echo "  generate-key     Generates GPG key and enables GPG signing of repository metadata with that key."
     echo "  enable KEYID     Enable GPG signing of repository metadata using the provided KEYID."
     echo "                   Requires a valid key with the given KEYID to exist in the default keyring."
     echo "  disable          Disable GPG signing of repository metadata."
@@ -75,6 +76,60 @@ function read_spacecmd_user_pass {
     echo
 }
 
+function save_to_config_file {
+  CONFIG_FILE=$1
+  KEY_TO_SAVE=$2
+  VALUE_TO_SAVE=$3
+  COMMENT_ABOVE=$4
+
+  if [ ! -r $CONFIG_FILE ]; then
+      echo "No config file found: ${CONFIG_FILE}" >&2
+      exit 1
+  fi
+
+  # make sure key is in configuration file
+  if grep --quiet "^${KEY_TO_SAVE}.*=.*$" $CONFIG_FILE; then
+      # edit configuration file to save key value
+      sed -i "s|${KEY_TO_SAVE}=\".*\"\s*$|${KEY_TO_SAVE}=\"${VALUE_TO_SAVE}\"|g" "$CONFIG_FILE"
+      echo "DONE. Saved ${KEY_TO_SAVE} in ${CONFIG_FILE}."
+  else
+      # add line to configuration file
+      echo "" >> "$CONFIG_FILE"
+      echo "${COMMENT_ABOVE}" >> "$CONFIG_FILE"
+      echo "${KEY_TO_SAVE}=\"${VALUE_TO_SAVE}\"" >> "$CONFIG_FILE"
+      echo "DONE. Saved new ${KEY_TO_SAVE} in ${CONFIG_FILE}."
+  fi
+}
+
+function generate_gpg_key {
+    # Create a secure temporary file, ensure it's deleted at exit
+    GPG_GEN_KEY_TMP_OUTPUT=$(mktemp)
+    trap 'rm -f "$GPG_GEN_KEY_TMP_OUTPUT"' EXIT
+
+    # copy of the standard output goes to the temp file
+    gpg --full-generate-key 2>&1 | tee "$GPG_GEN_KEY_TMP_OUTPUT"
+
+    GPG_GEN_KEY_EXIT_CODE=${PIPESTATUS[0]}
+    GPG_GEN_KEY_OUTPUT=$(<"$GPG_GEN_KEY_TMP_OUTPUT")
+
+    if [[ "$GPG_GEN_KEY_EXIT_CODE" -ne 0 ]]; then
+        exit "$GPG_GEN_KEY_EXIT_CODE"
+    fi
+
+    # Match a standalone 40-character uppercase hex string
+    if [[ "$GPG_GEN_KEY_OUTPUT" =~ ([0-9A-F]{40}) ]]; then
+        GPG_GEN_KEY_FINGERPRINT="${BASH_REMATCH[1]}"
+        # Last 8 characters (Short Key ID)
+        ENABLE_KEYID="${GPG_GEN_KEY_FINGERPRINT: -8}"
+        echo "Generated Short Key ID: $ENABLE_KEYID"
+    else
+        echo "Error: Could not find a GPG Key ID in the output." >&2
+        exit 1
+    fi
+
+    #save key short id in signing.conf
+    save_to_config_file "$SIGNING_CONF" "$GPG_SIGNING_CONF_KEY_ID_ENTRY" "$ENABLE_KEYID"
+}
 
 ACTION="check-config"
 ENABLE_KEYID=""
@@ -88,7 +143,7 @@ if [ -n "$1" ]; then
         else
            ENABLE_KEYID="$2"
         fi
-    elif [[ "$1" = "disable" || "$1" = "check-config" || "$1" = "check-channels" || "$1" = "regen-metadata" ]]; then
+    elif [[ "$1" = "generate-key" || "$1" = "disable" || "$1" = "check-config" || "$1" = "check-channels" || "$1" = "regen-metadata" ]]; then
         ACTION="$1"
     elif [[ "$1" = "help" || "$1" = "-h" ]]; then
         usage
@@ -105,6 +160,7 @@ GPG_SALT_EXPORT_FILE="$GPG_SALT_EXPORT_DIR/mgr-keyring.gpg"
 GPG_ARMOR_SALT_EXPORT_FILE="$GPG_SALT_EXPORT_DIR/mgr-gpg-pub.key"
 GPG_PUB_EXPORT_FILE="$(spacewalk-cfg-get documentroot)/pub/mgr-gpg-pub.key"
 SIGNING_CONF="/etc/rhn/signing.conf"
+GPG_SIGNING_CONF_KEY_ID_ENTRY="KEYID"
 
 if [[ ! -f "$SIGNING_CONF" ]]; then
     echo "Error. File ${SIGNING_CONF} is missing."
@@ -112,8 +168,12 @@ if [[ ! -f "$SIGNING_CONF" ]]; then
 fi
 
 source $SIGNING_CONF
+if [[ $ACTION = "generate-key" ]]; then
+    generate_gpg_key
+fi
 
-if [[  $ACTION = "enable" ]]; then
+# generate-key also enables
+if [[ $ACTION = "generate-key" || $ACTION = "enable" ]]; then
     # check if the KEYID exists in the keyring
     check_key_in_keyring "$ENABLE_KEYID"
 
@@ -320,7 +380,17 @@ elif [[ $ACTION = "regen-metadata" ]]; then
     regenerate_metadata
 fi
 
-if [[ $ACTION = "enable" || $ACTION = "disable" ]]; then
+if [[ $ACTION = "generate-key" ]]; then
+    echo
+    echo "NOTE. Add the password you just provided"
+    echo "      to the /etc/rhn/signing.conf configuration file,"
+    echo "      by opening the file in your text editor and editing this line:"
+    echo "      GPGPASS=\"<your-password>\""
+    echo "      You may need to restart the container for the configuration changes to be detected"
+    echo "      using the command \"mgradm restart\""
+fi
+
+if [[ $ACTION = "generate-key" || $ACTION = "enable" || $ACTION = "disable" ]]; then
     echo
     echo "NOTE. For the changes to become effective run:"
     echo "   mgr-sign-metadata-ctl regen-metadata"
