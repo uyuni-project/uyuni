@@ -151,7 +151,7 @@ def login_as_user(user, passwd)
     end
   end
   begin
-    next if all(:xpath, "//header//span[text()='#{user}']", wait: IMMEDIATE_WAIT).any?
+    return if all(:xpath, "//header//span[text()='#{user}']", wait: IMMEDIATE_WAIT).any?
   rescue NoMethodError, Capybara::NotSupportedByDriverError
     # driver is not ready yet after session reset, proceed to full login
   end
@@ -224,4 +224,16 @@ end
 # Clicks the Add Product button of the Products page.
 def click_add_product_button
   raise ScriptError, 'xpath: button#addProducts not found' unless find('button#addProducts').click
+end
+
+# Logs in as admin on the server, opens the Products page of the Setup Wizard and filters it by description.
+#
+# @param description [String] The text to type in the description filter
+def open_products_page_filtered_by(description)
+  login_as_user('admin', 'admin')
+  follow_left_menu('Admin > Setup Wizard > Products')
+  raise ScriptError, "Text 'currently running' found" unless has_no_text?('currently running', wait: DEFAULT_TIMEOUT)
+  raise ScriptError, "Text 'Loading' found" unless has_no_text?('Loading', wait: DEFAULT_TIMEOUT)
+
+  filter_products_by_description(description)
 end

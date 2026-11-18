@@ -953,12 +953,7 @@ When(/^I add the SLES15-SP7 product on the hub unless it is already synced$/) do
 
   refresh_scc
   using_server('server') do
-    login_as_user('admin', 'admin')
-    follow_left_menu('Admin > Setup Wizard > Products')
-    raise ScriptError, "Text 'currently running' found" unless has_no_text?('currently running', wait: DEFAULT_TIMEOUT)
-    raise ScriptError, "Text 'Loading' found" unless has_no_text?('Loading', wait: DEFAULT_TIMEOUT)
-
-    filter_products_by_description('SUSE Linux Enterprise Server 15 SP7')
+    open_products_page_filtered_by('SUSE Linux Enterprise Server 15 SP7')
     raise ScriptError, 'SLES 15 SP7 not found in the products list' unless check_text?('SUSE Linux Enterprise Server 15 SP7 x86_64', timeout: DEFAULT_TIMEOUT)
 
     sublists = [
@@ -979,6 +974,22 @@ When(/^I add the SLES15-SP7 product on the hub unless it is already synced$/) do
     click_add_product_button
     wait_until_product_added('SUSE Linux Enterprise Server 15 SP7 x86_64')
     assert_sle15_product_added('SP7')
+  end
+end
+
+# Adds SL Micro 6.2, the OS of the peripheral servers, through the Products UI of the hub, unless its pool channel is already there.
+When(/^I add the SL Micro 6.2 product on the hub unless it is already synced$/) do
+  next if api_client_for('server').channel.channel_verified?('sl-micro-6.2-pool-x86_64')
+  raise ScriptError, 'SL Micro 6.2 not synced on hub and no SCC credentials to add it' unless $scc_credentials
+
+  refresh_scc
+  using_server('server') do
+    open_products_page_filtered_by('SUSE Linux Micro 6.2')
+    set_product_selection('select', 'SUSE Linux Micro 6.2 x86_64')
+    open_product_sublist('SUSE Linux Micro 6.2 x86_64')
+    set_product_selection('select', 'SUSE Multi-Linux Manager Client Tools for SLE 16 x86_64')
+    click_add_product_button
+    wait_until_product_added('SUSE Linux Micro 6.2 x86_64')
   end
 end
 

@@ -5,7 +5,7 @@
 # (the peripheral host must be registered as a hub minion before bootstrap ordering can be validated).
 
 @scope_hub
-@hub_full_topology
+@hub_server_to_server
 @peripheral1
 Feature: Hub peripheral host managed as a hub minion
   In order to understand the correct bootstrap ordering for hub topologies

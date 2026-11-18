@@ -7,12 +7,12 @@
 # peripheral1). Without MINION the @sle_minion scenarios are skipped, and so are the reporting
 # scenarios that need the minion. No proxy nodes needed. SERVER3 is optional: without it the
 # cross-CA scenarios of srv_hub_token_registration.feature are skipped.
-# SCC credentials are needed when the hub does not have SLES15-SP7 yet (srv_hub_prerequisites.feature).
+# SCC credentials are needed when the hub does not have SLES15-SP7 or SL Micro 6.2 yet (srv_hub_prerequisites.feature).
 # Tag: @hub_server_to_server
 
 ## Hub server-to-server features BEGIN ##
 
-# Prerequisite: SLES15-SP7 product present and synced on the hub
+# Prerequisite: SLES15-SP7 and SL Micro 6.2 products and the SL Micro bootstrap repository on the hub
 - features/hub/srv_hub_prerequisites.feature
 
 # A-01/A-02: Hub deployment check and registration via admin credentials
@@ -24,7 +24,13 @@
 # A-05: Access token lifecycle (issue/invalidate/reactivate/delete)
 - features/hub/srv_hub_token_lifecycle.feature
 
-# B-01..B-04: sle_minion bootstrapped to peripheral1 (needed by the reporting feature)
+# B-01: peripheral-as-hub-minion bootstrap ordering.
+# Its SL Micro 6.2 bootstrap repository is provided by srv_hub_prerequisites.feature. Placed here because
+# srv_hub_token_lifecycle.feature deregisters peripheral1 in its cleanup, giving this feature the
+# clean deregistered state it needs, and its own cleanup restores that state for the next features.
+- features/hub/srv_hub_peripheral_as_minion.feature
+
+# B-03..B-04: sle_minion bootstrapped to peripheral1 (needed by the reporting feature)
 - features/hub/srv_hub_minion_on_peripheral.feature
 
 # A-06: ISSv3 online channel synchronization hub -> peripheral

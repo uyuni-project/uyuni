@@ -32,7 +32,7 @@ SPDX-License-Identifier: Apache-2.0
 Below, `<hub>`, `<peripheral1>`, `<monitoring>` etc. stand for the FQDN of the host in that role.
 
 **Run sets:**
-- `run_sets/hub_server_to_server.yml` — Focus A plus C-01 (hub, peripheral and one `sle_minion`; a missing minion skips the `@sle_minion` scenarios).
+- `run_sets/hub_server_to_server.yml` — Focus A plus B-01, B-03/B-04 and C-01 (hub, peripheral and one `sle_minion`; a missing minion skips the `@sle_minion` scenarios).
 - `run_sets/hub_full_topology.yml` — everything above plus the minion-based Focus B features and C-01 (needs a minion; the proxy scenarios B-02 run only as build-validation features).
 - `run_sets/hub_build_validation/*.yml` — per-peripheral BV features under `features/hub/build_validation/` (server setup, channel sync, activation key, bootstrap repo, proxy, minions, smoke tests).
 
