@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# Secondary family 'par_server'. See run_sets/secondary.yml and secondary_parallelizable.yml for the legacy full sets.
+
+- features/secondary/srv_users.feature
+- features/secondary/srv_menu.feature
+- features/secondary/srv_check_sync_source_packages.feature
+- features/secondary/srv_clone_channel_npn.feature
+- features/secondary/srv_manage_activationkey.feature
+- features/secondary/srv_activationkey_api.feature
+- features/secondary/srv_mainpage.feature
+- features/secondary/srv_user_api.feature
+- features/secondary/srv_salt_download_endpoint.feature
+- features/secondary/srv_docker_advanced_content_management.feature
+- features/secondary/srv_datepicker.feature
+- features/secondary/srv_group_union_intersection.feature
+- features/secondary/srv_custom_system_info.feature
+- features/secondary/srv_security.feature
+- features/secondary/srv_salt.feature
+- features/secondary/srv_check_channels_page.feature
+- features/secondary/srv_manage_channels_page.feature
+- features/secondary/srv_menu_filter.feature
+- features/secondary/srv_channel_api.feature
+- features/secondary/srv_content_lifecycle.feature
+- features/secondary/srv_change_task_schedule.feature
+- features/secondary/srv_notifications.feature
+- features/secondary/srv_payg_ssh_connection.feature
+- features/secondary/srv_push_package.feature
+- features/secondary/srv_dist_channel_mapping.feature
+- features/secondary/srv_health_check_supportconfig.feature
+- features/secondary/srv_software_channels_and_repositories_management.feature
+- features/secondary/buildhost_docker_build_image.feature
+- features/secondary/buildhost_docker_auth_registry.feature

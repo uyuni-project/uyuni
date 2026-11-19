@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# Secondary family 'seq_cobbler'. See run_sets/secondary.yml and secondary_parallelizable.yml for the legacy full sets.
+
+- features/secondary/srv_cobbler_sync.feature
+- features/secondary/srv_cobbler_distro.feature
+- features/secondary/srv_cobbler_buildiso.feature
+- features/secondary/srv_cobbler_profile.feature

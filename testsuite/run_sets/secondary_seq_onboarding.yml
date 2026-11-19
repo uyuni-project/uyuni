@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# Secondary family 'seq_onboarding'. See run_sets/secondary.yml and secondary_parallelizable.yml for the legacy full sets.
+
+- features/secondary/minssh_bootstrap_api.feature
+- features/secondary/min_bootstrap_ssh_key.feature
+- features/secondary/min_bootstrap_script.feature
+- features/secondary/minssh_tunnel.feature
+- features/secondary/min_bootstrap_activation_key.feature
+- features/secondary/min_bootstrap_api.feature
+- features/secondary/min_bootstrap_reactivation.feature

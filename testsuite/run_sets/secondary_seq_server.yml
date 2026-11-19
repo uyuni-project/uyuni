@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# Secondary family 'seq_server'. See run_sets/secondary.yml and secondary_parallelizable.yml for the legacy full sets.
+
+- features/secondary/https_connection.feature
+- features/secondary/srv_mgr_sync_list_products.feature
+- features/secondary/srv_task_status_engine.feature
+- features/secondary/srv_monitoring.feature
+- features/secondary/srv_virtual_host_manager.feature
+- features/secondary/srv_power_management.feature
+- features/secondary/srv_power_management_api.feature
+- features/secondary/srv_power_management_redfish.feature
+- features/secondary/srv_delete_channel_from_ui.feature
+- features/secondary/srv_delete_channel_with_tool.feature
+- features/secondary/srv_maintenance_windows.feature
+- features/secondary/srv_user_configuration_salt_states.feature
+- features/secondary/srv_handle_software_channels_with_ISS_v2.feature
+- features/secondary/srv_handle_config_channels_with_ISS_v2.feature
+- features/secondary/srv_salt_git_pillar.feature
+- features/secondary/srv_admin_gpg_api.feature
+- features/secondary/srv_patches_page.feature
+- features/secondary/srv_errata_api.feature

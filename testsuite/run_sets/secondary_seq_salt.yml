@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# Secondary family 'seq_salt'. See run_sets/secondary.yml and secondary_parallelizable.yml for the legacy full sets.
+
+- features/secondary/min_salt_minions_page.feature
+- features/secondary/min_salt_install_package_and_patch.feature
+- features/secondary/min_salt_install_with_staging.feature
+- features/secondary/min_salt_software_states.feature
+- features/secondary/min_salt_mgrcompat_state.feature
+- features/secondary/min_salt_lock_packages.feature
+- features/secondary/min_empty_system_profiles.feature
+- features/secondary/min_custom_pkg_download_endpoint.feature

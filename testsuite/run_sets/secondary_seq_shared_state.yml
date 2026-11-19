@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# Secondary family 'seq_shared_state'. See run_sets/secondary.yml and secondary_parallelizable.yml for the legacy full sets.
+# Moved from secondary_parallelizable: these change global server state or shared
+# sle_minion state (admin password, password policy, SCC credentials, search index,
+# fixed-name state channel, SSM and channels of sle_minion), so they must not run concurrently.
+
+- features/secondary/srv_change_password.feature
+- features/secondary/srv_reportdb.feature
+- features/secondary/srv_password_restriction.feature
+- features/secondary/allcli_system_group.feature
+- features/secondary/allcli_software_channels.feature
+- features/secondary/allcli_software_channels_dependencies.feature
+- features/secondary/min_config_state_channel.feature
+- features/secondary/min_config_state_channel_api.feature
+- features/secondary/srv_scc_user_credentials.feature
+- features/secondary/min_check_patches_install.feature
