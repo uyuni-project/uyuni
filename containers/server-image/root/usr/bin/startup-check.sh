@@ -13,5 +13,17 @@ if [ -f "/var/run/uyuni-init-pending" ]; then
     exit 1
 fi
 
-# If we reach here, container is ready
-exit 0
+target_status=$(/usr/bin/systemctl is-active multi-user.target 2>/dev/null || true)
+
+case "$target_status" in
+    active)
+        exit 0
+        ;;
+    failed)
+        echo "multi-user.target entered failed state"
+        exit 0
+        ;;
+    *)
+        exit 1
+        ;;
+esac
