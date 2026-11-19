@@ -434,8 +434,7 @@ When(/^I remove the mgr-sync cache file$/) do
 end
 
 When(/^I refresh SCC$/) do
-  refresh_timeout = 600
-  get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync refresh', timeout: refresh_timeout)
+  refresh_scc
 end
 
 When(/^I execute mgr-sync refresh$/) do

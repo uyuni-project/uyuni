@@ -6,23 +6,21 @@
 # - features/hub/srv_hub_grafana_data_validation.feature
 
 @scope_hub
-@hub_full_topology
+@hub_server_to_server
 @peripheral1
 Feature: Hub reportdb aggregation from peripheral servers
   In order to get a consolidated view of all managed systems
   As an authorized user
   I want to verify that peripheral reporting data aggregates into the hub reportdb (plan C-01)
 
-  # peripheral1 stays registered after this feature on purpose: the following features need it
-  # registered plus this feature's reportdb data. In hub_full_topology.yml the outage feature
-  # re-checks the registration and deregisters it at the end (the Grafana features that would
-  # otherwise do the final deregistration are commented out there).
+  # peripheral1 stays registered after this feature on purpose: srv_hub_verification_cleanup.feature
+  # runs next and deregisters it. sle_minion, bootstrapped by srv_hub_minion_on_peripheral.feature,
+  # is removed again by the last scenarios of this feature.
 
   # The hub reportdb only gets populated once a real managed system exists behind a
-  # peripheral, so the two scenarios below require sle_minion to already be bootstrapped
-  # onto peripheral1 (see run_sets/hub_full_topology.yml, where srv_hub_minion_on_peripheral.feature
-  # now runs earlier in the run set for exactly this reason). Without it, "one row per
-  # peripheral" finds 0 distinct mgm_id rows instead of the expected >= 2.
+  # peripheral, so the "one row per peripheral" scenario is skipped unless sle_minion is
+  # registered on peripheral1. Without it, "one row per peripheral" would find 0 distinct
+  # mgm_id rows instead of the expected >= 2.
 
   Background:
     Given I am authorized for the "Admin" section
@@ -41,13 +39,50 @@ Feature: Hub reportdb aggregation from peripheral servers
     When I schedule the reporting update task on "hub"
     Then I should see a "FINISHED" text
 
+  @sle_minion
   Scenario: Verify hub reportdb contains one row per peripheral
+    Given "sle_minion" is registered on "peripheral1"
+    And I am authorized for the "Admin" section on "server"
+    When I schedule a task to update ReportDB
     Then the hub reportdb should contain one row per peripheral
 
+  @sle_minion
   Scenario: Verify synced_date is recent in hub reportdb system table
+    Given "sle_minion" is registered on "peripheral1"
     Then the hub reportdb "system" table should have a recent synced_date
 
+  @sle_minion
   Scenario: Re-run hub reporting task and verify synced_date refreshes
+    Given "sle_minion" is registered on "peripheral1"
+    And I am authorized for the "Admin" section on "peripheral1"
+    And I schedule the reporting update task on "peripheral1"
     When I remember the latest synced_date of the hub reportdb "system" table
     And I schedule the reporting update task on "hub"
     Then the hub reportdb "system" table should have a newer synced_date than remembered
+
+  @sle_minion
+  Scenario: Verify hub reportdb has a system row for sle_minion of peripheral1
+    Given "sle_minion" is registered on "peripheral1"
+    Then the hub reportdb system table should contain a row for "sle_minion" of "peripheral1"
+
+  # The scenarios below always run and are idempotent: they leave the hub without sle_minion data
+  @sle_minion
+  Scenario: Cleanup: remove sle_minion from peripheral1
+    When I delete "sle_minion" system using the api from "peripheral1"
+    And I perform a full salt minion cleanup on "sle_minion"
+    Then I should not see "sle_minion" registered on "peripheral1"
+
+  @sle_minion
+  Scenario: Cleanup: refresh reporting on peripheral1 after removing sle_minion
+    Given I am authorized for the "Admin" section on "peripheral1"
+    When I schedule the reporting update task on "peripheral1"
+    Then I should see a "FINISHED" text
+
+  @sle_minion
+  Scenario: Cleanup: refresh hub reporting after removing sle_minion
+    When I schedule the reporting update task on "hub"
+    Then I should see a "FINISHED" text
+
+  @sle_minion
+  Scenario: Verify sle_minion is gone from the hub reportdb system table
+    Then the hub reportdb system table should not contain a row for "sle_minion" of "peripheral1"

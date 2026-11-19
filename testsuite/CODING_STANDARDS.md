@@ -26,6 +26,7 @@ Mechanical rules live in tooling, not here: RuboCop (`testsuite/.rubocop.yml`, r
 - Do not future-proof. Handle the repo, format or platform that exists today (#12324).
 - Feature files describe user-visible behaviour and must not expose CSS selectors or implementation details.
 - Group Ruby step definitions by domain, not by feature file. Call Ruby helpers rather than invoking one Gherkin step from another.
+- Define helper methods in `features/support/`, not in `features/step_definitions/`. A step definition file holds only steps, each a thin call to a helper. When a step body must be reused, move it into a helper in `support/` and call it from both steps.
 - Keep scenarios deterministic. Account for the suite's per-feature user and role context.
 
 ## Ruby code

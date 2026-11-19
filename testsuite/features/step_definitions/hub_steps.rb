@@ -606,6 +606,17 @@ When(/^I initiate channel sync from peripheral "([^"]*)"$/) do |host|
   step %(I click on "Schedule" in "Confirm channels synchronization" modal)
 end
 
+# The hub generates the repodata of a channel asynchronously (taskomatic); a peripheral syncing it
+# earlier gets a RepoMDError although reposync.log still prints "Sync of channel completed.".
+# 600 seconds: generation of a small cloned channel normally takes well under a minute.
+When(/^I wait until the repository metadata of channel "([^"]*)" is generated on the hub$/) do |channel|
+  repeat_until_timeout(timeout: 600, message: "Repository metadata of #{channel} is not generated on the hub") do
+    break if channel_metadata_present?(channel, 'server')
+
+    sleep 10
+  end
+end
+
 When(/^I trigger channel sync to "([^"]*)" via the hub API$/) do |host|
   result = api_client_for('server').sync_hub.sync_peripheral_channels(get_target(host).full_hostname)
   raise StandardError, "Channel sync to #{host} was not scheduled, API returned #{result}" unless result == 1
@@ -630,9 +641,16 @@ end
 Then(/^channel "([^"]*)" on "([^"]*)" should have "([^"]*)" packages?$/) do |channel, host, pkg_count|
   node = get_target(host)
   user, password = Credentials.for(host)
-  output, _code = node.run("spacecmd -u #{user} -p #{password} -- softwarechannel_listallpackages #{channel} | wc -l")
-  actual_count = output.strip.to_i
   expected_count = pkg_count.to_i
+  actual_count = 0
+  # A peripheral sync can report completion before the packages are imported (e.g. first reposync fails, a retry succeeds).
+  repeat_until_timeout(dont_raise: true) do
+    output, _code = node.run("spacecmd -u #{user} -p #{password} -- softwarechannel_listallpackages #{channel} | wc -l")
+    actual_count = output.strip.to_i
+    break if actual_count >= expected_count
+
+    sleep 5
+  end
   raise StandardError, "Expected #{expected_count} packages, found #{actual_count}" unless actual_count >= expected_count
 end
 
@@ -884,14 +902,20 @@ end
 
 # Peripheral-side activation key and minion bootstrap
 
-When(/^I create an activation key "([^"]*)" on "([^"]*)" with channel "([^"]*)"$/) do |key_label, host, channel|
-  api_client_for(host).activationkey.create(key_label, key_label, channel, 100)
-  add_context("#{host}_activation_key", key_label)
+# The API prefixes the key with the organization id: creating "hub-test-key" gives "1-hub-test-key".
+When(/^I create an activation key "([^"]*)" on "([^"]*)" with channel "([^"]*)"(?: and child channels "([^"]*)")?$/) do |key_label, host, channel, child_channels|
+  api = api_client_for(host).activationkey
+  api.delete("1-#{key_label}") if api.verified?("1-#{key_label}")
+  key = api.create(key_label, key_label, channel, 100)
+  raise StandardError, "Activation key #{key_label} not created on #{host}" if key.nil?
+
+  api.add_child_channels(key, child_channels.split(',').map(&:strip)) if child_channels
+  add_context("#{host}_activation_key", key)
 end
 
 # Fills and submits the bootstrapping form of the current server for a host.
 def bootstrap_from_ui(host, activation_key = nil)
-  visit('/rhn/systems/bootstrapping')
+  follow_left_menu('Systems > Bootstrapping')
   step %(I enter the hostname of "#{host}" as "hostname")
   step %(I enter "22" as "port")
   step %(I enter "root" as "user")
@@ -905,8 +929,8 @@ When(/^I bootstrap "([^"]*)" to peripheral "([^"]*)" using activation key "([^"]
   using_server(peripheral_host) { bootstrap_from_ui(minion_host, key_label) }
 end
 
-When(/^I bootstrap "([^"]*)" as a Salt minion of hub$/) do |host|
-  using_server('server') { bootstrap_from_ui(host) }
+When(/^I bootstrap "([^"]*)" as a Salt minion of hub(?: using activation key "([^"]*)")?$/) do |host, key_label|
+  using_server('server') { bootstrap_from_ui(host, key_label) }
 end
 
 # Returns the systems registered on a server whose name is the system name of a host.
@@ -919,8 +943,93 @@ Then(/^I should see "([^"]*)" registered on "([^"]*)"$/) do |minion_host, server
   raise StandardError, "#{minion_host} not found on #{server_host}" if systems_registered_as(minion_host, on: server_host).empty?
 end
 
+Then(/^I should not see "([^"]*)" registered on "([^"]*)"$/) do |minion_host, server_host|
+  raise StandardError, "#{minion_host} unexpectedly found on #{server_host}" unless systems_registered_as(minion_host, on: server_host).empty?
+end
+
 Then(/^I should not see "([^"]*)" registered on hub$/) do |minion_host|
   raise StandardError, "#{minion_host} unexpectedly found on hub" unless systems_registered_as(minion_host, on: 'server').empty?
+end
+
+Given(/^"([^"]*)" is registered on "([^"]*)"$/) do |minion_host, server_host|
+  # A host without its environment variable has no system name to search for
+  skip_this_scenario if get_target(minion_host).full_hostname.nil?
+  skip_this_scenario if systems_registered_as(minion_host, on: server_host).empty?
+end
+
+# The "not contain" check is only meaningful after a "contain" check passed for the same system, so it skips otherwise.
+Then(/^the hub reportdb system table should (contain|not contain) a row for "([^"]*)" of "([^"]*)"$/) do |expectation, minion_host, peripheral_host|
+  seen_key = "reportdb_row_seen_#{minion_host}_#{peripheral_host}"
+  skip_this_scenario if expectation == 'not contain' && !get_context(seen_key)
+
+  rows = hub_reportdb_system_rows(minion_host, peripheral_host)
+  raise StandardError, "Expected no hub reportdb row for #{minion_host} of #{peripheral_host}, found #{rows}" if expectation == 'not contain' && rows.positive?
+  raise StandardError, "No hub reportdb row for #{minion_host} of #{peripheral_host}" if expectation == 'contain' && rows.zero?
+
+  add_context(seen_key, true) if expectation == 'contain'
+end
+
+# Adds the SLES15-SP7 product through the Products UI of the hub, unless its pool channel is already there.
+# Mirrors the "Synchronize SLES 15 SP7 product" scenario of reposync/srv_sync_products.feature, with the Ruby helpers behind its steps.
+When(/^I add the SLES15-SP7 product on the hub unless it is already synced$/) do
+  next if api_client_for('server').channel.channel_verified?('sle-product-sles15-sp7-pool-x86_64')
+  raise ScriptError, 'SLES15-SP7 not synced on hub and no SCC credentials to add it' unless $scc_credentials
+
+  refresh_scc
+  using_server('server') do
+    open_products_page_filtered_by('SUSE Linux Enterprise Server 15 SP7')
+    raise ScriptError, 'SLES 15 SP7 not found in the products list' unless check_text?('SUSE Linux Enterprise Server 15 SP7 x86_64', timeout: DEFAULT_TIMEOUT)
+
+    sublists = [
+      'SUSE Linux Enterprise Server 15 SP7 x86_64',
+      'Basesystem Module 15 SP7 x86_64',
+      'Desktop Applications Module 15 SP7 x86_64'
+    ]
+    sublists.each { |product| open_product_sublist(product) }
+    open_product_sublist('SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64', if_present: true)
+    products = [
+      'SUSE Linux Enterprise Server 15 SP7 x86_64',
+      'Desktop Applications Module 15 SP7 x86_64',
+      'Development Tools Module 15 SP7 x86_64',
+      'Python 3 Module 15 SP7 x86_64',
+      'Containers Module 15 SP7 x86_64'
+    ]
+    products.each { |product| set_product_selection('select', product) }
+    click_add_product_button
+    wait_until_product_added('SUSE Linux Enterprise Server 15 SP7 x86_64')
+    assert_sle15_product_added('SP7')
+  end
+end
+
+# Adds SL Micro 6.2, the OS of the peripheral servers, through the Products UI of the hub, unless its pool channel is already there.
+When(/^I add the SL Micro 6.2 product on the hub unless it is already synced$/) do
+  next if api_client_for('server').channel.channel_verified?('sl-micro-6.2-pool-x86_64')
+  raise ScriptError, 'SL Micro 6.2 not synced on hub and no SCC credentials to add it' unless $scc_credentials
+
+  refresh_scc
+  using_server('server') do
+    open_products_page_filtered_by('SUSE Linux Micro 6.2')
+    set_product_selection('select', 'SUSE Linux Micro 6.2 x86_64')
+    open_product_sublist('SUSE Linux Micro 6.2 x86_64')
+    set_product_selection('select', 'SUSE Multi-Linux Manager Client Tools for SLE 16 x86_64')
+    click_add_product_button
+    wait_until_product_added('SUSE Linux Micro 6.2 x86_64')
+  end
+end
+
+# Adds the Server Extension 5.2 on top of SL Micro 6.2, so the hub can serve the Server product to its peripherals.
+When(/^I add the SUSE MLM Server Extension 5.2 product on the hub unless it is already synced$/) do
+  next if api_client_for('server').channel.channel_verified?('suse-multi-linux-manager-server-5.2-x86_64')
+  raise ScriptError, 'Server Extension 5.2 not synced on hub and no SCC credentials to add it' unless $scc_credentials
+
+  refresh_scc
+  using_server('server') do
+    open_products_page_filtered_by('SUSE Linux Micro 6.2')
+    open_product_sublist('SUSE Linux Micro 6.2 x86_64')
+    set_product_selection('select', 'SUSE Multi-Linux Manager Server Extension 5.2 x86_64')
+    click_add_product_button
+    wait_until_product_added('SUSE Multi-Linux Manager Server Extension 5.2 x86_64')
+  end
 end
 
 Then(/^I should see "([^"]*)" in hub system list as "(Salt Minion|Foreign)" type$/) do |host, expected_type|

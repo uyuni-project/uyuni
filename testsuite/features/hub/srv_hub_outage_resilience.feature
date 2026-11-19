@@ -28,7 +28,7 @@ Feature: Hub outage resilience for peripherals and their minions
   # no longer installs a package while the hub is down -- that previously relied on the
   # andromeda-dummy test package, which only exists in the (now unused) Fake-RPM-SUSE-Channel.
 
-  Background:
+  Scenario:
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: register peripheral1 as peripheral for outage resilience tests
