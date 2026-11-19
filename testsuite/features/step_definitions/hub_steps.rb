@@ -884,14 +884,20 @@ end
 
 # Peripheral-side activation key and minion bootstrap
 
-When(/^I create an activation key "([^"]*)" on "([^"]*)" with channel "([^"]*)"$/) do |key_label, host, channel|
-  api_client_for(host).activationkey.create(key_label, key_label, channel, 100)
-  add_context("#{host}_activation_key", key_label)
+# The API prefixes the key with the organization id: creating "hub-test-key" gives "1-hub-test-key".
+When(/^I create an activation key "([^"]*)" on "([^"]*)" with channel "([^"]*)"(?: and child channels "([^"]*)")?$/) do |key_label, host, channel, child_channels|
+  api = api_client_for(host).activationkey
+  api.delete("1-#{key_label}") if api.verified?("1-#{key_label}")
+  key = api.create(key_label, key_label, channel, 100)
+  raise StandardError, "Activation key #{key_label} not created on #{host}" if key.nil?
+
+  api.add_child_channels(key, child_channels.split(',').map(&:strip)) if child_channels
+  add_context("#{host}_activation_key", key)
 end
 
 # Fills and submits the bootstrapping form of the current server for a host.
 def bootstrap_from_ui(host, activation_key = nil)
-  visit('/rhn/systems/bootstrapping')
+  follow_left_menu('Systems > Bootstrapping')
   step %(I enter the hostname of "#{host}" as "hostname")
   step %(I enter "22" as "port")
   step %(I enter "root" as "user")
@@ -905,8 +911,8 @@ When(/^I bootstrap "([^"]*)" to peripheral "([^"]*)" using activation key "([^"]
   using_server(peripheral_host) { bootstrap_from_ui(minion_host, key_label) }
 end
 
-When(/^I bootstrap "([^"]*)" as a Salt minion of hub$/) do |host|
-  using_server('server') { bootstrap_from_ui(host) }
+When(/^I bootstrap "([^"]*)" as a Salt minion of hub(?: using activation key "([^"]*)")?$/) do |host, key_label|
+  using_server('server') { bootstrap_from_ui(host, key_label) }
 end
 
 # Returns the systems registered on a server whose name is the system name of a host.
@@ -990,6 +996,21 @@ When(/^I add the SL Micro 6.2 product on the hub unless it is already synced$/) 
     set_product_selection('select', 'SUSE Multi-Linux Manager Client Tools for SLE 16 x86_64')
     click_add_product_button
     wait_until_product_added('SUSE Linux Micro 6.2 x86_64')
+  end
+end
+
+# Adds the Server Extension 5.2 on top of SL Micro 6.2, so the hub can serve the Server product to its peripherals.
+When(/^I add the SUSE MLM Server Extension 5.2 product on the hub unless it is already synced$/) do
+  next if api_client_for('server').channel.channel_verified?('suse-multi-linux-manager-server-5.2-x86_64')
+  raise ScriptError, 'Server Extension 5.2 not synced on hub and no SCC credentials to add it' unless $scc_credentials
+
+  refresh_scc
+  using_server('server') do
+    open_products_page_filtered_by('SUSE Linux Micro 6.2')
+    open_product_sublist('SUSE Linux Micro 6.2 x86_64')
+    set_product_selection('select', 'SUSE Multi-Linux Manager Server Extension 5.2 x86_64')
+    click_add_product_button
+    wait_until_product_added('SUSE Multi-Linux Manager Server Extension 5.2 x86_64')
   end
 end
 

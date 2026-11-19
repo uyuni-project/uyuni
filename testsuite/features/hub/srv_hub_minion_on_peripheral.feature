@@ -20,6 +20,7 @@ Feature: Hub - minion managed via peripheral server
     And I perform a full salt minion cleanup on "sle_minion"
     Then "sle_minion" should not be registered
 
+  @susemanager
   Scenario: Pre-requisite: SLES15-SP7 channels are present on peripheral1
     Then channel "sle-product-sles15-sp7-pool-x86_64" should exist on "peripheral1"
     And channel "managertools-sle15-pool-x86_64-sp7" should exist on "peripheral1"
@@ -27,7 +28,7 @@ Feature: Hub - minion managed via peripheral server
 
   Scenario: Create activation key on peripheral1 peripheral with hub-synced channel
     Given I am authorized for the "Admin" section on "peripheral1"
-    When I create an activation key "1-hub-test-key" on "peripheral1" with channel "sle-product-sles15-sp7-pool-x86_64"
+    When I create an activation key "hub-test-key" on "peripheral1" with channel "sle-product-sles15-sp7-pool-x86_64"
     And I follow the left menu "Systems > Activation Keys"
     Then I should see a "1-hub-test-key" text
 

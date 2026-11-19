@@ -568,17 +568,29 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   salt_bundle_cleanup_paths = '/var/cache/venv-salt-minion /run/venv-salt-minion /var/log/venv-salt-minion.log /var/tmp/.root*'
   salt_classic_cleanup_paths = '/var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /var/tmp/.root*'
 
-  # File cleanup within the configuration directory
-  node.run("rm -f #{salt_bundle_config_dir}/grains #{salt_bundle_config_dir}/minion_id", check_errors: false)
-  node.run("find #{salt_bundle_config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", check_errors: false)
-  node.run("rm -f #{salt_bundle_config_dir}/pki/minion/*", check_errors: false)
+  # On a server host (with mgrctl), the minion runs on the host while commands default to the container,
+  # which holds the server's own Salt stack: run on the host instead.
+  in_container = !node.has_mgrctl
 
-  node.run("rm -f #{salt_classic_config_dir}/grains #{salt_classic_config_dir}/minion_id", check_errors: false)
-  node.run("find #{salt_classic_config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", check_errors: false)
-  node.run("rm -f #{salt_classic_config_dir}/pki/minion/*", check_errors: false)
+  # A host that is also a server keeps its packages: stop the minion instead of removing it, and drop the
+  # channel repositories of the previous registration, which make a new bootstrap fail (pkg.mod_repo)
+  unless in_container
+    node.run('systemctl disable --now venv-salt-minion', runs_in_container: false, check_errors: false)
+    node.run('rm -f /etc/zypp/repos.d/susemanager:channels.repo', runs_in_container: false, check_errors: false)
+  end
+
+  # File cleanup within the configuration directory
+  node.run("rm -f #{salt_bundle_config_dir}/grains #{salt_bundle_config_dir}/minion_id", runs_in_container: in_container, check_errors: false)
+  node.run("find #{salt_bundle_config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", runs_in_container: in_container, check_errors: false)
+  node.run("rm -f #{salt_bundle_config_dir}/pki/minion/*", runs_in_container: in_container, check_errors: false)
+
+  node.run("rm -f #{salt_classic_config_dir}/grains #{salt_classic_config_dir}/minion_id", runs_in_container: in_container, check_errors: false)
+  node.run("find #{salt_classic_config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", runs_in_container: in_container, check_errors: false)
+  node.run("rm -f #{salt_classic_config_dir}/pki/minion/*", runs_in_container: in_container, check_errors: false)
 
   # Additional cleanup for cached and runtime files
-  node.run("rm -Rf /root/salt #{salt_bundle_cleanup_paths} #{salt_classic_cleanup_paths}", check_errors: false)
+  node.run("rm -Rf /root/salt #{salt_bundle_cleanup_paths} #{salt_classic_cleanup_paths}", runs_in_container: in_container, check_errors: false)
+  next unless in_container
 
   # Package removal using the existing step
   step %(I remove packages "venv-salt-minion salt salt-minion" from this "#{host}" without error control)

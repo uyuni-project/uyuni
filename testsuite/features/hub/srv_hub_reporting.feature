@@ -42,6 +42,8 @@ Feature: Hub reportdb aggregation from peripheral servers
   @sle_minion
   Scenario: Verify hub reportdb contains one row per peripheral
     Given "sle_minion" is registered on "peripheral1"
+    And I am authorized for the "Admin" section on "server"
+    When I schedule a task to update ReportDB
     Then the hub reportdb should contain one row per peripheral
 
   @sle_minion
@@ -52,6 +54,8 @@ Feature: Hub reportdb aggregation from peripheral servers
   @sle_minion
   Scenario: Re-run hub reporting task and verify synced_date refreshes
     Given "sle_minion" is registered on "peripheral1"
+    And I am authorized for the "Admin" section on "peripheral1"
+    And I schedule the reporting update task on "peripheral1"
     When I remember the latest synced_date of the hub reportdb "system" table
     And I schedule the reporting update task on "hub"
     Then the hub reportdb "system" table should have a newer synced_date than remembered
