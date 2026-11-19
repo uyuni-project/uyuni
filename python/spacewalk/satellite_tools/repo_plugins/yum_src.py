@@ -965,11 +965,9 @@ type=rpm-md
         if self.pqc_insecure:
             log(
                 2,
-                # pylint: disable-next=consider-using-f-string
-                "Repository '{}' is not flagged as PQC signed: skipping the '{}' "
-                "Zypper sigcheck plugin.".format(
-                    self.channel_label or self.reponame, PQC_SIGCHECK_PLUGIN
-                ),
+                f"Repository '{self.channel_label or self.reponame}' is not flagged "
+                f"as PQC signed: skipping the '{PQC_SIGCHECK_PLUGIN}' "
+                "Zypper sigcheck plugin.",
             )
         elif not uln_repo and self._has_pqc_signature():
             pqc_repomd_digest = self._verify_pqc_signature(
@@ -992,10 +990,7 @@ type=rpm-md
 
         if process.returncode:
             if process.stderr:
-                raise RepoMDError(
-                    # pylint: disable-next=consider-using-f-string
-                    "Cannot access repository.\n{}".format(sstr(process.stderr))
-                )
+                raise RepoMDError(f"Cannot access repository.\n{sstr(process.stderr)}")
             raise RepoMDError(
                 "Cannot access repository. Maybe repository GPG keys are not imported"
             )
@@ -1009,14 +1004,11 @@ type=rpm-md
             )
             if synced_repomd_digest != pqc_repomd_digest:
                 raise RepoMDError(
-                    # pylint: disable-next=consider-using-f-string
-                    "Metadata of repository '{}' changed after its PQC signature was "
-                    "verified (validated repomd.xml sha256 {}, synced {}). Refusing "
-                    "to synchronize metadata that was not PQC-validated.".format(
-                        self.channel_label or self.reponame,
-                        pqc_repomd_digest,
-                        synced_repomd_digest,
-                    )
+                    f"Metadata of repository '{self.channel_label or self.reponame}' "
+                    "changed after its PQC signature was verified (validated "
+                    f"repomd.xml sha256 {pqc_repomd_digest}, synced "
+                    f"{synced_repomd_digest}). Refusing to synchronize metadata "
+                    "that was not PQC-validated."
                 )
 
         repo.is_configured = True
@@ -1093,21 +1085,17 @@ type=rpm-md
             if failures and all(self._is_missing_file_error(e) for e in failures):
                 log(
                     2,
-                    # pylint: disable-next=consider-using-f-string
-                    "Repository {} does not provide a PQC signature ({})".format(
-                        self.name, PQC_SIGNATURE_PATH
-                    ),
+                    f"Repository {self.name} does not provide a PQC signature "
+                    f"({PQC_SIGNATURE_PATH})",
                 )
                 return False
+            reason = "; ".join(
+                self._describe_fetch_error(e) for e in failures
+            ) or self._describe_fetch_error(exc)
             raise RepoMDError(
-                # pylint: disable-next=consider-using-f-string
-                "Cannot determine whether repository '{}' provides a PQC signature: "
-                "fetching {} failed: {}".format(
-                    self.channel_label or self.reponame,
-                    PQC_SIGNATURE_PATH,
-                    "; ".join(self._describe_fetch_error(e) for e in failures)
-                    or self._describe_fetch_error(exc),
-                )
+                "Cannot determine whether repository "
+                f"'{self.channel_label or self.reponame}' provides a PQC signature: "
+                f"fetching {PQC_SIGNATURE_PATH} failed: {reason}"
             ) from exc
 
     @staticmethod
@@ -1133,12 +1121,10 @@ type=rpm-md
         code = getattr(exc, "code", None)
         if exc.errno == 14 and code is not None:
             # HTTP status codes start at 100, curl error numbers are below
-            # pylint: disable-next=consider-using-f-string
-            return ("HTTP error {}" if code >= 100 else "curl error {}").format(code)
+            return f"HTTP error {code}" if code >= 100 else f"curl error {code}"
         if exc.errno == 12:
             return "timeout"
-        # pylint: disable-next=consider-using-f-string
-        return "urlgrabber error {}".format(exc.errno)
+        return f"urlgrabber error {exc.errno}"
 
     def _verify_pqc_signature(self, repo_config):
         """
@@ -1151,20 +1137,16 @@ type=rpm-md
         reponame = str(self.channel_label or self.reponame)
         log(
             0,
-            # pylint: disable-next=consider-using-f-string
-            "PQC signature ({}) found for repository '{}'. Validating the metadata "
-            "with the '{}' Zypper sigcheck plugin.".format(
-                PQC_SIGNATURE_PATH, reponame, PQC_SIGCHECK_PLUGIN
-            ),
+            f"PQC signature ({PQC_SIGNATURE_PATH}) found for repository "
+            f"'{reponame}'. Validating the metadata with the "
+            f"'{PQC_SIGCHECK_PLUGIN}' Zypper sigcheck plugin.",
         )
         if not os.access(PQC_SIGCHECK_PLUGIN_PATH, os.X_OK):
             raise RepoMDError(
-                # pylint: disable-next=consider-using-f-string
-                "Repository '{}' is signed with a PQC signature, but the '{}' Zypper "
-                "sigcheck plugin is not available at {}. Install the plugin to be "
-                "able to synchronize this repository.".format(
-                    reponame, PQC_SIGCHECK_PLUGIN, PQC_SIGCHECK_PLUGIN_PATH
-                )
+                f"Repository '{reponame}' is signed with a PQC signature, but the "
+                f"'{PQC_SIGCHECK_PLUGIN}' Zypper sigcheck plugin is not available "
+                f"at {PQC_SIGCHECK_PLUGIN_PATH}. Install the plugin to be able to "
+                "synchronize this repository."
             )
         with tempfile.TemporaryDirectory(prefix="reposync-pqc-") as tmp_dir:
             reposd_dir = os.path.join(tmp_dir, "repos.d")
@@ -1194,20 +1176,15 @@ type=rpm-md
             )
 
         if process.returncode:
+            stderr = sstr(process.stderr) if process.stderr else ""
             raise RepoMDError(
-                # pylint: disable-next=consider-using-f-string
-                "Repository metadata of '{}' rejected by the '{}' Zypper sigcheck "
-                "plugin.\n{}".format(
-                    reponame,
-                    PQC_SIGCHECK_PLUGIN,
-                    sstr(process.stderr) if process.stderr else "",
-                )
+                f"Repository metadata of '{reponame}' rejected by the "
+                f"'{PQC_SIGCHECK_PLUGIN}' Zypper sigcheck plugin.\n{stderr}"
             )
         log(
             0,
-            # pylint: disable-next=consider-using-f-string
-            "Metadata of repository '{}' successfully verified by the '{}' Zypper "
-            "sigcheck plugin.".format(reponame, PQC_SIGCHECK_PLUGIN),
+            f"Metadata of repository '{reponame}' successfully verified by the "
+            f"'{PQC_SIGCHECK_PLUGIN}' Zypper sigcheck plugin.",
         )
         return validated_repomd_digest
 
@@ -1230,10 +1207,7 @@ type=rpm-md
                 return hashlib.sha256(repomd.read()).hexdigest()
         except OSError as exc:
             raise RepoMDError(
-                # pylint: disable-next=consider-using-f-string
-                "Cannot read {} to check its PQC validation: {}".format(
-                    repomd_path, exc
-                )
+                f"Cannot read {repomd_path} to check its PQC validation: {exc}"
             ) from exc
 
     @staticmethod
@@ -1267,21 +1241,15 @@ type=rpm-md
         if not certificates:
             log(
                 3,
-                # pylint: disable-next=consider-using-f-string
-                "No PQC certificate available in {} for repository '{}'. Using the "
-                "certificates installed in {}.".format(
-                    SPACEWALK_PQC_KEYS_PATH,
-                    self.channel_label or self.reponame,
-                    PQC_KEYRING_PATH,
-                ),
+                f"No PQC certificate available in {SPACEWALK_PQC_KEYS_PATH} for "
+                f"repository '{self.channel_label or self.reponame}'. Using the "
+                f"certificates installed in {PQC_KEYRING_PATH}.",
             )
             return []
         log(
             2,
-            # pylint: disable-next=consider-using-f-string
-            "Verifying repository '{}' against {} PQC certificates".format(
-                self.channel_label or self.reponame, len(certificates)
-            ),
+            f"Verifying repository '{self.channel_label or self.reponame}' "
+            f"against {len(certificates)} PQC certificates",
         )
         installed = []
         try:
@@ -1292,27 +1260,18 @@ type=rpm-md
                 # certificates having the same file name in different directories apart
                 target = os.path.join(
                     PQC_KEYRING_PATH,
-                    # pylint: disable-next=consider-using-f-string
-                    "{}{}-{:03d}-{}".format(
-                        PQC_TEMPORARY_CERTIFICATE_PREFIX,
-                        os.getpid(),
-                        index,
-                        os.path.basename(certificate),
-                    ),
+                    f"{PQC_TEMPORARY_CERTIFICATE_PREFIX}{os.getpid()}-{index:03d}-"
+                    f"{os.path.basename(certificate)}",
                 )
                 copyfile(certificate, target)
                 installed.append(target)
         except OSError as exc:
             self._remove_pqc_certificates(installed)
             raise RepoMDError(
-                # pylint: disable-next=consider-using-f-string
-                "Unable to provide the PQC certificates of repository '{}' to the '{}' "
-                "Zypper sigcheck plugin: copying them into {} failed: {}".format(
-                    self.channel_label or self.reponame,
-                    PQC_SIGCHECK_PLUGIN,
-                    PQC_KEYRING_PATH,
-                    exc,
-                )
+                "Unable to provide the PQC certificates of repository "
+                f"'{self.channel_label or self.reponame}' to the "
+                f"'{PQC_SIGCHECK_PLUGIN}' Zypper sigcheck plugin: copying them "
+                f"into {PQC_KEYRING_PATH} failed: {exc}"
             ) from exc
         return installed
 
@@ -1327,10 +1286,8 @@ type=rpm-md
             except OSError as exc:
                 log(
                     0,
-                    # pylint: disable-next=consider-using-f-string
-                    "Could not remove the temporary PQC certificate {}: {}".format(
-                        certificate, exc
-                    ),
+                    f"Could not remove the temporary PQC certificate {certificate}: "
+                    f"{exc}",
                 )
 
     def error_msg(self, message):
