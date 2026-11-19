@@ -100,6 +100,8 @@ RUN set -euo pipefail; \
     printf "[Manager]\nLogColor=no" >/etc/systemd/system.conf.d/01-nocolor.conf && \
 # Credentials fail on Kubernetes, removing them to setup tmpfiles
     sed -i "/^ImportCredential=.*/d" /usr/lib/systemd/system/systemd-tmpfiles-setup.service && \
+# A /tmp mounted by systemd gets the tmpfs_t label, not writable on Kubernetes with SELinux
+    ln -sf /dev/null /etc/systemd/system/tmp.mount && \
 # Silence services that generate errors are not really needed in a container
     ln -sf /dev/null /etc/systemd/system/dev-hugepages.mount && \
     ln -sf /dev/null /etc/systemd/system/systemd-logind.service && \
