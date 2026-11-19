@@ -132,8 +132,10 @@ def test_run_decodes_non_utf8_notation_data(monkeypatch, tmp_path):
     )
 
     def mock_subprocess_run(*args, **kwargs):
-        assert kwargs.get("encoding") is None
-        return subprocess.CompletedProcess(args[0], 0, raw, b"")
+        assert kwargs.get("encoding") == "utf-8"
+        assert kwargs.get("errors") == "replace"
+        stdout = raw.decode(kwargs["encoding"], errors=kwargs["errors"])
+        return subprocess.CompletedProcess(args[0], 0, stdout, "")
 
     monkeypatch.setattr(gpgverify.subprocess, "run", mock_subprocess_run)
 
