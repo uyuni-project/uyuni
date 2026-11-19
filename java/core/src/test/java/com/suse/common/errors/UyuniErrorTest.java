@@ -18,6 +18,7 @@
 package com.suse.common.errors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,5 +29,21 @@ public class UyuniErrorTest {
         String testMessage = "Test error message";
         UyuniError error = new UyuniError(testMessage);
         assertEquals(testMessage, error.getMessage());
+    }
+
+    @Test
+    public void testPlainMessageIsUnknownWithoutField() {
+        UyuniError error = new UyuniError("plain");
+        assertEquals(UyuniErrorCategory.UNKNOWN, error.getCategory());
+        assertNull(error.getArgumentKey());
+    }
+
+    @Test
+    public void testErrorWithCategoryAndField() {
+        UyuniError error = new UyuniError(UyuniErrorCategory.NOT_FOUND, "serverId", "Server 1000010001 not found");
+
+        assertEquals(UyuniErrorCategory.NOT_FOUND, error.getCategory());
+        assertEquals("serverId", error.getArgumentKey());
+        assertEquals("Server 1000010001 not found", error.getMessage());
     }
 }

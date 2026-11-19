@@ -20,17 +20,40 @@ package com.suse.common.errors;
 import java.io.Serializable;
 
 /**
- * Represents a generic error in scope of uyuni
+ * Represents a generic error in scope of Uyuni: a category, the field it applies to (optional) and a message.
+ * The message is used as it is: translate it when creating the error if it must be localized.
  */
 public class UyuniError implements Serializable {
+    private final UyuniErrorCategory category;
+    private final String argumentKey;
     private final String message;
 
     /**
-     * Constructor
+     * Constructor for an error without category (UNKNOWN) or field
      * @param messageIn the error message
      */
     public UyuniError(String messageIn) {
+        this(UyuniErrorCategory.UNKNOWN, null, messageIn);
+    }
+
+    /**
+     * Constructor
+     * @param categoryIn the kind of error
+     * @param argumentKeyIn the field or object the error applies to, e.g. "serverId"; can be null
+     * @param messageIn the error message
+     */
+    public UyuniError(UyuniErrorCategory categoryIn, String argumentKeyIn, String messageIn) {
+        this.category = categoryIn;
+        this.argumentKey = argumentKeyIn;
         this.message = messageIn;
+    }
+
+    public UyuniErrorCategory getCategory() {
+        return category;
+    }
+
+    public String getArgumentKey() {
+        return argumentKey;
     }
 
     public String getMessage() {

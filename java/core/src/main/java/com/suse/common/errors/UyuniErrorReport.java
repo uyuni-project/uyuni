@@ -28,7 +28,11 @@ public class UyuniErrorReport {
      * Registers a new error in the error report.
      *
      * @param message   The error message.
+     * @deprecated the error gets category UNKNOWN (500 / fault -1 if nobody catches it) and no field;
+     * use {@link #register(UyuniError)} with a category, e.g.
+     * {@code register(new UyuniError(UyuniErrorCategory.INVALID_ARGUMENT, "name", "Name is too short"))}
      */
+    @Deprecated
     public void register(String message) {
         errors.add(new UyuniError(message));
     }
@@ -38,10 +42,22 @@ public class UyuniErrorReport {
      *
      * @param format    The format string with {} placeholders.
      * @param arguments The arguments to substitute into the placeholders.
+     * @deprecated the error gets category UNKNOWN (500 / fault -1 if nobody catches it) and no field;
+     * use {@link #register(UyuniError)} with a category
      */
+    @Deprecated
     public void register(String format, Object... arguments) {
         String formattedMessage = format == null ? null : MessageFormat.format(format, arguments);
         errors.add(new UyuniError(formattedMessage));
+    }
+
+    /**
+     * Registers an error in the error report, e.g. one with a category and a field.
+     *
+     * @param error The error.
+     */
+    public void register(UyuniError error) {
+        errors.add(error);
     }
 
     /**

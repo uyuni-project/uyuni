@@ -36,6 +36,7 @@ public class ErrorReportingStrategies {
         throw new UnsupportedOperationException(NOT_INSTANTIABLE);
     }
 
+    // Default strategy - throw a {@code UyuniGeneralException} with all registered errors
     private static final UyuniReportStrategy<UyuniError> VALIDATION_REPORT_STRATEGY;
 
     static {
