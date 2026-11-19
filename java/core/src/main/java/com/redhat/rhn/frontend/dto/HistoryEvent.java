@@ -16,14 +16,6 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-
-import com.redhat.rhn.common.util.TimeConversion;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 /**
@@ -40,9 +32,6 @@ public class HistoryEvent extends BaseDto {
     private String historyType;
     private String historyTypeName;
     private String details;
-    private static Logger logger = LogManager.getLogger(HistoryEvent.class);
-    private static final String COMPLETED_FORMAT = "yyyy-MM-dd kk:mm:ss";
-    private static final DateTimeFormatter COMPLETED_FORMATTER = DateTimeFormatter.ofPattern(COMPLETED_FORMAT);
     /**
      * gets details of the event
      * @return details
@@ -69,24 +58,6 @@ public class HistoryEvent extends BaseDto {
      */
     public void setCompleted(Date completedIn) {
         this.completed = completedIn;
-    }
-
-
-    /**
-     * sets the completed date based on a string format dateFormat
-     * @param completedIn the date in a string format
-     */
-    public void setCompleted(String completedIn) {
-        if (completedIn == null) {
-            this.completed = null;
-            return;
-        }
-        try {
-            this.completed = TimeConversion.dateFromLocalDateTimeString(COMPLETED_FORMATTER, completedIn);
-        }
-        catch (DateTimeParseException e) {
-            logger.error("Cannot parse {} according to format {}", completedIn, COMPLETED_FORMAT, e);
-        }
     }
 
     /**
