@@ -21,7 +21,6 @@
 
 import os.path
 import re
-import time
 
 from spacewalk.common import rhnCache
 from spacewalk.common.rhnConfig import CFG
@@ -783,9 +782,9 @@ def get_erratum_mapper(package_mapper):
 
 
 def oratimestamp_to_sinceepoch(ts):
-    return time.mktime(
-        (ts.year, ts.month, ts.day, ts.hour, ts.minute, ts.second, 0, 0, -1)
-    )
+    if ts is None:
+        return None
+    return ts.timestamp()
 
 
 def string_to_unicode(text):

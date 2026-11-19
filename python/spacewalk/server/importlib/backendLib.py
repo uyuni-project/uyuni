@@ -37,7 +37,7 @@ from uyuni.common.usix import ListType, StringType, DictType, IntType, UnicodeTy
 
 
 def gmtime(timestamp):
-    return _format_time(time.gmtime(float(timestamp)))
+    return _format_time(time.gmtime(float(timestamp))) + " UTC"
 
 
 def localtime(timestamp):
