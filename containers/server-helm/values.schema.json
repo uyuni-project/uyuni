@@ -598,6 +598,12 @@
           "description": "Node label matching rules.",
           "required": []
         },
+        "selinuxType": {
+          "default": "",
+          "description": "Name of the SELinux type to use for the saline pod.",
+          "required": [],
+          "title": "selinuxType"
+        },
         "tag": {
           "default": "null",
           "description": "Image tag for the Saline container, overwriting the global one",

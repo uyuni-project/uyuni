@@ -86,3 +86,15 @@ tests:
           content:
             seLinuxOptions:
               type: "spc_t"
+
+  - it: should render the SELinux type of the saline pod
+    template: saline.yaml
+    set:
+      global.fqdn: uyuni.example.com
+      saline:
+        enable: true
+        selinuxType: uyuni_saline_container_t
+    asserts:
+      - equal:
+          path: spec.template.spec.securityContext.seLinuxOptions.type
+          value: uyuni_saline_container_t
