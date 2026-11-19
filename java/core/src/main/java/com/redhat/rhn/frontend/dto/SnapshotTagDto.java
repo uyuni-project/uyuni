@@ -16,7 +16,6 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.TimeConversion;
 
 import java.time.format.DateTimeParseException;
@@ -52,7 +51,7 @@ public class SnapshotTagDto extends BaseDto {
             }
             catch (DateTimeParseException e) {
                 throw new IllegalArgumentException("lastCheckin must be of the: [" +
-                        LocalizationService.RHN_DB_DATEFORMAT + "] it was: " + createdIn);
+                        TimeConversion.LOCAL_DATE_TIME_PATTERN + "] it was: " + createdIn);
             }
         }
     }

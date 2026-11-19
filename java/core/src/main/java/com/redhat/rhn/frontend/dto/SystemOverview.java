@@ -398,7 +398,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
             }
             catch (DateTimeParseException e) {
                 throw new IllegalArgumentException("lastCheckin must be of the: [" +
-                        LocalizationService.RHN_DB_DATEFORMAT + "] it was: " +
+                        TimeConversion.LOCAL_DATE_TIME_PATTERN + "] it was: " +
                         lastCheckinIn);
             }
         }

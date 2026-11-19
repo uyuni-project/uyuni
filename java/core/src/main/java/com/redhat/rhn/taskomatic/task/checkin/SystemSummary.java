@@ -16,7 +16,6 @@
  */
 package com.redhat.rhn.taskomatic.task.checkin;
 
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.TimeConversion;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -129,7 +128,7 @@ public class SystemSummary {
             }
             catch (DateTimeParseException e) {
                 throw new IllegalArgumentException("lastCheckin must be of the: [" +
-                        LocalizationService.RHN_DB_DATEFORMAT + "] it was: " +
+                        TimeConversion.LOCAL_DATE_TIME_PATTERN + "] it was: " +
                         lastCheckinIn);
             }
         }
