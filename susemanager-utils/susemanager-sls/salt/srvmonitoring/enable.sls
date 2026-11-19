@@ -96,19 +96,6 @@ jmx_exporter_tomcat_service_cleanup:
     - name: prometheus-jmx_exporter@tomcat
     - enable: False
 
-# Legacy sysconfig JMX config cleanup
-legacy_tomcat_sysconfig_jmx_cleanup:
-  file.absent:
-    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
-
-jmx_exporter_taskomatic_systemd_config_cleanup:
-  file.absent:
-    - name: /etc/prometheus-jmx_exporter/taskomatic/environment
-
-jmx_exporter_taskomatic_yaml_config_cleanup:
-  file.absent:
-    - name: /etc/prometheus-jmx_exporter/taskomatic/prometheus-jmx_exporter.yml
-
 jmx_exporter_taskomatic_yaml_config:
   file.managed:
     - name: /etc/prometheus-jmx_exporter/taskomatic/java_agent.yml
@@ -135,10 +122,6 @@ jmx_exporter_taskomatic_service_cleanup:
   service.dead:
     - name: prometheus-jmx_exporter@taskomatic
     - enable: False
-
-legacy_taskomatic_sysconfig_jmx_cleanup:
-  file.absent:
-    - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:

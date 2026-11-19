@@ -1,2 +1,2 @@
-- Stop removing the JMX systemd drop-in links of tomcat and
-  taskomatic in the monitoring states
+- Remove obsolete JMX migration and cleanup steps from the
+  monitoring states (bsc#1253687)

@@ -20,15 +20,6 @@ jmx_taskomatic_config:
   file.absent:
     - name: /etc/rhn/taskomatic.conf.d/taskomatic_jmx.conf
 
-# Legacy sysconfig JMX config cleanup
-legacy_tomcat_sysconfig_jmx_cleanup:
-  file.absent:
-    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
-
-legacy_taskomatic_sysconfig_jmx_cleanup:
-  file.absent:
-    - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
-
 mgr_enable_prometheus_self_monitoring:
   cmd.run:
     - name: /usr/bin/grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && /usr/bin/sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 0/' /etc/rhn/rhn.conf || /usr/bin/echo 'prometheus_monitoring_enabled = 0' >> /etc/rhn/rhn.conf
