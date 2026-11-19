@@ -82,7 +82,11 @@ public class RhnConfiguration extends BaseDomainHelper {
         REPOSYNC_MINRATE(ValueType.INTEGER),
         REPOSYNC_NEVRA_FILTER(ValueType.BOOLEAN),
         SYNC_SOURCE_PACKAGES(ValueType.BOOLEAN),
-        URLGRABBER_LOGSPEC(ValueType.STRING);
+        URLGRABBER_LOGSPEC(ValueType.STRING),
+        BUFFER_SIZE(ValueType.INTEGER),
+        FORCE_PACKAGE_UPLOAD(ValueType.BOOLEAN),
+        PROXY_AUTH_TIMEOUT(ValueType.INTEGER),
+        PUSH_SESSION_LIFETIME(ValueType.INTEGER);
 
         private final ValueType type;
         private final Visibility visibility;

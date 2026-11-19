@@ -117,7 +117,44 @@ DB_CONFIG_KEYS = {
     "server.satellite.urlgrabber_logspec": "URLGRABBER_LOGSPEC",
     "server.urlgrabber_logspec": "URLGRABBER_LOGSPEC",
     "urlgrabber_logspec": "URLGRABBER_LOGSPEC",
+    "server.buffer_size": "BUFFER_SIZE",
+    "buffer_size": "BUFFER_SIZE",
+    "server.force_package_upload": "FORCE_PACKAGE_UPLOAD",
+    "force_package_upload": "FORCE_PACKAGE_UPLOAD",
+    "server.proxy_auth_timeout": "PROXY_AUTH_TIMEOUT",
+    "proxy_auth_timeout": "PROXY_AUTH_TIMEOUT",
+    "server.app.session_lifetime": "PUSH_SESSION_LIFETIME",
+    "server.session_lifetime": "PUSH_SESSION_LIFETIME",
+    "session_lifetime": "PUSH_SESSION_LIFETIME",
 }
+
+
+def _db_config_entry(line):
+    """
+    Return the lower case key name and the value of a rhn.conf line whose key moved
+    into the database, (None, None) for other lines
+    """
+    match = re.match(r"^\s*([\w.]+)\s*=(.*)$", line)
+    if not match or match.group(1).lower() not in DB_CONFIG_KEYS:
+        return None, None
+    return match.group(1).lower(), match.group(2).strip()
+
+
+def normalize_flag(value):
+    """
+    Return the canonical 1 or 0 for a flag written as number (1.0, 01, 2) or as
+    word (yes, off), as the database readers recognize only 1 and true.
+    Other values are returned unchanged.
+    """
+    try:
+        return "1" if float(value) else "0"
+    except ValueError:
+        pass
+    if value.lower() in ("y", "yes", "true", "on"):
+        return "1"
+    if value.lower() in ("n", "no", "false", "off"):
+        return "0"
+    return value
 
 
 def move_config_to_db():
@@ -129,15 +166,32 @@ def move_config_to_db():
     with open("/etc/rhn/rhn.conf", "r", encoding="utf8") as f:
         lines = f.readlines()
 
-    remaining = []
+    # Like the Java Config, let the least specific spelling win (buffer_size over
+    # server.buffer_size), and the last line among equally specific spellings.
+    values = {}
     for line in lines:
-        match = re.match(r"^\s*([\w.]+)\s*=(.*)$", line)
-        key = DB_CONFIG_KEYS.get(match.group(1).lower()) if match else None
-        if not key or not move_configuration(key, match.group(2).strip()):
-            remaining.append(line)
+        name, value = _db_config_entry(line)
+        if name is None:
+            continue
+        key = DB_CONFIG_KEYS[name]
+        specificity = name.count(".")
+        if key not in values or specificity <= values[key][0]:
+            values[key] = (specificity, value)
 
-    if len(remaining) == len(lines):
+    if "FORCE_PACKAGE_UPLOAD" in values:
+        specificity, value = values["FORCE_PACKAGE_UPLOAD"]
+        values["FORCE_PACKAGE_UPLOAD"] = (specificity, normalize_flag(value))
+
+    moved = {
+        key for key, (_, value) in values.items() if move_configuration(key, value)
+    }
+    if not moved:
         return
+    remaining = [
+        line
+        for line in lines
+        if DB_CONFIG_KEYS.get(_db_config_entry(line)[0]) not in moved
+    ]
     rhnSQL.commit()
     with open("/etc/rhn/rhn.conf", "w", encoding="utf8") as f:
         f.writelines(remaining)
