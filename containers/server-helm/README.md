@@ -299,7 +299,7 @@ This can be addressed in two different ways.
 The easiest, but unsafe way is to set `server.superPrivileged=true` value so the server containers run with the `spc_t` label.
 Otherwise set the `server.selinuxType` to the name of a custom SELinux type granting only the permissions needed by the server pod.
 Defining a dedicated type — rather than extending the generic `container_t` — ensures the extra permissions are not granted to every other container running on the node.
-If using exactly the policy below, the name of the type to use will be `uyuni_container_t`.
+If using exactly the policy below, the name of the type to use will be `uyuni_container_t`, and `uyuni_saline_container_t` for `saline.selinuxType` when saline is enabled.
 
 To deploy the policy, create a `/root/systemdcontainerpolicy.te` file with this content:
 
@@ -326,17 +326,21 @@ require {
     type tmpfs_t;
     type proc_t;
    
-    class dir { search write add_name create remove_name rmdir setattr getattr mounton };
+    class dir { search write add_name create remove_name rmdir setattr getattr mounton open read };
     class file { create open write append read unlink setattr getattr watch };
-    class filesystem { mount getattr relabelfrom relabelto remount unmount };
+    class filesystem { mount getattr relabelfrom relabelto remount unmount associate };
     class netlink_audit_socket { nlmsg_relay };
+    class unix_stream_socket { connectto };
 }
 
 # Declare the uyuni_container_t type and associate it with standard container attributes.
 type uyuni_container_t, domain, container_domain, container_net_domain, mcs_constrained_type, svirt_sandbox_domain, sandbox_net_domain, syslog_client_type, can_dump_kernel, can_receive_kernel_messages, corenet_unconfined_type, corenet_unlabeled_type, kernel_system_state_reader, pcmcia_typeattr_1, process_user_target;
 
+# Dedicated type for the saline pod, only able to reach the salt master socket of the server.
+type uyuni_saline_container_t, domain, container_domain, container_net_domain, mcs_constrained_type, svirt_sandbox_domain, sandbox_net_domain;
+
 # Associate with the system_r role
-role system_r types uyuni_container_t;
+role system_r types { uyuni_container_t uyuni_saline_container_t };
 
 #============= uyuni_container_t ==============
 allow uyuni_container_t cgroup_t:dir { add_name create remove_name rmdir setattr write search getattr };
@@ -349,6 +353,16 @@ allow uyuni_container_t tmpfs_t:dir mounton;
 # Standard lookups and attributes for the mount point
 allow uyuni_container_t tmpfs_t:dir { getattr search };
 
+# /tmp is a tmpfs. Objects created there by the server get a dedicated type,
+# so the server can only manage its own temporary files, not other containers' ones.
+type uyuni_tmp_t;
+allow uyuni_tmp_t tmpfs_t:filesystem associate;
+type_transition uyuni_container_t tmpfs_t:file uyuni_tmp_t;
+type_transition uyuni_container_t tmpfs_t:dir uyuni_tmp_t;
+allow uyuni_container_t tmpfs_t:dir { add_name remove_name write };
+allow uyuni_container_t uyuni_tmp_t:dir { add_name create remove_name rmdir setattr write search getattr open read };
+allow uyuni_container_t uyuni_tmp_t:file { create open write append read unlink setattr getattr };
+
 # Allow systemd to mount/remount the proc filesystem for namespacing
 allow uyuni_container_t proc_t:filesystem { mount remount unmount };
 
@@ -357,6 +371,9 @@ allow uyuni_container_t proc_t:dir mounton;
 
 # Allow su and PAM inside the container to log audits to the kernel
 allow uyuni_container_t self:netlink_audit_socket { nlmsg_relay };
+
+#============= uyuni_saline_container_t ==============
+allow uyuni_saline_container_t uyuni_container_t:unix_stream_socket connectto;
 ```
 
 Then compile and load it:
@@ -446,7 +463,7 @@ semodule -i /root/systemdcontainerpolicy.pp
 | `coco.affinity` | object | `{}` | Advanced scheduling rules. |
 | `coco.tolerations` | list | `[]` | Node taint tolerations. |
 | `coco.nodeName` | string | `nil` | Specific node assignment. |
-| `saline` | object | `{"affinity":{},"enable":false,"image":null,"nodeName":null,"nodeSelector":{},"tag":null,"tolerations":[]}` | Saline component configuration |
+| `saline` | object | `{"affinity":{},"enable":false,"image":null,"nodeName":null,"nodeSelector":{},"selinuxType":"","tag":null,"tolerations":[]}` | Saline component configuration |
 | `saline.image` | string | `nil` | Image for the Saline container, overwriting the one computed with the `repository` value |
 | `saline.tag` | string | `nil` | Image tag for the Saline container, overwriting the global one |
 | `saline.enable` | bool | `false` | Define a saline deployment with one replica if set to true. |
@@ -454,6 +471,7 @@ semodule -i /root/systemdcontainerpolicy.pp
 | `saline.affinity` | object | `{}` | Advanced scheduling rules. |
 | `saline.tolerations` | list | `[]` | Node taint tolerations. |
 | `saline.nodeName` | string | `nil` | Specific node assignment. |
+| `saline.selinuxType` | string | `""` | Name of the SELinux type to use for the saline pod. |
 | `db` | object | `{"affinity":{},"enable":true,"image":null,"internal":{"host":null,"name":null,"port":5432},"nodeName":null,"nodeSelector":{},"podsCIDR":"10.42.0.0/16","report":{"host":null,"name":null,"port":5432},"tag":null,"tolerations":[]}` | PostgreSQL database configuration |
 | `db.image` | string | `nil` | Image for the database container, overwriting the one computed with the `repository` value |
 | `db.tag` | string | `nil` | Image tag for the database container, overwriting the global one |

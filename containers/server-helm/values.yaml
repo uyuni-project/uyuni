@@ -586,6 +586,9 @@ saline:
   # @schema
   # saline.enable -- Define a saline deployment with one replica if set to true.
   enable: false
+
+  # saline.selinuxType -- Name of the SELinux type to use for the saline pod.
+  selinuxType: ""
   
   # @schema
   # $ref: "#/definitions/nodeSelectorMap"

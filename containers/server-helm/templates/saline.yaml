@@ -61,6 +61,9 @@ spec:
       securityContext:
         seLinuxOptions:
           level: "s0"
+{{- if .Values.saline.selinuxType }}
+          type: {{ .Values.saline.selinuxType | quote }}
+{{- end }}
       volumes:
       - name: run-salt-master
         persistentVolumeClaim:
