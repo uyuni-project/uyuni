@@ -127,8 +127,8 @@ public class SystemSummary {
                 this.lastCheckin = TimeConversion.dateFromDbDateTimeString(lastCheckinIn);
             }
             catch (DateTimeParseException e) {
-                throw new IllegalArgumentException("lastCheckin must be of the: [" +
-                        TimeConversion.LOCAL_DATE_TIME_PATTERN + "] it was: " +
+                throw new IllegalArgumentException("lastCheckin must be in the format [" +
+                        TimeConversion.LOCAL_DATE_TIME_PATTERN + "], it was: " +
                         lastCheckinIn);
             }
         }

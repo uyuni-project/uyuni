@@ -50,8 +50,8 @@ public class SnapshotTagDto extends BaseDto {
                 this.created = TimeConversion.dateFromDbDateTimeString(createdIn);
             }
             catch (DateTimeParseException e) {
-                throw new IllegalArgumentException("lastCheckin must be of the: [" +
-                        TimeConversion.LOCAL_DATE_TIME_PATTERN + "] it was: " + createdIn);
+                throw new IllegalArgumentException("created must be in the format [" +
+                        TimeConversion.LOCAL_DATE_TIME_PATTERN + "], it was: " + createdIn);
             }
         }
     }

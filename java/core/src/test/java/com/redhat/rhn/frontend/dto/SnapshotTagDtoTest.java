@@ -51,6 +51,6 @@ class SnapshotTagDtoTest {
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> dto.setCreated("05/03/2024"));
 
-        assertEquals("lastCheckin must be of the: [yyyy-MM-dd HH:mm:ss] it was: 05/03/2024", e.getMessage());
+        assertEquals("created must be in the format [yyyy-MM-dd HH:mm:ss], it was: 05/03/2024", e.getMessage());
     }
 }
