@@ -62,7 +62,7 @@ public class LocalizationService {
      * DateFormat used by RHN database queries. Useful for converting RHN dates
      * into java.util.Dates so they can be formatted based on Locale.
      */
-    public static final String RHN_DB_DATEFORMAT = TimeConversion.DB_DATE_TIME_PATTERN;
+    public static final String RHN_DB_DATEFORMAT = TimeConversion.LOCAL_DATE_TIME_PATTERN;
     public static final String RHN_CUSTOM_DATEFORMAT = "yyyy-MM-dd HH:mm:ss z";
     private static final String DOC_FOLDER = "/usr/share/susemanager/www/htdocs/docs";
 

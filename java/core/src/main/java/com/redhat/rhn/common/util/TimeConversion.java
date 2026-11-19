@@ -33,14 +33,17 @@ import java.util.TimeZone;
  */
 public final class TimeConversion {
 
-    /** Pattern of the date strings produced by the queries with {@code TO_CHAR(..., 'YYYY-MM-DD HH24:MI:SS')}. */
-    public static final String DB_DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    /**
+     * Pattern of local date and time strings, as written by {@code TO_CHAR} and read by {@code TO_TIMESTAMP}
+     * with {@code 'YYYY-MM-DD HH24:MI:SS'}.
+     */
+    public static final String LOCAL_DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     private static final DateTimeFormatter LOCAL_DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private static final DateTimeFormatter DB_DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern(DB_DATE_TIME_PATTERN);
+            DateTimeFormatter.ofPattern(LOCAL_DATE_TIME_PATTERN);
 
     private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -57,7 +60,7 @@ public final class TimeConversion {
     }
 
     /**
-     * Parses a date in {@link #DB_DATE_TIME_PATTERN} in the JVM default time zone, as produced by
+     * Parses a date in {@link #LOCAL_DATE_TIME_PATTERN} in the JVM default time zone, as produced by
      * {@code TO_CHAR(..., 'YYYY-MM-DD HH24:MI:SS')} or by {@code java.sql.Timestamp.toString()}.
      * As {@code SimpleDateFormat.parse(String)} did, text after the pattern (e.g. fractional seconds) is ignored
      * and a local time repeated at the end of daylight saving time resolves to the later instant.
