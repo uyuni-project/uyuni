@@ -72,6 +72,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.redhat.rhn.frontend.events.AnalyzeAlignTablesMsg;
+import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
+import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
@@ -80,6 +84,10 @@ import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.channel.CreateChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesManager;
+import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesManagerImpl;
+import com.redhat.rhn.manager.errata.syncwithpackages.dto.SyncedErratumWithPackages;
+import com.redhat.rhn.manager.user.UserManager;
 
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
@@ -93,12 +101,14 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -112,6 +122,8 @@ public class ContentManager {
     private static final String HOTFIX_LABEL = "hotfix";
     private static final String HOTFIX_NAME = "Hotfix";
     private ModulemdApi modulemdApi;
+    private final SyncErrataWithPackagesManager syncErrataWithPackagesManager =
+            new SyncErrataWithPackagesManagerImpl();
 
     /**
      * Initialize a new instance
@@ -1219,6 +1231,69 @@ public class ContentManager {
                     .toList());
         });
         return result;
+    }
+
+    /**
+     * Clones an erratum with its packages into a hotfix channel. See
+     * {@link #cloneIntoHotfixChannels(User, String, List)}.
+     *
+     * @param user the user
+     * @param advisoryName the advisory name, of an erratum of the user org or of a vendor erratum
+     * @param hotfixLabel the label of the hotfix channel that the user must be an administrator of
+     * @return the synchronized erratum
+     */
+    public SyncedErratumWithPackages cloneIntoHotfixChannel(User user, String advisoryName, String hotfixLabel) {
+        return cloneIntoHotfixChannels(user, advisoryName, List.of(hotfixLabel)).get(hotfixLabel);
+    }
+
+    /**
+     * Clones an erratum with its packages into hotfix channels, as
+     * {@link SyncErrataWithPackagesManager#syncByCriteria(User, String, List, boolean, boolean, boolean)} does for
+     * each of them. Every channel must be a hotfix channel compatible with the erratum (see
+     * {@link #listCompatibleHotfixChannels(String, User)}), otherwise none is changed. The other environments of
+     * the projects are not changed: promoting does that.
+     *
+     * @param user the user
+     * @param advisoryName the advisory name, of an erratum of the user org or of a vendor erratum
+     * @param hotfixLabels the labels of the hotfix channels that the user must be an administrator of
+     * @return the synchronized erratum by hotfix channel label
+     */
+    public Map<String, SyncedErratumWithPackages> cloneIntoHotfixChannels(
+            User user,
+            String advisoryName,
+            List<String> hotfixLabels
+    ) {
+        if (hotfixLabels.isEmpty()) {
+            throw new InvalidParameterException("hotfixLabels must not be empty");
+        }
+
+        // validate every hotfix channel before changing any
+        List<Channel> compatibleHotfixChannels = listCompatibleHotfixChannels(advisoryName, user);
+
+        // Later on, synchronizing will lock each channel until the transaction ends. Sorting by id makes concurrent
+        // requests lock shared channels in the same order, so they cannot deadlock on each other's channel locks.
+        Set<Channel> hotfixChannels = new TreeSet<>(Comparator.comparing(Channel::getId));
+        for (String label : hotfixLabels) {
+            Channel hotfix = ChannelFactory.lookupByLabelAndUser(label, user);
+            if (hotfix == null) {
+                throw new NoSuchChannelException(label);
+            }
+            if (!UserManager.verifyChannelAdmin(user, hotfix)) {
+                throw new PermissionCheckFailureException("User " + user.getLogin() +
+                        " does not have access to channel " + hotfix.getName());
+            }
+            if (!compatibleHotfixChannels.contains(hotfix)) {
+                throw new InvalidChannelException("Channel " + label + " is not a hotfix channel compatible with " +
+                        advisoryName);
+            }
+            hotfixChannels.add(hotfix);
+        }
+
+        // Once all channels are validated, synchronize them
+        Map<String, SyncedErratumWithPackages> synced = new LinkedHashMap<>();
+        hotfixChannels.forEach(hotfix -> synced.put(hotfix.getLabel(), syncErrataWithPackagesManager
+                .syncByCriteria(user, hotfix.getLabel(), List.of(advisoryName), true, false, true).erratas().get(0)));
+        return synced;
     }
 
     /**
