@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ShortSystemInfo;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
@@ -550,14 +551,34 @@ public class MinionController {
     public static ModelAndView bootstrap(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         ActivationKeyManager akm = ActivationKeyManager.getInstance();
-        List<String> visibleBootstrapKeys = akm.findAllActive(user).stream()
-                .map(ActivationKey::getKey)
+        List<Map<String, String>> visibleBootstrapKeys = akm.findAllActive(user).stream()
+                .map(MinionController::toBootstrapActivationKey)
                 .collect(Collectors.toList());
         data.put("availableActivationKeys", Json.GSON.toJson(visibleBootstrapKeys));
         addProxies(user, data);
         return new ModelAndView(data, "templates/minion/bootstrap.jade");
     }
 
+    /**
+     * Convert an activation key into the JSON object used by the bootstrap minion form.
+     * Blank notes and the default "None" description are omitted so the UI can show a
+     * useful label without duplicating the key.
+     *
+     * @param activationKey the activation key
+     * @return a map with {@code key} and {@code description}
+     */
+    static Map<String, String> toBootstrapActivationKey(ActivationKey activationKey) {
+        Map<String, String> entry = new HashMap<>();
+        entry.put("key", activationKey.getKey());
+        String note = Optional.ofNullable(activationKey.getNote()).orElse("").trim();
+        if (note.isEmpty() || ActivationKeyFactory.DEFAULT_DESCRIPTION.equalsIgnoreCase(note)) {
+            entry.put("description", "");
+        }
+        else {
+            entry.put("description", note);
+        }
+        return entry;
+    }
 
     /**
      * Handler for the proxy page
