@@ -189,7 +189,7 @@ public class HubController {
         }
         try {
             String newLocalToken = hubManager.replaceTokens(currentAccessToken, newRemoteToken);
-            return success(response, newLocalToken);
+            return success(response, newLocalToken, new TypeToken<>() { });
         }
         catch (TokenParsingException ex) {
             LOGGER.error("Unable to parse the received token for server {}", currentAccessToken.getServerFqdn());
@@ -259,7 +259,7 @@ public class HubController {
 
     private String getManagerInfo(Request request, Response response, IssAccessToken token) {
         ManagerInfoJson managerInfo = hubManager.collectManagerInfo(token);
-        return success(response, managerInfo);
+        return success(response, managerInfo, new TypeToken<>() { });
     }
 
     // Basic ping to check if the system is up
@@ -299,7 +299,7 @@ public class HubController {
 
     private String getServerInfo(Request request, Response response, IssAccessToken token) {
         ServerInfoJson serverInfoJson = hubManager.getServerInfo(token);
-        return success(response, serverInfoJson);
+        return success(response, serverInfoJson, new TypeToken<>() { });
     }
 
     private String storeCredentials(Request request, Response response, IssAccessToken token) {
@@ -324,7 +324,7 @@ public class HubController {
                         org.getOwnedChannels().stream().map(Channel::getLabel).toList()))
                 .toList();
 
-        return success(response, allOrgsInfo);
+        return success(response, allOrgsInfo, new TypeToken<>() { });
     }
 
     private String listAllPeripheralChannels(Request request, Response response, IssAccessToken token) {
@@ -335,7 +335,7 @@ public class HubController {
                         (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
                 .toList();
 
-        return success(response, allChannelsInfo);
+        return success(response, allChannelsInfo, new TypeToken<>() { });
     }
 
     private String syncChannels(Request request, Response response, IssAccessToken token) {

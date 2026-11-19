@@ -178,7 +178,7 @@ public class HubApiController {
 
         try {
             HubSCCCredentials newCredentials = hubManager.regenerateCredentials(user, peripheralId);
-            return success(response, ResultJson.success(newCredentials.getUsername()));
+            return success(response, ResultJson.success(newCredentials.getUsername()), new TypeToken<>() { });
         }
         catch (IllegalArgumentException ex) {
             LOGGER.warn("Unable to refresh credentials: {}", ex.getMessage());
@@ -275,7 +275,7 @@ public class HubApiController {
 
             // Lookup the registered peripheral and return the id
             IssServer peripheral = hubManager.findServer(satAdmin, remoteServer, IssRole.PERIPHERAL);
-            return success(response, ResultJson.success(peripheral.getId()));
+            return success(response, ResultJson.success(peripheral.getId()), new TypeToken<>() { });
         }
         catch (CertificateException ex) {
             LOGGER.error("Unable to parse the specified root certificate {}", issRequest.getRootCA(), ex);
@@ -356,7 +356,7 @@ public class HubApiController {
             case ISSUED -> {
                 try {
                     String serializedToken = hubManager.issueAccessToken(user, tokenRequest.getFqdn());
-                    return success(response, ResultJson.success(serializedToken));
+                    return success(response, ResultJson.success(serializedToken), new TypeToken<>() { });
                 }
                 catch (TokenException | RuntimeException ex) {
                     LOGGER.error("Error while attempting to issue a token for {}", tokenRequest.getFqdn(), ex);
@@ -366,7 +366,7 @@ public class HubApiController {
             case CONSUMED -> {
                 try {
                     hubManager.storeAccessToken(user, tokenRequest.getFqdn(), tokenRequest.getToken());
-                    return success(response, ResultJson.success(tokenRequest.getToken()));
+                    return success(response, ResultJson.success(tokenRequest.getToken()), new TypeToken<>() { });
                 }
                 catch (TokenParsingException ex) {
                     LOGGER.error("Unable to parse the token of request {}", tokenRequest, ex);
@@ -399,7 +399,7 @@ public class HubApiController {
         issAccessToken.setValid(validityRequest.isValid());
         issAccessToken = hubManager.updateToken(user, issAccessToken);
 
-        return success(response, ResultJson.success(issAccessToken.getModified()));
+        return success(response, ResultJson.success(issAccessToken.getModified()), new TypeToken<>() { });
     }
 
     private String deleteAccessToken(Request request, Response response, User user) {
@@ -515,7 +515,7 @@ public class HubApiController {
                 FlashScopeHelper.flash(request, LOC.getMessage("hub.migration_success", version));
             }
 
-            return success(response, result);
+            return success(response, result, new TypeToken<>() { });
         }
         catch (Exception ex) {
             LOGGER.error("Unexpected error while migrating the servers", ex);

@@ -147,7 +147,7 @@ public class ProxyConfigurationController {
 
         try {
             proxyConfigUpdateFacade.update(data, systemManager, user);
-            return result(response, ResultJson.success("Proxy configuration applied"));
+            return result(response, ResultJson.success("Proxy configuration applied"), new TypeToken<>() { });
         }
         catch (RhnRuntimeException e) {
             LOG.error("Failed to apply proxy configuration to minion", e);
