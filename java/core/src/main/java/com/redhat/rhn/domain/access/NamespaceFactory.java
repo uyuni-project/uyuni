@@ -137,7 +137,8 @@ public class NamespaceFactory extends HibernateFactory {
      */
     public static List<Namespace> find(String namespace) {
         return getSession()
-                .createQuery("SELECT n FROM Namespace n WHERE n.namespace LIKE :namespace", Namespace.class)
+                .createQuery("SELECT n FROM Namespace n WHERE n.namespace LIKE :namespace ESCAPE '!'",
+                        Namespace.class)
                 .setParameter("namespace", sanitizeNamespacePattern(namespace))
                 .getResultList();
     }
@@ -152,8 +153,8 @@ public class NamespaceFactory extends HibernateFactory {
      */
     public static List<Namespace> find(String namespace, Set<Namespace.AccessMode> modes) {
         return getSession()
-                .createQuery("SELECT n FROM Namespace n WHERE n.namespace LIKE :namespace AND n.accessMode IN :modes",
-                        Namespace.class)
+                .createQuery("SELECT n FROM Namespace n WHERE n.namespace LIKE :namespace ESCAPE '!' " +
+                        "AND n.accessMode IN :modes", Namespace.class)
                 .setParameter("namespace", sanitizeNamespacePattern(namespace))
                 .setParameter("modes", modes)
                 .getResultList();
@@ -184,7 +185,10 @@ public class NamespaceFactory extends HibernateFactory {
             return "%";
         }
 
-        // Hibernate adds ESCAPE '' on PostgreSQL, so '_' is left as a wildcard: it also matches itself
-        return input.replace("*", "%");
+        // Only '*' is a wildcard. The ESCAPE clause is needed: without it Hibernate adds ESCAPE '' on PostgreSQL
+        return input.replace("!", "!!")
+                .replace("%", "!%")
+                .replace("_", "!_")
+                .replace("*", "%");
     }
 }
