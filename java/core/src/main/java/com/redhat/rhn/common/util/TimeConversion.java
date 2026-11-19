@@ -37,9 +37,6 @@ public final class TimeConversion {
     public static final String DB_DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     private static final DateTimeFormatter LOCAL_DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    private static final DateTimeFormatter DB_DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern(DB_DATE_TIME_PATTERN);
 
     private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -68,7 +65,7 @@ public final class TimeConversion {
      * @throws NullPointerException if value is null
      */
     public static Date dateFromDbDateTimeString(String value) {
-        return dateFromLocalDateTimeString(DB_DATE_TIME_FORMATTER, value);
+        return dateFromLocalDateTimeString(LOCAL_DATE_TIME_FORMATTER, value);
     }
 
     /**
