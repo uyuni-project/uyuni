@@ -149,7 +149,9 @@ import java.net.IDN;
 import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.Types;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -187,6 +189,10 @@ public class SystemManager extends BaseManager {
     public static final String CAP_SCRIPT_RUN = "script.run";
     public static final String CAP_SCAP = "scap.xccdf_eval";
     private static final String COUNT = "count";
+    // Unix timestamp 0
+    private static final String DEFAULT_EARLIEST_EVENT_DATE =
+            DateTimeFormatter.ofPattern(TimeConversion.LOCAL_DATE_TIME_PATTERN).withZone(ZoneOffset.UTC)
+                    .format(Instant.EPOCH);
 
     private final SystemEntitlementManager systemEntitlementManager;
     private SaltApi saltApi;
@@ -3281,7 +3287,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("oid", oid);
-        params.put("date", "1970-01-01 00:00:00");
+        params.put("date", DEFAULT_EARLIEST_EVENT_DATE);
         params.put("limit", null);
         params.put("offset", null);
 
@@ -3306,7 +3312,7 @@ public class SystemManager extends BaseManager {
         params.put("sid", server.getId());
         params.put("oid", org.getId());
         params.put("date", earliestDate != null ?
-                TimeConversion.localDateTimeStringFromDate(earliestDate) : "1970-01-01 00:00:00");
+                TimeConversion.localDateTimeStringFromDate(earliestDate) : DEFAULT_EARLIEST_EVENT_DATE);
         params.put("limit", limit);
         params.put("offset", offset);
 
