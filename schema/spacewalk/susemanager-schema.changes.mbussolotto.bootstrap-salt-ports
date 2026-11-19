@@ -1,0 +1,3 @@
+- Add Salt publish and request port columns to rhnProxyInfo
+- Add the `proxy.setSaltPorts` and `proxy.getSaltPorts` APIs
+  to report and look up the Salt ports of the proxies
