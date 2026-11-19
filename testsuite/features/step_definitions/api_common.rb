@@ -249,6 +249,12 @@ When(/^I create a repo with label "([^"]*)" and url$/) do |label|
   assert($api_test.channel.software.create_repo(label, url))
 end
 
+When(/^I create a repo with label "([^"]*)" and a source URL of "([^"]*)" characters on the hub$/) do |label, length|
+  url = padded_repo_url("http://#{get_target('server').full_hostname}/pub/AnotherRepo/", length.to_i)
+  result = api_client_for('server').channel.software.create_repo(label, url)
+  raise StandardError, "Repo #{label} with a #{url.length}-character URL was not created, API returned #{result}" unless result
+end
+
 When(/^I associate repo "([^"]*)" with channel "([^"]*)"$/) do |repo_label, channel_label|
   assert($api_test.channel.software.associate_repo(channel_label, repo_label))
 end

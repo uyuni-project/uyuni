@@ -172,7 +172,7 @@ curl -sk https://<hub>/hub/rpc/api
 - **Regenerate Credentials** (mirror credentials) works and sync still succeeds afterwards.
 - Long repository URLs (BUG-019, fixed by bsc#1259230): `rhnContentSource.source_url` is `VARCHAR(4096)`; a URL longer than 2048 characters must not cause an HTTP 500.
 
-**Automation:** partial — `features/hub/srv_hub_channel_synchronization.feature` covers Method A, Method B (trigger from Hub Details), Method C (sync.hub add, list and trigger, with a new channel synced to peripheral1 and verified), cloned/vendor/custom channels, org mapping and credential regeneration. Not automated: synced channel/org counters. Long `source_url`: no automated regression (no step creates a repo with an arbitrary URL length); BUG-019 is covered by the schema fix only.
+**Automation:** partial — `features/hub/srv_hub_channel_synchronization.feature` covers Method A, Method B (trigger from Hub Details), Method C (sync.hub add, list and trigger, with a new channel synced to peripheral1 and verified), cloned/vendor/custom channels, org mapping and credential regeneration. Not automated: synced channel/org counters. Long `source_url` (BUG-019): automated by creating a repository with a 2100-character URL through the API on the hub, attaching it to a custom channel, syncing that channel to peripheral1 through the sync.hub API and checking it exists there; package content is not checked.
 
 ---
 

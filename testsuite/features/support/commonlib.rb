@@ -1224,6 +1224,18 @@ def api_client_for(host = 'server')
   $api_test_by_host[host] ||= new_api_client(host: host)
 end
 
+# Build a well-formed repository URL of an exact length by padding a query string onto it
+#
+# @param base_url [String] The URL to pad, without query string.
+# @param length [Integer] The exact length of the returned URL, longer than base_url plus '?p='.
+# @return [String] The padded URL.
+def padded_repo_url(base_url, length)
+  prefix = "#{base_url}?p="
+  raise ArgumentError, "Cannot build a #{length}-character URL from #{base_url}" if length <= prefix.length
+
+  prefix + ('a' * (length - prefix.length))
+end
+
 # Get a time in the future, adding the minutes passed as parameter
 #
 # @param minutes_to_add [Integer] The number of minutes to add to the current time.

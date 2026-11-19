@@ -26,9 +26,18 @@ Feature: Hub - minion managed via peripheral server
     And channel "managertools-sle15-pool-x86_64-sp7" should exist on "peripheral1"
     And channel "managertools-sle15-updates-x86_64-sp7" should exist on "peripheral1"
 
+  Scenario: Sync the Fake-RPM-SUSE-Channel from hub to peripheral1 for the andromeda-dummy test package
+    Given I am authorized for the "Admin" section
+    When I wait until the repository metadata of channel "fake-rpm-suse-channel" is generated on the hub
+    And I configure hub to sync channel "Fake-RPM-SUSE-Channel" to "peripheral1"
+    And I initiate channel sync from peripheral "peripheral1"
+    Then I should see a "Successfully scheduled a channels synchronization." text
+    When I wait until the channel "fake-rpm-suse-channel" has been synced on peripheral1
+    Then channel "fake-rpm-suse-channel" on "peripheral1" should have "3" packages
+
   Scenario: Create activation key on peripheral1 peripheral with hub-synced channel
     Given I am authorized for the "Admin" section on "peripheral1"
-    When I create an activation key "hub-test-key" on "peripheral1" with channel "sle-product-sles15-sp7-pool-x86_64"
+    When I create an activation key "hub-test-key" on "peripheral1" with channel "sle-product-sles15-sp7-pool-x86_64" and child channels "fake-rpm-suse-channel"
     And I follow the left menu "Systems > Activation Keys"
     Then I should see a "1-hub-test-key" text
 
@@ -46,12 +55,6 @@ Feature: Hub - minion managed via peripheral server
     Then I should see "sle_minion" registered on "peripheral1"
     And I should not see "sle_minion" registered on hub
 
-  # KNOWN BROKEN: the B-04 scenarios below install/verify/downgrade/patch the andromeda-dummy
-  # test package, which only exists in Fake-RPM-SUSE-Channel content. The activation key above
-  # now uses the real SLE-Product-SLES15-SP7-Pool vendor channel instead (see B-03 prerequisite
-  # comment), so andromeda-dummy is no longer synced to peripheral1 and these scenarios have no
-  # package to act on. They are skipped until they use a package from a hub-synced channel.
-  @skip
   Scenario: Install a package on sle_minion from hub-synced channel on peripheral1
     Given I am authorized for the "Admin" section on "peripheral1"
     And I am on the Systems overview page of this "sle_minion" on peripheral1
@@ -65,7 +68,6 @@ Feature: Hub - minion managed via peripheral server
     Then I should see a "1 package install has been scheduled" text
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
-  @skip
   Scenario: Verify andromeda-dummy is installed on sle_minion
     Given I am authorized for the "Admin" section on "peripheral1"
     And I am on the Systems overview page of this "sle_minion" on peripheral1
@@ -75,7 +77,6 @@ Feature: Hub - minion managed via peripheral server
     And I click on the filter button
     Then I should see a "andromeda-dummy" link
 
-  @skip
   Scenario: Downgrade andromeda-dummy to old version on sle_minion for errata test
     When I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_minion" without error control
@@ -83,12 +84,10 @@ Feature: Hub - minion managed via peripheral server
     And I refresh packages list via spacecmd on "sle_minion"
     And I wait until refresh package list on "sle_minion" is finished
 
-  @skip
   Scenario: Apply errata andromeda-dummy-6789 on sle_minion via peripheral1 peripheral API
     When I apply erratum "andromeda-dummy-6789" on "sle_minion" via "peripheral1" peripheral API
     And I wait for "andromeda-dummy-2.0-1.1" to be installed on "sle_minion"
 
-  @skip
   Scenario: Verify andromeda-dummy is updated to patched version on sle_minion
     Given I am authorized for the "Admin" section on "peripheral1"
     And I am on the Systems overview page of this "sle_minion" on peripheral1
@@ -102,11 +101,9 @@ Feature: Hub - minion managed via peripheral server
     When I run a remote command "hostname" on "sle_minion" via "peripheral1"
     Then the remote command should complete
 
-  @skip
   Scenario: Verify package checksum on sle_minion matches hub content
     Then the package "andromeda-dummy" installed on "sle_minion" should have the same header digest as on hub
 
-  @skip
   Scenario: Cleanup: remove andromeda-dummy from sle_minion
     Given I am authorized for the "Admin" section on "peripheral1"
     And I am on the Systems overview page of this "sle_minion" on peripheral1

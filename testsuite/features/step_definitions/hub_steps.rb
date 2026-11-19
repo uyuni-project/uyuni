@@ -606,6 +606,17 @@ When(/^I initiate channel sync from peripheral "([^"]*)"$/) do |host|
   step %(I click on "Schedule" in "Confirm channels synchronization" modal)
 end
 
+# The hub generates the repodata of a channel asynchronously (taskomatic); a peripheral syncing it
+# earlier gets a RepoMDError although reposync.log still prints "Sync of channel completed.".
+# 600 seconds: generation of a small cloned channel normally takes well under a minute.
+When(/^I wait until the repository metadata of channel "([^"]*)" is generated on the hub$/) do |channel|
+  repeat_until_timeout(timeout: 600, message: "Repository metadata of #{channel} is not generated on the hub") do
+    break if channel_metadata_present?(channel, 'server')
+
+    sleep 10
+  end
+end
+
 When(/^I trigger channel sync to "([^"]*)" via the hub API$/) do |host|
   result = api_client_for('server').sync_hub.sync_peripheral_channels(get_target(host).full_hostname)
   raise StandardError, "Channel sync to #{host} was not scheduled, API returned #{result}" unless result == 1
@@ -630,9 +641,16 @@ end
 Then(/^channel "([^"]*)" on "([^"]*)" should have "([^"]*)" packages?$/) do |channel, host, pkg_count|
   node = get_target(host)
   user, password = Credentials.for(host)
-  output, _code = node.run("spacecmd -u #{user} -p #{password} -- softwarechannel_listallpackages #{channel} | wc -l")
-  actual_count = output.strip.to_i
   expected_count = pkg_count.to_i
+  actual_count = 0
+  # A peripheral sync can report completion before the packages are imported (e.g. first reposync fails, a retry succeeds).
+  repeat_until_timeout(dont_raise: true) do
+    output, _code = node.run("spacecmd -u #{user} -p #{password} -- softwarechannel_listallpackages #{channel} | wc -l")
+    actual_count = output.strip.to_i
+    break if actual_count >= expected_count
+
+    sleep 5
+  end
   raise StandardError, "Expected #{expected_count} packages, found #{actual_count}" unless actual_count >= expected_count
 end
 

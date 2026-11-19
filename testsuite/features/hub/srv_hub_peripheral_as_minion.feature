@@ -4,6 +4,8 @@
 # Prerequisites: srv_hub_setup_registration.feature must have completed successfully
 # (the peripheral host must be registered as a hub minion before bootstrap ordering can be validated).
 
+## WORKAROUND: https://github.com/SUSE/spacewalk/issues/32847
+@skip
 @scope_hub
 @hub_server_to_server
 @peripheral1
