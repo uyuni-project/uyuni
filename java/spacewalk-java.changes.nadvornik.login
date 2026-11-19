@@ -1,0 +1,1 @@
+- Avoid duplicate user authentication (bsc#1286910)
