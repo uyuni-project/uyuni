@@ -19,7 +19,6 @@ package com.redhat.rhn.domain.kickstart.builder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
@@ -124,14 +123,19 @@ public class KickstartBuilder {
 
         boolean isReallyKickstartProfile = false;
         for (String currentLine : lines) {
-            if (currentLine.startsWith("#") || currentLine.equals("")) {
+            if (currentLine.startsWith("#") || currentLine.isEmpty()) {
                 continue;
             }
+            // Skip autoyast and json files
             if (!isReallyKickstartProfile &&
                     (currentLine.trim().startsWith("<?xml") ||
                      currentLine.trim().startsWith("<!DOCTYPE") ||
                      currentLine.trim().startsWith("<!--") ||
-                     currentLine.trim().startsWith("<profile"))) {
+                     currentLine.trim().startsWith("<profile") ||
+                     currentLine.trim().startsWith("{") ||
+                     currentLine.trim().startsWith("[") ||
+                     currentLine.trim().startsWith("local ") ||
+                     currentLine.trim().startsWith("//"))) {
                 break;
             }
 
@@ -165,9 +169,7 @@ public class KickstartBuilder {
             // Note: this may in fact never happen. See above, authconfig
             // is an alias to auth.
             if (!commandNames.containsKey(firstWord)) {
-                if (log.isWarnEnabled()) {
-                    log.warn("Unable to parse kickstart command: {}", StringUtil.sanitizeLogInput(firstWord));
-                }
+                log.warn("Unable to parse kickstart command for Kickstart profile {}", ksData.getLabel());
                 continue;
             }
 
@@ -177,11 +179,7 @@ public class KickstartBuilder {
                 isReallyKickstartProfile = true;
                 firstWord = "url";
                 restOfLine = tree.getDefaultDownloadLocation();
-                if (log.isWarnEnabled()) {
-                    log.warn("Using default kickstartable tree URL:");
-                    log.warn("   Replaced: {}", StringUtil.sanitizeLogInput(currentLine));
-                    log.warn("   With: {} {}", firstWord, restOfLine);
-                }
+                log.warn("Using default kickstartable tree URL for Kickstart profile {}", ksData.getLabel());
             }
 
             KickstartCommand kc = new KickstartCommand();
