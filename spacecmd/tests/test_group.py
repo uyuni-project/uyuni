@@ -10,6 +10,7 @@ from unittest.mock import MagicMock, patch, mock_open, call, ANY
 # pylint: disable-next=unused-import
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.group
+import spacecmd.shell
 from xmlrpc import client as xmlrpclib
 
 
@@ -1679,8 +1680,6 @@ class TestSCGroup:
         """
         Test tab completer with SpacewalkShell instance.
         """
-        import spacecmd.shell
-
         sw_shell = spacecmd.shell.SpacewalkShell(MagicMock(), "/tmp", MagicMock())
         sw_shell.do_group_list = MagicMock(return_value=["group1", "group2"])
         res = sw_shell.complete_group_addconfigchannels(
@@ -1692,8 +1691,6 @@ class TestSCGroup:
         """
         Test tab completer with SpacewalkShell instance.
         """
-        import spacecmd.shell
-
         sw_shell = spacecmd.shell.SpacewalkShell(MagicMock(), "/tmp", MagicMock())
         sw_shell.do_group_list = MagicMock(return_value=["group1", "group2"])
         res = sw_shell.complete_group_removeconfigchannels(
