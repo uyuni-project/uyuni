@@ -161,7 +161,7 @@ public class MigrationManager extends BaseManager {
 
         // Remove from entitlement groups
         for (EntitlementServerGroup oldEnt : server.getEntitledGroups()) {
-            ServerFactory.removeServerFromGroup(server, oldEnt);
+            SystemManager.removeServerFromGroup(server, oldEnt);
         }
 
         // Remove custom data values (aka System->CustomInfo)

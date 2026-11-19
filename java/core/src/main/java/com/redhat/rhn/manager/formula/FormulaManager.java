@@ -426,4 +426,12 @@ public class FormulaManager {
                                 groupsFormulaData, formulaName)).stream())
         ).collect(Collectors.toList());
     }
+
+    public void saveServerFormulas(User user, Long systemId, List<String> formulas) {
+        MinionServer minion = MinionServerFactory.lookupById(systemId)
+                .orElseThrow(() -> new IllegalArgumentException("Minion " + systemId + " not found."));
+        FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
+        FormulaFactory.saveServerFormulas(minion, formulas);
+        saltApi.refreshPillar(new MinionList(minion.getMinionId()));
+    }
 }

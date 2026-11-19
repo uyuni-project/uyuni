@@ -107,6 +107,7 @@ import com.redhat.rhn.frontend.dto.kickstart.KickstartSessionDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProxyVersionException;
 import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
+import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -842,12 +843,47 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * Removes servers from a server group. Servers of another org are ignored.
+     * @param servers The servers to remove
+     * @param serverGroup The group to remove the servers from
+     * @throws ServerNotInGroupException if no server was removed
+     */
+    public static void removeServersFromGroup(Collection<Server> servers, ServerGroup serverGroup) {
+        List<Server> sameOrgServers = servers.stream()
+                .filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
+                .toList();
+
+        boolean serversUpdated = ServerFactory.removeServersFromGroup(
+                sameOrgServers.stream().map(Server::getId).toList(), serverGroup.getId());
+
+        if (!serversUpdated) {
+            throw new ServerNotInGroupException();
+        }
+        sameOrgServers.forEach(s -> {
+            s.removeGroup(serverGroup);
+            updateSystemOverview(s);
+        });
+        if (serverGroup.isManaged()) {
+            ServerFactory.updatePermissionsForServerGroup(serverGroup.getId());
+        }
+    }
+
+    /**
+     * Removes a Server from a group.
+     * @param serverIn The server to remove
+     * @param serverGroupIn The group to remove the server from
+     */
+    public static void removeServerFromGroup(Server serverIn, ServerGroup serverGroupIn) {
+        removeServersFromGroup(Collections.singletonList(serverIn), serverGroupIn);
+    }
+
+    /**
      * Removes a set of servers from a group
      * @param servers The servers to remove
      * @param serverGroup The group to remove the servers from
      */
     public void removeServersFromServerGroup(Collection<Server> servers, ServerGroup serverGroup) {
-        ServerFactory.removeServersFromGroup(servers, serverGroup);
+        removeServersFromGroup(servers, serverGroup);
         snapshotServers(servers, "Group membership alteration");
         if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
             for (Server server : servers) {

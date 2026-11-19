@@ -210,15 +210,13 @@ public class FormulaHandler extends BaseHandler {
      * @apidoc.param #array_single("string", "formulas")
      * @apidoc.returntype #return_int_success()
      */
-    public int setFormulasOfServer(User loggedInUser, Integer systemId,
-            List<String> formulas) throws IOFaultException, InvalidParameterException {
+    public int setFormulasOfServer(User loggedInUser, Integer systemId, List<String> formulas)
+            throws IOFaultException, InvalidParameterException {
         try {
-            MinionServer minion = MinionServerFactory.lookupById(systemId.longValue())
-                    .orElseThrow(() -> new InvalidParameterException(
-                            "Provided systemId does not correspond to a minion"));
-            FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, minion);
-            FormulaFactory.saveServerFormulas(minion, formulas);
-            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
+            formulaManager.saveServerFormulas(loggedInUser, systemId.longValue(), formulas);
+        }
+        catch (IllegalArgumentException e) {
+            throw new InvalidParameterException("Provided systemId does not correspond to a minion");
         }
         catch (PermissionException e) {
             throw new PermissionCheckFailureException(LocalizationService.getInstance()
