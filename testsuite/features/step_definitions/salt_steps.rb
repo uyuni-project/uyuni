@@ -299,29 +299,29 @@ end
 
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
-  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
+  xpath_query = "//*[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
+  xpath_query = "//*[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
   if has_xpath?(xpath_query, wait: 2)
     raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: 2).click
   else
-    xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
-    xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
+    xpath_query = "//*[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
+    xpath_query = "//*[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
     raise ScriptError, "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: 2)
   end
 end
 
 Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'checked'
-  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
+  xpath_query = "//*[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'checked'
+  xpath_query = "//*[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
   raise ScriptError, "Checkbox is not #{state}" if has_xpath?(xpath_query)
 
-  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
-  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
+  xpath_query = "//*[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
+  xpath_query = "//*[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
   assert has_xpath?(xpath_query), 'Checkbox could not be found'
 end
 
@@ -440,13 +440,13 @@ end
 # Perform actions
 When(/^I reject "([^"]*)" from the Pending section$/) do |host|
   system_name = get_system_name(host)
-  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@aria-label = 'Reject']"
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Reject' or @aria-label = 'Reject']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "([^"]*)" from the Rejected section$/) do |host|
   system_name = get_system_name(host)
-  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@aria-label = 'Delete']"
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Delete' or @aria-label = 'Delete']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
@@ -461,7 +461,7 @@ end
 
 When(/^I accept "([^"]*)" key$/) do |host|
   system_name = get_system_name(host)
-  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@aria-label = 'Accept']"
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Accept' or @aria-label = 'Accept']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
