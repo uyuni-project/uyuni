@@ -22,10 +22,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class HistoryEventTest {
+class HistoryEventTest {
 
     @Test
-    public void testSetCompletedFromString() {
+    void testSetCompletedFromString() {
         HistoryEvent event = new HistoryEvent();
 
         event.setCompleted("2024-03-05 07:08:09");
@@ -37,7 +37,7 @@ public class HistoryEventTest {
     }
 
     @Test
-    public void testSetCompletedFromNullString() {
+    void testSetCompletedFromNullString() {
         HistoryEvent event = new HistoryEvent();
         event.setCompleted("2024-03-05 07:08:09");
 
@@ -47,7 +47,7 @@ public class HistoryEventTest {
     }
 
     @Test
-    public void testSetCompletedFromInvalidStringKeepsPreviousValue() {
+    void testSetCompletedFromInvalidStringKeepsPreviousValue() {
         HistoryEvent event = new HistoryEvent();
         event.setCompleted("2024-03-05 07:08:09");
 

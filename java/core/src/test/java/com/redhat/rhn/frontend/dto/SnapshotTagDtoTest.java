@@ -23,10 +23,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class SnapshotTagDtoTest {
+class SnapshotTagDtoTest {
 
     @Test
-    public void testSetCreatedParsesDbFormat() {
+    void testSetCreatedParsesDbFormat() {
         SnapshotTagDto dto = new SnapshotTagDto();
 
         dto.setCreated("2024-03-05 07:08:09");
@@ -36,7 +36,7 @@ public class SnapshotTagDtoTest {
     }
 
     @Test
-    public void testSetCreatedAcceptsNull() {
+    void testSetCreatedAcceptsNull() {
         SnapshotTagDto dto = new SnapshotTagDto();
         dto.setCreated("2024-03-05 07:08:09");
 
@@ -46,7 +46,7 @@ public class SnapshotTagDtoTest {
     }
 
     @Test
-    public void testSetCreatedRejectsOtherFormats() {
+    void testSetCreatedRejectsOtherFormats() {
         SnapshotTagDto dto = new SnapshotTagDto();
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> dto.setCreated("05/03/2024"));

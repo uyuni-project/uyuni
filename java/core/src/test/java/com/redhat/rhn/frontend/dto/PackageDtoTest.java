@@ -28,23 +28,23 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class PackageDtoTest {
+class PackageDtoTest {
 
     private TimeZone originalDefault;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         originalDefault = TimeZone.getDefault();
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         TimeZone.setDefault(originalDefault);
     }
 
     @Test
-    public void testSetBuildTimeReadsDatabaseWallClockAsGmt() {
+    void testSetBuildTimeReadsDatabaseWallClockAsGmt() {
         PackageDto dto = new PackageDto();
 
         // the timestamp column holds the GMT wall clock, JDBC reads it in the JVM time zone
@@ -54,7 +54,7 @@ public class PackageDtoTest {
     }
 
     @Test
-    public void testSetBuildTimeKeepsMilliseconds() {
+    void testSetBuildTimeKeepsMilliseconds() {
         PackageDto dto = new PackageDto();
 
         dto.setBuildTime(Timestamp.valueOf("2024-03-05 07:08:09.123"));
@@ -63,7 +63,7 @@ public class PackageDtoTest {
     }
 
     @Test
-    public void testSetBuildTimeAcceptsNull() {
+    void testSetBuildTimeAcceptsNull() {
         PackageDto dto = new PackageDto();
         dto.setBuildTime(Timestamp.valueOf("2024-03-05 07:08:09"));
 
@@ -73,7 +73,7 @@ public class PackageDtoTest {
     }
 
     @Test
-    public void testSetBuildTimeRejectsNonTimestampDate() {
+    void testSetBuildTimeRejectsNonTimestampDate() {
         PackageDto dto = new PackageDto();
         Date notATimestamp = new Date(Timestamp.valueOf("2024-03-05 07:08:09").getTime());
 
@@ -81,7 +81,7 @@ public class PackageDtoTest {
     }
 
     @Test
-    public void testSetBuildTimeKeepsSingleDigitFraction() {
+    void testSetBuildTimeKeepsSingleDigitFraction() {
         PackageDto dto = new PackageDto();
 
         dto.setBuildTime(Timestamp.valueOf("2024-03-05 07:08:09.5"));
