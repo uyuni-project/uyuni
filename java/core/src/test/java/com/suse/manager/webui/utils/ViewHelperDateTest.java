@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class ViewHelperDateTest {
+class ViewHelperDateTest {
 
     private static final Date DATE = Date.from(Instant.parse("2024-03-05T07:08:09Z"));
 
@@ -36,20 +36,20 @@ public class ViewHelperDateTest {
     private Locale originalLocale;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
         Context.freeCurrentContext();
     }
 
     @Test
-    public void testRenderDateUsesContextTimeZone() {
+    void testRenderDateUsesContextTimeZone() {
         Context.getCurrentContext().setLocale(Locale.US);
         Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("Europe/Berlin"));
 
@@ -57,7 +57,7 @@ public class ViewHelperDateTest {
     }
 
     @Test
-    public void testRenderDateWritesLocaleDigits() {
+    void testRenderDateWritesLocaleDigits() {
         Context.getCurrentContext().setLocale(Locale.forLanguageTag("bn-IN"));
         Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("UTC"));
 
@@ -67,7 +67,7 @@ public class ViewHelperDateTest {
     }
 
     @Test
-    public void testFormatDateTimeToISOUsesServerTimeZone() {
+    void testFormatDateTimeToISOUsesServerTimeZone() {
         Locale.setDefault(Locale.US);
 
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
@@ -78,19 +78,19 @@ public class ViewHelperDateTest {
     }
 
     @Test
-    public void testGetDateFromISOString() throws ParseException {
+    void testGetDateFromISOString() throws ParseException {
         assertEquals(DATE, ViewHelper.getDateFromISOString("2024-03-05T12:38:09+05:30"));
         assertEquals(DATE, ViewHelper.getDateFromISOString("2024-03-05T07:08:09Z"));
     }
 
     @Test
-    public void testGetDateFromISOStringRejectsOtherFormats() {
+    void testGetDateFromISOStringRejectsOtherFormats() {
         assertThrows(ParseException.class, () -> ViewHelper.getDateFromISOString("2024-03-05T07:08:09.123Z"));
         assertThrows(ParseException.class, () -> ViewHelper.getDateFromISOString("2024-03-05 07:08:09Z"));
     }
 
     @Test
-    public void testRenderTimezoneUsesContextTimeZone() {
+    void testRenderTimezoneUsesContextTimeZone() {
         Context.getCurrentContext().setLocale(Locale.US);
         Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("Asia/Kolkata"));
 
@@ -98,7 +98,7 @@ public class ViewHelperDateTest {
     }
 
     @Test
-    public void testGetServerTimeZoneUsesServerTimeZone() {
+    void testGetServerTimeZoneUsesServerTimeZone() {
         Locale.setDefault(Locale.US);
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
 

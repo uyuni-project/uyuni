@@ -31,22 +31,22 @@ import java.util.TimeZone;
 
 import jakarta.servlet.jsp.JspException;
 
-public class DateTimePickerTagTest extends BaseTestCase {
+class DateTimePickerTagTest extends BaseTestCase {
 
     private TimeZone originalTimeZone;
 
     @BeforeEach
-    public void setUpTimeZone() {
+    void setUpTimeZone() {
         originalTimeZone = TimeZone.getDefault();
     }
 
     @AfterEach
-    public void restoreTimeZone() {
+    void restoreTimeZone() {
         TimeZone.setDefault(originalTimeZone);
     }
 
     @Test
-    public void testDataValueUsesServerTimeZone() throws JspException {
+    void testDataValueUsesServerTimeZone() throws JspException {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
         DatePicker picker = new DatePicker("date", TimeZone.getTimeZone("Asia/Kolkata"), Locale.US,
                 DatePicker.YEAR_RANGE_POSITIVE);

@@ -29,7 +29,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class ECMAScriptDateAdapterTest {
+class ECMAScriptDateAdapterTest {
 
     private final Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .serializeNulls().create();
@@ -37,19 +37,19 @@ public class ECMAScriptDateAdapterTest {
     private TimeZone originalDefault;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         originalDefault = TimeZone.getDefault();
         // the format is always UTC, whatever the JVM time zone
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         TimeZone.setDefault(originalDefault);
     }
 
     @Test
-    public void testWrite() {
+    void testWrite() {
         Date date = Date.from(Instant.parse("2024-03-05T07:08:09.120Z"));
 
         assertEquals("\"2024-03-05T07:08:09.120Z\"", gson.toJson(date, Date.class));
@@ -57,7 +57,7 @@ public class ECMAScriptDateAdapterTest {
     }
 
     @Test
-    public void testRead() {
+    void testRead() {
         Date date = gson.fromJson("\"2024-03-05T07:08:09.123Z\"", Date.class);
 
         assertEquals(Instant.parse("2024-03-05T07:08:09.123Z"), date.toInstant());
@@ -65,7 +65,7 @@ public class ECMAScriptDateAdapterTest {
     }
 
     @Test
-    public void testReadOtherFractionLengths() {
+    void testReadOtherFractionLengths() {
         assertEquals(Instant.parse("2024-03-05T07:08:09.500Z"),
                 gson.fromJson("\"2024-03-05T07:08:09.5Z\"", Date.class).toInstant());
         assertEquals(Instant.parse("2024-03-05T07:08:09.123Z"),
@@ -73,7 +73,7 @@ public class ECMAScriptDateAdapterTest {
     }
 
     @Test
-    public void testReadRejectsOtherFormats() {
+    void testReadRejectsOtherFormats() {
         assertThrows(JsonParseException.class, () -> gson.fromJson("\"2024-03-05T07:08:09Z\"", Date.class));
         assertThrows(JsonParseException.class, () -> gson.fromJson("\"2024-03-05T07:08:09.123+01:00\"", Date.class));
     }

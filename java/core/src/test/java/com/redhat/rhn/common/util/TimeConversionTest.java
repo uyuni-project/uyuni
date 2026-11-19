@@ -28,24 +28,24 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class TimeConversionTest {
+class TimeConversionTest {
 
     private static final long INSTANT_MILLIS = Instant.parse("2019-05-29T13:49:09.123Z").toEpochMilli();
 
     private TimeZone originalDefault;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         originalDefault = TimeZone.getDefault();
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         TimeZone.setDefault(originalDefault);
     }
 
     @Test
-    public void testLocalDateTimeStringFromDateUsesDefaultZoneAtCallTime() {
+    void testLocalDateTimeStringFromDateUsesDefaultZoneAtCallTime() {
         Date date = new Date(INSTANT_MILLIS);
 
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
@@ -56,7 +56,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testLocalDateTimeStringFromDateAcceptsSqlTypes() {
+    void testLocalDateTimeStringFromDateAcceptsSqlTypes() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
         assertEquals("2019-05-29 13:49:09",
@@ -66,12 +66,12 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testLocalDateTimeStringFromDateRejectsNull() {
+    void testLocalDateTimeStringFromDateRejectsNull() {
         assertThrows(NullPointerException.class, () -> TimeConversion.localDateTimeStringFromDate(null));
     }
 
     @Test
-    public void testDateFromDbDateTimeStringUsesDefaultZone() {
+    void testDateFromDbDateTimeStringUsesDefaultZone() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
 
         Date parsed = TimeConversion.dateFromDbDateTimeString("2021-06-25 00:56:01");
@@ -80,7 +80,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testDateFromDbDateTimeStringIgnoresFractionalSeconds() {
+    void testDateFromDbDateTimeStringIgnoresFractionalSeconds() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         // java.sql.Timestamp.toString() format, reaches the DTO setters when a query selects a raw timestamp
         Date parsed = TimeConversion.dateFromDbDateTimeString("2021-06-25 00:56:01.123456");
@@ -89,7 +89,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testDateFromDbDateTimeStringResolvesRepeatedLocalTimeToLaterInstant() {
+    void testDateFromDbDateTimeStringResolvesRepeatedLocalTimeToLaterInstant() {
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
         // 02:56 happens twice on 2021-10-31: at 00:56Z (CEST) and at 01:56Z (CET)
         Date parsed = TimeConversion.dateFromDbDateTimeString("2021-10-31 02:56:12");
@@ -98,7 +98,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testDateFromDbDateTimeStringRejectsOtherFormats() {
+    void testDateFromDbDateTimeStringRejectsOtherFormats() {
         assertThrows(DateTimeParseException.class, () -> TimeConversion.dateFromDbDateTimeString("2024-03-05"));
         assertThrows(DateTimeParseException.class,
                 () -> TimeConversion.dateFromDbDateTimeString("2024-03-05T07:08:09"));
@@ -106,7 +106,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testLocalDateStringFromDateUsesDefaultZone() {
+    void testLocalDateStringFromDateUsesDefaultZone() {
         Date date = Date.from(Instant.parse("2024-03-05T20:00:00Z"));
 
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
@@ -117,7 +117,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testDateFromLocalDateStringReturnsStartOfDayInDefaultZone() {
+    void testDateFromLocalDateStringReturnsStartOfDayInDefaultZone() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
 
         Date parsed = TimeConversion.dateFromLocalDateString("2021-11-22");
@@ -126,7 +126,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testDateFromLocalDateStringIgnoresTrailingText() {
+    void testDateFromLocalDateStringIgnoresTrailingText() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
         Date parsed = TimeConversion.dateFromLocalDateString("2021-11-22T10:00:00");
@@ -135,7 +135,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testDateFromLocalDateStringSkipsMissingMidnight() {
+    void testDateFromLocalDateStringSkipsMissingMidnight() {
         TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
         // daylight saving time started at midnight on 2018-11-04, the day began at 01:00 (-02:00)
         Date parsed = TimeConversion.dateFromLocalDateString("2018-11-04");
@@ -144,7 +144,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testDateFromLocalDateStringResolvesRepeatedMidnightToLaterInstant() {
+    void testDateFromLocalDateStringResolvesRepeatedMidnightToLaterInstant() {
         TimeZone.setDefault(TimeZone.getTimeZone("America/Havana"));
         // daylight saving time ended at 01:00 on 1991-10-13: midnight happened at 04:00Z and at 05:00Z
         Date parsed = TimeConversion.dateFromLocalDateString("1991-10-13");
@@ -153,13 +153,13 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testDateFromLocalDateStringRejectsOtherFormats() {
+    void testDateFromLocalDateStringRejectsOtherFormats() {
         assertThrows(DateTimeParseException.class, () -> TimeConversion.dateFromLocalDateString("22/11/2021"));
         assertThrows(NullPointerException.class, () -> TimeConversion.dateFromLocalDateString(null));
     }
 
     @Test
-    public void testDateFromLocalDateTimeStringUsesGivenPattern() {
+    void testDateFromLocalDateTimeStringUsesGivenPattern() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         DateTimeFormatter clockHour = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm:ss");
 
@@ -171,7 +171,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testDateFromLocalDateTimeStringIgnoresFractionalSeconds() {
+    void testDateFromLocalDateTimeStringIgnoresFractionalSeconds() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
         DateTimeFormatter clockHour = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm:ss");
 
@@ -181,7 +181,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testDateFromLocalDateTimeStringRejectsOtherFormats() {
+    void testDateFromLocalDateTimeStringRejectsOtherFormats() {
         DateTimeFormatter clockHour = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm:ss");
 
         assertThrows(DateTimeParseException.class,
@@ -190,7 +190,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testTimeZoneShortNameDependsOnDaylightSavingTime() {
+    void testTimeZoneShortNameDependsOnDaylightSavingTime() {
         TimeZone berlin = TimeZone.getTimeZone("Europe/Berlin");
         Date winter = Date.from(Instant.parse("2024-01-15T12:00:00Z"));
         Date summer = Date.from(Instant.parse("2024-07-15T12:00:00Z"));
@@ -202,7 +202,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testTimeZoneShortNameKeepsLegacyIds() {
+    void testTimeZoneShortNameKeepsLegacyIds() {
         // java.time would write -05:00 for this id
         Date summer = Date.from(Instant.parse("2024-07-15T12:00:00Z"));
 
@@ -210,7 +210,7 @@ public class TimeConversionTest {
     }
 
     @Test
-    public void testLocalDateTimeWithZoneNameString() {
+    void testLocalDateTimeWithZoneNameString() {
         TimeZone berlin = TimeZone.getTimeZone("Europe/Berlin");
 
         assertEquals("2010-04-01 15:04:24 CEST", TimeConversion.localDateTimeWithZoneNameString(
