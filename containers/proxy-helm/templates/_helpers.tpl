@@ -10,12 +10,13 @@
 {{- if .global.Values.tag -}}
 {{- $tag = .global.Values.tag -}}
 {{- end -}}
-{{- if .local.tag -}}
-{{- $tag = .local.tag -}}
+{{- $local := .local | default (dict) -}}
+{{- if $local.tag -}}
+{{- $tag = $local.tag -}}
 {{- end -}}
 {{- $uri := (printf "%s/%s:%s" (required "The repository value is required!" .global.Values.repository) .name $tag) -}}
-{{- if .local.image -}}
-{{- $uri = (printf "%s:%s" .local.image $tag) -}}
+{{- if $local.image -}}
+{{- $uri = (printf "%s:%s" $local.image $tag) -}}
 {{- end -}}
 {{- $uri -}}
 {{- end -}}

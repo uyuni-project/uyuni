@@ -2,6 +2,10 @@
 #
 # SPDX-License-Identifier: MIT
 
+{{- $salt := .Values.salt | default (dict) -}}
+{{- $ssh := .Values.ssh | default (dict) -}}
+{{- $httpd := .Values.httpd | default (dict) -}}
+{{- $squid := .Values.squid | default (dict) -}}
 {{- $config := .Values.global.config | fromYaml }}
 apiVersion: v1
 kind: ConfigMap
@@ -20,17 +24,17 @@ data:
 
   squid_tuning: |
     # Add your Squid tuning configuration here
-{{ .Values.squid.tuning | indent 4 }}
+{{ $squid.tuning | default "" | indent 4 }}
   ssh_tuning: |
     # Add your SSHd tuning configuration here
-{{ .Values.ssh.tuning | indent 4 }}
+{{ $ssh.tuning | default "" | indent 4 }}
   apache_tuning: |
     # Add your Apache tuning configuration here
-{{ .Values.httpd.tuning | indent 4 }}
+{{ $httpd.tuning | default "" | indent 4 }}
   salt_tuning: |
     # Add your Salt Broker tuning configuration here
-{{- if .Values.salt.tuning }}
-{{ .Values.salt.tuning | indent 4 }}
+{{- if $salt.tuning }}
+{{ $salt.tuning | indent 4 }}
 {{- else }}
     {}
 {{- end }}

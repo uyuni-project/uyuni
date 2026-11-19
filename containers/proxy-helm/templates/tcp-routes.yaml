@@ -2,9 +2,14 @@
 #
 # SPDX-License-Identifier: MIT
 
-{{- if .Values.gateway.enable }}
-{{- $gatewayName := .Values.gateway.name | default "uyuni-gateway" -}}
-  {{- if ne (default .Values.services.type .Values.services.salt.type) "NodePort" }}
+{{- $gateway := .Values.gateway | default (dict) -}}
+{{- $services := .Values.services | default (dict) -}}
+{{- $servicesType := $services.type | default "ClusterIP" -}}
+{{- $servicesSalt := $services.salt | default (dict) -}}
+{{- $servicesSsh := $services.ssh | default (dict) -}}
+{{- if $gateway.enable }}
+{{- $gatewayName := $gateway.name | default "uyuni-gateway" -}}
+  {{- if ne (default $servicesType $servicesSalt.type) "NodePort" }}
 apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TCPRoute
 metadata:
@@ -38,7 +43,7 @@ spec:
         port: 4506
 ---
   {{- end }}
-  {{- if ne (default .Values.services.type .Values.services.ssh.type) "NodePort" }}
+  {{- if ne (default $services.type $servicesSsh.type) "NodePort" }}
 apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TCPRoute
 metadata:

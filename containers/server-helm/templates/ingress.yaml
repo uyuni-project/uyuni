@@ -2,7 +2,10 @@
 #
 # SPDX-License-Identifier: MIT
 
-{{- if not .Values.gateway.enable }}
+{{- $gateway := .Values.gateway | default (dict) -}}
+{{- $saline := .Values.saline | default (dict) -}}
+{{- $hubAPI := .Values.hubAPI | default (dict) -}}
+{{- if not $gateway.enable }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -112,7 +115,7 @@ spec:
               number: 5556
         pathType: Prefix
   {{- end }}
-  {{- if .Values.saline.enable }}
+  {{- if $saline.enable }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -154,7 +157,7 @@ spec:
         path: /saline
         pathType: Prefix
   {{- end }}
-  {{- if default .Values.hubAPI.enable false }}
+  {{- if default $hubAPI.enable false }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -229,7 +232,7 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-    {{- if default .Values.hubAPI.enable false }}
+    {{- if default $hubAPI.enable false }}
       - backend:
           service:
             name: hub-xmlrpc
@@ -416,7 +419,7 @@ spec:
               number: 5556
         pathType: Prefix
   {{- end }}
-  {{- if .Values.saline.enable }}
+  {{- if $saline.enable }}
       - backend:
           service:
             name: saline

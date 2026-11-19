@@ -2,7 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 
-{{- if .Values.tftp.enable }}
+{{- $tftp := .Values.tftp | default (dict) -}}
+{{- if $tftp.enable }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -23,14 +24,14 @@ spec:
         app.kubernetes.io/component: tftp
         app.kubernetes.io/part-of: uyuni
     spec:
-{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" .Values.tftp) | nindent 6 }}
-{{- if .Values.tftp.hostNetwork }}
+{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" $tftp) | nindent 6 }}
+{{- if $tftp.hostNetwork }}
       dnsPolicy: ClusterFirstWithHostNet
       hostNetwork: true
 {{- end }}
       containers:
       - name: tftp
-        image: {{ include "uyuni.image" (dict "name" "proxy-tftpd" "global" . "local" .Values.tftp) }}
+        image: {{ include "uyuni.image" (dict "name" "proxy-tftpd" "global" . "local" $tftp) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - /usr/bin/tftp_wrapper.py
@@ -55,7 +56,7 @@ spec:
           until curl -L http://web/rhn/manager/api/api/getVersion; do
             sleep 60
           done
-        image: {{ include "uyuni.image" (dict "name" "proxy-tftpd" "global" . "local" .Values.tftp) }}
+        image: {{ include "uyuni.image" (dict "name" "proxy-tftpd" "global" . "local" $tftp) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: server-waiter
 {{- end }}

@@ -10,12 +10,13 @@
 {{- if .global.Values.tag -}}
 {{- $tag = .global.Values.tag -}}
 {{- end -}}
-{{- if .local.tag -}}
-{{- $tag = .local.tag -}}
+{{- $local := .local | default (dict) -}}
+{{- if $local.tag -}}
+{{- $tag = $local.tag -}}
 {{- end -}}
 {{- $uri := (printf "%s/%s:%s" (required "The repository value is required!" .global.Values.repository) .name $tag) -}}
-{{- if .local.image -}}
-{{- $uri = (printf "%s:%s" .local.image $tag) -}}
+{{- if $local.image -}}
+{{- $uri = (printf "%s:%s" $local.image $tag) -}}
 {{- end -}}
 {{- $uri -}}
 {{- end -}}
@@ -27,6 +28,8 @@
 {{/*   "defaultSize", the default size of the volume in case the user messes it up in the values, */}}
 {{/*   "accessMode", the access mode to use for the volume */}}
 {{- define "uyuni.pvc" -}}
+{{- $volume := .volume | default (dict) -}}
+{{- $volumes := .root.Values.volumes | default (dict) }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -34,17 +37,17 @@ metadata:
   namespace: {{ .root.Release.Namespace | quote }}
   labels:
     app.kubernetes.io/part-of: uyuni
-{{- if .volume.extraLabels }}
-{{ toYaml .volume.extraLabels | nindent 4 }}
+{{- if $volume.extraLabels }}
+{{ toYaml $volume.extraLabels | nindent 4 }}
 {{- end }}
-{{- if .volume.annotations }}
+{{- if $volume.annotations }}
   annotations:
-{{ toYaml .volume.annotations | nindent 4 }}
+{{ toYaml $volume.annotations | nindent 4 }}
 {{- end }}
 spec:
-{{- $storageClass := .root.Values.volumes.storageClass }}
-{{- if .volume.storageClass }}
-  {{ $storageClass = .volume.storageClass }}
+{{- $storageClass := $volumes.storageClass }}
+{{- if $volume.storageClass }}
+  {{ $storageClass = $volume.storageClass }}
 {{- end }}
 {{- if $storageClass }}
   {{- if eq "-" $storageClass }}
@@ -57,13 +60,13 @@ spec:
     - {{ .accessMode }}
   resources:
     requests:
-      storage: {{ .volume.size | default .defaultSize | quote }}
-{{- if .volume.volumeName }}
-  volumeName: {{ .volume.volumeName | quote }}
+      storage: {{ $volume.size | default .defaultSize | quote }}
+{{- if $volume.volumeName }}
+  volumeName: {{ $volume.volumeName | quote }}
 {{- end }}
-{{- if .volume.selector }}
+{{- if $volume.selector }}
   selector:
-{{ toYaml .volume.selector | nindent 4 }}
+{{ toYaml $volume.selector | nindent 4 }}
 {{- end }}
 ---
 {{- end -}}

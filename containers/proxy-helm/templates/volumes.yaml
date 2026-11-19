@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 {{- $config := .Values.global.config | fromYaml }}
+{{- $squid := (.Values.volumes | default (dict)).squid | default (dict) }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -11,19 +12,19 @@ metadata:
   labels:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
-{{- if .Values.volumes.squid.extraLabels }}
-{{ toYaml .Values.volumes.squid.extraLabels | nindent 4 }}
+{{- if $squid.extraLabels }}
+{{ toYaml $squid.extraLabels | nindent 4 }}
 {{- end }}
-{{- if .Values.volumes.squid.annotations }}
+{{- if $squid.annotations }}
   annotations:
-{{ toYaml .Values.volumes.squid.annotations | nindent 4 }}
+{{ toYaml $squid.annotations | nindent 4 }}
 {{- end }}
 spec:
-{{- if .Values.volumes.squid.storageClass }}
-  {{- if eq "-" .Values.volumes.squid.storageClass }}
+{{- if $squid.storageClass }}
+  {{- if eq "-" $squid.storageClass }}
   storageClassName: ""
   {{- else }}
-  storageClassName: {{ .Values.volumes.squid.storageClass | quote }}
+  storageClassName: {{ $squid.storageClass | quote }}
   {{- end }}
 {{- end }}
   accessModes:
@@ -31,10 +32,10 @@ spec:
   resources:
     requests:
       storage: "{{ $config.max_cache_size_mb }}Mi"
-{{- if .Values.volumes.squid.volumeName }}
-  volumeName: {{ .Values.volumes.squid.volumeName | quote }}
+{{- if $squid.volumeName }}
+  volumeName: {{ $squid.volumeName | quote }}
 {{- end }}
-{{- if .Values.volumes.squid.selector }}
+{{- if $squid.selector }}
   selector:
-{{ toYaml .Values.volumes.squid.selector | nindent 4 }}
+{{ toYaml $squid.selector | nindent 4 }}
 {{- end }}
