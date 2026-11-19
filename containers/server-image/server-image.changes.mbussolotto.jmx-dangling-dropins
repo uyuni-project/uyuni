@@ -1,0 +1,2 @@
+- Move legacy JMX settings to the new configuration files on
+  container start (bsc#1253687)
