@@ -81,10 +81,11 @@ export function generateFormulaComponent(
   formulaForm: any,
   parents?: any,
   wrapper?: any,
-  disabled = false
+  disabled = false,
+  level = 1
 ) {
   const id = (parents ? parents + "#" : "") + element.$id;
-  return generateFormulaComponentForId(element, value, formulaForm, id, wrapper, disabled);
+  return generateFormulaComponentForId(element, value, formulaForm, id, wrapper, disabled, level);
 }
 
 export function generateFormulaComponentForId(
@@ -93,7 +94,8 @@ export function generateFormulaComponentForId(
   formulaForm: any,
   id,
   wrapper,
-  disabled = false
+  disabled = false,
+  level = 1
 ) {
   wrapper = get(wrapper, defaultWrapper);
 
@@ -211,7 +213,7 @@ export function generateFormulaComponentForId(
         isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
         criteria={formulaForm.props.searchCriteria}
       >
-        {generateChildrenFormItems(element, value, formulaForm, id, isDisabled)}
+        {generateChildrenFormItems(element, value, formulaForm, id, isDisabled, level)}
       </Group>
     );
   } else if (element.$type === "namespace")
@@ -394,12 +396,12 @@ function isVisibleByCriteria(element: any, criteria: string) {
   );
 }
 
-function generateChildrenFormItems(element, value, formulaForm, id, disabled = false) {
+function generateChildrenFormItems(element, value, formulaForm, id, disabled = false, level = 1) {
   const child_items: ReactNode[] = [];
   for (const child_name in element) {
     if (child_name.startsWith("$")) continue;
     child_items.push(
-      generateFormulaComponent(element[child_name], value[child_name], formulaForm, id, undefined, disabled)
+      generateFormulaComponent(element[child_name], value[child_name], formulaForm, id, undefined, disabled, level + 1)
     );
   }
   return child_items;
@@ -973,6 +975,11 @@ export class FormulaFormContextProvider extends Component<
     // todo handle the edit groups where their key must be unique
     element.$default = get(element.$default, []);
     while (element.$default.length < element.$minItems) {
+      element.$default.push(deepCopy(element.$newItemValue));
+    }
+
+    // show one sample item by default for empty dynamic edit-groups
+    if (element.$default.length === 0) {
       element.$default.push(deepCopy(element.$newItemValue));
     }
   };
