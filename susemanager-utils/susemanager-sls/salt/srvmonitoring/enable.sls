@@ -96,14 +96,10 @@ jmx_exporter_tomcat_service_cleanup:
     - name: prometheus-jmx_exporter@tomcat
     - enable: False
 
-# Legacy systemd drop-in and sysconfig JMX config cleanup
+# Legacy sysconfig JMX config cleanup
 legacy_tomcat_sysconfig_jmx_cleanup:
   file.absent:
     - name: /etc/sysconfig/tomcat/systemd/jmx.conf
-
-legacy_tomcat_systemd_dropin_jmx_cleanup:
-  file.absent:
-    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
 
 jmx_exporter_taskomatic_systemd_config_cleanup:
   file.absent:
@@ -143,10 +139,6 @@ jmx_exporter_taskomatic_service_cleanup:
 legacy_taskomatic_sysconfig_jmx_cleanup:
   file.absent:
     - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
-
-legacy_taskomatic_systemd_dropin_jmx_cleanup:
-  file.absent:
-    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:

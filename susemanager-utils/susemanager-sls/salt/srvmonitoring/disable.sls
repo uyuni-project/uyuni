@@ -20,22 +20,14 @@ jmx_taskomatic_config:
   file.absent:
     - name: /etc/rhn/taskomatic.conf.d/taskomatic_jmx.conf
 
-# Legacy systemd drop-in and sysconfig JMX config cleanup
+# Legacy sysconfig JMX config cleanup
 legacy_tomcat_sysconfig_jmx_cleanup:
   file.absent:
     - name: /etc/sysconfig/tomcat/systemd/jmx.conf
 
-legacy_tomcat_systemd_dropin_jmx_cleanup:
-  file.absent:
-    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
-
 legacy_taskomatic_sysconfig_jmx_cleanup:
   file.absent:
     - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
-
-legacy_taskomatic_systemd_dropin_jmx_cleanup:
-  file.absent:
-    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:

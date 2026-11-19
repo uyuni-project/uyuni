@@ -30,12 +30,6 @@ legacy_tomcat_sysconfig_jmx_cleanup:
     - require:
       - cmd: migrate_tomcat_jmx_config
 
-legacy_tomcat_systemd_dropin_jmx_cleanup:
-  file.absent:
-    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
-    - require:
-      - cmd: migrate_tomcat_jmx_config
-
 migrate_taskomatic_jmx_config:
   cmd.run:
     - name: >-
@@ -48,12 +42,6 @@ migrate_taskomatic_jmx_config:
 legacy_taskomatic_sysconfig_jmx_cleanup:
   file.absent:
     - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
-    - require:
-      - cmd: migrate_taskomatic_jmx_config
-
-legacy_taskomatic_systemd_dropin_jmx_cleanup:
-  file.absent:
-    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
     - require:
       - cmd: migrate_taskomatic_jmx_config
 
