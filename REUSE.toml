@@ -149,7 +149,6 @@ path = [
   "schema/spacewalk/update-messages.txt",
   "spacewalk/setup/salt/*.conf",
   "web/.prettier*",
-  "web/README-1.png",
   "web/html/src/.babelrc",
   "*/po/Makevars"
 ]
@@ -262,7 +261,6 @@ path = [
   "scripts/translation/xmlformat.conf",
   "rel-eng/packages/*",
   "**.changes*",
-  "testsuite/ext-tools/predictive-test-selection/readme_resources/**",
   "testsuite/*.json",
   "susemanager-utils/susemanager-sls/src/tests/data/*",
   "susemanager-utils/susemanager-sls/test/data/**",

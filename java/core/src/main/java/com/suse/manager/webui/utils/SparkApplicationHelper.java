@@ -673,12 +673,13 @@ public class SparkApplicationHelper {
      * Serialize a success
      * @param response the http response
      * @param data the data
+     * @param type type token needed for gson
      * @return a JSON string
      * @param <T> the type of data
      */
-    public static <T> String success(Response response, T data) {
+    public static <T> String success(Response response, T data, TypeToken<T> type) {
         response.status(HttpStatus.SC_OK);
-        return json(response, data, new TypeToken<>() { });
+        return json(response, data, type);
     }
 
     /**
@@ -721,17 +722,6 @@ public class SparkApplicationHelper {
         response.type(APPLICATION_JSON);
         ParameterizedType parameterizedType = new ParameterizedTypeImpl(null, ResultJson.class, type.getType());
         return GSON.toJson(result, parameterizedType);
-    }
-
-    /**
-     * Serialize the result and set the response content type to JSON.
-     * @param response the http response
-     * @param result the object to serialize to JSON
-     * @param <T> type of the result
-     * @return a JSON string
-     */
-    public static <T> String result(Response response, ResultJson<T> result) {
-        return result(response, result, new TypeToken<>() { });
     }
 
     /**

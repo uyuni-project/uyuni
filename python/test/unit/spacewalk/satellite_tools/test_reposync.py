@@ -349,12 +349,107 @@ class RepoSyncTest(unittest.TestCase):
         plugin = self._mock_repo_plugin(packs)
 
         with patch("spacewalk.common.rhnConfig.CFG", self._mock_cfg()):
-            rs.import_packages(plugin, None, "unused-url-string", None)
+            ret = rs.import_packages(plugin, None, "unused-url-string", None)
 
         # repository plugin returned 1 package that failed to download
         # multiprocessing.Pool.apply_async shouldn't be called
         apply_async_mock = pool.return_value.__enter__.return_value.apply_async
         self.assertFalse(apply_async_mock.called)
+        self.assertEqual(ret, 1)
+
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.reposync.log2", Mock())
+    @patch("spacewalk.satellite_tools.reposync.os", os)
+    @patch("spacewalk.satellite_tools.reposync.log", Mock())
+    @patch("spacewalk.satellite_tools.reposync.ThreadedDownloader")
+    @patch("spacewalk.satellite_tools.reposync.multiprocessing.Pool")
+    def test_import_packages_raises_rhnfault_when_fail_set_and_download_fails(
+        self, pool, downloader
+    ):
+        """
+        When fail option is set and downloader fails to download packages
+        Then RepoSync.import_packages should raise rhnFault before importing
+        """
+        rs = _init_reposync(self.reposync)
+        rs.fail = True
+        _mock_rhnsql(self.reposync, [None, []])
+
+        fail_pkg_name = "failed.rpm"
+        downloader.return_value.failed_pkgs = [fail_pkg_name]
+
+        packs = self._mock_packages_list([fail_pkg_name])
+        plugin = self._mock_repo_plugin(packs)
+
+        with patch("spacewalk.common.rhnConfig.CFG", self._mock_cfg()):
+            with self.assertRaises(self.reposync.rhnFault) as ctx:
+                rs.import_packages(plugin, None, "unused-url-string", None)
+            self.assertIn(
+                "Failed to download 1 packages and fail option is set",
+                str(ctx.exception),
+            )
+
+        apply_async_mock = pool.return_value.__enter__.return_value.apply_async
+        self.assertFalse(apply_async_mock.called)
+
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.reposync.log2")
+    @patch("spacewalk.satellite_tools.reposync.cfg_component")
+    @patch("spacewalk.satellite_tools.reposync.SQLBackend", Mock())
+    @patch("spacewalk.satellite_tools.reposync.log", Mock())
+    @patch("spacewalk.satellite_tools.reposync.os", os)
+    def test_import_package_batch_logs_error_when_package_fails(
+        self, cfg_comp_mock, log2_mock
+    ):
+        """
+        When package staging or import fails during import_package_batch
+        Then an explanatory error message should be logged via log2
+        """
+        self.reposync.rhnSQL.closeDB = Mock()
+        cfg_mock = Mock()
+        cfg_mock.MOUNT_POINT = "/tmp"
+        cfg_comp_mock.return_value.__enter__.return_value = cfg_mock
+
+        fail_pkg_name = "failed.rpm"
+        fail_stage_path = f"/tmp/{fail_pkg_name}"
+        pack = Mock()
+        pack.path = fail_stage_path
+        pack.name = "failed"
+
+        to_process = [(pack, True, False)]
+        to_disassociate = {}
+
+        with patch(
+            "spacewalk.satellite_tools.reposync.os.path.exists", return_value=False
+        ):
+            _, failed_packages, _, processed = (
+                self.reposync.RepoSync.import_package_batch(
+                    to_process,
+                    to_disassociate,
+                    False,
+                    0,
+                    1,
+                    False,
+                    1,
+                    False,
+                    100,
+                )
+            )
+
+        self.assertEqual(failed_packages, 1)
+        self.assertEqual(processed[0], (pack, False, False))
+        logged_msgs = [
+            args[2]
+            for args, _ in log2_mock.call_args_list
+            if len(args) > 2 and isinstance(args[2], str)
+        ]
+        self.assertTrue(
+            any(
+                msg.startswith(f"ERROR: Failed to import package {fail_pkg_name}: ")
+                and f"Staged package file does not exist: {fail_stage_path}" in msg
+                for msg in logged_msgs
+            ),
+            logged_msgs,
+        )
 
     @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     @patch("spacewalk.satellite_tools.reposync.send_error_mail")

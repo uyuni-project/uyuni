@@ -24,6 +24,7 @@ import com.redhat.rhn.manager.session.SessionManager;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * PxtSessionDelegateImpl is an implementation of PxtSessionDelegate that wraps a
@@ -232,12 +233,19 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     public void invalidatePxtSession(HttpServletRequest request,
                                      HttpServletResponse response) {
 
-        WebSession pxtSession = getPxtSession(request);
-        pxtSession.setWebUserId(null);
+        // Invalidate csrf_token, without creating an HttpSession if one doesn't already exist.
+        HttpSession httpSession = request.getSession(false);
+        if (httpSession != null) {
+            httpSession.setAttribute("csrf_token", null);
+            httpSession.setAttribute("webUserID", null);
+        }
 
-        // Invalidate csrf_token
-        request.getSession().setAttribute("csrf_token", null);
-        request.getSession().setAttribute("webUserID", null);
+        // Don't create a pxt session just to invalidate it.
+        WebSession pxtSession = getPxtSessionIfExists(request);
+        if (pxtSession == null) {
+            return;
+        }
+        pxtSession.setWebUserId(null);
 
         refreshPxtSession(request, response, 0);
     }

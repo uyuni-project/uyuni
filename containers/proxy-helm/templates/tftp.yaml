@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 
+{{- $tftp := .Values.tftp | default (dict) }}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -12,7 +14,7 @@ metadata:
     app.kubernetes.io/part-of: uyuni
 spec:
   replicas: 1
-{{- if .Values.tftp.hostNetwork }}
+{{- if $tftp.hostNetwork }}
   strategy:
     type: Recreate
 {{- end }}
@@ -26,18 +28,18 @@ spec:
         app.kubernetes.io/component: proxy-tftp
         app.kubernetes.io/part-of: uyuni
     spec:
-{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" .Values.tftp) | nindent 6 }}
+{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" $tftp) | nindent 6 }}
 {{- if .Values.registrySecret }}
       imagePullSecrets:
         - name: {{ .Values.registrySecret }}
 {{- end }}
-{{- if .Values.tftp.hostNetwork }}
+{{- if $tftp.hostNetwork }}
       dnsPolicy: ClusterFirstWithHostNet
       hostNetwork: true
 {{- end }}
       containers:
         - name: tftpd
-          image: {{ include "uyuni.image" (dict "name" "proxy-tftpd" "global" . "local" .Values.tftp) }}
+          image: {{ include "uyuni.image" (dict "name" "proxy-tftpd" "global" . "local" $tftp) }}
           imagePullPolicy: "{{ .Values.pullPolicy }}"
           command:
             - /usr/bin/tftp_wrapper.py

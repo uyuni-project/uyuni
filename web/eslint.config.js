@@ -18,13 +18,7 @@ import localRules from "./eslint-local-rules/index.js";
 const isProduction = process.env.NODE_ENV === "production";
 
 export default defineConfig([
-  globalIgnores([
-    "html/src/dist/**/*",
-    "html/src/storybook/generated/**/*",
-    "html/src/vendors/**/*",
-    "html/javascript/**/*",
-    "storybook-static/**/*",
-  ]),
+  globalIgnores(["html/src/dist/**/*", "html/src/vendors/**/*", "html/javascript/**/*", "storybook-static/**/*"]),
   eslint.configs.recommended,
   tseslint.configs.recommended,
   {
@@ -155,8 +149,8 @@ export default defineConfig([
     },
   },
   {
-    // Examples and tests can have lingering vars to exemplify
-    files: ["**/*.example.{ts,tsx}", "**/*.test.{ts,tsx}"],
+    // Tests can have lingering vars to exemplify
+    files: ["**/*.test.{ts,tsx}"],
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
       "react/jsx-key": "off",

@@ -1,0 +1,3 @@
+- Introduce counting dimensions for systems with the Multi-Linux
+  Support in Pay-as-you-go environments, covering the regular and
+  long-term support versions and the EMS and HA extensions

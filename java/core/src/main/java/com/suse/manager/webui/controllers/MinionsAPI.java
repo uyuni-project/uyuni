@@ -443,7 +443,7 @@ public class MinionsAPI {
             Action action = createSupportDataAction(user, server, scheduleRequest);
             taskomaticApi.scheduleActionExecution(action);
 
-            return success(response, ResultJson.success(action.getId().intValue()));
+            return success(response, ResultJson.success(action.getId().intValue()), new TypeToken<>() { });
         }
         catch (TaskomaticApiException ex) {
             LOG.error("Unable to schedule taskomatic execution for support data action", ex);
@@ -857,7 +857,7 @@ public class MinionsAPI {
             );
 
             Long result = actionChain != null ? actionChain.getId() : scheduledActions.get(0).getId();
-            return success(response, ResultJson.success(result));
+            return success(response, ResultJson.success(result), new TypeToken<>() { });
         }
         catch (RuntimeException | TaskomaticApiException | NoInstalledProductException | DistUpgradePaygException ex) {
             LOG.error("Unable to schedule product migration action", ex);

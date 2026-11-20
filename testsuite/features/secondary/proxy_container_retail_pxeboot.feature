@@ -27,6 +27,12 @@ Feature: PXE boot a Retail terminal behind a containerized proxy
   As the system administrator
   I PXE boot one of the terminals
 
+  @pxeboot_image_check
+  Scenario: Sanity check: the OS image built previously is available
+    Given I am authorized for the "Images" section
+    When I follow the left menu "Images > Image List"
+    Then I should see the image for "pxeboot_minion" is built
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 

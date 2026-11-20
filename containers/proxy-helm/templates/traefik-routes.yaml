@@ -2,8 +2,16 @@
 #
 # SPDX-License-Identifier: MIT
 
-{{- if and (not .Values.gateway.enable) (eq ((.Values.ingress).type) "traefik") }}
-  {{- if ne (default .Values.services.type .Values.services.ssh.type) "NodePort" }}
+{{- $gateway := .Values.gateway | default (dict) -}}
+{{- $ingress := .Values.ingress | default (dict) -}}
+{{- $services := .Values.services | default (dict) -}}
+{{- $servicesType := $services.type | default "ClusterIP" -}}
+{{- $servicesSalt := $services.salt | default (dict) -}}
+{{- $servicesSsh := $services.ssh | default (dict) -}}
+
+{{- if and (not $gateway.enable) (eq $ingress.type "traefik") }}
+{{- $entryPoints := $ingress.entryPoints | default (dict) }}
+  {{- if ne (default $servicesType $servicesSsh.type) "NodePort" }}
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
@@ -12,13 +20,13 @@ metadata:
   labels:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
-  {{- if .Values.ingress.class }}
+  {{- if $ingress.class }}
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingress.class | quote }}
+    kubernetes.io/ingress.class: {{ $ingress.class | quote }}
   {{- end }}
 spec:
   entryPoints:
-    - {{ .Values.ingress.entryPoints.ssh | default "ssh" }}
+    - {{ $entryPoints.ssh | default "ssh" }}
   routes:
     - match: HostSNI(`*`)
       services:
@@ -26,7 +34,7 @@ spec:
         port: 8022
 ---
   {{- end }}
-  {{- if ne (default .Values.services.type .Values.services.salt.type) "NodePort" }}
+  {{- if ne (default $servicesType $servicesSalt.type) "NodePort" }}
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
@@ -35,13 +43,13 @@ metadata:
   labels:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
-  {{- if .Values.ingress.class }}
+  {{- if $ingress.class }}
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingress.class | quote }}
+    kubernetes.io/ingress.class: {{ $ingress.class | quote }}
   {{- end }}
 spec:
   entryPoints:
-    - {{ .Values.ingress.entryPoints.saltPublish | default "salt-publish" }}
+    - {{ $entryPoints.saltPublish | default "salt-publish" }}
   routes:
     - match: HostSNI(`*`)
       services:
@@ -56,13 +64,13 @@ metadata:
   labels:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
-  {{- if .Values.ingress.class }}
+  {{- if $ingress.class }}
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingress.class | quote }}
+    kubernetes.io/ingress.class: {{ $ingress.class | quote }}
   {{- end }}
 spec:
   entryPoints:
-    - {{ .Values.ingress.entryPoints.saltRequest | default "salt-request" }}
+    - {{ $entryPoints.saltRequest | default "salt-request" }}
   routes:
     - match: HostSNI(`*`)
       services:

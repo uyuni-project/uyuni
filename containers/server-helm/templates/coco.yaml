@@ -2,7 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 
-{{- if gt (default .Values.coco.replicas 0 | int) 0 }}
+{{- $coco := .Values.coco | default (dict) -}}
+{{- if gt (default $coco.replicas 0 | int) 0 }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -12,7 +13,7 @@ metadata:
   name: coco-attestation
   namespace: "{{ .Release.Namespace }}"
 spec:
-  replicas: {{ default .Values.coco.replicas 0 | int }}
+  replicas: {{ default $coco.replicas 0 | int }}
   selector:
     matchLabels:
       app.kubernetes.io/component: coco-attestation
@@ -25,7 +26,7 @@ spec:
         app.kubernetes.io/component: coco-attestation
         app.kubernetes.io/part-of: uyuni
     spec:
-{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" .Values.coco) | nindent 6 }}
+{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" $coco) | nindent 6 }}
       containers:
       - env:
         - name: database_user
@@ -58,7 +59,7 @@ spec:
               key: db_name
               name: uyuni-config
               optional: false
-        image: {{ include "uyuni.image" (dict "name" "server-attestation" "global" . "local" .Values.coco) }}
+        image: {{ include "uyuni.image" (dict "name" "server-attestation" "global" . "local" $coco) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: coco
 {{- if .Values.registrySecret }}

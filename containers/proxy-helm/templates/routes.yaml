@@ -2,9 +2,13 @@
 #
 # SPDX-License-Identifier: MIT
 
-{{- if .Values.gateway.enable }}
+{{- $gateway := .Values.gateway | default (dict) -}}
+{{- $listeners := $gateway.listeners | default (dict) -}}
+{{- $http := $listeners.http | default (dict) -}}
+{{- $https := $listeners.https | default (dict) -}}
+{{- if $gateway.enable }}
 {{- $config := .Values.global.config | fromYaml }}
-{{- $gatewayName := .Values.gateway.name | default "uyuni-gateway" -}}
+{{- $gatewayName := $gateway.name | default "uyuni-gateway" -}}
 
 # HTTPS Routes
 apiVersion: gateway.networking.k8s.io/v1
@@ -18,9 +22,9 @@ metadata:
 spec:
   parentRefs:
     - name: {{ $gatewayName }}
-      sectionName: {{ .Values.gateway.listeners.https.name }}
+      sectionName: {{ $https.name | default "websecure" }}
     - name: {{ $gatewayName }}
-      sectionName: {{ .Values.gateway.listeners.http.name }}
+      sectionName: {{ $http.name | default "web" }}
   hostnames:
     - {{ $config.proxy_fqdn | quote }}
   rules:

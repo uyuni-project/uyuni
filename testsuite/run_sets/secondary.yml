@@ -54,6 +54,7 @@
 - features/secondary/allcli_action_chain.feature
 - features/secondary/min_docker_api.feature
 - features/secondary/min_recurring_action.feature
+- features/secondary/min_recurring_action_custom_states.feature
 - features/secondary/min_change_software_channel.feature
 - features/secondary/min_retracted_patches.feature
 - features/secondary/proxy_container_cobbler_pxeboot.feature

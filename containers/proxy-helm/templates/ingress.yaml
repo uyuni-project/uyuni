@@ -2,7 +2,10 @@
 #
 # SPDX-License-Identifier: MIT
 
-{{- if not .Values.gateway.enable }}
+{{- $gateway := .Values.gateway | default (dict) -}}
+{{- $ingress := .Values.ingress | default (dict) -}}
+{{- $ingressAnnotations := $ingress.annotations | default (dict) -}}
+{{- if not $gateway.enable }}
 {{- $config := .Values.global.config | fromYaml }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -10,20 +13,20 @@ metadata:
   name: uyuni-proxy-ssl
   namespace: "{{ .Release.Namespace }}"
   annotations:
-  {{- if eq .Values.ingress.type "traefik" }}
+  {{- if eq $ingress.type "traefik" }}
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.domains.n.main: "{{ $config.proxy_fqdn }}"
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure,web"
   {{- end }}
-  {{- if (((.Values.ingress).annotations).ssl) }}
-{{ toYaml .Values.ingress.annotations.ssl | indent 4 }}
+  {{- if $ingressAnnotations.ssl }}
+{{ toYaml $ingressAnnotations.ssl | indent 4 }}
   {{- end }}
   labels:
     app.kubernetes.io/part-of: uyuni
     app.kubernetes.io/component: proxy
 spec:
-  {{- if ((.Values.ingress).class) }}
-  ingressClassName: {{ .Values.ingress.class }}
+  {{- if ($ingress.class) }}
+  ingressClassName: {{ $ingress.class }}
   {{- end }}
   rules:
   - host: {{ $config.proxy_fqdn }}

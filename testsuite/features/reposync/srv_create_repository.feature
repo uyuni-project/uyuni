@@ -91,6 +91,8 @@ Feature: Add a repository to a channel
 
 @deblike_minion
   Scenario: Add a test repository for Debian-like
+    Given I mirror the Debian test packages locally
+    And the Debian test packages should be available on the server
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "fake-debian-repo" as "label"

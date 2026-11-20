@@ -276,6 +276,8 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         context().checking(new Expectations() { {
             allowing(mockRequest).getAttribute("session");
             will(returnValue(getPxtSession()));
+            allowing(mockRequest).getSession(false);
+            will(returnValue(getSession()));
             allowing(mockRequest).getSession();
             will(returnValue(getSession()));
             allowing(mockPxtSession).getId();
@@ -286,6 +288,23 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
             allowing(mockHttpSession).setAttribute(with(any(String.class)),
                     with(aNull(Object.class)));
         } });
+    }
+
+    @Test
+    public final void testInvalidatePxtSessionDoesNotCreateSessionWhenNoneExists() {
+        context().checking(new Expectations() { {
+            allowing(mockRequest).getSession(false);
+            will(returnValue(null));
+            allowing(mockRequest).getAttribute("session");
+            will(returnValue(null));
+            allowing(mockRequest).setAttribute(with(equal("session")), with(aNull(Object.class)));
+            allowing(mockRequest).getCookies();
+            will(returnValue(null));
+        } });
+
+        pxtSessionDelegate.invalidatePxtSession(getRequest(), getResponse());
+
+        assertEquals(0, pxtSessionDelegate.getSavePxtSessionCounter());
     }
 
     @Test

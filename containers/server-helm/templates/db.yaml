@@ -2,7 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 
-{{- if .Values.db.enable }}
+{{- $db := .Values.db | default (dict) -}}
+{{- if $db.enable }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,7 +27,7 @@ spec:
         app.kubernetes.io/component: db
         app.kubernetes.io/part-of: uyuni
     spec:
-{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" .Values.db) | nindent 6 }}
+{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" $db) | nindent 6 }}
       containers:
         - env:
             - name: TZ
@@ -62,8 +63,8 @@ spec:
                   key: password
                   name: reportdb-credentials
             - name: POD_NETWORK
-              value: {{ .Values.db.podsCIDR | quote }}
-          image: {{ include "uyuni.image" (dict "name" "server-postgresql" "global" . "local" .Values.db) }}
+              value: {{ $db.podsCIDR | quote }}
+          image: {{ include "uyuni.image" (dict "name" "server-postgresql" "global" . "local" $db) }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           name: db
           volumeMounts:

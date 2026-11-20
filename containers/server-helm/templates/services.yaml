@@ -2,6 +2,23 @@
 #
 # SPDX-License-Identifier: MIT
 
+{{- $db := .Values.db | default (dict) -}}
+{{- $tftpVal := .Values.tftp | default (dict) -}}
+{{- $hubAPI := .Values.hubAPI | default (dict) -}}
+{{- $saline := .Values.saline | default (dict) -}}
+{{- $services := .Values.services | default (dict) -}}
+{{- $servicesType := $services.type | default "ClusterIP" -}}
+{{- $reportdb := $services.reportdb | default (dict) -}}
+{{- $reportdbPorts := $reportdb.ports | default (dict) -}}
+{{- $salt := $services.salt | default (dict) -}}
+{{- $saltPorts := $salt.ports | default (dict) -}}
+{{- $search := $services.search | default (dict) -}}
+{{- $searchPorts := $search.ports | default (dict) -}}
+{{- $taskomatic := $services.taskomatic | default (dict) -}}
+{{- $taskomaticPorts := $taskomatic.ports | default (dict) -}}
+{{- $tomcat := $services.tomcat | default (dict) -}}
+{{- $tomcatPorts := $tomcat.ports | default (dict) -}}
+{{- $tftp := $services.tftp | default (dict) }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -18,7 +35,7 @@ spec:
     app.kubernetes.io/component: server
     app.kubernetes.io/part-of: uyuni
   type: ClusterIP
-{{- if .Values.db.enable }}
+{{- if $db.enable }}
 ---
 apiVersion: v1
 kind: Service
@@ -45,24 +62,24 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: reportdb
   namespace: "{{ .Release.Namespace }}"
-{{- if or .Values.services.annotations .Values.services.reportdb.annotations }}
+{{- if or $services.annotations $reportdb.annotations }}
   annotations:
-{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.reportdb.annotations) ) | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) $services.annotations) (default (dict) $reportdb.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   ports:
     - name: pgsql
       port: 5432
-{{- if eq (default .Values.services.type .Values.services.reportdb.type) "NodePort" }}
-      nodePort: {{ .Values.services.reportdb.ports.pgsql }}
+{{- if eq (default $servicesType $reportdb.type) "NodePort" }}
+      nodePort: {{ $reportdbPorts.pgsql | default 30032 }}
 {{- end }}
-{{- if eq (default .Values.services.type .Values.services.reportdb.type) "LoadBalancer" }}
+{{- if eq (default $servicesType $reportdb.type) "LoadBalancer" }}
   externalTrafficPolicy: Local
 {{- end }}
   selector:
     app.kubernetes.io/component: db
     app.kubernetes.io/part-of: uyuni
-  type: {{ .Values.services.reportdb.type | default .Values.services.type }}
+  type: {{ $reportdb.type | default $servicesType }}
 {{- end }}
 ---
 apiVersion: v1
@@ -73,26 +90,26 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: salt
   namespace: "{{ .Release.Namespace }}"
-{{- if or .Values.services.annotations .Values.services.salt.annotations }}
+{{- if or $services.annotations $salt.annotations }}
   annotations:
-{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.salt.annotations) ) | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) $services.annotations) (default (dict) $salt.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   ports:
     - name: publish
       port: 4505
-{{- if eq (default .Values.services.type .Values.services.salt.type) "NodePort" }}
-      nodePort: {{ .Values.services.salt.ports.publish }}
+{{- if eq (default $servicesType $salt.type) "NodePort" }}
+      nodePort: {{ $saltPorts.publish | default 30005 }}
 {{- end }}
     - name: request
       port: 4506
-{{- if eq (default .Values.services.type .Values.services.salt.type) "NodePort" }}
-      nodePort: {{ .Values.services.salt.ports.request }}
+{{- if eq (default $servicesType $salt.type) "NodePort" }}
+      nodePort: {{ $saltPorts.request | default 30006 }}
 {{- end }}
   selector:
     app.kubernetes.io/component: server
     app.kubernetes.io/part-of: uyuni
-  type: {{ .Values.services.salt.type | default .Values.services.type }}
+  type: {{ $salt.type | default $servicesType }}
 ---
 {{- if .Values.exposeJavaDebug | default false }}
 apiVersion: v1
@@ -103,21 +120,21 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: search
   namespace: "{{ .Release.Namespace }}"
-{{- if or .Values.services.annotations .Values.services.search.annotations }}
+{{- if or $services.annotations $search.annotations }}
   annotations:
-{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.search.annotations) ) | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) $services.annotations) (default (dict) $search.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   ports:
     - name: debug
       port: 8002
-{{- if eq (default .Values.services.type .Values.services.search.type) "NodePort" }}
-      nodePort: {{ .Values.services.search.ports.debug }}
+{{- if eq (default $servicesType $search.type) "NodePort" }}
+      nodePort: {{ $searchPorts.debug | default 30002 }}
 {{- end }}
   selector:
     app.kubernetes.io/component: server
     app.kubernetes.io/part-of: uyuni
-  type: {{ .Values.services.search.type | default .Values.services.type }}
+  type: {{ $search.type | default $servicesType }}
 ---
 apiVersion: v1
 kind: Service
@@ -127,21 +144,21 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: taskomatic
   namespace: "{{ .Release.Namespace }}"
-{{- if or .Values.services.annotations .Values.services.taskomatic.annotations }}
+{{- if or $services.annotations $taskomatic.annotations }}
   annotations:
-{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.taskomatic.annotations) ) | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) $services.annotations) (default (dict) $taskomatic.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   ports:
     - name: debug
       port: 8001
-{{- if eq (default .Values.services.type .Values.services.taskomatic.type) "NodePort" }}
-      nodePort: {{ .Values.services.taskomatic.ports.debug }}
+{{- if eq (default $servicesType $taskomatic.type) "NodePort" }}
+      nodePort: {{ $taskomaticPorts.debug | default 30001 }}
 {{- end }}
   selector:
     app.kubernetes.io/component: server
     app.kubernetes.io/part-of: uyuni
-  type: {{ .Values.services.taskomatic.type | default .Values.services.type }}
+  type: {{ $taskomatic.type | default $servicesType }}
 ---
 apiVersion: v1
 kind: Service
@@ -151,21 +168,21 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: tomcat
   namespace: "{{ .Release.Namespace }}"
-{{- if or .Values.services.annotations .Values.services.tomcat.annotations }}
+{{- if or $services.annotations $tomcat.annotations }}
   annotations:
-{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.tomcat.annotations) ) | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) $services.annotations) (default (dict) $tomcat.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   ports:
     - name: debug
       port: 8003
-{{- if eq (default .Values.services.type .Values.services.tomcat.type) "NodePort" }}
-      nodePort: {{ .Values.services.tomcat.ports.debug }}
+{{- if eq (default $servicesType $tomcat.type) "NodePort" }}
+      nodePort: {{ $tomcatPorts.debug | default 30003 }}
 {{- end }}
   selector:
     app.kubernetes.io/component: server
     app.kubernetes.io/part-of: uyuni
-  type: {{ .Values.services.tomcat.type | default .Values.services.type }}
+  type: {{ $tomcat.type | default $servicesType }}
 ---
 {{- end }}
 {{- if ne .Values.enableMonitoring false }}
@@ -189,7 +206,7 @@ spec:
   type: ClusterIP
 ---
 {{- end }}
-{{- if and .Values.tftp.enable (not .Values.tftp.hostNetwork) }}
+{{- if and $tftpVal.enable (not $tftpVal.hostNetwork) }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -198,9 +215,9 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: tftp
   namespace: "{{ .Release.Namespace }}"
-{{- if or .Values.services.annotations .Values.services.tftp.annotations }}
+{{- if or $services.annotations $tftp.annotations }}
   annotations:
-{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.tftp.annotations) ) | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) $services.annotations) (default (dict) $tftp.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   ports:
@@ -260,7 +277,7 @@ spec:
     app.kubernetes.io/component: server
     app.kubernetes.io/part-of: uyuni
   type: ClusterIP
-{{- if default .Values.hubAPI.enable false }}
+{{- if default $hubAPI.enable false }}
 ---
 apiVersion: v1
 kind: Service
@@ -279,7 +296,7 @@ spec:
     app.kubernetes.io/part-of: uyuni
   type: ClusterIP
 {{- end }}
-{{- if default .Values.saline.enable false }}
+{{- if default $saline.enable false }}
 ---
 apiVersion: v1
 kind: Service

@@ -18,7 +18,6 @@
 package com.redhat.rhn.manager.system.proxycontainerconfig;
 
 import static com.redhat.rhn.common.ErrorReportingStrategies.raiseAndLog;
-import static com.suse.utils.Predicates.allProvided;
 import static com.suse.utils.Predicates.isAbsent;
 
 import com.redhat.rhn.common.RhnRuntimeException;
@@ -230,7 +229,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
                 .orElseThrow(raiseAndLog(this, "Could not find specified server named " + serverFqdn +
                         " in the organization."));
 
-        if (!allProvided(serverServer.getProxyInfo(), serverServer.getProxyInfo().getSshPublicKey())) {
+        if (serverServer.getProxyInfo() == null || serverServer.getProxyInfo().getSshPublicKey() == null) {
             raiseAndLog(this, "Could not find the public SSH key for the server.").get();
         }
 
