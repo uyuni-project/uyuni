@@ -16,3 +16,16 @@ if [ -e /etc/sysconfig/prometheus-postgres_exporter/systemd/60-server.conf ]; th
     sed -i 's/\/etc\/postgres_exporter\//\/etc\/sysconfig\/prometheus-postgres_exporter\//' \
         /etc/sysconfig/prometheus-postgres_exporter/systemd/60-server.conf
 fi
+
+# JMX settings moved from systemd drop-ins to conf.d files
+if [ -s /etc/sysconfig/tomcat/systemd/jmx.conf ] &&
+    [ ! -e /etc/tomcat/conf.d/tomcat_jmx.conf ]; then
+    mkdir -p /etc/tomcat/conf.d
+    cp /usr/share/susemanager/salt/srvmonitoring/tomcat_jmx.conf /etc/tomcat/conf.d/
+fi
+if [ -s /etc/sysconfig/taskomatic/systemd/jmx.conf ] &&
+    [ ! -e /etc/rhn/taskomatic.conf.d/taskomatic_jmx.conf ]; then
+    mkdir -p /etc/rhn/taskomatic.conf.d
+    cp /usr/share/susemanager/salt/srvmonitoring/taskomatic_jmx.conf /etc/rhn/taskomatic.conf.d/
+fi
+rm -f /etc/sysconfig/tomcat/systemd/jmx.conf /etc/sysconfig/taskomatic/systemd/jmx.conf
