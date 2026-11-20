@@ -1,0 +1,2 @@
+- Report all KIWI image artefacts from the build state and
+  provide their checksums in the inspect state

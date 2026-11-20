@@ -34,6 +34,7 @@ import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
@@ -51,6 +52,7 @@ import com.google.gson.JsonElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -125,6 +127,9 @@ public class ImageInspectAction extends Action {
         Map<LocalCall<?>, List<MinionSummary>> result = new HashMap<>();
         if (ImageStoreFactory.TYPE_OS_IMAGE.equals(store.getStoreType())) {
             pillar.put("build_id", "build" + details.getBuildActionId());
+            pillar.put("collected_files", ImageInfoFactory.lookupByInspectAction(this)
+                    .map(info -> collectedFileNames(info).stream().sorted().toList())
+                    .orElseGet(Collections::emptyList));
             LocalCall<Map<String, State.ApplyResult>> apply = State.apply(
                     Collections.singletonList("images.kiwi-image-inspect"),
                     Optional.of(pillar));
@@ -280,15 +285,23 @@ public class ImageInspectAction extends Action {
             if (result.getKiwiInspect().isResult()) {
                 Long instantNow = new Date().getTime() / 1000L;
                 OSImageInspectSlsResult ret = result.getKiwiInspect().getChanges().getRet();
-                List<OSImageInspectSlsResult.Package> packages = ret.getPackages();
-                packages.forEach(pkg -> createImagePackageFromSalt(pkg.getName(), Optional.of(pkg.getEpoch()),
-                        Optional.of(pkg.getRelease()), pkg.getVersion(), Optional.of(instantNow),
-                        Optional.of(pkg.getArch()), imageInfo));
-                if ("pxe".equals(ret.getImage().getType())) {
-                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(),
-                            ret.getBootImage(), imageInfo);
-                    if (ret.getBootImage().isPresent() && ret.getBundles().isEmpty()) {
-                        SaltbootUtils.createSaltbootDistro(imageInfo);
+                List<String> invalidFiles = findInvalidFiles(imageInfo, ret);
+                if (!invalidFiles.isEmpty()) {
+                    serverAction.setResultMsg("Checksum validation failed for: " + String.join(", ", invalidFiles));
+                    as = ActionFactory.STATUS_FAILED;
+                }
+                else {
+                    retagImageFiles(imageInfo, ret);
+                    List<OSImageInspectSlsResult.Package> packages = ret.getPackages();
+                    packages.forEach(pkg -> createImagePackageFromSalt(pkg.getName(), Optional.of(pkg.getEpoch()),
+                            Optional.of(pkg.getRelease()), pkg.getVersion(), Optional.of(instantNow),
+                            Optional.of(pkg.getArch()), imageInfo));
+                    if ("pxe".equals(ret.getImage().getType())) {
+                        SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(),
+                                ret.getBootImage(), imageInfo);
+                        if (ret.getBootImage().isPresent() && ret.getBundles().isEmpty()) {
+                            SaltbootUtils.createSaltbootDistro(imageInfo);
+                        }
                     }
                 }
             }
@@ -304,6 +317,59 @@ public class ImageInspectAction extends Action {
         }
         ImageInfoFactory.save(imageInfo);
         ErrataManager.insertErrataCacheTask(imageInfo);
+    }
+
+    private static Set<String> collectedFileNames(ImageInfo imageInfo) {
+        return imageInfo.getImageFiles().stream()
+                .filter(file -> !file.isExternal())
+                .map(file -> Path.of(file.getFile()).getFileName().toString())
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * @return the names of the collected files whose checksum is missing in or differs from the inspection result
+     */
+    private static List<String> findInvalidFiles(ImageInfo imageInfo, OSImageInspectSlsResult result) {
+        return imageInfo.getImageFiles().stream()
+                .filter(file -> !file.isExternal())
+                .filter(file -> {
+                    ImageChecksum.Checksum reported =
+                            result.getFiles().get(Path.of(file.getFile()).getFileName().toString());
+                    return reported == null || !reported.getChecksum().equals(file.getChecksum().getChecksum());
+                })
+                .map(file -> Path.of(file.getFile()).getFileName().toString())
+                .sorted()
+                .toList();
+    }
+
+    /**
+     * Collection stores the artefacts with the filetype of the matched extension, the inspection tells
+     * what the files really are (image, bundle, kernel or initrd).
+     */
+    private static void retagImageFiles(ImageInfo imageInfo, OSImageInspectSlsResult result) {
+        Map<String, String> typesByName = new HashMap<>();
+        typesByName.put(result.getImage().getFilename(), "image");
+        result.getBootImage().ifPresent(boot -> {
+            typesByName.put(boot.getKernel().getFilename(), "kernel");
+            typesByName.put(boot.getInitrd().getFilename(), "initrd");
+        });
+        result.getBundles().forEach(bundle -> typesByName.put(bundle.getFilename(), "bundle"));
+
+        imageInfo.getImageFiles().stream()
+                .filter(file -> !file.isExternal())
+                .forEach(file -> {
+                    String type = typesByName.get(Path.of(file.getFile()).getFileName().toString());
+                    if (type != null) {
+                        file.setType(type);
+                    }
+                });
+
+        if (imageInfo.getChecksum() == null) {
+            imageInfo.getImageFiles().stream()
+                    .filter(file -> "bundle".equals(file.getType()) || "image".equals(file.getType()))
+                    .findFirst()
+                    .ifPresent(file -> imageInfo.setChecksum(file.getChecksum()));
+        }
     }
 
     private ImagePackage createImagePackageFromSalt(String name, Pkg.Info info, ImageInfo imageInfo) {

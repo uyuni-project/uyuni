@@ -38,6 +38,11 @@
                 "__run_num__": 0,
                 "changes": {
                     "ret": {
+                        "files": {
+                            "POS_Image_JeOS6.x86_64-6.0.0": "sha256:ee5bfccbed044cf8ee449b1c85ecb337cb5aca97ebdddf69b4868ffb647a84c7",
+                            "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default": "sha256:760e6af1375758094455355d124d130a30c4d9c0438d03ad1f2e54e9c9592da2",
+                            "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz": "sha256:97a538135c7bda3eceb717da366405cc59b4a30364d3ea3f137064b19b7fe323"
+                        },
                         "image": {
                             "hash": "md5:a64dbc025c748bde968b888db6b7b9e3",
                             "compression": null,

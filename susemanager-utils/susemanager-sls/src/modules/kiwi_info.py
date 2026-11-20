@@ -431,10 +431,11 @@ def image_details(dest, bundle_dest=None):
     return res
 
 
-def inspect_image(dest, build_id, bundle_dest=None):
+def inspect_image(dest, build_id, bundle_dest=None, files=None):
     """
     Image inspection stage entrypoint.
     Provides detailed information about image and packages it contains.
+    When files are given, also their sha256 checksums, which the server validates.
     """
     res = image_details(dest, bundle_dest)
     if not res:
@@ -453,8 +454,18 @@ def inspect_image(dest, build_id, bundle_dest=None):
 
     res["packages"] = parse_packages(os.path.join(dest, basename + ".packages"))
 
-    if image_type == "pxe":
+    if image_type in ("pxe", "kis"):
         res["boot_image"] = inspect_boot_image(dest)
+
+    res["files"] = {}
+    for name in files or []:
+        for directory in [bundle_dest, dest]:
+            path = os.path.join(directory, name) if directory else None
+            if path and __salt__["file.file_exists"](path):
+                res["files"][name] = "sha256:" + __salt__["file.get_hash"](
+                    path, form="sha256"
+                )
+                break
 
     return res
 
@@ -623,52 +634,37 @@ def build_info(dest, build_id, bundle_dest=None):
     arch = match.group("arch")
     version = match.group("version")
 
-    image_filepath = None
-    image_filename = None
-    image_types = _known_image_types()
-
-    if image_type == "pxe" or image_type == "kis":
-        r = inspect_boot_image(dest)
-        res["boot_image"] = {
-            "initrd": {
-                "filepath": r["initrd"]["filepath"],
-                "filename": r["initrd"]["filename"],
-                "hash": r["initrd"]["hash"],
-            },
-            "kernel": {
-                "filepath": r["kernel"]["filepath"],
-                "filename": r["kernel"]["filename"],
-                "hash": r["kernel"]["hash"],
-            },
-        }
-        image_types = _pxe_image_types
-
-    for c in image_types:
-        test_name = basename + c
-        filepath = os.path.join(dest, test_name)
-        if __salt__["file.file_exists"](filepath):
-            image_filename = test_name
-            image_filepath = filepath
-            break
-
     res["image"] = {
         "name": name,
         "arch": arch,
         "version": version,
-        "filepath": image_filepath,
-        "filename": image_filename,
+        "basename": basename,
+        "type": image_type,
         "build_id": build_id,
     }
 
-    # Kiwi creates checksum for filesystem image when image type is PXE(or KIS), however if image is compressed, this
-    # checksum is of uncompressed image. Other image types do not have checksum created at all.
-    res["image"].update(get_md5(image_filepath))
+    # Kiwi creates checksum for filesystem image when image type is PXE(or KIS). It is only needed
+    # for compressed images, where it is a checksum of the uncompressed image (used by saltboot).
+    # All other checksums are calculated on the server for the collected files.
+    for suffix, compression in _compression_types.items():
+        if compression and __salt__["file.file_exists"](
+            os.path.join(dest, basename + suffix)
+        ):
+            for hash_type in ["sha256", "md5"]:
+                kiwi_hash = parse_kiwi_hash(
+                    os.path.join(dest, basename + "." + hash_type), True, hash_type
+                )
+                if "hash" in kiwi_hash:
+                    res["image"]["hash"] = kiwi_hash["hash"]
+                    break
+            break
 
-    sbom = inspect_sbom(dest, basename, build_id, bundle_dest)
-    if sbom is not None:
-        res["sbom"] = sbom
-
-    if bundle_dest is not None:
-        res["bundles"] = inspect_bundles(bundle_dest, basename)
+    artefacts_dir = bundle_dest if bundle_dest is not None else dest
+    res["files"] = sorted(
+        os.path.join(artefacts_dir, f)
+        for f in __salt__["file.readdir"](artefacts_dir)
+        if f.startswith(basename)
+        and __salt__["file.file_exists"](os.path.join(artefacts_dir, f))
+    )
 
     return res
