@@ -51,6 +51,8 @@ import java.util.List;
  *      #prop("string", "gpg_key_url")
  *      #prop("string", "gpg_key_id")
  *      #prop("string", "gpg_key_fp")
+ *      #prop("boolean", "gpg_check")
+ *      #prop("boolean", "pqc_check")
  *      #prop_desc("$date", "yumrepo_last_sync", "(optional)")
  *      #prop("string", "end_of_life")
  *      #prop("string", "parent_channel_label")
@@ -106,6 +108,8 @@ public class ChannelSerializer extends ApiResponseSerializer<Channel> {
         builder.add("gpg_key_fp",
                 StringUtils.defaultString(src.getGPGKeyFp()));
         builder.add("gpg_check", src.isGPGCheck());
+
+        builder.add("pqc_check", src.isPqcCheck());
 
         List<ContentSource> csList = new ArrayList<>(src.getSources().size());
         if (!src.getSources().isEmpty()) {

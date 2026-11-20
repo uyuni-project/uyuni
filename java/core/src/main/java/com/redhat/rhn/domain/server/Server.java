@@ -2638,6 +2638,24 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Return <code>true</code> if OS supports Post Quantum Cryptography
+     *
+     * @return <code>true</code> if OS supports Post Quantum Cryptography
+     */
+    public boolean doesOsSupportPQC() {
+        int tumbleweedReleaseNumber = 0;
+        try {
+            tumbleweedReleaseNumber = Integer.parseInt(getRelease());
+        }
+        catch (NumberFormatException e) {
+            //ignore exception
+        }
+
+        return (isTumbleweed() && tumbleweedReleaseNumber > 20261000) ||
+                isLeap16() || isSLES16();
+    }
+
+    /**
      * @return true if the installer type is of SLES 10
      */
     boolean isSLES10() {
@@ -2716,6 +2734,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     boolean isopenSUSEMicroOS() {
         return ServerConstants.OPENSUSEMICROOS.equals(getOs());
+    }
+
+    boolean isTumbleweed() {
+        return ServerConstants.TUMBLEWEED.equalsIgnoreCase(getOs());
     }
 
     boolean isUbuntu() {
