@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 12:10+0100\n"
+"POT-Creation-Date: 2026-11-20 13:26+0100\n"
 "PO-Revision-Date: 2024-08-22 17:47+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -634,13 +634,12 @@ msgstr "Zrušit"
 #: ../html/src/components/dialog/DeleteDialog.tsx:33
 #: ../html/src/components/hub/PeripheralsList.tsx:62
 #: ../html/src/components/hub/TokenTable.tsx:141
-#: ../html/src/components/hub/TokenTable.tsx:230
+#: ../html/src/components/hub/TokenTable.tsx:232
 #: ../html/src/components/large-text-attachment.tsx:212
 #: ../html/src/components/large-text-attachment.tsx:214
 #: ../html/src/components/large-text-attachment.tsx:227
 #: ../html/src/components/panels/CreatorPanel.tsx:101
 #: ../html/src/components/table/Table.tsx:251
-#: ../html/src/components/table/search.example.tsx:29
 #: ../html/src/manager/admin/payg/payg.tsx:76
 #: ../html/src/manager/admin/payg/payg.tsx:77
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:105
@@ -677,123 +676,13 @@ msgstr "Zrušit"
 msgid "Delete"
 msgstr "Smazat"
 
-#: ../html/src/components/dialog/delete.example.tsx:20
-msgid "Delete project"
-msgstr "Smazat projekt"
-
-#: ../html/src/components/dialog/delete.example.tsx:23
-msgid "Are you sure you want to delete project "
-msgstr "Opravdu chcete smazat projekt "
-
-#: ../html/src/components/formik/Form.example.tsx:38
-msgid "Field"
-msgstr ""
-
-#: ../html/src/components/formik/Form.example.tsx:40
-#: ../html/src/components/input/InputBase.test.tsx:49
-#: ../html/src/components/input/InputBase.test.tsx:75
-#: ../html/src/components/input/InputBase.test.tsx:103
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:58
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:67
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:67
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:75
-#: ../html/src/components/input/form/Form.example.tsx:31
-#: ../html/src/components/input/text/Text.example.tsx:31
-#: ../html/src/components/input/text/Text.example.tsx:40
-#: ../html/src/components/steps-progress-bar.stories.tsx:17
-msgid "Minimum 2 characters"
-msgstr "Aspoň dva znaky"
-
-#: ../html/src/components/formik/Form.example.tsx:43
-#: ../html/src/components/input/check/form.example.tsx:24
-msgid "Checkbox"
-msgstr ""
-
-#: ../html/src/components/formik/Form.example.tsx:45
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:187
-#: ../html/src/components/input/password/Password.example.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:81
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:80
-#: ../html/src/manager/images/image-store-edit.tsx:186
-#: ../html/src/manager/login/susemanager/login.tsx:105
-#: ../html/src/manager/login/uyuni/login.tsx:103
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:431
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:554
-msgid "Password"
-msgstr "Heslo"
-
-#: ../html/src/components/formik/Form.example.tsx:47
-#, fuzzy
-#| msgid "fa-times"
-msgid "Datetime"
-msgstr "fa-times"
-
-#: ../html/src/components/formik/Form.example.tsx:49
-msgid "Multiple values"
-msgstr ""
-
-#: ../html/src/components/formik/Form.example.tsx:51
-#, fuzzy
-msgid "Long text"
-msgstr "Načítání obsahu..."
-
-#: ../html/src/components/formik/Form.example.tsx:53
-#, fuzzy
-#| msgid "Changes"
-msgid "Range"
-msgstr "Změny"
-
-#: ../html/src/components/formik/Form.example.tsx:57
-msgid "Radio"
-msgstr ""
-
-#: ../html/src/components/formik/Form.example.tsx:59
-msgid "One"
-msgstr ""
-
-#: ../html/src/components/formik/Form.example.tsx:60
-msgid "Two"
-msgstr ""
-
-#: ../html/src/components/formik/Form.example.tsx:61
-msgid "Three"
-msgstr ""
-
-#: ../html/src/components/formik/Form.example.tsx:68
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:313
-msgid "Select"
-msgstr "Vybrat"
-
-#: ../html/src/components/formik/Form.example.tsx:71
-#, fuzzy
-#| msgid "foo"
-msgid "Foo"
-msgstr "foo"
-
-#: ../html/src/components/formik/Form.example.tsx:75
-msgid "Bar"
-msgstr ""
-
-#: ../html/src/components/formik/Form.example.tsx:82
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:249
-#: ../html/src/components/input/check/DEPRECATED_Check.example.tsx:31
-#: ../html/src/components/input/check/form.example.tsx:26
-#: ../html/src/components/input/datetime/DateTime.example.tsx:31
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:75
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:62
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:84
-#: ../html/src/components/input/form/Form.example.tsx:36
-#: ../html/src/components/input/password/Password.example.tsx:36
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:43
-#: ../html/src/components/input/radio/horizontal.example.tsx:42
-#: ../html/src/components/input/radio/vertical-open.example.tsx:42
-#: ../html/src/components/input/radio/vertical.example.tsx:41
-#: ../html/src/components/input/range/Range.example.tsx:30
-#: ../html/src/components/input/text/Text.example.tsx:44
-msgid "Submit"
-msgstr "Předložit"
+#: ../html/src/components/dialog/ModalButton.stories.tsx:93
+#: ../html/src/components/hub/AddTokenButton.tsx:232
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:182
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:108
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:109
+msgid "Close"
+msgstr "Zavřít"
 
 #: ../html/src/components/formik/field/AsRadio.tsx:47
 #, fuzzy
@@ -951,13 +840,6 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
-#: ../html/src/components/hub/AddTokenButton.tsx:232
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:182
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:108
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:109
-msgid "Close"
-msgstr "Zavřít"
-
 #: ../html/src/components/hub/AddTokenButton.tsx:265
 msgid "Access token copied to the clipboard"
 msgstr ""
@@ -994,7 +876,6 @@ msgid "Channel Name"
 msgstr "Název kanálu"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:151
-#: ../html/src/components/table/nested-data.example.tsx:68
 #: ../html/src/manager/admin/setup/products/products.tsx:663
 #: ../html/src/manager/admin/setup/products/products.tsx:1055
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:177
@@ -1158,6 +1039,10 @@ msgstr ""
 #| msgid "SSL Certificate data"
 msgid "Root Certificate Authority"
 msgstr "Data certifikátu SSL"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:249
+msgid "Submit"
+msgstr "Předložit"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:273
 msgid "This slave is currently disabled and cannot be selected for migration"
@@ -1348,6 +1233,18 @@ msgstr "Uživatelské jméno"
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:179
 msgid "The username of {productName} Administrator of the remote server."
 msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:187
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:81
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:80
+#: ../html/src/manager/images/image-store-edit.tsx:186
+#: ../html/src/manager/login/susemanager/login.tsx:105
+#: ../html/src/manager/login/uyuni/login.tsx:103
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:431
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:554
+msgid "Password"
+msgstr "Heslo"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:188
 msgid "The password of the specified user."
@@ -1549,8 +1446,6 @@ msgstr "Filtrovat podle názvu"
 #. ref={nameInputRef}
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:239
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:275
-#: ../html/src/components/input/form/Form.example.tsx:29
-#: ../html/src/components/steps-progress-bar.stories.tsx:15
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:119
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:113
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:359
@@ -1735,14 +1630,14 @@ msgid "Confirm if you want to proceed."
 msgstr "Chcete-li pokračovat, potvrďte."
 
 #: ../html/src/components/hub/TokenTable.tsx:129
-#: ../html/src/components/hub/TokenTable.tsx:175
+#: ../html/src/components/hub/TokenTable.tsx:177
 #, fuzzy
 #| msgid "Invalid data"
 msgid "Invalidate"
 msgstr "Neplatná data"
 
 #: ../html/src/components/hub/TokenTable.tsx:129
-#: ../html/src/components/hub/TokenTable.tsx:175
+#: ../html/src/components/hub/TokenTable.tsx:177
 #, fuzzy
 #| msgid "Invalid data"
 msgid "Validate"
@@ -1764,139 +1659,71 @@ msgstr "Opravdu chcete tento plán smazat?"
 msgid "No, never expires"
 msgstr ""
 
-#: ../html/src/components/hub/TokenTable.tsx:159
+#: ../html/src/components/hub/TokenTable.tsx:160
 msgid "Yes, expired <expiration></expiration>"
 msgstr ""
 
-#: ../html/src/components/hub/TokenTable.tsx:159
+#: ../html/src/components/hub/TokenTable.tsx:161
 msgid "No, expires <expiration></expiration>"
 msgstr ""
 
-#: ../html/src/components/hub/TokenTable.tsx:222
+#: ../html/src/components/hub/TokenTable.tsx:224
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
 msgstr ""
 
-#: ../html/src/components/hub/TokenTable.tsx:226
+#: ../html/src/components/hub/TokenTable.tsx:228
 msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
 msgstr ""
 
 #. token issued for another server currently valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:237
+#: ../html/src/components/hub/TokenTable.tsx:239
 msgid "Invalidating this access token will prevent the hub {fqdn} from accesssing."
 msgstr ""
 
 #. token issued for another server currently valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:240
+#: ../html/src/components/hub/TokenTable.tsx:242
 msgid "Invalidating this access token will prevent the peripheral {fqdn} from accesssing."
 msgstr ""
 
 #. token issued for another server currently not valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:243
+#: ../html/src/components/hub/TokenTable.tsx:245
 msgid "Enabling this access token will grant access to the hub {fqdn}."
 msgstr ""
 
 #. token issued for another server currently not valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:246
+#: ../html/src/components/hub/TokenTable.tsx:248
 msgid "Enabling this access token will grant access to the peripheral {fqdn}."
 msgstr ""
 
 #. token received from another server currently valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:249
+#: ../html/src/components/hub/TokenTable.tsx:251
 msgid "Invalidating this access token will prevent access to the hub {fqdn}."
 msgstr ""
 
 #. token received from another server currently valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:252
+#: ../html/src/components/hub/TokenTable.tsx:254
 msgid "Invalidating this access token will prevent access to the peripheral {fqdn}."
 msgstr ""
 
 #. token received from another server currently not valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:255
+#: ../html/src/components/hub/TokenTable.tsx:257
 msgid "Enabling this access token will restore access to the hub {fqdn}."
 msgstr ""
 
 #. token received from another server currently not valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:258
+#: ../html/src/components/hub/TokenTable.tsx:260
 msgid "Enabling this access token will restore access to the peripheral {fqdn}."
 msgstr ""
 
-#: ../html/src/components/input/datetime/DateTime.example.tsx:30
-msgid "Time"
-msgstr "Čas"
+#: ../html/src/components/input/InputBase.test.tsx:49
+#: ../html/src/components/input/InputBase.test.tsx:75
+#: ../html/src/components/input/InputBase.test.tsx:103
+msgid "Minimum 2 characters"
+msgstr "Aspoň dva znaky"
 
 #: ../html/src/components/input/form-multi-input/FormMultiInput.tsx:166
 msgid "Remove"
 msgstr "Odstranit"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:30
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:30
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:38
-#: ../html/src/manager/admin/access-control/access-group-list.tsx:128
-#: ../html/src/manager/admin/access-control/access-group.tsx:215
-msgid "Users"
-msgstr "Uživatelé"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:56
-#: ../html/src/components/input/text/Text.example.tsx:29
-msgid "First Name"
-msgstr "První jméno"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:65
-#, fuzzy
-msgid "Last Name"
-msgstr "Název úkolu"
-
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:53
-#: ../html/src/manager/login/uyuni/login.tsx:91
-msgid "Login"
-msgstr "Přihlášení"
-
-#: ../html/src/components/input/password/Password.example.tsx:31
-#, fuzzy
-#| msgid "Minimum 4 characters"
-msgid "Must be at least 4 characters"
-msgstr "Aspoň čtyři znaky"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:32
-#: ../html/src/components/input/radio/horizontal.example.tsx:32
-#: ../html/src/components/input/radio/vertical-open.example.tsx:31
-#: ../html/src/components/input/radio/vertical.example.tsx:31
-msgid "Level"
-msgstr "Úroveň"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:38
-#: ../html/src/components/input/radio/horizontal.example.tsx:37
-#: ../html/src/components/input/radio/vertical-open.example.tsx:37
-#: ../html/src/components/input/radio/vertical.example.tsx:36
-#: ../html/src/components/input/select/custom-fields.example.tsx:15
-#: ../html/src/components/input/select/multiple.example.tsx:15
-#: ../html/src/components/input/select/simple.example.tsx:15
-msgid "Beginner"
-msgstr "Začátečník"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:39
-#: ../html/src/components/input/radio/horizontal.example.tsx:38
-#: ../html/src/components/input/radio/vertical-open.example.tsx:38
-#: ../html/src/components/input/radio/vertical.example.tsx:37
-#: ../html/src/components/input/select/custom-fields.example.tsx:21
-#: ../html/src/components/input/select/multiple.example.tsx:19
-#: ../html/src/components/input/select/simple.example.tsx:19
-msgid "Normal"
-msgstr "Normální"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:40
-#: ../html/src/components/input/radio/horizontal.example.tsx:39
-#: ../html/src/components/input/radio/vertical-open.example.tsx:39
-#: ../html/src/components/input/radio/vertical.example.tsx:38
-#: ../html/src/components/input/select/custom-fields.example.tsx:27
-#: ../html/src/components/input/select/multiple.example.tsx:23
-#: ../html/src/components/input/select/simple.example.tsx:23
-msgid "Expert"
-msgstr "Odborník"
-
-#: ../html/src/components/input/range/Range.example.tsx:29
-msgid "Port range"
-msgstr "Rozsah portů"
 
 #: ../html/src/components/input/range/Range.test.tsx:78
 msgid "Both values need to be positive integers"
@@ -1943,7 +1770,6 @@ msgstr "Stáhnout CSV"
 
 #: ../html/src/components/large-text-attachment.tsx:126
 #: ../html/src/components/large-text-attachment.tsx:128
-#: ../html/src/components/table/search.example.tsx:28
 msgid "Add"
 msgstr "Přidat"
 
@@ -2419,7 +2245,6 @@ msgid "State Label"
 msgstr "Štítek stavu"
 
 #: ../html/src/components/states-picker.tsx:529
-#: ../html/src/components/table/nested-data.example.tsx:62
 msgid "Channel Label"
 msgstr "Označení kanálu"
 
@@ -2488,37 +2313,37 @@ msgstr "Bezpečnostní poradenství"
 msgid "System Locked"
 msgstr "Systém uzamčen"
 
-#: ../html/src/components/table/NumericSearchField.tsx:17
+#: ../html/src/components/table/NumericSearchField.tsx:19
 #, fuzzy
 msgid "less than"
 msgstr "menší než"
 
-#: ../html/src/components/table/NumericSearchField.tsx:18
+#: ../html/src/components/table/NumericSearchField.tsx:20
 #, fuzzy
 msgid "less than or equal to"
 msgstr "menší než nebo rovno"
 
-#: ../html/src/components/table/NumericSearchField.tsx:19
+#: ../html/src/components/table/NumericSearchField.tsx:21
 #, fuzzy
 msgid "equal to"
 msgstr "roven / stejný"
 
-#: ../html/src/components/table/NumericSearchField.tsx:20
+#: ../html/src/components/table/NumericSearchField.tsx:22
 #, fuzzy
 msgid "greater than or equal to"
 msgstr "větší než nebo rovno"
 
-#: ../html/src/components/table/NumericSearchField.tsx:21
+#: ../html/src/components/table/NumericSearchField.tsx:23
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:118
 msgid "greater than"
 msgstr "větší než"
 
-#: ../html/src/components/table/NumericSearchField.tsx:22
+#: ../html/src/components/table/NumericSearchField.tsx:24
 #, fuzzy
 msgid "not equal to"
 msgstr "nesestaveno"
 
-#: ../html/src/components/table/NumericSearchField.tsx:68
+#: ../html/src/components/table/NumericSearchField.tsx:71
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:150
 msgid "Matcher"
 msgstr "Párovač"
@@ -2544,57 +2369,6 @@ msgstr "Vše"
 msgid "Clear All"
 msgstr "Vymazat vše"
 
-#: ../html/src/components/table/nested-data.example.tsx:51
-#, fuzzy
-#| msgid "Channel Name"
-msgid "Channel name"
-msgstr "Název kanálu"
-
-#: ../html/src/components/table/nested-data.example.tsx:73
-msgid "Hub Org"
-msgstr ""
-
-#: ../html/src/components/table/nested-data.example.tsx:77
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:385
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:187
-msgid "View"
-msgstr ""
-
-#: ../html/src/components/table/nested-data.example.tsx:78
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:388
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:202
-msgid "Modify"
-msgstr ""
-
-#: ../html/src/components/table/search.example.tsx:38
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:368
-msgid "API"
-msgstr ""
-
-#: ../html/src/components/table/search.example.tsx:41
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:210
-msgid "Web"
-msgstr ""
-
-#: ../html/src/components/table/search.example.tsx:44
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:213
-#, fuzzy
-#| msgid "Delete selected"
-msgid "Only selected"
-msgstr "Odstranit vybrané"
-
-#: ../html/src/components/table/search.example.tsx:55
-#, fuzzy
-msgid "Item id"
-msgstr "Název systému"
-
-#: ../html/src/components/table/search.example.tsx:56
-#, fuzzy
-#| msgid "System name"
-msgid "Item name"
-msgstr "Název systému"
-
 #: ../html/src/components/target-systems.tsx:32
 #, fuzzy
 msgid "Target Systems"
@@ -2613,19 +2387,9 @@ msgstr "Neplatná data"
 msgid "No data"
 msgstr "Žádná data"
 
-#: ../html/src/components/utils/HelpIcon.example.tsx:10
-msgid "Text to display on hover"
-msgstr ""
-
 #: ../html/src/components/utils/HelpLink.tsx:22
 msgid "Help"
 msgstr "Pomoc"
-
-#: ../html/src/components/utils/loading/text-border.example.tsx:13
-#: ../html/src/components/utils/loading/text.example.tsx:13
-#, fuzzy
-msgid "Loading text"
-msgstr "Načítání obsahu..."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:24
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:13
@@ -2658,7 +2422,7 @@ msgstr "žádný"
 msgid "Require this channel"
 msgstr "Vyžadovat tento kanál"
 
-#: ../html/src/core/intl/index.example.tsx:13
+#: ../html/src/core/intl/index.stories.tsx:30
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr ""
 
@@ -2759,6 +2523,11 @@ msgstr "Nenašlo se žádné předplatné."
 msgid "Filter by name or description"
 msgstr "Filtrovat podle popisu"
 
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:128
+#: ../html/src/manager/admin/access-control/access-group.tsx:215
+msgid "Users"
+msgstr "Uživatelé"
+
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:133
 #, fuzzy
 #| msgid "Version"
@@ -2775,6 +2544,21 @@ msgstr "Opravdu chcete smazat vybrané úložiště?"
 #, fuzzy
 msgid "An unexpected error occurred while fetching namespaces."
 msgstr "Chyba během zavádění dat. Zkontrolujte záznamy."
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:368
+msgid "API"
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:210
+msgid "Web"
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:213
+#, fuzzy
+#| msgid "Delete selected"
+msgid "Only selected"
+msgstr "Odstranit vybrané"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:273
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:136
@@ -2803,6 +2587,16 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:149
 msgid "Filter by name"
 msgstr "Filtrovat podle názvu"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:385
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:187
+msgid "View"
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:388
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:202
+msgid "Modify"
+msgstr ""
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:168
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:140
@@ -4490,6 +4284,10 @@ msgstr "Krok 1/2: z tabulky níže vyberte systém, který chcete připnout."
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:298
 msgid "Socket/IFL count"
 msgstr "Počet zásuvek (soketů)/IFL"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:313
+msgid "Select"
+msgstr "Vybrat"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:326
 msgid "Available Subscriptions for the Selected System"
@@ -6259,6 +6057,10 @@ msgstr "Poznat více o"
 msgid "View website"
 msgstr ""
 
+#: ../html/src/manager/login/uyuni/login.tsx:91
+msgid "Login"
+msgstr "Přihlášení"
+
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:81
 msgid "Skip to the last maintenance window"
 msgstr "Přeskočit na poslední okno údržby"
@@ -8009,14 +7811,6 @@ msgstr "Použití highstate bylo "
 msgid "Apply Highstate"
 msgstr "Použít Highstate"
 
-#: ../html/src/manager/storybook/storybook.tsx:55
-msgid "Development debugging page"
-msgstr ""
-
-#: ../html/src/manager/storybook/storybook.tsx:57
-msgid "This is a hidden page used by developers, if you found it by accident, good job!"
-msgstr ""
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:39
 msgid "{productName} Default"
 msgstr ""
@@ -8952,6 +8746,79 @@ msgstr "Zdroj nebyl nalezen."
 #: ../html/src/utils/network.ts:112
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
+
+#~ msgid "Delete project"
+#~ msgstr "Smazat projekt"
+
+#~ msgid "Are you sure you want to delete project "
+#~ msgstr "Opravdu chcete smazat projekt "
+
+#, fuzzy
+#~| msgid "fa-times"
+#~ msgid "Datetime"
+#~ msgstr "fa-times"
+
+#, fuzzy
+#~ msgid "Long text"
+#~ msgstr "Načítání obsahu..."
+
+#, fuzzy
+#~| msgid "Changes"
+#~ msgid "Range"
+#~ msgstr "Změny"
+
+#, fuzzy
+#~| msgid "foo"
+#~ msgid "Foo"
+#~ msgstr "foo"
+
+#~ msgid "Time"
+#~ msgstr "Čas"
+
+#~ msgid "First Name"
+#~ msgstr "První jméno"
+
+#, fuzzy
+#~ msgid "Last Name"
+#~ msgstr "Název úkolu"
+
+#, fuzzy
+#~| msgid "Minimum 4 characters"
+#~ msgid "Must be at least 4 characters"
+#~ msgstr "Aspoň čtyři znaky"
+
+#~ msgid "Level"
+#~ msgstr "Úroveň"
+
+#~ msgid "Beginner"
+#~ msgstr "Začátečník"
+
+#~ msgid "Normal"
+#~ msgstr "Normální"
+
+#~ msgid "Expert"
+#~ msgstr "Odborník"
+
+#~ msgid "Port range"
+#~ msgstr "Rozsah portů"
+
+#, fuzzy
+#~| msgid "Channel Name"
+#~ msgid "Channel name"
+#~ msgstr "Název kanálu"
+
+#, fuzzy
+#~ msgid "Item id"
+#~ msgstr "Název systému"
+
+#, fuzzy
+#~| msgid "System name"
+#~ msgid "Item name"
+#~ msgstr "Název systému"
+
+#, fuzzy
+#~ msgid "Loading text"
+#~ msgstr "Načítání obsahu..."
 
 #, fuzzy
 #~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
