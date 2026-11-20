@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-14 12:10+0100\n"
-"PO-Revision-Date: 2026-11-20 05:13+0000\n"
+"PO-Revision-Date: 2026-11-20 08:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -147,10 +147,8 @@ msgid "Add to:"
 msgstr "추가 위치:"
 
 #: ../html/src/components/action-schedule.tsx:332
-#, fuzzy
-#| msgid "e.g. 12345"
 msgid "e.g. Ticket #12345"
-msgstr "예: 12345"
+msgstr "예: 티켓 번호 12345"
 
 #: ../html/src/components/action-schedule.tsx:344
 msgid "Loading the scheduler..."
@@ -2137,10 +2135,8 @@ msgstr "다시 정렬"
 
 #: ../html/src/components/states-picker.tsx:474
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:271
-#, fuzzy
-#| msgid "Registration date:"
 msgid "Use transactional update"
-msgstr "등록 날짜:"
+msgstr "트랜잭션 업데이트 사용"
 
 #: ../html/src/components/states-picker.tsx:491
 msgid "Search in states"
@@ -2339,10 +2335,8 @@ msgid "Item id"
 msgstr "항목 ID"
 
 #: ../html/src/components/table/search.example.tsx:56
-#, fuzzy
-#| msgid "System name"
 msgid "Item name"
-msgstr "시스템 이름"
+msgstr "항목 이름"
 
 #: ../html/src/components/target-systems.tsx:32
 msgid "Target Systems"
@@ -2817,10 +2811,8 @@ msgid "No hub is currently configured for this server. "
 msgstr "현재 이 서버에 허브가 구성되어 있지 않습니다. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:95
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr "이 서버는 현재 허브 {fqdn}의 주변기기로 등록되어 있습니다."
+msgstr "이 서버는 현재 허브 {fqdn}의 주변 기기로 등록되어 있습니다. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:114
 msgid "Successfully scheduled a channels synchronization."
@@ -2843,10 +2835,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - 주변 장치 세부 정보"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:57
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr "{fqdn} 서버는 현재 이 허브의 주변기기로 등록되어 있습니다."
+msgstr "{fqdn} 서버는 현재 이 허브의 주변 기기로 등록되어 있습니다. "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:30
 msgid "Peripherals Configuration"
@@ -2989,7 +2979,7 @@ msgstr "최신 상태 업데이트"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:56
 msgid "Edit "
-msgstr "편집  "
+msgstr "편집 "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:71
 msgid "Editing ssh connection data.."
@@ -4249,10 +4239,8 @@ msgid "Create a new filter"
 msgstr "새 필터 만들기"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:191
-#, fuzzy
-#| msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
 msgid "This filter cannot be deleted because it is currently in use by one or more projects"
-msgstr "이 액세스 토큰은 삭제할 수 없습니다. 현재 주변기기 {fqdn}에서 사용 중입니다."
+msgstr "이 필터는 삭제할 수 없습니다. 현재 주변 기기 {fqdn}에서 사용 중입니다."
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:198
 msgid "Filter deleted successfully"
@@ -4263,14 +4251,10 @@ msgid "Bear in mind that all the associated projects need to be rebuilt after a 
 msgstr "필터를 업데이트한 후에는 연결된 모든 프로젝트를 다시 빌드해야 합니다."
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:97
-#, fuzzy
-#| msgid "Use a manual filter"
 msgid "Manual Filter"
-msgstr "수동 필터 만들기"
+msgstr "수동 필터"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:102
-#, fuzzy
-#| msgid "Use a template"
 msgid "Use Template"
 msgstr "템플릿 사용"
 
@@ -4793,10 +4777,8 @@ msgid "Create New Filter"
 msgstr "새 필터 만들기"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:38
-#, fuzzy
-#| msgid "Edit Filter {name}"
 msgid "Edit {name}"
-msgstr "{name} 필터 편집"
+msgstr "{name} 편집"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:85
 msgid "Filters"
@@ -4976,14 +4958,10 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "요청한 페이지 {currentUrl}을(를) 찾을 수 없습니다."
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr "이 주소를 브라우저에 직접 입력한 경우 철자와 대/소문자를 다시 확인하십시오."
 
 #: ../html/src/manager/errors/not-found.tsx:22
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr "링크를 따라온 경우 해당 링크가 잘못되었거나 오래되었을 수 있습니다. 다음의 뒤로 버튼을 클릭하십시오. "
 
@@ -4992,8 +4970,6 @@ msgid "If you used a bookmark, the page may have moved to a different location s
 msgstr "책갈피를 사용한 경우, 책갈피가 이전에 사용된 이후 페이지가 다른 위치로 이동했을 수 있습니다. "
 
 #: ../html/src/manager/errors/not-found.tsx:36
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr "실수로 인해 이 페이지에 방문하게 되었다고 생각되는 경우, 수신한 방법에 대한 자세한 내용과 함께 문의해 주십시오. "
 
@@ -5631,20 +5607,16 @@ msgid "Images"
 msgstr "이미지"
 
 #: ../html/src/manager/images/image-view.tsx:536
-#, fuzzy
-#| msgid "sync failed"
 msgid "Inspect failed"
-msgstr "동기화 실패"
+msgstr "검사 실패"
 
 #: ../html/src/manager/images/image-view.tsx:545
 msgid "Building"
 msgstr "빌드하는 중"
 
 #: ../html/src/manager/images/image-view.tsx:550
-#, fuzzy
-#| msgid " failed"
 msgid "Build failed"
-msgstr " 실패"
+msgstr "빌드 실패"
 
 #: ../html/src/manager/images/image-view.tsx:553
 msgid "Unknown"
@@ -7676,32 +7648,24 @@ msgstr "데이터베이스 비밀번호 보고 생성"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:63
 #: ../html/src/manager/systems/details/snapshots.tsx:66
-#, fuzzy
-#| msgid "Unable to perform action."
 msgid "Unable to load snapshot information."
-msgstr "작업을 수행할 수 없습니다."
+msgstr "스냅샷 정보를 불러올 수 없습니다."
 
 #: ../html/src/manager/systems/details/snapshots.tsx:93
-#, fuzzy
-#| msgid "Remediation has been "
 msgid "The action has been "
-msgstr "교정이  "
+msgstr "작업이 "
 
 #: ../html/src/manager/systems/details/snapshots.tsx:114
-#, fuzzy
-#| msgid "Refresh Data"
 msgid "Refresh Snapshots"
-msgstr "데이터 새로 고침"
+msgstr "스냅샷 새로 고침"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:118
 msgid "Btrfs Snapshots"
 msgstr "Btrfs 스냅샷"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:131
-#, fuzzy
-#| msgid "No streams available"
 msgid "No snapshots available."
-msgstr "사용할 수 있는 스트림 없음"
+msgstr "사용할 수 있는 스냅샷 없음"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:135
 msgid "#"
