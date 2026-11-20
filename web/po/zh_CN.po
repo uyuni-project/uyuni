@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 12:10+0100\n"
+"POT-Creation-Date: 2026-11-20 13:26+0100\n"
 "PO-Revision-Date: 2026-11-18 12:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/zh_CN/>\n"
@@ -582,13 +582,12 @@ msgstr "取消"
 #: ../html/src/components/dialog/DeleteDialog.tsx:33
 #: ../html/src/components/hub/PeripheralsList.tsx:62
 #: ../html/src/components/hub/TokenTable.tsx:141
-#: ../html/src/components/hub/TokenTable.tsx:230
+#: ../html/src/components/hub/TokenTable.tsx:232
 #: ../html/src/components/large-text-attachment.tsx:212
 #: ../html/src/components/large-text-attachment.tsx:214
 #: ../html/src/components/large-text-attachment.tsx:227
 #: ../html/src/components/panels/CreatorPanel.tsx:101
 #: ../html/src/components/table/Table.tsx:251
-#: ../html/src/components/table/search.example.tsx:29
 #: ../html/src/manager/admin/payg/payg.tsx:76
 #: ../html/src/manager/admin/payg/payg.tsx:77
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:105
@@ -625,116 +624,13 @@ msgstr "取消"
 msgid "Delete"
 msgstr "删除"
 
-#: ../html/src/components/dialog/delete.example.tsx:20
-msgid "Delete project"
-msgstr "删除项目"
-
-#: ../html/src/components/dialog/delete.example.tsx:23
-msgid "Are you sure you want to delete project "
-msgstr "您确定要删除项目吗 "
-
-#: ../html/src/components/formik/Form.example.tsx:38
-msgid "Field"
-msgstr "字段"
-
-#: ../html/src/components/formik/Form.example.tsx:40
-#: ../html/src/components/input/InputBase.test.tsx:49
-#: ../html/src/components/input/InputBase.test.tsx:75
-#: ../html/src/components/input/InputBase.test.tsx:103
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:58
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:67
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:67
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:75
-#: ../html/src/components/input/form/Form.example.tsx:31
-#: ../html/src/components/input/text/Text.example.tsx:31
-#: ../html/src/components/input/text/Text.example.tsx:40
-#: ../html/src/components/steps-progress-bar.stories.tsx:17
-msgid "Minimum 2 characters"
-msgstr "最少 2 个字符"
-
-#: ../html/src/components/formik/Form.example.tsx:43
-#: ../html/src/components/input/check/form.example.tsx:24
-msgid "Checkbox"
-msgstr "复选框"
-
-#: ../html/src/components/formik/Form.example.tsx:45
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:187
-#: ../html/src/components/input/password/Password.example.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:81
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:80
-#: ../html/src/manager/images/image-store-edit.tsx:186
-#: ../html/src/manager/login/susemanager/login.tsx:105
-#: ../html/src/manager/login/uyuni/login.tsx:103
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:431
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:554
-msgid "Password"
-msgstr "口令"
-
-#: ../html/src/components/formik/Form.example.tsx:47
-msgid "Datetime"
-msgstr "日期时间"
-
-#: ../html/src/components/formik/Form.example.tsx:49
-msgid "Multiple values"
-msgstr "多个值"
-
-#: ../html/src/components/formik/Form.example.tsx:51
-msgid "Long text"
-msgstr "长文本"
-
-#: ../html/src/components/formik/Form.example.tsx:53
-msgid "Range"
-msgstr "范围"
-
-#: ../html/src/components/formik/Form.example.tsx:57
-msgid "Radio"
-msgstr "单选按钮"
-
-#: ../html/src/components/formik/Form.example.tsx:59
-msgid "One"
-msgstr "一"
-
-#: ../html/src/components/formik/Form.example.tsx:60
-msgid "Two"
-msgstr "二"
-
-#: ../html/src/components/formik/Form.example.tsx:61
-msgid "Three"
-msgstr "三"
-
-#: ../html/src/components/formik/Form.example.tsx:68
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:313
-msgid "Select"
-msgstr "选择"
-
-#: ../html/src/components/formik/Form.example.tsx:71
-msgid "Foo"
-msgstr "Foo"
-
-#: ../html/src/components/formik/Form.example.tsx:75
-msgid "Bar"
-msgstr "Bar"
-
-#: ../html/src/components/formik/Form.example.tsx:82
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:249
-#: ../html/src/components/input/check/DEPRECATED_Check.example.tsx:31
-#: ../html/src/components/input/check/form.example.tsx:26
-#: ../html/src/components/input/datetime/DateTime.example.tsx:31
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:75
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:62
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:84
-#: ../html/src/components/input/form/Form.example.tsx:36
-#: ../html/src/components/input/password/Password.example.tsx:36
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:43
-#: ../html/src/components/input/radio/horizontal.example.tsx:42
-#: ../html/src/components/input/radio/vertical-open.example.tsx:42
-#: ../html/src/components/input/radio/vertical.example.tsx:41
-#: ../html/src/components/input/range/Range.example.tsx:30
-#: ../html/src/components/input/text/Text.example.tsx:44
-msgid "Submit"
-msgstr "提交"
+#: ../html/src/components/dialog/ModalButton.stories.tsx:93
+#: ../html/src/components/hub/AddTokenButton.tsx:232
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:182
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:108
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:109
+msgid "Close"
+msgstr "关闭"
 
 #: ../html/src/components/formik/field/AsRadio.tsx:47
 msgid "Custom value"
@@ -875,13 +771,6 @@ msgstr "已成功生成新令牌。请务必立即复制，因为您将无法再
 msgid "Copy"
 msgstr "复制"
 
-#: ../html/src/components/hub/AddTokenButton.tsx:232
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:182
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:108
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:109
-msgid "Close"
-msgstr "关闭"
-
 #: ../html/src/components/hub/AddTokenButton.tsx:265
 msgid "Access token copied to the clipboard"
 msgstr "访问令牌已复制到剪贴板"
@@ -914,7 +803,6 @@ msgid "Channel Name"
 msgstr "通道名称"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:151
-#: ../html/src/components/table/nested-data.example.tsx:68
 #: ../html/src/manager/admin/setup/products/products.tsx:663
 #: ../html/src/manager/admin/setup/products/products.tsx:1055
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:177
@@ -1049,6 +937,10 @@ msgstr "访问令牌"
 #: ../html/src/components/hub/ServerDetailsForm.tsx:113
 msgid "Root Certificate Authority"
 msgstr "根证书颁发机构"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:249
+msgid "Submit"
+msgstr "提交"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:273
 msgid "This slave is currently disabled and cannot be selected for migration"
@@ -1211,6 +1103,18 @@ msgstr "用户名"
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:179
 msgid "The username of {productName} Administrator of the remote server."
 msgstr "远程服务器的 {productName} 管理员的用户名。"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:187
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:81
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:80
+#: ../html/src/manager/images/image-store-edit.tsx:186
+#: ../html/src/manager/login/susemanager/login.tsx:105
+#: ../html/src/manager/login/uyuni/login.tsx:103
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:431
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:554
+msgid "Password"
+msgstr "口令"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:188
 msgid "The password of the specified user."
@@ -1379,8 +1283,6 @@ msgstr "按名称过滤"
 #. ref={nameInputRef}
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:239
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:275
-#: ../html/src/components/input/form/Form.example.tsx:29
-#: ../html/src/components/steps-progress-bar.stories.tsx:15
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:119
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:113
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:359
@@ -1544,12 +1446,12 @@ msgid "Confirm if you want to proceed."
 msgstr "请确认是否继续。"
 
 #: ../html/src/components/hub/TokenTable.tsx:129
-#: ../html/src/components/hub/TokenTable.tsx:175
+#: ../html/src/components/hub/TokenTable.tsx:177
 msgid "Invalidate"
 msgstr "设为无效"
 
 #: ../html/src/components/hub/TokenTable.tsx:129
-#: ../html/src/components/hub/TokenTable.tsx:175
+#: ../html/src/components/hub/TokenTable.tsx:177
 msgid "Validate"
 msgstr "设为有效"
 
@@ -1565,136 +1467,71 @@ msgstr "您确定要删除此令牌吗？它目前未被使用。"
 msgid "No, never expires"
 msgstr "不，永不过期"
 
-#: ../html/src/components/hub/TokenTable.tsx:159
+#: ../html/src/components/hub/TokenTable.tsx:160
 msgid "Yes, expired <expiration></expiration>"
 msgstr "是，已过期 <expiration></expiration>"
 
-#: ../html/src/components/hub/TokenTable.tsx:159
+#: ../html/src/components/hub/TokenTable.tsx:161
 msgid "No, expires <expiration></expiration>"
 msgstr "否，会过期 <expiration></expiration>"
 
-#: ../html/src/components/hub/TokenTable.tsx:222
+#: ../html/src/components/hub/TokenTable.tsx:224
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
 msgstr "无法删除此访问令牌。它目前已被中心 {fqdn} 使用"
 
-#: ../html/src/components/hub/TokenTable.tsx:226
+#: ../html/src/components/hub/TokenTable.tsx:228
 msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
 msgstr "无法删除此访问令牌。它目前已被外围 {fqdn} 使用"
 
 #. token issued for another server currently valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:237
+#: ../html/src/components/hub/TokenTable.tsx:239
 msgid "Invalidating this access token will prevent the hub {fqdn} from accesssing."
 msgstr "如果将此访问令牌设为无效，将会阻止中心 {fqdn} 进行访问。"
 
 #. token issued for another server currently valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:240
+#: ../html/src/components/hub/TokenTable.tsx:242
 msgid "Invalidating this access token will prevent the peripheral {fqdn} from accesssing."
 msgstr "如果将此访问令牌设为无效，将会阻止外围 {fqdn} 进行访问。"
 
 #. token issued for another server currently not valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:243
+#: ../html/src/components/hub/TokenTable.tsx:245
 msgid "Enabling this access token will grant access to the hub {fqdn}."
 msgstr "启用此访问令牌将授予对中心 {fqdn} 的访问权限。"
 
 #. token issued for another server currently not valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:246
+#: ../html/src/components/hub/TokenTable.tsx:248
 msgid "Enabling this access token will grant access to the peripheral {fqdn}."
 msgstr "启用此访问令牌将授予对外围 {fqdn} 的访问权限。"
 
 #. token received from another server currently valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:249
+#: ../html/src/components/hub/TokenTable.tsx:251
 msgid "Invalidating this access token will prevent access to the hub {fqdn}."
 msgstr "如果将此访问令牌设为无效，将会阻止访问中心 {fqdn}。"
 
 #. token received from another server currently valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:252
+#: ../html/src/components/hub/TokenTable.tsx:254
 msgid "Invalidating this access token will prevent access to the peripheral {fqdn}."
 msgstr "如果将此访问令牌设为无效，将会阻止访问外围 {fqdn}。"
 
 #. token received from another server currently not valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:255
+#: ../html/src/components/hub/TokenTable.tsx:257
 msgid "Enabling this access token will restore access to the hub {fqdn}."
 msgstr "启用此访问令牌将恢复对中心 {fqdn} 的访问权限。"
 
 #. token received from another server currently not valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:258
+#: ../html/src/components/hub/TokenTable.tsx:260
 msgid "Enabling this access token will restore access to the peripheral {fqdn}."
 msgstr "启用此访问令牌将恢复对外围 {fqdn} 的访问权限。"
 
-#: ../html/src/components/input/datetime/DateTime.example.tsx:30
-msgid "Time"
-msgstr "时间"
+#: ../html/src/components/input/InputBase.test.tsx:49
+#: ../html/src/components/input/InputBase.test.tsx:75
+#: ../html/src/components/input/InputBase.test.tsx:103
+msgid "Minimum 2 characters"
+msgstr "最少 2 个字符"
 
 #: ../html/src/components/input/form-multi-input/FormMultiInput.tsx:166
 msgid "Remove"
 msgstr "去除"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:30
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:30
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:38
-#: ../html/src/manager/admin/access-control/access-group-list.tsx:128
-#: ../html/src/manager/admin/access-control/access-group.tsx:215
-msgid "Users"
-msgstr "用户"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:56
-#: ../html/src/components/input/text/Text.example.tsx:29
-msgid "First Name"
-msgstr "名字"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:65
-msgid "Last Name"
-msgstr "姓氏"
-
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:53
-#: ../html/src/manager/login/uyuni/login.tsx:91
-msgid "Login"
-msgstr "登录"
-
-#: ../html/src/components/input/password/Password.example.tsx:31
-msgid "Must be at least 4 characters"
-msgstr "必须至少包含 4 个字符"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:32
-#: ../html/src/components/input/radio/horizontal.example.tsx:32
-#: ../html/src/components/input/radio/vertical-open.example.tsx:31
-#: ../html/src/components/input/radio/vertical.example.tsx:31
-msgid "Level"
-msgstr "级别"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:38
-#: ../html/src/components/input/radio/horizontal.example.tsx:37
-#: ../html/src/components/input/radio/vertical-open.example.tsx:37
-#: ../html/src/components/input/radio/vertical.example.tsx:36
-#: ../html/src/components/input/select/custom-fields.example.tsx:15
-#: ../html/src/components/input/select/multiple.example.tsx:15
-#: ../html/src/components/input/select/simple.example.tsx:15
-msgid "Beginner"
-msgstr "新手"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:39
-#: ../html/src/components/input/radio/horizontal.example.tsx:38
-#: ../html/src/components/input/radio/vertical-open.example.tsx:38
-#: ../html/src/components/input/radio/vertical.example.tsx:37
-#: ../html/src/components/input/select/custom-fields.example.tsx:21
-#: ../html/src/components/input/select/multiple.example.tsx:19
-#: ../html/src/components/input/select/simple.example.tsx:19
-msgid "Normal"
-msgstr "普通"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:40
-#: ../html/src/components/input/radio/horizontal.example.tsx:39
-#: ../html/src/components/input/radio/vertical-open.example.tsx:39
-#: ../html/src/components/input/radio/vertical.example.tsx:38
-#: ../html/src/components/input/select/custom-fields.example.tsx:27
-#: ../html/src/components/input/select/multiple.example.tsx:23
-#: ../html/src/components/input/select/simple.example.tsx:23
-msgid "Expert"
-msgstr "专家"
-
-#: ../html/src/components/input/range/Range.example.tsx:29
-msgid "Port range"
-msgstr "端口范围"
 
 #: ../html/src/components/input/range/Range.test.tsx:78
 msgid "Both values need to be positive integers"
@@ -1736,7 +1573,6 @@ msgstr "下载"
 
 #: ../html/src/components/large-text-attachment.tsx:126
 #: ../html/src/components/large-text-attachment.tsx:128
-#: ../html/src/components/table/search.example.tsx:28
 msgid "Add"
 msgstr "添加"
 
@@ -2177,7 +2013,6 @@ msgid "State Label"
 msgstr "状态标签"
 
 #: ../html/src/components/states-picker.tsx:529
-#: ../html/src/components/table/nested-data.example.tsx:62
 msgid "Channel Label"
 msgstr "通道标签"
 
@@ -2243,32 +2078,32 @@ msgstr "安全建议"
 msgid "System Locked"
 msgstr "系统已锁定"
 
-#: ../html/src/components/table/NumericSearchField.tsx:17
+#: ../html/src/components/table/NumericSearchField.tsx:19
 msgid "less than"
 msgstr "小于"
 
-#: ../html/src/components/table/NumericSearchField.tsx:18
+#: ../html/src/components/table/NumericSearchField.tsx:20
 msgid "less than or equal to"
 msgstr "小于或等于"
 
-#: ../html/src/components/table/NumericSearchField.tsx:19
+#: ../html/src/components/table/NumericSearchField.tsx:21
 msgid "equal to"
 msgstr "等于"
 
-#: ../html/src/components/table/NumericSearchField.tsx:20
+#: ../html/src/components/table/NumericSearchField.tsx:22
 msgid "greater than or equal to"
 msgstr "大于或等于"
 
-#: ../html/src/components/table/NumericSearchField.tsx:21
+#: ../html/src/components/table/NumericSearchField.tsx:23
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:118
 msgid "greater than"
 msgstr "高于"
 
-#: ../html/src/components/table/NumericSearchField.tsx:22
+#: ../html/src/components/table/NumericSearchField.tsx:24
 msgid "not equal to"
 msgstr "不等于"
 
-#: ../html/src/components/table/NumericSearchField.tsx:68
+#: ../html/src/components/table/NumericSearchField.tsx:71
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:150
 msgid "Matcher"
 msgstr "匹配器"
@@ -2294,50 +2129,6 @@ msgstr "所有"
 msgid "Clear All"
 msgstr "全部清除"
 
-#: ../html/src/components/table/nested-data.example.tsx:51
-msgid "Channel name"
-msgstr "通道名称"
-
-#: ../html/src/components/table/nested-data.example.tsx:73
-msgid "Hub Org"
-msgstr "中心组织"
-
-#: ../html/src/components/table/nested-data.example.tsx:77
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:385
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:187
-msgid "View"
-msgstr "查看"
-
-#: ../html/src/components/table/nested-data.example.tsx:78
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:388
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:202
-msgid "Modify"
-msgstr "修改"
-
-#: ../html/src/components/table/search.example.tsx:38
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:368
-msgid "API"
-msgstr "API"
-
-#: ../html/src/components/table/search.example.tsx:41
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:210
-msgid "Web"
-msgstr "Web"
-
-#: ../html/src/components/table/search.example.tsx:44
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:213
-msgid "Only selected"
-msgstr "仅选中项"
-
-#: ../html/src/components/table/search.example.tsx:55
-msgid "Item id"
-msgstr "项目 ID"
-
-#: ../html/src/components/table/search.example.tsx:56
-msgid "Item name"
-msgstr "项目名称"
-
 #: ../html/src/components/target-systems.tsx:32
 msgid "Target Systems"
 msgstr "目标系统"
@@ -2354,18 +2145,9 @@ msgstr "无效数据"
 msgid "No data"
 msgstr "无数据"
 
-#: ../html/src/components/utils/HelpIcon.example.tsx:10
-msgid "Text to display on hover"
-msgstr "光标悬停时显示的文本"
-
 #: ../html/src/components/utils/HelpLink.tsx:22
 msgid "Help"
 msgstr "帮助"
-
-#: ../html/src/components/utils/loading/text-border.example.tsx:13
-#: ../html/src/components/utils/loading/text.example.tsx:13
-msgid "Loading text"
-msgstr "正在加载文本"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:24
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:13
@@ -2398,7 +2180,7 @@ msgstr "无"
 msgid "Require this channel"
 msgstr "需要此通道"
 
-#: ../html/src/core/intl/index.example.tsx:13
+#: ../html/src/core/intl/index.stories.tsx:30
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "请参见 <link>Format.JS 文档</link>了解消息语法。"
 
@@ -2485,6 +2267,11 @@ msgstr "未找到访问组。"
 msgid "Filter by name or description"
 msgstr "按名称或说明过滤"
 
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:128
+#: ../html/src/manager/admin/access-control/access-group.tsx:215
+msgid "Users"
+msgstr "用户"
+
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:133
 msgid "permissions"
 msgstr "权限"
@@ -2496,6 +2283,19 @@ msgstr "您确定要删除所选访问组吗？"
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:162
 msgid "An unexpected error occurred while fetching namespaces."
 msgstr "提取名称空间时发生意外错误。"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:368
+msgid "API"
+msgstr "API"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:210
+msgid "Web"
+msgstr "Web"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:213
+msgid "Only selected"
+msgstr "仅选中项"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:273
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:136
@@ -2520,6 +2320,16 @@ msgstr "查看并根据需要修改此自定义组的权限。"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:149
 msgid "Filter by name"
 msgstr "按名称过滤"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:385
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:187
+msgid "View"
+msgstr "查看"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:388
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:202
+msgid "Modify"
+msgstr "修改"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:168
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:140
@@ -4059,6 +3869,10 @@ msgstr "步骤 1/2：从下表中选择要关联的系统。"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:298
 msgid "Socket/IFL count"
 msgstr "插槽/IFL 计数"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:313
+msgid "Select"
+msgstr "选择"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:326
 msgid "Available Subscriptions for the Selected System"
@@ -5747,6 +5561,10 @@ msgstr "了解 {productName} 的详细信息："
 msgid "View website"
 msgstr "查看网站"
 
+#: ../html/src/manager/login/uyuni/login.tsx:91
+msgid "Login"
+msgstr "登录"
+
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:81
 msgid "Skip to the last maintenance window"
 msgstr "跳到最后一个维护时段"
@@ -7354,14 +7172,6 @@ msgstr "应用 Highstate 的操作<link>已安排</link>。"
 msgid "Apply Highstate"
 msgstr "应用 Highstate"
 
-#: ../html/src/manager/storybook/storybook.tsx:55
-msgid "Development debugging page"
-msgstr "开发调试页面"
-
-#: ../html/src/manager/storybook/storybook.tsx:57
-msgid "This is a hidden page used by developers, if you found it by accident, good job!"
-msgstr "这是开发人员使用的隐藏页面，如果您无意间发现了该页面，那么为您点赞！"
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:39
 msgid "{productName} Default"
 msgstr "{productname} 默认"
@@ -8226,6 +8036,99 @@ msgstr "未找到资源。"
 #: ../html/src/utils/network.ts:112
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
+
+#~ msgid "Delete project"
+#~ msgstr "删除项目"
+
+#~ msgid "Are you sure you want to delete project "
+#~ msgstr "您确定要删除项目吗 "
+
+#~ msgid "Field"
+#~ msgstr "字段"
+
+#~ msgid "Checkbox"
+#~ msgstr "复选框"
+
+#~ msgid "Datetime"
+#~ msgstr "日期时间"
+
+#~ msgid "Multiple values"
+#~ msgstr "多个值"
+
+#~ msgid "Long text"
+#~ msgstr "长文本"
+
+#~ msgid "Range"
+#~ msgstr "范围"
+
+#~ msgid "Radio"
+#~ msgstr "单选按钮"
+
+#~ msgid "One"
+#~ msgstr "一"
+
+#~ msgid "Two"
+#~ msgstr "二"
+
+#~ msgid "Three"
+#~ msgstr "三"
+
+#~ msgid "Foo"
+#~ msgstr "Foo"
+
+#~ msgid "Bar"
+#~ msgstr "Bar"
+
+#~ msgid "Time"
+#~ msgstr "时间"
+
+#~ msgid "First Name"
+#~ msgstr "名字"
+
+#~ msgid "Last Name"
+#~ msgstr "姓氏"
+
+#~ msgid "Must be at least 4 characters"
+#~ msgstr "必须至少包含 4 个字符"
+
+#~ msgid "Level"
+#~ msgstr "级别"
+
+#~ msgid "Beginner"
+#~ msgstr "新手"
+
+#~ msgid "Normal"
+#~ msgstr "普通"
+
+#~ msgid "Expert"
+#~ msgstr "专家"
+
+#~ msgid "Port range"
+#~ msgstr "端口范围"
+
+#~ msgid "Channel name"
+#~ msgstr "通道名称"
+
+#~ msgid "Hub Org"
+#~ msgstr "中心组织"
+
+#~ msgid "Item id"
+#~ msgstr "项目 ID"
+
+#~ msgid "Item name"
+#~ msgstr "项目名称"
+
+#~ msgid "Text to display on hover"
+#~ msgstr "光标悬停时显示的文本"
+
+#~ msgid "Loading text"
+#~ msgstr "正在加载文本"
+
+#~ msgid "Development debugging page"
+#~ msgstr "开发调试页面"
+
+#~ msgid "This is a hidden page used by developers, if you found it by accident, good job!"
+#~ msgstr "这是开发人员使用的隐藏页面，如果您无意间发现了该页面，那么为您点赞！"
 
 #~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
 #~ msgstr "操作已成功添加到操作链 <link>\"{name}\"</link>。"
