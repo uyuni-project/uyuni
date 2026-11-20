@@ -12235,6 +12235,13 @@ For a detailed analysis, please refer to the log files.
         </context-group>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="kickstart.tree.invalidinstalltype" xml:space="preserve">
+        <source>The installer type is not valid: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
