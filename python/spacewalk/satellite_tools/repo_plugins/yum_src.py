@@ -25,7 +25,7 @@
 from __future__ import absolute_import, unicode_literals
 
 # pylint: disable-next=unused-import
-from shutil import rmtree, copytree
+from shutil import rmtree, copytree, copyfile
 
 import configparser
 import fnmatch
@@ -41,6 +41,7 @@ import bz2
 
 # pylint: disable-next=unused-import
 import lzma
+import hashlib
 import os
 import re
 import solv
@@ -97,6 +98,22 @@ REPOSYNC_ZYPPER_CONF = "/etc/rhn/spacewalk-repo-sync/zypper.conf"
 REPOSYNC_EXTRA_HTTP_HEADERS_CONF = "/etc/rhn/spacewalk-repo-sync/extra_headers.conf"
 
 RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r"^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)")
+
+# Post-Quantum Cryptography signature of the repository metadata
+PQC_SIGNATURE_PATH = "repodata/repomd.xml.p7s"
+# Plugin name and path to verify the PQC repository signature
+PQC_SIGCHECK_PLUGIN = "pqcverification"
+PQC_SIGCHECK_PLUGIN_PATH = os.path.join(
+    "/usr/lib/zypp/plugins/sigcheck", PQC_SIGCHECK_PLUGIN
+)
+# The path the PQC sigcheck plugin reads keys from is hardcoded
+PQC_KEYRING_PATH = "/usr/lib/rpm/pqkeys"
+# Path to PQC certificates Uyuni holds for repository verification
+SPACEWALK_PQC_KEYS_PATH = os.path.join(SPACEWALK_LIB, "pqkeys")
+PQC_CERTIFICATE_EXTENSIONS = (".pem", ".crt")
+PQC_CERTIFICATE_GLOBS = ("*.pem", "*.crt")
+# Prefix of the certificates temporarily copied into the PQC keys path
+PQC_TEMPORARY_CERTIFICATE_PREFIX = "reposync-"
 
 # possible urlgrabber errno
 NO_MORE_MIRRORS_TO_TRY = 256
@@ -589,6 +606,7 @@ class ContentSource:
         client_key_file=None,
         channel_arch="",
         http_headers={},
+        pqc_insecure=False,
     ):
         """
         Plugin constructor.
@@ -602,6 +620,7 @@ class ContentSource:
             self.url = "file://%s" % url
         self.name = name
         self.insecure = insecure
+        self.pqc_insecure = pqc_insecure
         self.interactive = interactive
         self.org = org if org else "NULL"
         self.proxy_hostname = None
@@ -882,6 +901,7 @@ autorefresh=0
 gpgcheck={gpgcheck}
 repo_gpgcheck={gpgcheck}
 type=rpm-md
+{sigcheck}
 """
         if uln_repo:
             # pylint: disable-next=invalid-name,consider-using-f-string
@@ -933,43 +953,342 @@ type=rpm-md
                     repo_url=_repo_url,
                     url=_url,
                     gpgcheck="0" if self.insecure else "1",
+                    sigcheck="",
                 )
             )
-        zypper_cmd = "zypper"
-        if not self.interactive:
-            # pylint: disable-next=consider-using-f-string
-            zypper_cmd = "{} -n".format(zypper_cmd)
-        # pylint: disable-next=consider-using-f-string
-        zypper_cmd = "{} --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
-            zypper_cmd,
-            REPOSYNC_ZYPPER_ROOT,
-            os.path.join(repo.root, "etc/zypp/repos.d/"),
-            REPOSYNC_ZYPPER_RPMDB_PATH,
-            os.path.join(repo.root, "var/cache/zypp/raw/"),
-            os.path.join(repo.root, "var/cache/zypp/solv/"),
+
+        # Zypper is not able to run a sigcheck plugin chrooted into the reposync root,
+        # so the PQC signature of the metadata is verified by a Zypper
+        # run that is not chrooted and only refreshes the metadata.
+        # ULN repositories are not fetched through repo.urls, so they are not probed.
+        pqc_repomd_digest = None
+        if self.pqc_insecure:
+            log(
+                2,
+                f"Repository '{self.channel_label or self.reponame}' is not flagged "
+                f"as PQC signed: skipping the '{PQC_SIGCHECK_PLUGIN}' "
+                "Zypper sigcheck plugin.",
+            )
+        elif not uln_repo and self._has_pqc_signature():
+            pqc_repomd_digest = self._verify_pqc_signature(
+                repo_cfg.format(
+                    reponame=self.channel_label or self.reponame,
+                    repo_url=_repo_url,
+                    url=_url,
+                    gpgcheck="0",
+                    sigcheck=f"repo_sigcheck_plugin={PQC_SIGCHECK_PLUGIN}",
+                )
+            )
+
+        process = self._run_zypper_ref(
+            reposd_dir=os.path.join(repo.root, "etc/zypp/repos.d/"),
+            cache_dir=REPOSYNC_ZYPPER_RPMDB_PATH,
+            raw_cache_dir=os.path.join(repo.root, "var/cache/zypp/raw/"),
+            solv_cache_dir=os.path.join(repo.root, "var/cache/zypp/solv/"),
+            root=REPOSYNC_ZYPPER_ROOT,
         )
+
+        if process.returncode:
+            if process.stderr:
+                raise RepoMDError(f"Cannot access repository.\n{sstr(process.stderr)}")
+            raise RepoMDError(
+                "Cannot access repository. Maybe repository GPG keys are not imported"
+            )
+
+        # The refresh above fetches the metadata again, so make sure reposync uses
+        # the same repomd.xml that was PQC-validated. All the other metadata files
+        # are verified by Zypper against the checksums listed in repomd.xml.
+        if pqc_repomd_digest is not None:
+            synced_repomd_digest = self._repomd_digest(
+                os.path.join(repo.root, "var/cache/zypp/raw/")
+            )
+            if synced_repomd_digest != pqc_repomd_digest:
+                raise RepoMDError(
+                    f"Metadata of repository '{self.channel_label or self.reponame}' "
+                    "changed after its PQC signature was verified (validated "
+                    f"repomd.xml sha256 {pqc_repomd_digest}, synced "
+                    f"{synced_repomd_digest}). Refusing to synchronize metadata "
+                    "that was not PQC-validated."
+                )
+
+        repo.is_configured = True
+
+    def _run_zypper_ref(
+        self,
+        reposd_dir,
+        cache_dir,
+        raw_cache_dir,
+        solv_cache_dir,
+        root=None,
+    ):
+        """
+        Construct and execute a Zypper 'ref' command with the specified paths.
+
+        :param reposd_dir: path to the Zypper repos.d directory
+        :param cache_dir: path to the Zypper cache directory
+        :param raw_cache_dir: path to the Zypper raw-cache directory
+        :param solv_cache_dir: path to the Zypper solv-cache directory
+        :param root: optional chroot directory to run under (for '--root')
+        :returns: subprocess.CompletedProcess
+        """
+        zypper_cmd = ["zypper"]
+        if not self.interactive:
+            zypper_cmd.append("-n")
+
+        if root is not None:
+            zypper_cmd += ["--root", root]
+
+        zypper_cmd += [
+            "--reposd-dir",
+            reposd_dir,
+            "--cache-dir",
+            cache_dir,
+            "--raw-cache-dir",
+            raw_cache_dir,
+            "--solv-cache-dir",
+            solv_cache_dir,
+            "ref",
+        ]
+
+        log(2, " ".join([sh_quote(x) for x in zypper_cmd]))
+
         # libzypp older Curl backend does not set Proxy-Authorization reliably.
         # The new Curl2 backend does not have the same problem.
         # See https://bugzilla.suse.com/show_bug.cgi?id=1245222 and
         # https://bugzilla.suse.com/show_bug.cgi?id=1245221
         zypper_env = os.environ.copy()
         zypper_env["ZYPP_CURL2"] = "1"
-        # pylint: disable-next=subprocess-run-check
-        process = subprocess.run(
-            zypper_cmd.split(" "), stderr=subprocess.PIPE, env=zypper_env
-        )
 
-        if process.returncode:
-            if process.stderr:
-                raise RepoMDError(
-                    # pylint: disable-next=consider-using-f-string
-                    "Cannot access repository.\n{}".format(sstr(process.stderr))
+        # pylint: disable-next=subprocess-run-check
+        return subprocess.run(zypper_cmd, stderr=subprocess.PIPE, env=zypper_env)
+
+    def _has_pqc_signature(self):
+        """
+        Check whether the repository provides a PQC (Post-Quantum Cryptography)
+        signature of its master index
+
+        :returns: bool, False only if every mirror confirmed the signature is missing
+        :raises RepoMDError: if the signature could not be fetched for another reason
+        """
+        failures = []
+        mirror_group = MirrorGroup(
+            urlgrabber.grabber.URLGrabber(),
+            self.repo.urls,
+            failure_callback=lambda cb_obj: failures.append(cb_obj.exception),
+        )
+        urlgrabber_opts = {}
+        self.set_download_parameters(urlgrabber_opts, PQC_SIGNATURE_PATH)
+        try:
+            mirror_group.urlread(PQC_SIGNATURE_PATH, **urlgrabber_opts)
+            return True
+        except URLGrabError as exc:
+            if failures and all(self._is_missing_file_error(e) for e in failures):
+                log(
+                    2,
+                    f"Repository {self.name} does not provide a PQC signature "
+                    f"({PQC_SIGNATURE_PATH})",
                 )
+                return False
+            reason = "; ".join(
+                self._describe_fetch_error(e) for e in failures
+            ) or self._describe_fetch_error(exc)
             raise RepoMDError(
-                "Cannot access repository. Maybe repository GPG keys are not imported"
+                "Cannot determine whether repository "
+                f"'{self.channel_label or self.reponame}' provides a PQC signature: "
+                f"fetching {PQC_SIGNATURE_PATH} failed: {reason}"
+            ) from exc
+
+    @staticmethod
+    def _is_missing_file_error(exc):
+        """
+        Check whether a URLGrabError confirms the requested file does not exist
+
+        :returns: bool
+        """
+        # urlgrabber reports HTTP(S) errors and curl errors as errno 14, with the
+        # HTTP status or the curl error number as code: HTTP 404, or curl 37
+        # (CURLE_FILE_COULDNT_READ_FILE) for a file:// path that cannot be read
+        return exc.errno == 14 and getattr(exc, "code", None) in (404, 37)
+
+    @staticmethod
+    def _describe_fetch_error(exc):
+        """
+        Describe a URLGrabError without its message, as messages like the timeout
+        one contain the full URL, which may hold authentication tokens
+
+        :returns: str
+        """
+        code = getattr(exc, "code", None)
+        if exc.errno == 14 and code is not None:
+            # HTTP status codes start at 100, curl error numbers are below
+            return f"HTTP error {code}" if code >= 100 else f"curl error {code}"
+        if exc.errno == 12:
+            return "timeout"
+        return f"urlgrabber error {exc.errno}"
+
+    def _verify_pqc_signature(self, repo_config):
+        """
+         Verify the PQC (Post-Quantum Cryptography) signature of the repository metadata.
+
+        :param repo_config: the Zypper repository configuration to verify with
+        :returns: str, the SHA-256 digest of the validated repomd.xml
+         :raises RepoMDError: if the metadata cannot be verified
+        """
+        reponame = str(self.channel_label or self.reponame)
+        log(
+            0,
+            f"PQC signature ({PQC_SIGNATURE_PATH}) found for repository "
+            f"'{reponame}'. Validating the metadata with the "
+            f"'{PQC_SIGCHECK_PLUGIN}' Zypper sigcheck plugin.",
+        )
+        if not os.access(PQC_SIGCHECK_PLUGIN_PATH, os.X_OK):
+            raise RepoMDError(
+                f"Repository '{reponame}' is signed with a PQC signature, but the "
+                f"'{PQC_SIGCHECK_PLUGIN}' Zypper sigcheck plugin is not available "
+                f"at {PQC_SIGCHECK_PLUGIN_PATH}. Install the plugin to be able to "
+                "synchronize this repository."
+            )
+        with tempfile.TemporaryDirectory(prefix="reposync-pqc-") as tmp_dir:
+            reposd_dir = os.path.join(tmp_dir, "repos.d")
+            os.mkdir(reposd_dir)
+            # pylint: disable-next=unspecified-encoding
+            with open(
+                os.path.join(reposd_dir, reponame + ".repo"), "w"
+            ) as repo_conf_file:
+                repo_conf_file.write(repo_config)
+
+            certificates = self._install_pqc_certificates()
+            try:
+                process = self._run_zypper_ref(
+                    reposd_dir=reposd_dir,
+                    cache_dir=os.path.join(tmp_dir, "cache"),
+                    raw_cache_dir=os.path.join(tmp_dir, "raw"),
+                    solv_cache_dir=os.path.join(tmp_dir, "solv"),
+                )
+            finally:
+                self._remove_pqc_certificates(certificates)
+
+            # Keep track of the validated repomd.xml before the cache is removed
+            validated_repomd_digest = (
+                None
+                if process.returncode
+                else self._repomd_digest(os.path.join(tmp_dir, "raw"))
             )
 
-        repo.is_configured = True
+        if process.returncode:
+            stderr = sstr(process.stderr) if process.stderr else ""
+            raise RepoMDError(
+                f"Repository metadata of '{reponame}' rejected by the "
+                f"'{PQC_SIGCHECK_PLUGIN}' Zypper sigcheck plugin.\n{stderr}"
+            )
+        log(
+            0,
+            f"Metadata of repository '{reponame}' successfully verified by the "
+            f"'{PQC_SIGCHECK_PLUGIN}' Zypper sigcheck plugin.",
+        )
+        return validated_repomd_digest
+
+    def _repomd_digest(self, raw_cache_dir):
+        """
+        Calculate the SHA-256 digest of the repomd.xml stored in a Zypper raw cache
+
+        :param raw_cache_dir: path to the Zypper raw-cache directory
+        :returns: str
+        :raises RepoMDError: if the repomd.xml cannot be read
+        """
+        repomd_path = os.path.join(
+            raw_cache_dir,
+            str(self.channel_label or self.reponame),
+            "repodata",
+            "repomd.xml",
+        )
+        try:
+            with open(repomd_path, "rb") as repomd:
+                return hashlib.sha256(repomd.read()).hexdigest()
+        except OSError as exc:
+            raise RepoMDError(
+                f"Cannot read {repomd_path} to check its PQC validation: {exc}"
+            ) from exc
+
+    @staticmethod
+    def _list_certificates(directory):
+        """
+        List the certificate files of the given directory
+
+        :returns: list of paths
+        """
+        try:
+            names = os.listdir(directory)
+        except OSError:
+            return []
+        certificates = []
+        for name in names:
+            if name.endswith(PQC_CERTIFICATE_EXTENSIONS):
+                path = os.path.join(directory, name)
+                if os.path.isfile(path):
+                    certificates.append(path)
+        return sorted(certificates)
+
+    def _install_pqc_certificates(self):
+        """
+        Copy the certificates Uyuni holds into the PQCkeys
+        directory the sigcheck plugin reads
+
+        :returns: list of the paths written, to be removed after the verification
+        :raises RepoMDError: if the certificates cannot be copied
+        """
+        certificates = self._list_certificates(SPACEWALK_PQC_KEYS_PATH)
+        if not certificates:
+            log(
+                3,
+                f"No PQC certificate available in {SPACEWALK_PQC_KEYS_PATH} for "
+                f"repository '{self.channel_label or self.reponame}'. Using the "
+                f"certificates installed in {PQC_KEYRING_PATH}.",
+            )
+            return []
+        log(
+            2,
+            f"Verifying repository '{self.channel_label or self.reponame}' "
+            f"against {len(certificates)} PQC certificates",
+        )
+        installed = []
+        try:
+            if not os.path.isdir(PQC_KEYRING_PATH):
+                os.makedirs(PQC_KEYRING_PATH)
+            for index, certificate in enumerate(certificates):
+                # The plugin reads the keyring directory flat, so the index keeps
+                # certificates having the same file name in different directories apart
+                target = os.path.join(
+                    PQC_KEYRING_PATH,
+                    f"{PQC_TEMPORARY_CERTIFICATE_PREFIX}{os.getpid()}-{index:03d}-"
+                    f"{os.path.basename(certificate)}",
+                )
+                copyfile(certificate, target)
+                installed.append(target)
+        except OSError as exc:
+            self._remove_pqc_certificates(installed)
+            raise RepoMDError(
+                "Unable to provide the PQC certificates of repository "
+                f"'{self.channel_label or self.reponame}' to the "
+                f"'{PQC_SIGCHECK_PLUGIN}' Zypper sigcheck plugin: copying them "
+                f"into {PQC_KEYRING_PATH} failed: {exc}"
+            ) from exc
+        return installed
+
+    @staticmethod
+    def _remove_pqc_certificates(certificates):
+        """
+        Remove the certificates copied into the PQC keys directory
+        """
+        for certificate in certificates:
+            try:
+                os.unlink(certificate)
+            except OSError as exc:
+                log(
+                    0,
+                    f"Could not remove the temporary PQC certificate {certificate}: "
+                    f"{exc}",
+                )
 
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
