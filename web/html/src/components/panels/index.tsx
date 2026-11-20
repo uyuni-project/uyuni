@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
-export * from "./BootstrapPanel";
 export * from "./CreatorPanel";
 export * from "./InnerPanel";
 export * from "./Panel";

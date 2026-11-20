@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { AsyncButton, Button, LinkButton } from "components/buttons";
 import { Form, FormGroup, Label, Text } from "components/input";
 import { LargeTextInput, LargeTextInputRef } from "components/large-text-input";
-import { BootstrapPanel, Panel } from "components/panels";
+import { Panel } from "components/panels";
 import { CronTimes, RecurringEventPicker, RecurringType } from "components/picker/recurring-event-picker";
 import { Toggler } from "components/toggler";
 
@@ -315,7 +315,7 @@ export const CoCoSettingsForm: React.FC<Props> = ({
 
         {showOnScheduleOption && model.attestOnSchedule && (
           <FormGroup>
-            <BootstrapPanel title={t("Select a schedule")}>
+            <Panel headingLevel="h2" title={t("Select a schedule")}>
               <RecurringEventPicker
                 mode="Inline"
                 hideScheduleName
@@ -328,7 +328,7 @@ export const CoCoSettingsForm: React.FC<Props> = ({
                 onCronTimesChanged={(scheduleCronTimes) => setModel((prev) => ({ ...prev, scheduleCronTimes }))}
                 onCronChanged={(scheduleCron) => setModel((prev) => ({ ...prev, scheduleCron }))}
               />
-            </BootstrapPanel>
+            </Panel>
           </FormGroup>
         )}
 

@@ -12,7 +12,7 @@ import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionChainLink, ActionLink, ChannelAnchorLink } from "components/links";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Panel } from "components/panels/Panel";
 import { Toggler } from "components/toggler";
 
 import { localizedMoment } from "utils";
@@ -577,7 +577,8 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
     }
 
     return (
-      <BootstrapPanel
+      <Panel
+        headingLevel="h2"
         footer={
           <div className="btn-group">
             <Button
@@ -594,7 +595,8 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
         <span>
           <div className="row channel-for-system">
             <div className="col-md-6">
-              <BootstrapPanel
+              <Panel
+                headingLevel="h2"
                 title={t("Base Channel")}
                 icon="spacewalk-icon-software-channels"
                 header={
@@ -617,10 +619,11 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
                 </div>
                 <hr />
                 <div>{baseChannels} </div>
-              </BootstrapPanel>
+              </Panel>
             </div>
             <div className="col-md-6">
-              <BootstrapPanel
+              <Panel
+                headingLevel="h2"
                 title={t("Child Channels")}
                 icon="spacewalk-icon-software-channels"
                 header={
@@ -657,7 +660,7 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
                     ) : undefined}
                   </div>
                 )}
-              </BootstrapPanel>
+              </Panel>
               {!this.areAllMandatoryChildrenSelected() ? (
                 <span className="help-block">
                   {" "}
@@ -668,7 +671,7 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
             </div>
           </div>
         </span>
-      </BootstrapPanel>
+      </Panel>
     );
   };
 
@@ -677,7 +680,8 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
     const availableChildren = this.getAvailableChildren();
 
     return (
-      <BootstrapPanel
+      <Panel
+        headingLevel="h2"
         title={t("Confirm Software Channel Change")}
         icon="spacewalk-icon-software-channels"
         footer={
@@ -741,7 +745,7 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
             actionType="channels.subscribe"
           />
         </div>
-      </BootstrapPanel>
+      </Panel>
     );
   };
 }

@@ -9,7 +9,7 @@ import { Component } from "react";
 import { AsyncButton } from "components/buttons";
 import { ActionLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Panel } from "components/panels/Panel";
 
 import Network from "utils/network";
 
@@ -120,7 +120,11 @@ class Proxy extends Component<Props, State> {
     return (
       <div>
         {messages}
-        <BootstrapPanel title={t("Change Proxy")} header={<p>{t("Connect minion(s) to another proxy server.")}</p>}>
+        <Panel
+          headingLevel="h2"
+          title={t("Change Proxy")}
+          header={<p>{t("Connect minion(s) to another proxy server.")}</p>}
+        >
           <div className="form-horizontal">
             <div className="row">
               <label className="col-md-3 control-label">{t("New Proxy")}:</label>
@@ -137,7 +141,7 @@ class Proxy extends Component<Props, State> {
               <div className="col-md-offset-3 offset-md-3 col-md-6">{buttons}</div>
             </div>
           </div>
-        </BootstrapPanel>
+        </Panel>
       </div>
     );
   }

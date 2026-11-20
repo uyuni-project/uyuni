@@ -14,7 +14,7 @@ import { ModalButton } from "components/dialog/ModalButton";
 import { IconTag } from "components/icontag";
 import { SystemLink } from "components/links";
 import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Panel } from "components/panels/Panel";
 import { TabLabel } from "components/tab-container";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -103,12 +103,12 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
 
   return (
     <div>
-      <BootstrapPanel title={t("Schedule Details")}>
+      <Panel headingLevel="h2" title={t("Schedule Details")}>
         <Table data={tableData} identifier={(row) => tableData.indexOf(row)} hideHeaderFooter="both">
           <Column columnKey="left" cell={(row) => row.left} />
           <Column columnKey="right" cell={(row) => row.right} />
         </Table>
-      </BootstrapPanel>
+      </Panel>
       {props.calendarName && (
         <div className="panel panel-default">
           <div className="panel-heading">

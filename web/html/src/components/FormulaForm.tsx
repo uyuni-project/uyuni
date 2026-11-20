@@ -8,7 +8,7 @@ import { Component } from "react";
 
 import { Button } from "components/buttons";
 import { Messages, MessageType } from "components/messages/messages";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Panel } from "components/panels/Panel";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
 import { Utils } from "utils/functions";
@@ -323,7 +323,8 @@ class FormulaForm extends Component<Props, State> {
                   </FormulaFormContext.Consumer>
                 </div>
               </SectionToolbar>
-              <BootstrapPanel
+              <Panel
+                headingLevel="h2"
                 header={
                   <div className="ms-4">
                     <SearchField
@@ -341,7 +342,7 @@ class FormulaForm extends Component<Props, State> {
                   <hr />
                   <FormulaFormRenderer />
                 </div>
-              </BootstrapPanel>
+              </Panel>
             </div>
           </div>
         </FormulaFormContextProvider>

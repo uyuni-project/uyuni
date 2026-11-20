@@ -12,7 +12,7 @@ import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { DEPRECATED_Check } from "components/input/check/DEPRECATED_Check";
 import { Form } from "components/input/form/Form";
 import { MessageType } from "components/messages/messages";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Panel } from "components/panels/Panel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
@@ -94,12 +94,12 @@ const MaintenanceCalendarOverview = (props: OverviewProps) => {
 
   return (
     <div>
-      <BootstrapPanel title={t("Calendar Details")}>
+      <Panel headingLevel="h2" title={t("Calendar Details")}>
         <Table data={tableData} identifier={(row) => tableData.indexOf(row)} hideHeaderFooter="both">
           <Column columnKey="left" cell={(row) => row.left} />
           <Column columnKey="right" cell={(row) => row.right} />
         </Table>
-      </BootstrapPanel>
+      </Panel>
       <div className="panel panel-default">
         <div className="panel-heading">
           <h4>{props.name}</h4>

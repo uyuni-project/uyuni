@@ -10,7 +10,7 @@ import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Panel } from "components/panels/Panel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
@@ -71,11 +71,11 @@ class VirtualHostManagerDetails extends Component<Props, State> {
     return (
       <div>
         {this.state.messages ? <Messages items={this.state.messages} /> : null}
-        <BootstrapPanel title={t("Properties")}>
+        <Panel headingLevel="h2" title={t("Properties")}>
           <ConfigParams data={this.props.data} />
-        </BootstrapPanel>
+        </Panel>
         {this.state.nodes && this.state.nodes.length > 0 && (
-          <BootstrapPanel title={t("Nodes")}>
+          <Panel headingLevel="h2" title={t("Nodes")}>
             <Table data={this.state.nodes} identifier={(node) => node.type + "_" + node.id} initialSortColumnKey="name">
               <Column
                 columnKey="name"
@@ -104,7 +104,7 @@ class VirtualHostManagerDetails extends Component<Props, State> {
                 cell={(row) => (row.memory !== 0 ? row.memory : t("N/A"))}
               />
             </Table>
-          </BootstrapPanel>
+          </Panel>
         )}
         <div className="btn-group">
           <Button

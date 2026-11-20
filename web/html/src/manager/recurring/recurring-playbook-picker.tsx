@@ -12,7 +12,7 @@ import { AnsiblePathContent } from "manager/minion/ansible/ansible-path-content"
 
 import { AceEditor } from "components/ace-editor";
 import { Button } from "components/buttons";
-import { BootstrapPanel } from "components/panels";
+import { Panel } from "components/panels";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
 type PropsType = {
@@ -104,7 +104,7 @@ class RecurringPlaybookPicker extends Component<PropsType, StateType> {
         <SectionToolbar top="50">
           <div className="action-button-wrapper">{button}</div>
         </SectionToolbar>
-        <BootstrapPanel title={t("Playbook details")}>
+        <Panel headingLevel="h2" title={t("Playbook details")}>
           <table className="table">
             <tbody>
               <tr>
@@ -141,7 +141,7 @@ class RecurringPlaybookPicker extends Component<PropsType, StateType> {
               />
             </>
           )}
-        </BootstrapPanel>
+        </Panel>
       </div>
     );
   }
