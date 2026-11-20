@@ -608,7 +608,8 @@ public class ActivationKeyHandler extends BaseHandler {
             // Verify that, *IF* this AK specifies a base-channel, then the proposed
             // child is a child of *that* base channel
             Channel base = activationKey.getBaseChannel();
-            if (base != null && !base.equals(childChannel.getParentChannel())) {
+            if (base != null && (childChannel.getParentChannel() == null ||
+                    !base.getId().equals(childChannel.getParentChannel().getId()))) {
                 throw new InvalidChannelException(childChannel.getName() +
                         " is not a child channel of parent " +
                         base.getName() + " which is already used by this key");
