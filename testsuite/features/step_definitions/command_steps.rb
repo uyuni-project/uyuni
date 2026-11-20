@@ -1118,6 +1118,16 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   node.run(cmd, verbose: true, check_errors: error_control.empty?)
 end
 
+When(/^I (enable|disable) the dnf repositories "([^"]*)" on this "([^"]*)"$/) do |action, repo_ids, host|
+  node = get_target(host)
+  repolist, _code = node.run('dnf repolist --all')
+  repos = repo_ids.split & repolist.lines.map { |line| line.split.first }
+  next if repos.empty?
+
+  flag = action == 'enable' ? '--set-enabled' : '--set-disabled'
+  node.run("dnf config-manager #{flag} #{repos.join(' ')}", verbose: true)
+end
+
 # Recent reposync reads SYNC_SOURCE_PACKAGES from the rhnConfiguration table
 When(/^I (enable|disable) source package syncing$/) do |action|
   value = action == 'enable' ? 1 : 0

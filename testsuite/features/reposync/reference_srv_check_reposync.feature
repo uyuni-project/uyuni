@@ -5,14 +5,14 @@ Feature: Synchronize product channels
 
 @scc_credentials
 @susemanager
-  Scenario: Reposync of Rocky Linux 8 channels has finished
-    When I wait until the channel "rockylinux8-x86_64" has been synced
-    And I wait until the channel "rockylinux8-appstream-x86_64" has been synced
+  Scenario: Reposync of Rocky Linux 10 channels has finished
+    When I wait until the channel "rockylinux-10-x86_64" has been synced
+    And I wait until the channel "rockylinux-10-appstream-x86_64" has been synced
 
 @uyuni
-  Scenario: Reposync of Rocky Linux 8 channels has finished
-    When I wait until the channel "rockylinux8-x86_64" has been synced
-    And I wait until the channel "rockylinux8-x86_64-appstream" has been synced
+  Scenario: Reposync of Rocky Linux 10 channels has finished
+    When I wait until the channel "rockylinux10-x86_64" has been synced
+    And I wait until the channel "rockylinux10-x86_64-appstream" has been synced
 
 @scc_credentials
 @susemanager
@@ -62,5 +62,5 @@ Feature: Synchronize product channels
 @uyuni
   Scenario: Reposync of Uyuni client tools has finished
     When I wait until the channel "opensuse_tumbleweed-uyuni-client-devel-x86_64" has been synced
-    And I wait until the channel "rockylinux8-uyuni-client-x86_64" has been synced
+    And I wait until the channel "rockylinux10-uyuni-client-x86_64" has been synced
     And I wait until the channel "ubuntu-2404-amd64-uyuni-client" has been synced
