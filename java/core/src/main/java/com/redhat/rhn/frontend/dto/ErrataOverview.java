@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.common.db.datasource.RowCallback;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 
@@ -25,7 +26,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -253,8 +254,7 @@ public class ErrataOverview extends BaseDto implements RowCallback {
         if (updateDate == null) {
             return null;
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(updateDate);
+        return TimeConversion.localDateStringFromDate(updateDate);
     }
     /**
      * @return Returns the advisoryLastUpdated.
@@ -284,8 +284,7 @@ public class ErrataOverview extends BaseDto implements RowCallback {
         if (issueDate == null) {
             return null;
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(issueDate);
+        return TimeConversion.localDateStringFromDate(issueDate);
     }
     /**
      * @return Returns the advisoryLastUpdated.
@@ -305,12 +304,15 @@ public class ErrataOverview extends BaseDto implements RowCallback {
      */
     public void setIssueDate(String issueDateIn) throws ParseException {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            issueDate = sdf.parse(issueDateIn);
+            issueDate = TimeConversion.dateFromDbDateTimeString(issueDateIn);
         }
-        catch (ParseException ex) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            issueDate = sdf.parse(issueDateIn);
+        catch (DateTimeParseException ex) {
+            try {
+                issueDate = TimeConversion.dateFromLocalDateString(issueDateIn);
+            }
+            catch (DateTimeParseException e) {
+                throw new ParseException(e.getMessage(), e.getErrorIndex());
+            }
         }
     }
     /**

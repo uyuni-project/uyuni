@@ -33,6 +33,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -109,7 +110,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1099,16 +1099,14 @@ public class ChannelManager extends BaseManager {
 
         // convert the start and end dates to a string representation
         // that can be used in the db query...
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
         String startDateStr = null;
         String endDateStr = null;
 
         if (startDate != null) {
-            startDateStr = sdf.format(startDate);
+            startDateStr = TimeConversion.localDateTimeStringFromDate(startDate);
         }
         if (endDate != null) {
-            endDateStr = sdf.format(endDate);
+            endDateStr = TimeConversion.localDateTimeStringFromDate(endDate);
         }
 
         return listAllPackages(channel, startDateStr, endDateStr);

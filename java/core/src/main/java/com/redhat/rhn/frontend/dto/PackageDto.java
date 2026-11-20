@@ -22,12 +22,11 @@ import com.redhat.rhn.common.util.CompressionUtil;
 import com.redhat.rhn.frontend.xmlrpc.packages.PackageHelper;
 
 import java.sql.Blob;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
-import java.util.TimeZone;
 /**
  * PackageDto
  *
@@ -302,17 +301,20 @@ public class PackageDto extends BaseDto {
      * which means we have to parse in here as long as this is not changed!
      *
      * @param buildTimeIn The buildTime to set.
-     * @throws RhnRuntimeException when buildTimeIn can't be parsed
+     * @throws RhnRuntimeException when buildTimeIn is not a {@link Timestamp} read from the database
      */
     public void setBuildTime(Date buildTimeIn) throws RhnRuntimeException {
-        SimpleDateFormat dateFormatGMT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-        dateFormatGMT.setTimeZone(TimeZone.getTimeZone("GMT"));
-        try {
-            this.buildTime = (buildTimeIn == null ?
-                        null : dateFormatGMT.parse(buildTimeIn.toString()));
+        if (buildTimeIn == null) {
+            this.buildTime = null;
+            return;
         }
-        catch (ParseException e) {
-            throw new RhnRuntimeException(e);
+
+        if (buildTimeIn instanceof Timestamp timestamp) {
+            // the wall clock read in the JVM time zone is the GMT time written to the database
+            this.buildTime = Date.from(timestamp.toLocalDateTime().atZone(ZoneId.of("GMT")).toInstant());
+        }
+        else {
+            throw new RhnRuntimeException("Build time must be a database timestamp, it was: " + buildTimeIn);
         }
     }
 

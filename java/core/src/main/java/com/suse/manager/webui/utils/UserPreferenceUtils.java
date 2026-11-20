@@ -20,15 +20,13 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclFactory;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -160,9 +158,7 @@ public class UserPreferenceUtils {
         Context ctx = Context.getCurrentContext();
         Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
         TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
-        DateFormat tzFormat = new SimpleDateFormat("z", locale);
-        tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
-        return tzFormat.format(new Date());
+        return TimeConversion.timeZoneShortName(timezone, new Date(), locale);
     }
 
 

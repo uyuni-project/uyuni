@@ -36,6 +36,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.FileTime;
+import java.time.Instant;
 import java.util.Map;
 
 /**
@@ -74,6 +80,35 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
         Map params = (Map) request.getAttribute("params");
         String filename = (String) params.get("filename");
         assertNotNull(filename);
+    }
+
+    @Test
+    public void testKsDownloadSetsLastModifiedHeader() throws Exception {
+        createImageFile("last-modified.img");
+        addRequestParameter("url", "/ks/dist/" + tree.getLabel() + "/images/last-modified.img");
+        request.setQueryString("url=/ks/dist/" + tree.getLabel() + "/images/last-modified.img");
+
+        actionPerform();
+
+        assertEquals("Tue, 05 Mar 2024 07:08:09 GMT", getResponse().getHeader("last-modified"));
+    }
+
+    @Test
+    public void testKsRangeDownloadSetsLastModifiedHeader() throws Exception {
+        createImageFile("last-modified.img");
+        addRequestParameter("url", "/ks/dist/" + tree.getLabel() + "/images/last-modified.img");
+        request.setQueryString("url=/ks/dist/" + tree.getLabel() + "/images/last-modified.img");
+        request.setHeader("Range", "bytes=0-3");
+
+        actionPerform();
+
+        assertEquals("Tue, 05 Mar 2024 07:08:09 GMT", getResponse().getHeader("last-modified"));
+    }
+
+    private static void createImageFile(String name) throws IOException {
+        Path file = Path.of("/tmp/images", name);
+        Files.writeString(file, "0123456789", StandardCharsets.UTF_8);
+        Files.setLastModifiedTime(file, FileTime.from(Instant.parse("2024-03-05T07:08:09Z")));
     }
 
     @Test

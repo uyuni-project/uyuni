@@ -37,6 +37,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
@@ -148,8 +149,9 @@ import java.net.IDN;
 import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.Types;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -187,6 +189,10 @@ public class SystemManager extends BaseManager {
     public static final String CAP_SCRIPT_RUN = "script.run";
     public static final String CAP_SCAP = "scap.xccdf_eval";
     private static final String COUNT = "count";
+    // Unix timestamp 0
+    private static final String DEFAULT_EARLIEST_EVENT_DATE =
+            DateTimeFormatter.ofPattern(TimeConversion.LOCAL_DATE_TIME_PATTERN).withZone(ZoneOffset.UTC)
+                    .format(Instant.EPOCH);
 
     private final SystemEntitlementManager systemEntitlementManager;
     private SaltApi saltApi;
@@ -3281,7 +3287,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("oid", oid);
-        params.put("date", "1970-01-01 00:00:00");
+        params.put("date", DEFAULT_EARLIEST_EVENT_DATE);
         params.put("limit", null);
         params.put("offset", null);
 
@@ -3302,12 +3308,11 @@ public class SystemManager extends BaseManager {
                                                                 Integer offset, Integer limit) {
         final SelectMode m = ModeFactory.getMode("System_queries", "system_events_history");
 
-        final SimpleDateFormat formatter = new SimpleDateFormat(LocalizationService.RHN_DB_DATEFORMAT);
-
         final Map<String, Object> params = new HashMap<>();
         params.put("sid", server.getId());
         params.put("oid", org.getId());
-        params.put("date", earliestDate != null ? formatter.format(earliestDate) : "1970-01-01 00:00:00");
+        params.put("date", earliestDate != null ?
+                TimeConversion.localDateTimeStringFromDate(earliestDate) : DEFAULT_EARLIEST_EVENT_DATE);
         params.put("limit", limit);
         params.put("offset", offset);
 

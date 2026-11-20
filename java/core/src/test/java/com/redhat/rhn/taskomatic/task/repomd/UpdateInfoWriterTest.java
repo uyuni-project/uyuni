@@ -37,8 +37,9 @@ import com.redhat.rhn.testing.TestUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Tests for the {@link com.redhat.rhn.taskomatic.task.repomd.UpdateInfoWriter} generator.
@@ -97,15 +98,17 @@ public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
         UpdateInfoWriter metadataWriter = new UpdateInfoWriter(buffer);
         metadataWriter.getUpdateInfo(baseChannel);
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault());
 
         final String xml = buffer.toString();
 
         TestUtils.assertContains(xml, "<id>SUSE-SLE-SERVER-2016-1234</id>");
         TestUtils.assertContains(xml, "<title>" + errata.getSynopsis() + "</title>");
         TestUtils.assertContains(xml, "<severity>" + errata.getSeverity().getLocalizedLabel() + "</severity>");
-        TestUtils.assertContains(xml, "<issued date=\"" + df.format(errata.getIssueDate()) + "\"/>");
-        TestUtils.assertContains(xml, "<updated date=\"" + df.format(errata.getUpdateDate()) + "\"/>");
+        TestUtils.assertContains(xml,
+                "<issued date=\"" + df.format(Instant.ofEpochMilli(errata.getIssueDate().getTime())) + "\"/>");
+        TestUtils.assertContains(xml,
+                "<updated date=\"" + df.format(Instant.ofEpochMilli(errata.getUpdateDate().getTime())) + "\"/>");
         TestUtils.assertContains(xml, "<rights>" + errata.getRights() + "</rights>");
         TestUtils.assertContains(xml, "<description>" + errata.getDescription() + "</description>");
 

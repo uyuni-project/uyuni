@@ -65,10 +65,11 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -76,7 +77,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -106,6 +106,8 @@ public class DownloadFile extends DownloadAction {
     private static final String CONTENT_TYPE_TEXT_PLAIN = "text/plain";
     private static final Long DOWNLOAD_REPO_LOG_LENGTH = 102400L;
     private static final Long DOWNLOAD_REPO_LOG_MIN_LENGTH = 10L;
+    private static final DateTimeFormatter LAST_MODIFIED_FORMATTER =
+            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US).withZone(ZoneId.of("GMT"));
 
     /** {@inheritDoc} */
     @Override
@@ -560,11 +562,9 @@ public class DownloadFile extends DownloadAction {
         log.debug("returning getStreamForPath");
 
         File actualFile = new File(diskPath);
-        Date mtime = new Date(actualFile.lastModified());
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         setContentInfo(response, actualFile.length(), CONTENT_TYPE_OCTET_STREAM);
-        response.addHeader("last-modified", formatter.format(mtime));
+        response.addHeader("last-modified",
+                LAST_MODIFIED_FORMATTER.format(Instant.ofEpochMilli(actualFile.lastModified())));
         log.debug("added last-modified and content-length values");
         return getStreamForPath(diskPath, CONTENT_TYPE_OCTET_STREAM);
     }
@@ -771,10 +771,7 @@ public class DownloadFile extends DownloadAction {
         }
         setContentInfo(response, size, CONTENT_TYPE_OCTET_STREAM);
         response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
-        Date mtime = new Date(actualFile.lastModified());
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-        String fdate = formatter.format(mtime);
+        String fdate = LAST_MODIFIED_FORMATTER.format(Instant.ofEpochMilli(actualFile.lastModified()));
         response.addHeader("last-modified", fdate);
         response.addHeader("Content-Range", "bytes " + start + "-" + end + "/" + totalSize);
         response.addHeader("Accept-Ranges", "bytes");
