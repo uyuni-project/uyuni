@@ -51,7 +51,10 @@ LOG = None
 
 
 def log_time():
-    if time.daylight:
+    now = time.localtime(time.time())
+    # time.daylight only says that the zone has DST rules, not that DST
+    # is in effect now; tm_isdst says that
+    if time.daylight and now.tm_isdst > 0:
         # altzone provides the DST-corrected time
         tz_offset = time.altzone
     else:
@@ -68,7 +71,7 @@ def log_time():
 
     # pylint: disable-next=consider-using-f-string
     tz_offset_string = " %s%02d:%02d" % (sign, hours, mins)
-    t = time.strftime("%Y/%m/%d %H:%M:%S", time.localtime(time.time()))
+    t = time.strftime("%Y/%m/%d %H:%M:%S", now)
     return t + tz_offset_string
 
 

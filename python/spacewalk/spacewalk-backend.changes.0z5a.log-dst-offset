@@ -1,0 +1,2 @@
+- Fix the UTC offset of log timestamps outside daylight saving
+  time (gh#uyuni-project/uyuni#12809)
