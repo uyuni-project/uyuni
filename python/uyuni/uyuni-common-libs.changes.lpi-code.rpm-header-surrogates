@@ -1,0 +1,3 @@
+- Fix repository sync of RPM packages with non-UTF-8 header data
+  (e.g. GBK file names) on rpm 4.15 and newer
+  (gh#uyuni-project/uyuni#12875)
