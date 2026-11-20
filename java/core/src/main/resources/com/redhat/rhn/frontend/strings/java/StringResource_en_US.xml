@@ -9792,6 +9792,9 @@ For a detailed analysis, please refer to the log files.</source>
       <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve">
         <source>Failed to migrate the branch server. See log files for details.</source>
       </trans-unit>
+      <trans-unit id="event.rbsmigrationmoreentries" xml:space="preserve">
+        <source>...and {0} more entries</source>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfinished" xml:space="preserve">
         <source>Proxy migration: finished</source>
       </trans-unit>
