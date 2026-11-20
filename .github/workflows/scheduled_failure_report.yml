@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: Scheduled Acceptance Tests failure report
+
+# Lists the PRs merged since the last green scheduled run, to narrow down
+# which change broke master. Metadata only: no PR code is checked out or run.
+on:
+  workflow_run:
+    workflows: ["Scheduled Acceptance Tests"]
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: read
+
+jobs:
+  report:
+    if: >-
+      github.repository == 'uyuni-project/uyuni' &&
+      github.event.workflow_run.conclusion == 'failure' &&
+      github.event.workflow_run.head_branch == 'master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the report script
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+        with:
+          sparse-checkout: .github/scripts
+          persist-credentials: false
+
+      - name: List PRs merged since the last green run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          RUN_TIME: ${{ github.event.workflow_run.created_at }}
+        shell: bash
+        run: |
+          {
+            echo "Scheduled acceptance tests failed on master: [run]($RUN_URL)"
+            echo
+            .github/scripts/prs_since_green.sh acceptance_tests_scheduler.yml master "$GITHUB_REPOSITORY" "$HEAD_SHA" "$RUN_TIME"
+          } | tee report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post the report to Slack
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ -z "$SLACK_WEBHOOK_URL" ]; then
+            echo "SLACK_WEBHOOK_URL is not set, skipping."
+            exit 0
+          fi
+          jq -Rs '{text: (
+              gsub("&"; "&amp;") | gsub("<"; "&lt;") | gsub(">"; "&gt;")
+              | gsub("\\[(?<t>[^\\]]*)\\]\\((?<u>https://[^)]*)\\)"; "<\(.u)|\(.t)>")
+            )}' report.md |
+            curl -sS --fail -X POST -H 'Content-type: application/json' --data @- "$SLACK_WEBHOOK_URL"
