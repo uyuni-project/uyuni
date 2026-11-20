@@ -1,0 +1,1 @@
+- Fix /tmp SELinux denials on Kubernetes with the Uyuni image
