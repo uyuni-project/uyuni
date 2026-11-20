@@ -13,7 +13,8 @@ import { RecurringPlaybookPicker } from "manager/recurring/recurring-playbook-pi
 import { AsyncButton, Button } from "components/buttons";
 import { DEPRECATED_Select, Form } from "components/input";
 import { Utils as MessagesUtils } from "components/messages/messages";
-import { InnerPanel } from "components/panels/InnerPanel";
+import { Panel } from "components/panels/Panel";
+import { TopPanel } from "components/panels/TopPanel";
 import { RecurringEventPicker } from "components/picker/recurring-event-picker";
 import { PoliciesPicker } from "components/policies-picker";
 import { StatesPicker } from "components/states-picker";
@@ -258,8 +259,15 @@ class RecurringActionsEdit extends Component<Props, State> {
     if (!this.state.details.type && this.isEdit()) {
       return false;
     }
-    const buttons = [
-      <div className="btn-group pull-right" key="buttons-right">
+    const buttons = (
+      <>
+        <Button
+          id="back-btn"
+          className="btn-default"
+          icon="fa-chevron-left"
+          text={t("Back to list")}
+          handler={() => this.props.onActionChanged("back")}
+        />
         <Toggler
           text={t("Test mode")}
           value={this.state.details.test}
@@ -279,86 +287,79 @@ class RecurringActionsEdit extends Component<Props, State> {
           defaultType="btn-primary"
           text={(this.isEdit() ? t("Update ") : t("Create ")) + t("Schedule")}
         />
-      </div>,
-    ];
-    const buttonsLeft = [
-      <div className="btn-group pull-left" key="buttons-left">
-        <Button
-          id="back-btn"
-          className="btn-default"
-          icon="fa-chevron-left"
-          text={t("Back to list")}
-          handler={() => this.props.onActionChanged("back")}
-        />
-      </div>,
-    ];
+      </>
+    );
 
     return (
-      <InnerPanel
+      <TopPanel
         title={this.isEdit() ? this.state.scheduleName : t("Schedule Recurring Action")}
         icon="spacewalk-icon-salt"
-        buttonsLeft={buttonsLeft}
-        buttons={buttons}
+        button={buttons}
       >
-        <Form onChange={this.onActionTypeChanged} model={{ actionTypeDescription: this.state.actionTypeDescription }}>
-          <DEPRECATED_Select
-            required
-            name="actionTypeDescription"
-            label={t("Action Type")}
-            disabled={this.isEdit()}
-            options={this.getTypes()}
-            labelClass="col-sm-3"
-            divClass="col-sm-6"
-          />
-        </Form>
-        <RecurringEventPicker
-          scheduleName={this.state.scheduleName}
-          type={this.state.details.type}
-          cron={this.state.cron}
-          cronTimes={this.state.details.cronTimes}
-          onScheduleNameChanged={this.onScheduleNameChanged}
-          onTypeChanged={this.onTypeChanged}
-          onCronTimesChanged={this.onCronTimesChanged}
-          onCronChanged={this.onCustomCronChanged}
-        />
-        {window.entityType === "NONE" || this.state.actionTypeDescription !== "Highstate" ? null : (
-          <DisplayHighstate minions={this.state.minions} />
-        )}
-        {this.state.actionTypeDescription === "Custom state" && (
-          <span>
-            <h3>
-              {t("Configure states to execute")}
-              &nbsp;
-            </h3>
-            <StatesPicker
-              type={"state"}
-              matchUrl={this.matchUrl}
-              saveRequest={this.onSaveStates}
-              applyRequest={this.onClickExecute}
-              showTransactionalUpdate={this.hasTransactionalSystems()}
+        <Panel>
+          <Form onChange={this.onActionTypeChanged} model={{ actionTypeDescription: this.state.actionTypeDescription }}>
+            <DEPRECATED_Select
+              required
+              name="actionTypeDescription"
+              label={t("Action Type")}
+              disabled={this.isEdit()}
+              options={this.getTypes()}
+              labelClass="col-sm-3"
+              divClass="col-sm-6"
             />
-          </span>
-        )}
-        {this.state.actionTypeDescription === "Scap Policy" && (
-          <span>
-            <h3>
-              {t("SCAP Policies")}
-              &nbsp;
-            </h3>
-            <PoliciesPicker matchUrl={(filter) => this.matchUrl("policy", filter)} saveRequest={this.onSavePolicies} />
-          </span>
-        )}
-        {this.state.actionTypeDescription === "Ansible Playbook" && (
-          <RecurringPlaybookPicker
-            minionServerId={this.state.targetId}
-            playbookPath={this.state.details.playbookPath}
-            inventoryPath={this.state.details.inventoryPath}
-            flushCache={this.state.details.flushCache}
-            variables={this.state.details.extraVars}
-            onSelectPlaybook={this.onSelectPlaybook}
+          </Form>
+          <RecurringEventPicker
+            scheduleName={this.state.scheduleName}
+            type={this.state.details.type}
+            cron={this.state.cron}
+            cronTimes={this.state.details.cronTimes}
+            onScheduleNameChanged={this.onScheduleNameChanged}
+            onTypeChanged={this.onTypeChanged}
+            onCronTimesChanged={this.onCronTimesChanged}
+            onCronChanged={this.onCustomCronChanged}
           />
-        )}
-      </InnerPanel>
+          {window.entityType === "NONE" || this.state.actionTypeDescription !== "Highstate" ? null : (
+            <DisplayHighstate minions={this.state.minions} />
+          )}
+          {this.state.actionTypeDescription === "Custom state" && (
+            <span>
+              <h3>
+                {t("Configure states to execute")}
+                &nbsp;
+              </h3>
+              <StatesPicker
+                type={"state"}
+                matchUrl={this.matchUrl}
+                saveRequest={this.onSaveStates}
+                applyRequest={this.onClickExecute}
+                showTransactionalUpdate={this.hasTransactionalSystems()}
+              />
+            </span>
+          )}
+          {this.state.actionTypeDescription === "Scap Policy" && (
+            <span>
+              <h3>
+                {t("SCAP Policies")}
+                &nbsp;
+              </h3>
+              <PoliciesPicker
+                matchUrl={(filter) => this.matchUrl("policy", filter)}
+                saveRequest={this.onSavePolicies}
+              />
+            </span>
+          )}
+          {this.state.actionTypeDescription === "Ansible Playbook" && (
+            <RecurringPlaybookPicker
+              minionServerId={this.state.targetId}
+              playbookPath={this.state.details.playbookPath}
+              inventoryPath={this.state.details.inventoryPath}
+              flushCache={this.state.details.flushCache}
+              variables={this.state.details.extraVars}
+              onSelectPlaybook={this.onSelectPlaybook}
+            />
+          )}
+        </Panel>
+      </TopPanel>
     );
   }
 }

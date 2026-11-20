@@ -133,7 +133,7 @@ class ImageProfiles extends Component<Props, State> {
 
   render() {
     const panelButtons = (
-      <div className="pull-right btn-group">
+      <>
         {window.isAdmin && this.state.selectedItems.length > 0 && (
           <ModalButton
             id="delete-selected"
@@ -155,7 +155,7 @@ class ImageProfiles extends Component<Props, State> {
             href="/rhn/manager/cm/imageprofiles/create"
           />
         )}
-      </div>
+      </>
     );
 
     return (

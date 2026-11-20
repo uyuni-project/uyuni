@@ -68,7 +68,7 @@ export class MigrateSlavesForm extends Component<Props, State> {
         button={
           this.props.migrateFrom === MigrationVersion.v2 && (
             // When migrating from ISSv2 the user needs to add all the information about the remote servers
-            <div className="btn-group pull-right">
+            <>
               <ModalEditButton
                 buttonLabel={t("Add Server")}
                 buttonIcon="fa-plus"
@@ -79,7 +79,7 @@ export class MigrateSlavesForm extends Component<Props, State> {
                 invalidHint={t("Has to be a valid FQDN address")}
                 onSave={(value) => this.onAddServer(value)}
               />
-            </div>
+            </>
           )
         }
       >

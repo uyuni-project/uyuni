@@ -32,7 +32,7 @@ const meta = {
     onRemove: action("item removed"),
     children: () => null,
     id: "multi-input",
-    title: "Items",
+    title: "Email Addresses",
     prefix: "item",
     disabled: false,
   },
@@ -71,8 +71,10 @@ const meta = {
       description: "CSS class applied to the row containing each item's fields.",
     },
     panelHeading: {
-      control: false,
-      description: "HTML tag name for panel headers (e.g., 'h2', 'h3').",
+      control: "select",
+      options: ["h1", "h2", "h3", "h4", "label"],
+      description:
+        "HTML tag used for the list title (default 'h2'). Use 'label' to make the list look like a form field.",
     },
     panelClassName: {
       control: "text",
@@ -130,11 +132,14 @@ const SimpleListExample = (args: Partial<FormMultiInputProps>) => {
     >
       <FormMultiInput
         id="email-list"
-        title="Email Addresses"
+        title={args.title ?? "Email Addresses"}
         prefix="email"
         onAdd={handleAdd}
         onRemove={handleRemove}
         disabled={args.disabled}
+        rowClass={args.rowClass}
+        panelHeading={args.panelHeading}
+        panelClassName={args.panelClassName}
       >
         {(index) => (
           <Text
@@ -566,6 +571,150 @@ export const ComplexForm: Story = {
       description: {
         story:
           "Complex example with multiple fields per item. Panel titles update dynamically based on the contact's name. Note how the prefix-based naming keeps all fields organized in the model.",
+      },
+    },
+  },
+};
+
+const useMultiInputModel = (
+  prefix: string,
+  emptyItem: Record<string, string>,
+  initial: Record<string, string> = {}
+) => {
+  const [model, setModel] = useState<Record<string, string>>(initial);
+
+  const onAdd = (index: number) => {
+    const newFields = Object.fromEntries(
+      Object.entries(emptyItem).map(([name, value]) => [`${prefix}${index}${name}`, value])
+    );
+    setModel({ ...model, ...newFields });
+  };
+
+  const onRemove = (index: number) => {
+    setModel(
+      Object.fromEntries(Object.entries(model).filter(([key]) => !new RegExp(`^${prefix}${index}(_|$)`).test(key)))
+    );
+  };
+
+  return { model, setModel, onAdd, onRemove };
+};
+
+const FormFieldStyleComponent = () => {
+  const { model, setModel, onAdd, onRemove } = useMultiInputModel(
+    "intermediateCA",
+    { "": "" },
+    { intermediateCA0: "" }
+  );
+
+  return (
+    <Form model={model} onChange={(newModel) => setModel({ ...newModel })} formDirection="form-horizontal">
+      <Text name="rootCA" label="Root CA" type="file" labelClass="col-md-3" divClass="col-md-6" />
+      <div className="form-group">
+        <FormMultiInput
+          id="intermediateCAs"
+          title="Intermediate CAs"
+          prefix="intermediateCA"
+          onAdd={onAdd}
+          onRemove={onRemove}
+          panelHeading="label"
+          panelClassName="panel-default col-md-6 offset-md-3 no-padding"
+        >
+          {(index) => (
+            <Text
+              name={`intermediateCA${index}`}
+              label="An intermediate CA certificate (PEM format)"
+              type="file"
+              divClass="col-md-8"
+              labelClass="col-md-4 no-padding"
+              className="col-md-11"
+            />
+          )}
+        </FormMultiInput>
+      </div>
+      <Text name="proxyCertificate" label="Proxy certificate" type="file" labelClass="col-md-3" divClass="col-md-6" />
+    </Form>
+  );
+};
+
+export const FormFieldStyle: Story = {
+  render: () => <FormFieldStyleComponent />,
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Embedding the list among regular form fields, as the proxy configuration pages do. `panelHeading="label"` renders the title like a field label and `panelClassName` places the panel in the form grid. Each item has a single field named `{prefix}{index}`, without a suffix.',
+      },
+    },
+  },
+};
+
+const PanelTitleOnlyComponent = () => {
+  const { model, setModel, onAdd, onRemove } = useMultiInputModel(
+    "repo",
+    { _url: "" },
+    { repo0_url: "https://download.example.com/repo" }
+  );
+
+  return (
+    <Form model={model} onChange={(newModel) => setModel({ ...newModel })}>
+      <FormMultiInput
+        id="repositories"
+        title="Repositories"
+        prefix="repo"
+        onAdd={onAdd}
+        onRemove={onRemove}
+        panelTitle={(index) => `Repository ${index + 1}`}
+      >
+        {(index) => <Text name={`repo${index}_url`} label="URL" labelClass="col-md-3" divClass="col-md-6" />}
+      </FormMultiInput>
+    </Form>
+  );
+};
+
+export const PanelTitleOnly: Story = {
+  render: () => <PanelTitleOnlyComponent />,
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story: "Passing only `panelTitle` is enough to wrap each item in its own Panel, without an icon.",
+      },
+    },
+  },
+};
+
+const RowClassComponent = () => {
+  const { model, setModel, onAdd, onRemove } = useMultiInputModel(
+    "alias",
+    { _name: "" },
+    { alias0_name: "web01", alias1_name: "web02" }
+  );
+
+  return (
+    <Form model={model} onChange={(newModel) => setModel({ ...newModel })}>
+      <FormMultiInput
+        id="aliases"
+        title="Host Aliases"
+        prefix="alias"
+        onAdd={onAdd}
+        onRemove={onRemove}
+        rowClass="align-items-center"
+      >
+        {(index) => <Text name={`alias${index}_name`} label="Alias" labelClass="col-md-3" divClass="col-md-6" />}
+      </FormMultiInput>
+    </Form>
+  );
+};
+
+export const RowClass: Story = {
+  render: () => <RowClassComponent />,
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          "`rowClass` adds CSS classes to each item row in the default (non-panel) layout, here to center the fields and the remove button vertically. It has no effect when items are wrapped in panels.",
       },
     },
   },

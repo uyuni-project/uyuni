@@ -352,7 +352,7 @@ class ImageView extends Component<ImageViewProps, ImageViewState> {
 
   render() {
     const panelButtons = (
-      <div className="pull-right btn-group">
+      <>
         {window.isAdmin && this.state.selectedCount > 0 && !this.state.selected && (
           <ModalButton
             id="delete-selected"
@@ -383,7 +383,7 @@ class ImageView extends Component<ImageViewProps, ImageViewState> {
           />
         )}
         <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={this.reloadData} />
-      </div>
+      </>
     );
 
     const selected = Object.assign({}, this.state.selected, this.state.selectedRuntime);

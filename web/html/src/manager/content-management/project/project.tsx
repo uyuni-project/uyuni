@@ -108,9 +108,7 @@ const Project = (props: Props) => {
       helpUrl="reference/clm/clm-projects.html" // icon="fa-plus"
       button={
         hasEditingPermissions && (
-          <div className="pull-right btn-group">
-            <ModalButton className="btn-danger" title={t("Delete")} text={t("Delete")} target="delete-project-modal" />
-          </div>
+          <ModalButton className="btn-danger" title={t("Delete")} text={t("Delete")} target="delete-project-modal" />
         )
       }
     >

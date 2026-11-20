@@ -31,7 +31,7 @@ const IssPeripheral = (props: Props) => {
         icon="spacewalk-icon-suse-manager"
         helpUrl="specialized-guides/large-deployments/hub-online-sync.html#_registration_of_the_hub_and_peripheral_servers"
         button={
-          <div className="btn-group pull-right">
+          <>
             <Button
               id="addPeripheral"
               icon="fa-plus"
@@ -65,7 +65,7 @@ const IssPeripheral = (props: Props) => {
                 />,
               ]}
             />
-          </div>
+          </>
         }
       >
         <PeripheralsList />

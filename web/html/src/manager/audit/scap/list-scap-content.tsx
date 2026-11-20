@@ -93,7 +93,7 @@ const ScapContent = (): JSX.Element => {
   );
 
   const renderActions = (row: ScapContentData) => (
-    <div className="btn-group">
+    <>
       <LinkButton
         className="btn-default btn-sm"
         title={t("Edit")}
@@ -108,7 +108,7 @@ const ScapContent = (): JSX.Element => {
         item={row}
         onClick={setSelected}
       />
-    </div>
+    </>
   );
 
   return (

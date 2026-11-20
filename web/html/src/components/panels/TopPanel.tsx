@@ -22,7 +22,7 @@ export function TopPanel(props: Props) {
   return (
     <>
       <div className="spacewalk-toolbar-h1">
-        {props.button}
+        <div className="pull-right btn-group">{props.button}</div>
         <h1>
           {props.icon && <i className={`fa ${props.icon}`} />}
           {t(props.title)}

@@ -86,7 +86,7 @@ const TailoringFiles = (): JSX.Element => {
   );
 
   const renderActions = (row: TailoringFileData) => (
-    <div className="btn-group">
+    <>
       <LinkButton
         className="btn-default btn-sm"
         title={t("Edit")}
@@ -101,7 +101,7 @@ const TailoringFiles = (): JSX.Element => {
         item={row}
         onClick={setSelected}
       />
-    </div>
+    </>
   );
 
   return (

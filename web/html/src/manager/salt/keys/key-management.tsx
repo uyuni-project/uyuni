@@ -162,9 +162,7 @@ class KeyManagement extends Component<Props, State> {
 
   render() {
     const panelButtons = (
-      <div className="pull-right btn-group">
-        <AsyncButton id="reload" icon="fa-refresh" text="Refresh" action={this.reloadKeys} />
-      </div>
+      <AsyncButton id="reload" icon="fa-refresh" text="Refresh" action={this.reloadKeys} />
     );
     return (
       <span>

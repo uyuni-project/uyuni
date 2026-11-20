@@ -236,7 +236,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
 
   render() {
     const buttons = [
-      <div className="btn-group pull-right" key="buttons-right">
+      <div key="buttons-right">
         <Button
           text={t("Back")}
           icon="fa-chevron-left"
