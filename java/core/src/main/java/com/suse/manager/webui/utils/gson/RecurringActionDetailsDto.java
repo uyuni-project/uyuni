@@ -17,6 +17,7 @@
 package com.suse.manager.webui.utils.gson;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,6 +58,42 @@ public class RecurringActionDetailsDto {
 
     /** The policies assigned to a scap policy schedule */
     private Set<ScapPolicyJson> policies;
+
+    /** Target Content Project label for CLM actions */
+    private String projectLabel;
+
+    /** Target Content Project name for CLM actions */
+    private String projectName;
+
+    /** Target Content Environment label for CLM promote actions */
+    private String environmentLabel;
+
+    /** Target Content Environment name for CLM promote actions */
+    private String environmentName;
+
+    /** Target Content Successor Environment label for CLM promote actions */
+    private String nextEnvironmentLabel;
+
+    /** Target Content Successor Environment name for CLM promote actions */
+    private String nextEnvironmentName;
+
+    /** Whether the recurring action schedule is active */
+    private boolean active;
+
+    /** Next scheduled execution timestamp of the trigger */
+    private Date nextExecution;
+
+    /** Current deployed version in source environment */
+    private Long sourceEnvironmentVersion;
+
+    /** Current deployed version in target environment */
+    private Long targetEnvironmentVersion;
+
+    /** Timestamp when target environment was last modified/promoted */
+    private Date targetEnvironmentModified;
+
+    /** Recent build history for CLM build schedules */
+    private List<ClmBuildHistoryDto> buildHistory;
 
     /**
      * @return the Array containing Quartz information
@@ -259,5 +296,173 @@ public class RecurringActionDetailsDto {
      */
     public void setPolicies(Set<ScapPolicyJson> policiesIn) {
         this.policies = policiesIn;
+    }
+
+    /**
+     * @return the project label
+     */
+    public String getProjectLabel() {
+        return projectLabel;
+    }
+
+    /**
+     * @param projectLabelIn the project label
+     */
+    public void setProjectLabel(String projectLabelIn) {
+        this.projectLabel = projectLabelIn;
+    }
+
+    /**
+     * @return the project name
+     */
+    public String getProjectName() {
+        return projectName;
+    }
+
+    /**
+     * @param projectNameIn the project name
+     */
+    public void setProjectName(String projectNameIn) {
+        this.projectName = projectNameIn;
+    }
+
+    /**
+     * @return the environment label
+     */
+    public String getEnvironmentLabel() {
+        return environmentLabel;
+    }
+
+    /**
+     * @param environmentLabelIn the environment label
+     */
+    public void setEnvironmentLabel(String environmentLabelIn) {
+        this.environmentLabel = environmentLabelIn;
+    }
+
+    /**
+     * @return the environment name
+     */
+    public String getEnvironmentName() {
+        return environmentName;
+    }
+
+    /**
+     * @param environmentNameIn the environment name
+     */
+    public void setEnvironmentName(String environmentNameIn) {
+        this.environmentName = environmentNameIn;
+    }
+
+    /**
+     * @return the next environment label
+     */
+    public String getNextEnvironmentLabel() {
+        return nextEnvironmentLabel;
+    }
+
+    /**
+     * @param nextEnvironmentLabelIn the next environment label
+     */
+    public void setNextEnvironmentLabel(String nextEnvironmentLabelIn) {
+        this.nextEnvironmentLabel = nextEnvironmentLabelIn;
+    }
+
+    /**
+     * @return the next environment name
+     */
+    public String getNextEnvironmentName() {
+        return nextEnvironmentName;
+    }
+
+    /**
+     * @param nextEnvironmentNameIn the next environment name
+     */
+    public void setNextEnvironmentName(String nextEnvironmentNameIn) {
+        this.nextEnvironmentName = nextEnvironmentNameIn;
+    }
+
+    /**
+     * @return true if the recurring action is active
+     */
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * @param activeIn whether active
+     */
+    public void setActive(boolean activeIn) {
+        this.active = activeIn;
+    }
+
+    /**
+     * @return the next execution timestamp
+     */
+    public Date getNextExecution() {
+        return nextExecution;
+    }
+
+    /**
+     * @param nextExecutionIn the next execution timestamp
+     */
+    public void setNextExecution(Date nextExecutionIn) {
+        this.nextExecution = nextExecutionIn;
+    }
+
+    /**
+     * @return the source environment version
+     */
+    public Long getSourceEnvironmentVersion() {
+        return sourceEnvironmentVersion;
+    }
+
+    /**
+     * @param sourceEnvironmentVersionIn the source environment version
+     */
+    public void setSourceEnvironmentVersion(Long sourceEnvironmentVersionIn) {
+        this.sourceEnvironmentVersion = sourceEnvironmentVersionIn;
+    }
+
+    /**
+     * @return the target environment version
+     */
+    public Long getTargetEnvironmentVersion() {
+        return targetEnvironmentVersion;
+    }
+
+    /**
+     * @param targetEnvironmentVersionIn the target environment version
+     */
+    public void setTargetEnvironmentVersion(Long targetEnvironmentVersionIn) {
+        this.targetEnvironmentVersion = targetEnvironmentVersionIn;
+    }
+
+    /**
+     * @return the target environment modified timestamp
+     */
+    public Date getTargetEnvironmentModified() {
+        return targetEnvironmentModified;
+    }
+
+    /**
+     * @param targetEnvironmentModifiedIn the target environment modified timestamp
+     */
+    public void setTargetEnvironmentModified(Date targetEnvironmentModifiedIn) {
+        this.targetEnvironmentModified = targetEnvironmentModifiedIn;
+    }
+
+    /**
+     * @return the build history list
+     */
+    public List<ClmBuildHistoryDto> getBuildHistory() {
+        return buildHistory;
+    }
+
+    /**
+     * @param buildHistoryIn the build history list
+     */
+    public void setBuildHistory(List<ClmBuildHistoryDto> buildHistoryIn) {
+        this.buildHistory = buildHistoryIn;
     }
 }

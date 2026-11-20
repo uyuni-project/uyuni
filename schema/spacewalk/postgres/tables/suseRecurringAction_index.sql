@@ -25,6 +25,6 @@ CREATE UNIQUE INDEX suse_rec_action_name_grp_uq
     WHERE minion_id IS NULL AND org_id IS NULL AND group_id IS NOT NULL;
 
 CREATE UNIQUE INDEX suse_rec_action_name_org_uq
-    ON suseRecurringAction(name, org_id)
+    ON suseRecurringAction(name, org_id, target_type)
     WHERE minion_id IS NULL AND group_id IS NULL AND org_id IS NOT NULL;
 

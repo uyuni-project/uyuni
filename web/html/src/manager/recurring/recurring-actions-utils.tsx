@@ -12,12 +12,21 @@ const targetTypeToString = (targetType?: string) => {
       return t("Group");
     case "ORG":
       return t("Organization");
+    case "NO_ENTITY":
+    case "NO-ENTITY":
+      return t("Content Lifecycle");
   }
   return null;
 };
 
-const targetNameLink = (targetName?: string, targetType?: string, targetId?: number, targetAccessible?: boolean) => {
-  if (!targetAccessible) {
+const targetNameLink = (
+  targetName?: string,
+  targetType?: string,
+  targetId?: number,
+  targetAccessible?: boolean,
+  projectLabel?: string
+) => {
+  if (!targetAccessible && targetType !== "NO_ENTITY" && targetType !== "NO-ENTITY") {
     return targetName;
   }
   switch (targetType) {
@@ -30,8 +39,14 @@ const targetNameLink = (targetName?: string, targetType?: string, targetId?: num
         return <a href={"/rhn/manager/multiorg/recurring-actions?oid=" + targetId}>{targetName}</a>;
       }
       return <a href={"/rhn/manager/yourorg/recurring-actions"}>{targetName}</a>;
+    case "NO_ENTITY":
+    case "NO-ENTITY":
+      if (projectLabel) {
+        return <a href={"/rhn/manager/contentmanagement/project/" + projectLabel}>{targetName}</a>;
+      }
+      return <a href="/rhn/manager/contentmanagement/projects">{targetName}</a>;
   }
-  return null;
+  return targetName ?? null;
 };
 
 const inferEntityParams = () => {
@@ -41,13 +56,18 @@ const inferEntityParams = () => {
     return "/ORG/" + window.orgId;
   } else if (window.entityType === "MINION") {
     return "/MINION/" + window.minions?.[0].id;
+  } else if (window.entityType === "CLM") {
+    return "/CLM/0";
   }
   return "";
 };
 
 const isReadOnly = (item) => {
+  if (window.entityType === "CLM") {
+    return false;
+  }
   const params = inferEntityParams().split("/");
-  return !(params[1] === item.targetType && params[2] === item.targetId.toString());
+  return !(params[1] === item.targetType && params[2] === item.targetId?.toString());
 };
 
 export { targetTypeToString, targetNameLink, inferEntityParams, isReadOnly };

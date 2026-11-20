@@ -18,10 +18,14 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
@@ -29,6 +33,7 @@ import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -59,7 +64,7 @@ public class RecurringActionJob extends RhnJavaJob {
     }
 
     /**
-     * Schedule highstate application.
+     * Schedule recurring action application.
      *
      * If the {@link RecurringAction} data is not found, clean the schedule.
      *
@@ -84,75 +89,23 @@ public class RecurringActionJob extends RhnJavaJob {
     }
 
     private void scheduleAction(JobExecutionContext context, RecurringAction action) {
+        RecurringActionType actionType = action.getRecurringActionType();
+        if (actionType instanceof RecurringContentBuildType buildType) {
+            executeClmBuild(buildType, action);
+            return;
+        }
+        if (actionType instanceof RecurringContentPromoteType promoteType) {
+            executeClmPromote(promoteType, action);
+            return;
+        }
+
         List<Long> minionIds = maintenanceManager.systemIdsMaintenanceMode(action.computeMinions());
 
         if (action.getName() != null && !action.getName().isBlank()) {
             Context.getCurrentContext().setActionDescription("Recurring Action: " + action.getName());
         }
         try {
-            RecurringActionType actionType = action.getRecurringActionType();
-            if (actionType instanceof RecurringHighstate highstateType) {
-                ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
-                        Optional.of(highstateType.isTestMode()), context.getFireTime(), null);
-            }
-            else if (actionType instanceof RecurringState stateType) {
-                Set<RecurringStateConfig> configs = stateType.getStateConfig();
-                List<String> mods = configs.stream()
-                        .sorted(Comparator.comparingLong(RecurringStateConfig::getPosition))
-                        .map(RecurringStateConfig::getStateName)
-                        .collect(Collectors.toList());
-                Action a = ActionManager.scheduleApplyStates(action.getCreator(),
-                        minionIds, mods,
-                        Optional.of(Map.of("rec_id", action.getId().toString())),
-                        context.getFireTime(),
-                        Optional.of(stateType.isTestMode()),
-                        true,
-                        false,
-                        stateType.isUseTransactionalUpdate());
-                ActionFactory.save(a);
-                new TaskomaticApi().scheduleActionExecution(a);
-            }
-            else if (actionType instanceof RecurringPlaybook playbookType) {
-                AnsibleManager.schedulePlaybook(
-                        playbookType.getPlaybookPath(),
-                        playbookType.getInventoryPath(),
-                        minionIds.get(0),
-                        playbookType.isTestMode(),
-                        playbookType.isFlushCache(),
-                        playbookType.getExtraVarsContents(),
-                        context.getFireTime(),
-                        Optional.empty(),
-                        action.getCreator()
-                );
-            }
-            else if (actionType instanceof RecurringScapPolicy scapPolicyType) {
-                if (scapPolicyType.getScapPolicy() != null) {
-                    // Build parameters for SCAP scan
-                    String parameters = "--profile " + scapPolicyType.getScapPolicy().getXccdfProfileId();
-                    if (scapPolicyType.getScapPolicy().getTailoringFile() != null &&
-                            scapPolicyType.getScapPolicy().getTailoringProfileId() != null) {
-                        parameters += " --tailoring-file " + scapPolicyType.getScapPolicy().getTailoringFile().
-                          getFileName() + " --tailoring-profile-id " + scapPolicyType.getScapPolicy().
-                          getTailoringProfileId();
-                    }
-                    ActionManager.scheduleXccdfEval(
-                            action.getCreator(),
-                            new HashSet<>(minionIds),
-                            scapPolicyType.getScapPolicy().getDataStreamName(),
-                            parameters,
-                            null, // ovalFiles
-                            context.getFireTime(),
-                            scapPolicyType.getScapPolicy().getId(),
-                            null, // contentId - will be looked up from policy
-                            null, // tailoringId - will be looked up from policy
-                            true // recurring=true
-                    );
-                }
-                else {
-                    log.warn("RecurringScapPolicy {} has no SCAP policy assigned, skipping execution",
-                            action.getId());
-                }
-            }
+            scheduleMinionAction(context, action, actionType, minionIds);
         }
         catch (TaskomaticApiException e) {
             log.error("Error scheduling states application for recurring action {}", action, e);
@@ -160,6 +113,152 @@ public class RecurringActionJob extends RhnJavaJob {
         finally {
             Context.getCurrentContext().setActionDescription(null);
         }
+    }
+
+    private void executeClmBuild(RecurringContentBuildType buildType, RecurringAction action) {
+        ContentProject project = buildType.getProject();
+        if (project == null) {
+            log.warn("RecurringContentBuildType {} has no project assigned, skipping execution",
+                    action.getId());
+            return;
+        }
+        if (project.getFirstEnvironmentOpt().isEmpty()) {
+            log.warn("Skipping recurring CLM build for project '{}': " +
+                    "project has no environments configured.", project.getLabel());
+            return;
+        }
+        if (project.lookupSwSourceLeader().isEmpty()) {
+            log.warn("Skipping recurring CLM build for project '{}': " +
+                    "project has no base channel associated with it.", project.getLabel());
+            return;
+        }
+        ContentManager contentManager = new ContentManager();
+        try {
+            contentManager.buildProject(project,
+                    Optional.of("Automated build from recurring action: " + action.getName()),
+                    true, action.getCreator());
+        }
+        catch (Exception e) {
+            if (e.getMessage() != null && e.getMessage().contains("already in progress")) {
+                log.info("Build/Promote already in progress for project '{}', skipping this run.",
+                        project.getLabel());
+            }
+            else {
+                log.error("Error executing recurring CLM build for project {}", project.getLabel(), e);
+            }
+        }
+    }
+
+    private void executeClmPromote(RecurringContentPromoteType promoteType, RecurringAction action) {
+        ContentProject project = promoteType.getProject();
+        ContentEnvironment env = promoteType.getEnvironment();
+        if (project == null || env == null) {
+            log.warn("RecurringContentPromoteType {} has missing project or environment, skipping execution",
+                    action.getId());
+            return;
+        }
+        if (env.getNextEnvironmentOpt().isEmpty()) {
+            log.warn("Skipping recurring CLM promote for project '{}': " +
+                    "environment '{}' has no successor.", project.getLabel(), env.getLabel());
+            return;
+        }
+        ContentManager contentManager = new ContentManager();
+        try {
+            contentManager.promoteProject(project.getLabel(), env.getLabel(), true, action.getCreator());
+        }
+        catch (Exception e) {
+            if (e.getMessage() != null && e.getMessage().contains("already in progress")) {
+                log.info("Build/Promote already in progress for project '{}' and env '{}', skipping this run.",
+                        project.getLabel(), env.getLabel());
+            }
+            else {
+                log.error("Error executing recurring CLM promote for project {} and env {}",
+                        project.getLabel(), env.getLabel(), e);
+            }
+        }
+    }
+
+    private void scheduleMinionAction(JobExecutionContext context, RecurringAction action,
+                                      RecurringActionType actionType, List<Long> minionIds)
+            throws TaskomaticApiException {
+        if (actionType instanceof RecurringHighstate highstateType) {
+            ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
+                    Optional.of(highstateType.isTestMode()), context.getFireTime(), null);
+        }
+        else if (actionType instanceof RecurringState stateType) {
+            scheduleCustomState(context, action, stateType, minionIds);
+        }
+        else if (actionType instanceof RecurringPlaybook playbookType) {
+            schedulePlaybook(context, action, playbookType, minionIds);
+        }
+        else if (actionType instanceof RecurringScapPolicy scapPolicyType) {
+            scheduleScapPolicy(context, action, scapPolicyType, minionIds);
+        }
+    }
+
+    private void scheduleCustomState(JobExecutionContext context, RecurringAction action,
+                                     RecurringState stateType, List<Long> minionIds)
+            throws TaskomaticApiException {
+        Set<RecurringStateConfig> configs = stateType.getStateConfig();
+        List<String> mods = configs.stream()
+                .sorted(Comparator.comparingLong(RecurringStateConfig::getPosition))
+                .map(RecurringStateConfig::getStateName)
+                .collect(Collectors.toList());
+        Action a = ActionManager.scheduleApplyStates(action.getCreator(),
+                minionIds, mods,
+                Optional.of(Map.of("rec_id", action.getId().toString())),
+                context.getFireTime(),
+                Optional.of(stateType.isTestMode()),
+                true,
+                false,
+                stateType.isUseTransactionalUpdate());
+        ActionFactory.save(a);
+        new TaskomaticApi().scheduleActionExecution(a);
+    }
+
+    private void schedulePlaybook(JobExecutionContext context, RecurringAction action,
+                                  RecurringPlaybook playbookType, List<Long> minionIds)
+            throws TaskomaticApiException {
+        AnsibleManager.schedulePlaybook(
+                playbookType.getPlaybookPath(),
+                playbookType.getInventoryPath(),
+                minionIds.get(0),
+                playbookType.isTestMode(),
+                playbookType.isFlushCache(),
+                playbookType.getExtraVarsContents(),
+                context.getFireTime(),
+                Optional.empty(),
+                action.getCreator()
+        );
+    }
+
+    private void scheduleScapPolicy(JobExecutionContext context, RecurringAction action,
+                                    RecurringScapPolicy scapPolicyType, List<Long> minionIds)
+            throws TaskomaticApiException {
+        if (scapPolicyType.getScapPolicy() == null) {
+            log.warn("RecurringScapPolicy {} has no SCAP policy assigned, skipping execution",
+                    action.getId());
+            return;
+        }
+        String parameters = "--profile " + scapPolicyType.getScapPolicy().getXccdfProfileId();
+        if (scapPolicyType.getScapPolicy().getTailoringFile() != null &&
+                scapPolicyType.getScapPolicy().getTailoringProfileId() != null) {
+            parameters += " --tailoring-file " + scapPolicyType.getScapPolicy().getTailoringFile().
+              getFileName() + " --tailoring-profile-id " + scapPolicyType.getScapPolicy().
+              getTailoringProfileId();
+        }
+        ActionManager.scheduleXccdfEval(
+                action.getCreator(),
+                new HashSet<>(minionIds),
+                scapPolicyType.getScapPolicy().getDataStreamName(),
+                parameters,
+                null,
+                context.getFireTime(),
+                scapPolicyType.getScapPolicy().getId(),
+                null,
+                null,
+                true
+        );
     }
 
     private void cleanSchedule(String scheduleName) {

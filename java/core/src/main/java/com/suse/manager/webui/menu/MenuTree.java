@@ -397,7 +397,10 @@ public class MenuTree {
                     .withDir("/rhn/manager/contentmanagement/project"))
             .addChild(new MenuItem("contentmanagement.nav.filters")
                     .withPrimaryUrl("/rhn/manager/contentmanagement/filters")
-                    .withDir("/rhn/manager/contentmanagement/filter"));
+                    .withDir("/rhn/manager/contentmanagement/filter"))
+            .addChild(new MenuItem("contentmanagement.nav.recurring")
+                    .withPrimaryUrl("/rhn/manager/contentmanagement/recurring")
+                    .withDir("/rhn/manager/contentmanagement/recurring"));
     }
 
     private MenuItem getAuditNode(User user, Map<String, Boolean> adminRoles) {
