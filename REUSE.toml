@@ -150,7 +150,9 @@ path = [
   "spacewalk/setup/salt/*.conf",
   "web/.prettier*",
   "web/html/src/.babelrc",
-  "*/po/Makevars"
+  "*/po/Makevars",
+  "node-red-contrib-uyuni/package.json",
+  "node-red-contrib-uyuni/examples/*.json"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "SUSE LLC"
