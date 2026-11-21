@@ -1,0 +1,3 @@
+- Avoid merging stderr into stdout in ModulemdApi to prevent
+  corrupting JSON responses on GLib/Python warnings
+  (gh#uyuni-project/uyuni#12243, gh#uyuni-project/uyuni#12734)
