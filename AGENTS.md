@@ -18,6 +18,11 @@ environment instructions as overrides to this file.
 This is a large, long-lived Uyuni/Spacewalk monorepo. Treat code, manifests,
 build files, and CI workflows in the target branch as authoritative.
 
+Step-by-step procedures for recurring tasks (frontend checks, Java tests,
+Checkstyle, Python lint, writing changelogs, REUSE licensing) are skills in
+`.agents/skills/<name>/SKILL.md`. If your tool does not load skills
+automatically, read the matching file before doing that task.
+
 ## Testsuite-only changes
 
 If every changed file is under `testsuite/`, work from
@@ -100,32 +105,11 @@ and include only the expected result.
 
 ## Licensing headers (REUSE)
 
-CI runs `reuse lint` (`.github/workflows/reuse.yml`); every file needs a
-copyright and license.
-
-- Start new files that allow comments with this header, below any shebang,
-  in the file's own comment syntax (for example `#` in `tito.props`, not
-  `<!-- -->`):
-
-  ```text
-  SPDX-FileCopyrightText: <current year> SUSE LLC
-
-  SPDX-License-Identifier: <license>
-  ```
-
-- Copy the license from neighbouring files; it differs per component. It
-  must have a file in `LICENSES/`.
-- A classic copyright block with an `SPDX-License-Identifier` line is
-  sufficient. Do not add or rewrite headers in files you only edit.
-- Files that cannot hold comments (JSON, binaries, fixtures, generated
-  files) and changelog fragments get no header. Ensure a `REUSE.toml`
-  `[[annotations]]` glob covers them, extending an existing entry with the
-  same license and holder. Do not add `.license` sidecar files.
-- Third-party files keep their upstream copyright and license, recorded in
-  `REUSE.toml`.
-
-Run `reuse lint` if installed; otherwise report that the check was left to
-CI.
+CI runs `reuse lint` (`.github/workflows/reuse.yml`); every new file needs a
+copyright and license, either as an SPDX header or through a `REUSE.toml`
+annotation. Do not add or rewrite headers in files you only edit. The
+`check-reuse-licensing` skill describes the header, the annotations, and the
+local check.
 
 ## Build and test commands
 
@@ -134,23 +118,9 @@ change crosses subsystem boundaries or targeted checks expose wider failures.
 
 ### Frontend
 
-The root npm scripts delegate to `web/`, so these commands run from the
-repository root:
-
-```bash
-npm --prefix web ci --ignore-scripts --save=false
-npm run build
-npm run test -- <test-pattern>
-npm run lint
-npm run tsc
-```
-
-`npm run lint` fixes ESLint findings. `npm run lint:production` runs ESLint
-without auto-fixing, but it can still reorder `web/package.json`; run
-`npm run sort-package -- --check` separately when reproducing CI's package
-ordering check. Use npm, not Yarn. For local UI development,
-`npm run proxy -- https://<server-fqdn>` starts the development proxy and
-`npm --prefix web run storybook` starts Storybook.
+The frontend is in `web/`; the root npm scripts delegate to it. Use npm, not
+Yarn, with Node 22. The `run-frontend-checks` skill describes the install,
+build, Jest tests, ESLint, and TypeScript checks as CI runs them.
 
 ### Java
 
@@ -164,45 +134,9 @@ mvn -f java --non-recursive initialize
 mvn -f java package
 ```
 
-JUnit tests require the PostgreSQL test environment. Start it from `java/`
-before running tests:
-
-```bash
-cd java
-make -f Makefile.docker
-```
-
-This pulls the test database image, writes the git-ignored
-`java/buildconf/test/rhn.conf` from `rhn.conf.postgresql-example`, and runs
-the database container in the foreground with PostgreSQL published on
-localhost:5432. Keep it running in a separate terminal while tests run.
-
-When the agent runs in a sandbox (for example a podman-based sandbox), it
-usually cannot start containers, and `localhost` inside the sandbox is not
-the host. Ask the user to start the database on the host, outside the
-sandbox:
-
-```bash
-cd java
-make -f Makefile.docker confighost podmanrun
-```
-
-`confighost` writes `rhn.conf` with `db_host` and `report_db_host` set to
-`host.containers.internal`, so tests inside the sandbox reach the database on
-the host. If the user already started the database on the host (for example
-with plain `make -f Makefile.docker`), regenerate only the configuration
-from the repository root:
-
-```bash
-make -C java -f Makefile.docker confighost
-```
-
-Then run the owning module and test class, for example from the repository
-root:
-
-```bash
-mvn -f java/core test -DskipTests=false -Dtest=<TestClass>
-```
+JUnit tests require a PostgreSQL test database. Use the `run-java-tests`
+skill for the database setup (including sandboxes) and test runs, and the
+`run-java-checkstyle` skill for style checks.
 
 Ant/Ivy is still used by parts of the containerized integration-test workflow;
 do not remove or rewrite it merely because Maven is used for local builds.
@@ -215,26 +149,9 @@ Run backend unit tests from `python/`:
 python3 -m pytest test/unit/
 ```
 
-Run the repository's containerized lint wrapper from the root:
-
-```bash
-./python/linting/lint.sh <path>
-./python/linting/lint.sh -a
-```
-
-`lint.sh` runs Black and Pylint in the CI container image by default. In a
-sandbox that cannot run containers but provides `black` and `pylint`, add
-`-l` to use the local binaries:
-
-```bash
-./python/linting/lint.sh -l <path>
-./python/linting/lint.sh -l -a
-```
-
-Local tool versions can differ from the CI image; CI's result is
-authoritative.
-
-Python code follows Black and the repository Pylint configuration. Keep tests
+Python code follows Black and the repository Pylint configuration; run them
+with `python/linting/lint.sh` as described in the `run-python-lint` skill.
+Keep tests
 isolated with mocks and temporary paths; do not make unit tests depend on a
 developer's machine configuration.
 
@@ -289,26 +206,21 @@ on the repository's CI workflows for their execution.
 - Some documented commands such as `build-packages-for-obs` are external
   developer tools, not scripts shipped by this repository.
 
-For package changelogs, follow the existing package-specific pattern. Add a
-fragment beside the package changelog named
+For package changelogs, add a fragment beside the package changelog named
 `<package>.changes.<author>.<topic>` rather than editing the consolidated
-`<package>.changes` file directly. In changelog entries:
-
-- Add an entry only for changes visible to users. Internal refactorings
-  and developer-only changes get no changelog entry.
-- Keep entries short: summarize the change, without naming every class
-  or keyword.
-- Keep every line at 67 characters or less, including the leading `- `
-  and the two-space indent of continuation lines.
-- Wrap configuration keys and file names that contain a dot in backticks
-  or quotes (for example `server.satellite.rhn_parent` or `rhn.conf`), so
-  that only a dot ending a sentence stays unquoted.
+`<package>.changes` file directly, and only for changes visible to users.
+The `write-changelog` skill describes the format and the local validation.
 
 ## Change-specific expectations
 
 - **Frontend:** keep types precise, follow existing React patterns, and add or
   update Jest tests for behavior changes. Run lint, TypeScript, and focused
-  tests.
+  tests. Reuse the components in `web/html/src/components` before writing
+  new ones; their `*.stories.tsx` files document usage. The Storybook for
+  `master` is published at https://www.uyuni-project.org/uyuni/storybook/
+  (`index.json` there lists every story with its source file). New or
+  actively changed reusable components need a `.stories.tsx` file; see
+  `web/README.md` for the story categories.
 - **Java:** follow the owning module's APIs and dependency boundaries. Add
   focused JUnit tests; use the established database fixtures where needed.
 - **Python:** preserve Python 3 compatibility supported by the package, use
