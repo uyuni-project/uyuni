@@ -1,0 +1,2 @@
+- Fix the package profile refresh for RPM packages with an empty
+  release (gh#uyuni-project/uyuni#12762)
