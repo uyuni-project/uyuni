@@ -56,9 +56,11 @@ No output and exit code 0 means compliant; otherwise it prints
 run the full check as CI does (about 15 seconds):
 
 ```bash
-reuse lint | head -20
+reuse lint
 ```
 
-Success ends with `Congratulations! Your project is compliant`. Failures
+Do not truncate the output with `head` or `tail`: the problem files are
+listed first and the result last, and a pipe hides the exit code. Success
+(exit code 0) ends with `Congratulations! Your project is compliant`. Failures
 list the files under `MISSING COPYRIGHT AND LICENSING INFORMATION`. If
 `reuse` is not installed, report that the check was left to CI.
