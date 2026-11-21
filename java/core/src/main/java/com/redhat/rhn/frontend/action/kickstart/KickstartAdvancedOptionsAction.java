@@ -92,8 +92,9 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
             ActionErrors messages = new ActionErrors();
 
             //let's first make sure all required params are set
-            for (Object valueIn : cmd.getRequiredOptions()) {
-                KickstartCommandName cn = (KickstartCommandName) valueIn;
+            //commands not supported by the profile's install type (e.g. auth on
+            //Enterprise Linux 10) are not part of the required options
+            for (KickstartCommandName cn : cmd.getRequiredOptions()) {
                 if ((request.getParameter(cn.getName()) == null) ||
                         (request.getParameter(cn.getName().concat("_txt")).equals(""))) {
                     messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.required", cn.getName()));

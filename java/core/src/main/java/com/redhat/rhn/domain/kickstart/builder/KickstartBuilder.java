@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDefaults;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.kickstart.KickstartRawData;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
@@ -598,7 +599,10 @@ public class KickstartBuilder {
     }
 
     private void setAuth(KickstartWizardHelper cmd, KickstartData ksdata) {
-        if (!ksdata.isRhel10OrGreater()) {
+        // auth/authconfig was removed from the kickstart syntax in
+        // Enterprise Linux 10, don't add it to profiles of those distros
+        KickstartInstallType installType = ksdata.getInstallType();
+        if (installType == null || installType.isCommandSupported("auth")) {
             cmd.createCommand("auth", "--enableshadow --passalgo=sha256", ksdata);
         }
     }

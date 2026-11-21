@@ -858,8 +858,10 @@ public class ProfileHandler extends BaseHandler {
         KickstartOptionsCommand cmd = new KickstartOptionsCommand(ksid, loggedInUser);
 
         //check if all the required options are present
+        //commands removed from the kickstart syntax of the profile's distro
+        //(e.g. auth on Enterprise Linux 10) are not required for it
         List<KickstartCommandName> requiredOptions = KickstartFactory.
-            lookupKickstartRequiredOptions();
+            lookupKickstartRequiredOptions(ksdata.getInstallType());
 
         List<String> requiredOptionNames = new ArrayList<>();
         for (KickstartCommandName kcn : requiredOptions) {

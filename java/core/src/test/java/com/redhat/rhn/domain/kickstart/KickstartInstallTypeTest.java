@@ -113,6 +113,45 @@ public class KickstartInstallTypeTest extends BaseTestCase {
         assertEquals("fedora18", type("fedora18").getCobblerOsVersion());
     }
 
+    /**
+     * Commands removed from the kickstart syntax of newer Enterprise Linux
+     * releases must not be supported for those install types: auth/authconfig
+     * was removed in EL10, the install command in EL9. Older EL versions and
+     * other distros keep supporting them.
+     */
+    @Test
+    public void testIsCommandSupported() {
+        // Enterprise Linux 10: auth and authconfig are gone, install is gone too
+        KickstartInstallType rhel10 = type("rhel_10");
+        assertFalse(rhel10.isCommandSupported("auth"));
+        assertFalse(rhel10.isCommandSupported("authconfig"));
+        assertFalse(rhel10.isCommandSupported("install"));
+        // but the mandatory auth-related field of EL10 kickstart, the root
+        // password, stays supported
+        assertTrue(rhel10.isCommandSupported("rootpw"));
+        assertTrue(rhel10.isCommandSupported("bootloader"));
+        assertTrue(rhel10.isCommandSupported("url"));
+        assertTrue(rhel10.isCommandSupported("sshkey"));
+        assertTrue(rhel10.isCommandSupported(null));
+        assertTrue(rhel10.isCommandSupported("somecustomcommand"));
+
+        // Enterprise Linux 9: auth still supported, install is not
+        KickstartInstallType rhel9 = type("rhel_9");
+        assertTrue(rhel9.isCommandSupported("auth"));
+        assertTrue(rhel9.isCommandSupported("authconfig"));
+        assertFalse(rhel9.isCommandSupported("install"));
+        assertTrue(rhel9.isCommandSupported("rootpw"));
+
+        // Enterprise Linux 8 and older: everything supported
+        for (String label : new String[] {"rhel_6", "rhel_7", "rhel_8"}) {
+            KickstartInstallType older = type(label);
+            assertTrue(older.isCommandSupported("auth"), label);
+            assertTrue(older.isCommandSupported("authconfig"), label);
+            assertTrue(older.isCommandSupported("install"), label);
+            assertTrue(older.isCommandSupported("rootpw"), label);
+        }
+    }
+
     private KickstartInstallType type(String label) {
         KickstartInstallType installType = new KickstartInstallType();
         installType.setLabel(label);
