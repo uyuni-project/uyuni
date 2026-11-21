@@ -46,8 +46,7 @@ public class AppStreamTest extends BaseTestCaseWithUser {
         appStream.setChannel(ChannelFactoryTest.createTestChannel(user));
         session.persist(appStream);
 
-        AppStreamApi api = new AppStreamApi("perl(strict)", appStream.getId());
-        api.setAppStream(appStream);
+        AppStreamApi api = new AppStreamApi("perl(strict)", appStream);
         appStream.setRpms(new HashSet<>());
         appStream.getRpms().add(api);
         session.persist(api);
