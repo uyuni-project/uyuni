@@ -83,17 +83,22 @@ sandbox, install it into a throwaway venv outside the repository:
 python3 -m venv /tmp/chlogvenv && /tmp/chlogvenv/bin/pip -q install 'python-bugzilla~=3.2.0'
 ```
 
-Then, from the repository root, pass all changed files (changelog
-fragments included):
+Then, from the repository root, pass all changed files of the branch,
+committed or not, including untracked files such as new fragments:
 
 ```bash
+base=$(git merge-base <target-branch> HEAD)
 /tmp/chlogvenv/bin/python -I .github/workflows/changelogs/changelogs.py \
-    $(git diff --name-only <base>..HEAD) <fragment files not yet committed>
+    $(git diff --name-only "$base") $(git ls-files --others --exclude-standard)
 ```
 
-`<base>` is the target branch (for example `origin/master`). The fragment
-must exist on disk; the checker also needs the other changed files to know
-which packages are affected. Without `--pr-number` and `--tracker-file`,
+`<target-branch>` is the branch the PR goes to (for example
+`origin/master`). `git diff "$base"` compares the branch point with the
+working tree, so it covers commits, staged and unstaged edits, but not
+commits that landed on the target branch later. Check that the untracked
+list contains only files that belong to the change. The checker needs the
+other changed files to know which packages are affected; passing only the
+fragment fails with "Changelog added without changes". Without `--pr-number` and `--tracker-file`,
 PR/tracker/Bugzilla checks are skipped. Success prints
 `Changelog test passed`; otherwise each problem is listed with file and
 line.

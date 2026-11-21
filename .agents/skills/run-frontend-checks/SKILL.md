@@ -47,8 +47,8 @@ Run the ones relevant to the change; together they are what the
 | Jest tests (all) | `npm run test -- --no-cache` | `frontend-unit-tests` |
 | TypeScript | `npm run tsc` (about 15 s) | `frontend-typescript-compilation` |
 | Storybook TypeScript | `npm --prefix web run tsc:storybook` | `frontend-typescript-compilation` |
-| ESLint, no fixes | `npm run lint:production` (about 20 s) | `frontend-lint` |
 | `package.json` order | `npm run sort-package -- --check` | `frontend-lint` |
+| ESLint, no fixes | `npm run lint:production` (about 20 s) | `frontend-lint` |
 | Production build | `npm run build` (about 50 s) | `frontend-build` |
 
 - **Focused tests need `--testPathPattern`.** The test script ends in
@@ -59,12 +59,24 @@ Run the ones relevant to the change; together they are what the
   `-t <name>` to select tests by name.
 - **`npm run lint` rewrites files**: it runs ESLint with `--fix` and sorts
   `web/package.json`. Use it to apply fixes, then review the result with
-  `git diff`. `lint:production` reports without fixing, but can also sort
-  `web/package.json`, so run `sort-package -- --check` to reproduce CI's
-  check.
+  `git diff`. `lint:production` reports ESLint findings without fixing,
+  but first sorts `web/package.json` itself, so run
+  `sort-package -- --check` **before** it (as CI does); afterwards the
+  check always passes.
 - `npm run build` writes the git-ignored `web/html/src/dist/`; never commit
   it. It prints many Node deprecation stack traces; only the exit code and
   the final lines matter.
+- `frontend-build` installs with `--omit=dev` (about 700 instead of 1550
+  packages), so a build can pass locally only because a development
+  dependency is present. When dependencies or build-time imports change,
+  reproduce it exactly, then restore the full install for the other
+  checks:
+
+  ```bash
+  npm --prefix web ci --ignore-scripts --save=false --omit=dev
+  npm run build
+  npm --prefix web ci --ignore-scripts --save=false
+  ```
 - The Storybook build (`npm --prefix web run build-storybook`, also in
   `frontend-typescript-compilation`) is slow; run it only when changing
   stories or `web/.storybook/`.

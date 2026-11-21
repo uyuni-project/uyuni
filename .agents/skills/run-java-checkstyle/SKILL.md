@@ -30,8 +30,11 @@ Pick the module that contains the changed files:
 | `microservices/coco-attestation/`  | `microservices/coco-attestation`    |
 
 ```bash
+set -o pipefail
 mvn -f <module>/pom.xml checkstyle:check 2>&1 | grep -v -e WARNING -e Progress -e Download | tail -30
 ```
+
+`pipefail` keeps Maven's exit code instead of `tail`'s.
 
 Success ends with `You have 0 Checkstyle violations.` and `BUILD SUCCESS`.
 Violations are listed as `[ERROR] <file>:[line,col] ... [CheckName]`.

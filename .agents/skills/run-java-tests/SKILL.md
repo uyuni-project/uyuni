@@ -66,8 +66,12 @@ The run is slow, so start it in the background and filter the noisy
 resolver warnings:
 
 ```bash
+set -o pipefail
 mvn -f java/core test -DskipTests=false -Dtest=<TestClass> 2>&1 | grep -v -e WARNING -e Progress -e Download | tail -40
 ```
+
+`pipefail` keeps Maven's exit code; without it the pipeline returns
+`tail`'s status and a failed build looks successful.
 
 Look for `Tests run: N, Failures: F, Errors: E` and `BUILD SUCCESS`.
 Per-test reports are in `java/core/target/surefire-reports/`.
