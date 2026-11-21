@@ -22,12 +22,12 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import java.io.Serializable;
 
 public class AppStreamApiKey implements Serializable {
-    private Long id;
+    private Long appStream;
     private String rpm;
 
     @Override
     public int hashCode() {
-        return rpm.hashCode() + id.intValue();
+        return rpm.hashCode() + appStream.intValue();
     }
 
     @Override
@@ -38,6 +38,6 @@ public class AppStreamApiKey implements Serializable {
         if (!(obj instanceof AppStreamApiKey key)) {
             return false;
         }
-        return new EqualsBuilder().append(id, key.id).append(rpm, key.rpm).isEquals();
+        return new EqualsBuilder().append(appStream, key.appStream).append(rpm, key.rpm).isEquals();
     }
 }

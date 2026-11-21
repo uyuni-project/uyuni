@@ -17,13 +17,11 @@
 
 package com.redhat.rhn.domain.channel;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
@@ -40,32 +38,20 @@ public class AppStreamApi {
      * Constructor
      *
      * @param rpmIn the name of the rpm
-     * @param idIn the id of the appstream
+     * @param appStreamIn the appstream
      */
-    public AppStreamApi(String rpmIn, Long idIn) {
-        id = idIn;
+    public AppStreamApi(String rpmIn, AppStream appStreamIn) {
+        appStream = appStreamIn;
         rpm = rpmIn;
     }
 
     @Id
-    @Column(name = "module_id")
-    private Long id;
-
-    @Id
     private String rpm;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "module_id")
-    @MapsId("id")
     private AppStream appStream;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long idIn) {
-        id = idIn;
-    }
 
     public String getRpm() {
         return rpm;
