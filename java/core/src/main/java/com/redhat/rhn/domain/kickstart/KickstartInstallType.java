@@ -116,6 +116,36 @@ public class KickstartInstallType extends BaseDomainHelper {
     public boolean isRhel10() {
         return RHEL_10.equals(getLabel());
     }
+
+    /**
+     * Checks whether a kickstart command is still supported by the kickstart
+     * syntax of this install type. Some commands were removed from newer
+     * Enterprise Linux releases and must not be offered, required or rendered
+     * for profiles of those install types:
+     * <ul>
+     * <li>{@code auth}/{@code authconfig} was removed in Enterprise Linux 10
+     * (anaconda rejects it, authselect is used instead)</li>
+     * <li>{@code install} was removed in Enterprise Linux 9 (replaced by
+     * {@code url})</li>
+     * </ul>
+     *
+     * @param commandName name of the kickstart command (e.g. "auth")
+     * @return true if the command is supported by this install type
+     */
+    public boolean isCommandSupported(String commandName) {
+        if (commandName == null) {
+            return true;
+        }
+        if (("auth".equals(commandName) || "authconfig".equals(commandName)) &&
+                isRhel10OrGreater()) {
+            return false;
+        }
+        if ("install".equals(commandName) && isRhel9OrGreater()) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * @return true if the installer type is rhel 8
      */

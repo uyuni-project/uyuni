@@ -363,6 +363,29 @@ public class KickstartFactory extends HibernateFactory {
     }
 
     /**
+     * List of required advanced Kickstart Command Names which are supported by
+     * the given install type. Commands that were removed from the kickstart
+     * syntax of a distro (e.g. {@code auth} on Enterprise Linux 10) are never
+     * mandatory for profiles of that install type, no matter what the
+     * {@code required} flag in the database says.
+     *
+     * @param installType install type of the kickstart profile/tree, may be null
+     * @return List of required advanced Kickstart Command Names supported by
+     *         the install type. Does not include partitions, logvols, raids,
+     *         varlogs or includes.
+     */
+    public static List<KickstartCommandName> lookupKickstartRequiredOptions(
+            KickstartInstallType installType) {
+        List<KickstartCommandName> requiredOptions = lookupKickstartRequiredOptions();
+        if (installType == null) {
+            return requiredOptions;
+        }
+        return requiredOptions.stream()
+                .filter(cn -> installType.isCommandSupported(cn.getName()))
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Insert or Update a CryptoKey.
      *
      * @param cryptoKeyIn CryptoKey to be stored in database.

@@ -302,9 +302,19 @@ public class KickstartFormatter {
         StringBuilder commands = new StringBuilder();
         LinkedList<KickstartCommand> l = new LinkedList<>(this.ksdata.getCommands());
         Collections.sort(l);
+        KickstartInstallType installType = ksdata.getInstallType();
         for (KickstartCommand command : l) {
             String cname = command.getCommandName().getName();
             log.debug("getCommands name: {}", cname);
+
+            // never render commands that the target distro's anaconda does not
+            // support anymore (e.g. auth on Enterprise Linux 10), even if they
+            // are still stored on the profile
+            if (installType != null && !installType.isCommandSupported(cname)) {
+                log.info("Skipping kickstart command '{}': not supported by install type '{}'",
+                        cname, installType.getLabel());
+                continue;
+            }
 
             if (cname.matches("rootpw")) {
                 commands.append(cname + SPACE + ISCRYPTED +
