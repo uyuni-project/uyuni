@@ -36,6 +36,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.session.SessionManager;
 
+import com.suse.manager.reactor.mqtt.MqttEventHelper;
+import com.suse.manager.reactor.mqtt.event.UserCreatedEvent;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.StringUtils;
@@ -380,6 +382,8 @@ public class UserFactory extends HibernateFactory {
         // User object has an Id and that the User has an org_id.
         User retval = lookupById(userId);
         saveObject(retval);
+        MqttEventHelper.publishAfterCommit(
+                new UserCreatedEvent(retval.getLogin(), retval.getId(), retval.getOrg().getId()));
         return retval;
     }
 
