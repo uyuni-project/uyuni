@@ -624,6 +624,25 @@ public class UserManager extends BaseManager {
      * @throws LoginException if login fails.  The message is a string resource key.
      */
     public static User loginUser(String username, String password) throws LoginException {
+        return loginUser(username, password, false);
+    }
+
+    /**
+     * This method should be ONLY called when we need to authenticate read-only user
+     * e.g. for purpose of the API calls
+     * Login the user with the given username and password.
+     * @param username User's login name
+     * @param password User's unencrypted password.
+     * @return Returns the user if login is successful, or null othewise.
+     * @throws LoginException if login fails.  The message is a string resource key.
+     */
+    public static User loginReadOnlyUser(String username,
+            String password) throws LoginException {
+        return loginUser(username, password, true);
+    }
+
+    private static User loginUser(String username, String password, boolean allowReadOnly)
+            throws LoginException {
         if (username == null) {
             throw new LoginException("error.invalid_login");
         }
@@ -637,7 +656,7 @@ public class UserManager extends BaseManager {
             else if (user.isDisabled()) {
                 exceptionType = "account.disabled";
             }
-            else if (user.isReadOnly()) { // KEEP LAST!!
+            else if (user.isReadOnly() && !allowReadOnly) { // KEEP LAST!!
                 exceptionType = "error.user_readonly";
             }
             else {
@@ -656,32 +675,6 @@ public class UserManager extends BaseManager {
             log.warn("Failed to set timeout: {}", ie.getMessage());
         }
         throw new LoginException(exceptionType);
-    }
-
-    /**
-     * This method should be ONLY called when we need to authenticate read-only user
-     * e.g. for purpose of the API calls
-     * Login the user with the given username and password.
-     * @param username User's login name
-     * @param password User's unencrypted password.
-     * @return Returns the user if login is successful, or null othewise.
-     * @throws LoginException if login fails.  The message is a string resource key.
-     */
-    public static User loginReadOnlyUser(String username,
-            String password) throws LoginException {
-        try {
-            loginUser(username, password);
-        }
-        catch (LoginException e) {
-            // if exception type is error.user_readonly everything else went well
-            // and we can safely log the read-only user
-            if (!e.getMessage().equals("error.user_readonly")) {
-                throw e;
-            }
-        }
-        User user = UserFactory.lookupByLogin(username);
-        user.authenticate(password);
-        return performLoginActions(user);
     }
 
     /**

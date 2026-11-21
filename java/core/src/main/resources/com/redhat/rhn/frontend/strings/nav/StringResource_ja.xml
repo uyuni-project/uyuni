@@ -1311,13 +1311,13 @@
         </context-group>
         <target state="final">サポート</target>
       </trans-unit>
-      <trans-unit id="Btrfs Snapshots" xml:space="preserve">
+      <trans-unit id="Btrfs Snapshots" xml:space="preserve" approved="yes">
         <source>Btrfs Snapshots</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/snapshots</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">Btrfsスナップショット</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

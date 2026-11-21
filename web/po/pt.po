@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 12:10+0100\n"
+"POT-Creation-Date: 2026-11-20 13:26+0100\n"
 "PO-Revision-Date: 2026-10-09 15:13+0000\n"
 "Last-Translator: Ricardo Mestre <ricardo.mestre@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/>\n"
@@ -584,13 +584,12 @@ msgstr "Cancelar"
 #: ../html/src/components/dialog/DeleteDialog.tsx:33
 #: ../html/src/components/hub/PeripheralsList.tsx:62
 #: ../html/src/components/hub/TokenTable.tsx:141
-#: ../html/src/components/hub/TokenTable.tsx:230
+#: ../html/src/components/hub/TokenTable.tsx:232
 #: ../html/src/components/large-text-attachment.tsx:212
 #: ../html/src/components/large-text-attachment.tsx:214
 #: ../html/src/components/large-text-attachment.tsx:227
 #: ../html/src/components/panels/CreatorPanel.tsx:101
 #: ../html/src/components/table/Table.tsx:251
-#: ../html/src/components/table/search.example.tsx:29
 #: ../html/src/manager/admin/payg/payg.tsx:76
 #: ../html/src/manager/admin/payg/payg.tsx:77
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:105
@@ -627,116 +626,13 @@ msgstr "Cancelar"
 msgid "Delete"
 msgstr "Eliminar"
 
-#: ../html/src/components/dialog/delete.example.tsx:20
-msgid "Delete project"
-msgstr "Eliminar projeto"
-
-#: ../html/src/components/dialog/delete.example.tsx:23
-msgid "Are you sure you want to delete project "
-msgstr "Tem a certeza de que pretende eliminar o projeto "
-
-#: ../html/src/components/formik/Form.example.tsx:38
-msgid "Field"
-msgstr "Campo"
-
-#: ../html/src/components/formik/Form.example.tsx:40
-#: ../html/src/components/input/InputBase.test.tsx:49
-#: ../html/src/components/input/InputBase.test.tsx:75
-#: ../html/src/components/input/InputBase.test.tsx:103
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:58
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:67
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:67
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:75
-#: ../html/src/components/input/form/Form.example.tsx:31
-#: ../html/src/components/input/text/Text.example.tsx:31
-#: ../html/src/components/input/text/Text.example.tsx:40
-#: ../html/src/components/steps-progress-bar.stories.tsx:17
-msgid "Minimum 2 characters"
-msgstr "Mínimo 2 caracteres"
-
-#: ../html/src/components/formik/Form.example.tsx:43
-#: ../html/src/components/input/check/form.example.tsx:24
-msgid "Checkbox"
-msgstr "Caixa de seleção"
-
-#: ../html/src/components/formik/Form.example.tsx:45
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:187
-#: ../html/src/components/input/password/Password.example.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:81
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:80
-#: ../html/src/manager/images/image-store-edit.tsx:186
-#: ../html/src/manager/login/susemanager/login.tsx:105
-#: ../html/src/manager/login/uyuni/login.tsx:103
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:431
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:554
-msgid "Password"
-msgstr "Palavra-passe"
-
-#: ../html/src/components/formik/Form.example.tsx:47
-msgid "Datetime"
-msgstr "Data e hora"
-
-#: ../html/src/components/formik/Form.example.tsx:49
-msgid "Multiple values"
-msgstr "Múltiplos valores"
-
-#: ../html/src/components/formik/Form.example.tsx:51
-msgid "Long text"
-msgstr "Texto longo"
-
-#: ../html/src/components/formik/Form.example.tsx:53
-msgid "Range"
-msgstr "Intervalo"
-
-#: ../html/src/components/formik/Form.example.tsx:57
-msgid "Radio"
-msgstr "Botão de opção"
-
-#: ../html/src/components/formik/Form.example.tsx:59
-msgid "One"
-msgstr "Um"
-
-#: ../html/src/components/formik/Form.example.tsx:60
-msgid "Two"
-msgstr "Dois"
-
-#: ../html/src/components/formik/Form.example.tsx:61
-msgid "Three"
-msgstr "Três"
-
-#: ../html/src/components/formik/Form.example.tsx:68
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:313
-msgid "Select"
-msgstr "Selecionar"
-
-#: ../html/src/components/formik/Form.example.tsx:71
-msgid "Foo"
-msgstr "Foo"
-
-#: ../html/src/components/formik/Form.example.tsx:75
-msgid "Bar"
-msgstr "Bar"
-
-#: ../html/src/components/formik/Form.example.tsx:82
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:249
-#: ../html/src/components/input/check/DEPRECATED_Check.example.tsx:31
-#: ../html/src/components/input/check/form.example.tsx:26
-#: ../html/src/components/input/datetime/DateTime.example.tsx:31
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:75
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:62
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:84
-#: ../html/src/components/input/form/Form.example.tsx:36
-#: ../html/src/components/input/password/Password.example.tsx:36
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:43
-#: ../html/src/components/input/radio/horizontal.example.tsx:42
-#: ../html/src/components/input/radio/vertical-open.example.tsx:42
-#: ../html/src/components/input/radio/vertical.example.tsx:41
-#: ../html/src/components/input/range/Range.example.tsx:30
-#: ../html/src/components/input/text/Text.example.tsx:44
-msgid "Submit"
-msgstr "Submeter"
+#: ../html/src/components/dialog/ModalButton.stories.tsx:93
+#: ../html/src/components/hub/AddTokenButton.tsx:232
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:182
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:108
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:109
+msgid "Close"
+msgstr "Fechar"
 
 #: ../html/src/components/formik/field/AsRadio.tsx:47
 msgid "Custom value"
@@ -877,13 +773,6 @@ msgstr "O novo token foi gerado com sucesso. Certifique-se de que o copia agora,
 msgid "Copy"
 msgstr "Copiar"
 
-#: ../html/src/components/hub/AddTokenButton.tsx:232
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:182
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:108
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:109
-msgid "Close"
-msgstr "Fechar"
-
 #: ../html/src/components/hub/AddTokenButton.tsx:265
 msgid "Access token copied to the clipboard"
 msgstr "Token de acesso copiado para a área de transferência"
@@ -916,7 +805,6 @@ msgid "Channel Name"
 msgstr "Nome do Canal"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:151
-#: ../html/src/components/table/nested-data.example.tsx:68
 #: ../html/src/manager/admin/setup/products/products.tsx:663
 #: ../html/src/manager/admin/setup/products/products.tsx:1055
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:177
@@ -1051,6 +939,10 @@ msgstr "Token de Acesso"
 #: ../html/src/components/hub/ServerDetailsForm.tsx:113
 msgid "Root Certificate Authority"
 msgstr "Autoridade de Certificação Raiz"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:249
+msgid "Submit"
+msgstr "Submeter"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:273
 msgid "This slave is currently disabled and cannot be selected for migration"
@@ -1213,6 +1105,18 @@ msgstr "Nome de utilizador"
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:179
 msgid "The username of {productName} Administrator of the remote server."
 msgstr "O nome de utilizador do Administrador {productName} do servidor remoto."
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:187
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:81
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:80
+#: ../html/src/manager/images/image-store-edit.tsx:186
+#: ../html/src/manager/login/susemanager/login.tsx:105
+#: ../html/src/manager/login/uyuni/login.tsx:103
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:431
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:554
+msgid "Password"
+msgstr "Palavra-passe"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:188
 msgid "The password of the specified user."
@@ -1381,8 +1285,6 @@ msgstr "Filtrar por Nome"
 #. ref={nameInputRef}
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:239
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:275
-#: ../html/src/components/input/form/Form.example.tsx:29
-#: ../html/src/components/steps-progress-bar.stories.tsx:15
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:119
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:113
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:359
@@ -1546,12 +1448,12 @@ msgid "Confirm if you want to proceed."
 msgstr "Confirme se quer prosseguir."
 
 #: ../html/src/components/hub/TokenTable.tsx:129
-#: ../html/src/components/hub/TokenTable.tsx:175
+#: ../html/src/components/hub/TokenTable.tsx:177
 msgid "Invalidate"
 msgstr "Invalidar"
 
 #: ../html/src/components/hub/TokenTable.tsx:129
-#: ../html/src/components/hub/TokenTable.tsx:175
+#: ../html/src/components/hub/TokenTable.tsx:177
 msgid "Validate"
 msgstr "Validar"
 
@@ -1567,136 +1469,71 @@ msgstr "Tem a certeza que quer eliminar este token. Atualmente não está a ser 
 msgid "No, never expires"
 msgstr "Não, nunca expira"
 
-#: ../html/src/components/hub/TokenTable.tsx:159
+#: ../html/src/components/hub/TokenTable.tsx:160
 msgid "Yes, expired <expiration></expiration>"
 msgstr "Sim, expirou <expiration></expiration>"
 
-#: ../html/src/components/hub/TokenTable.tsx:159
+#: ../html/src/components/hub/TokenTable.tsx:161
 msgid "No, expires <expiration></expiration>"
 msgstr "Não, expira <expiration></expiration>"
 
-#: ../html/src/components/hub/TokenTable.tsx:222
+#: ../html/src/components/hub/TokenTable.tsx:224
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
 msgstr "Este token de acesso não pode ser eliminado. Está atualmente a ser usado pelo hub {fqdn}"
 
-#: ../html/src/components/hub/TokenTable.tsx:226
+#: ../html/src/components/hub/TokenTable.tsx:228
 msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
 msgstr "Este token de acesso não pode ser eliminado. Está atualmente a ser usado pelo periférico {fqdn}"
 
 #. token issued for another server currently valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:237
+#: ../html/src/components/hub/TokenTable.tsx:239
 msgid "Invalidating this access token will prevent the hub {fqdn} from accesssing."
 msgstr "Invalidar este token de acesso impedirá o acesso do hub {fqdn}."
 
 #. token issued for another server currently valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:240
+#: ../html/src/components/hub/TokenTable.tsx:242
 msgid "Invalidating this access token will prevent the peripheral {fqdn} from accesssing."
 msgstr "Invalidar este token de acesso impedirá o acesso do periférico {fqdn}."
 
 #. token issued for another server currently not valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:243
+#: ../html/src/components/hub/TokenTable.tsx:245
 msgid "Enabling this access token will grant access to the hub {fqdn}."
 msgstr "Ativar este token de acesso concederá acesso ao hub {fqdn}."
 
 #. token issued for another server currently not valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:246
+#: ../html/src/components/hub/TokenTable.tsx:248
 msgid "Enabling this access token will grant access to the peripheral {fqdn}."
 msgstr "Ativar este token de acesso concederá acesso ao periférico {fqdn}."
 
 #. token received from another server currently valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:249
+#: ../html/src/components/hub/TokenTable.tsx:251
 msgid "Invalidating this access token will prevent access to the hub {fqdn}."
 msgstr "Invalidar este token de acesso impedirá o acesso ao hub {fqdn}."
 
 #. token received from another server currently valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:252
+#: ../html/src/components/hub/TokenTable.tsx:254
 msgid "Invalidating this access token will prevent access to the peripheral {fqdn}."
 msgstr "Invalidar este token de acesso impedirá o acesso ao periférico {fqdn}."
 
 #. token received from another server currently not valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:255
+#: ../html/src/components/hub/TokenTable.tsx:257
 msgid "Enabling this access token will restore access to the hub {fqdn}."
 msgstr "Ativar este token de acesso restaurará o acesso ao hub {fqdn}."
 
 #. token received from another server currently not valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:258
+#: ../html/src/components/hub/TokenTable.tsx:260
 msgid "Enabling this access token will restore access to the peripheral {fqdn}."
 msgstr "Ativar este token de acesso restaurará o acesso ao periférico {fqdn}."
 
-#: ../html/src/components/input/datetime/DateTime.example.tsx:30
-msgid "Time"
-msgstr "Hora"
+#: ../html/src/components/input/InputBase.test.tsx:49
+#: ../html/src/components/input/InputBase.test.tsx:75
+#: ../html/src/components/input/InputBase.test.tsx:103
+msgid "Minimum 2 characters"
+msgstr "Mínimo 2 caracteres"
 
 #: ../html/src/components/input/form-multi-input/FormMultiInput.tsx:166
 msgid "Remove"
 msgstr "Remover"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:30
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:30
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:38
-#: ../html/src/manager/admin/access-control/access-group-list.tsx:128
-#: ../html/src/manager/admin/access-control/access-group.tsx:215
-msgid "Users"
-msgstr "Utilizadores"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:56
-#: ../html/src/components/input/text/Text.example.tsx:29
-msgid "First Name"
-msgstr "Primeiro nome"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:65
-msgid "Last Name"
-msgstr "Apelido"
-
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:53
-#: ../html/src/manager/login/uyuni/login.tsx:91
-msgid "Login"
-msgstr "Autenticação"
-
-#: ../html/src/components/input/password/Password.example.tsx:31
-msgid "Must be at least 4 characters"
-msgstr "Deve ter pelo menos 4 caracteres"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:32
-#: ../html/src/components/input/radio/horizontal.example.tsx:32
-#: ../html/src/components/input/radio/vertical-open.example.tsx:31
-#: ../html/src/components/input/radio/vertical.example.tsx:31
-msgid "Level"
-msgstr "Nível"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:38
-#: ../html/src/components/input/radio/horizontal.example.tsx:37
-#: ../html/src/components/input/radio/vertical-open.example.tsx:37
-#: ../html/src/components/input/radio/vertical.example.tsx:36
-#: ../html/src/components/input/select/custom-fields.example.tsx:15
-#: ../html/src/components/input/select/multiple.example.tsx:15
-#: ../html/src/components/input/select/simple.example.tsx:15
-msgid "Beginner"
-msgstr "Principiante"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:39
-#: ../html/src/components/input/radio/horizontal.example.tsx:38
-#: ../html/src/components/input/radio/vertical-open.example.tsx:38
-#: ../html/src/components/input/radio/vertical.example.tsx:37
-#: ../html/src/components/input/select/custom-fields.example.tsx:21
-#: ../html/src/components/input/select/multiple.example.tsx:19
-#: ../html/src/components/input/select/simple.example.tsx:19
-msgid "Normal"
-msgstr "Normal"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:40
-#: ../html/src/components/input/radio/horizontal.example.tsx:39
-#: ../html/src/components/input/radio/vertical-open.example.tsx:39
-#: ../html/src/components/input/radio/vertical.example.tsx:38
-#: ../html/src/components/input/select/custom-fields.example.tsx:27
-#: ../html/src/components/input/select/multiple.example.tsx:23
-#: ../html/src/components/input/select/simple.example.tsx:23
-msgid "Expert"
-msgstr "Experiente"
-
-#: ../html/src/components/input/range/Range.example.tsx:29
-msgid "Port range"
-msgstr "Intervalo de portas"
 
 #: ../html/src/components/input/range/Range.test.tsx:78
 msgid "Both values need to be positive integers"
@@ -1738,7 +1575,6 @@ msgstr "Descarregar"
 
 #: ../html/src/components/large-text-attachment.tsx:126
 #: ../html/src/components/large-text-attachment.tsx:128
-#: ../html/src/components/table/search.example.tsx:28
 msgid "Add"
 msgstr "Adicionar"
 
@@ -2179,7 +2015,6 @@ msgid "State Label"
 msgstr "Etiqueta Estado"
 
 #: ../html/src/components/states-picker.tsx:529
-#: ../html/src/components/table/nested-data.example.tsx:62
 msgid "Channel Label"
 msgstr "Etiqueta do Canal"
 
@@ -2245,32 +2080,32 @@ msgstr "Aviso de Segurança"
 msgid "System Locked"
 msgstr "Sistema Bloqueado"
 
-#: ../html/src/components/table/NumericSearchField.tsx:17
+#: ../html/src/components/table/NumericSearchField.tsx:19
 msgid "less than"
 msgstr "menor que"
 
-#: ../html/src/components/table/NumericSearchField.tsx:18
+#: ../html/src/components/table/NumericSearchField.tsx:20
 msgid "less than or equal to"
 msgstr "menor ou igual a"
 
-#: ../html/src/components/table/NumericSearchField.tsx:19
+#: ../html/src/components/table/NumericSearchField.tsx:21
 msgid "equal to"
 msgstr "igual a"
 
-#: ../html/src/components/table/NumericSearchField.tsx:20
+#: ../html/src/components/table/NumericSearchField.tsx:22
 msgid "greater than or equal to"
 msgstr "maior ou igual a"
 
-#: ../html/src/components/table/NumericSearchField.tsx:21
+#: ../html/src/components/table/NumericSearchField.tsx:23
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:118
 msgid "greater than"
 msgstr "maior que"
 
-#: ../html/src/components/table/NumericSearchField.tsx:22
+#: ../html/src/components/table/NumericSearchField.tsx:24
 msgid "not equal to"
 msgstr "diferente de"
 
-#: ../html/src/components/table/NumericSearchField.tsx:68
+#: ../html/src/components/table/NumericSearchField.tsx:71
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:150
 msgid "Matcher"
 msgstr "Matcher"
@@ -2296,50 +2131,6 @@ msgstr "Todos"
 msgid "Clear All"
 msgstr "Limpar Tudo"
 
-#: ../html/src/components/table/nested-data.example.tsx:51
-msgid "Channel name"
-msgstr "Nome do canal"
-
-#: ../html/src/components/table/nested-data.example.tsx:73
-msgid "Hub Org"
-msgstr "Org Hub"
-
-#: ../html/src/components/table/nested-data.example.tsx:77
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:385
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:187
-msgid "View"
-msgstr "Ver"
-
-#: ../html/src/components/table/nested-data.example.tsx:78
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:388
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:202
-msgid "Modify"
-msgstr "Modificar"
-
-#: ../html/src/components/table/search.example.tsx:38
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:368
-msgid "API"
-msgstr "API"
-
-#: ../html/src/components/table/search.example.tsx:41
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:210
-msgid "Web"
-msgstr "Web"
-
-#: ../html/src/components/table/search.example.tsx:44
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:213
-msgid "Only selected"
-msgstr "Apenas selecionados"
-
-#: ../html/src/components/table/search.example.tsx:55
-msgid "Item id"
-msgstr "ID do item"
-
-#: ../html/src/components/table/search.example.tsx:56
-msgid "Item name"
-msgstr "Nome do item"
-
 #: ../html/src/components/target-systems.tsx:32
 msgid "Target Systems"
 msgstr "Sistemas de Destino"
@@ -2356,18 +2147,9 @@ msgstr "Dados inválidos"
 msgid "No data"
 msgstr "Sem dados"
 
-#: ../html/src/components/utils/HelpIcon.example.tsx:10
-msgid "Text to display on hover"
-msgstr "Texto a exibir ao passar o rato"
-
 #: ../html/src/components/utils/HelpLink.tsx:22
 msgid "Help"
 msgstr "Ajuda"
-
-#: ../html/src/components/utils/loading/text-border.example.tsx:13
-#: ../html/src/components/utils/loading/text.example.tsx:13
-msgid "Loading text"
-msgstr "A carregar texto"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:24
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:13
@@ -2400,7 +2182,7 @@ msgstr "nenhum"
 msgid "Require this channel"
 msgstr "Requerer este canal"
 
-#: ../html/src/core/intl/index.example.tsx:13
+#: ../html/src/core/intl/index.stories.tsx:30
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "Consulte <link>Format.JS docs</link> para a sintaxe da mensagem."
 
@@ -2487,6 +2269,11 @@ msgstr "Nenhum Grupo de Acesso encontrado."
 msgid "Filter by name or description"
 msgstr "Filtrar por nome ou descrição"
 
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:128
+#: ../html/src/manager/admin/access-control/access-group.tsx:215
+msgid "Users"
+msgstr "Utilizadores"
+
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:133
 msgid "permissions"
 msgstr "permissões"
@@ -2498,6 +2285,19 @@ msgstr "Tem a certeza que quer eliminar o Grupo de Acesso selecionado?"
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:162
 msgid "An unexpected error occurred while fetching namespaces."
 msgstr "Ocorreu um erro inesperado ao obter os namespaces."
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:368
+msgid "API"
+msgstr "API"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:210
+msgid "Web"
+msgstr "Web"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:213
+msgid "Only selected"
+msgstr "Apenas selecionados"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:273
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:136
@@ -2522,6 +2322,16 @@ msgstr "Reveja e modifique as permissões para este grupo personalizado conforme
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:149
 msgid "Filter by name"
 msgstr "Filtrar por nome"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:385
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:187
+msgid "View"
+msgstr "Ver"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:388
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:202
+msgid "Modify"
+msgstr "Modificar"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:168
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:140
@@ -4067,6 +3877,10 @@ msgstr "Passo 1/2: selecione o sistema a fixar da tabela abaixo."
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:298
 msgid "Socket/IFL count"
 msgstr "Contagem de Socket/IFL"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:313
+msgid "Select"
+msgstr "Selecionar"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:326
 msgid "Available Subscriptions for the Selected System"
@@ -5761,6 +5575,10 @@ msgstr "Saiba mais sobre {productName}:"
 msgid "View website"
 msgstr "Ver website"
 
+#: ../html/src/manager/login/uyuni/login.tsx:91
+msgid "Login"
+msgstr "Autenticação"
+
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:81
 msgid "Skip to the last maintenance window"
 msgstr "Saltar para a última janela de manutenção"
@@ -7368,14 +7186,6 @@ msgstr "A aplicação do highstate foi <link>agendada</link>."
 msgid "Apply Highstate"
 msgstr "Aplicar Highstate"
 
-#: ../html/src/manager/storybook/storybook.tsx:55
-msgid "Development debugging page"
-msgstr "Página de depuração de desenvolvimento"
-
-#: ../html/src/manager/storybook/storybook.tsx:57
-msgid "This is a hidden page used by developers, if you found it by accident, good job!"
-msgstr "Esta é uma página oculta usada por programadores, se a encontrou por acidente, bom trabalho!"
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:39
 msgid "{productName} Default"
 msgstr "{productName} Predefinido"
@@ -8240,6 +8050,99 @@ msgstr "Recurso não encontrado."
 #: ../html/src/utils/network.ts:112
 msgid "HTTP Error code "
 msgstr "Código de erro HTTP "
+
+#~ msgid "Delete project"
+#~ msgstr "Eliminar projeto"
+
+#~ msgid "Are you sure you want to delete project "
+#~ msgstr "Tem a certeza de que pretende eliminar o projeto "
+
+#~ msgid "Field"
+#~ msgstr "Campo"
+
+#~ msgid "Checkbox"
+#~ msgstr "Caixa de seleção"
+
+#~ msgid "Datetime"
+#~ msgstr "Data e hora"
+
+#~ msgid "Multiple values"
+#~ msgstr "Múltiplos valores"
+
+#~ msgid "Long text"
+#~ msgstr "Texto longo"
+
+#~ msgid "Range"
+#~ msgstr "Intervalo"
+
+#~ msgid "Radio"
+#~ msgstr "Botão de opção"
+
+#~ msgid "One"
+#~ msgstr "Um"
+
+#~ msgid "Two"
+#~ msgstr "Dois"
+
+#~ msgid "Three"
+#~ msgstr "Três"
+
+#~ msgid "Foo"
+#~ msgstr "Foo"
+
+#~ msgid "Bar"
+#~ msgstr "Bar"
+
+#~ msgid "Time"
+#~ msgstr "Hora"
+
+#~ msgid "First Name"
+#~ msgstr "Primeiro nome"
+
+#~ msgid "Last Name"
+#~ msgstr "Apelido"
+
+#~ msgid "Must be at least 4 characters"
+#~ msgstr "Deve ter pelo menos 4 caracteres"
+
+#~ msgid "Level"
+#~ msgstr "Nível"
+
+#~ msgid "Beginner"
+#~ msgstr "Principiante"
+
+#~ msgid "Normal"
+#~ msgstr "Normal"
+
+#~ msgid "Expert"
+#~ msgstr "Experiente"
+
+#~ msgid "Port range"
+#~ msgstr "Intervalo de portas"
+
+#~ msgid "Channel name"
+#~ msgstr "Nome do canal"
+
+#~ msgid "Hub Org"
+#~ msgstr "Org Hub"
+
+#~ msgid "Item id"
+#~ msgstr "ID do item"
+
+#~ msgid "Item name"
+#~ msgstr "Nome do item"
+
+#~ msgid "Text to display on hover"
+#~ msgstr "Texto a exibir ao passar o rato"
+
+#~ msgid "Loading text"
+#~ msgstr "A carregar texto"
+
+#~ msgid "Development debugging page"
+#~ msgstr "Página de depuração de desenvolvimento"
+
+#~ msgid "This is a hidden page used by developers, if you found it by accident, good job!"
+#~ msgstr "Esta é uma página oculta usada por programadores, se a encontrou por acidente, bom trabalho!"
 
 #~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
 #~ msgstr "A ação foi adicionada com sucesso à cadeia de ações <link>\"{name}\"</link>."

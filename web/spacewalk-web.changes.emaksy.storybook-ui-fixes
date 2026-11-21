@@ -1,0 +1,3 @@
+- Show expiration information for expired Hub tokens
+- Keep restricted Content Lifecycle Management dialogs open
+- Remove leftover dialogs and overlays when leaving a page

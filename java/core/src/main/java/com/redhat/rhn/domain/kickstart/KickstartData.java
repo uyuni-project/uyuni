@@ -890,6 +890,16 @@ public class KickstartData extends BaseDomainHelper {
     }
 
     /**
+     * @return if this kickstart profile is rhel 10 installer type or greater
+     */
+    public boolean isRhel10OrGreater() {
+        if (getInstallType() != null) {
+            return (getInstallType().isRhel10OrGreater() || getInstallType().isFedora());
+        }
+        return false;
+    }
+
+    /**
      * @return if this kickstart profile is rhel 6 installer type or greater (for rhel7)
      */
     public boolean isRhel6OrGreater() {
@@ -952,6 +962,17 @@ public class KickstartData extends BaseDomainHelper {
     public boolean isSLES15OrGreater() {
         if (getInstallType() != null) {
             return (getInstallType().isSLES15OrGreater());
+        }
+        return false;
+    }
+
+    /**
+     * @return if this auto installation profile is SLES 16 installer type or greater
+     *  (for SLES 16+)
+     */
+    public boolean isSLES16OrGreater() {
+        if (getInstallType() != null) {
+            return (getInstallType().isSLES16OrGreater());
         }
         return false;
     }

@@ -158,7 +158,7 @@ public class VirtualHostManagerController {
      */
     public static Object getSingle(Request req, Response res, User user) {
         return withVirtualHostManager(req, res, user,
-                VirtualHostManagerController::getJsonDetails);
+                VirtualHostManagerController::getJsonDetails, new TypeToken<JsonObject>() { });
     }
 
     /**
@@ -215,7 +215,7 @@ public class VirtualHostManagerController {
      */
     public static String getNodes(Request request, Response response, User user) {
         return withVirtualHostManager(request, response, user,
-                VirtualHostManagerController::getJsonNodes);
+                VirtualHostManagerController::getJsonNodes, new TypeToken<JsonArray>() { });
     }
 
     /**
@@ -297,7 +297,7 @@ public class VirtualHostManagerController {
                 return ResultJson.success();
             }
             return ResultJson.error(errors);
-        });
+        }, new TypeToken<Object>() { });
     }
 
     /**
@@ -402,14 +402,14 @@ public class VirtualHostManagerController {
                         kubeconfigPath + ": " + e.getMessage());
             }
             return ResultJson.success(contextNames);
-        });
+        }, new TypeToken<List<String>>() { });
     }
 
     private static <T> String withVirtualHostManager(Request request,
-                                                 Response response,
-                                                 User user,
-                                                 Function<VirtualHostManager, ResultJson<T>>
-                                                         operation) {
+                                                     Response response,
+                                                     User user,
+                                                     Function<VirtualHostManager, ResultJson<T>> operation,
+                                                     TypeToken<T> type) {
         Long storeId;
         try {
             storeId = Long.parseLong(request.params("id"));
@@ -425,10 +425,10 @@ public class VirtualHostManagerController {
             ResultJson<T> result = operation.apply(vhm);
 
             if (result.isSuccess()) {
-                return result(response, HttpStatus.SC_OK, result, new TypeToken<>() { });
+                return result(response, HttpStatus.SC_OK, result, type);
             }
             else {
-                return result(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, result, new TypeToken<>() { });
+                return result(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, result, type);
             }
         }
         catch (IllegalArgumentException e) {
@@ -610,7 +610,7 @@ public class VirtualHostManagerController {
         return withVirtualHostManager(req, res, user, vhm -> {
             getFactory().delete(vhm);
             return ResultJson.success();
-        });
+        }, new TypeToken<Object>() { });
     }
 
     /**
@@ -637,7 +637,7 @@ public class VirtualHostManagerController {
             }
 
             return ResultJson.success();
-        });
+        }, new TypeToken<Object>() { });
     }
 
     /**
@@ -707,7 +707,7 @@ public class VirtualHostManagerController {
         }).collect(Collectors.toList());
     }
 
-    private static ResultJson<?> getJsonDetails(VirtualHostManager vhm) {
+    private static ResultJson<JsonObject> getJsonDetails(VirtualHostManager vhm) {
         JsonObject json = new JsonObject();
         json.addProperty("id", vhm.getId());
         json.addProperty("label", vhm.getLabel());
@@ -726,7 +726,7 @@ public class VirtualHostManagerController {
     }
 
 
-    private static ResultJson<?> getJsonNodes(VirtualHostManager vhm) {
+    private static ResultJson<JsonArray> getJsonNodes(VirtualHostManager vhm) {
         JsonArray list = new JsonArray();
 
         vhm.getServers().stream().map(srv -> {

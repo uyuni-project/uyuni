@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 12:10+0100\n"
-"PO-Revision-Date: 2026-08-18 06:13+0000\n"
+"POT-Creation-Date: 2026-11-20 13:26+0100\n"
+"PO-Revision-Date: 2026-11-20 08:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.11.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:431
 msgid "remaining"
@@ -120,7 +120,7 @@ msgstr "이름 없음"
 #: ../html/src/components/action-schedule.test.tsx:77
 #: ../html/src/components/action-schedule.tsx:324
 msgid "Comment / Reason:"
-msgstr ""
+msgstr "의견 / 사유:"
 
 #: ../html/src/components/action-schedule.tsx:57
 msgid "new action chain"
@@ -147,10 +147,8 @@ msgid "Add to:"
 msgstr "추가 위치:"
 
 #: ../html/src/components/action-schedule.tsx:332
-#, fuzzy
-#| msgid "e.g. 12345"
 msgid "e.g. Ticket #12345"
-msgstr "예: 12345"
+msgstr "예: 티켓 번호 12345"
 
 #: ../html/src/components/action-schedule.tsx:344
 msgid "Loading the scheduler..."
@@ -584,13 +582,12 @@ msgstr "취소"
 #: ../html/src/components/dialog/DeleteDialog.tsx:33
 #: ../html/src/components/hub/PeripheralsList.tsx:62
 #: ../html/src/components/hub/TokenTable.tsx:141
-#: ../html/src/components/hub/TokenTable.tsx:230
+#: ../html/src/components/hub/TokenTable.tsx:232
 #: ../html/src/components/large-text-attachment.tsx:212
 #: ../html/src/components/large-text-attachment.tsx:214
 #: ../html/src/components/large-text-attachment.tsx:227
 #: ../html/src/components/panels/CreatorPanel.tsx:101
 #: ../html/src/components/table/Table.tsx:251
-#: ../html/src/components/table/search.example.tsx:29
 #: ../html/src/manager/admin/payg/payg.tsx:76
 #: ../html/src/manager/admin/payg/payg.tsx:77
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:105
@@ -627,116 +624,13 @@ msgstr "취소"
 msgid "Delete"
 msgstr "삭제"
 
-#: ../html/src/components/dialog/delete.example.tsx:20
-msgid "Delete project"
-msgstr "프로젝트 삭제"
-
-#: ../html/src/components/dialog/delete.example.tsx:23
-msgid "Are you sure you want to delete project "
-msgstr "프로젝트를 삭제하시겠습니까 "
-
-#: ../html/src/components/formik/Form.example.tsx:38
-msgid "Field"
-msgstr "필드"
-
-#: ../html/src/components/formik/Form.example.tsx:40
-#: ../html/src/components/input/InputBase.test.tsx:49
-#: ../html/src/components/input/InputBase.test.tsx:75
-#: ../html/src/components/input/InputBase.test.tsx:103
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:58
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:67
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:67
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:75
-#: ../html/src/components/input/form/Form.example.tsx:31
-#: ../html/src/components/input/text/Text.example.tsx:31
-#: ../html/src/components/input/text/Text.example.tsx:40
-#: ../html/src/components/steps-progress-bar.stories.tsx:17
-msgid "Minimum 2 characters"
-msgstr "2자 이상"
-
-#: ../html/src/components/formik/Form.example.tsx:43
-#: ../html/src/components/input/check/form.example.tsx:24
-msgid "Checkbox"
-msgstr "확인란"
-
-#: ../html/src/components/formik/Form.example.tsx:45
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:187
-#: ../html/src/components/input/password/Password.example.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:81
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:80
-#: ../html/src/manager/images/image-store-edit.tsx:186
-#: ../html/src/manager/login/susemanager/login.tsx:105
-#: ../html/src/manager/login/uyuni/login.tsx:103
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:431
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:554
-msgid "Password"
-msgstr "비밀번호"
-
-#: ../html/src/components/formik/Form.example.tsx:47
-msgid "Datetime"
-msgstr "날짜/시간"
-
-#: ../html/src/components/formik/Form.example.tsx:49
-msgid "Multiple values"
-msgstr "다중 값"
-
-#: ../html/src/components/formik/Form.example.tsx:51
-msgid "Long text"
-msgstr "긴 텍스트"
-
-#: ../html/src/components/formik/Form.example.tsx:53
-msgid "Range"
-msgstr "범위"
-
-#: ../html/src/components/formik/Form.example.tsx:57
-msgid "Radio"
-msgstr "라디오"
-
-#: ../html/src/components/formik/Form.example.tsx:59
-msgid "One"
-msgstr "1"
-
-#: ../html/src/components/formik/Form.example.tsx:60
-msgid "Two"
-msgstr "2"
-
-#: ../html/src/components/formik/Form.example.tsx:61
-msgid "Three"
-msgstr "3"
-
-#: ../html/src/components/formik/Form.example.tsx:68
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:313
-msgid "Select"
-msgstr "선택"
-
-#: ../html/src/components/formik/Form.example.tsx:71
-msgid "Foo"
-msgstr "Foo"
-
-#: ../html/src/components/formik/Form.example.tsx:75
-msgid "Bar"
-msgstr "막대"
-
-#: ../html/src/components/formik/Form.example.tsx:82
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:249
-#: ../html/src/components/input/check/DEPRECATED_Check.example.tsx:31
-#: ../html/src/components/input/check/form.example.tsx:26
-#: ../html/src/components/input/datetime/DateTime.example.tsx:31
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:75
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:62
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:84
-#: ../html/src/components/input/form/Form.example.tsx:36
-#: ../html/src/components/input/password/Password.example.tsx:36
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:43
-#: ../html/src/components/input/radio/horizontal.example.tsx:42
-#: ../html/src/components/input/radio/vertical-open.example.tsx:42
-#: ../html/src/components/input/radio/vertical.example.tsx:41
-#: ../html/src/components/input/range/Range.example.tsx:30
-#: ../html/src/components/input/text/Text.example.tsx:44
-msgid "Submit"
-msgstr "제출"
+#: ../html/src/components/dialog/ModalButton.stories.tsx:93
+#: ../html/src/components/hub/AddTokenButton.tsx:232
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:182
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:108
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:109
+msgid "Close"
+msgstr "닫기"
 
 #: ../html/src/components/formik/field/AsRadio.tsx:47
 msgid "Custom value"
@@ -877,13 +771,6 @@ msgstr "새 토큰이 생성되었습니다. 이 토큰은 다시 확인할 수 
 msgid "Copy"
 msgstr "복사"
 
-#: ../html/src/components/hub/AddTokenButton.tsx:232
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:182
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:108
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:109
-msgid "Close"
-msgstr "닫기"
-
 #: ../html/src/components/hub/AddTokenButton.tsx:265
 msgid "Access token copied to the clipboard"
 msgstr "액세스 토큰이 클립보드에 복사되었습니다."
@@ -916,7 +803,6 @@ msgid "Channel Name"
 msgstr "채널 이름"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:151
-#: ../html/src/components/table/nested-data.example.tsx:68
 #: ../html/src/manager/admin/setup/products/products.tsx:663
 #: ../html/src/manager/admin/setup/products/products.tsx:1055
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:177
@@ -1051,6 +937,10 @@ msgstr "액세스 토큰"
 #: ../html/src/components/hub/ServerDetailsForm.tsx:113
 msgid "Root Certificate Authority"
 msgstr "루트 인증 기관"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:249
+msgid "Submit"
+msgstr "제출"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:273
 msgid "This slave is currently disabled and cannot be selected for migration"
@@ -1213,6 +1103,18 @@ msgstr "사용자 이름"
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:179
 msgid "The username of {productName} Administrator of the remote server."
 msgstr "원격 서버에 대한 {productname} 관리자의 사용자 이름입니다."
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:187
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:81
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:80
+#: ../html/src/manager/images/image-store-edit.tsx:186
+#: ../html/src/manager/login/susemanager/login.tsx:105
+#: ../html/src/manager/login/uyuni/login.tsx:103
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:431
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:554
+msgid "Password"
+msgstr "비밀번호"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:188
 msgid "The password of the specified user."
@@ -1381,8 +1283,6 @@ msgstr "이름을 기준으로 필터링"
 #. ref={nameInputRef}
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:239
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:275
-#: ../html/src/components/input/form/Form.example.tsx:29
-#: ../html/src/components/steps-progress-bar.stories.tsx:15
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:119
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:113
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:359
@@ -1546,12 +1446,12 @@ msgid "Confirm if you want to proceed."
 msgstr "계속 진행할지 여부를 확인하십시오."
 
 #: ../html/src/components/hub/TokenTable.tsx:129
-#: ../html/src/components/hub/TokenTable.tsx:175
+#: ../html/src/components/hub/TokenTable.tsx:177
 msgid "Invalidate"
 msgstr "무효화"
 
 #: ../html/src/components/hub/TokenTable.tsx:129
-#: ../html/src/components/hub/TokenTable.tsx:175
+#: ../html/src/components/hub/TokenTable.tsx:177
 msgid "Validate"
 msgstr "검증"
 
@@ -1567,136 +1467,71 @@ msgstr "이 토큰을 삭제하시겠습니까? 현재 사용 중이지 않습�
 msgid "No, never expires"
 msgstr "아니요, 만료되지 않음"
 
-#: ../html/src/components/hub/TokenTable.tsx:159
+#: ../html/src/components/hub/TokenTable.tsx:160
 msgid "Yes, expired <expiration></expiration>"
 msgstr "예, 만료됨 <expiration></expiration>"
 
-#: ../html/src/components/hub/TokenTable.tsx:159
+#: ../html/src/components/hub/TokenTable.tsx:161
 msgid "No, expires <expiration></expiration>"
 msgstr "아니요, 만료됨 <expiration></expiration>"
 
-#: ../html/src/components/hub/TokenTable.tsx:222
+#: ../html/src/components/hub/TokenTable.tsx:224
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
 msgstr "이 액세스 토큰은 삭제할 수 없습니다. 현재 허브 {fqdn}에서 사용 중입니다."
 
-#: ../html/src/components/hub/TokenTable.tsx:226
+#: ../html/src/components/hub/TokenTable.tsx:228
 msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
 msgstr "이 액세스 토큰은 삭제할 수 없습니다. 현재 주변기기 {fqdn}에서 사용 중입니다."
 
 #. token issued for another server currently valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:237
+#: ../html/src/components/hub/TokenTable.tsx:239
 msgid "Invalidating this access token will prevent the hub {fqdn} from accesssing."
 msgstr "이 액세스 토큰을 무효화하면 허브 {fqdn}의 액세스가 차단됩니다."
 
 #. token issued for another server currently valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:240
+#: ../html/src/components/hub/TokenTable.tsx:242
 msgid "Invalidating this access token will prevent the peripheral {fqdn} from accesssing."
 msgstr "이 액세스 토큰을 무효화하면 주변기기 {fqdn}의 액세스가 차단됩니다."
 
 #. token issued for another server currently not valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:243
+#: ../html/src/components/hub/TokenTable.tsx:245
 msgid "Enabling this access token will grant access to the hub {fqdn}."
 msgstr "이 액세스 토큰을 활성화하면 허브 {fqdn}에 대한 액세스 권한이 부여됩니다."
 
 #. token issued for another server currently not valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:246
+#: ../html/src/components/hub/TokenTable.tsx:248
 msgid "Enabling this access token will grant access to the peripheral {fqdn}."
 msgstr "이 액세스 토큰을 활성화하면 주변기기 {fqdn}에 대한 액세스 권한이 부여됩니다."
 
 #. token received from another server currently valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:249
+#: ../html/src/components/hub/TokenTable.tsx:251
 msgid "Invalidating this access token will prevent access to the hub {fqdn}."
 msgstr "이 액세스 토큰을 무효화하면 허브 {fqdn}에 대한 액세스가 차단됩니다."
 
 #. token received from another server currently valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:252
+#: ../html/src/components/hub/TokenTable.tsx:254
 msgid "Invalidating this access token will prevent access to the peripheral {fqdn}."
 msgstr "이 액세스 토큰을 무효화하면 주변기기 {fqdn}에 대한 액세스가 차단됩니다."
 
 #. token received from another server currently not valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:255
+#: ../html/src/components/hub/TokenTable.tsx:257
 msgid "Enabling this access token will restore access to the hub {fqdn}."
 msgstr "이 액세스 토큰을 활성화하면 허브 {fqdn}에 대한 액세스가 복원됩니다."
 
 #. token received from another server currently not valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:258
+#: ../html/src/components/hub/TokenTable.tsx:260
 msgid "Enabling this access token will restore access to the peripheral {fqdn}."
 msgstr "이 액세스 토큰을 활성화하면 주변기기 {fqdn}에 대한 액세스가 복원됩니다."
 
-#: ../html/src/components/input/datetime/DateTime.example.tsx:30
-msgid "Time"
-msgstr "시간"
+#: ../html/src/components/input/InputBase.test.tsx:49
+#: ../html/src/components/input/InputBase.test.tsx:75
+#: ../html/src/components/input/InputBase.test.tsx:103
+msgid "Minimum 2 characters"
+msgstr "2자 이상"
 
 #: ../html/src/components/input/form-multi-input/FormMultiInput.tsx:166
 msgid "Remove"
 msgstr "제거"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:30
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:30
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:38
-#: ../html/src/manager/admin/access-control/access-group-list.tsx:128
-#: ../html/src/manager/admin/access-control/access-group.tsx:215
-msgid "Users"
-msgstr "사용자"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:56
-#: ../html/src/components/input/text/Text.example.tsx:29
-msgid "First Name"
-msgstr "이름"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:65
-msgid "Last Name"
-msgstr "성"
-
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:53
-#: ../html/src/manager/login/uyuni/login.tsx:91
-msgid "Login"
-msgstr "로그인"
-
-#: ../html/src/components/input/password/Password.example.tsx:31
-msgid "Must be at least 4 characters"
-msgstr "4자 이상"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:32
-#: ../html/src/components/input/radio/horizontal.example.tsx:32
-#: ../html/src/components/input/radio/vertical-open.example.tsx:31
-#: ../html/src/components/input/radio/vertical.example.tsx:31
-msgid "Level"
-msgstr "레벨"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:38
-#: ../html/src/components/input/radio/horizontal.example.tsx:37
-#: ../html/src/components/input/radio/vertical-open.example.tsx:37
-#: ../html/src/components/input/radio/vertical.example.tsx:36
-#: ../html/src/components/input/select/custom-fields.example.tsx:15
-#: ../html/src/components/input/select/multiple.example.tsx:15
-#: ../html/src/components/input/select/simple.example.tsx:15
-msgid "Beginner"
-msgstr "초급자"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:39
-#: ../html/src/components/input/radio/horizontal.example.tsx:38
-#: ../html/src/components/input/radio/vertical-open.example.tsx:38
-#: ../html/src/components/input/radio/vertical.example.tsx:37
-#: ../html/src/components/input/select/custom-fields.example.tsx:21
-#: ../html/src/components/input/select/multiple.example.tsx:19
-#: ../html/src/components/input/select/simple.example.tsx:19
-msgid "Normal"
-msgstr "일반"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:40
-#: ../html/src/components/input/radio/horizontal.example.tsx:39
-#: ../html/src/components/input/radio/vertical-open.example.tsx:39
-#: ../html/src/components/input/radio/vertical.example.tsx:38
-#: ../html/src/components/input/select/custom-fields.example.tsx:27
-#: ../html/src/components/input/select/multiple.example.tsx:23
-#: ../html/src/components/input/select/simple.example.tsx:23
-msgid "Expert"
-msgstr "전문가"
-
-#: ../html/src/components/input/range/Range.example.tsx:29
-msgid "Port range"
-msgstr "포트 범위"
 
 #: ../html/src/components/input/range/Range.test.tsx:78
 msgid "Both values need to be positive integers"
@@ -1738,7 +1573,6 @@ msgstr "다운로드"
 
 #: ../html/src/components/large-text-attachment.tsx:126
 #: ../html/src/components/large-text-attachment.tsx:128
-#: ../html/src/components/table/search.example.tsx:28
 msgid "Add"
 msgstr "추가"
 
@@ -2137,10 +1971,8 @@ msgstr "다시 정렬"
 
 #: ../html/src/components/states-picker.tsx:474
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:271
-#, fuzzy
-#| msgid "Registration date:"
 msgid "Use transactional update"
-msgstr "등록 날짜:"
+msgstr "트랜잭션 업데이트 사용"
 
 #: ../html/src/components/states-picker.tsx:491
 msgid "Search in states"
@@ -2181,7 +2013,6 @@ msgid "State Label"
 msgstr "상태 레이블"
 
 #: ../html/src/components/states-picker.tsx:529
-#: ../html/src/components/table/nested-data.example.tsx:62
 msgid "Channel Label"
 msgstr "채널 레이블"
 
@@ -2247,32 +2078,32 @@ msgstr "보안 자문"
 msgid "System Locked"
 msgstr "시스템 잠김"
 
-#: ../html/src/components/table/NumericSearchField.tsx:17
+#: ../html/src/components/table/NumericSearchField.tsx:19
 msgid "less than"
 msgstr "다음보다 작음"
 
-#: ../html/src/components/table/NumericSearchField.tsx:18
+#: ../html/src/components/table/NumericSearchField.tsx:20
 msgid "less than or equal to"
 msgstr "다음보다 작거나 같음"
 
-#: ../html/src/components/table/NumericSearchField.tsx:19
+#: ../html/src/components/table/NumericSearchField.tsx:21
 msgid "equal to"
 msgstr "같음"
 
-#: ../html/src/components/table/NumericSearchField.tsx:20
+#: ../html/src/components/table/NumericSearchField.tsx:22
 msgid "greater than or equal to"
 msgstr "다음보다 크거나 같음"
 
-#: ../html/src/components/table/NumericSearchField.tsx:21
+#: ../html/src/components/table/NumericSearchField.tsx:23
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:118
 msgid "greater than"
 msgstr "다음보다 큼"
 
-#: ../html/src/components/table/NumericSearchField.tsx:22
+#: ../html/src/components/table/NumericSearchField.tsx:24
 msgid "not equal to"
 msgstr "다음과 같지 않음"
 
-#: ../html/src/components/table/NumericSearchField.tsx:68
+#: ../html/src/components/table/NumericSearchField.tsx:71
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:150
 msgid "Matcher"
 msgstr "선택기"
@@ -2298,52 +2129,6 @@ msgstr "모두"
 msgid "Clear All"
 msgstr "모두 지우기"
 
-#: ../html/src/components/table/nested-data.example.tsx:51
-msgid "Channel name"
-msgstr "채널 이름"
-
-#: ../html/src/components/table/nested-data.example.tsx:73
-msgid "Hub Org"
-msgstr "허브 조직"
-
-#: ../html/src/components/table/nested-data.example.tsx:77
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:385
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:187
-msgid "View"
-msgstr "보기"
-
-#: ../html/src/components/table/nested-data.example.tsx:78
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:388
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:202
-msgid "Modify"
-msgstr "수정"
-
-#: ../html/src/components/table/search.example.tsx:38
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:368
-msgid "API"
-msgstr "API"
-
-#: ../html/src/components/table/search.example.tsx:41
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:210
-msgid "Web"
-msgstr "웹"
-
-#: ../html/src/components/table/search.example.tsx:44
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:213
-msgid "Only selected"
-msgstr "선택한 항목만"
-
-#: ../html/src/components/table/search.example.tsx:55
-msgid "Item id"
-msgstr "항목 ID"
-
-#: ../html/src/components/table/search.example.tsx:56
-#, fuzzy
-#| msgid "System name"
-msgid "Item name"
-msgstr "시스템 이름"
-
 #: ../html/src/components/target-systems.tsx:32
 msgid "Target Systems"
 msgstr "대상 시스템"
@@ -2360,18 +2145,9 @@ msgstr "유효하지 않은 데이터"
 msgid "No data"
 msgstr "데이터 없음"
 
-#: ../html/src/components/utils/HelpIcon.example.tsx:10
-msgid "Text to display on hover"
-msgstr "마우스로 가리킬 때 표시되는 텍스트"
-
 #: ../html/src/components/utils/HelpLink.tsx:22
 msgid "Help"
 msgstr "도움말"
-
-#: ../html/src/components/utils/loading/text-border.example.tsx:13
-#: ../html/src/components/utils/loading/text.example.tsx:13
-msgid "Loading text"
-msgstr "텍스트를 로드하는 중"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:24
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:13
@@ -2404,7 +2180,7 @@ msgstr "없음"
 msgid "Require this channel"
 msgstr "이 채널 필요"
 
-#: ../html/src/core/intl/index.example.tsx:13
+#: ../html/src/core/intl/index.stories.tsx:30
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "메시지 구문은 <link>Format.JS docs</link>를 참조하십시오."
 
@@ -2491,6 +2267,11 @@ msgstr "액세스 그룹이 없습니다."
 msgid "Filter by name or description"
 msgstr "이름 또는 설명을 기준으로 필터링"
 
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:128
+#: ../html/src/manager/admin/access-control/access-group.tsx:215
+msgid "Users"
+msgstr "사용자"
+
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:133
 msgid "permissions"
 msgstr "권한"
@@ -2502,6 +2283,19 @@ msgstr "선택한 액세스 그룹을 삭제하시겠습니까?"
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:162
 msgid "An unexpected error occurred while fetching namespaces."
 msgstr "네임스페이스를 가져오는 동안 예기치 않은 오류가 발생했습니다."
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:368
+msgid "API"
+msgstr "API"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:210
+msgid "Web"
+msgstr "웹"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:213
+msgid "Only selected"
+msgstr "선택한 항목만"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:273
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:136
@@ -2526,6 +2320,16 @@ msgstr "필요에 따라 이 사용자 정의 그룹의 권한을 검토 및 수
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:149
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:385
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:187
+msgid "View"
+msgstr "보기"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:388
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:202
+msgid "Modify"
+msgstr "수정"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:168
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:140
@@ -2817,10 +2621,8 @@ msgid "No hub is currently configured for this server. "
 msgstr "현재 이 서버에 허브가 구성되어 있지 않습니다. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:95
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr "이 서버는 현재 허브 {fqdn}의 주변기기로 등록되어 있습니다."
+msgstr "이 서버는 현재 허브 {fqdn}의 주변 기기로 등록되어 있습니다. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:114
 msgid "Successfully scheduled a channels synchronization."
@@ -2843,10 +2645,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - 주변 장치 세부 정보"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:57
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr "{fqdn} 서버는 현재 이 허브의 주변기기로 등록되어 있습니다."
+msgstr "{fqdn} 서버는 현재 이 허브의 주변 기기로 등록되어 있습니다. "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:30
 msgid "Peripherals Configuration"
@@ -2989,7 +2789,7 @@ msgstr "최신 상태 업데이트"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:56
 msgid "Edit "
-msgstr "편집  "
+msgstr "편집 "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:71
 msgid "Editing ssh connection data.."
@@ -3546,7 +3346,7 @@ msgstr "알 수 없는 패치 상태"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:247
 msgid "OVAL audit not supported for this system's OS"
-msgstr ""
+msgstr "이 시스템의 운영체제에서는 OVAL 감사를 지원하지 않습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:249
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
@@ -4070,6 +3870,10 @@ msgstr "단계 1/2: 테이블에서 고정할 시스템을 아래에서 선택�
 msgid "Socket/IFL count"
 msgstr "소켓/IFL 개수"
 
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:313
+msgid "Select"
+msgstr "선택"
+
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:326
 msgid "Available Subscriptions for the Selected System"
 msgstr "선택한 시스템에서 사용할 수 있는 구독"
@@ -4249,10 +4053,8 @@ msgid "Create a new filter"
 msgstr "새 필터 만들기"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:191
-#, fuzzy
-#| msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
 msgid "This filter cannot be deleted because it is currently in use by one or more projects"
-msgstr "이 액세스 토큰은 삭제할 수 없습니다. 현재 주변기기 {fqdn}에서 사용 중입니다."
+msgstr "이 필터는 삭제할 수 없습니다. 현재 주변 기기 {fqdn}에서 사용 중입니다."
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:198
 msgid "Filter deleted successfully"
@@ -4263,14 +4065,10 @@ msgid "Bear in mind that all the associated projects need to be rebuilt after a 
 msgstr "필터를 업데이트한 후에는 연결된 모든 프로젝트를 다시 빌드해야 합니다."
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:97
-#, fuzzy
-#| msgid "Use a manual filter"
 msgid "Manual Filter"
-msgstr "수동 필터 만들기"
+msgstr "수동 필터"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:102
-#, fuzzy
-#| msgid "Use a template"
 msgid "Use Template"
 msgstr "템플릿 사용"
 
@@ -4793,10 +4591,8 @@ msgid "Create New Filter"
 msgstr "새 필터 만들기"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:38
-#, fuzzy
-#| msgid "Edit Filter {name}"
 msgid "Edit {name}"
-msgstr "{name} 필터 편집"
+msgstr "{name} 편집"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:85
 msgid "Filters"
@@ -4976,14 +4772,10 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "요청한 페이지 {currentUrl}을(를) 찾을 수 없습니다."
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr "이 주소를 브라우저에 직접 입력한 경우 철자와 대/소문자를 다시 확인하십시오."
 
 #: ../html/src/manager/errors/not-found.tsx:22
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr "링크를 따라온 경우 해당 링크가 잘못되었거나 오래되었을 수 있습니다. 다음의 뒤로 버튼을 클릭하십시오. "
 
@@ -4992,8 +4784,6 @@ msgid "If you used a bookmark, the page may have moved to a different location s
 msgstr "책갈피를 사용한 경우, 책갈피가 이전에 사용된 이후 페이지가 다른 위치로 이동했을 수 있습니다. "
 
 #: ../html/src/manager/errors/not-found.tsx:36
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr "실수로 인해 이 페이지에 방문하게 되었다고 생각되는 경우, 수신한 방법에 대한 자세한 내용과 함께 문의해 주십시오. "
 
@@ -5631,20 +5421,16 @@ msgid "Images"
 msgstr "이미지"
 
 #: ../html/src/manager/images/image-view.tsx:536
-#, fuzzy
-#| msgid "sync failed"
 msgid "Inspect failed"
-msgstr "동기화 실패"
+msgstr "검사 실패"
 
 #: ../html/src/manager/images/image-view.tsx:545
 msgid "Building"
 msgstr "빌드하는 중"
 
 #: ../html/src/manager/images/image-view.tsx:550
-#, fuzzy
-#| msgid " failed"
 msgid "Build failed"
-msgstr " 실패"
+msgstr "빌드 실패"
 
 #: ../html/src/manager/images/image-view.tsx:553
 msgid "Unknown"
@@ -5774,6 +5560,10 @@ msgstr "{productName}에 대해 자세히 알아보기:"
 #: ../html/src/manager/login/uyuni/login.tsx:59
 msgid "View website"
 msgstr "웹사이트 보기"
+
+#: ../html/src/manager/login/uyuni/login.tsx:91
+msgid "Login"
+msgstr "로그인"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:81
 msgid "Skip to the last maintenance window"
@@ -7382,14 +7172,6 @@ msgstr "highstate 적용이 <link>예약</link>되었습니다."
 msgid "Apply Highstate"
 msgstr "Highstate 적용"
 
-#: ../html/src/manager/storybook/storybook.tsx:55
-msgid "Development debugging page"
-msgstr "개발 디버깅 페이지"
-
-#: ../html/src/manager/storybook/storybook.tsx:57
-msgid "This is a hidden page used by developers, if you found it by accident, good job!"
-msgstr "개발자들이 사용하는 숨겨진 페이지입니다. 이 페이지를 우연히 발견하셨다면 대단하시네요!"
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:39
 msgid "{productName} Default"
 msgstr "{productName} 기본"
@@ -7676,78 +7458,60 @@ msgstr "데이터베이스 비밀번호 보고 생성"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:63
 #: ../html/src/manager/systems/details/snapshots.tsx:66
-#, fuzzy
-#| msgid "Unable to perform action."
 msgid "Unable to load snapshot information."
-msgstr "작업을 수행할 수 없습니다."
+msgstr "스냅샷 정보를 불러올 수 없습니다."
 
 #: ../html/src/manager/systems/details/snapshots.tsx:93
-#, fuzzy
-#| msgid "Remediation has been "
 msgid "The action has been "
-msgstr "교정이  "
+msgstr "작업이 "
 
 #: ../html/src/manager/systems/details/snapshots.tsx:114
-#, fuzzy
-#| msgid "Refresh Data"
 msgid "Refresh Snapshots"
-msgstr "데이터 새로 고침"
+msgstr "스냅샷 새로 고침"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:118
 msgid "Btrfs Snapshots"
-msgstr ""
+msgstr "Btrfs 스냅샷"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:131
-#, fuzzy
-#| msgid "No streams available"
 msgid "No snapshots available."
-msgstr "사용할 수 있는 스트림 없음"
+msgstr "사용할 수 있는 스냅샷 없음"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:135
 msgid "#"
-msgstr ""
+msgstr "번호"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:142
-#, fuzzy
-#| msgid "Inactive"
 msgid "active"
-msgstr "비활성"
+msgstr "활성"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:147
 msgid "default"
-msgstr ""
+msgstr "기본값"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:156
 msgid "Pre #"
-msgstr ""
+msgstr "이전 번호"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:160
-#, fuzzy
-#| msgid "Datetime"
 msgid "Date"
-msgstr "날짜/시간"
+msgstr "날짜"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:164
-#, fuzzy
-#| msgid "Used by Schedule"
 msgid "Used Space"
-msgstr "일정에서 사용됨"
+msgstr "사용 공간"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:168
-#, fuzzy
-#| msgid "Clear Menu"
 msgid "Cleanup"
-msgstr "메뉴 지우기"
+msgstr "정리"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:170
-#, fuzzy
-#| msgid "User"
 msgid "Userdata"
-msgstr "사용자"
+msgstr "사용자 데이터"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:197
 msgid "Unable to schedule snapshot refresh."
-msgstr ""
+msgstr "스냅샷 새로 고침을 예약할 수 없습니다."
 
 #: ../html/src/manager/systems/list-filter.tsx:10
 msgid "Manager Server"
@@ -8272,6 +8036,99 @@ msgstr "리소스를 찾을 수 없음"
 #: ../html/src/utils/network.ts:112
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
+
+#~ msgid "Delete project"
+#~ msgstr "프로젝트 삭제"
+
+#~ msgid "Are you sure you want to delete project "
+#~ msgstr "프로젝트를 삭제하시겠습니까 "
+
+#~ msgid "Field"
+#~ msgstr "필드"
+
+#~ msgid "Checkbox"
+#~ msgstr "확인란"
+
+#~ msgid "Datetime"
+#~ msgstr "날짜/시간"
+
+#~ msgid "Multiple values"
+#~ msgstr "다중 값"
+
+#~ msgid "Long text"
+#~ msgstr "긴 텍스트"
+
+#~ msgid "Range"
+#~ msgstr "범위"
+
+#~ msgid "Radio"
+#~ msgstr "라디오"
+
+#~ msgid "One"
+#~ msgstr "1"
+
+#~ msgid "Two"
+#~ msgstr "2"
+
+#~ msgid "Three"
+#~ msgstr "3"
+
+#~ msgid "Foo"
+#~ msgstr "Foo"
+
+#~ msgid "Bar"
+#~ msgstr "막대"
+
+#~ msgid "Time"
+#~ msgstr "시간"
+
+#~ msgid "First Name"
+#~ msgstr "이름"
+
+#~ msgid "Last Name"
+#~ msgstr "성"
+
+#~ msgid "Must be at least 4 characters"
+#~ msgstr "4자 이상"
+
+#~ msgid "Level"
+#~ msgstr "레벨"
+
+#~ msgid "Beginner"
+#~ msgstr "초급자"
+
+#~ msgid "Normal"
+#~ msgstr "일반"
+
+#~ msgid "Expert"
+#~ msgstr "전문가"
+
+#~ msgid "Port range"
+#~ msgstr "포트 범위"
+
+#~ msgid "Channel name"
+#~ msgstr "채널 이름"
+
+#~ msgid "Hub Org"
+#~ msgstr "허브 조직"
+
+#~ msgid "Item id"
+#~ msgstr "항목 ID"
+
+#~ msgid "Item name"
+#~ msgstr "항목 이름"
+
+#~ msgid "Text to display on hover"
+#~ msgstr "마우스로 가리킬 때 표시되는 텍스트"
+
+#~ msgid "Loading text"
+#~ msgstr "텍스트를 로드하는 중"
+
+#~ msgid "Development debugging page"
+#~ msgstr "개발 디버깅 페이지"
+
+#~ msgid "This is a hidden page used by developers, if you found it by accident, good job!"
+#~ msgstr "개발자들이 사용하는 숨겨진 페이지입니다. 이 페이지를 우연히 발견하셨다면 대단하시네요!"
 
 #~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
 #~ msgstr "작업이 작업 체인 <link>\"{name}\"</link>에 추가되었습니다."

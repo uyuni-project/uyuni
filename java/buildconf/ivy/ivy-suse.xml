@@ -68,7 +68,7 @@ SPDX-License-Identifier: GPL-2.0-only
         <dependency org="suse" name="quartz" rev="2.5.0" />
         <dependency org="suse" name="redstone-xmlrpc" rev="1.1_20071120" />
         <dependency org="suse" name="redstone-xmlrpc-client" rev="1.1_20071120" />
-        <dependency org="suse" name="salt-netapi-client" rev="1.0.0" />
+        <dependency org="suse" name="salt-netapi-client" rev="1.1.0" />
         <dependency org="suse" name="prometheus-metrics-config" rev="1.5.1" />
         <dependency org="suse" name="prometheus-metrics-core" rev="1.5.1" />
         <dependency org="suse" name="prometheus-metrics-model" rev="1.5.1" />

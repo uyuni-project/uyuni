@@ -61,7 +61,6 @@ import com.redhat.rhn.frontend.dto.UpgradablePackageListItem;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManagerTest;
-import com.redhat.rhn.manager.kickstart.tree.BaseTreeEditOperation;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.task.repomd.SaxSerializerFactory;
 import com.redhat.rhn.taskomatic.task.repomd.SimpleAttributesImpl;
@@ -453,6 +452,8 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         m.executeUpdate(params);
     }
 
+    private static final String KICKSTART_CAPABILITY = "rhn.kickstart.boot_image";
+
     /**
      * Find the kickstart package capability if it exists, create it otherwise.
      * @return The kickstart package capability.
@@ -461,7 +462,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Session session = HibernateFactory.getSession();
         Query query = session.createQuery(
                 "from PackageCapability where name = :capability");
-        query.setParameter("capability", BaseTreeEditOperation.KICKSTART_CAPABILITY);
+        query.setParameter("capability", KICKSTART_CAPABILITY);
         List results = query.list();
 
         // Multiple results could be returned for this capability,
@@ -471,7 +472,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         }
 
         return PackageCapabilityTest.createTestCapability(
-                BaseTreeEditOperation.KICKSTART_CAPABILITY);
+                KICKSTART_CAPABILITY);
     }
 
     @Test

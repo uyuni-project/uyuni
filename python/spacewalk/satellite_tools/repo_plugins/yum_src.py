@@ -1254,7 +1254,7 @@ password={passwd}
 
         for filter_item in filters:
             sense, pkg_list = filter_item
-            regex = fnmatch.translate(pkg_list[0])
+            regex = "|".join(fnmatch.translate(p) for p in pkg_list)
             reobj = re.compile(regex)
             if sense == "+":
                 if exclude_only:
@@ -1474,10 +1474,10 @@ password={passwd}
 
         :returns: list
         """
-        rawpkglist = [
-            RawSolvablePackage(solvable) for solvable in self._get_solvable_packages()
-        ]
-        return self._apply_filters(rawpkglist, filters)
+        rawpkglist = self._get_solvable_packages()
+        self.num_packages = len(rawpkglist)
+        rawpkglist = self._apply_filters(rawpkglist, filters)
+        return [RawSolvablePackage(solvable) for solvable in rawpkglist]
 
     def list_packages(self, filters, latest):
         """

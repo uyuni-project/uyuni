@@ -109,6 +109,45 @@ Given(/^I mirror the AppStream test packages locally$/) do
   mirror_repo_locally(get_target('server'), test_packages_base_url('Appstream/rhlike'), '/srv/www/htdocs/pub/TestRepoAppStream')
 end
 
+DEB_TEST_REPO_DIR = '/srv/www/htdocs/pub/TestRepoDebUpdates'.freeze
+
+# Lists the package files (relative paths) of the flat Debian repository in dir on the server.
+def deb_repo_package_files(server, dir)
+  files, = server.run("sed -n 's/^Filename: //p' #{dir}/Packages | sed 's#^\\./##'")
+  files.split("\n")
+end
+
+# Downloads all Debian packages and index files from base_url into dest on the server.
+# Same approach as mirror_repo_locally, for a flat Debian repository: the package list comes from Packages.
+def mirror_deb_repo_locally(server, base_url, dest)
+  _out, rc = server.run("test -f #{dest}/Packages", check_errors: false)
+  return if rc.zero?
+
+  tmp = "#{dest}.tmp"
+  server.run("rm -rf #{tmp} && mkdir -p #{tmp}")
+  download_hrefs(server, base_url, tmp, %w[Release Release.gpg Release.key Packages Packages.gz])
+  download_hrefs(server, base_url, tmp, deb_repo_package_files(server, tmp))
+  server.run("rm -rf #{dest} && mv #{tmp} #{dest}")
+end
+
+# On podman, sumaform puts the Debian test repository on the server; on RKE2 the testsuite installs the server, so it must do it.
+Given(/^I mirror the Debian test packages locally$/) do
+  mirror_deb_repo_locally(get_target('server'), test_packages_base_url('Updates/deb'), DEB_TEST_REPO_DIR)
+end
+
+# Fails early if the Debian test repository is missing or empty:
+# a reposync against it would otherwise report "Sync completed" with 0 packages.
+Then(/^the Debian test packages should be available on the server$/) do
+  server = get_target('server')
+  server.run('curl -sf -o /dev/null http://localhost/pub/TestRepoDebUpdates/Release')
+  files = deb_repo_package_files(server, DEB_TEST_REPO_DIR)
+  raise ScriptError, "No package listed in #{DEB_TEST_REPO_DIR}/Packages" if files.empty?
+
+  list = files.map { |file| "'#{file}'" }.join(' ')
+  missing, = server.run("cd #{DEB_TEST_REPO_DIR} && for f in #{list}; do test -f \"$f\" || echo \"$f\"; done")
+  raise ScriptError, "Missing Debian test packages in #{DEB_TEST_REPO_DIR}: #{missing.split.join(', ')}" unless missing.strip.empty?
+end
+
 Then(/^it should be possible to use the HTTP proxy$/) do
   url = 'https://www.suse.com'
   # Proxy Password: P4$$w/ord With%and&
@@ -589,12 +628,15 @@ Then(/^the taskomatic logs should not contain errors$/) do
 end
 
 Then(/^the logs messages should not contain SELinux denials$/) do
-  output, error, code = get_target('server').run('ausearch -m AVC,USER_AVC | audit2why', runs_in_container: false, check_errors: false)
-  no_matches = code == 1 && output.empty? && error.strip == '<no matches>'
-  unless no_matches
-    raise ScriptError, "SELinux audit query failed on server host (status #{code}):\n#{output}#{error}" unless code.zero? && error.empty?
-    raise ScriptError, "SELinux errors on server host:\n#{output}" unless output.empty?
-  end
+  server = get_target('server')
+  # Without a terminal, ausearch reads stdin instead of the audit logs and never returns: --input-logs forces the logs.
+  # Query ausearch alone, as the exit code of a pipe into audit2why is always 0, even without matches
+  _output, error, code = server.run('ausearch --input-logs -m AVC,USER_AVC', runs_in_container: false, check_errors: false, separated_results: true)
+  next if code == 1 && error.strip == '<no matches>'
+  raise ScriptError, "SELinux audit query failed on server host (status #{code}):\n#{error}" unless code.zero?
+
+  explanation, _code = server.run('ausearch --input-logs -m AVC,USER_AVC | audit2why', runs_in_container: false, check_errors: false)
+  raise ScriptError, "SELinux errors on server host:\n#{explanation}"
 end
 
 Then(/^the log messages should not contain out of memory errors$/) do
@@ -618,8 +660,10 @@ Then(/^the server log should not contain "([^"]*)" errors$/) do |component|
   errors =
     records.select do |record|
       # While the database container stops and restarts, the salt-event-notification-poller thread in the server container
-      # is interrupted mid-query or while waiting on the JDBC connection pool
-      is_transient_db_restart = record.include?('An SQLException was provoked by the following failure: java.lang.InterruptedException')
+      # is interrupted mid-query or while waiting on the JDBC connection pool, and new connections fail
+      # while the "db" host is unresolvable
+      is_transient_db_restart = record.include?('An SQLException was provoked by the following failure: java.lang.InterruptedException') ||
+                                (record.include?('Connections could not be acquired from the underlying database') && record.include?('UnknownHostException: db'))
 
       !is_transient_db_restart &&
         record.match?(/exception/i) &&
@@ -1074,14 +1118,11 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   node.run(cmd, verbose: true, check_errors: error_control.empty?)
 end
 
-When(/^I enable source package syncing$/) do
-  cmd = 'echo \'server.sync_source_packages = 1\' >> /etc/rhn/rhn.conf'
-  get_target('server').run(cmd)
-end
-
-When(/^I disable source package syncing$/) do
-  cmd = 'sed -i \'s/^server.sync_source_packages = 1.*//g\' /etc/rhn/rhn.conf'
-  get_target('server').run(cmd)
+# Recent reposync reads SYNC_SOURCE_PACKAGES from the rhnConfiguration table
+When(/^I (enable|disable) source package syncing$/) do |action|
+  value = action == 'enable' ? 1 : 0
+  server = get_target('server')
+  server.run("echo \"UPDATE rhnConfiguration SET value = '#{value}' WHERE key = 'SYNC_SOURCE_PACKAGES';\" | spacewalk-sql -")
 end
 
 When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
@@ -2147,7 +2188,12 @@ Then(/^I check the uyuni server (has started|is running|has stopped)$/) do |stat
     if ['has started', 'is running'].include? status
       break if code.zero? && running == 'true' && health == 'healthy'
     elsif status == 'has stopped'
-      break if code.nonzero? || running != 'true'
+      db_out, db_err, db_code = ssh_command("podman inspect -f '{{.State.Running}}' uyuni-db", node.full_hostname)
+      # Only a confirmed stop or a missing container counts: an SSH or inspect failure does not prove a container is down
+      missing = /no such (object|container)/i
+      server_stopped = (code.zero? && running == 'false') || res_err.to_s.match?(missing)
+      db_stopped = (db_code.zero? && db_out.strip == 'false') || db_err.to_s.match?(missing)
+      break if server_stopped || db_stopped
     end
     sleep 6
     "return code: #{code};  stdout: #{res_out};  stderr: #{res_err}"

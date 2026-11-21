@@ -2,9 +2,15 @@
 #
 # SPDX-License-Identifier: MIT
 
-{{- if .Values.gateway.enable }}
+{{- $gateway := .Values.gateway | default (dict) -}}
+{{- $listeners := $gateway.listeners | default (dict) -}}
+{{- $http := $listeners.http | default (dict) -}}
+{{- $https := $listeners.https | default (dict) -}}
+{{- $saline := .Values.saline | default (dict) -}}
+{{- $hubAPI := .Values.hubAPI | default (dict) -}}
+{{- if $gateway.enable }}
 {{- $fqdn := required "global.fqdn is needed!" .Values.global.fqdn -}}
-{{- $gatewayName := .Values.gateway.name | default "uyuni-gateway" -}}
+{{- $gatewayName := $gateway.name | default "uyuni-gateway" }}
 
 # SSL Redirection (Port 80 to 443)
 apiVersion: gateway.networking.k8s.io/v1
@@ -17,7 +23,7 @@ metadata:
 spec:
   parentRefs:
     - name: {{ $gatewayName }}
-      sectionName: {{ .Values.gateway.listeners.http.name }}
+      sectionName: {{ $http.name | default "web" }}
   hostnames:
     - {{ $fqdn | quote }}
   rules:
@@ -38,7 +44,7 @@ metadata:
 spec:
   parentRefs:
     - name: {{ $gatewayName }}
-      sectionName: {{ .Values.gateway.listeners.https.name }}
+      sectionName: {{ $https.name | default "websecure" }}
   hostnames:
     - {{ $fqdn | quote }}
   rules:
@@ -98,7 +104,7 @@ spec:
         - name: taskomatic-internal
           port: 5557
     {{- end }}
-    {{- if .Values.saline.enable }}
+    {{- if $saline.enable }}
     - matches:
         - path: { type: PathPrefix, value: /saline }
       filters:
@@ -109,7 +115,7 @@ spec:
         - name: saline
           port: 8216
     {{- end }}
-    {{- if default .Values.hubAPI.enable false }}
+    {{- if default $hubAPI.enable false }}
     - matches:
         - path: { type: PathPrefix, value: /hub/rpc/api }
       backendRefs:
@@ -133,7 +139,7 @@ metadata:
 spec:
   parentRefs:
     - name: {{ $gatewayName }}
-      sectionName: {{ .Values.gateway.listeners.http.name }}
+      sectionName: {{ $http.name | default "web" }}
   hostnames:
     - {{ $fqdn | quote }}
   rules:
@@ -215,7 +221,7 @@ spec:
         - name: taskomatic-internal
           port: 5557
     {{- end }}
-    {{- if .Values.saline.enable }}
+    {{- if $saline.enable }}
     - matches:
         - path: { type: PathPrefix, value: /saline }
       filters:

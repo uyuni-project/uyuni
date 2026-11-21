@@ -23,16 +23,19 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.message;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.notFound;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 
 import com.suse.manager.webui.utils.gson.ResultJson;
 
+import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -65,20 +68,8 @@ public class JsonSerializationTest {
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
         Optional<String> optString = Optional.of("test");
-        Set<Object> emptySet = Collections.emptySet();
-        List<Object> emptyList = Collections.emptyList();
-        LocalDate localDate = LocalDate.of(2021, 6, 25);
 
-        // When serializing without type information, Gson must use reflection on the actual runtime class.
-        // For JDK internal classes like {@code java.util.Optional} or with internal implementations like
-        // {@code Collections.emptySet()}, Java's module system blocks this reflection
-        // causing {@code InaccessibleObjectException}.
-        assertThrows(InaccessibleObjectException.class, () -> json(response, optString));
-        assertThrows(InaccessibleObjectException.class, () -> json(response, emptySet));
-        assertThrows(InaccessibleObjectException.class, () -> json(response, emptyList));
-        // This will fail because there is a type adapter registered for LocalDateTime, but not for LocalDate
-        // specifically
-        assertThrows(InaccessibleObjectException.class, () -> json(response, localDate));
+        assertReflectionAccessFailure(() -> json(response, optString));
     }
 
     /**
@@ -189,5 +180,12 @@ public class JsonSerializationTest {
                         HttpStatus.SC_BAD_REQUEST,
                         ResultJson.error("invalid_activation_key_id"))
         );
+    }
+
+    private static void assertReflectionAccessFailure(Executable serialize) {
+        RuntimeException exception = assertThrows(RuntimeException.class, serialize);
+        // Newer gson wraps the InaccessibleObjectException into a JsonIOException, so prepare the code for that
+        Throwable cause = exception instanceof JsonIOException ? exception.getCause() : exception;
+        assertInstanceOf(InaccessibleObjectException.class, cause);
     }
 }

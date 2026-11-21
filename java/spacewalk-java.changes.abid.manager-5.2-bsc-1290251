@@ -1,0 +1,2 @@
+- Fix PXTSessions leak on token-authenticated download requests
+  (bsc#1290251)

@@ -40,6 +40,7 @@ import com.suse.manager.model.gatherer.GathererModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -207,10 +208,12 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         String label = "TestVHM_" + TestUtils.randomString(10);
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, user.getOrg());
         Request request = getDeleteRequestWithCsrfAndBody("/manager/api/vhms/delete/:id", "", vhm.getId());
-        VirtualHostManagerController.delete(request, response, user);
+        String result = (String) VirtualHostManagerController.delete(request, response, user);
         TestUtils.flushSession();
 
         assertNull(factory.lookupByLabel(label));
+        assertEquals(HttpStatus.SC_OK, response.status(), result);
+        assertEquals(Boolean.TRUE, GSON.fromJson(result, Map.class).get("success"));
     }
 
     /**

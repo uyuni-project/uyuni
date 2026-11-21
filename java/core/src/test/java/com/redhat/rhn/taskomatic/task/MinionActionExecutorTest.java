@@ -17,6 +17,7 @@
 
 package com.redhat.rhn.taskomatic.task;
 
+import static org.jmock.AbstractExpectations.any;
 import static org.jmock.AbstractExpectations.returnValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,6 +43,8 @@ import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
 import org.quartz.TriggerKey;
 import org.quartz.impl.JobExecutionContextImpl;
 import org.quartz.spi.OperableTrigger;
@@ -52,6 +55,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
 
@@ -114,6 +118,7 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
                 expectations.with(a1Reloaded),
                 expectations.with(false),
                 expectations.with(false),
+                expectations.with(Optional.empty()),
                 expectations.with(Optional.empty())
             );
         });
@@ -139,5 +144,102 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
         assertTrue(sa2.isStatusFailed());
         assertEquals(expectedMessage, sa2.getResultMsg());
         assertEquals(-1, sa2.getResultCode());
+    }
+
+    @Test
+    public void retriesLaterForServersWaitingForReboot() {
+        Action action = createActionWithQueuedServer();
+        Long serverId = getServerId(action);
+        JobDataMap triggerData = new JobDataMap();
+
+        runExecutor(action, triggerData, Optional.empty(), Set.of(serverId), true);
+
+        assertEquals(String.valueOf(serverId), triggerData.get("reboot_wait_server_ids"));
+    }
+
+    @Test
+    public void doesNotRetryWhenNoServerWaitsForReboot() {
+        Action action = createActionWithQueuedServer();
+
+        runExecutor(action, new JobDataMap(), Optional.empty(), Set.of(), false);
+    }
+
+    @Test
+    public void retryOnlyExecutesForServersWaitingForReboot() {
+        Action action = createActionWithQueuedServer();
+        Long serverId = getServerId(action);
+        JobDataMap triggerData = new JobDataMap(Map.of("reboot_wait_server_ids", String.valueOf(serverId)));
+
+        runExecutor(action, triggerData, Optional.of(Set.of(serverId)), Set.of(), false);
+    }
+
+    private Action createActionWithQueuedServer() {
+        Action action = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_ERRATA);
+        ActionFactoryTest.addServerAction(user, action, ServerAction::setStatusQueued);
+        return TestUtils.saveAndReload(action);
+    }
+
+    private static Long getServerId(Action action) {
+        return action.getServerActions().iterator().next().getServerId();
+    }
+
+    /**
+     * Run the executor for the action and check that the Salt service is called for the expected servers and
+     * that the job is scheduled again only if a retry is expected.
+     */
+    private void runExecutor(Action action, JobDataMap triggerData, Optional<Set<Long>> expectedServerIds,
+                             Set<Long> waitingServerIds, boolean expectRetry) {
+        SaltServerActionService saltServerActionService = mock(SaltServerActionService.class);
+
+        checking(expectations -> {
+            expectations.ignoring(jobDetail).getJobDataMap();
+            expectations.will(returnValue(new JobDataMap(Map.of(
+                "action_id", String.valueOf(action.getId()),
+                "user_id", String.valueOf(user.getId()),
+                "staging_job", String.valueOf(false),
+                "force_pkg_list_refresh", String.valueOf(false)
+            ))));
+
+            expectations.ignoring(jobDetail).getKey();
+            expectations.will(returnValue(new JobKey("dummyJob")));
+
+            expectations.ignoring(trigger).getJobDataMap();
+            expectations.will(returnValue(triggerData));
+
+            expectations.ignoring(trigger).getKey();
+            expectations.will(returnValue(new TriggerKey("dummyTrigger")));
+
+            expectations.ignoring(trigger).getJobKey();
+            expectations.will(returnValue(new JobKey("dummyJob")));
+
+            expectations.oneOf(saltServerActionService).execute(
+                expectations.with(action),
+                expectations.with(false),
+                expectations.with(false),
+                expectations.with(Optional.empty()),
+                expectations.with(expectedServerIds)
+            );
+            expectations.will(returnValue(waitingServerIds));
+
+            try {
+                if (expectRetry) {
+                    expectations.oneOf(scheduler).scheduleJob(expectations.with(any(Trigger.class)));
+                    expectations.will(returnValue(new Date()));
+                }
+                else {
+                    expectations.never(scheduler).scheduleJob(expectations.with(any(Trigger.class)));
+                }
+            }
+            catch (SchedulerException e) {
+                throw new IllegalStateException(e);
+            }
+        });
+
+        JobExecutionContext context = new JobExecutionContextImpl(scheduler, firedBundle, job);
+
+        new MinionActionExecutor(saltServerActionService, new TestCloudPaygManagerBuilder().build())
+                .execute(context);
+
+        context().assertIsSatisfied();
     }
 }

@@ -12253,42 +12253,49 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>Apply formulas assigned to the target system</source>
         <target state="translated">Použiť vzorce priradené k cieľovému systému</target>
       </trans-unit>
-    <trans-unit id="Server Settings" xml:space="preserve">
+      <trans-unit id="Server Settings" xml:space="preserve">
         <source>Server Settings</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nastavenia servera</target>
+      </trans-unit>
       <trans-unit id="server_settings.error.unknown_key" xml:space="preserve">
         <source>Unknown server setting {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
           <context context-type="paramnotes">Unknown server setting KEY_NAME.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Neznáme nastavenie servera {0}.</target>
+      </trans-unit>
       <trans-unit id="server_settings.error.hidden_key" xml:space="preserve">
         <source>The server setting {0} can't be changed on this page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
           <context context-type="paramnotes">The server setting KEY_NAME can't be changed on this page.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nastavenie servera {0} nie je možné na tejto stránke zmeniť.</target>
+      </trans-unit>
       <trans-unit id="server_settings.error.integer" xml:space="preserve">
         <source>The value of {0} must be an integer.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
           <context context-type="paramnotes">The value of KEY_NAME must be an integer.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Hodnota {0} musí byť celé číslo.</target>
+      </trans-unit>
       <trans-unit id="server_settings.error.boolean" xml:space="preserve">
         <source>The value of {0} must be true or false.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
           <context context-type="paramnotes">The value of KEY_NAME must be true or false.</context>
+        </context-group>
+        <target state="translated">Hodnota {0} musí byť true alebo false.</target>
+      </trans-unit>
+    <trans-unit id="kickstart.tree.invalidinstalltype" xml:space="preserve">
+        <source>The installer type is not valid: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
       <target state="new"/>
   </trans-unit>

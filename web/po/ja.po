@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 12:10+0100\n"
-"PO-Revision-Date: 2026-08-19 05:12+0000\n"
+"POT-Creation-Date: 2026-11-20 13:26+0100\n"
+"PO-Revision-Date: 2026-11-18 08:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.11.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:431
 msgid "remaining"
@@ -120,7 +120,7 @@ msgstr "名前なし"
 #: ../html/src/components/action-schedule.test.tsx:77
 #: ../html/src/components/action-schedule.tsx:324
 msgid "Comment / Reason:"
-msgstr ""
+msgstr "コメント/理由:"
 
 #: ../html/src/components/action-schedule.tsx:57
 msgid "new action chain"
@@ -147,10 +147,8 @@ msgid "Add to:"
 msgstr "以下に追加:"
 
 #: ../html/src/components/action-schedule.tsx:332
-#, fuzzy
-#| msgid "e.g. 12345"
 msgid "e.g. Ticket #12345"
-msgstr "例: 12345"
+msgstr "例: チケット#12345"
 
 #: ../html/src/components/action-schedule.tsx:344
 msgid "Loading the scheduler..."
@@ -584,13 +582,12 @@ msgstr "取り消し"
 #: ../html/src/components/dialog/DeleteDialog.tsx:33
 #: ../html/src/components/hub/PeripheralsList.tsx:62
 #: ../html/src/components/hub/TokenTable.tsx:141
-#: ../html/src/components/hub/TokenTable.tsx:230
+#: ../html/src/components/hub/TokenTable.tsx:232
 #: ../html/src/components/large-text-attachment.tsx:212
 #: ../html/src/components/large-text-attachment.tsx:214
 #: ../html/src/components/large-text-attachment.tsx:227
 #: ../html/src/components/panels/CreatorPanel.tsx:101
 #: ../html/src/components/table/Table.tsx:251
-#: ../html/src/components/table/search.example.tsx:29
 #: ../html/src/manager/admin/payg/payg.tsx:76
 #: ../html/src/manager/admin/payg/payg.tsx:77
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:105
@@ -627,116 +624,13 @@ msgstr "取り消し"
 msgid "Delete"
 msgstr "削除"
 
-#: ../html/src/components/dialog/delete.example.tsx:20
-msgid "Delete project"
-msgstr "プロジェクトの削除"
-
-#: ../html/src/components/dialog/delete.example.tsx:23
-msgid "Are you sure you want to delete project "
-msgstr "下記のプロジェクトを削除してよろしいですか "
-
-#: ../html/src/components/formik/Form.example.tsx:38
-msgid "Field"
-msgstr "フィールド"
-
-#: ../html/src/components/formik/Form.example.tsx:40
-#: ../html/src/components/input/InputBase.test.tsx:49
-#: ../html/src/components/input/InputBase.test.tsx:75
-#: ../html/src/components/input/InputBase.test.tsx:103
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:58
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:67
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:67
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:75
-#: ../html/src/components/input/form/Form.example.tsx:31
-#: ../html/src/components/input/text/Text.example.tsx:31
-#: ../html/src/components/input/text/Text.example.tsx:40
-#: ../html/src/components/steps-progress-bar.stories.tsx:17
-msgid "Minimum 2 characters"
-msgstr "最低 2 文字"
-
-#: ../html/src/components/formik/Form.example.tsx:43
-#: ../html/src/components/input/check/form.example.tsx:24
-msgid "Checkbox"
-msgstr "チェックボックス"
-
-#: ../html/src/components/formik/Form.example.tsx:45
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:187
-#: ../html/src/components/input/password/Password.example.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:81
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:80
-#: ../html/src/manager/images/image-store-edit.tsx:186
-#: ../html/src/manager/login/susemanager/login.tsx:105
-#: ../html/src/manager/login/uyuni/login.tsx:103
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:431
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:554
-msgid "Password"
-msgstr "パスワード"
-
-#: ../html/src/components/formik/Form.example.tsx:47
-msgid "Datetime"
-msgstr "日時"
-
-#: ../html/src/components/formik/Form.example.tsx:49
-msgid "Multiple values"
-msgstr "複数の値"
-
-#: ../html/src/components/formik/Form.example.tsx:51
-msgid "Long text"
-msgstr "長いテキスト"
-
-#: ../html/src/components/formik/Form.example.tsx:53
-msgid "Range"
-msgstr "範囲"
-
-#: ../html/src/components/formik/Form.example.tsx:57
-msgid "Radio"
-msgstr "ラジオ"
-
-#: ../html/src/components/formik/Form.example.tsx:59
-msgid "One"
-msgstr "1"
-
-#: ../html/src/components/formik/Form.example.tsx:60
-msgid "Two"
-msgstr "2"
-
-#: ../html/src/components/formik/Form.example.tsx:61
-msgid "Three"
-msgstr "3"
-
-#: ../html/src/components/formik/Form.example.tsx:68
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:313
-msgid "Select"
-msgstr "選択"
-
-#: ../html/src/components/formik/Form.example.tsx:71
-msgid "Foo"
-msgstr "Foo"
-
-#: ../html/src/components/formik/Form.example.tsx:75
-msgid "Bar"
-msgstr "バー"
-
-#: ../html/src/components/formik/Form.example.tsx:82
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:249
-#: ../html/src/components/input/check/DEPRECATED_Check.example.tsx:31
-#: ../html/src/components/input/check/form.example.tsx:26
-#: ../html/src/components/input/datetime/DateTime.example.tsx:31
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:75
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:62
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:84
-#: ../html/src/components/input/form/Form.example.tsx:36
-#: ../html/src/components/input/password/Password.example.tsx:36
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:43
-#: ../html/src/components/input/radio/horizontal.example.tsx:42
-#: ../html/src/components/input/radio/vertical-open.example.tsx:42
-#: ../html/src/components/input/radio/vertical.example.tsx:41
-#: ../html/src/components/input/range/Range.example.tsx:30
-#: ../html/src/components/input/text/Text.example.tsx:44
-msgid "Submit"
-msgstr "送信"
+#: ../html/src/components/dialog/ModalButton.stories.tsx:93
+#: ../html/src/components/hub/AddTokenButton.tsx:232
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:182
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:108
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:109
+msgid "Close"
+msgstr "閉じる"
 
 #: ../html/src/components/formik/field/AsRadio.tsx:47
 msgid "Custom value"
@@ -877,13 +771,6 @@ msgstr "新しいトークンが正常に生成されました。このトーク
 msgid "Copy"
 msgstr "コピー"
 
-#: ../html/src/components/hub/AddTokenButton.tsx:232
-#: ../html/src/components/hub/MigrateSlavesForm.tsx:182
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:108
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:109
-msgid "Close"
-msgstr "閉じる"
-
 #: ../html/src/components/hub/AddTokenButton.tsx:265
 msgid "Access token copied to the clipboard"
 msgstr "アクセストークンがクリップボードにコピーされました"
@@ -916,7 +803,6 @@ msgid "Channel Name"
 msgstr "チャンネル名"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:151
-#: ../html/src/components/table/nested-data.example.tsx:68
 #: ../html/src/manager/admin/setup/products/products.tsx:663
 #: ../html/src/manager/admin/setup/products/products.tsx:1055
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:177
@@ -1051,6 +937,10 @@ msgstr "アクセストークン"
 #: ../html/src/components/hub/ServerDetailsForm.tsx:113
 msgid "Root Certificate Authority"
 msgstr "ルート認証局"
+
+#: ../html/src/components/hub/MigrateSlavesForm.tsx:249
+msgid "Submit"
+msgstr "送信"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:273
 msgid "This slave is currently disabled and cannot be selected for migration"
@@ -1213,6 +1103,18 @@ msgstr "ユーザ名"
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:179
 msgid "The username of {productName} Administrator of the remote server."
 msgstr "リモートサーバの {productName} 管理者のユーザ名。"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:187
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:81
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:80
+#: ../html/src/manager/images/image-store-edit.tsx:186
+#: ../html/src/manager/login/susemanager/login.tsx:105
+#: ../html/src/manager/login/uyuni/login.tsx:103
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:431
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:554
+msgid "Password"
+msgstr "パスワード"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:188
 msgid "The password of the specified user."
@@ -1381,8 +1283,6 @@ msgstr "名前でフィルタ"
 #. ref={nameInputRef}
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:239
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:275
-#: ../html/src/components/input/form/Form.example.tsx:29
-#: ../html/src/components/steps-progress-bar.stories.tsx:15
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:119
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:113
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:359
@@ -1546,12 +1446,12 @@ msgid "Confirm if you want to proceed."
 msgstr "続行して問題ないかご確認ください。"
 
 #: ../html/src/components/hub/TokenTable.tsx:129
-#: ../html/src/components/hub/TokenTable.tsx:175
+#: ../html/src/components/hub/TokenTable.tsx:177
 msgid "Invalidate"
 msgstr "無効"
 
 #: ../html/src/components/hub/TokenTable.tsx:129
-#: ../html/src/components/hub/TokenTable.tsx:175
+#: ../html/src/components/hub/TokenTable.tsx:177
 msgid "Validate"
 msgstr "有効"
 
@@ -1567,136 +1467,71 @@ msgstr "このトークンを削除してもよろしいですか? 現在、使�
 msgid "No, never expires"
 msgstr "いいえ、期限はありません"
 
-#: ../html/src/components/hub/TokenTable.tsx:159
+#: ../html/src/components/hub/TokenTable.tsx:160
 msgid "Yes, expired <expiration></expiration>"
 msgstr "はい、期限切れです<expiration></expiration>"
 
-#: ../html/src/components/hub/TokenTable.tsx:159
+#: ../html/src/components/hub/TokenTable.tsx:161
 msgid "No, expires <expiration></expiration>"
 msgstr "いいえ、期限はありません<expiration></expiration>"
 
-#: ../html/src/components/hub/TokenTable.tsx:222
+#: ../html/src/components/hub/TokenTable.tsx:224
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
 msgstr "このアクセストークンは削除できません。現在、ハブ {fqdn} によって使用されています"
 
-#: ../html/src/components/hub/TokenTable.tsx:226
+#: ../html/src/components/hub/TokenTable.tsx:228
 msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
 msgstr "このアクセストークンは削除できません。現在、周辺機器 {fqdn} によって使用されています"
 
 #. token issued for another server currently valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:237
+#: ../html/src/components/hub/TokenTable.tsx:239
 msgid "Invalidating this access token will prevent the hub {fqdn} from accesssing."
 msgstr "このアクセストークンを無効にすると、ハブ {fqdn} がアクセスできなくなります。"
 
 #. token issued for another server currently valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:240
+#: ../html/src/components/hub/TokenTable.tsx:242
 msgid "Invalidating this access token will prevent the peripheral {fqdn} from accesssing."
 msgstr "このアクセストークンを無効にすると、周辺機器 {fqdn} がアクセスできなくなります。"
 
 #. token issued for another server currently not valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:243
+#: ../html/src/components/hub/TokenTable.tsx:245
 msgid "Enabling this access token will grant access to the hub {fqdn}."
 msgstr "このアクセストークンを有効にすると、ハブ {fqdn} へのアクセスが許可されます。"
 
 #. token issued for another server currently not valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:246
+#: ../html/src/components/hub/TokenTable.tsx:248
 msgid "Enabling this access token will grant access to the peripheral {fqdn}."
 msgstr "このアクセストークンを有効にすると、周辺機器 {fqdn} へのアクセスが許可されます。"
 
 #. token received from another server currently valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:249
+#: ../html/src/components/hub/TokenTable.tsx:251
 msgid "Invalidating this access token will prevent access to the hub {fqdn}."
 msgstr "このアクセストークンを無効にすると、ハブ {fqdn} にアクセスできなくなります。"
 
 #. token received from another server currently valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:252
+#: ../html/src/components/hub/TokenTable.tsx:254
 msgid "Invalidating this access token will prevent access to the peripheral {fqdn}."
 msgstr "このアクセストークンを無効にすると、周辺機器 {fqdn} にアクセスできなくなります。"
 
 #. token received from another server currently not valid and linked to a hub
-#: ../html/src/components/hub/TokenTable.tsx:255
+#: ../html/src/components/hub/TokenTable.tsx:257
 msgid "Enabling this access token will restore access to the hub {fqdn}."
 msgstr "このアクセストークンを有効にすると、ハブ {fqdn} へのアクセスが復元されます。"
 
 #. token received from another server currently not valid and linked to a peripheral
-#: ../html/src/components/hub/TokenTable.tsx:258
+#: ../html/src/components/hub/TokenTable.tsx:260
 msgid "Enabling this access token will restore access to the peripheral {fqdn}."
 msgstr "このアクセストークンを有効にすると、周辺機器 {fqdn} へのアクセスが復元されます。"
 
-#: ../html/src/components/input/datetime/DateTime.example.tsx:30
-msgid "Time"
-msgstr "時刻"
+#: ../html/src/components/input/InputBase.test.tsx:49
+#: ../html/src/components/input/InputBase.test.tsx:75
+#: ../html/src/components/input/InputBase.test.tsx:103
+msgid "Minimum 2 characters"
+msgstr "最低 2 文字"
 
 #: ../html/src/components/input/form-multi-input/FormMultiInput.tsx:166
 msgid "Remove"
 msgstr "削除"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:30
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:30
-#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:38
-#: ../html/src/manager/admin/access-control/access-group-list.tsx:128
-#: ../html/src/manager/admin/access-control/access-group.tsx:215
-msgid "Users"
-msgstr "ユーザー"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:56
-#: ../html/src/components/input/text/Text.example.tsx:29
-msgid "First Name"
-msgstr "名"
-
-#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:65
-msgid "Last Name"
-msgstr "姓"
-
-#: ../html/src/components/input/form-multi-input/single-field.example.tsx:53
-#: ../html/src/manager/login/uyuni/login.tsx:91
-msgid "Login"
-msgstr "ログイン"
-
-#: ../html/src/components/input/password/Password.example.tsx:31
-msgid "Must be at least 4 characters"
-msgstr "4文字以上である必要があります"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:32
-#: ../html/src/components/input/radio/horizontal.example.tsx:32
-#: ../html/src/components/input/radio/vertical-open.example.tsx:31
-#: ../html/src/components/input/radio/vertical.example.tsx:31
-msgid "Level"
-msgstr "レベル"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:38
-#: ../html/src/components/input/radio/horizontal.example.tsx:37
-#: ../html/src/components/input/radio/vertical-open.example.tsx:37
-#: ../html/src/components/input/radio/vertical.example.tsx:36
-#: ../html/src/components/input/select/custom-fields.example.tsx:15
-#: ../html/src/components/input/select/multiple.example.tsx:15
-#: ../html/src/components/input/select/simple.example.tsx:15
-msgid "Beginner"
-msgstr "初心者"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:39
-#: ../html/src/components/input/radio/horizontal.example.tsx:38
-#: ../html/src/components/input/radio/vertical-open.example.tsx:38
-#: ../html/src/components/input/radio/vertical.example.tsx:37
-#: ../html/src/components/input/select/custom-fields.example.tsx:21
-#: ../html/src/components/input/select/multiple.example.tsx:19
-#: ../html/src/components/input/select/simple.example.tsx:19
-msgid "Normal"
-msgstr "通常"
-
-#: ../html/src/components/input/radio/horizontal-open.example.tsx:40
-#: ../html/src/components/input/radio/horizontal.example.tsx:39
-#: ../html/src/components/input/radio/vertical-open.example.tsx:39
-#: ../html/src/components/input/radio/vertical.example.tsx:38
-#: ../html/src/components/input/select/custom-fields.example.tsx:27
-#: ../html/src/components/input/select/multiple.example.tsx:23
-#: ../html/src/components/input/select/simple.example.tsx:23
-msgid "Expert"
-msgstr "熟練者"
-
-#: ../html/src/components/input/range/Range.example.tsx:29
-msgid "Port range"
-msgstr "ポート範囲"
 
 #: ../html/src/components/input/range/Range.test.tsx:78
 msgid "Both values need to be positive integers"
@@ -1738,7 +1573,6 @@ msgstr "ダウンロード"
 
 #: ../html/src/components/large-text-attachment.tsx:126
 #: ../html/src/components/large-text-attachment.tsx:128
-#: ../html/src/components/table/search.example.tsx:28
 msgid "Add"
 msgstr "追加"
 
@@ -2137,10 +1971,8 @@ msgstr "並べ替え"
 
 #: ../html/src/components/states-picker.tsx:474
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:271
-#, fuzzy
-#| msgid "Registration date:"
 msgid "Use transactional update"
-msgstr "登録日:"
+msgstr "トランザクション更新を使用する"
 
 #: ../html/src/components/states-picker.tsx:491
 msgid "Search in states"
@@ -2181,7 +2013,6 @@ msgid "State Label"
 msgstr "状態ラベル"
 
 #: ../html/src/components/states-picker.tsx:529
-#: ../html/src/components/table/nested-data.example.tsx:62
 msgid "Channel Label"
 msgstr "チャンネルラベル"
 
@@ -2247,32 +2078,32 @@ msgstr "セキュリティアドバイザリ"
 msgid "System Locked"
 msgstr "システムはロック済み"
 
-#: ../html/src/components/table/NumericSearchField.tsx:17
+#: ../html/src/components/table/NumericSearchField.tsx:19
 msgid "less than"
 msgstr "指定したものより古い"
 
-#: ../html/src/components/table/NumericSearchField.tsx:18
+#: ../html/src/components/table/NumericSearchField.tsx:20
 msgid "less than or equal to"
 msgstr "指定したものよりも古いか等しい"
 
-#: ../html/src/components/table/NumericSearchField.tsx:19
+#: ../html/src/components/table/NumericSearchField.tsx:21
 msgid "equal to"
 msgstr "等しい"
 
-#: ../html/src/components/table/NumericSearchField.tsx:20
+#: ../html/src/components/table/NumericSearchField.tsx:22
 msgid "greater than or equal to"
 msgstr "指定したものよりも新しいか等しい"
 
-#: ../html/src/components/table/NumericSearchField.tsx:21
+#: ../html/src/components/table/NumericSearchField.tsx:23
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:118
 msgid "greater than"
 msgstr "指定したものより新しい"
 
-#: ../html/src/components/table/NumericSearchField.tsx:22
+#: ../html/src/components/table/NumericSearchField.tsx:24
 msgid "not equal to"
 msgstr "等しくない"
 
-#: ../html/src/components/table/NumericSearchField.tsx:68
+#: ../html/src/components/table/NumericSearchField.tsx:71
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:150
 msgid "Matcher"
 msgstr "マッチャー"
@@ -2298,52 +2129,6 @@ msgstr "すべて"
 msgid "Clear All"
 msgstr "全てを消去"
 
-#: ../html/src/components/table/nested-data.example.tsx:51
-msgid "Channel name"
-msgstr "チャンネル名"
-
-#: ../html/src/components/table/nested-data.example.tsx:73
-msgid "Hub Org"
-msgstr "ハブ組織"
-
-#: ../html/src/components/table/nested-data.example.tsx:77
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:385
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:187
-msgid "View"
-msgstr "表示"
-
-#: ../html/src/components/table/nested-data.example.tsx:78
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:388
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:202
-msgid "Modify"
-msgstr "変更"
-
-#: ../html/src/components/table/search.example.tsx:38
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:368
-msgid "API"
-msgstr "API"
-
-#: ../html/src/components/table/search.example.tsx:41
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:210
-msgid "Web"
-msgstr "Web"
-
-#: ../html/src/components/table/search.example.tsx:44
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:213
-msgid "Only selected"
-msgstr "選択されたもののみ"
-
-#: ../html/src/components/table/search.example.tsx:55
-msgid "Item id"
-msgstr "項目ID"
-
-#: ../html/src/components/table/search.example.tsx:56
-#, fuzzy
-#| msgid "System name"
-msgid "Item name"
-msgstr "システム名"
-
 #: ../html/src/components/target-systems.tsx:32
 msgid "Target Systems"
 msgstr "ターゲットシステム"
@@ -2360,18 +2145,9 @@ msgstr "データが正しくありません"
 msgid "No data"
 msgstr "データがありません"
 
-#: ../html/src/components/utils/HelpIcon.example.tsx:10
-msgid "Text to display on hover"
-msgstr "カーソルを合わせると表示されるテキスト"
-
 #: ../html/src/components/utils/HelpLink.tsx:22
 msgid "Help"
 msgstr "ヘルプ"
-
-#: ../html/src/components/utils/loading/text-border.example.tsx:13
-#: ../html/src/components/utils/loading/text.example.tsx:13
-msgid "Loading text"
-msgstr "テキストを読み込んでいます"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:24
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:13
@@ -2404,7 +2180,7 @@ msgstr "なし"
 msgid "Require this channel"
 msgstr "このチャンネルが必要"
 
-#: ../html/src/core/intl/index.example.tsx:13
+#: ../html/src/core/intl/index.stories.tsx:30
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "メッセージの構文については、<link>Format.JSドキュメント</link>を参照してください。"
 
@@ -2491,6 +2267,11 @@ msgstr "アクセスグループが見つかりません。"
 msgid "Filter by name or description"
 msgstr "名前または説明でフィルタ"
 
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:128
+#: ../html/src/manager/admin/access-control/access-group.tsx:215
+msgid "Users"
+msgstr "ユーザー"
+
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:133
 msgid "permissions"
 msgstr "許可"
@@ -2502,6 +2283,19 @@ msgstr "選択したアクセスグループを削除してよろしいですか
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:162
 msgid "An unexpected error occurred while fetching namespaces."
 msgstr "ネームスペースのフェッチ中に予期しないエラーが発生しました。"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:368
+msgid "API"
+msgstr "API"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:210
+msgid "Web"
+msgstr "Web"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:213
+msgid "Only selected"
+msgstr "選択されたもののみ"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:273
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:136
@@ -2526,6 +2320,16 @@ msgstr "必要に応じて、このカスタムグループの許可を確認し
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:149
 msgid "Filter by name"
 msgstr "名前でフィルタ"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:385
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:187
+msgid "View"
+msgstr "表示"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:388
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:202
+msgid "Modify"
+msgstr "変更"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:168
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:140
@@ -2817,10 +2621,8 @@ msgid "No hub is currently configured for this server. "
 msgstr "このサーバには現在ハブが設定されていません。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:95
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr "このサーバは現在、ハブ {fqdn} の周辺機器として登録されています。 "
+msgstr "このサーバは現在、ハブ{fqdn}の周辺機器として登録されています。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:114
 msgid "Successfully scheduled a channels synchronization."
@@ -2843,10 +2645,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - 周辺機器の詳細"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:57
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr "サーバ {fqdn} は現在、このハブの周辺機器として登録されています。 "
+msgstr "サーバ{fqdn}は現在、このハブの周辺機器として登録されています。 "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:30
 msgid "Peripherals Configuration"
@@ -3546,7 +3346,7 @@ msgstr "不明パッチステータス"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:247
 msgid "OVAL audit not supported for this system's OS"
-msgstr ""
+msgstr "このシステムのOSでは、OVAL監査はサポートされていません"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:249
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
@@ -4070,6 +3870,10 @@ msgstr "ステップ 1/2: 下記の表で、ピンを設定するシステムを
 msgid "Socket/IFL count"
 msgstr "ソケット/IFL カウント"
 
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:313
+msgid "Select"
+msgstr "選択"
+
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:326
 msgid "Available Subscriptions for the Selected System"
 msgstr "選択したシステムで利用可能なサブスクリプション"
@@ -4249,10 +4053,8 @@ msgid "Create a new filter"
 msgstr "新しいフィルタの作成"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:191
-#, fuzzy
-#| msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
 msgid "This filter cannot be deleted because it is currently in use by one or more projects"
-msgstr "このアクセストークンは削除できません。現在、周辺機器 {fqdn} によって使用されています"
+msgstr "このフィルタは現在、1つ以上のプロジェクトで使用されているため、削除できません"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:198
 msgid "Filter deleted successfully"
@@ -4263,14 +4065,10 @@ msgid "Bear in mind that all the associated projects need to be rebuilt after a 
 msgstr "フィルタを更新した場合、その後に関連する全てのプロジェクトを再構築する必要があることに注意してください"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:97
-#, fuzzy
-#| msgid "Use a manual filter"
 msgid "Manual Filter"
-msgstr "手動フィルタを使用する"
+msgstr "手動フィルタ"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:102
-#, fuzzy
-#| msgid "Use a template"
 msgid "Use Template"
 msgstr "テンプレートを使用する"
 
@@ -4793,10 +4591,8 @@ msgid "Create New Filter"
 msgstr "新しいフィルタの作成"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:38
-#, fuzzy
-#| msgid "Edit Filter {name}"
 msgid "Edit {name}"
-msgstr "フィルタ{name}の編集"
+msgstr "{name}の編集"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:85
 msgid "Filters"
@@ -4976,14 +4772,10 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "リクエストされたページ{currentUrl}が見つかりませんでした。"
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr "このアドレスをご使用のブラウザに入力したら、スペリングや大文字の使い方に誤りがないかを再度確認してください。"
 
 #: ../html/src/manager/errors/not-found.tsx:22
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr "リンクをたどっている場合、リンクが正しくないか、古くなっている可能性があります。戻るボタンをクリックしてください。 "
 
@@ -4992,8 +4784,6 @@ msgid "If you used a bookmark, the page may have moved to a different location s
 msgstr "ブックマークを使用している場合は、ブックマークの作成後に異なる場所に移動している場合もあります。 "
 
 #: ../html/src/manager/errors/not-found.tsx:36
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr "このページが間違って表示されたと判断する場合は、受け取った状況の詳細を弊社にご報告ください。 "
 
@@ -5631,20 +5421,16 @@ msgid "Images"
 msgstr "イメージ"
 
 #: ../html/src/manager/images/image-view.tsx:536
-#, fuzzy
-#| msgid "sync failed"
 msgid "Inspect failed"
-msgstr "同期が失敗しました"
+msgstr "検査に失敗しました"
 
 #: ../html/src/manager/images/image-view.tsx:545
 msgid "Building"
 msgstr "構築しています"
 
 #: ../html/src/manager/images/image-view.tsx:550
-#, fuzzy
-#| msgid " failed"
 msgid "Build failed"
-msgstr " 失敗"
+msgstr "構築に失敗しました"
 
 #: ../html/src/manager/images/image-view.tsx:553
 msgid "Unknown"
@@ -5774,6 +5560,10 @@ msgstr "{productName}に関する詳細:"
 #: ../html/src/manager/login/uyuni/login.tsx:59
 msgid "View website"
 msgstr "Webサイトを表示"
+
+#: ../html/src/manager/login/uyuni/login.tsx:91
+msgid "Login"
+msgstr "ログイン"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:81
 msgid "Skip to the last maintenance window"
@@ -7382,14 +7172,6 @@ msgstr "highstateの適用が <link>スケジュールされました</link>。"
 msgid "Apply Highstate"
 msgstr "highstate の適用"
 
-#: ../html/src/manager/storybook/storybook.tsx:55
-msgid "Development debugging page"
-msgstr "開発デバッグページ"
-
-#: ../html/src/manager/storybook/storybook.tsx:57
-msgid "This is a hidden page used by developers, if you found it by accident, good job!"
-msgstr "これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:39
 msgid "{productName} Default"
 msgstr "{productName} デフォルト"
@@ -7676,78 +7458,60 @@ msgstr "レポーティングデータベースパスワードの生成"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:63
 #: ../html/src/manager/systems/details/snapshots.tsx:66
-#, fuzzy
-#| msgid "Unable to perform action."
 msgid "Unable to load snapshot information."
-msgstr "動作を実行できません。"
+msgstr "スナップショット情報を読み込めません。"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:93
-#, fuzzy
-#| msgid "Remediation has been "
 msgid "The action has been "
-msgstr "修復されました "
+msgstr "動作が実行されました "
 
 #: ../html/src/manager/systems/details/snapshots.tsx:114
-#, fuzzy
-#| msgid "Refresh Data"
 msgid "Refresh Snapshots"
-msgstr "データの更新"
+msgstr "スナップショットの更新"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:118
 msgid "Btrfs Snapshots"
-msgstr ""
+msgstr "Btrfsスナップショット"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:131
-#, fuzzy
-#| msgid "No streams available"
 msgid "No snapshots available."
-msgstr "利用可能なストリームがありません"
+msgstr "利用可能なスナップショットがありません。"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:135
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:142
-#, fuzzy
-#| msgid "Inactive"
 msgid "active"
-msgstr "無効"
+msgstr "有効"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:147
 msgid "default"
-msgstr ""
+msgstr "デフォルト"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:156
 msgid "Pre #"
-msgstr ""
+msgstr "プレ#"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:160
-#, fuzzy
-#| msgid "Datetime"
 msgid "Date"
-msgstr "日時"
+msgstr "日付"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:164
-#, fuzzy
-#| msgid "Used by Schedule"
 msgid "Used Space"
-msgstr "スケジュールで使用済み"
+msgstr "使用済み容量"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:168
-#, fuzzy
-#| msgid "Clear Menu"
 msgid "Cleanup"
-msgstr "メニューの消去"
+msgstr "クリーンアップ"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:170
-#, fuzzy
-#| msgid "User"
 msgid "Userdata"
-msgstr "ユーザ"
+msgstr "ユーザデータ"
 
 #: ../html/src/manager/systems/details/snapshots.tsx:197
 msgid "Unable to schedule snapshot refresh."
-msgstr ""
+msgstr "スナップショットの更新をスケジュールできません。"
 
 #: ../html/src/manager/systems/list-filter.tsx:10
 msgid "Manager Server"
@@ -8272,6 +8036,99 @@ msgstr "リソースが見つかりませんでした。"
 #: ../html/src/utils/network.ts:112
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
+
+#~ msgid "Delete project"
+#~ msgstr "プロジェクトの削除"
+
+#~ msgid "Are you sure you want to delete project "
+#~ msgstr "下記のプロジェクトを削除してよろしいですか "
+
+#~ msgid "Field"
+#~ msgstr "フィールド"
+
+#~ msgid "Checkbox"
+#~ msgstr "チェックボックス"
+
+#~ msgid "Datetime"
+#~ msgstr "日時"
+
+#~ msgid "Multiple values"
+#~ msgstr "複数の値"
+
+#~ msgid "Long text"
+#~ msgstr "長いテキスト"
+
+#~ msgid "Range"
+#~ msgstr "範囲"
+
+#~ msgid "Radio"
+#~ msgstr "ラジオ"
+
+#~ msgid "One"
+#~ msgstr "1"
+
+#~ msgid "Two"
+#~ msgstr "2"
+
+#~ msgid "Three"
+#~ msgstr "3"
+
+#~ msgid "Foo"
+#~ msgstr "Foo"
+
+#~ msgid "Bar"
+#~ msgstr "バー"
+
+#~ msgid "Time"
+#~ msgstr "時刻"
+
+#~ msgid "First Name"
+#~ msgstr "名"
+
+#~ msgid "Last Name"
+#~ msgstr "姓"
+
+#~ msgid "Must be at least 4 characters"
+#~ msgstr "4文字以上である必要があります"
+
+#~ msgid "Level"
+#~ msgstr "レベル"
+
+#~ msgid "Beginner"
+#~ msgstr "初心者"
+
+#~ msgid "Normal"
+#~ msgstr "通常"
+
+#~ msgid "Expert"
+#~ msgstr "熟練者"
+
+#~ msgid "Port range"
+#~ msgstr "ポート範囲"
+
+#~ msgid "Channel name"
+#~ msgstr "チャンネル名"
+
+#~ msgid "Hub Org"
+#~ msgstr "ハブ組織"
+
+#~ msgid "Item id"
+#~ msgstr "項目ID"
+
+#~ msgid "Item name"
+#~ msgstr "項目名"
+
+#~ msgid "Text to display on hover"
+#~ msgstr "カーソルを合わせると表示されるテキスト"
+
+#~ msgid "Loading text"
+#~ msgstr "テキストを読み込んでいます"
+
+#~ msgid "Development debugging page"
+#~ msgstr "開発デバッグページ"
+
+#~ msgid "This is a hidden page used by developers, if you found it by accident, good job!"
+#~ msgstr "これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
 
 #~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
 #~ msgstr "動作を動作チェーン<link>\"{name}\"</link>に正常に追加しました 。"

@@ -2,7 +2,15 @@
 #
 # SPDX-License-Identifier: MIT
 
-{{- if and .Values.gateway.enable (eq .Values.gateway.name "") }}
+{{- $gateway := .Values.gateway | default (dict) -}}
+{{- $listeners := $gateway.listeners | default (dict) -}}
+{{- $http := $listeners.http | default (dict) -}}
+{{- $https := $listeners.https | default (dict) -}}
+{{- $services := .Values.services | default (dict) -}}
+{{- $servicesType := $services.type | default "ClusterIP" -}}
+{{- $saltService := $services.salt | default (dict) -}}
+{{- $sshService := $services.ssh | default (dict) -}}
+{{- if and $gateway.enable (eq ($gateway.name | default "") "") }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
@@ -11,19 +19,19 @@ metadata:
   labels:
     app.kubernetes.io/part-of: uyuni
 spec:
-  gatewayClassName: "{{ .Values.gateway.class }}"
+  gatewayClassName: "{{ $gateway.class }}"
   listeners:
     # HTTP/HTTPS Listeners
-    - name: {{ default .Values.gateway.listeners.http.name "web" }}
+    - name: {{ $http.name | default "web" }}
       protocol: HTTP
-      port: {{ default .Values.gateway.listeners.http.port 8000 }}
+      port: {{ $http.port | default 8000 }}
       allowedRoutes:
         namespaces:
           from: Same
 
-    - name: {{ default .Values.gateway.listeners.http.name "websecure" }}
+    - name: {{ $https.name | default "websecure" }}
       protocol: HTTPS
-      port: {{ default .Values.gateway.listeners.https.port 8443 }}
+      port: {{ $https.port | default 8443 }}
       tls:
         mode: Terminate
         certificateRefs:
@@ -33,7 +41,7 @@ spec:
           from: Same
 
     # TCP Listeners
-  {{- if ne (default .Values.services.type .Values.services.salt.type) "NodePort" }}
+  {{- if ne (default $servicesType $saltService.type) "NodePort" }}
     - name: salt-publish
       protocol: TCP
       port: 4505
@@ -49,7 +57,7 @@ spec:
           from: Same
   {{- end }}
 
-  {{- if ne (default .Values.services.type .Values.services.ssh.type) "NodePort" }}
+  {{- if ne (default $servicesType $sshService.type) "NodePort" }}
     - name: ssh
       protocol: TCP
       port: 8022

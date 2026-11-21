@@ -548,6 +548,7 @@ LABEL_BY_BASE_CHANNEL = {
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-2404-amd64-main-amd64',
     'ubuntu-2604-amd64-main for amd64' => 'ubuntu-2604-amd64-main-amd64',
     'debian-13-pool for amd64' => 'debian-13-pool-amd64',
+    'raspberrypios-13-pool for arm64' => 'raspberrypios-13-pool-arm64',
     'openSUSE-Leap-16.1 for aarch64' => 'opensuse-leap-16.1-aarch64',
     'openSUSE-Leap-16.1 for ppc64le' => 'opensuse-leap-16.1-ppc64le'
   },
@@ -662,7 +663,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-24.04-amd64',
     'ubuntu-2604-amd64-main for amd64' => 'ubuntu-26.04-amd64',
     'debian-13-pool for amd64' => 'debian13-amd64',
-    'raspberrypios-13-pool for arm64' => 'raspberrypios13-arm4',
+    'raspberrypios-13-pool for arm64' => 'raspberrypios-13-arm64',
     'openSUSE-Leap-16.1 for aarch64' => 'openSUSE-Leap-16.1-aarch64',
     'openSUSE-Leap-16.1 for ppc64le' => 'openSUSE-Leap-16.1-ppc64le'
   },

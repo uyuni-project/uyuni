@@ -2,6 +2,10 @@
 #
 # SPDX-License-Identifier: MIT
 
+{{- $server := .Values.server | default (dict) -}}
+{{- $db := .Values.db | default (dict) -}}
+{{- $internalDb := $db.internal | default (dict) -}}
+{{- $reportDb := $db.report | default (dict) }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,8 +15,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
 data:
   fqdn: {{ required "global.fqdn is needed!" .Values.global.fqdn }}
-  email: {{ required "server.email is needed!" .Values.server.email }}
-  {{- if .Values.db.enable }}
+  email: {{ required "server.email is needed!" $server.email }}
+  {{- if $db.enable }}
   db_host: db
   db_port: "5432"
   db_name: "susemanager"
@@ -20,10 +24,10 @@ data:
   reportdb_port: "5432"
   reportdb_name: reportdb
   {{- else }}
-  db_host: {{ .Values.db.internal.host | default "db" }}
-  db_port: "{{ .Values.db.internal.port | default 5432 }}"
-  db_name: {{ .Values.db.internal.name | default "susemanager " }}
-  reportdb_host: {{ .Values.db.report.host | default "reportdb" }}
-  reportdb_port: "{{ .Values.db.report.port | default 5432 }}"
-  reportdb_name: {{ .Values.db.report.name | default "reportdb" }}
+  db_host: {{ $internalDb.host | default "db" }}
+  db_port: "{{ $internalDb.port | default 5432 }}"
+  db_name: {{ $internalDb.name | default "susemanager" }}
+  reportdb_host: {{ $reportDb.host | default "reportdb" }}
+  reportdb_port: "{{ $reportDb.port | default 5432 }}"
+  reportdb_name: {{ $reportDb.name | default "reportdb" }}
   {{- end }}

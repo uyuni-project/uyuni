@@ -203,10 +203,7 @@ Then(/^the GPG key fingerprint "([^"]*)" should have user name "([^"]*)" via API
 end
 
 When(/^I make sure "([^"]*)" is not present$/) do |user|
-  $api_test.user.list_users
-           .map { |u| u['login'] }
-           .select { |l| l == user }
-           .each { $api_test.user.delete(user) }
+  $api_test.user.delete(user) if $api_test.user.exists?(user)
 end
 
 When(/^I call user\.remove_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |luser, rolename|
@@ -215,7 +212,7 @@ end
 
 Given(/^I create a user with name "([^"]*)" and password "([^"]*)"(?: with roles "([^"]*)")?/) do |user, password, roles_string|
   Credentials.login_as(user, password)
-  next if $api_test.user.list_users.to_s.include? user
+  next if $api_test.user.exists?(user)
 
   begin
     $api_test.user.create(user, password, user, user, 'galaxy-noise@localhost')

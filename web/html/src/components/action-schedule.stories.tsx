@@ -1,0 +1,86 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
+import { useState } from "react";
+
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
+import { action } from "storybook/actions";
+
+import { localizedMoment } from "utils";
+
+import { ActionSchedule } from "./action-schedule";
+
+const StatefulActionSchedule = (args: React.ComponentProps<typeof ActionSchedule>) => {
+  const [description, setDescription] = useState(args.actionDescription);
+
+  return (
+    <ActionSchedule
+      {...args}
+      actionDescription={description}
+      onActionDescriptionChanged={(value) => {
+        setDescription(value);
+        args.onActionDescriptionChanged(value);
+      }}
+    />
+  );
+};
+
+const meta = {
+  title: "Compositions/Scheduling/ActionSchedule",
+  component: ActionSchedule,
+  render: (args) => <StatefulActionSchedule key={args.actionDescription} {...args} />,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Shared scheduler for choosing the earliest execution time or adding an operation to an existing or new action chain.",
+      },
+    },
+  },
+  args: {
+    actionDescription: "",
+    onActionDescriptionChanged: action("description changed"),
+    earliest: localizedMoment().add(1, "day"),
+    actionChains: [
+      { id: 11, text: "Monthly maintenance" },
+      { id: 12, text: "Production rollout" },
+    ],
+    onDateTimeChanged: action("date and time changed"),
+    onActionChainChanged: action("action chain changed"),
+  },
+  argTypes: {
+    earliest: {
+      control: false,
+      description: "Initial earliest execution time as a localized Moment value.",
+    },
+    actionChains: {
+      control: false,
+      description: "Available action chains. Omit this prop when action-chain scheduling is unavailable.",
+    },
+    onDateTimeChanged: {
+      action: "date and time changed",
+      description: "Called whenever date-based scheduling is selected or changed.",
+    },
+    onActionChainChanged: {
+      action: "action chain changed",
+      description: "Called with the chosen action chain, or null when date scheduling is selected.",
+    },
+    systemIds: {
+      control: false,
+      description: "System IDs used to load maintenance windows when supplied with actionType.",
+    },
+    actionType: {
+      control: false,
+      description: "Used together with systemIds for maintenance-window requests; not demonstrated in this example.",
+    },
+  },
+} satisfies Meta<typeof ActionSchedule>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Playground: Story = {};
