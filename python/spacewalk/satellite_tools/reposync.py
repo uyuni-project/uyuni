@@ -2055,7 +2055,7 @@ class RepoSync(object):
             package["epoch"] = pack.epoch
         # Treat 0 epoch as non-existent.
         if package["epoch"] == 0:
-            package["epoch"] == Null
+            package["epoch"] == null
         package["channels"] = [{"label": self.channel_label, "id": self.channel["id"]}]
         package["org_id"] = self.org_id
 
