@@ -12,6 +12,8 @@
  */
 package com.redhat.rhn.manager.errata.syncwithpackages;
 
+import static com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesTestUtils.createCloneOf;
+import static com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesTestUtils.createErrata;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,11 +26,9 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.ErrataTestBuilder;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
-import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 import com.redhat.rhn.frontend.events.SyncErrataWithPackagesAction;
 import com.redhat.rhn.frontend.events.SyncErrataWithPackagesEvent;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandlerTestCase;
@@ -117,15 +117,15 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
         Package e1 = createPackage("e1");
         Package v1 = createPackage("v1");
         source.addPackages(List.of(d1, e1, v1));
-        Errata cloneOfB = createCloneErrataOf(errataB, target);
+        Errata cloneOfB = createCloneOf(admin.getOrg(), errataB, target);
         target.addErrata(errataC);
         Errata errataD = createErrataWithPackages("errataD", admin.getOrg(), source, d1);
         Errata errataE = createErrataWithPackages("errataE", null, source, e1);
-        Errata oldestCloneOfE = createCloneErrataOf(errataE, null);
-        createCloneErrataOf(errataE, null);
+        Errata oldestCloneOfE = createCloneOf(admin.getOrg(), errataE, null);
+        createCloneOf(admin.getOrg(), errataE, null);
         Errata vendorV = createErrataWithPackages("vendorV", null, null, v1);
-        Errata cloneOfVInSource = createCloneErrataOf(vendorV, source);
-        Errata siblingInTarget = createCloneErrataOf(vendorV, target);
+        Errata cloneOfVInSource = createCloneOf(admin.getOrg(), vendorV, source);
+        Errata siblingInTarget = createCloneOf(admin.getOrg(), vendorV, target);
 
         assertEquals(Set.of(errataX, cloneOfB, errataC, siblingInTarget), target.getErratas());
         assertEquals(Set.of(x), target.getPackages());
@@ -208,7 +208,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
     @Test
     public void testSyncFromSourceWhenCloneInTargetButMissingNewPackages() {
         // Arrange
-        Errata cloneOfA = createCloneErrataOf(errataA, target);
+        Errata cloneOfA = createCloneOf(admin.getOrg(), errataA, target);
         Package a3 = createPackage("a3");
         source.addPackages(List.of(a3));
         errataA.addPackage(a3);
@@ -238,7 +238,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
     @Test
     public void testSyncFromSourceWhenNoAdvisoryNamesAreProvided() {
         // Arrange
-        Errata cloneOfA = createCloneErrataOf(errataA, target);
+        Errata cloneOfA = createCloneOf(admin.getOrg(), errataA, target);
         target.addPackages(List.of(a1));
         assertEquals(Set.of(errataX, cloneOfA), target.getErratas());
         assertEquals(Set.of(x, a1), target.getPackages());
@@ -506,7 +506,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
     @Test
     public void testSyncByCriteriaWhenCloneOutsideTargetMissingPackages() {
         // Arrange
-        Errata errataAClone = createCloneErrataOf(errataA, null);
+        Errata errataAClone = createCloneOf(admin.getOrg(), errataA, null);
         errataAClone.removePackage(a2);
         Channel plain = createChannelWithPackages("plain");
 
@@ -665,35 +665,13 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
     }
 
     private Errata createErrataWithPackages(String description, Org org, Channel channel, Package... packages) {
-        return createNamedErrataWithPackages(null, description, org, channel, packages);
+        return createErrata(null, description, org, channel, packages);
     }
 
     private Errata createNamedErrataWithPackages(
             String advisoryName, String description, Org org, Package... packages
     ) {
-        return createNamedErrataWithPackages(advisoryName, description, org, null, packages);
-    }
-
-    private Errata createNamedErrataWithPackages(
-            String advisoryName, String description, Org org, Channel channel, Package... packages
-    ) {
-        ErrataTestBuilder builder = new ErrataTestBuilder()
-                .orgId(org == null ? null : org.getId())
-                .advisory(advisoryName)
-                .description(description)
-                .addPackages(packages);
-        if (channel != null) {
-            builder.addChannel(channel);
-        }
-        return builder.buildAndSave();
-    }
-
-    private Errata createCloneErrataOf(Errata original, Channel channel) {
-        Errata clone = ErrataHelper.cloneErrataFast(original, admin.getOrg());
-        if (channel != null) {
-            channel.addErrata(clone);
-        }
-        return clone;
+        return createErrata(advisoryName, description, org, null, packages);
     }
 
     /**
