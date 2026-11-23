@@ -1,0 +1,2 @@
+- Run the cobbler-sync-default task every 30 minutes instead of
+  every 5 minutes by default (bsc#1280365)
