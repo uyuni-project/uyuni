@@ -994,8 +994,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 "pqc_cert", "---- BEGIN NEW PQC CERT ----")
         );
 
-        MockHubManager mockHubManager = new MockHubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager(), mockTaskomaticApi,
-                systemEntitlementManager, systemManagerMock);
+        MockHubManager mockHubManager = new MockHubManager(hubFactory, clientFactoryMock,
+                new MirrorCredentialsManager(), mockTaskomaticApi, systemEntitlementManager, systemManagerMock);
 
 
         mockHubManager.updateServerData(satAdmin, "hub.domain.com", IssRole.valueOf("HUB"), data);

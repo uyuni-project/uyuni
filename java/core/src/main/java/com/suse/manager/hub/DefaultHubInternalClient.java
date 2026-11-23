@@ -140,6 +140,11 @@ public class DefaultHubInternalClient implements HubInternalClient {
         return invokeGet("hub", "serverInfo", ServerInfoJson.class);
     }
 
+    @Override
+    public void setHubDetails(Map<String, String> data) throws IOException {
+        invokePost("hub/sync", "setHubDetails", data);
+    }
+
     private <R> R invokeGet(String namespace, String apiMethod, Type responseType)
             throws IOException {
         return invoke(HttpGet.METHOD_NAME, namespace, apiMethod, null, responseType);
