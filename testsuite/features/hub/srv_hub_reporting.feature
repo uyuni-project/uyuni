@@ -22,7 +22,7 @@ Feature: Hub reportdb aggregation from peripheral servers
   # registered on peripheral1. Without it, "one row per peripheral" would find 0 distinct
   # mgm_id rows instead of the expected >= 2.
 
-  Background:
+  Scenario:  Log in as admin user on hub
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: peripheral1 is registered as peripheral for reporting tests

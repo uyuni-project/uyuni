@@ -27,10 +27,13 @@
 # B-01: peripheral-as-hub-minion bootstrap ordering.
 # Its SL Micro 6.2 bootstrap repository is provided by srv_hub_prerequisites.feature. Placed here because
 # srv_hub_token_lifecycle.feature deregisters peripheral1 in its cleanup, giving this feature the
-# clean deregistered state it needs, and its own cleanup restores that state for the next features.
+# clean deregistered state it needs, and its own cleanup leaves peripheral1 deregistered.
 - features/hub/srv_hub_peripheral_as_minion.feature
 
-# B-03..B-04: sle_minion bootstrapped to peripheral1 (needed by the reporting feature)
+# B-03..B-04: sle_minion bootstrapped to peripheral1 (needed by the reporting feature).
+# Registers peripheral1, which stays registered through channel_synchronization, xmlrpc, issv2,
+# reporting and verification_cleanup; channel_synchronization, reporting and verification_cleanup
+# now require this feature to run before them.
 - features/hub/srv_hub_minion_on_peripheral.feature
 
 # A-06: ISSv3 online channel synchronization hub -> peripheral

@@ -26,6 +26,12 @@ Feature: Hub - minion managed via peripheral server
     And channel "managertools-sle15-pool-x86_64-sp7" should exist on "peripheral1"
     And channel "managertools-sle15-updates-x86_64-sp7" should exist on "peripheral1"
 
+  Scenario: Pre-requisite: register peripheral1 as peripheral
+    Given I am authorized for the "Admin" section
+    When I add "peripheral1" as peripheral using administrator credentials
+    And I wait until I see "is currently registered as peripheral of this hub" text
+    Then I should see "peripheral1" in peripherals list
+
   Scenario: Sync the Fake-RPM-SUSE-Channel from hub to peripheral1 for the andromeda-dummy test package
     Given I am authorized for the "Admin" section
     When I wait until the repository metadata of channel "fake-rpm-suse-channel" is generated on the hub
@@ -116,4 +122,3 @@ Feature: Hub - minion managed via peripheral server
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
     And I wait until event "Package Removal scheduled by admin" is completed
-

@@ -14,7 +14,7 @@ Feature: Hub ISSv2 CLI channel export and import
   As an authorized user
   I want to export a channel from the hub and import it on a peripheral (plan A-09)
 
-  Background:
+  Scenario: Log in as admin user on hub
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: org names match on hub and peripheral1 for ISS v2 import

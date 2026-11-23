@@ -141,13 +141,21 @@ def get_reverse_net(net)
 end
 
 # Returns true if a RepoMDError line timestamped at or after start_time (a "YYYY-MM-DD HH:MM:SS"
-# string from the target node's own clock, matching the log4j2 %d prefix) exists in the taskomatic log. Comparing
-# against a recorded start time -- rather than tailing a fixed number of lines or lines
-# after a line-count marker -- avoids both stale matches from earlier in the log and
-# missed matches if the log grows faster than a fixed window can capture.
+# string from the target node's own clock) exists in the taskomatic log. The log lines carry
+# only an "HH:MM:SS" prefix (an optional leading date is ignored), so only the time of day is compared.
+# A line time more than 12 hours before the start time of day is taken as past midnight, which is
+# fine as long as the wait is much shorter than 12 hours. Comparing against a recorded start time
+# -- rather than tailing a fixed number of lines or lines after a line-count marker -- avoids
+# both stale matches from earlier in the log and missed matches if the log grows faster than a
+# fixed window can capture.
 def recent_taskomatic_repomd_error?(node, start_time)
+  to_seconds = ->(time) { time.split(':').map(&:to_i).then { |h, m, s| (h * 3600) + (m * 60) + s } }
+  start_seconds = to_seconds.call(start_time[/\d{2}:\d{2}:\d{2}\z/])
   output, _code = node.run("grep RepoMDError #{TASKOMATIC_LOG_PATH} | tail -5", check_errors: false, exec_option: '--')
-  output.lines.any? { |line| line[0..18] >= start_time }
+  output.lines.any? do |line|
+    time = line[/\A(?:\d{4}-\d{2}-\d{2}[ T])?(\d{2}:\d{2}:\d{2})/, 1]
+    time && (diff = to_seconds.call(time) - start_seconds) && (diff >= 0 || diff < -43_200)
+  end
 end
 
 # Repeatedly executes a block raising an exception in case it is not finished within timeout seconds

@@ -17,10 +17,9 @@ Feature: Hub ISSv3 channel synchronization to peripheral
   Scenario: Log in as admin user for channel sync tests
     Given I am authorized for the "Admin" section
 
-  Scenario: Pre-requisite: register peripheral1 as peripheral for channel sync tests
-    When I add "peripheral1" as peripheral using administrator credentials
-    And I wait until I see "is currently registered as peripheral of this hub" text
-    Then I should see "peripheral1" in peripherals list
+  Scenario: Pre-requisite: peripheral1 is registered as peripheral for channel sync tests
+    When I follow the left menu "Admin > Hub Configuration > Peripherals Configuration"
+    Then I should see "peripheral1" hostname
 
   Scenario: Clone a channel on hub for sync testing
     When I follow the left menu "Software > Manage > Channels"
