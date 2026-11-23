@@ -98,6 +98,10 @@ Feature: Migrate a RHEL 7 Salt SSH minion to SUSE Liberty Linux LTSS 7
     Given I am on the Systems overview page of this "rhel7_sshminion"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
+    And I click on "Update Package List"
+    And I wait until event "Package List Refresh scheduled by admin" is completed
+    And I follow "Software" in the content area
+    And I wait until I see "Upgrade Packages" text
     And I follow "List / Remove"
     And I enter the package for "rhel7_sshminion" as the filtered package name
     And I click on the filter button
