@@ -1,0 +1,3 @@
+- Introduce handling of license handling using reuse
+- Add missing java headers in search server
+- Remove Apache-2.0 license from search server
