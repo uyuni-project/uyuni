@@ -12,22 +12,16 @@
  */
 package com.redhat.rhn.manager.contentmgmt;
 
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
+import static com.redhat.rhn.manager.contentmgmt.ContentManagerTestUtils.buildProjectWithEnvironments;
+import static com.redhat.rhn.manager.contentmgmt.ContentManagerTestUtils.getRegularChannels;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
-import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
-import com.redhat.rhn.domain.contentmgmt.ContentProject;
-import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
-import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataTestBuilder;
@@ -56,7 +50,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -107,9 +100,9 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
         errata = new ErrataTestBuilder().addPackages(pkgA, pkgB).addChannel(source).buildAndSave();
         other = new ErrataTestBuilder().addPackages(pkgC).addChannel(source).buildAndSave();
 
-        buildProjectWithEnvironments(admin, CP_PROJECT_LABEL, source, DEV, "test", "prod");
-        buildProjectWithEnvironments(admin, "cp2", source, DEV);
-        buildProjectWithEnvironments(admin, "cpother",
+        buildProjectWithEnvironments(contentManager, admin, CP_PROJECT_LABEL, source, DEV, "test", "prod");
+        buildProjectWithEnvironments(contentManager, admin, "cp2", source, DEV);
+        buildProjectWithEnvironments(contentManager, admin, "cpother",
                 createChannelWithPackages(admin, PackageTest.createTestPackage(admin.getOrg(), "cpother-pkg")), DEV);
     }
 
@@ -192,12 +185,8 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
     public void testCloneIntoInvalidChannels() {
         String advisoryName = "does-not-exist";
         String regularChannel =
-                ContentManager.lookupEnvironment(DEV, CP_PROJECT_LABEL, admin).orElseThrow().getTargets()
-                        .stream()
-                        .flatMap(t -> t.asSoftwareTarget().stream())
-                        .filter(t -> !t.isHotfix())
-                        .findFirst().orElseThrow()
-                        .getChannel().getLabel();
+                getRegularChannels(ContentManager.lookupEnvironment(DEV, CP_PROJECT_LABEL, admin).orElseThrow())
+                        .iterator().next().getLabel();
         String unrelated = new ErrataTestBuilder().addPackages(pkgA)
                 .addChannel(createChannelWithPackages(admin, pkgA)).buildAndSave().getAdvisoryName();
         String advisory = errata.getAdvisoryName();
@@ -244,7 +233,7 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
         otherOrg.addRole(RoleFactory.CHANNEL_ADMIN);
         Channel otherSource = createChannelWithPackages(otherAdmin, pkgA);
         otherSource.addErrata(errata);
-        buildProjectWithEnvironments(otherAdmin, "o2", otherSource, DEV);
+        buildProjectWithEnvironments(contentManager, otherAdmin, "o2", otherSource, DEV);
         String advisory = errata.getAdvisoryName();
 
         assertThrows(NoSuchChannelException.class, () ->
@@ -320,63 +309,6 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
     // Utility methods
 
     /**
-     * Creates a content project with a chain of environments, attaches a software channel source, builds the
-     * first environment and promotes it down to the last one, so every environment has a hotfix channel
-     * labeled {@code <projectLabel>-<envLabel>-hotfix}.
-     *
-     * @param user the user, whose organization owns the project
-     * @param projectLabel the project label
-     * @param projectSource the software channel source of the project
-     * @param envLabels the environment labels, from the first to the last
-     */
-    private void buildProjectWithEnvironments(User user, String projectLabel, Channel projectSource,
-                                              String... envLabels) {
-        buildProjectWithEnvironments(user, projectLabel, List.of(projectSource), envLabels);
-    }
-
-    /**
-     * Same as {@link #buildProjectWithEnvironments(User, String, Channel, String...)}, attaching several software
-     * channel sources, the parent channel first.
-     *
-     * @param user the user, whose organization owns the project
-     * @param projectLabel the project label
-     * @param projectSources the software channel sources of the project
-     * @param envLabels the environment labels, from the first to the last
-     */
-    private void buildProjectWithEnvironments(User user, String projectLabel, List<Channel> projectSources,
-                                              String... envLabels) {
-        ContentProjectFactory.save(new ContentProject(projectLabel, projectLabel, "desc", user.getOrg()));
-        Optional<String> predecessor = empty();
-        for (String envLabel : envLabels) {
-            contentManager.createEnvironment(projectLabel, predecessor, envLabel, envLabel, "desc", false, user);
-            predecessor = of(envLabel);
-        }
-        for (Channel projectSource : projectSources) {
-            contentManager.attachSource(projectLabel, SW_CHANNEL, projectSource.getLabel(), empty(), user);
-        }
-        contentManager.buildProject(projectLabel, empty(), false, user);
-        for (int i = 0; i < envLabels.length - 1; i++) {
-            contentManager.promoteProject(projectLabel, envLabels[i], false, user);
-        }
-    }
-
-    /**
-     * Returns the hotfix channel of an environment, asserting there is exactly one.
-     *
-     * @param env the environment
-     * @return the hotfix channel
-     */
-    private static Channel getHotfixChannel(ContentEnvironment env) {
-        List<Channel> hotfixChannels = env.getTargets().stream()
-                .flatMap(target -> target.asSoftwareTarget().stream())
-                .filter(SoftwareEnvironmentTarget::isHotfix)
-                .map(SoftwareEnvironmentTarget::getChannel)
-                .toList();
-        assertEquals(1, hotfixChannels.size(), "hotfix channels of " + env.getLabel());
-        return hotfixChannels.get(0);
-    }
-
-    /**
      * Returns a channel of an organization, read from the database.
      *
      * @param org the organization owning the channel
@@ -384,8 +316,7 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
      * @return the channel
      */
     private static Channel lookupChannel(Org org, String label) {
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         return ChannelFactory.lookupByLabel(org, label);
     }
 
@@ -503,7 +434,7 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
         new ErrataTestBuilder().addPackages(initialBasePkg).addChannel(base).buildAndSave();
         new ErrataTestBuilder().addPackages(initialChild1Pkg).addChannel(child1).buildAndSave();
         new ErrataTestBuilder().addPackages(initialChild2Pkg).addChannel(child2).buildAndSave();
-        buildProjectWithEnvironments(admin, projectLabel, List.of(base, child1, child2), envLabels);
+        buildProjectWithEnvironments(contentManager, admin, projectLabel, List.of(base, child1, child2), envLabels);
 
         // the new erratum arrives in the source channels after the build
         Package pkg1 = PackageTest.createTestPackage(org, "spread1");
@@ -530,12 +461,8 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
      */
     private void assertClonedChannelsHoldInitialContent(Org org, String projectLabel, String envLabel,
                                                         SpreadProject project) {
-        List<Channel> clonedChannels = ContentManager.lookupEnvironment(envLabel, projectLabel, admin).orElseThrow()
-                .getTargets().stream()
-                .flatMap(t -> t.asSoftwareTarget().stream())
-                .filter(t -> !t.isHotfix())
-                .map(SoftwareEnvironmentTarget::getChannel)
-                .toList();
+        Set<Channel> clonedChannels =
+                getRegularChannels(ContentManager.lookupEnvironment(envLabel, projectLabel, admin).orElseThrow());
         assertEquals(3, clonedChannels.size(), envLabel + " channels");
         for (Channel cloned : clonedChannels) {
             Channel reloaded = lookupChannel(org, cloned.getLabel());

@@ -22,6 +22,9 @@ import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static com.redhat.rhn.manager.contentmgmt.ContentManagerTestUtils.buildProjectWithEnvironments;
+import static com.redhat.rhn.manager.contentmgmt.ContentManagerTestUtils.getHotfixTarget;
+import static com.redhat.rhn.manager.contentmgmt.ContentManagerTestUtils.getRegularChannels;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
@@ -1357,8 +1360,8 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     public void testListCompatibleHotfixChannels() throws Exception {
         Channel source1 = createPopulatedChannel();
         Channel source2 = createPopulatedChannel();
-        buildProjectWithEnvironments("cplabel1", source1, "dev", "test");
-        buildProjectWithEnvironments("cplabel2", source2, "qa");
+        buildProjectWithEnvironments(contentManager, user, "cplabel1", source1, "dev", "test");
+        buildProjectWithEnvironments(contentManager, user, "cplabel2", source2, "qa");
 
         // each errata is only compatible with the project using its channel as a source
         assertEquals(List.of("cplabel1-dev-hotfix", "cplabel1-test-hotfix"),
@@ -1383,7 +1386,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         Errata vendorErrata = ErrataFactoryTest.createTestErrata(null);
         source.addErrata(vendorErrata);
         ChannelFactory.save(source);
-        buildProjectWithEnvironments("cplabel", source, "dev");
+        buildProjectWithEnvironments(contentManager, user, "cplabel", source, "dev");
 
         List<String> labels = contentManager.listCompatibleHotfixChannels(vendorErrata.getAdvisoryName(), user)
                 .stream()
@@ -1406,14 +1409,14 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testListCompatibleHotfixChannelsWithClonedSources() throws Exception {
         Channel original = createPopulatedChannel();
-        buildProjectWithEnvironments("cporig", original, "dev");
-        buildProjectWithEnvironments("cpsibling", original, "dev");
+        buildProjectWithEnvironments(contentManager, user, "cporig", original, "dev");
+        buildProjectWithEnvironments(contentManager, user, "cpsibling", original, "dev");
         // the channels in the dev environments are clones of the common source
         Channel clone = ChannelFactory.lookupByLabel("cporig-dev-" + original.getLabel());
         Channel siblingClone = ChannelFactory.lookupByLabel("cpsibling-dev-" + original.getLabel());
-        buildProjectWithEnvironments("cpclone", clone, "dev");
-        buildProjectWithEnvironments("cpsiblingclone", siblingClone, "dev");
-        buildProjectWithEnvironments("cpother", createPopulatedChannel(), "dev");
+        buildProjectWithEnvironments(contentManager, user, "cpclone", clone, "dev");
+        buildProjectWithEnvironments(contentManager, user, "cpsiblingclone", siblingClone, "dev");
+        buildProjectWithEnvironments(contentManager, user, "cpother", createPopulatedChannel(), "dev");
         List<String> expected = List.of("cpclone-dev-hotfix", "cporig-dev-hotfix", "cpsibling-dev-hotfix",
                 "cpsiblingclone-dev-hotfix");
 
@@ -1440,9 +1443,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     public void testListCompatibleHotfixChannelLabelsByProject() throws Exception {
         Channel original = createPopulatedChannel();
         // the environments are created in the opposite order of their labels
-        buildProjectWithEnvironments("cpb", original, "prod", "mid", "dev");
-        buildProjectWithEnvironments("cpa", original, "dev", "test");
-        buildProjectWithEnvironments("cpother", createPopulatedChannel(), "dev");
+        buildProjectWithEnvironments(contentManager, user, "cpb", original, "prod", "mid", "dev");
+        buildProjectWithEnvironments(contentManager, user, "cpa", original, "dev", "test");
+        buildProjectWithEnvironments(contentManager, user, "cpother", createPopulatedChannel(), "dev");
 
         String advisory = original.getErratas().iterator().next().getAdvisoryName();
         Map<String, List<String>> result = contentManager.listCompatibleHotfixChannelLabelsByProject(advisory, user);
@@ -1461,7 +1464,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testListCompatibleHotfixChannelsWithDetachedSource() throws Exception {
         Channel source = createPopulatedChannel();
-        buildProjectWithEnvironments("cplabel", source, "dev");
+        buildProjectWithEnvironments(contentManager, user, "cplabel", source, "dev");
 
         contentManager.detachSource("cplabel", SW_CHANNEL, source.getLabel(), user);
 
@@ -1478,8 +1481,8 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testListCompatibleHotfixChannelsOfNonAdminUser() throws Exception {
         Channel source = createPopulatedChannel();
-        buildProjectWithEnvironments("cpaccessible", source, "dev");
-        buildProjectWithEnvironments("cpdenied", source, "dev");
+        buildProjectWithEnvironments(contentManager, user, "cpaccessible", source, "dev");
+        buildProjectWithEnvironments(contentManager, user, "cpdenied", source, "dev");
 
         // a regular user can neither subscribe nor manage this hotfix channel
         Channel denied = ChannelFactory.lookupByLabel("cpdenied-dev-hotfix");
@@ -1500,22 +1503,6 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
         // the organization administrator gets both
         assertEquals(List.of("cpaccessible-dev-hotfix", "cpdenied-dev-hotfix"), listCompatibleHotfixLabels(source));
-    }
-
-    private void buildProjectWithEnvironments(String projectLabel, Channel source, String... envLabels)
-            throws Exception {
-        ContentProject cp = new ContentProject(projectLabel, projectLabel, "desc", user.getOrg());
-        ContentProjectFactory.save(cp);
-        Optional<String> predecessor = empty();
-        for (String envLabel : envLabels) {
-            contentManager.createEnvironment(projectLabel, predecessor, envLabel, envLabel, "desc", false, user);
-            predecessor = of(envLabel);
-        }
-        contentManager.attachSource(projectLabel, SW_CHANNEL, source.getLabel(), empty(), user);
-        contentManager.buildProject(projectLabel, empty(), false, user);
-        for (int i = 0; i < envLabels.length - 1; i++) {
-            contentManager.promoteProject(projectLabel, envLabels[i], false, user);
-        }
     }
 
     private List<String> listCompatibleHotfixLabels(Channel channelWithErrata) {
@@ -1732,13 +1719,6 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertTrue(getHotfixTarget(testEnv).orElseThrow().getChannel().getPackages().contains(hotfixPackage));
         contentManager.diffEnvironment(cp, testEnv);
         assertTrue(ContentManager.listEnvironmentDifference(user, "cplabel", "test").isEmpty());
-    }
-
-    private static Optional<SoftwareEnvironmentTarget> getHotfixTarget(ContentEnvironment env) {
-        return env.getTargets().stream()
-                .flatMap(t -> t.asSoftwareTarget().stream())
-                .filter(SoftwareEnvironmentTarget::isHotfix)
-                .findFirst();
     }
 
     /**
@@ -2037,7 +2017,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         TestUtils.flushAndClearSession();
 
         // check that built channels have the originals set correctly
-        assertEquals(Set.of(channel1, channel2), getOriginalChannels(getEnvChannels(devEnv)));
+        assertEquals(Set.of(channel1, channel2), getOriginalChannels(getRegularChannels(devEnv)));
 
         // promote project
         contentManager.promoteProject("cplabel", "dev", false, user);
@@ -2046,7 +2026,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // check the originals of the test environment correspond to channels in the dev environment
         devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
         testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
-        assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
+        assertEquals(getRegularChannels(devEnv), getOriginalChannels(getRegularChannels(testEnv)));
 
         // delete a source && build the project
         contentManager.detachSource("cplabel", SW_CHANNEL, channel1.getLabel(), user);
@@ -2055,9 +2035,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
         // check the originals of the "test" channels: one should point to a channel in the "dev" environment,
         // the other should point to the "source" channel1
-        var expectedTestOriginals = getEnvChannels(devEnv);
+        var expectedTestOriginals = getRegularChannels(devEnv);
         expectedTestOriginals.add(channel1);
-        assertEquals(expectedTestOriginals, getOriginalChannels(getEnvChannels(testEnv)));
+        assertEquals(expectedTestOriginals, getOriginalChannels(getRegularChannels(testEnv)));
 
         // add the channel again && build
         contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
@@ -2067,8 +2047,8 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // check the originals of the test environment correspond to channels in the dev environment again
         devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
         testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
-        assertEquals(Set.of(channel1, channel2), getOriginalChannels(getEnvChannels(devEnv)));
-        assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
+        assertEquals(Set.of(channel1, channel2), getOriginalChannels(getRegularChannels(devEnv)));
+        assertEquals(getRegularChannels(devEnv), getOriginalChannels(getRegularChannels(testEnv)));
     }
 
     /**
@@ -2099,7 +2079,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // check the originals of the test environment correspond to channels in the dev environment
         devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
         testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
-        assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
+        assertEquals(getRegularChannels(devEnv), getOriginalChannels(getRegularChannels(testEnv)));
 
         // create a new environment "in the middle"
         var middleEnv = contentManager.createEnvironment(
@@ -2109,9 +2089,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
 
         // check the originals of the mid environment correspond to channels in the dev environment
-        assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(middleEnv)));
+        assertEquals(getRegularChannels(devEnv), getOriginalChannels(getRegularChannels(middleEnv)));
         // check the originals of the test environment correspond to channels in the mid environment
-        assertEquals(getEnvChannels(middleEnv), getOriginalChannels(getEnvChannels(testEnv)));
+        assertEquals(getRegularChannels(middleEnv), getOriginalChannels(getRegularChannels(testEnv)));
 
         // check that after removing the middle env, the originals of the test point to dev channels again
         contentManager.removeEnvironment("mid", "cplabel", user);
@@ -2119,7 +2099,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
         testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
         // check the originals of the mid environment correspond to channels in the dev environment
-        assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
+        assertEquals(getRegularChannels(devEnv), getOriginalChannels(getRegularChannels(testEnv)));
     }
 
     /**
@@ -2147,19 +2127,19 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         contentManager.buildProject("cplabel", empty(), false, user);
 
         // check that built channel has the original set correctly
-        assertEquals(Set.of(channel1), getOriginalChannels(getEnvChannels(devEnv)));
+        assertEquals(Set.of(channel1), getOriginalChannels(getRegularChannels(devEnv)));
 
         // promote project
         contentManager.promoteProject("cplabel", "dev", false, user);
 
         // now "break" the testEnv channel
-        getEnvChannels(testEnv).forEach(chan -> chan.asCloned().get().setOriginal(channel1));
-        assertEquals(Set.of(channel1), getOriginalChannels(getEnvChannels(testEnv)));
+        getRegularChannels(testEnv).forEach(chan -> chan.asCloned().get().setOriginal(channel1));
+        assertEquals(Set.of(channel1), getOriginalChannels(getRegularChannels(testEnv)));
 
         // promote project again and check that the original of testEnv channel was fixed
         contentManager.promoteProject("cplabel", "dev", false, user);
 
-        assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
+        assertEquals(getRegularChannels(devEnv), getOriginalChannels(getRegularChannels(testEnv)));
     }
 
     /**
@@ -2220,15 +2200,6 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         return channels.stream()
                 .map(c -> c.asCloned().orElseThrow())
                 .map(ClonedChannel::getOriginal).collect(toSet());
-    }
-
-    // get channels of given environment, except the hotfix channel which is not cloned from a source
-    private Set<Channel> getEnvChannels(ContentEnvironment testEnv) {
-        return testEnv.getTargets().stream()
-                .flatMap(tgt -> tgt.asSoftwareTarget().stream())
-                .filter(tgt -> !tgt.isHotfix())
-                .map(SoftwareEnvironmentTarget::getChannel)
-                .collect(toSet());
     }
 
     /**
