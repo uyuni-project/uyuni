@@ -289,6 +289,7 @@ INSERT INTO access.accessGroupNamespace
     SELECT ag.id, ns.id
     FROM access.accessGroup ag, access.namespace ns
     WHERE ns.namespace IN (
+        'api.audit.list_cves_by_system',
         'api.audit.list_images_by_patch_status',
         'api.audit.list_systems_by_patch_status'
     )

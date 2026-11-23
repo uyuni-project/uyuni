@@ -16,7 +16,7 @@
 --
 
 CREATE OR REPLACE PROCEDURE
-insert_product_vulnerable_packages(package_name_in varchar, fix_epoch_in varchar, fix_version_in varchar, fix_release_in varchar, fix_type_in varchar, product_cpe_in varchar, product_os_family_in varchar, product_os_version_in varchar, cve_name_in varchar)
+insert_product_vulnerable_packages(package_name_in varchar, fix_epoch_in varchar, fix_version_in varchar, fix_release_in varchar, fix_type_in varchar, product_cpe_in varchar, product_os_family_in varchar, product_os_version_in varchar, cve_name_in varchar, severity_in varchar)
 AS
 $$
 DECLARE
@@ -52,10 +52,10 @@ begin
       fix_version_evrt := evr_t(fix_epoch_in, fix_version_in, fix_release_in, fix_type_in);
     END IF;
 
-    INSERT INTO suseOVALPlatformVulnerable(platform_id, product_os_id, cve_id, last_modified)
-    VALUES (product_cpe_id_val, product_os_id_val, cve_id_val, current_timestamp)
+    INSERT INTO suseOVALPlatformVulnerable(platform_id, product_os_id, cve_id, severity, last_modified)
+    VALUES (product_cpe_id_val, product_os_id_val, cve_id_val, severity_in, current_timestamp)
     ON CONFLICT (platform_id, product_os_id, cve_id) DO
-    UPDATE SET last_modified = current_timestamp
+    UPDATE SET severity = EXCLUDED.severity, last_modified = current_timestamp
     RETURNING id INTO platform_vulnerable_id_val;
 
     INSERT INTO suseOVALVulnerablePackage(plat_vuln_id, name, fix_version, last_modified)

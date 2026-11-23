@@ -37,6 +37,9 @@ public class Advisory {
 
     @XmlElement(name = "affected", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
     private AdvisoryAffectedType affected;
+
+    @XmlElement(name = "severity", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
+    private String severity;
     /**
      * Sets the list of affected CPEs.
      *
@@ -68,5 +71,19 @@ public class Advisory {
 
     public void setAffected(AdvisoryAffectedType affectedIn) {
         this.affected = affectedIn;
+    }
+
+    /**
+     * @return the severity as written by the OVAL vendor, e.g. 'Important', if any
+     */
+    public Optional<String> getSeverity() {
+        return Optional.ofNullable(severity);
+    }
+
+    /**
+     * @param severityIn the severity as written by the OVAL vendor
+     */
+    public void setSeverity(String severityIn) {
+        this.severity = severityIn;
     }
 }

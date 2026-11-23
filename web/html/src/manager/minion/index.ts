@@ -20,4 +20,5 @@ export default {
   "minion/proxy/proxy-config": () => import("./proxy/proxy-config.renderer"),
   "minion/audit/schedule-scap-scan": () => import("./audit/schedule-scap-scan"),
   "minion/audit/rule-result-detail": () => import("./audit/rule-result-detail"),
+  "minion/audit/system-cve": () => import("./audit/system-cve.renderer"),
 };

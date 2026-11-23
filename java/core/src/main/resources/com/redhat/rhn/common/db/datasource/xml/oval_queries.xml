@@ -7,8 +7,8 @@ SPDX-License-Identifier: GPL-2.0-only
 
 <datasource_modes>
     <callable-mode name="add_product_vulnerable_package">
-        <query params="package_name, fix_epoch, fix_version, fix_release, fix_type, product_name, os_product_family, os_product_version, cve_name">
-            call insert_product_vulnerable_packages(:package_name, :fix_epoch, :fix_version, :fix_release, :fix_type, :product_name, :os_product_family, :os_product_version, :cve_name)
+        <query params="package_name, fix_epoch, fix_version, fix_release, fix_type, product_name, os_product_family, os_product_version, cve_name, severity">
+            call insert_product_vulnerable_packages(:package_name, :fix_epoch, :fix_version, :fix_release, :fix_type, :product_name, :os_product_family, :os_product_version, :cve_name, :severity)
         </query>
     </callable-mode>
 
@@ -104,5 +104,54 @@ SPDX-License-Identifier: GPL-2.0-only
             WHERE last_modified &lt; :start_date;
         </query>
     </write-mode>
+
+    <mode name="list_system_cve_errata">
+        <query params="sid">
+            SELECT DISTINCT ON (errataCve.cve_id, errata.id)
+                errataCve.cve_id AS cve_id,
+                errata.id AS errata_id,
+                errata.advisory AS advisory,
+                channel.label AS channel_label,
+                serverChannel.channel_id IS NOT NULL AS assigned
+            FROM rhnErrataCVE errataCve
+            JOIN rhnErrata errata
+              ON errata.id = errataCve.errata_id
+            JOIN rhnErrataPackage errataPkg
+              ON errataPkg.errata_id = errata.id
+            JOIN rhnPackage pkg
+              ON pkg.id = errataPkg.package_id
+            JOIN rhnPackageEVR pkgEvr
+              ON pkgEvr.id = pkg.evr_id
+            JOIN rhnChannelErrata channelErrata
+              ON channelErrata.errata_id = errata.id
+            JOIN rhnChannelPackage channelPkg
+              ON channelPkg.channel_id = channelErrata.channel_id
+                AND channelPkg.package_id = pkg.id
+            JOIN suseCVEServerChannel cveChannel
+              ON cveChannel.server_id = :sid
+                AND cveChannel.channel_id = channelErrata.channel_id
+                AND cveChannel.channel_rank &lt; 100000
+            JOIN rhnChannel channel
+              ON channel.id = channelErrata.channel_id
+            LEFT JOIN rhnServerChannel serverChannel
+              ON serverChannel.server_id = :sid
+                AND serverChannel.channel_id = channelErrata.channel_id
+            WHERE errataCve.cve_id IN (%s)
+              AND pkgEvr.evr > (SELECT max(installedEvr.evr)
+                                FROM rhnServerPackage installed
+                                JOIN rhnPackageEVR installedEvr
+                                  ON installedEvr.id = installed.evr_id
+                                WHERE installed.server_id = :sid
+                                  AND installed.name_id = pkg.name_id)
+              AND EXISTS (SELECT 1
+                          FROM rhnServerPackage installed
+                          JOIN rhnPackageUpgradeArchCompat archCompat
+                            ON archCompat.package_arch_id = installed.package_arch_id
+                          WHERE installed.server_id = :sid
+                            AND installed.name_id = pkg.name_id
+                            AND archCompat.package_upgrade_arch_id = pkg.package_arch_id)
+            ORDER BY errataCve.cve_id, errata.id, assigned DESC, cveChannel.channel_rank
+        </query>
+    </mode>
 
 </datasource_modes>

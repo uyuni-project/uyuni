@@ -4400,6 +4400,16 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.audit.cve' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/systems/details/audit/cve' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.audit.cve' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/systems/:sid/details/audit/cve/:statuses/:severities' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.states.highstate' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/states/applyall' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
@@ -6905,6 +6915,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.audit.list_systems_by_patch_status' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/api/audit/listSystemsByPatchStatus' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.audit.list_cves_by_system' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/audit/listCvesBySystem' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep

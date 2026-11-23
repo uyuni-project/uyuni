@@ -17,6 +17,8 @@
 
 package com.suse.oval.vulnerablepkgextractor;
 
+import com.suse.oval.OvalSeverity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class ProductVulnerablePackages {
     private String productCpe;
     private final List<VulnerablePackage> vulnerablePackages = new ArrayList<>();
     private String productUserFriendlyName;
+    private OvalSeverity severity = OvalSeverity.UNKNOWN;
 
     public String getProductCpe() {
         return productCpe;
@@ -76,5 +79,13 @@ public class ProductVulnerablePackages {
 
     public String getProductUserFriendlyName() {
         return productUserFriendlyName;
+    }
+
+    public OvalSeverity getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(OvalSeverity severityIn) {
+        this.severity = severityIn;
     }
 }

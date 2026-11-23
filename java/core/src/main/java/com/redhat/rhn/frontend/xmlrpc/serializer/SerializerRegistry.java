@@ -132,6 +132,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(XccdfRuleResultDtoSerializer.class);
         SERIALIZER_CLASSES.add(CVEAuditServerSerializer.class);
         SERIALIZER_CLASSES.add(CVEAuditImageSerializer.class);
+        SERIALIZER_CLASSES.add(SystemCVEResultSerializer.class);
         SERIALIZER_CLASSES.add(UserExtGroupSerializer.class);
         SERIALIZER_CLASSES.add(OrgUserExtGroupSerializer.class);
         SERIALIZER_CLASSES.add(PackageSourceOverviewSerializer.class);

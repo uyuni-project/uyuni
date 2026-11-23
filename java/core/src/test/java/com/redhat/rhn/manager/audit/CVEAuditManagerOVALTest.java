@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
@@ -47,6 +48,8 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
+import com.suse.oval.OvalSeverity;
+import com.suse.oval.ovaltypes.Advisory;
 import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.parser.OvalTestUtils;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
@@ -709,6 +712,24 @@ public class CVEAuditManagerOVALTest extends BaseTestCase {
         Date afterSync = new Date(System.currentTimeMillis() + 10000); // 10 seconds in the future
         OVALCachingFactory.deleteOldOVALMetadata(afterSync);
         assertFalse(OVALCachingFactory.canAuditCVE("CVE-2022-2991"));
+    }
+
+    @Test
+    void testSaveStoresNormalizedSeverity() throws Exception {
+        OvalRootType ovalRoot = OvalTestUtils.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+        assertEquals("Important", ovalRoot.getDefinitions().get(0).getMetadata().getAdvisory()
+                .flatMap(Advisory::getSeverity).orElseThrow());
+        String cveName = setTestCveName(ovalRoot);
+
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        List<String> severities = HibernateFactory.getSession().createNativeQuery(
+                        "SELECT DISTINCT pv.severity FROM suseOVALPlatformVulnerable pv " +
+                                "JOIN rhnCVE cve ON cve.id = pv.cve_id WHERE cve.name = :cve_name", String.class)
+                .setParameter("cve_name", cveName)
+                .list();
+        assertEquals(List.of(OvalSeverity.IMPORTANT.name()), severities);
     }
 
     private static void extractAndSaveVulnerablePackages(OvalRootType rootType) {

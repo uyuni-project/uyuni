@@ -17,24 +17,37 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.audit.CVEAuditImage;
 import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.CVEAuditSystem;
 import com.redhat.rhn.manager.audit.PatchStatus;
+import com.redhat.rhn.manager.audit.SystemCVEAuditManager;
+import com.redhat.rhn.manager.audit.SystemCVEResult;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
+import com.suse.manager.webui.utils.PageControlHelper;
+import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.gson.SystemCVEJson;
+import com.suse.oval.OvalSeverity;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -80,6 +93,86 @@ public class CVEAuditController {
 
         post("/manager/api/audit/cve", withUser(CVEAuditController::cveAudit));
         get("/manager/api/audit/cve.csv", withUser(CVEAuditController::cveAuditCSV));
+
+        get("/manager/systems/details/audit/cve",
+                withCsrfToken(withDocsLocale(withUserAndServer(CVEAuditController::systemCveView))), jade);
+        get("/manager/api/systems/:sid/details/audit/cve/:statuses/:severities",
+                asJson(withUserAndServer(CVEAuditController::systemCves)));
+    }
+
+    /**
+     * Returns the system CVE list page
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the authorized user
+     * @param server the server
+     * @return the model and view
+     */
+    public static ModelAndView systemCveView(Request request, Response response, User user, Server server) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("ovalState", SystemCVEAuditManager.getOvalState(server).name());
+        return new ModelAndView(data, "templates/minion/system-cve.jade");
+    }
+
+    /**
+     * Returns a page of the CVEs affecting the system, as paged JSON.
+     * Path param 'statuses' is a comma separated list of {@link PatchStatus} names ('none' for no status).
+     * Path param 'severities' is a comma separated list of {@link OvalSeverity} names ('all' for any severity).
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the authorized user
+     * @param server the server
+     * @return the JSON page
+     */
+    public static String systemCves(Request request, Response response, User user, Server server) {
+        Set<PatchStatus> statuses = parseSystemCveStatuses(request.params("statuses"));
+        Set<OvalSeverity> severities = parseSystemCveSeverities(request.params("severities"));
+        PageControlHelper pageHelper = new PageControlHelper(request, "cveName");
+        PageControl pc = pageHelper.getPageControl();
+
+        DataResult<SystemCVEResult> cves = SystemCVEAuditManager.listCves(server, statuses, severities, pc);
+        List<SystemCVEJson> items = cves.stream().map(SystemCVEJson::new).collect(Collectors.toList());
+
+        return json(response, new PagedDataResultJson<>(items, cves.getTotalSize(), Collections.emptySet()),
+                new TypeToken<>() { });
+    }
+
+    /**
+     * Parse a comma separated list of status names, ignoring unknown values.
+     *
+     * @param value the raw value, may be null
+     * @return the parsed statuses
+     */
+    static Set<PatchStatus> parseSystemCveStatuses(String value) {
+        return parseEnumNames(value, PatchStatus.class);
+    }
+
+    /**
+     * Parse a comma separated list of severity names, ignoring unknown values. An empty result means any severity.
+     *
+     * @param value the raw value, may be null
+     * @return the parsed severities
+     */
+    static Set<OvalSeverity> parseSystemCveSeverities(String value) {
+        return parseEnumNames(value, OvalSeverity.class);
+    }
+
+    private static <E extends Enum<E>> Set<E> parseEnumNames(String value, Class<E> type) {
+        Set<E> result = EnumSet.noneOf(type);
+        if (value == null) {
+            return result;
+        }
+        for (String token : value.split(",")) {
+            try {
+                result.add(Enum.valueOf(type, token.trim()));
+            }
+            catch (IllegalArgumentException e) {
+                log.debug("Ignoring unknown {} value: {}", type.getSimpleName(), token);
+            }
+        }
+        return result;
     }
 
     /**

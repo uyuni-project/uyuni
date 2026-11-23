@@ -305,6 +305,9 @@ public class OvalParser {
                 else if (nextEvent.asStartElement().getName().getLocalPart().equals("affected")) {
                     advisory.setAffected(parseAdvisoryAffectedType(reader));
                 }
+                else if (nextEvent.asStartElement().getName().getLocalPart().equals("severity")) {
+                    advisory.setSeverity(reader.getElementText());
+                }
             }
 
             if (nextEvent.isEndElement() && nextEvent.asEndElement().getName().getLocalPart().equals("advisory")) {
