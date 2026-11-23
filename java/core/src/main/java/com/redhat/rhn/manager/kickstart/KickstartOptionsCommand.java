@@ -19,6 +19,7 @@ package com.redhat.rhn.manager.kickstart;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartOptionValue;
 
@@ -76,12 +77,9 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
             log.debug("avail commandname: {}", cn.getName());
 
             String name = cn.getName();
-            if (getKickstartData().getInstallType().isRhel9OrGreater() && name.equals("install")) {
-                log.debug("install is not supported on RHEL 9 or greater, don't show it");
-                continue;
-            }
-            if (getKickstartData().getInstallType().isRhel10OrGreater() && "auth".equals(name)) {
-                log.debug("auth is not supported on RHEL 10 or greater, don't show it");
+            if (!isCommandSupported(name)) {
+                log.debug("{} is not supported on this profile's install type, don't show it",
+                        name);
                 continue;
             }
             boolean added = false;
@@ -134,6 +132,11 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
 
         for (KickstartCommandName cn : availableOptions) {
             String name = cn.getName();
+            if (!isCommandSupported(name)) {
+                log.debug("{} is not supported on this profile's install type, don't show it",
+                        name);
+                continue;
+            }
             KickstartOptionValue v = new KickstartOptionValue();
             v.setHasArgs(cn.getArgs());
             v.setName(name);
@@ -151,11 +154,32 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
     }
 
     /**
+     * Commands that were removed from the kickstart syntax of the profile's
+     * distro (e.g. {@code auth} on Enterprise Linux 10) are not supported and
+     * therefore never required for that profile, even if the database still
+     * marks them as required.
      *
-     * @return List of required options
+     * @param commandName name of the kickstart command
+     * @return true if the command is supported by the profile's install type
      */
-    public List getRequiredOptions() {
-        return requiredOptions;
+    private boolean isCommandSupported(String commandName) {
+        KickstartInstallType installType = getKickstartData().getInstallType();
+        return installType == null || installType.isCommandSupported(commandName);
+    }
+
+    /**
+     *
+     * @return List of required options supported by the profile's install type
+     */
+    public List<KickstartCommandName> getRequiredOptions() {
+        List<KickstartCommandName> supported = new LinkedList<>();
+        for (Object option : requiredOptions) {
+            KickstartCommandName cn = (KickstartCommandName) option;
+            if (isCommandSupported(cn.getName())) {
+                supported.add(cn);
+            }
+        }
+        return supported;
     }
 
 }
