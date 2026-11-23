@@ -17,6 +17,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { VirtualSystemsListFilter } from "./list-filter";
+import { TopPanel } from "components/panels/TopPanel";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/systems/virtual-list.jade
 type Props = {
@@ -40,18 +41,11 @@ export function VirtualSystems(props: Props) {
   };
 
   return (
-    <>
-      <h1 className="mb-5">
-        <IconTag type="header-system" />
-        {t("Virtual Systems")}
-        <a
-          href={`/docs/${props.docsLocale}/reference/systems/systems-list.html`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <IconTag type="header-help" />
-        </a>
-      </h1>
+      <TopPanel
+        title={t("Virtual Systems")}
+        iconType="header-system"
+        helpUrl={`/reference/systems/systems-list.html`}
+      >
       <Table
         data="/rhn/manager/api/systems/list/virtual"
         identifier={(item) => item.virtualSystemId || item.uuid}
@@ -122,6 +116,6 @@ export function VirtualSystems(props: Props) {
           }}
         />
       </Table>
-    </>
+    </TopPanel>
   );
 }

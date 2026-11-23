@@ -18,6 +18,7 @@ import { MessagesContainer, showSuccessToastr } from "components/toastr/toastr";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
+import { TopPanel } from "components/panels/TopPanel";
 
 type Props = {
   /** Locale of the help links */
@@ -88,20 +89,12 @@ export function PackageList(props: Props) {
   ].concat(channels);
 
   return (
-    <>
+    <TopPanel
+      title={t("Package Management")}
+      iconType="header-package"
+      helpUrl={`/reference/software/manage-packages.html`}
+    >
       <MessagesContainer />
-      <h1>
-        <IconTag type="header-package" />
-        {t(" Package Management ")}
-        <a
-          href={`/docs/${props.docsLocale}/reference/software/manage-packages.html`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <IconTag type="header-help" />
-        </a>
-      </h1>
-
       <Form model={formModel} onChange={(model: object) => setFormModel({ ...model })}>
         <DEPRECATED_Select
           name="channel"
@@ -181,6 +174,6 @@ export function PackageList(props: Props) {
           />
         </Table>
       )}
-    </>
+    </TopPanel>
   );
 }
