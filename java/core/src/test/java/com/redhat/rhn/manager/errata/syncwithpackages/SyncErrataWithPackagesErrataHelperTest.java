@@ -12,6 +12,8 @@
  */
 package com.redhat.rhn.manager.errata.syncwithpackages;
 
+import static com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesTestUtils.createCloneOf;
+import static com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesTestUtils.createErrata;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,11 +23,9 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.ErrataTestBuilder;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
-import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -38,27 +38,6 @@ import java.util.Map;
 import java.util.Optional;
 
 public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser {
-
-    private Errata erratum(Org org, Channel channel, Package... packages) {
-        ErrataTestBuilder builder = new ErrataTestBuilder().orgId(org == null ? null : org.getId())
-                .addPackages(packages);
-        if (channel != null) {
-            builder.addChannel(channel);
-        }
-        return builder.buildAndSave();
-    }
-
-    private Errata erratum(Org org, String advisoryName) {
-        return new ErrataTestBuilder().orgId(org == null ? null : org.getId()).advisory(advisoryName).buildAndSave();
-    }
-
-    private Errata cloneOf(Errata original, Channel channel) {
-        Errata clone = ErrataHelper.cloneErrataFast(original, user.getOrg());
-        if (channel != null) {
-            channel.addErrata(clone);
-        }
-        return clone;
-    }
 
     // a map that accepts the null source channel of errata found without one
     private static Map<Errata, Channel> mapOf(Errata errata, Channel source) {
@@ -74,8 +53,8 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
     @Test
     public void testFindInSourceByNames() {
         Channel source = channel();
-        Errata wanted = erratum(user.getOrg(), source);
-        erratum(user.getOrg(), source);
+        Errata wanted = createErrata(user.getOrg(), source);
+        createErrata(user.getOrg(), source);
 
         Map<Errata, Channel> found = SyncErrataWithPackagesErrataHelper.findInSource(source,
                 List.of(wanted.getAdvisoryName(), "NOT-THERE"));
@@ -89,9 +68,9 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
     @Test
     public void testFindInSourceWithoutNamesReturnsAllErrataOfTheChannel() {
         Channel source = channel();
-        Errata first = erratum(user.getOrg(), source);
-        Errata second = erratum(user.getOrg(), source);
-        erratum(user.getOrg(), channel());
+        Errata first = createErrata(user.getOrg(), source);
+        Errata second = createErrata(user.getOrg(), source);
+        createErrata(user.getOrg(), channel());
 
         Map<Errata, Channel> found = SyncErrataWithPackagesErrataHelper.findInSource(source, List.of());
 
@@ -104,8 +83,8 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
     @Test
     public void testFindInSourceByDates() {
         Channel source = channel();
-        Errata inRange = erratum(user.getOrg(), source);
-        Errata outOfRange = erratum(user.getOrg(), source);
+        Errata inRange = createErrata(user.getOrg(), source);
+        Errata outOfRange = createErrata(user.getOrg(), source);
         HibernateFactory.getSession().flush();
         Date start = new Date(System.currentTimeMillis() - 3_600_000L);
         Date end = new Date(System.currentTimeMillis() + 3_600_000L);
@@ -128,7 +107,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
         Channel original = channel();
         Channel middle = ChannelFactoryTest.createTestClonedChannel(original, user);
         Channel target = ChannelFactoryTest.createTestClonedChannel(middle, user);
-        Errata errata = erratum(null, original);
+        Errata errata = createErrata(null, original);
         middle.addErrata(errata);
 
         Map<Errata, Channel> found = SyncErrataWithPackagesErrataHelper.findByCriteria(user, target,
@@ -145,7 +124,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
         Channel original = channel();
         Channel middle = ChannelFactoryTest.createTestClonedChannel(original, user);
         Channel target = ChannelFactoryTest.createTestClonedChannel(middle, user);
-        Errata errata = erratum(null, original);
+        Errata errata = createErrata(null, original);
 
         Map<Errata, Channel> found = SyncErrataWithPackagesErrataHelper.findByCriteria(user, target,
                 List.of(errata.getAdvisoryName()));
@@ -161,7 +140,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
     public void testFindByCriteriaNeverUsesTheTargetAsSource() {
         Channel original = channel();
         Channel target = ChannelFactoryTest.createTestClonedChannel(original, user);
-        Errata errata = erratum(user.getOrg(), target);
+        Errata errata = createErrata(user.getOrg(), target);
 
         Map<Errata, Channel> found = SyncErrataWithPackagesErrataHelper.findByCriteria(user, target,
                 List.of(errata.getAdvisoryName()));
@@ -178,7 +157,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
         Org otherOrg = UserTestUtils.createOrg(this);
         Channel inaccessible = ChannelFactoryTest.createTestChannel(otherOrg);
         Channel target = ChannelFactoryTest.createTestClonedChannel(inaccessible, user);
-        Errata vendor = erratum(null, inaccessible);
+        Errata vendor = createErrata(null, inaccessible);
 
         Map<Errata, Channel> found = SyncErrataWithPackagesErrataHelper.findByCriteria(user, target,
                 List.of(vendor.getAdvisoryName()));
@@ -198,12 +177,12 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
         String all = "ALL-" + System.nanoTime();
         String userAndVendor = "USER-VENDOR-" + System.nanoTime();
         String vendorOnly = "VENDOR-" + System.nanoTime();
-        Errata inTargetOrg = erratum(targetOrg, all);
-        erratum(user.getOrg(), all);
-        erratum(null, all);
-        Errata inUserOrg = erratum(user.getOrg(), userAndVendor);
-        erratum(null, userAndVendor);
-        Errata vendor = erratum(null, vendorOnly);
+        Errata inTargetOrg = createErrata(all, null, targetOrg, null);
+        createErrata(all, null, user.getOrg(), null);
+        createErrata(all, null, null, null);
+        Errata inUserOrg = createErrata(userAndVendor, null, user.getOrg(), null);
+        createErrata(userAndVendor, null, null, null);
+        Errata vendor = createErrata(vendorOnly, null, null, null);
 
         Map<Errata, Channel> found = SyncErrataWithPackagesErrataHelper.findByCriteria(user, target,
                 List.of(all, userAndVendor, vendorOnly, "NOT-THERE"));
@@ -220,7 +199,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
     @Test
     public void testFindRepresentativeInTargetReturnsTheErratumItself() {
         Channel target = channel();
-        Errata errata = erratum(user.getOrg(), target);
+        Errata errata = createErrata(user.getOrg(), target);
 
         assertEquals(Optional.of(errata),
                 SyncErrataWithPackagesErrataHelper.findRepresentativeErrataInTarget(target, errata));
@@ -232,8 +211,8 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
     @Test
     public void testFindRepresentativeInTargetReturnsAClone() {
         Channel target = channel();
-        Errata vendor = erratum(null, null);
-        Errata clone = cloneOf(vendor, target);
+        Errata vendor = createErrata(null, null);
+        Errata clone = createCloneOf(user.getOrg(), vendor, target);
 
         assertEquals(Optional.of(clone),
                 SyncErrataWithPackagesErrataHelper.findRepresentativeErrataInTarget(target, vendor));
@@ -245,9 +224,9 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
     @Test
     public void testFindRepresentativeInTargetReturnsASibling() {
         Channel target = channel();
-        Errata vendor = erratum(null, null);
-        Errata clone = cloneOf(vendor, null);
-        Errata sibling = cloneOf(vendor, target);
+        Errata vendor = createErrata(null, null);
+        Errata clone = createCloneOf(user.getOrg(), vendor, null);
+        Errata sibling = createCloneOf(user.getOrg(), vendor, target);
 
         assertEquals(Optional.of(sibling),
                 SyncErrataWithPackagesErrataHelper.findRepresentativeErrataInTarget(target, clone));
@@ -258,8 +237,8 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      */
     @Test
     public void testFindRepresentativeInTargetReturnsNothingWhenNotHeld() {
-        Errata vendor = erratum(null, channel());
-        cloneOf(vendor, null);
+        Errata vendor = createErrata(null, channel());
+        createCloneOf(user.getOrg(), vendor, null);
 
         assertEquals(Optional.empty(),
                 SyncErrataWithPackagesErrataHelper.findRepresentativeErrataInTarget(channel(), vendor));
@@ -270,7 +249,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      */
     @Test
     public void testRepresentativeOwnedByReturnsTheOwnErratum() {
-        Errata own = erratum(user.getOrg(), null);
+        Errata own = createErrata(user.getOrg(), null);
 
         assertEquals(own, SyncErrataWithPackagesErrataHelper.getRepresentativeErrataOwnedBy(user.getOrg(), own));
     }
@@ -280,9 +259,9 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      */
     @Test
     public void testRepresentativeOwnedByReusesTheOldestClone() {
-        Errata vendor = erratum(null, null);
-        Errata oldest = cloneOf(vendor, null);
-        cloneOf(vendor, null);
+        Errata vendor = createErrata(null, null);
+        Errata oldest = createCloneOf(user.getOrg(), vendor, null);
+        createCloneOf(user.getOrg(), vendor, null);
 
         assertEquals(oldest, SyncErrataWithPackagesErrataHelper.getRepresentativeErrataOwnedBy(user.getOrg(), vendor));
     }
@@ -293,7 +272,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      */
     @Test
     public void testRepresentativeOwnedByClonesWhenNoCloneExists() {
-        Errata vendor = erratum(null, null, pkg());
+        Errata vendor = createErrata(null, null, pkg());
 
         Errata representative =
                 SyncErrataWithPackagesErrataHelper.getRepresentativeErrataOwnedBy(user.getOrg(), vendor);
