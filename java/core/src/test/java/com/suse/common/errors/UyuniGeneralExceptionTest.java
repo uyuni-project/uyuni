@@ -41,4 +41,31 @@ public class UyuniGeneralExceptionTest {
         assertEquals(errors, exception.getErrors());
         assertArrayEquals(expectedMessages, exception.getErrorMessages());
     }
+
+    @Test
+    public void testGetCategorySameCategory() {
+        UyuniGeneralException exception = new UyuniGeneralException(List.of(
+                new UyuniError(UyuniErrorCategory.NOT_FOUND, "serverId", "Server 1 not found"),
+                new UyuniError(UyuniErrorCategory.NOT_FOUND, "channelId", "Channel 2 not found")));
+
+        assertEquals(UyuniErrorCategory.NOT_FOUND, exception.getCategory());
+    }
+
+    @Test
+    public void testGetCategoryMixedCategories() {
+        UyuniGeneralException exception = new UyuniGeneralException(List.of(
+                new UyuniError(UyuniErrorCategory.NOT_FOUND, "serverId", "Server 1 not found"),
+                new UyuniError(UyuniErrorCategory.ALREADY_EXISTS, "label", "Label in use")));
+
+        assertEquals(UyuniErrorCategory.INVALID_ARGUMENT, exception.getCategory());
+    }
+
+    @Test
+    public void testGetCategoryWithUnknown() {
+        UyuniGeneralException exception = new UyuniGeneralException(List.of(
+                new UyuniError(UyuniErrorCategory.NOT_FOUND, "serverId", "Server 1 not found"),
+                new UyuniError("Something failed")));
+
+        assertEquals(UyuniErrorCategory.UNKNOWN, exception.getCategory());
+    }
 }
