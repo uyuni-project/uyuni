@@ -36,7 +36,7 @@ import java.util.List;
  * They are kept apart from {@link ChannelSoftwareHandlerTest} so they can use a smaller, controlled setup.
  */
 @ExtendWith(UserForTestCaseExtension.class)
-public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObjectTestCase {
+class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObjectTestCase {
 
     private static final List<String> NAMES = List.of("SUSE-2026-1234", "SUSE-2026-5678");
     private static final SyncErrataWithPackagesResult RESULT =
@@ -51,7 +51,7 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
     protected User user;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         manager = context.mock(SyncErrataWithPackagesManager.class);
         handler = new ChannelSoftwareHandler(null, null, manager);
     }
@@ -61,7 +61,7 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
      * passing the other parameters unchanged.
      */
     @Test
-    public void testFromSourceByNamesIsStrictByDefault() {
+    void testFromSourceByNamesIsStrictByDefault() {
         context.checking(new Expectations() {{
             oneOf(manager).syncFromSource(user, SOURCE, TARGET, NAMES, true, true, false);
             will(returnValue(RESULT));
@@ -75,7 +75,7 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
      * forceRefresh flags.
      */
     @Test
-    public void testFromSourceByNames() {
+    void testFromSourceByNames() {
         context.checking(new Expectations() {{
             oneOf(manager).syncFromSource(user, SOURCE, TARGET, NAMES, false, true, false);
             will(returnValue(RESULT));
@@ -88,7 +88,7 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
      * The source channel variant by date range delegates to the manager with the given dates and flags.
      */
     @Test
-    public void testFromSourceByDates() {
+    void testFromSourceByDates() {
         Date start = new Date(1_000L);
         Date end = new Date(2_000L);
         context.checking(new Expectations() {{
@@ -104,7 +104,7 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
      * unchanged.
      */
     @Test
-    public void testByCriteriaIsStrictByDefault() {
+    void testByCriteriaIsStrictByDefault() {
         context.checking(new Expectations() {{
             oneOf(manager).syncByCriteria(user, TARGET, NAMES, true, true, false);
             will(returnValue(RESULT));
@@ -117,7 +117,7 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
      * The criteria variant delegates to the manager with the given strict, async and forceRefresh flags.
      */
     @Test
-    public void testByCriteria() {
+    void testByCriteria() {
         context.checking(new Expectations() {{
             oneOf(manager).syncByCriteria(user, TARGET, NAMES, false, true, false);
             will(returnValue(RESULT));
@@ -130,7 +130,7 @@ public class ChannelSoftwareHandlerSyncErrataWithPackagesTest extends MockObject
      * A fault raised by the manager reaches the API caller unchanged.
      */
     @Test
-    public void testManagerFaultsArePropagated() {
+    void testManagerFaultsArePropagated() {
         FaultException fault = new FaultException(-208, "no_such_patch", "Patches not found: SUSE-2026-5678");
         context.checking(new Expectations() {{
             oneOf(manager).syncByCriteria(user, TARGET, NAMES, true, false, true);

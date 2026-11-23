@@ -67,7 +67,7 @@ import java.util.stream.IntStream;
  * Each test asserts the complete content of the target channel, so anything synchronized beyond what was expected
  * makes it fail.
  */
-public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
+class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
 
     private final SyncErrataWithPackagesManager manager = new SyncErrataWithPackagesManagerImpl();
 
@@ -79,7 +79,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * Builds the setup described in the class documentation.
      */
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         a1 = createPackage("a1");
         a2 = createPackage("a2");
         b1 = createPackage("b1");
@@ -111,7 +111,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * served), no further clone created, and the target channel holding exactly X and the representatives.
      */
     @Test
-    public void testSyncFromSourceWhenAllMatchWithDistinctRepresentatives() {
+    void testSyncFromSourceWhenAllMatchWithDistinctRepresentatives() {
         // Arrange
         Package d1 = createPackage("d1");
         Package e1 = createPackage("e1");
@@ -170,7 +170,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * without causing additional side effects.
      */
     @Test
-    public void testSyncFromSourceWhenVendorErratumNotInTargetChannelOrgIsIdempotent() {
+    void testSyncFromSourceWhenVendorErratumNotInTargetChannelOrgIsIdempotent() {
         // Arrange
         assertEquals(Set.of(errataX), target.getErratas());
         assertEquals(Set.of(x), target.getPackages());
@@ -206,7 +206,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * Note: mind a2 is excluded because its NOT served by the source channel.
      */
     @Test
-    public void testSyncFromSourceWhenCloneInTargetButMissingNewPackages() {
+    void testSyncFromSourceWhenCloneInTargetButMissingNewPackages() {
         // Arrange
         Errata cloneOfA = createCloneOf(admin.getOrg(), errataA, target);
         Package a3 = createPackage("a3");
@@ -236,7 +236,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * and c1.
      */
     @Test
-    public void testSyncFromSourceWhenNoAdvisoryNamesAreProvided() {
+    void testSyncFromSourceWhenNoAdvisoryNamesAreProvided() {
         // Arrange
         Errata cloneOfA = createCloneOf(admin.getOrg(), errataA, target);
         target.addPackages(List.of(a1));
@@ -264,7 +264,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * erratum. Expects a 2800 fault "No erratas were found" and the target channel unchanged: exactly X and x.
      */
     @Test
-    public void testSyncFromSourceWhenSourceChannelHasNoErratas() {
+    void testSyncFromSourceWhenSourceChannelHasNoErratas() {
         Channel emptySource = createChannelWithPackages("emptySourceChannel", createPackage("emptySourcePackage"));
 
         FaultException e = assertThrows(FaultException.class,
@@ -282,7 +282,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * Expects a -208 fault naming the unmatched name, and the target channel unchanged: exactly X and x, without C.
      */
     @Test
-    public void testSyncFromSourceWhenStrictAndNameUnmatchedThenFailsSyncingNothing() {
+    void testSyncFromSourceWhenStrictAndNameUnmatchedThenFailsSyncingNothing() {
         FaultException e = assertThrows(FaultException.class,
                 () -> manager.syncFromSource(admin, source.getLabel(), target.getLabel(),
                         List.of(errataC.getAdvisoryName(), "dummy"), true, false, true));
@@ -298,7 +298,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * Expects a -208 fault listing the first 20 names followed by "and 5 more".
      */
     @Test
-    public void testSyncFromSourceWhenStrictAndUnmatchedNamesExceedsLimit() {
+    void testSyncFromSourceWhenStrictAndUnmatchedNamesExceedsLimit() {
         List<String> names = IntStream.range(0, 25).mapToObj(i -> "MISSING-" + i).toList();
 
         FaultException e = assertThrows(FaultException.class,
@@ -315,7 +315,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * The target channel holds exactly X and C, and serves exactly x and c1.
      */
     @Test
-    public void testSyncFromSourceWhenLenientAndHasUnmatchedNames() {
+    void testSyncFromSourceWhenLenientAndHasUnmatchedNames() {
         // Arrange
         assertEquals(Set.of(errataX), target.getErratas());
         assertEquals(Set.of(x), target.getPackages());
@@ -340,7 +340,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * "No erratas were found" and the target channel unchanged: exactly X and x.
      */
     @Test
-    public void testSyncFromSourceWhenLenientButNoMatchingErratas() {
+    void testSyncFromSourceWhenLenientButNoMatchingErratas() {
         FaultException e = assertThrows(FaultException.class,
                 () -> manager.syncFromSource(admin, source.getLabel(), target.getLabel(),
                         List.of("NOT-THERE"), false, false, true));
@@ -358,7 +358,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * target channel holds exactly X and clones of A and B, and serves exactly x, a1 and b1.
      */
     @Test
-    public void testSyncFromSourceByDatesWhenErrataOnAndOutsideBounds() {
+    void testSyncFromSourceByDatesWhenErrataOnAndOutsideBounds() {
         // Arrange
         Date start = new Date(System.currentTimeMillis() - 3_600_000L);
         Date end = new Date(System.currentTimeMillis() + 3_600_000L);
@@ -389,7 +389,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * channel unchanged: exactly X and x.
      */
     @Test
-    public void testSyncFromSourceByDatesWhenRangeReversedOrEmptyThenFails() {
+    void testSyncFromSourceByDatesWhenRangeReversedOrEmptyThenFails() {
         Date now = new Date();
         FaultException reversed = assertThrows(FaultException.class,
                 () -> manager.syncFromSource(admin, source.getLabel(), target.getLabel(), now,
@@ -422,7 +422,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * reported as unmatched, and the target channel holding exactly X and the representatives.
      */
     @Test
-    public void testSyncByCriteriaWhenNamesResolveToDifferentSources() {
+    void testSyncByCriteriaWhenNamesResolveToDifferentSources() {
         // Arrange
         middle.addPackages(List.of(a2));
         middle.addErrata(errataA);
@@ -472,7 +472,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * exactly e1 and e2 (only e1 if the original channel had been used).
      */
     @Test
-    public void testSyncByCriteriaWhenAncestorNotAccessibleThenSkipsIt() {
+    void testSyncByCriteriaWhenAncestorNotAccessibleThenSkipsIt() {
         // Arrange
         Package e1 = createPackage("e1");
         Package e2 = createPackage("e2");
@@ -504,7 +504,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * Expects getting the existing clone, with a1 and a2. This means a2 is added to the clone.
      */
     @Test
-    public void testSyncByCriteriaWhenCloneOutsideTargetMissingPackages() {
+    void testSyncByCriteriaWhenCloneOutsideTargetMissingPackages() {
         // Arrange
         Errata errataAClone = createCloneOf(admin.getOrg(), errataA, null);
         errataAClone.removePackage(a2);
@@ -529,7 +529,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * channel unchanged: exactly X and x.
      */
     @Test
-    public void testSyncByCriteriaWhenNameUnmatchedOrNamesEmptyThenFails() {
+    void testSyncByCriteriaWhenNameUnmatchedOrNamesEmptyThenFails() {
         FaultException strict = assertThrows(FaultException.class,
                 () -> manager.syncByCriteria(admin, target.getLabel(), List.of("NOT-THERE"), true, false, true));
         assertEquals(-208, strict.getErrorCode());
@@ -546,7 +546,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * missing channels and a -23 fault for the missing permission.
      */
     @Test
-    public void testSyncFromSourceWhenChannelMissingOrUserNotAdminThenFails() {
+    void testSyncFromSourceWhenChannelMissingOrUserNotAdminThenFails() {
         FaultException noTarget = assertThrows(FaultException.class,
                 () -> manager.syncFromSource(admin, source.getLabel(), "no-such-channel", List.of(), true,
                         false, true));
@@ -571,7 +571,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * Expects a -211 fault and the target channel unchanged: exactly X and x.
      */
     @Test
-    public void testSyncFromSourceWhenAsyncJobsPendingThenFails() {
+    void testSyncFromSourceWhenAsyncJobsPendingThenFails() {
         AsyncErrataCloneCounter.getInstance().addAsyncErrataCloneJob(target.getId());
         try {
             FaultException e = assertThrows(FaultException.class,
@@ -594,7 +594,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * channel not yet changed (exactly X and x) in the second.
      */
     @Test
-    public void testSyncFromSourceWhenAsyncThenValidatesAndSchedulesJob() {
+    void testSyncFromSourceWhenAsyncThenValidatesAndSchedulesJob() {
         assertThrows(FaultException.class, () -> manager.syncFromSource(admin, source.getLabel(),
                 target.getLabel(), List.of("NOT-THERE"), true, true, true));
         assertFalse(ErrataManager.channelHasPendingAsyncCloneJobs(target));
@@ -618,7 +618,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * the clone of A, and serves exactly x and a1.
      */
     @Test
-    public void testAsyncActionWhenEventRunsThenSyncsErrataAndReleasesJob() {
+    void testAsyncActionWhenEventRunsThenSyncsErrataAndReleasesJob() {
         SyncErrataWithPackagesEvent event =
                 new SyncErrataWithPackagesEvent(target, Map.of(errataA, source), true, admin);
         event.register();
@@ -635,7 +635,7 @@ public class SyncErrataWithPackagesManagerImplTest extends BaseHandlerTestCase {
      * Expects C skipped and A still synchronized: the target channel holds exactly X and the clone of A.
      */
     @Test
-    public void testAsyncActionWhenErratumDeletedThenSkipsIt() {
+    void testAsyncActionWhenErratumDeletedThenSkipsIt() {
         SyncErrataWithPackagesEvent event =
                 new SyncErrataWithPackagesEvent(target, Map.of(errataA, source, errataC, source), true, admin);
         event.register();

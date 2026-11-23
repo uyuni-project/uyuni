@@ -22,7 +22,7 @@ import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 /**
  * Helpers shared by the syncErrataWithPackages tests.
  */
-public final class SyncErrataWithPackagesTestUtils {
+final class SyncErrataWithPackagesTestUtils {
 
     private SyncErrataWithPackagesTestUtils() { }
 
@@ -34,7 +34,7 @@ public final class SyncErrataWithPackagesTestUtils {
      * @param packages the packages of the erratum
      * @return the erratum
      */
-    public static Errata createErrata(Org org, Channel channel, Package... packages) {
+    static Errata createErrata(Org org, Channel channel, Package... packages) {
         return buildErrataWithPackages(new ErrataTestBuilder(), org, channel, packages);
     }
 
@@ -48,7 +48,7 @@ public final class SyncErrataWithPackagesTestUtils {
      * @param packages the packages of the erratum
      * @return the erratum
      */
-    public static Errata createErrata(String advisoryName, String description, Org org, Channel channel,
+    static Errata createErrata(String advisoryName, String description, Org org, Channel channel,
                                       Package... packages) {
         ErrataTestBuilder builder = new ErrataTestBuilder().advisory(advisoryName);
         if (description != null) {
@@ -65,7 +65,7 @@ public final class SyncErrataWithPackagesTestUtils {
      * @param channel the channel holding the clone, null for none
      * @return the clone
      */
-    public static Errata createCloneOf(Org org, Errata original, Channel channel) {
+    static Errata createCloneOf(Org org, Errata original, Channel channel) {
         Errata clone = ErrataHelper.cloneErrataFast(original, org);
         if (channel != null) {
             channel.addErrata(clone);
