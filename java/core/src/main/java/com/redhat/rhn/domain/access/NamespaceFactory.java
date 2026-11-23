@@ -20,7 +20,6 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.gson.NamespaceJson;
 
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -138,7 +137,8 @@ public class NamespaceFactory extends HibernateFactory {
      */
     public static List<Namespace> find(String namespace) {
         return getSession()
-                .createQuery("SELECT n FROM Namespace n WHERE n.namespace LIKE :namespace", Namespace.class)
+                .createQuery("SELECT n FROM Namespace n WHERE n.namespace LIKE :namespace ESCAPE '!'",
+                        Namespace.class)
                 .setParameter("namespace", sanitizeNamespacePattern(namespace))
                 .getResultList();
     }
@@ -153,8 +153,8 @@ public class NamespaceFactory extends HibernateFactory {
      */
     public static List<Namespace> find(String namespace, Set<Namespace.AccessMode> modes) {
         return getSession()
-                .createQuery("SELECT n FROM Namespace n WHERE n.namespace LIKE :namespace AND n.accessMode IN :modes",
-                        Namespace.class)
+                .createQuery("SELECT n FROM Namespace n WHERE n.namespace LIKE :namespace ESCAPE '!' " +
+                        "AND n.accessMode IN :modes", Namespace.class)
                 .setParameter("namespace", sanitizeNamespacePattern(namespace))
                 .setParameter("modes", modes)
                 .getResultList();
@@ -185,18 +185,10 @@ public class NamespaceFactory extends HibernateFactory {
             return "%";
         }
 
-        String escaped = StringEscapeUtils.escapeJava(input);
-        StringBuilder result = new StringBuilder(escaped.length());
-
-        for (int i = 0; i < escaped.length(); i++) {
-            char c = escaped.charAt(i);
-            if (c == '%' || c == '_') {
-                result.append('\\'); // Escape SQL LIKE special characters
-            }
-            result.append(c);
-        }
-
-        // Translate wildcard '*' to '%' to be used with LIKE
-        return result.toString().replace("*", "%");
+        // Only '*' is a wildcard. The ESCAPE clause is needed: without it Hibernate adds ESCAPE '' on PostgreSQL
+        return input.replace("!", "!!")
+                .replace("%", "!%")
+                .replace("_", "!_")
+                .replace("*", "%");
     }
 }

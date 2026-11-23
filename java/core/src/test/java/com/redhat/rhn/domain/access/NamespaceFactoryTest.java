@@ -17,6 +17,10 @@
 
 package com.redhat.rhn.domain.access;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
@@ -53,6 +57,24 @@ public class NamespaceFactoryTest extends BaseTestCase {
         // feel free to modify and/or complete it
         Set<Namespace.AccessMode> arg1 = new HashSet<>();
         NamespaceFactory.find("", arg1);
+    }
+
+    @Test
+    public void testFindNamespaceWithUnderscore() {
+        List<Namespace> found = NamespaceFactory.find("systems.activation_keys.list", Set.of(Namespace.AccessMode.R));
+
+        assertEquals(1, found.size());
+        assertEquals("systems.activation_keys.list", found.get(0).getNamespace());
+        assertEquals(Namespace.AccessMode.R, found.get(0).getAccessMode());
+    }
+
+    @Test
+    public void testFindTreatsOnlyAsteriskAsWildcard() {
+        List<String> found = NamespaceFactory.find("*_config").stream().map(Namespace::getNamespace).toList();
+
+        assertTrue(found.contains("users.group_config"));
+        assertFalse(found.contains("admin.config"));
+        assertTrue(NamespaceFactory.find("%").isEmpty());
     }
 
     @Test
