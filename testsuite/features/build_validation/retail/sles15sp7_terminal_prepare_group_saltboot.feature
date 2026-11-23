@@ -53,3 +53,12 @@ Feature: Prepare prerequisites for SLES 15 SP7 terminal deployment
     And I enter the image name for "sles15sp7_terminal" in third OS image field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
+
+  # The Cobbler profile of the group is only created if an OS image already exists, so save the formula again now
+  Scenario: Save the Saltboot Group formula again now that the OS image exists
+    When I follow the left menu "Systems > System Groups"
+    And I follow "example" in the content area
+    And I follow "Formulas" in the content area
+    And I follow first "Saltboot Group" in the content area
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
