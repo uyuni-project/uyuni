@@ -28,6 +28,8 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.common.errors.UyuniError;
+import com.suse.common.errors.UyuniGeneralException;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.Languages;
@@ -50,6 +52,7 @@ import java.lang.reflect.ParameterizedType;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -510,6 +513,16 @@ public class SparkApplicationHelper {
             }
         });
 
+        // report all the errors of a json endpoint, with a status matching the category
+        Spark.exception(UyuniGeneralException.class, (e, request, response) -> {
+            if (request.headers("accept").contains("json") || isJson(response)) {
+                response.body(uyuniErrors(response, e));
+            }
+            else {
+                throw e;
+            }
+        });
+
 
         // set up template engine
         JadeTemplateEngine jade = new JadeTemplateEngine(TEMPLATE_ROOT);
@@ -804,6 +817,33 @@ public class SparkApplicationHelper {
         response.type(APPLICATION_JSON);
         response.status(HttpStatus.SC_BAD_REQUEST);
         return GSON.toJson(ResultJson.error(messages));
+    }
+
+    /**
+     * Serialize the errors of a report and set the response content type to JSON and the http status code
+     * matching the category of the report. As in validation responses, errors without a field go to the messages
+     * and field errors to the errors map.
+     * @param response the http response
+     * @param e the exception carrying the report
+     * @return a JSON string
+     */
+    public static String uyuniErrors(Response response, UyuniGeneralException e) {
+        List<String> messages = e.getErrors().stream()
+                .filter(error -> error.getArgumentKey() == null)
+                .map(UyuniError::getMessage)
+                .toList();
+        Map<String, List<String>> fieldErrors = e.getErrors().stream()
+                .filter(error -> error.getArgumentKey() != null)
+                .collect(Collectors.groupingBy(UyuniError::getArgumentKey, LinkedHashMap::new,
+                        Collectors.mapping(UyuniError::getMessage, Collectors.toList())));
+        response.type(APPLICATION_JSON);
+        response.status(switch (e.getCategory()) {
+            case INVALID_ARGUMENT, FAILED_PRECONDITION -> HttpStatus.SC_BAD_REQUEST;
+            case NOT_FOUND -> HttpStatus.SC_NOT_FOUND;
+            case ALREADY_EXISTS -> HttpStatus.SC_CONFLICT;
+            case UNKNOWN -> HttpStatus.SC_INTERNAL_SERVER_ERROR;
+        });
+        return GSON.toJson(ResultJson.error(messages, fieldErrors));
     }
 
     /**
