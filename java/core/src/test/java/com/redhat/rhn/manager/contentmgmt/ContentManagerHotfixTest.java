@@ -43,11 +43,15 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.errata.syncwithpackages.dto.SyncedErratumWithPackages;
+import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Collection;
 import java.util.List;
@@ -55,6 +59,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * Tests cloning an erratum into CLM hotfix channels with {@link ContentManager}.
@@ -257,6 +262,61 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
         assertTrue(lookupChannel(admin.getOrg(), CP_DEV_HOTFIX).getErratas().isEmpty());
     }
 
+    /**
+     * Provides the environments of project "cpchild" an erratum is cloned into.
+     *
+     * @return the environment labels
+     */
+    private static Stream<Arguments> hotfixEnvironments() {
+        return Stream.of(
+                Arguments.of(List.of(DEV)),
+                Arguments.of(List.of("test")),
+                Arguments.of(List.of(DEV, "prod")),
+                Arguments.of(List.of(DEV, "test", "prod")));
+    }
+
+    /**
+     * Tests an erratum whose packages are spread over two child channels of the project base channel. The base
+     * channel and both child channels hold an initial package and erratum, and the project, with the environments
+     * dev, test and prod, is built with them. Afterwards the source child channels get a new erratum: pkg1 and pkg2
+     * are served by the first child, pkg3 by the second one. After cloning it into the hotfix channels of the given
+     * environments, only these hold the clone and all three packages. The hotfix channels of the other
+     * environments get nothing, and the cloned channels of every environment keep their initial content.
+     *
+     * @param targetEnvLabels the labels of the environments whose hotfix channel the erratum is cloned into
+     * @throws Exception if anything goes wrong
+     */
+    @ParameterizedTest(name = "clone into {0}")
+    @MethodSource("hotfixEnvironments")
+    public void testCloneErratumSpreadOverChildChannels(List<String> targetEnvLabels) throws Exception {
+        Org org = admin.getOrg();
+        List<String> envLabels = List.of(DEV, "test", "prod");
+        SpreadProject project = buildSpreadProject("cpchild", envLabels.toArray(String[]::new));
+        Function<String, String> hotfixLabel = envLabel -> "cpchild-" + envLabel + "-hotfix";
+        List<String> targetLabels = targetEnvLabels.stream().map(hotfixLabel).toList();
+
+        Map<String, SyncedErratumWithPackages> synced = contentManager.cloneIntoHotfixChannels(admin,
+                project.spread().getAdvisoryName(), targetLabels);
+
+        Errata clone = getCloneOf(org, project.spread());
+        assertEquals(Set.copyOf(targetLabels), synced.keySet());
+        synced.values().forEach(s -> {
+            assertEquals(clone.getId(), s.errata().getId());
+            assertEquals(project.spreadPackageIds(), ids(s.packages()));
+        });
+        assertEquals(Set.copyOf(targetLabels), clone.getChannels().stream().map(Channel::getLabel).collect(toSet()));
+        for (String envLabel : envLabels) {
+            if (targetEnvLabels.contains(envLabel)) {
+                assertChannelHasErratasAndPackages(org, hotfixLabel.apply(envLabel), Set.of(clone.getId()),
+                        project.spreadPackageIds());
+            }
+            else {
+                assertChannelHasErratasAndPackages(org, hotfixLabel.apply(envLabel), Set.of(), Set.of());
+            }
+            assertClonedChannelsHoldInitialContent(org, "cpchild", envLabel, project);
+        }
+    }
+
     // Utility methods
 
     /**
@@ -271,13 +331,29 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
      */
     private void buildProjectWithEnvironments(User user, String projectLabel, Channel projectSource,
                                               String... envLabels) {
+        buildProjectWithEnvironments(user, projectLabel, List.of(projectSource), envLabels);
+    }
+
+    /**
+     * Same as {@link #buildProjectWithEnvironments(User, String, Channel, String...)}, attaching several software
+     * channel sources, the parent channel first.
+     *
+     * @param user the user, whose organization owns the project
+     * @param projectLabel the project label
+     * @param projectSources the software channel sources of the project
+     * @param envLabels the environment labels, from the first to the last
+     */
+    private void buildProjectWithEnvironments(User user, String projectLabel, List<Channel> projectSources,
+                                              String... envLabels) {
         ContentProjectFactory.save(new ContentProject(projectLabel, projectLabel, "desc", user.getOrg()));
         Optional<String> predecessor = empty();
         for (String envLabel : envLabels) {
             contentManager.createEnvironment(projectLabel, predecessor, envLabel, envLabel, "desc", false, user);
             predecessor = of(envLabel);
         }
-        contentManager.attachSource(projectLabel, SW_CHANNEL, projectSource.getLabel(), empty(), user);
+        for (Channel projectSource : projectSources) {
+            contentManager.attachSource(projectLabel, SW_CHANNEL, projectSource.getLabel(), empty(), user);
+        }
         contentManager.buildProject(projectLabel, empty(), false, user);
         for (int i = 0; i < envLabels.length - 1; i++) {
             contentManager.promoteProject(projectLabel, envLabels[i], false, user);
@@ -379,6 +455,95 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
         channel.addPackages(List.of(packages));
         return ChannelFactory.save(channel);
+    }
+
+    /**
+     * Creates a child channel of the organization of the user, serving the given packages.
+     *
+     * @param user the user, whose organization owns the channel
+     * @param parent the parent channel
+     * @param packages the packages the channel serves
+     * @return the channel
+     */
+    private Channel createChildChannelWithPackages(User user, Channel parent, Package... packages)
+            throws Exception {
+        Channel channel = TestUtils.reload(ChannelTestUtils.createChildChannel(user, parent));
+        channel.addPackages(List.of(packages));
+        return ChannelFactory.save(channel);
+    }
+
+    /**
+     * A project with a base channel and two child channels as sources, and an erratum added to the sources after
+     * the project was built.
+     *
+     * @param spread the erratum, declaring three packages: two served by the first child, one by the second
+     * @param spreadPackageIds the ids of the packages of the erratum
+     * @param initialPackagesBySource the package every source channel held when the project was built, by channel id
+     */
+    private record SpreadProject(Errata spread, Set<Long> spreadPackageIds,
+                                 Map<Long, Package> initialPackagesBySource) { }
+
+    /**
+     * Builds a project from a base channel and two child channels, each with an initial package and erratum, then
+     * adds the spread erratum to the source child channels.
+     *
+     * @param projectLabel the project label
+     * @param envLabels the environment labels, from the first to the last
+     * @return the project and the spread erratum
+     * @throws Exception if anything goes wrong
+     */
+    private SpreadProject buildSpreadProject(String projectLabel, String... envLabels) throws Exception {
+        Org org = admin.getOrg();
+        Package initialBasePkg = PackageTest.createTestPackage(org, "initialBase");
+        Package initialChild1Pkg = PackageTest.createTestPackage(org, "initialChild1");
+        Package initialChild2Pkg = PackageTest.createTestPackage(org, "initialChild2");
+        Channel base = createChannelWithPackages(admin, initialBasePkg);
+        Channel child1 = createChildChannelWithPackages(admin, base, initialChild1Pkg);
+        Channel child2 = createChildChannelWithPackages(admin, base, initialChild2Pkg);
+        new ErrataTestBuilder().addPackages(initialBasePkg).addChannel(base).buildAndSave();
+        new ErrataTestBuilder().addPackages(initialChild1Pkg).addChannel(child1).buildAndSave();
+        new ErrataTestBuilder().addPackages(initialChild2Pkg).addChannel(child2).buildAndSave();
+        buildProjectWithEnvironments(admin, projectLabel, List.of(base, child1, child2), envLabels);
+
+        // the new erratum arrives in the source channels after the build
+        Package pkg1 = PackageTest.createTestPackage(org, "spread1");
+        Package pkg2 = PackageTest.createTestPackage(org, "spread2");
+        Package pkg3 = PackageTest.createTestPackage(org, "spread3");
+        child1.addPackages(List.of(pkg1, pkg2));
+        child2.addPackages(List.of(pkg3));
+        Errata spread = new ErrataTestBuilder().addPackages(pkg1, pkg2, pkg3)
+                .addChannel(child1).addChannel(child2).buildAndSave();
+
+        return new SpreadProject(spread, ids(List.of(pkg1, pkg2, pkg3)), Map.of(
+                base.getId(), initialBasePkg,
+                child1.getId(), initialChild1Pkg,
+                child2.getId(), initialChild2Pkg));
+    }
+
+    /**
+     * Asserts the cloned source channels of an environment hold only their initial package and one erratum.
+     *
+     * @param org the organization owning the project
+     * @param projectLabel the project label
+     * @param envLabel the environment label
+     * @param project the project
+     */
+    private void assertClonedChannelsHoldInitialContent(Org org, String projectLabel, String envLabel,
+                                                        SpreadProject project) {
+        List<Channel> clonedChannels = ContentManager.lookupEnvironment(envLabel, projectLabel, admin).orElseThrow()
+                .getTargets().stream()
+                .flatMap(t -> t.asSoftwareTarget().stream())
+                .filter(t -> !t.isHotfix())
+                .map(SoftwareEnvironmentTarget::getChannel)
+                .toList();
+        assertEquals(3, clonedChannels.size(), envLabel + " channels");
+        for (Channel cloned : clonedChannels) {
+            Channel reloaded = lookupChannel(org, cloned.getLabel());
+            Channel root = reloaded.originChain().reduce((first, last) -> last).orElseThrow();
+            assertEquals(Set.of(project.initialPackagesBySource().get(root.getId()).getId()),
+                    ids(reloaded.getPackages(), Package::getId), reloaded.getLabel() + " packages");
+            assertEquals(1, reloaded.getErratas().size(), reloaded.getLabel() + " errata");
+        }
     }
 
 }
