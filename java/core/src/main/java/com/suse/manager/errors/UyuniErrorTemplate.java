@@ -20,7 +20,8 @@ import com.suse.common.errors.UyuniErrorCategory;
 
 /**
  * A reusable kind of error: a category plus a localized message, so the same error isn't written out again
- * wherever it occurs. The message receives the offending value as {0} and the field as {1}.
+ * wherever it occurs. The message receives the offending value as {0} and the field as {1}. The message key is also
+ * the key of the errors it creates, so an entry point can recognise them.
  * <p>
  * Common templates are declared here; a domain can declare its own, e.g.
  * {@code new UyuniErrorTemplate(UyuniErrorCategory.ALREADY_EXISTS, "edit.channel.invalidchannellabel.labelinuse")}.
@@ -79,6 +80,13 @@ public final class UyuniErrorTemplate {
         // as text, so MessageFormat doesn't format ids as numbers ("1,000,010,001")
         String text = value == null ? null : String.valueOf(value);
         String message = LocalizationService.getInstance().getMessage(messageKey, text, field);
-        return new UyuniError(category, field, message);
+        return new UyuniError(category, messageKey, field, text, message);
+    }
+
+    /**
+     * @return the key of the errors created from this template, to recognise them with {@link UyuniError#getKey()}
+     */
+    public String getKey() {
+        return messageKey;
     }
 }

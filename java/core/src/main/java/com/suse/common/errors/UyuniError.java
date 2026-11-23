@@ -20,12 +20,15 @@ package com.suse.common.errors;
 import java.io.Serializable;
 
 /**
- * Represents a generic error in scope of Uyuni: a category, the field it applies to (optional) and a message.
+ * Represents a generic error in scope of Uyuni: a category, a key identifying the kind of error (optional), the field
+ * it applies to and the value read from it (optional), and a message.
  * The message is used as it is: translate it when creating the error if it must be localized.
  */
 public class UyuniError implements Serializable {
     private final UyuniErrorCategory category;
+    private final String key;
     private final String argumentKey;
+    private final String argumentValue;
     private final String message;
 
     /**
@@ -43,8 +46,23 @@ public class UyuniError implements Serializable {
      * @param messageIn the error message
      */
     public UyuniError(UyuniErrorCategory categoryIn, String argumentKeyIn, String messageIn) {
+        this(categoryIn, null, argumentKeyIn, null, messageIn);
+    }
+
+    /**
+     * Constructor
+     * @param categoryIn the kind of error
+     * @param keyIn the stable identifier of the kind of error, e.g. the message key of a template; can be null
+     * @param argumentKeyIn the field or object the error applies to, e.g. "serverId"; can be null
+     * @param argumentValueIn the value read from the field, as text; can be null
+     * @param messageIn the error message
+     */
+    public UyuniError(UyuniErrorCategory categoryIn, String keyIn, String argumentKeyIn, String argumentValueIn,
+                      String messageIn) {
         this.category = categoryIn;
+        this.key = keyIn;
         this.argumentKey = argumentKeyIn;
+        this.argumentValue = argumentValueIn;
         this.message = messageIn;
     }
 
@@ -52,8 +70,16 @@ public class UyuniError implements Serializable {
         return category;
     }
 
+    public String getKey() {
+        return key;
+    }
+
     public String getArgumentKey() {
         return argumentKey;
+    }
+
+    public String getArgumentValue() {
+        return argumentValue;
     }
 
     public String getMessage() {

@@ -14,6 +14,7 @@
 package com.suse.manager.errors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.suse.common.errors.UyuniError;
 import com.suse.common.errors.UyuniErrorCategory;
@@ -29,6 +30,8 @@ public class UyuniErrorTemplateTest {
         assertEquals(UyuniErrorCategory.INVALID_ARGUMENT, error.getCategory());
         assertEquals("name", error.getArgumentKey());
         assertEquals("name is required", error.getMessage());
+        assertEquals(UyuniErrorTemplate.REQUIRED.getKey(), error.getKey());
+        assertNull(error.getArgumentValue());
     }
 
     @Test
@@ -46,6 +49,8 @@ public class UyuniErrorTemplateTest {
         assertEquals(UyuniErrorCategory.NOT_FOUND, error.getCategory());
         assertEquals("serverId", error.getArgumentKey());
         assertEquals("serverId 1000010001 not found", error.getMessage());
+        assertEquals("common.error.not_found", error.getKey());
+        assertEquals("1000010001", error.getArgumentValue());
     }
 
     @Test

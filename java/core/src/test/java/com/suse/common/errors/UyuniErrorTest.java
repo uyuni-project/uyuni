@@ -45,5 +45,17 @@ public class UyuniErrorTest {
         assertEquals(UyuniErrorCategory.NOT_FOUND, error.getCategory());
         assertEquals("serverId", error.getArgumentKey());
         assertEquals("Server 1000010001 not found", error.getMessage());
+        assertNull(error.getKey());
+        assertNull(error.getArgumentValue());
+    }
+
+    @Test
+    public void testErrorWithKeyAndValue() {
+        UyuniError error = new UyuniError(UyuniErrorCategory.INVALID_ARGUMENT, "common.error.illegal_value", "port",
+                "abc", "Invalid value for port: abc");
+
+        assertEquals("common.error.illegal_value", error.getKey());
+        assertEquals("port", error.getArgumentKey());
+        assertEquals("abc", error.getArgumentValue());
     }
 }
