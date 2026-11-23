@@ -67,7 +67,7 @@ import java.util.stream.Stream;
  * Project "cpother" uses an unrelated source
  * Every environment has a hotfix channel.
  */
-public class ContentManagerHotfixTest extends BaseHandlerTestCase {
+class ContentManagerHotfixTest extends BaseHandlerTestCase {
 
     private static final String CP_DEV_HOTFIX = "cp-dev-hotfix";
     private static final String CP_TEST_HOTFIX = "cp-test-hotfix";
@@ -89,7 +89,7 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
      * @throws Exception if anything goes wrong
      */
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         contentManager.setModulemdApi(new MockModulemdApi());
 
         pkgA = PackageTest.createTestPackage(admin.getOrg(), "pkgA");
@@ -114,7 +114,7 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
      * Repeating the call changes nothing.
      */
     @Test
-    public void testCloneIntoHotfixChannel() {
+    void testCloneIntoHotfixChannel() {
         Org org = admin.getOrg();
         assertTrue(lookupChannel(org, CP_DEV_HOTFIX).getErratas().isEmpty());
 
@@ -141,7 +141,7 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
      * of {@code errata}, a label given twice is cloned into once, the hotfix channels not given are not changed.
      */
     @Test
-    public void testCloneIntoHotfixChannels() {
+    void testCloneIntoHotfixChannels() {
         Org org = admin.getOrg();
         Set<String> hotfixLabels = Set.of(CP_DEV_HOTFIX, CP_PROD_HOTFIX, CP2_DEV_HOTFIX);
         hotfixLabels.forEach(label -> assertTrue(lookupChannel(org, label).getErratas().isEmpty()));
@@ -163,7 +163,7 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
      * channel does not get the errata of the hotfix channel of the previous environment it was cloned from.
      */
     @Test
-    public void testCloneKeepsHotfixContent() {
+    void testCloneKeepsHotfixContent() {
         Org org = admin.getOrg();
 
         contentManager.cloneIntoHotfixChannel(admin, other.getAdvisoryName(), CP_DEV_HOTFIX);
@@ -182,7 +182,7 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
      * the request.
      */
     @Test
-    public void testCloneIntoInvalidChannels() {
+    void testCloneIntoInvalidChannels() {
         String advisoryName = "does-not-exist";
         String regularChannel =
                 getRegularChannels(ContentManager.lookupEnvironment(DEV, CP_PROJECT_LABEL, admin).orElseThrow())
@@ -226,7 +226,7 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
      * first organization gets nothing, and neither organization can clone into the hotfix channels of the other.
      */
     @Test
-    public void testCloneIntoHotfixChannelOfAnotherOrg() {
+    void testCloneIntoHotfixChannelOfAnotherOrg() {
         String hotfixLabel = "o2-dev-hotfix";
         User otherAdmin = new UserTestUtils.UserBuilder().orgAdmin(true).build();
         Org otherOrg = otherAdmin.getOrg();
@@ -277,7 +277,7 @@ public class ContentManagerHotfixTest extends BaseHandlerTestCase {
      */
     @ParameterizedTest(name = "clone into {0}")
     @MethodSource("hotfixEnvironments")
-    public void testCloneErratumSpreadOverChildChannels(List<String> targetEnvLabels) throws Exception {
+    void testCloneErratumSpreadOverChildChannels(List<String> targetEnvLabels) throws Exception {
         Org org = admin.getOrg();
         List<String> envLabels = List.of(DEV, "test", "prod");
         SpreadProject project = buildSpreadProject("cpchild", envLabels.toArray(String[]::new));

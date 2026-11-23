@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser {
+class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser {
 
     // a map that accepts the null source channel of errata found without one
     private static Map<Errata, Channel> mapOf(Errata errata, Channel source) {
@@ -51,7 +51,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * names are left out.
      */
     @Test
-    public void testFindInSourceByNames() {
+    void testFindInSourceByNames() {
         Channel source = channel();
         Errata wanted = createErrata(user.getOrg(), source);
         createErrata(user.getOrg(), source);
@@ -66,7 +66,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * An empty list of advisory names returns every erratum of the source channel, and none from other channels.
      */
     @Test
-    public void testFindInSourceWithoutNamesReturnsAllErrataOfTheChannel() {
+    void testFindInSourceWithoutNamesReturnsAllErrataOfTheChannel() {
         Channel source = channel();
         Errata first = createErrata(user.getOrg(), source);
         Errata second = createErrata(user.getOrg(), source);
@@ -81,7 +81,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * Only the errata of the source channel last modified within the date range are returned.
      */
     @Test
-    public void testFindInSourceByDates() {
+    void testFindInSourceByDates() {
         Channel source = channel();
         Errata inRange = createErrata(user.getOrg(), source);
         Errata outOfRange = createErrata(user.getOrg(), source);
@@ -103,7 +103,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * When several clone ancestors hold the erratum, the nearest one is its source channel.
      */
     @Test
-    public void testFindByCriteriaUsesTheNearestAncestorHoldingTheAdvisory() {
+    void testFindByCriteriaUsesTheNearestAncestorHoldingTheAdvisory() {
         Channel original = channel();
         Channel middle = ChannelFactoryTest.createTestClonedChannel(original, user);
         Channel target = ChannelFactoryTest.createTestClonedChannel(middle, user);
@@ -120,7 +120,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * When the nearest ancestor does not hold the erratum, the walk goes up to further ancestors.
      */
     @Test
-    public void testFindByCriteriaWalksUpToFurtherAncestors() {
+    void testFindByCriteriaWalksUpToFurtherAncestors() {
         Channel original = channel();
         Channel middle = ChannelFactoryTest.createTestClonedChannel(original, user);
         Channel target = ChannelFactoryTest.createTestClonedChannel(middle, user);
@@ -137,7 +137,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * through the org lookup without source.
      */
     @Test
-    public void testFindByCriteriaNeverUsesTheTargetAsSource() {
+    void testFindByCriteriaNeverUsesTheTargetAsSource() {
         Channel original = channel();
         Channel target = ChannelFactoryTest.createTestClonedChannel(original, user);
         Errata errata = createErrata(user.getOrg(), target);
@@ -153,7 +153,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * source.
      */
     @Test
-    public void testFindByCriteriaSkipsInaccessibleAncestors() {
+    void testFindByCriteriaSkipsInaccessibleAncestors() {
         Org otherOrg = UserTestUtils.createOrg(this);
         Channel inaccessible = ChannelFactoryTest.createTestChannel(otherOrg);
         Channel target = ChannelFactoryTest.createTestClonedChannel(inaccessible, user);
@@ -171,7 +171,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * errata, then vendor errata, and the first match wins; unknown names are left out.
      */
     @Test
-    public void testFindByCriteriaFallsBackToTargetOrgThenUserOrgThenVendor() {
+    void testFindByCriteriaFallsBackToTargetOrgThenUserOrgThenVendor() {
         Org targetOrg = UserTestUtils.createOrg(this);
         Channel target = ChannelFactoryTest.createTestChannel(targetOrg);
         String all = "ALL-" + System.nanoTime();
@@ -197,7 +197,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * The erratum is its own representative when the target channel holds it.
      */
     @Test
-    public void testFindRepresentativeInTargetReturnsTheErratumItself() {
+    void testFindRepresentativeInTargetReturnsTheErratumItself() {
         Channel target = channel();
         Errata errata = createErrata(user.getOrg(), target);
 
@@ -209,7 +209,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * A clone of the erratum held by the target channel is its representative.
      */
     @Test
-    public void testFindRepresentativeInTargetReturnsAClone() {
+    void testFindRepresentativeInTargetReturnsAClone() {
         Channel target = channel();
         Errata vendor = createErrata(null, null);
         Errata clone = createCloneOf(user.getOrg(), vendor, target);
@@ -222,7 +222,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * A sibling of the erratum (another clone of the same original) held by the target channel is its representative.
      */
     @Test
-    public void testFindRepresentativeInTargetReturnsASibling() {
+    void testFindRepresentativeInTargetReturnsASibling() {
         Channel target = channel();
         Errata vendor = createErrata(null, null);
         Errata clone = createCloneOf(user.getOrg(), vendor, null);
@@ -236,7 +236,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * No representative is found when the target channel holds neither the erratum, nor a clone, nor a sibling of it.
      */
     @Test
-    public void testFindRepresentativeInTargetReturnsNothingWhenNotHeld() {
+    void testFindRepresentativeInTargetReturnsNothingWhenNotHeld() {
         Errata vendor = createErrata(null, channel());
         createCloneOf(user.getOrg(), vendor, null);
 
@@ -248,7 +248,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * An erratum owned by the org is its own representative.
      */
     @Test
-    public void testRepresentativeOwnedByReturnsTheOwnErratum() {
+    void testRepresentativeOwnedByReturnsTheOwnErratum() {
         Errata own = createErrata(user.getOrg(), null);
 
         assertEquals(own, SyncErrataWithPackagesErrataHelper.getRepresentativeErrataOwnedBy(user.getOrg(), own));
@@ -258,7 +258,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * When the org already has several clones of the erratum, the oldest one is the representative.
      */
     @Test
-    public void testRepresentativeOwnedByReusesTheOldestClone() {
+    void testRepresentativeOwnedByReusesTheOldestClone() {
         Errata vendor = createErrata(null, null);
         Errata oldest = createCloneOf(user.getOrg(), vendor, null);
         createCloneOf(user.getOrg(), vendor, null);
@@ -271,7 +271,7 @@ public class SyncErrataWithPackagesErrataHelperTest extends BaseTestCaseWithUser
      * and the same packages.
      */
     @Test
-    public void testRepresentativeOwnedByClonesWhenNoCloneExists() {
+    void testRepresentativeOwnedByClonesWhenNoCloneExists() {
         Errata vendor = createErrata(null, null, pkg());
 
         Errata representative =
