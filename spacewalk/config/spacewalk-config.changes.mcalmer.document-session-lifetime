@@ -1,1 +1,2 @@
-- Document `server.session_lifetime` in the `rhn.conf` man page
+- Move `server.session_lifetime` into the database and drop it
+  from the `rhn.conf` man page

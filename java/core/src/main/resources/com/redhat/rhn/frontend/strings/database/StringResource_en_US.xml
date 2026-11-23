@@ -3118,8 +3118,32 @@
         </context-group>
         </trans-unit>
       <!-- Descriptions of the server settings (rhnConfiguration) -->
+      <trans-unit id="server_settings.description.BUFFER_SIZE" xml:space="preserve">
+        <source>Size in bytes of the chunks in which the server streams files like packages to clients</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.FORCE_PACKAGE_UPLOAD" xml:space="preserve">
+        <source>Allow mgr-push to force the upload of packages which already exist on the server</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="server_settings.description.NO_PROXY" xml:space="preserve">
         <source>Comma separated list of hosts and domains which are connected without the HTTP proxy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.PROXY_AUTH_TIMEOUT" xml:space="preserve">
+        <source>Lifetime in seconds of the authentication tokens which proxies get when they log in</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="server_settings.description.PUSH_SESSION_LIFETIME" xml:space="preserve">
+        <source>Lifetime in seconds of the sessions which mgr-push gets when it logs in to upload packages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/admin/config/server-settings</context>
         </context-group>
