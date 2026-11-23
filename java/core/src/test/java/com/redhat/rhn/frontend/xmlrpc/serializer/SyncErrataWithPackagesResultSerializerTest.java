@@ -31,14 +31,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SyncErrataWithPackagesResultSerializerTest extends BaseTestCaseWithUser {
+class SyncErrataWithPackagesResultSerializerTest extends BaseTestCaseWithUser {
 
     /**
      * The result and each synchronized erratum are serialized with the documented keys; a package shared by two errata
      * is listed under both.
      */
     @Test
-    public void testSerialize() {
+    void testSerialize() {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Package pkg = errata.getPackages().iterator().next();
         SyncedErratumWithPackages synced = new SyncedErratumWithPackages(errata, List.of(pkg));

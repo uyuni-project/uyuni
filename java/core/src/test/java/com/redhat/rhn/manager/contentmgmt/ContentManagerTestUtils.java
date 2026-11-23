@@ -31,7 +31,7 @@ import java.util.Set;
 /**
  * Helpers shared by the {@link ContentManager} tests.
  */
-public final class ContentManagerTestUtils {
+final class ContentManagerTestUtils {
 
     private ContentManagerTestUtils() { }
 
@@ -46,7 +46,7 @@ public final class ContentManagerTestUtils {
      * @param projectSource the software channel source of the project
      * @param envLabels the environment labels, from the first to the last
      */
-    public static void buildProjectWithEnvironments(
+    static void buildProjectWithEnvironments(
             ContentManager contentManager,
             User user,
             String projectLabel,
@@ -66,7 +66,7 @@ public final class ContentManagerTestUtils {
      * @param projectSources the software channel sources of the project
      * @param envLabels the environment labels, from the first to the last
      */
-    public static void buildProjectWithEnvironments(
+    static void buildProjectWithEnvironments(
             ContentManager contentManager,
             User user,
             String projectLabel,
@@ -94,7 +94,7 @@ public final class ContentManagerTestUtils {
      * @param env the environment
      * @return the hotfix target, if any
      */
-    public static Optional<SoftwareEnvironmentTarget> getHotfixTarget(ContentEnvironment env) {
+    static Optional<SoftwareEnvironmentTarget> getHotfixTarget(ContentEnvironment env) {
         return env.getTargets().stream()
                 .flatMap(t -> t.asSoftwareTarget().stream())
                 .filter(SoftwareEnvironmentTarget::isHotfix)
@@ -107,7 +107,7 @@ public final class ContentManagerTestUtils {
      * @param env the environment
      * @return the channels
      */
-    public static Set<Channel> getRegularChannels(ContentEnvironment env) {
+    static Set<Channel> getRegularChannels(ContentEnvironment env) {
         return env.getTargets().stream()
                 .flatMap(t -> t.asSoftwareTarget().stream())
                 .filter(t -> !t.isHotfix())
