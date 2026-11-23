@@ -139,7 +139,7 @@ class RecurringActionsList extends Component<Props, State> {
       <>
         <h1>
           <IconTag type="spacewalk-icon-salt" />
-          {t(" Recurring Actions TESTS")}
+          {t(" Recurring Actions ")}
           <HelpLink url="reference/schedule/recurring-actions.html" />
         </h1>
         <p>{t("The following recurring actions have been created.")}</p>

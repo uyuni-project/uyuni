@@ -161,9 +161,7 @@ class KeyManagement extends Component<Props, State> {
   }
 
   render() {
-    const panelButtons = (
-      <AsyncButton id="reload" icon="fa-refresh" text="Refresh" action={this.reloadKeys} />
-    );
+    const panelButtons = <AsyncButton id="reload" icon="fa-refresh" text="Refresh" action={this.reloadKeys} />;
     return (
       <span>
         <TopPanel title={t("Keys")} icon="fa-desktop" button={panelButtons} helpUrl="reference/salt/salt-keys.html">

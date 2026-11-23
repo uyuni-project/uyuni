@@ -68,18 +68,16 @@ export class MigrateSlavesForm extends Component<Props, State> {
         button={
           this.props.migrateFrom === MigrationVersion.v2 && (
             // When migrating from ISSv2 the user needs to add all the information about the remote servers
-            <>
-              <ModalEditButton
-                buttonLabel={t("Add Server")}
-                buttonIcon="fa-plus"
-                modalTitle={t("Set the FQDN of the remote server")}
-                fieldLabel={t("Server FQDN")}
-                disabled={this.state.loading}
-                validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
-                invalidHint={t("Has to be a valid FQDN address")}
-                onSave={(value) => this.onAddServer(value)}
-              />
-            </>
+            <ModalEditButton
+              buttonLabel={t("Add Server")}
+              buttonIcon="fa-plus"
+              modalTitle={t("Set the FQDN of the remote server")}
+              fieldLabel={t("Server FQDN")}
+              disabled={this.state.loading}
+              validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
+              invalidHint={t("Has to be a valid FQDN address")}
+              onSave={(value) => this.onAddServer(value)}
+            />
           )
         }
       >

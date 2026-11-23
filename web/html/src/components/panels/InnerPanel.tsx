@@ -54,9 +54,9 @@ function InnerPanel(props: Props) {
       </h2>
       <p>{props.summary}</p>
       {toolbar}
-        <div className="panel panel-default">
-          <div className="panel-body">{props.children}</div>
-        </div>
+      <div className="panel panel-default">
+        <div className="panel-body">{props.children}</div>
+      </div>
     </div>
   );
 }

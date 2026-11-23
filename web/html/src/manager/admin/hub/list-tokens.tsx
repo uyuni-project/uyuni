@@ -25,9 +25,7 @@ export class TokenList extends Component<Props> {
       <TopPanel
         title={t("Access Tokens")}
         icon="fa fa-shield"
-        button={
-          <AddTokenButton onCreated={() => this.tokenTable.current?.refresh()} />
-        }
+        button={<AddTokenButton onCreated={() => this.tokenTable.current?.refresh()} />}
       >
         <TokenTable ref={this.tokenTable} allowToggleValidity={true} allowDeletion={true} />
       </TopPanel>
