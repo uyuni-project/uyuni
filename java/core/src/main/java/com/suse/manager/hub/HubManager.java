@@ -756,7 +756,7 @@ public class HubManager {
      * @param data the new data
      */
     public void updateServerData(IssAccessToken token, String fqdn, IssRole role, UpdatableServerData data)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException, PqcKeyException, GpgKeyException {
         ensureValidToken(token);
         updateServerData(fqdn, role, data);
     }
@@ -771,39 +771,63 @@ public class HubManager {
      * @throws TaskomaticApiException when it's not possible to schedule the certificate refresh
      */
     public void updateServerData(User user, String fqdn, IssRole role, UpdatableServerData data)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException, PqcKeyException, GpgKeyException {
         ensureSatAdmin(user);
         updateServerData(fqdn, role, data);
     }
 
-    private void updateServerData(String fqdn, IssRole role, UpdatableServerData data) throws TaskomaticApiException {
+    private void updateServerData(String fqdn, IssRole role, UpdatableServerData data)
+            throws TaskomaticApiException, GpgKeyException, PqcKeyException {
         Optional<? extends IssServer> server = switch (role) {
             case HUB -> hubFactory.lookupIssHubByFqdn(fqdn);
             case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(fqdn);
         };
 
-        server.ifPresentOrElse(issServer -> {
+        boolean hasRootCA = false;
+        boolean hasGpgKey = false;
+        boolean hasPqcCert = false;
+        if (server.isPresent()) {
+            IssServer issServer = server.get();
+
             if (data.hasRootCA()) {
+                hasRootCA = true;
                 issServer.setRootCa(data.getRootCA());
             }
 
             if (data.hasGpgKey() && issServer instanceof IssHub issHub) {
+                hasGpgKey = true;
                 issHub.setGpgKey(data.getGpgKey());
             }
 
             if (data.hasPqcCert() && issServer instanceof IssHub issHub) {
+                hasPqcCert = true;
                 issHub.setPqcCert(data.getPqcCert());
             }
 
             hubFactory.save(issServer);
-        }, () -> {
+        }
+        else {
             LOG.error("Server {} not found with role {}", fqdn, role);
             throw new IllegalArgumentException("Server not found");
-        });
+        }
 
-        if (data.hasRootCA()) {
+        if (hasRootCA) {
             taskomaticApi.scheduleSingleRootCaCertUpdate(role, fqdn, data.getRootCA());
         }
+        if (hasGpgKey) {
+            importGpgKey(data.getGpgKey());
+        }
+        if (hasPqcCert) {
+            importHubPqcCert(data.getPqcCert());
+        }
+    }
+
+    protected void importGpgKey(String gpgKey) throws GpgKeyException {
+        CertificateUtils.importGpgKey(gpgKey);
+    }
+
+    protected void importHubPqcCert(String pqcCert) throws PqcKeyException {
+        CertificateUtils.importHubPqcCert(pqcCert);
     }
 
     /**

@@ -44,6 +44,8 @@ import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.manager.xmlrpc.InvalidCertificateException;
+import com.suse.utils.GpgKeyException;
+import com.suse.utils.PqcKeyException;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -460,6 +462,14 @@ public class HubHandler extends BaseHandler {
         }
         catch (IllegalArgumentException ex) {
             throw new InvalidParameterException(logAndGetErrorMessage(ex, "Illegal state"));
+        }
+        catch (GpgKeyException ex) {
+            throw new InvalidParameterException(logAndGetErrorMessage(ex,
+                    "Unexpected error while processing the GPG key"));
+        }
+        catch (PqcKeyException ex) {
+            throw new InvalidParameterException(logAndGetErrorMessage(ex,
+                    "Unexpected error while processing the PQC key"));
         }
         return 1;
     }

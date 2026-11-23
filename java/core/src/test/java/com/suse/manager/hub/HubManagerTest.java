@@ -191,6 +191,28 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     private SystemEntitlementManager systemEntitlementManager;
 
+    static class MockHubManager extends HubManager {
+        MockHubManager(HubFactory hubFactoryIn, HubClientFactory clientFactoryIn,
+                       MirrorCredentialsManager mirrorCredentialsManagerIn, TaskomaticApi taskomaticApiIn,
+                       SystemEntitlementManager systemEntitlementManagerIn,
+                       SystemManager systemManagerIn) {
+            super(hubFactoryIn, clientFactoryIn,
+                    mirrorCredentialsManagerIn, taskomaticApiIn,
+                    systemEntitlementManagerIn,
+                    systemManagerIn);
+        }
+
+        @Override
+        protected void importGpgKey(String gpgKeyIn) {
+            //do nothing
+        }
+
+        @Override
+        protected void importHubPqcCert(String pqcCertIn) {
+            //do nothing
+        }
+    }
+
     @BeforeEach
     public void setUp() throws Exception {
 
@@ -967,19 +989,24 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         assertNull(hub.getPqcCert());
 
         UpdatableServerData data = new UpdatableServerData(Map.of(
-            "gpg_key", "---- BEGIN NEW GPG PUB KEY -----",
-            "root_ca", "---- BEGIN NEW ROOT CA ----")
+                "gpg_key", "---- BEGIN NEW GPG PUB KEY -----",
+                "root_ca", "---- BEGIN NEW ROOT CA ----",
+                "pqc_cert", "---- BEGIN NEW PQC CERT ----")
         );
 
-        hubManager.updateServerData(satAdmin, "hub.domain.com", IssRole.valueOf("HUB"), data);
+        MockHubManager mockHubManager = new MockHubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager(), mockTaskomaticApi,
+                systemEntitlementManager, systemManagerMock);
+
+
+        mockHubManager.updateServerData(satAdmin, "hub.domain.com", IssRole.valueOf("HUB"), data);
         TestUtils.flushAndClearSession();
 
         hub = hubFactory.lookupIssHubByFqdn("hub.domain.com").orElseGet(() -> fail("Hub Server not found"));
         assertEquals("---- BEGIN NEW ROOT CA ----", hub.getRootCa());
         assertEquals("---- BEGIN NEW GPG PUB KEY -----", hub.getGpgKey());
-        assertNull(hub.getPqcCert());
+        assertEquals("---- BEGIN NEW PQC CERT ----", hub.getPqcCert());
         assertThrows(IllegalArgumentException.class,
-                () -> hubManager.updateServerData(satAdmin, "hub1.domain.com", IssRole.valueOf("HUB"), data));
+                () -> mockHubManager.updateServerData(satAdmin, "hub1.domain.com", IssRole.valueOf("HUB"), data));
 
         // PERIPHERAL
 
@@ -988,13 +1015,13 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 .orElseGet(() -> fail("Peripheral Server not found"));
         assertEquals("---- BEGIN ROOT CA ----", peripheral.getRootCa());
 
-        hubManager.updateServerData(satAdmin, "peripheral.domain.com", IssRole.valueOf("PERIPHERAL"), data);
+        mockHubManager.updateServerData(satAdmin, "peripheral.domain.com", IssRole.valueOf("PERIPHERAL"), data);
         TestUtils.flushAndClearSession();
 
         peripheral = hubFactory.lookupIssPeripheralByFqdn("peripheral.domain.com")
                 .orElseGet(() -> fail("Peripheral Server not found"));
         assertEquals("---- BEGIN NEW ROOT CA ----", peripheral.getRootCa());
-        assertThrows(IllegalArgumentException.class, () -> hubManager.updateServerData(satAdmin,
+        assertThrows(IllegalArgumentException.class, () -> mockHubManager.updateServerData(satAdmin,
                 "peripheral1.domain.com", IssRole.valueOf("PERIPHERAL"), data));
     }
 

@@ -168,6 +168,14 @@ public class HubController {
             LOGGER.error("Unable to schedule Taskomatic execution to refresh the root ca: ", ex);
             return internalServerError(response, "Unable to schedule refresh of the root CA certificate");
         }
+        catch (GpgKeyException ex) {
+            LOGGER.error("Unexpected error while processing the GPG key for {}", accessToken.getServerFqdn(), ex);
+            return internalServerError(response, "Unexpected error while processing the GPG key");
+        }
+        catch (PqcKeyException ex) {
+            LOGGER.error("Unexpected error while processing the PQC key for {}", accessToken.getServerFqdn(), ex);
+            return internalServerError(response, "Unexpected error while processing the PQC key");
+        }
         return success(response);
     }
 
