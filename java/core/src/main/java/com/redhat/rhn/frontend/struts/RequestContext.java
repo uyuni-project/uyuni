@@ -89,6 +89,7 @@ public class RequestContext {
     public static final String CONFIG_FILE_ID = "cfid";
     public static final String SERVER_GROUP_ID = "sgid";
     public static final String NAME = "name";
+    public static final String SUBMITTED = "submitted";
     // Request Attributes go here:
     public static final String ACTIVATION_KEY = "activationkey";
     public static final String KICKSTART = "ksdata";
@@ -690,7 +691,7 @@ public class RequestContext {
      * @return true if the form was submitted, false other wise
      */
     public boolean isSubmitted() {
-        return Boolean.TRUE.toString().equals(getParam(RhnAction.SUBMITTED, false));
+        return Boolean.TRUE.toString().equals(getParam(SUBMITTED, false));
     }
 
     /**
