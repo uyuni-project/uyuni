@@ -60,7 +60,10 @@ public class ErrorReportingStrategies {
      * @param obj Object to log
      * @param message Message to log
      * @return Supplier of RhnRuntimeException that logs the message and throw the exception
+     * @deprecated throw {@code new RhnRuntimeException(message, cause)} instead: the entry point logs it,
+     * so logging here logs it twice
      */
+    @Deprecated
     public static Supplier<RhnRuntimeException> raiseAndLog(Object obj, String message) {
         Logger logger = getLogger(obj);
         return () -> {
