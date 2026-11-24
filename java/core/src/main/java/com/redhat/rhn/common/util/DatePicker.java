@@ -17,7 +17,6 @@
 package com.redhat.rhn.common.util;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.struts.action.DynaActionForm;
 
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
@@ -46,14 +45,14 @@ import java.util.stream.Collectors;
  *   DynaActionForm dynaForm = ...;
  *   DatePicker p = new DatePicker("date", timeZone, locale, yearDirection);
  *   p.setDate(d);
- *   p.writeForm(dynaForm.getMap());
+ *   p.writeToMap(dynaForm.getMap());
  * </pre>
  *
  * <p> Once the form is submitted, you can extract the date with
  * <pre>
  *   DynaActionForm dynaForm = ...;
  *   DatePicker p = new DatePicker("date", timeZone, locale, yearDirection);
- *   p.readForm(dynaForm.getMap());
+ *   p.readMap(dynaForm.getMap());
  *   Date result = p.getDate();
  *   if ( result == null ) {
  *     ... tell user that date was incorrect ...
@@ -459,16 +458,6 @@ public class DatePicker {
     }
 
     /**
-     * Reads the form fields to populate date fields.
-     * If a form does not have all of the fields, the inital date
-     * will be now.
-     * @param form The form containing date picker fields.
-     */
-    public void readForm(DynaActionForm form) {
-        readMap(form.getMap());
-    }
-
-    /**
      * Write the internal date into <code>map</code>. The
      * <code>map</code> will map the names of the date widget fields like
      * <code>date_year</code> etc. to <code>Integer</code> values.
@@ -478,18 +467,6 @@ public class DatePicker {
     public void writeToMap(Map<String, Integer> map) {
         map.putAll(getFieldCalMap().keySet().stream()
                 .collect(Collectors.toMap(k -> propertyName(k), k -> getField(k))));
-    }
-
-    /**
-     * Write the internal date into <code>form</code>. The
-     * <code>form</code> will map the names of the date widget fields like
-     * <code>date_year</code> etc. to <code>Integer</code> values.
-     *
-     * @param form a dyna action form with date widget field names
-     *             to <code>Integer</code> values
-     */
-    public void writeToForm(DynaActionForm form) {
-        writeToMap(form.getMap());
     }
 
     /**

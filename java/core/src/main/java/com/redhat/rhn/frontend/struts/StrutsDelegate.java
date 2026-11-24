@@ -349,7 +349,7 @@ public class StrutsDelegate {
                 String.valueOf(form.get(DatePicker.SCHEDULE_TYPE)).isEmpty() ||
                 form.get(DatePicker.SCHEDULE_TYPE).equals(DatePicker.ScheduleType.DATE.asString())) {
             DatePicker p = getDatePicker(name, yearDirection);
-            p.readForm(form);
+            p.readMap(form.getMap());
             return p.getDate();
         }
         return new Date();
@@ -395,7 +395,7 @@ public class StrutsDelegate {
 
         //The datepicker itself can write the rest.
         DatePicker p = getDatePicker(name, yearDirection);
-        p.readForm(form);
+        p.readMap(form.getMap());
         p.writeToMap(requestParams);
     }
 
@@ -421,7 +421,7 @@ public class StrutsDelegate {
         p.readMap(request.getParameterMap());
 
         //prepopulate the form for this picker
-        p.writeToForm(form);
+        p.writeToMap(form.getMap());
         if (!StringUtils.isEmpty(request.getParameter(DatePicker.SCHEDULE_TYPE))) {
             String preset = request.getParameter(DatePicker.SCHEDULE_TYPE);
             form.set(DatePicker.SCHEDULE_TYPE, preset);
