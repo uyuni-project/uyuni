@@ -1415,6 +1415,8 @@ public class ContentManager {
             return;
         }
         Channel hotfix = hotfixChannel.get();
+        // serialize with cloning errata into the hotfix channel, before reading its errata
+        ChannelFactory.lock(hotfix);
 
         Set<Long> builtRootIds = target.getChannel().getErratas().stream()
                 .map(e -> getRootOriginal(e).getId())
@@ -1439,6 +1441,9 @@ public class ContentManager {
                 .filter(p -> !realIds.contains(p.getId()))
                 .collect(toSet()));
         ChannelManager.refreshWithNewestPackages(hotfix, "java::removeBuiltErrataFromHotfixChannel");
+        // removing the errata also dropped the needed cache entries the systems of the hotfix channel get from
+        // the regular channels: recompute the cache of these systems
+        ErrataCacheManager.updateErrataAndPackageCacheForChannel(hotfix.getId());
     }
 
     /**

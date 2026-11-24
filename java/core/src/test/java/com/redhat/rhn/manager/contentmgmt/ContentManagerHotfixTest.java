@@ -18,6 +18,7 @@ import static java.util.Optional.empty;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -34,18 +35,28 @@ import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataTestBuilder;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
+import com.redhat.rhn.frontend.dto.ErrataCacheDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.errata.cache.UpdateErrataCacheCommand;
 import com.redhat.rhn.manager.errata.syncwithpackages.dto.SyncedErratumWithPackages;
+import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -454,6 +465,51 @@ class ContentManagerHotfixTest extends BaseHandlerTestCase {
         assertFalse(regularErrata.contains(deniedClone), "regular channel does not hold the denied erratum");
         assertTrue(regularPackages.containsAll(ids(List.of(builtPkg, sharedPkg))), "regular built packages");
         assertFalse(regularPackages.contains(deniedPkg.getId()), "regular channel does not hold the denied package");
+    }
+
+    /**
+     * Tests the cleanup of the hotfix channel with a system subscribed to the regular and the hotfix channel: the
+     * cleanup drops the needed cache entries of the system, so the system gets queued for recomputing its cache,
+     * which then holds the update from the regular channel.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    void testHotfixChannelCleanupRefreshesNeededCache() throws Exception {
+        Org org = admin.getOrg();
+        Channel cacheSource = createChannelWithPackages(admin, PackageTest.createTestPackage(org, "initialCache"));
+        buildProjectWithEnvironments(contentManager, admin, "cpcache", cacheSource, DEV);
+        String hotfixLabel = "cpcache-dev-hotfix";
+
+        Package pkg = PackageTest.createTestPackage(org, "cachePkg");
+        cacheSource.addPackages(List.of(pkg));
+        Errata erratum = new ErrataTestBuilder().addPackages(pkg).addChannel(cacheSource).buildAndSave();
+        contentManager.cloneIntoHotfixChannel(admin, erratum.getAdvisoryName(), hotfixLabel);
+
+        // the system has an older version of the package installed
+        String regularLabel = lookupSingleRegularChannel(org, "cpcache", DEV).getLabel();
+        Server server = ErrataTestUtils.createTestServer(admin, List.of(
+                ChannelFactory.lookupByLabel(org, regularLabel), ChannelFactory.lookupByLabel(org, hotfixLabel)));
+        Package reloadedPkg = TestUtils.reload(pkg);
+        PackageEvr evr = reloadedPkg.getPackageEvr();
+        InstalledPackage installed = new InstalledPackage();
+        installed.setEvr(PackageEvrFactoryTest.createTestPackageEvr(evr.getEpoch(), "0.9.9", evr.getRelease(),
+                evr.getPackageType()));
+        installed.setArch(reloadedPkg.getPackageArch());
+        installed.setName(reloadedPkg.getPackageName());
+        installed.setServer(server);
+        server.getPackages().add(installed);
+        TaskFactory.deleteByNameData(ErrataCacheWorker.FOR_SERVER, server.getId());
+
+        contentManager.buildProject("cpcache", empty(), false, admin);
+
+        assertNotNull(TaskFactory.lookup(org, ErrataCacheWorker.FOR_SERVER, server.getId()), "system is queued");
+        new UpdateErrataCacheCommand().updateErrataCacheForServer(server.getId(), false);
+        Set<Long> regularErrata =
+                ids(lookupSingleRegularChannel(org, "cpcache", DEV).getErratas(), Errata::getId);
+        List<ErrataCacheDto> needed = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        assertEquals(List.of(pkg.getId()), needed.stream().map(ErrataCacheDto::getPackageId).toList());
+        assertTrue(regularErrata.contains(needed.get(0).getErrataId()), "update from the regular channel");
     }
 
     // Utility methods
