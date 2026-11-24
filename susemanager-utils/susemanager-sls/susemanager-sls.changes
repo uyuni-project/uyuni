@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue Nov 24 11:47:44 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3-0
+  * Make OpenSCAP scan scheduling generally available
+  * Pass the oscap options selecting rules and content to the
+    openscap module when running an XCCDF scan, serialized so that
+    paths and references reach oscap unchanged
+  * Report KIWI SPDX SBOM metadata in build results
+  * Make proxy certs optional (bsc#1265630)
+
+-------------------------------------------------------------------
 Wed Oct 07 18:27:45 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2-0

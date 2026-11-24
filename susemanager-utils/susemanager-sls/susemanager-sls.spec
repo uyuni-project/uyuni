@@ -43,7 +43,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        5.3.2
+Version:        5.3.3
 Release:        0
 Summary:        Static Salt state files for %{productprettyname}
 License:        Apache-2.0 AND LGPL-2.1-only
