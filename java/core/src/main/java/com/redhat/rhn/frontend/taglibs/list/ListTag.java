@@ -22,6 +22,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.html.HtmlTag;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.RhnListTagFunctions;
 import com.redhat.rhn.frontend.taglibs.list.decorators.ExpansionDecorator;
@@ -1059,7 +1060,7 @@ public class ListTag extends BodyTagSupport {
         if (PageSizeDecorator.pageWidgetSelected(httpRequest, getUniqueName())) {
             int size = PageSizeDecorator.getSelectedPageSize(httpRequest,
                                                         getUniqueName());
-            List<Integer> pageSizes = PageSizeDecorator.getPageSizes();
+            List<Integer> pageSizes = PageControl.getPageSizes();
             if (size < 1 || size > pageSizes.get(pageSizes.size() - 1)) {
                 return;
             }

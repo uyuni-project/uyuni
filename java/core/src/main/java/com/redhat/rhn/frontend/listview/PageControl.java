@@ -17,7 +17,15 @@
  */
 package com.redhat.rhn.frontend.listview;
 
-import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * PageControl is a means of controlling how much data the user
@@ -31,8 +39,14 @@ public class PageControl extends ListControl {
     private String sortColumn;
     private boolean sortDescending;
 
+    private static final Logger LOG = LogManager.getLogger(PageControl.class);
+
     /** static value for default results per page. */
     public static final int DEFAULT_PER_PAGE = 25;
+    /** static value for max results per page. */
+    public static final int MAX_PER_PAGE = 500;
+    /** page sizes offered when the configuration does not set any. */
+    public static final List<Integer> DEFAULT_PAGE_SIZES = List.of(5, 10, 25, 50, 100, 250, 500);
 
     /**
      * Initialize an object with controls starting from 1 and with the default page size
@@ -113,8 +127,8 @@ public class PageControl extends ListControl {
     public int getEnd() {
 
         int end = start + pageSize - 1;
-        if (end - start > PageSizeDecorator.MAX_PER_PAGE) {
-            end = start + PageSizeDecorator.MAX_PER_PAGE;
+        if (end - start > MAX_PER_PAGE) {
+            end = start + MAX_PER_PAGE;
         }
 
         return end;
@@ -180,5 +194,72 @@ public class PageControl extends ListControl {
      */
     public void setSortDescending(boolean sortDescendingIn) {
         sortDescending = sortDescendingIn;
+    }
+
+    /**
+     * Returns the default page size that can be used
+     * by the app. This is basically used at the user creation time.
+     * When a new user is created, the default page size is set
+     * using the value returned by this method..
+     * @return the defaut page size.
+     */
+    public static int getDefaultPageSize() {
+        String sizeStr = ConfigDefaults.get().getDefaultPageSize();
+        int size = DEFAULT_PER_PAGE;
+        try {
+            if (!StringUtils.isBlank(sizeStr)) {
+                size = Integer.parseInt(sizeStr);
+            }
+        }
+        catch (NumberFormatException nfe) {
+            LOG.warn("Number format exception encountered while parsing {}={}",
+                    ConfigDefaults.DEFAULT_PAGE_SIZE, sizeStr);
+            size = DEFAULT_PER_PAGE;
+        }
+
+        int prev = 0;
+        for (int sz : getPageSizes()) {
+            if (sz == size) {
+                return size;
+            }
+            if (sz > size) {
+                if (prev == 0) {
+                    return sz;
+                }
+                return prev;
+            }
+            prev = sz;
+        }
+
+        return prev;
+    }
+
+    /**
+     * Returns the list of available page sizes.
+     * This is used mainly in the PageSize selection
+     * drop down when rendering lists...
+     * This is also used in the My Preferences page to check
+     * the list of page sizes..
+     * @return the list of page sizes..
+     */
+    public static List<Integer> getPageSizes() {
+        String pageSizes = ConfigDefaults.get().getPageSizes();
+        String [] sizes = pageSizes.split("\\,");
+        if (StringUtils.isBlank(pageSizes) || sizes == null || sizes.length == 0) {
+            return DEFAULT_PAGE_SIZES;
+        }
+
+        try {
+            List<Integer> ret = new LinkedList<>();
+            for (String size : sizes) {
+                ret.add(Integer.valueOf(size.trim()));
+            }
+            return ret;
+        }
+        catch (NumberFormatException nfe) {
+            LOG.warn("Number format exception encountered while parsing {}={}",
+                    ConfigDefaults.PAGE_SIZES, pageSizes);
+            return Collections.emptyList();
+        }
     }
 }

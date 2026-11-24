@@ -25,7 +25,7 @@ import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
@@ -129,7 +129,7 @@ public class CreateUserCommandTest extends BaseTestCase {
 
         User result = UserFactory.lookupById(uid);
         assertEquals(login, result.getLogin());
-        assertEquals(PageSizeDecorator.getDefaultPageSize(), result.getPageSize());
+        assertEquals(PageControl.getDefaultPageSize(), result.getPageSize());
     }
 
     @Test

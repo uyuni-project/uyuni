@@ -16,19 +16,13 @@
  */
 package com.redhat.rhn.frontend.taglibs.list.decorators;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.html.HtmlTag;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.jsp.JspException;
@@ -38,27 +32,12 @@ import jakarta.servlet.jsp.JspException;
  */
 public class PageSizeDecorator extends BaseListDecorator {
 
-    private static Logger logger = LogManager.getLogger(PageSizeDecorator.class);
-    private static final int DEFAULT_PAGE_SIZE = 25;
-    private static final List<Integer> PAGE_SIZE = new LinkedList<>();
-    /** static value for max results per page. */
-    public static final int MAX_PER_PAGE = 500;
     private static final String PAGE_SIZE_LABEL = "PAGE_SIZE_LABEL";
     private static final String PAGE_SELECTION_LABEL = "PAGE_SIZE_LABEL_SELECTED";
 
     private static final String SELECTED = "selected";
     private static final String ON_CHANGE = "document.getElementById('%s').value='%s';" +
                                                     "this.form.submit(); return true";
-
-    static {
-        PAGE_SIZE.add(5);
-        PAGE_SIZE.add(10);
-        PAGE_SIZE.add(25);
-        PAGE_SIZE.add(50);
-        PAGE_SIZE.add(100);
-        PAGE_SIZE.add(250);
-        PAGE_SIZE.add(500);
-    }
 
     private static  String makePageSizeLabel(String listName) {
         return listName + "_" + PAGE_SIZE_LABEL;
@@ -120,7 +99,7 @@ public class PageSizeDecorator extends BaseListDecorator {
             select.setAttribute("onChange", makeOnChangeScript());
             select.setAttribute("class", "display-number");
 
-            for (int size : PAGE_SIZE) {
+            for (int size : PageControl.DEFAULT_PAGE_SIZES) {
                 HtmlTag option = new HtmlTag("option");
                 option.setAttribute("value", String.valueOf(size));
                 if (currentList.getPageSize() == size) {
@@ -142,73 +121,6 @@ public class PageSizeDecorator extends BaseListDecorator {
                             .getRequest().getParameter(makeSelectionLabel(listName))));
             stringBuild.append(input.render());
             ListTagUtil.write(pageContext, stringBuild.toString());
-        }
-    }
-
-    /**
-     * Returns the default page size that can be used
-     * by the app. This is basically used at the user creation time.
-     * When a new user is created, the default page size is set
-     * using the value returned by this method..
-     * @return the defaut page size.
-     */
-    public static int getDefaultPageSize() {
-        String sizeStr = ConfigDefaults.get().getDefaultPageSize();
-        int size = DEFAULT_PAGE_SIZE;
-        try {
-            if (!StringUtils.isBlank(sizeStr)) {
-                size = Integer.parseInt(sizeStr);
-            }
-        }
-        catch (NumberFormatException nfe) {
-            logger.warn("Number format exception encountered while parsing {}={}",
-                    ConfigDefaults.DEFAULT_PAGE_SIZE, sizeStr);
-            size = DEFAULT_PAGE_SIZE;
-        }
-
-        int prev = 0;
-        for (int sz : getPageSizes()) {
-            if (sz == size) {
-                return size;
-            }
-            if (sz > size) {
-                if (prev == 0) {
-                    return sz;
-                }
-                return prev;
-            }
-            prev = sz;
-        }
-
-        return prev;
-    }
-
-    /**
-     * Returns the list of available page sizes.
-     * This is used mainly in the PageSize selection
-     * drop down when rendering lists...
-     * This is also used in the My Preferences page to check
-     * the list of page sizes..
-     * @return the list of page sizes..
-     */
-    public static List<Integer> getPageSizes() {
-        String pageSizes = ConfigDefaults.get().getPageSizes();
-        String [] sizes = pageSizes.split("\\,");
-        if (StringUtils.isBlank(pageSizes) || sizes == null || sizes.length == 0) {
-            return PAGE_SIZE;
-        }
-
-        try {
-            List<Integer> ret = new LinkedList<>();
-            for (String size : sizes) {
-                ret.add(Integer.valueOf(size.trim()));
-            }
-            return ret;
-        }
-        catch (NumberFormatException nfe) {
-            logger.warn("Number format exception encountered while parsing {}={}",
-                    ConfigDefaults.PAGE_SIZES, pageSizes);
-            return Collections.emptyList();
         }
     }
 }
