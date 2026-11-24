@@ -65,7 +65,8 @@ Feature: Bootstrap the monitoring server
     And I wait until event "Apply highstate scheduled by admin" is completed
     # Visit monitoring endpoints on the minion
     When I wait until "prometheus" service is active on "monitoring_server"
-    And I visit "Prometheus" endpoint of this "monitoring_server"
+    Then the Prometheus target "prometheus" should be up on "monitoring_server"
+    And the Prometheus target "blackbox" should be up on "monitoring_server"
 
   Scenario: Test Grafana formula on monitoring server
     Given I am on the Systems overview page of this "monitoring_server"

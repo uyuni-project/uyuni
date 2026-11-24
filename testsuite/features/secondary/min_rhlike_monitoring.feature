@@ -52,10 +52,19 @@ Feature: Monitor MLM environment with Prometheus on a Red Hat-like Salt minion
     And I wait until "apache" exporter service is active on "rhlike_minion"
     And I wait until "postgres" exporter service is active on "rhlike_minion"
 
-  Scenario: Visit monitoring endpoints on the Red Hat-like minion
-    When I visit "Prometheus node exporter" endpoint of this "rhlike_minion"
-    And I visit "Prometheus apache exporter" endpoint of this "rhlike_minion"
-    And I visit "Prometheus postgres exporter" endpoint of this "rhlike_minion"
+@skip_if_github_validation
+  Scenario: Verify Prometheus exporter packages are installed from client tools
+    Then the "golang-github-prometheus-node_exporter" package should be installed from the client tools channel on "rhlike_minion"
+
+@monitoring_server
+@skip_if_github_validation
+  Scenario: Verify Prometheus exporter targets and metrics on the Red Hat-like minion
+    Then the Prometheus target "node_exporter" on "rhlike_minion" should be up on "monitoring_server"
+    And the Prometheus target "apache_exporter" on "rhlike_minion" should be up on "monitoring_server"
+    And the Prometheus target "postgres_exporter" on "rhlike_minion" should be up on "monitoring_server"
+    And the Prometheus metric "node_boot_time_seconds" for "rhlike_minion" should have a positive value on "monitoring_server"
+    And the Prometheus metric "apache_up" for "rhlike_minion" should equal "1" on "monitoring_server"
+    And the Prometheus metric "pg_up" for "rhlike_minion" should equal "1" on "monitoring_server"
 
   Scenario: Cleanup: undo Prometheus exporter formulas on the Red Hat-like minion
     When I follow "Formulas" in the content area

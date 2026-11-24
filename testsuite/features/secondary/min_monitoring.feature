@@ -57,11 +57,16 @@ Feature: Monitor MLM environment with Prometheus on a SLE Salt minion
     And I wait until "apache" exporter service is active on "sle_minion"
     And I wait until "postgres" exporter service is active on "sle_minion"
 
-  Scenario: Visit monitoring endpoints on the minion
-    When I visit "Prometheus" endpoint of this "sle_minion"
-    And I visit "Prometheus node exporter" endpoint of this "sle_minion"
-    And I visit "Prometheus apache exporter" endpoint of this "sle_minion"
-    And I visit "Prometheus postgres exporter" endpoint of this "sle_minion"
+  Scenario: Verify Prometheus exporter packages are installed from client tools
+    Then the "golang-github-prometheus-node_exporter" package should be installed from the client tools channel on "sle_minion"
+
+  Scenario: Verify Prometheus exporter targets and metrics on the minion
+    Then the Prometheus target "node_exporter" on "sle_minion" should be up on "sle_minion"
+    And the Prometheus target "apache_exporter" on "sle_minion" should be up on "sle_minion"
+    And the Prometheus target "postgres_exporter" on "sle_minion" should be up on "sle_minion"
+    And the Prometheus metric "node_boot_time_seconds" for "sle_minion" should have a positive value on "sle_minion"
+    And the Prometheus metric "apache_up" for "sle_minion" should equal "1" on "sle_minion"
+    And the Prometheus metric "pg_up" for "sle_minion" should equal "1" on "sle_minion"
 
   Scenario: Cleanup: undo Prometheus and Prometheus exporter formulas
     When I follow "Formulas" in the content area

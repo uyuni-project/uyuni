@@ -52,10 +52,19 @@ Feature: Monitor MLM environment with Prometheus on a Debian-like Salt minion
      And I wait until "apache" exporter service is active on "deblike_minion"
      And I wait until "postgres" exporter service is active on "deblike_minion"
 
-  Scenario: Visit monitoring endpoints on the Debian-like minion
-    And I visit "Prometheus node exporter" endpoint of this "deblike_minion"
-    And I visit "Prometheus apache exporter" endpoint of this "deblike_minion"
-    And I visit "Prometheus postgres exporter" endpoint of this "deblike_minion"
+@skip_if_github_validation
+  Scenario: Verify Prometheus exporter packages are installed from client tools
+    Then the "prometheus-node-exporter" package should be installed from the client tools channel on "deblike_minion"
+
+@monitoring_server
+@skip_if_github_validation
+  Scenario: Verify Prometheus exporter targets and metrics on the Debian-like minion
+    Then the Prometheus target "node_exporter" on "deblike_minion" should be up on "monitoring_server"
+    And the Prometheus target "apache_exporter" on "deblike_minion" should be up on "monitoring_server"
+    And the Prometheus target "postgres_exporter" on "deblike_minion" should be up on "monitoring_server"
+    And the Prometheus metric "node_boot_time_seconds" for "deblike_minion" should have a positive value on "monitoring_server"
+    And the Prometheus metric "apache_up" for "deblike_minion" should equal "1" on "monitoring_server"
+    And the Prometheus metric "pg_up" for "deblike_minion" should equal "1" on "monitoring_server"
 
   Scenario: Cleanup: undo Prometheus exporter formulas on the Debian-like minion
     When I follow "Formulas" in the content area
