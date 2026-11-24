@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Nov 24 14:21:52 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3-0
+  * Introduce handling of license handling using reuse
+  * Remove unused mgr-push patches
+
+-------------------------------------------------------------------
 Thu Oct 08 01:02:34 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2-0
