@@ -70,6 +70,7 @@ public class PackageFactory extends HibernateFactory {
     public static final String SEARCH_ARCHITECTURE = "architecture";
     public static final String SEARCH_CHANNEL = "channel";
     public static final String SEARCH_RELEVANT = "relevant";
+    public static final String SEARCH_ALL = "all";
 
     private static final Map<String, Set<String>> PACKAGE_CAPABILITY_MAP;
     static {
