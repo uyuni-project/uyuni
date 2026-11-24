@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.kickstart.ScheduleKickstartWizardAction;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -226,9 +225,9 @@ public class SSMScheduleCommand {
 
 
 
-        com.setKernelOptions(ScheduleKickstartWizardAction.parseKernelOptions(
+        com.setKernelOptions(KickstartScheduleCommand.parseKernelOptions(
                          customKernelParams, kernelParamType, profileId, false, user));
-        com.setPostKernelOptions(ScheduleKickstartWizardAction.parseKernelOptions(
+        com.setPostKernelOptions(KickstartScheduleCommand.parseKernelOptions(
                 customPostKernelParams, postKernelParamType, profileId, true, user));
         com.setProfileType(profileType);
         com.setProfileId(packageProfileId);
