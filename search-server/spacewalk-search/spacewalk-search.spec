@@ -31,7 +31,7 @@
 %define oro (oro or jakarta-oro)
 
 Name:           spacewalk-search
-Version:        5.3.2
+Version:        5.3.3
 Release:        0
 Summary:        Spacewalk Full Text Search Server
 License:        GPL-2.0-only

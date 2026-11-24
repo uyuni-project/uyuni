@@ -1,3 +1,10 @@
+-------------------------------------------------------------------
+Tue Nov 24 14:24:21 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3-0
+  * Introduce handling of license handling using reuse
+  * Add missing java headers in search server
+  * Remove Apache-2.0 license from search server
 
 -------------------------------------------------------------------
 Thu Oct 08 00:53:38 CEST 2026 - marina.latini@suse.com
