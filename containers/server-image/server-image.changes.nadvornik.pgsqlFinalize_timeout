@@ -1,2 +1,0 @@
-- Wait for DB in "90-pgsqlFinalize.sh" (bsc#1287172)
-- Fix healthcheck on long DB reindexing

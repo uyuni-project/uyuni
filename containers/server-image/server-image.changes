@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Tue Nov 24 13:49:46 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.5
+  * Remove unused ISSv1 variable ISS_PARENT
+  * Automate CA certificate update on start.
+  * Do not set `pam_auth_service` in `rhn.conf` on container start
+  * Write the global key `default_mail_from` instead of
+    `web.default_mail_from` into `rhn.conf`
+  * Wait for DB in "90-pgsqlFinalize.sh" (bsc#1287172)
+  * Fix healthcheck on long DB reindexing
+  * Fix /tmp SELinux denials on Kubernetes with the Uyuni image
+
+-------------------------------------------------------------------
 Fri Oct 09 15:49:54 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.4
