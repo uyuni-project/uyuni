@@ -77,6 +77,7 @@ import jakarta.persistence.OneToOne;
 @DiscriminatorValue("505")
 public class ImageInspectAction extends Action {
     private static final Logger LOG = LogManager.getLogger(ImageInspectAction.class);
+    private static final Set<String> PXE_TYPES = Set.of("pxe", "kis");
 
     @OneToOne(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private ImageInspectActionDetails details;
@@ -296,7 +297,7 @@ public class ImageInspectAction extends Action {
                     packages.forEach(pkg -> createImagePackageFromSalt(pkg.getName(), Optional.of(pkg.getEpoch()),
                             Optional.of(pkg.getRelease()), pkg.getVersion(), Optional.of(instantNow),
                             Optional.of(pkg.getArch()), imageInfo));
-                    if ("pxe".equals(ret.getImage().getType())) {
+                    if (PXE_TYPES.contains(ret.getImage().getType())) {
                         SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(),
                                 ret.getBootImage(), imageInfo);
                         if (ret.getBootImage().isPresent() && ret.getBundles().isEmpty()) {

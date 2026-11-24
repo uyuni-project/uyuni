@@ -40,8 +40,6 @@ public class ImageFileTypeFactory extends HibernateFactory {
 
     private static final Logger LOG = LogManager.getLogger(ImageFileTypeFactory.class);
 
-    private static ImageFileTypeFactory instance = new ImageFileTypeFactory();
-
     private ImageFileTypeFactory() {
         super();
     }
