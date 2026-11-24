@@ -93,7 +93,7 @@ public class CSVDownloadController {
         pc.setStart(1);
         pc.setPageSize(0);
 
-        var parser = SystemsController.getFilterParser(pc);
+        var parser = SystemManager.getFilterParser(pc);
         DataResult<SystemOverview> all = SystemManager.systemListNew(user, parser, pc);
 
         List<String> columns = Arrays.asList("serverName", "id", "securityErrata", "bugErrata", "enhancementErrata",

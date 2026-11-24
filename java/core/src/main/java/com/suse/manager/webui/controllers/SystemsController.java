@@ -85,7 +85,6 @@ import org.apache.struts.action.ActionMessages;
 import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -95,8 +94,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -207,7 +204,7 @@ public class SystemsController {
         PageControlHelper pageHelper = new PageControlHelper(request, "server_name");
         PageControl pc = pageHelper.getPageControl();
 
-        var parser = getFilterParser(pc);
+        var parser = SystemManager.getFilterParser(pc);
 
         // When getting ids for the select all we just get all systems ID matching the filter, no paging
         if ("id".equals(pageHelper.getFunction())) {
@@ -231,84 +228,6 @@ public class SystemsController {
 
         return json(response, new PagedDataResultJson<>(systems, systems.getTotalSize(), ssmSet.getElementValues()),
                 new TypeToken<>() { });
-    }
-
-    /**
-     * Helper function to create the filter parser
-     * @param pc - the page control object
-     * @return - the filter parser
-     */
-    public static Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue>
-        getFilterParser(PageControl pc) {
-        Map<String, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue>> mapping = Map.of(
-                "outdated_packages", PagedSqlQueryBuilder::parseFilterAsNumber,
-                "extra_pkg_count", PagedSqlQueryBuilder::parseFilterAsNumber,
-                "config_files_with_differences", PagedSqlQueryBuilder::parseFilterAsNumber,
-                "group_count", PagedSqlQueryBuilder::parseFilterAsNumber,
-                "requires_reboot", PagedSqlQueryBuilder::parseFilterAsBoolean,
-                "total_errata_count",
-                pageControl -> {
-                    pageControl.ifPresent(c -> c.setFilterColumn("security_errata + bug_errata + enhancement_errata"));
-                    return PagedSqlQueryBuilder.parseFilterAsNumber(pageControl);
-                },
-                "system_kind",
-                pageControl -> {
-                    pageControl.ifPresent(
-                        control -> {
-                            List<String> values = List.of("proxy", "mgr_server", "virtual_host",
-                                                          "virtual_guest", "physical");
-                            Matcher matcher = Pattern.compile("^([!=]*) *([a-z_]+)$").matcher(control.getFilterData());
-                            if (matcher.matches()) {
-                                var value = matcher.group(2);
-                                var operator = matcher.group(1);
-                                if (values.contains(value)) {
-                                    if ("physical".equals(value)) {
-                                        control.setFilterColumn("virtual_guest");
-                                        control.setFilterData(operator + "false");
-                                    }
-                                    else {
-                                        control.setFilterColumn(value);
-                                        control.setFilterData(operator + "true");
-                                    }
-                                }
-                                else {
-                                    // Don't filter if the value is invalid
-                                    control.setFilter(false);
-                                }
-                            }
-                            else {
-                                // Don't filter if the value is invalid
-                                control.setFilter(false);
-                            }
-                        });
-                    return PagedSqlQueryBuilder.parseFilterAsBoolean(pageControl);
-                },
-            "created_days",
-                pageControl -> {
-                    pageControl.ifPresent(control -> {
-                        control.setFilterColumn("created");
-                        Matcher matcher = Pattern.compile("^([<>!=]*) *(\\d+)$").matcher(control.getFilterData());
-                        if (matcher.matches()) {
-                            long value = Long.parseLong(matcher.group(2));
-                            control.setFilterData(matcher.group(1) +
-                                    DateTimeFormatter.ISO_LOCAL_DATE.format(
-                                            LocalDateTime.now().minusDays(value).toLocalDate()));
-                        }
-                        else {
-                            control.setFilter(false);
-                        }
-                    });
-                    return PagedSqlQueryBuilder.parseFilterAsDate(pageControl);
-                }
-        );
-
-        Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser =
-                PagedSqlQueryBuilder::parseFilterAsText;
-
-        if (pc.getFilterColumn() != null && mapping.containsKey(pc.getFilterColumn())) {
-            parser = mapping.get(pc.getFilterColumn());
-        }
-        return parser;
     }
 
     /**

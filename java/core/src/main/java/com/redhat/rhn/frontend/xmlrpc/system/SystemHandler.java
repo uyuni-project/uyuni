@@ -204,7 +204,6 @@ import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.model.products.migration.MigrationDataFactory;
-import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
@@ -7110,7 +7109,7 @@ public class SystemHandler extends BaseHandler {
         }
         pc.setSortDescending(sortDescending);
         DataResult<SystemOverview> dr = SystemManager.systemListNew(
-                loggedInUser, SystemsController.getFilterParser(pc), pc);
+                loggedInUser, SystemManager.getFilterParser(pc), pc);
         dr.elaborate();
         Map<String, Object> result = new HashMap<>();
         result.put("total", dr.getTotalSize());
