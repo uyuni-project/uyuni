@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Tue Nov 24 13:47:17 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3-0
+  * Pass the diskcheck environment variables to tomcat for the login
+    page disk space warning
+  * Do not report an error when the CA certificate is already in
+    place in the Salt file root (bsc#1285080)
+  * Write salt-api TLS certificate to /etc/rhn/ca.
+  * Store configuration values moved into the database only when they
+    differ from the default value and commit them before removing
+    them from `rhn.conf`
+  * Hash user passwords which are still stored in plain text on
+    container start
+  * Rename `server.satellite.*` keys in `rhn.conf` which moved to
+    `rhn_server.conf` to `server.*`
+  * Read the minimal backend schema version from `rhn_server.conf`
+  * Rename `web.default_mail_from` to `default_mail_from` in
+    `rhn.conf`
+  * Move the HTTP proxy settings from `rhn.conf` into the
+    database
+  * Move configuration values from `rhn.conf` into the database after
+    the schema upgrade, so newly moved keys are migrated on the first
+    start after an upgrade
+  * Move the reposync settings from `rhn.conf` into the database
+  * Move the user login and e-mail length limits from `rhn.conf`
+    into the database
+
+-------------------------------------------------------------------
 Thu Oct 08 01:03:23 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2-0

@@ -1,2 +1,0 @@
-- Rename `server.satellite.*` keys in `rhn.conf` which moved to
-  `rhn_server.conf` to `server.*`

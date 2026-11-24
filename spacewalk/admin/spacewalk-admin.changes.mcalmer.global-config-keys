@@ -1,2 +1,0 @@
-- Rename `web.default_mail_from` to `default_mail_from` in
-  `rhn.conf`
