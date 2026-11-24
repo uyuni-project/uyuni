@@ -102,7 +102,6 @@ import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.kickstart.KickstartHelper;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
@@ -3225,8 +3224,8 @@ public class SystemHandler extends BaseHandler {
                     "No Kickstart Profile found with label: " + profileName);
         }
 
-        KickstartHelper helper = new KickstartHelper(request);
-        String host = helper.getKickstartHost();
+        String host = KickstartScheduleCommand.getKickstartHost(
+                request.getHeader(KickstartScheduleCommand.XRHNPROXYAUTH));
 
         KickstartScheduleCommand cmd = new KickstartScheduleCommand(
                 Long.valueOf(sid),
