@@ -12292,13 +12292,13 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         </context-group>
         <target state="translated">Hodnota {0} musí byť true alebo false.</target>
       </trans-unit>
-    <trans-unit id="kickstart.tree.invalidinstalltype" xml:space="preserve">
+      <trans-unit id="kickstart.tree.invalidinstalltype" xml:space="preserve">
         <source>The installer type is not valid: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Typ inštalátora nie je platný: {0}</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

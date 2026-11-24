@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-20 13:26+0100\n"
-"PO-Revision-Date: 2026-11-18 12:13+0000\n"
-"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
+"PO-Revision-Date: 2026-11-24 07:08+0000\n"
+"Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/spacecmd/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -4053,7 +4053,7 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:46
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4093,14 +4093,14 @@ msgstr ""
 "            可以提供多次。\n"
 "\n"
 "示例：\n"
-"  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key"
+"  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 
 #: ../src/spacecmd/proxy.py:114
 msgid "proxy_container_config_nossl: create a proxy system and return its configuration file without SSL certificate"
 msgstr "proxy_container_config_nossl：创建代理系统并返回不含 SSL 证书的配置文件"
 
 #: ../src/spacecmd/proxy.py:119
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4130,14 +4130,14 @@ msgstr ""
 "  -p、--ssh-port 代理要侦听的 SSH 端口。默认端口为 8022\n"
 "\n"
 "示例：\n"
-"  proxy_container_config_nossl -o config.zip proxy.lab server.lab 51200 proxy@acme.org"
+"  proxy_container_config_nossl -o config.zip proxy.lab server.lab 51200 proxy@acme.org\n"
 
 #: ../src/spacecmd/proxy.py:169
 msgid "proxy_container_config_generate_cert: create a proxy system and return its configuration file"
 msgstr "proxy_container_config_generate_cert：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:174
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4191,7 +4191,7 @@ msgstr ""
 "  --ssl-email 要在证书中设置的电子邮件地址。如果省略，将使用 mgr-ssl-tool 提供的默认值。\n"
 "\n"
 "示例：\n"
-"  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file"
+"  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file\n"
 
 #: ../src/spacecmd/repo.py:51
 msgid "repo_list: List all available user repos"
