@@ -16,9 +16,9 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.common.util.SelectableAdapter;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.frontend.struts.SelectableAdapter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

@@ -16,7 +16,7 @@
  */
 package com.redhat.rhn.manager.audit;
 
-import com.redhat.rhn.frontend.struts.SelectableAdapter;
+import com.redhat.rhn.common.util.SelectableAdapter;
 
 import java.util.Set;
 

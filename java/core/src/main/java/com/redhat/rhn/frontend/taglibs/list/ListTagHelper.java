@@ -16,8 +16,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.list;
 
+import com.redhat.rhn.common.util.Selectable;
 import com.redhat.rhn.domain.Identifiable;
-import com.redhat.rhn.frontend.struts.Selectable;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 

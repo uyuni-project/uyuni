@@ -35,7 +35,7 @@ public interface Listable<T> {
      * Returns the data to display on the web page.
      *
      * @param context the request context; will not be <code>null</code>
-     * @return a List of {@link com.redhat.rhn.frontend.struts.Selectable} or
+     * @return a List of {@link com.redhat.rhn.common.util.Selectable} or
      *         {@link com.redhat.rhn.domain.Identifiable} objects.
      */
     List<T> getResult(RequestContext context);

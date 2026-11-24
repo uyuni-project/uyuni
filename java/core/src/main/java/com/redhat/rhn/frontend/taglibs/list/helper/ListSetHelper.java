@@ -17,10 +17,10 @@
 
 package com.redhat.rhn.frontend.taglibs.list.helper;
 
+import com.redhat.rhn.common.util.Selectable;
 import com.redhat.rhn.frontend.dto.BaseDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.frontend.struts.Selectable;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 
 import java.util.Collection;

@@ -16,7 +16,7 @@
  */
 package com.redhat.rhn.domain.channel;
 
-import com.redhat.rhn.frontend.struts.Selectable;
+import com.redhat.rhn.common.util.Selectable;
 
 import java.util.ArrayList;
 import java.util.List;

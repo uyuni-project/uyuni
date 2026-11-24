@@ -16,9 +16,9 @@
  */
 package com.redhat.rhn.manager.system;
 
+import com.redhat.rhn.common.util.Expandable;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.frontend.dto.NetworkDto;
-import com.redhat.rhn.frontend.struts.Expandable;
 
 import java.util.ArrayList;
 import java.util.List;
