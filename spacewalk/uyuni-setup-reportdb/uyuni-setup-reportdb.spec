@@ -23,7 +23,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           uyuni-setup-reportdb
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Tools to setup PostgreSQL database as reporting DB for %{productprettyname}
 License:        GPL-2.0-only
