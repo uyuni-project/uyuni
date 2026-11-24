@@ -28,7 +28,6 @@ import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigInfo;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
-import com.redhat.rhn.frontend.action.configuration.ConfigFileForm;
 import com.redhat.rhn.manager.configuration.ConfigurationValidation;
 
 import org.apache.commons.lang3.StringUtils;
@@ -59,6 +58,16 @@ public abstract class ConfigFileData {
 
     public static final String DEFAULT_CONFIG_DELIM_START = "{|";
     public static final String DEFAULT_CONFIG_DELIM_END = "|}";
+    // Field names in the validation XSD, shared with ConfigFileForm
+    public static final String REV_SYMLINK_TARGET_PATH = "targetPath";
+    public static final String REV_UID = "cffUid";
+    public static final String REV_GID = "cffGid";
+    public static final String REV_PERMS = "cffPermissions";
+    public static final String REV_SELINUX_CTX = "cffSELinuxCtx";
+    public static final String REV_MACROSTART = "cffMacroStart";
+    public static final String REV_MACROEND = "cffMacroEnd";
+    public static final String REV_BINARY = "binary";
+
     public static final long MAX_FILE_SIZE = Config.get().
                                     getInt(ConfigDefaults.CONFIG_REVISION_MAX_SIZE);
     private static final String DEFAULT_MACRO_START = Config.get().
@@ -366,14 +375,14 @@ public abstract class ConfigFileData {
      */
     protected Map<String, Object> makeValidationMap() {
         Map<String, Object> map = new HashMap<>();
-        map.put(ConfigFileForm.REV_UID, getOwner());
-        map.put(ConfigFileForm.REV_GID, getGroup());
-        map.put(ConfigFileForm.REV_PERMS, getPermissions());
-        map.put(ConfigFileForm.REV_SELINUX_CTX, getSelinuxCtx());
-        map.put(ConfigFileForm.REV_SYMLINK_TARGET_PATH, getSelinuxCtx());
-        map.put(ConfigFileForm.REV_MACROSTART, getMacroStart());
-        map.put(ConfigFileForm.REV_MACROEND, getMacroEnd());
-        map.put(ConfigFileForm.REV_BINARY, isBinary());
+        map.put(REV_UID, getOwner());
+        map.put(REV_GID, getGroup());
+        map.put(REV_PERMS, getPermissions());
+        map.put(REV_SELINUX_CTX, getSelinuxCtx());
+        map.put(REV_SYMLINK_TARGET_PATH, getSelinuxCtx());
+        map.put(REV_MACROSTART, getMacroStart());
+        map.put(REV_MACROEND, getMacroEnd());
+        map.put(REV_BINARY, isBinary());
         return map;
     }
 
