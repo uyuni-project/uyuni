@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Nov 24 14:24:56 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3-0
+  * Read the configuration of the `server` component instead of
+    `server.satellite`
+  * Add support for setting action description via webUI and API
+
+-------------------------------------------------------------------
 Thu Oct 08 00:54:21 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2-0
