@@ -281,7 +281,7 @@ public class SystemsControllerTest extends BaseControllerTestCase {
     @MethodSource("provideValuesForFilterParser")
     public void testFilterParserIsProxy(String value, String expectedFilter, String expectedValue) {
         PageControl pc = new PageControl(0, 25, "name", true, "system_kind", value);
-        var parser = SystemsController.getFilterParser(pc);
+        var parser = SystemManager.getFilterParser(pc);
         var actualFilter = parser.apply(Optional.of(pc));
 
         assertEquals(String.format(" %s CAST(:filter_value AS BOOLEAN) ", expectedFilter), actualFilter.getFilter());
