@@ -210,6 +210,26 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
                 </tr>
               }
               {this.getExecutionText(details)}
+              {details.lastExecutionStatus && (
+                <tr>
+                  <td>{t("Last execution status")}:</td>
+                  <td>
+                    {details.lastExecutionStatus === "FINISHED" ? (
+                      <span className="text-success">
+                        <i className="fa fa-check-circle" /> {t("Success")}
+                        {details.lastExecutionTime ? ` (${details.lastExecutionTime} ${window.timezone})` : ""}
+                      </span>
+                    ) : details.lastExecutionStatus === "FAILED" ? (
+                      <span className="text-danger">
+                        <i className="fa fa-times-circle" /> {t("Failed")}
+                        {details.lastExecutionTime ? ` (${details.lastExecutionTime} ${window.timezone})` : ""}
+                      </span>
+                    ) : (
+                      <span>{details.lastExecutionStatus}</span>
+                    )}
+                  </td>
+                </tr>
+              )}
               <tr>
                 <td>{t("Next execution")}:</td>
                 <td>
@@ -269,6 +289,16 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
             ? `v${details.targetEnvironmentVersion}`
             : t("not built"),
       });
+      if (details.lastExecutionStatus === "FAILED") {
+        rows.push({
+          label: t("Build Status") + ":",
+          value: (
+            <span className="label label-danger">
+              <i className="fa fa-times" /> {t("Last build failed")}
+            </span>
+          ),
+        });
+      }
     } else {
       rows.push({
         label: t("Source Environment") + ":",
@@ -294,7 +324,13 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
       });
 
       let statusContent: any;
-      if (
+      if (details.lastExecutionStatus === "FAILED") {
+        statusContent = (
+          <span className="label label-danger">
+            <i className="fa fa-times" /> {t("Last promotion failed")}
+          </span>
+        );
+      } else if (
         typeof details.sourceEnvironmentVersion === "number" &&
         typeof details.targetEnvironmentVersion === "number"
       ) {
@@ -468,6 +504,19 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
         button={buttons}
       >
         {this.state.messages ? <Messages items={this.state.messages} /> : null}
+        {this.state.details?.lastExecutionStatus === "FAILED" && (
+          <div className="alert alert-danger" role="alert">
+            <i className="fa fa-exclamation-triangle" />{" "}
+            {t(
+              "The last execution of this recurring schedule failed{time}. Please check Taskomatic logs for details.",
+              {
+                time: this.state.details.lastExecutionTime
+                  ? ` on ${this.state.details.lastExecutionTime} ${window.timezone}`
+                  : "",
+              }
+            )}
+          </div>
+        )}
         {this.showScheduleDetails(this.props.data)}
         {isClm ? this.showClmDetails() : null}
         {this.props.data.actionType === RecurringActionType.CLM_BUILD ? this.showClmBuildHistory() : null}

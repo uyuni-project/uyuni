@@ -88,6 +88,7 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.CronExpression;
 
 import java.text.ParseException;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -338,6 +339,7 @@ public class RecurringActionController {
         dto.setType(picker.getStatus());
         dto.setCronTimes(cronTimes);
         dto.setActive(action.isActive());
+        populateTaskoRunStatus(dto, action);
         try {
             CronExpression cron = new CronExpression(action.getCronExpr());
             dto.setNextExecution(cron.getNextValidTimeAfter(new Date()));
@@ -437,6 +439,38 @@ public class RecurringActionController {
             }
         }
         return dto;
+    }
+
+    private static void populateTaskoRunStatus(RecurringActionDetailsDto dto, RecurringAction action) {
+        try {
+            String jobLabel = "recurring-action-" + action.getId();
+            Object[] runData = HibernateFactory.getSession()
+                    .createNativeQuery(
+                            "SELECT r.status, r.start_time " +
+                            "FROM rhnTaskoRun r " +
+                            "JOIN rhnTaskoSchedule s ON r.schedule_id = s.id " +
+                            "WHERE s.job_label = :jobLabel " +
+                            "ORDER BY r.start_time DESC " +
+                            "LIMIT 1",
+                            Object[].class)
+                    .setParameter("jobLabel", jobLabel)
+                    .uniqueResultOptional()
+                    .orElse(null);
+            if (runData != null) {
+                if (runData[0] != null) {
+                    dto.setLastExecutionStatus((String) runData[0]);
+                }
+                if (runData[1] instanceof Instant instant) {
+                    dto.setLastExecutionTime(Date.from(instant));
+                }
+                else if (runData[1] instanceof Date date) {
+                    dto.setLastExecutionTime(date);
+                }
+            }
+        }
+        catch (Exception e) {
+            LOG.warn("Unable to query TaskoRun status for recurring action {}", action.getId(), e);
+        }
     }
 
     /**

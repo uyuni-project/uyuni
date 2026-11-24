@@ -83,6 +83,12 @@ public class RecurringActionDetailsDto {
     /** Next scheduled execution timestamp of the trigger */
     private Date nextExecution;
 
+    /** Status of the last execution (e.g. FINISHED, FAILED, RUNNING, or null if never run) */
+    private String lastExecutionStatus;
+
+    /** Timestamp of the last execution */
+    private Date lastExecutionTime;
+
     /** Current deployed version in source environment */
     private Long sourceEnvironmentVersion;
 
@@ -464,5 +470,33 @@ public class RecurringActionDetailsDto {
      */
     public void setBuildHistory(List<ClmBuildHistoryDto> buildHistoryIn) {
         this.buildHistory = buildHistoryIn;
+    }
+
+    /**
+     * @return the last execution status
+     */
+    public String getLastExecutionStatus() {
+        return lastExecutionStatus;
+    }
+
+    /**
+     * @param lastExecutionStatusIn the last execution status
+     */
+    public void setLastExecutionStatus(String lastExecutionStatusIn) {
+        this.lastExecutionStatus = lastExecutionStatusIn;
+    }
+
+    /**
+     * @return the last execution timestamp
+     */
+    public Date getLastExecutionTime() {
+        return lastExecutionTime;
+    }
+
+    /**
+     * @param lastExecutionTimeIn the last execution timestamp
+     */
+    public void setLastExecutionTime(Date lastExecutionTimeIn) {
+        this.lastExecutionTime = lastExecutionTimeIn;
     }
 }

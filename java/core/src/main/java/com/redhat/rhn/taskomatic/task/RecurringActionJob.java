@@ -145,6 +145,8 @@ public class RecurringActionJob extends RhnJavaJob {
             }
             else {
                 log.error("Error executing recurring CLM build for project {}", project.getLabel(), e);
+                throw new RuntimeException("Error executing recurring CLM build for project " +
+                        project.getLabel(), e);
             }
         }
     }
@@ -174,6 +176,8 @@ public class RecurringActionJob extends RhnJavaJob {
             else {
                 log.error("Error executing recurring CLM promote for project {} and env {}",
                         project.getLabel(), env.getLabel(), e);
+                throw new RuntimeException("Error executing recurring CLM promote for project " +
+                        project.getLabel() + " and env " + env.getLabel(), e);
             }
         }
     }
