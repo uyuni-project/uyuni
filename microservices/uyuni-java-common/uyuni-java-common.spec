@@ -24,7 +24,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           uyuni-java-common
-Version:        5.3.2
+Version:        5.3.3
 Release:        0
 Summary:        Common Java library for %{productprettyname} Java components
 License:        GPL-2.0-only
