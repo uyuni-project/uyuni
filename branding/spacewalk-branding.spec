@@ -29,7 +29,7 @@
 %global tomcat_path %{wwwroot}/tomcat
 %global wwwdocroot %{wwwroot}/htdocs
 Name:           spacewalk-branding
-Version:        5.3.2
+Version:        5.3.3
 Release:        0
 Summary:        %{productprettyname} branding data
 License:        GPL-2.0-only AND OFL-1.1
