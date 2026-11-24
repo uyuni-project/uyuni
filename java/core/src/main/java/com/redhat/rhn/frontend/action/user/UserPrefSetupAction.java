@@ -23,10 +23,10 @@ import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.PaneFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.LabelValueEnabledBean;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.commons.lang3.BooleanUtils;
@@ -125,7 +125,7 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
      */
     private List<Map<String, String>> getPageSizes() {
         List<Map<String, String>> pages = new ArrayList<>();
-        for (int i : PageSizeDecorator.getPageSizes()) {
+        for (int i : PageControl.getPageSizes()) {
             String istr = String.valueOf(i);
             pages.add(createDisplayMap(istr, istr));
         }
