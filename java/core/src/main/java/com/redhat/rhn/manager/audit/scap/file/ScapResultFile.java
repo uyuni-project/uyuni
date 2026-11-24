@@ -21,8 +21,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 
-import org.apache.struts.actions.DownloadAction.StreamInfo;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +30,7 @@ import java.nio.file.Paths;
 /**
  * ScapResultFile
  */
-public class ScapResultFile implements StreamInfo {
+public class ScapResultFile {
     private final XccdfTestResult testResult;
     private final String filename;
 
@@ -80,9 +78,9 @@ public class ScapResultFile implements StreamInfo {
     }
 
     /**
-     * {@inheritDoc}
+     * Content type to serve this file with
+     * @return the content type
      */
-    @Override
     public String getContentType() {
         if (filename.endsWith(".xml")) {
             return "text/xml";
@@ -96,9 +94,9 @@ public class ScapResultFile implements StreamInfo {
     }
 
     /**
-     * {@inheritDoc}
+     * Open this file for reading
+     * @return the stream of the file contents
      */
-    @Override
     public InputStream getInputStream() {
         try {
             return new FileInputStream(getAbsolutePath());
