@@ -684,10 +684,21 @@ When(/^I shutdown the spacewalk service$/) do
   get_target('server').run('spacewalk-service stop')
 end
 
-When(/^I execute spacewalk-debug on the server$/) do
-  get_target('server').run('spacewalk-debug')
-  success = file_extract(get_target('server'), '/tmp/spacewalk-debug.tar.bz2', 'spacewalk-debug.tar.bz2')
-  raise ScriptError, 'Download debug file failed' unless success
+When(/^I execute spacewalk-debug on the server(?: with target file "([^"]*)")?$/) do |dest_file|
+  dest_file ||= 'spacewalk-debug.tar.bz2'
+  server = get_target('server')
+  begin
+    server.run('spacewalk-debug')
+    server.run('tar -tf /tmp/spacewalk-debug.tar.bz2 > /dev/null')
+    success = file_extract(server, '/tmp/spacewalk-debug.tar.bz2', dest_file)
+    raise ScriptError, 'Download debug file failed' unless success
+  ensure
+    server.run('rm -f /tmp/spacewalk-debug.tar.bz2')
+  end
+end
+
+Then(/^the archive "([^"]*)" should be valid on the controller$/) do |archive|
+  raise ScriptError, "Local file #{archive} on the controller is invalid or missing" unless system("tar -tf #{archive} > /dev/null 2>&1")
 end
 
 When(/^I extract the log files from all our active nodes$/) do

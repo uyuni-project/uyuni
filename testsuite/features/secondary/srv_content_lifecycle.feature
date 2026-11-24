@@ -622,6 +622,10 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
     And I click on "Save" in "Create a new filter" modal
     Then I should see a "Filter created successfully" text
 
+  Scenario: Call spacewalk-debug after CLM project operations
+    When I execute spacewalk-debug on the server with target file "spacewalk-debug-clm.tar.bz2"
+    Then the archive "spacewalk-debug-clm.tar.bz2" should be valid on the controller
+
   Scenario: Cleanup: remove the Content Lifecycle Management project
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
