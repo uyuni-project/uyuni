@@ -14,13 +14,15 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.common.errors;
+package com.redhat.rhn.frontend.struts.errors;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -34,7 +36,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * PermissionExceptionHandler
  */
-public class NoSuchKickstartExceptionHandler extends ExceptionHandler {
+public class PermissionExceptionHandler extends ExceptionHandler {
 
     /**
      * Custom Handler for HibernateLookupExceptions
@@ -45,9 +47,10 @@ public class NoSuchKickstartExceptionHandler extends ExceptionHandler {
                                  ActionMapping mapping, ActionForm form,
                                  HttpServletRequest request, HttpServletResponse response)
                                  throws ServletException {
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         request.setAttribute("error", ex);
-
+        Logger log = LogManager.getLogger(PermissionExceptionHandler.class);
+        log.error("Permission Error", ex);
 
         TraceBackEvent evt = new TraceBackEvent();
         RequestContext requestContext = new RequestContext(request);
