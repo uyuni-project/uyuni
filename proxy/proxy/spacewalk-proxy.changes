@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue Nov 24 13:44:25 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3-0
+  * Fix proxy 403 errors under mass patching (bsc#1277719)
+  * Move mgr-proxy-ssh-* scripts to the proxy ssh container
+    (bsc#1274066)
+  * Remove the unused `X-Replace-Content-Throttle` header code
+  * Remove the obsolete `getPackageHeader` call from the list of
+    locally served functions
+
+-------------------------------------------------------------------
 Thu Oct 08 00:55:11 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2-0
