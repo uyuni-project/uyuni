@@ -31,6 +31,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DownloadAction;
 
+import java.io.InputStream;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -60,7 +62,17 @@ public class ScapDownloadAction extends DownloadAction {
         if (!file.getHTML()) {
             response.setHeader("Content-Disposition", "attachment; filename=" + sanitizedFilename);
         }
-        return file;
+        return new StreamInfo() {
+            @Override
+            public String getContentType() {
+                return file.getContentType();
+            }
+
+            @Override
+            public InputStream getInputStream() {
+                return file.getInputStream();
+            }
+        };
     }
 
 }
