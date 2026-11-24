@@ -20,6 +20,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.type.YesNoConverter;
 
+import java.nio.file.Path;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -31,6 +33,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * ImageFile
@@ -94,6 +97,14 @@ public class ImageFile extends BaseDomainHelper {
      */
     public void setFile(String fileIn) {
         this.file = fileIn;
+    }
+
+    /**
+     * @return the file name of the stored file, without the directory path
+     */
+    @Transient
+    public String getFileName() {
+        return Path.of(file).getFileName().toString();
     }
 
     /**

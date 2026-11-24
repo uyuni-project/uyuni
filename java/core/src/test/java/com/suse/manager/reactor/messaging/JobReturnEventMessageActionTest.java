@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -94,6 +95,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.utils.RhelUtilsTest;
+import com.suse.manager.saltboot.SaltbootException;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
@@ -2172,6 +2174,109 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     // no re-tagging for failed validation
                     assertTrue(info.getImageFiles().stream().allMatch(f -> "image".equals(f.getType())));
                 });
+    }
+
+    @Test
+    public void testKiwiImageInspectSelectsInspectedImageFile() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
+        }});
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+        doTestKiwiImageInspect(server, profile, "image.inspect.kiwi_compressed.json", info -> {
+            info.setChecksum(null);
+            // another image artefact with a different checksum was collected as well: the uncompressed
+            // POS_Image_JeOS6.x86_64-6.0.0.gz next to the inspected POS_Image_JeOS6.x86_64-6.0.0
+            String decoy = "POS_Image_JeOS6-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0.gz";
+            ImageTestUtils.createImageFile(info, decoy, "image");
+            info.getImageFiles().stream()
+                    .filter(f -> f.getFile().equals(decoy))
+                    .forEach(f -> f.setChecksum(ChecksumFactory.safeCreate(
+                            DigestUtils.sha256Hex(f.getFileName()), "sha256")));
+        }, info -> {
+            Pillar pillar = user.getOrg().getPillars().stream()
+                .filter(item -> ("Image" + info.getId()).equals(item.getCategory()))
+                .findFirst()
+                .get();
+
+            Map<String, Object> map = pillar.getPillar();
+
+            Map<String, Map<String, Map<String, Object>>> images =
+                        (Map<String, Map<String, Map<String, Object>>>) map.get("images");
+            Map<String, Object> details = images.get("POS_Image_JeOS6").get("6.0.0-1");
+            // the pillar must describe the inspected image file, not the other collected artefact
+            assertEquals("https://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0",
+                        details.get("url"));
+            Map<String, Object> sync = (Map<String, Object>) details.get("sync");
+            assertTrue(((String) sync.get("url"))
+                        .endsWith("/POS_Image_JeOS6-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0"));
+            assertEquals(
+                    info.getImageFiles().stream()
+                            .filter(f -> f.getFileName().equals("POS_Image_JeOS6.x86_64-6.0.0"))
+                            .findFirst().get().getChecksum().getChecksum(),
+                    info.getChecksum().getChecksum());
+        });
+    }
+
+    @Test
+    public void testKiwiImageInspectWithoutCollectedImageFile() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
+        }});
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+        // schedule the build and collect only the boot image artefacts, leaving out the inspected image
+        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), null, profile, new Date(), user);
+        ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
+        buildAction = TestUtils.reload(buildAction);
+        ImageInfo info = ImageInfoFactory.lookupByBuildAction(buildAction).orElseThrow();
+        info.setName("POS_Image_JeOS6");
+        info.setVersion("6.0.0");
+        info.setRevisionNumber(1);
+        for (String name : List.of(
+                "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default",
+                "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz")) {
+            ImageTestUtils.createImageFile(info, "POS_Image_JeOS6-6.0.0-1/" + name, "image");
+        }
+        info.getImageFiles().forEach(f -> f.setChecksum(ChecksumFactory.safeCreate(
+                DigestUtils.sha256Hex(f.getFileName()), "sha256")));
+
+        long inspectId = ImageInfoFactory.scheduleInspect(info, new Date(), user);
+        final ImageInspectAction inspectAction = (ImageInspectAction) TestUtils.reload(
+                ActionFactory.lookupById(inspectId));
+
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("image.inspect.kiwi_compressed.json", inspectId));
+        JsonElement jsonResult = event.get().getData().getResult(JsonElement.class);
+
+        // no pillar can be generated without the inspected image file
+        assertThrows(SaltbootException.class, () -> inspectAction.handleUpdateServerAction(
+                inspectAction.getServerActions().iterator().next(), jsonResult, null));
+        assertNull(info.getPillar());
     }
 
     private static org.jmock.api.Action deleteCollectedFile() {

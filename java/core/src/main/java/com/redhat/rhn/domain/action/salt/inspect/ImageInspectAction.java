@@ -17,6 +17,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImagePackage;
@@ -52,7 +53,6 @@ import com.google.gson.JsonElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -298,8 +298,7 @@ public class ImageInspectAction extends Action {
                             Optional.of(pkg.getRelease()), pkg.getVersion(), Optional.of(instantNow),
                             Optional.of(pkg.getArch()), imageInfo));
                     if (PXE_TYPES.contains(ret.getImage().getType())) {
-                        SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(),
-                                ret.getBootImage(), imageInfo);
+                        SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret, imageInfo);
                         if (ret.getBootImage().isPresent() && ret.getBundles().isEmpty()) {
                             SaltbootUtils.createSaltbootDistro(imageInfo);
                         }
@@ -323,7 +322,7 @@ public class ImageInspectAction extends Action {
     private static Set<String> collectedFileNames(ImageInfo imageInfo) {
         return imageInfo.getImageFiles().stream()
                 .filter(file -> !file.isExternal())
-                .map(file -> Path.of(file.getFile()).getFileName().toString())
+                .map(ImageFile::getFileName)
                 .collect(Collectors.toSet());
     }
 
@@ -334,11 +333,10 @@ public class ImageInspectAction extends Action {
         return imageInfo.getImageFiles().stream()
                 .filter(file -> !file.isExternal())
                 .filter(file -> {
-                    ImageChecksum.Checksum reported =
-                            result.getFiles().get(Path.of(file.getFile()).getFileName().toString());
+                    ImageChecksum.Checksum reported = result.getFiles().get(file.getFileName());
                     return reported == null || !reported.getChecksum().equals(file.getChecksum().getChecksum());
                 })
-                .map(file -> Path.of(file.getFile()).getFileName().toString())
+                .map(ImageFile::getFileName)
                 .sorted()
                 .toList();
     }
@@ -359,16 +357,24 @@ public class ImageInspectAction extends Action {
         imageInfo.getImageFiles().stream()
                 .filter(file -> !file.isExternal())
                 .forEach(file -> {
-                    String type = typesByName.get(Path.of(file.getFile()).getFileName().toString());
+                    String type = typesByName.get(file.getFileName());
                     if (type != null) {
                         file.setType(type);
                     }
                 });
 
         if (imageInfo.getChecksum() == null) {
+            // the image level checksum belongs to the inspected artefact: prefer the inspected bundle
+            // files when there are bundles, otherwise the inspected image file itself
+            List<String> bundleNames = result.getBundles().stream()
+                    .map(OSImageInspectSlsResult.Bundle::getFilename)
+                    .toList();
             imageInfo.getImageFiles().stream()
-                    .filter(file -> "bundle".equals(file.getType()) || "image".equals(file.getType()))
+                    .filter(file -> bundleNames.contains(file.getFileName()))
                     .findFirst()
+                    .or(() -> imageInfo.getImageFiles().stream()
+                            .filter(file -> file.getFileName().equals(result.getImage().getFilename()))
+                            .findFirst())
                     .ifPresent(file -> imageInfo.setChecksum(file.getChecksum()));
         }
     }
