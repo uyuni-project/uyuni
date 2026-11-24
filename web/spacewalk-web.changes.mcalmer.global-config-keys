@@ -1,2 +1,0 @@
-- Remove `web.mount_point` and `web.default_mail_from` defaults in
-  favor of the global keys in the default `rhn.conf`

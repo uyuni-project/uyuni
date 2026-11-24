@@ -1,2 +1,0 @@
-- Remove `web.traceback_mail` from `rhn_web.conf`. The global key
-  `traceback_mail` is used instead

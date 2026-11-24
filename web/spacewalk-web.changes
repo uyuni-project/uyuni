@@ -1,4 +1,54 @@
 -------------------------------------------------------------------
+Tue Nov 24 13:41:23 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3-0
+  * Make OpenSCAP scan scheduling generally available
+  * Improve UX/UI of Formula Section Form
+  * Remove unused configuration defaults ssh_push_use_hostname
+    and ssh_push_task_timeout
+  * Update transitive ajv dependency used by ESLint, Babel loader,
+    Storybook and Webpack plugins from version 6.12.6 to 6.15.0
+  * Update transitive ajv dependency used for Webpack schema
+    validation from version 8.17.1 to 8.20.0
+  * Update brace-expansion from version 1.1.18 to 1.1.21
+  * CVE-2026-102276: brace-expansion: DoS via uncontrolled recursion
+    in parseCommaParts causing stack exhaustion (bsc#1283188)
+  * CVE-2026-102277: brace-expansion: Quadratic-time expansion of the
+    `{a},b}` rewrite causes CPU denial of service (bsc#1283371)
+  * CVE-2026-102278: brace-expansion: DoS via uncontrolled recursion
+    on nested brace groups causing stack exhaustion (bsc#1283400)
+  * Update postcss-selector-parser from version 7.1.0 to 7.1.7
+  * CVE-2026-104844: PostCSS: Quadratic complexity in flat selector
+    parsing allows CPU exhaustion (bsc#1284190)
+  * Remove the internal Storybook component catalog
+  * Update source-map-js from version 1.2.1 to 1.2.2
+  * CVE-2026-93749: source-map-js event-loop denial of service
+    via indexed source-map section offsets (bsc#1282486)
+  * Fix React ref warnings for function components rendered globally.
+  * Show expiration information for expired Hub tokens
+  * Keep restricted Content Lifecycle Management dialogs open
+  * Remove leftover dialogs and overlays when leaving a page
+  * Update webpack from version 5.99.7 to 5.104.1
+    (CVE-2025-68157, CVE-2025-68458)
+  * Remove `web.encrypted_passwords` from `rhn_web.conf`
+  * Remove the Oracle-only `server.nls_lang` from `rhn_web.conf` and
+    the unreachable Oracle connection code from `RHN::DBI`
+  * Remove `web.pam_auth_service` from `rhn_web.conf`
+  * Remove `web.traceback_mail` from `rhn_web.conf`. The global key
+    `traceback_mail` is used instead
+  * Remove `web.mount_point` and `web.default_mail_from` defaults in
+    favor of the global keys in the default `rhn.conf`
+  * Remove the HTTP proxy defaults as they are stored in the database
+  * Show the tab bar of the Manager Configuration pages on the
+    Password Policy page
+  * Add the Server Settings page to show and change the server
+    settings stored in the database
+  * Remove `web.max_user_len` from `rhn_web.conf`. The limit moved
+    into the database
+  * Add support for setting action description via webUI and API
+  * Make proxy certs optional (bsc#1265630)
+
+-------------------------------------------------------------------
 Wed Oct 07 18:40:28 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2-0
