@@ -1,4 +1,33 @@
 -------------------------------------------------------------------
+Tue Nov 24 13:44:57 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3-0
+  * Remove unused disable_iss option from `rhn.conf` template and
+    man page
+  * Serve the uyuni CA via Apache Alias instead of copying it to
+    /srv/www/htdocs/pub, so /pub/RHN-ORG-TRUSTED-SSL-CERT is served
+    directly from the projected trust anchor file.
+  * Document `server.buffer_size` in the `rhn.conf` man page
+  * Document `server.session_lifetime` in the `rhn.conf` man page
+  * Remove `enable_nvrea` from the `rhn.conf` man page
+  * Do not write `encrypted_passwords` into `rhn.conf` any more
+  * Do not write the Oracle-only `server.nls_lang` into `rhn.conf`
+    any more
+  * Do not write `pam_auth_service` into `rhn.conf` any more
+  * Remove `server.satellite.rhn_parent` from the `rhn.conf` man page
+  * Set `server.reposync_nevra_filter` instead of
+    `server.satellite.reposync_nevra_filter` in the `rhn.conf`
+    template
+  * Fix the documented default of `mount_point` in the `rhn.conf`
+    man page
+  * Remove the HTTP proxy settings from the `rhn.conf` template
+    and the man page as they are stored in the database
+  * Correct the description of `repomd_cache_mount_point` in the
+    `rhn.conf` man page
+  * Do not write `server.reposync_nevra_filter` into `rhn.conf`
+    any more; the setting is stored in the database
+
+-------------------------------------------------------------------
 Thu Oct 08 00:55:54 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2-0

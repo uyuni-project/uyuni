@@ -1,2 +1,0 @@
-- Do not write the Oracle-only `server.nls_lang` into `rhn.conf`
-  any more

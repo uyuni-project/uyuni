@@ -1,2 +1,0 @@
-- Remove the HTTP proxy settings from the `rhn.conf` template
-  and the man page as they are stored in the database
