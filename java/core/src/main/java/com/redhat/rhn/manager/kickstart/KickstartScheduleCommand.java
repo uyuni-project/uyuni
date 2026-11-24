@@ -123,6 +123,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     public static final String KERNEL_PARAMS_DISTRO = "distro";
     public static final String KERNEL_PARAMS_PROFILE = "profile";
     public static final String KERNEL_PARAMS_CUSTOM = "custom";
+    /** Header a proxy adds to the requests it forwards, listing the proxy hosts. */
+    public static final String XRHNPROXYAUTH = "X-RHN-Proxy-Auth";
 
     private KickstartData ksdata;
     protected String cobblerProfileLabel;
@@ -1409,6 +1411,35 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
     public static void setTaskomaticApi(TaskomaticApi testApiIn) {
         taskomaticApi = testApiIn;
+    }
+
+    /**
+     * Get the kickstart host to use. Will use the host of the proxy if the proxy
+     * header is present. If not, falls back to the hostname from rhn.conf.
+     *
+     * @param proxyHeader value of the {@link #XRHNPROXYAUTH} request header, or null
+     * @return String representing the Kickstart Host
+     */
+    public static String getKickstartHost(String proxyHeader) {
+        // Example proxy header:
+        // X-RHN-Proxy-Auth : 1006681409::1151513167.96:21600.0:VV/xF
+        // NEmCYOuHxEBAs7BEw==:fjs-0-08.rhndev.redhat.com,1006681408
+        // ::1151513034.3:21600.0:w2lm+XWSFJMVCGBK1dZXXQ==:fjs-0-11.
+        // rhndev.redhat.com,1006678487::1152567362.02:21600.0:t15l
+        // gsaTRKpX6AxkUFQ11A==:fjs-0-12.rhndev.redhat.com
+
+        if (!StringUtils.isEmpty(proxyHeader)) {
+            String[] proxies = StringUtils.split(proxyHeader, ",");
+            String firstProxy = proxies[0];
+            // Now we have: 1006681409::1151513167.96:21600.0:VV/xF
+            // NEmCYOuHxEBAs7BEw==:fjs-0-08.rhndev.redhat.com
+            log.debug("first1: {}", firstProxy);
+            String[] chunks = StringUtils.split(firstProxy, ":");
+            firstProxy = chunks[chunks.length - 1];
+            log.debug("Kickstart host from proxy header: {}", firstProxy);
+            return firstProxy;
+        }
+        return ConfigDefaults.get().getJavaHostname();
     }
 
     /**
