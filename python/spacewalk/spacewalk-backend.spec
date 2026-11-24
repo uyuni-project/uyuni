@@ -417,9 +417,6 @@ fi
 %dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers/app
 %{rhnroot}/server/handlers/app/*
-# config files
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_app.conf
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-app
 
 %files package-push-server
 %{!?_licensedir:%global license %doc}

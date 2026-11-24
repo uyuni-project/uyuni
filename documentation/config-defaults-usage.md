@@ -21,11 +21,12 @@ reference is listed. Line numbers refer to the state of the
   then the namespaced key; a lookup without one (`foo`) also falls back to
   `web.foo` and `server.foo`. When the code uses a `ConfigDefaults`
   constant, the reference points to where that constant is read.
-- **Python** (`spacewalk.common.rhnConfig`): `initCFG("server.app")` merges
-  `rhn.conf`, `rhn_server.conf` and `rhn_server_app.conf`, so keys are read
-  as plain attributes (`CFG.LOG_FILE`). Keys like `log_file` and `debug` that
-  appear in several files are read by the same line, which picks up whichever
-  component is active.
+- **Python** (`spacewalk.common.rhnConfig`): `initCFG("<component>")` merges
+  `rhn.conf`, the default files of the parent components and the component's
+  own `rhn_<component>.conf`, so keys are read as plain attributes
+  (`CFG.LOG_FILE`). Keys like `log_file` and `debug` that appear in several
+  files are read by the same line, which picks up whichever component is
+  active.
 - **Shell**: the `*_daemon.conf` files are sourced by the launcher scripts,
   and `spacewalk-startup-helper` greps the schema version keys directly.
 
@@ -250,7 +251,6 @@ reference is listed. Line numbers refer to the state of the
 | rhn_search_daemon.conf | `SEARCH_INIT_MEMORY` <sup>3</sup> | [`search-server/spacewalk-search/src/config/rhn-search:17`](search-server/spacewalk-search/src/config/rhn-search#L17) |
 | rhn_search_daemon.conf | `SEARCH_MAX_MEMORY` <sup>3</sup> | [`search-server/spacewalk-search/src/config/rhn-search:17`](search-server/spacewalk-search/src/config/rhn-search#L17) |
 | rhn_search_daemon.conf | `JAVA_OPTS` <sup>3</sup> | [`search-server/spacewalk-search/src/config/rhn-search:19`](search-server/spacewalk-search/src/config/rhn-search#L19) |
-| rhn_server_app.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `log_file` | [`python/spacewalk/server/apacheHandler.py:75`](python/spacewalk/server/apacheHandler.py#L75) |
 | rhn_server.conf | `min_schema_version` | [`spacewalk/admin/spacewalk-startup-helper:36`](spacewalk/admin/spacewalk-startup-helper#L36) |
 | rhn_server.conf | `secret_key` | [`python/spacewalk/server/apacheAuth.py:94`](python/spacewalk/server/apacheAuth.py#L94) |

@@ -1,0 +1,2 @@
+- Remove `rhn_server_app.conf`; the `/APP` handler used by
+  `rhnpush` now logs to `rhn_server.log`

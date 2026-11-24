@@ -42,16 +42,6 @@ traceback_mail = user0@example.com, user1@example.com
 #server.log_file = /var/log/rhn/rhn_server.log
 
 #
-# server.app
-#
-# -no settings at this level-
-
-#
-# server.app
-#
-#server.app.log_file = /var/log/rhn/rhn_server_app.log
-
-#
 # web
 #
 web.download_url = #FIXME
@@ -79,12 +69,6 @@ web.rhnproc_port =   #FIXME
 #
 # server            - all components that are of base component type "server"
 #                     will inherit these settings.
-#
-# server.app        - settings for the app component of the RHN Server.
-#                     E.g. server.app.traceback_mail = jill@company.com
-#                     (all error message for all server.app components
-#                     now are sent to Jill, whereas non-server.app
-#                     component error messages are still sent to Bob and Mary).
 #
 # web               - XXX: web stuff
 
