@@ -29,14 +29,12 @@ import com.redhat.rhn.domain.user.User;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -177,30 +175,25 @@ public class ResetPasswordFactory extends HibernateFactory {
     }
 
     /**
-     * Report problems with a ResetPassword entity
+     * Report the problem with a ResetPassword entity, if any
      * @param rp ResetPassword of interest
-     * @return ActionErrors list - isEmpty() means "no errors found"
+     * @return the message key of the problem, empty if there is none
      */
-    public static ActionErrors findErrors(ResetPassword rp) {
-        log.debug("findErrors : [{}]", rp == null ? "null" : rp.toString());
-        ActionErrors errors = new ActionErrors();
+    public static Optional<String> findErrorKey(ResetPassword rp) {
+        log.debug("findErrorKey : [{}]", rp == null ? "null" : rp.toString());
         if (rp == null) {
-            log.debug("findErrors: no RP found");
-            errors.add(ActionMessages.GLOBAL_MESSAGE,
-                       new ActionMessage("resetpassword.jsp.error.notoken"));
+            log.debug("findErrorKey: no RP found");
+            return Optional.of("resetpassword.jsp.error.notoken");
         }
-        else if (!rp.isValid()) {
-            log.debug("findErrors: invalid RP found");
-            errors.add(ActionMessages.GLOBAL_MESSAGE,
-                       new ActionMessage("resetpassword.jsp.error.invalidtoken"));
-
+        if (!rp.isValid()) {
+            log.debug("findErrorKey: invalid RP found");
+            return Optional.of("resetpassword.jsp.error.invalidtoken");
         }
-        else if (rp.isExpired()) {
-            log.debug("findErrors: expired RP found");
-            errors.add(ActionMessages.GLOBAL_MESSAGE,
-                       new ActionMessage("resetpassword.jsp.error.expiredtoken"));
+        if (rp.isExpired()) {
+            log.debug("findErrorKey: expired RP found");
+            return Optional.of("resetpassword.jsp.error.expiredtoken");
         }
-        return errors;
+        return Optional.empty();
     }
 
 }
