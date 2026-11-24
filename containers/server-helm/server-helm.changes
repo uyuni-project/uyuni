@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Nov 24 13:56:40 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3
+  * Remove unused ISSv1 variable ISS_PARENT
+  * Handle null values
+  * Replace ca-certs PVC with a projected volume of CAs.
+
+-------------------------------------------------------------------
 Thu Oct 08 01:13:06 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2
