@@ -54,16 +54,16 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
     private static final long serialVersionUID = -2162768922109257186L;
     // configFileForm elements
     public static final String REV_PATH         = "cffPath";
-    public static final String REV_SYMLINK_TARGET_PATH = "targetPath";
-    public static final String REV_UID          = "cffUid";
-    public static final String REV_GID          = "cffGid";
-    public static final String REV_PERMS        = "cffPermissions";
-    public static final String REV_SELINUX_CTX  = "cffSELinuxCtx";
-    public static final String REV_MACROSTART   = "cffMacroStart";
-    public static final String REV_MACROEND     = "cffMacroEnd";
+    public static final String REV_SYMLINK_TARGET_PATH = ConfigFileData.REV_SYMLINK_TARGET_PATH;
+    public static final String REV_UID          = ConfigFileData.REV_UID;
+    public static final String REV_GID          = ConfigFileData.REV_GID;
+    public static final String REV_PERMS        = ConfigFileData.REV_PERMS;
+    public static final String REV_SELINUX_CTX  = ConfigFileData.REV_SELINUX_CTX;
+    public static final String REV_MACROSTART   = ConfigFileData.REV_MACROSTART;
+    public static final String REV_MACROEND     = ConfigFileData.REV_MACROEND;
     public static final String REV_CONTENTS     = "contents"; //cffContent
     public static final String REV_FILETYPE     = "filetype"; //cffFiletype
-    public static final String REV_BINARY       = "binary";
+    public static final String REV_BINARY       = ConfigFileData.REV_BINARY;
     public static final String REV_UPLOAD       = "cffUpload";
 
     public static final String REV_EDITABLE      = "editable";
@@ -73,8 +73,8 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
 
 
 
-    public static final String DEFAULT_CONFIG_DELIM_START = "{|";
-    public static final String DEFAULT_CONFIG_DELIM_END = "|}";
+    public static final String DEFAULT_CONFIG_DELIM_START = ConfigFileData.DEFAULT_CONFIG_DELIM_START;
+    public static final String DEFAULT_CONFIG_DELIM_END = ConfigFileData.DEFAULT_CONFIG_DELIM_END;
 
     // This cannot be the right way to find this
     // Here to deal with form-size-limits
