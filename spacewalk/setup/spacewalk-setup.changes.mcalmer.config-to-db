@@ -1,2 +1,0 @@
-- Store setup values of configuration keys moved into the database
-  in the database instead of `rhn.conf`
