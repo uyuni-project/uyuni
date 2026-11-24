@@ -7,7 +7,7 @@ from distutils.core import setup
 
 setup(
     name="mgrlibmod",
-    version="5.3.1",
+    version="5.3.2",
     packages=[
         "mgrlibmod",
     ],
