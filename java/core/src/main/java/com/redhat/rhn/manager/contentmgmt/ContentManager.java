@@ -1392,6 +1392,70 @@ public class ContentManager {
                 .findFirst();
     }
 
+    /**
+     * Removes from the hotfix channel of the first {@link ContentEnvironment} the errata, and their packages, that
+     * the given regular target of that Environment holds after building it. Errata are matched by the erratum they
+     * were cloned from in the first place, as clones may have different advisory names. The hotfix channels of the
+     * other Environments are cleaned up when they get promoted.
+     *
+     * @param target the built target
+     * @param user the user
+     */
+    public void removeBuiltErrataFromHotfixChannel(SoftwareEnvironmentTarget target, User user) {
+        ContentEnvironment env = target.getContentEnvironment();
+        if (target.isHotfix() || env.getPrevEnvironmentOpt().isPresent()) {
+            return;
+        }
+        Optional<Channel> hotfixChannel = env.getTargets().stream()
+                .flatMap(t -> stream(t.asSoftwareTarget()))
+                .filter(SoftwareEnvironmentTarget::isHotfix)
+                .map(SoftwareEnvironmentTarget::getChannel)
+                .findFirst();
+        if (hotfixChannel.isEmpty()) {
+            return;
+        }
+        Channel hotfix = hotfixChannel.get();
+
+        Set<Long> builtRootIds = target.getChannel().getErratas().stream()
+                .map(e -> getRootOriginal(e).getId())
+                .collect(toSet());
+        Map<Boolean, Set<Errata>> builtOrKept = hotfix.getErratas().stream()
+                .collect(partitioningBy(e -> builtRootIds.contains(getRootOriginal(e).getId()), toSet()));
+        Set<Errata> builtErrata = builtOrKept.get(true);
+        if (builtErrata.isEmpty()) {
+            return;
+        }
+        LOG.info("Removing {} built errata from hotfix channel {}", builtErrata.size(), hotfix.getLabel());
+        ErrataManager.removeErratumAndPackagesFromChannel(builtErrata, builtOrKept.get(false), hotfix, user);
+        // the regular channel may hold another clone of the same original: delete clones left in no channel
+        builtErrata.stream()
+                .filter(e -> e.getChannels().isEmpty())
+                .forEach(e -> ErrataManager.deleteErratum(user, e));
+
+        // the packages were removed in the database directly, prune them from the in-memory channel as well
+        HibernateFactory.getSession().flush();
+        List<Long> realIds = ChannelFactory.getPackageIds(hotfix.getId());
+        hotfix.removePackages(hotfix.getPackages().stream()
+                .filter(p -> !realIds.contains(p.getId()))
+                .collect(toSet()));
+        ChannelManager.refreshWithNewestPackages(hotfix, "java::removeBuiltErrataFromHotfixChannel");
+    }
+
+    /**
+     * Returns the erratum the given erratum was cloned from in the first place, or the erratum itself if it is not
+     * a clone.
+     *
+     * @param errata the erratum
+     * @return the root original erratum
+     */
+    private static Errata getRootOriginal(Errata errata) {
+        Errata current = HibernateFactory.unproxy(errata);
+        while (current instanceof ClonedErrata cloned && cloned.getOriginal() != null) {
+            current = HibernateFactory.unproxy(cloned.getOriginal());
+        }
+        return current;
+    }
+
     private static boolean isHotfixChannel(ContentEnvironment env, Channel channel) {
         return env.getTargets().stream()
                 .flatMap(t -> stream(t.asSoftwareTarget()))
