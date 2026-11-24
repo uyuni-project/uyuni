@@ -1,4 +1,111 @@
 -------------------------------------------------------------------
+Tue Nov 24 14:29:37 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.4-0
+  * Add migration paths from SLES4SAP 15SP7 to SLES4SAP 16.0
+    (bsc#1286315)
+  * Make OpenSCAP scan scheduling generally available
+  * Remove scheduleXccdfScan* and scheduleBetaXccdfScan* methods
+    from `system.scap`
+  * Change API version to 30
+  * Pass the diskcheck environment variables to taskomatic only
+    through the shared systemd override
+  * Speed up loading package data for repodata generation by
+    avoiding a full scan of the checksum table (bsc#1286091)
+  * Cache the public methods of classes used to fill query results
+    to reduce CPU usage
+  * Remove unused configuration defaults customer_service_email,
+    login_banner and base_port
+  * Remove ineffective Quartz option
+    `org.terracotta.quartz.skipUpdateCheck`
+  * Do not execute select queries twice when no IN clause is used
+  * Commit and close the database transaction after connecting to
+    the Salt event bus to not block database maintenance
+  * Preserve error messages when transactional states fail to render
+  * Fix package state execution on transactional systems
+  * Fix PXTSessions leak on token-authenticated download requests
+    (bsc#1290251)
+  * Create an API entry to list package orphans with pagination
+    (bsc#1286754)
+  * Fix index out of bounds exception when locking packages
+    see github_com/uyuni-project/uyuni/issues/12255
+  * Fix taskomatic clear log history bug
+    see github_com/uyuni-project/uyuni/issues/12273
+  * Do not add auth in kickstart files for RHEL 10+ (bsc#1286150)
+  * Allow operators in system_kind systemsListFiltered API
+  * Remove the internal Storybook development page
+  * Use the canonical Asia/Karachi timezone for Pakistan
+  * Allow saving kickstart profiles without the deprecated auth
+    command (gh#uyuni-project/uyuni#6467, bsc#1286150)
+  * Forward the oscap options that select rules and content, such as
+    --skip-rule, to the scanned system instead of dropping them
+    silently, and document the supported options in the API
+  * Introduce counting dimensions for systems with the Multi-Linux
+    Support in Pay-as-you-go environments, covering the regular and
+    long-term support versions and the EMS and HA extensions.
+  * Display a warning only for eligible subscriptions (bsc#1284284)
+  * Prefer the field allbinaries over binaries when present in an
+    Ubuntu erratum (bsc#1280946)
+  * Accept both string and array of string as values for the cves
+    field in Ubuntu erratas (bsc#1280946,
+    gh#uyuni-project/uyuni#12544)
+  * Process Ubuntu erratas with no binaries (bsc#1280946,
+    gh#uyuni-project/uyuni#12596)
+  * Add retry logic to the SCC web client (bsc#1285760)
+  * Store peripheral servers certificates in /etc/rhn/ca/ instead
+    of /etc/pki/trust/anchors/
+  * Fall back to the default value for configuration values stored
+    in the database when no value is set
+  * Fix storing the default organization for externally authenticated
+    users in the web UI
+  * Remove the configuration option `web.encrypted_passwords`. User
+    passwords are always stored hashed
+  * Remove the configuration option `web.pam_auth_service`. PAM
+    authentication is always available and uses the `susemanager`
+    service
+  * Use a constant for the repository metadata directory instead of
+    the configuration options `taskomatic.repomd_path_prefix` and
+    `repomd_path_prefix`
+  * Remove the unused configuration option
+    `server.satellite.rhn_parent`
+  * Read the global configuration key `traceback_mail` instead of
+    `web.traceback_mail`
+  * Read the global keys `mount_point` and `default_mail_from`
+    instead of `web.mount_point` and `web.default_mail_from`
+  * Store the HTTP proxy settings (http_proxy, http_proxy_username,
+    http_proxy_password and no_proxy) in the database
+  * Read `repomd_cache_mount_point` in one place with `/var/cache` as
+    fallback instead of the inconsistent fallbacks (`/pub` and
+    `/var/cache`)
+  * Add the Server Settings page to show and change the server
+    settings stored in the database
+  * Read the user login and e-mail length limits from the
+    rhnConfiguration table instead of `rhn.conf`
+  * Postpone actions on a system until a running or imminent
+    reboot has finished (bsc#1290254)
+  * Collect KIWI SPDX SBOMs with built OS images
+  * Avoid duplicate user authentication (bsc#1286910)
+  * Add autoinstallation support for SLE16
+  * Add support for setting action description via webUI and API
+  * Fix regex in Ubuntu OVAL parser to match current Canonical
+    comment wording
+  * Log warning when non-empty OVAL definitions yield 0
+    vulnerable packages
+  * Make proxy certs optional (bsc#1265630)
+  * Fix NullPointerException when generating proxy config in
+    containerized proxy chain (gh#uyuni-project/uyuni#12179)
+  * Fix ISE when changing the SSL set of an existing repository
+    (bsc#1281341)
+  * Clarify cloned patch reuse in the 'channel.software.clone' and
+    'errata.clone*' API documentation (bsc#1282231)
+  * Fix corrupted dates in API responses under concurrent
+    requests (bsc#1284783)
+  * Periodically flush and clear the session for Errata Advisory
+    (bsc#1277714)
+  * Fix saving RBAC permissions for namespaces containing
+    underscores, such as activation keys (bsc#1290589)
+
+-------------------------------------------------------------------
 Thu Oct 15 13:22:51 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.3-0

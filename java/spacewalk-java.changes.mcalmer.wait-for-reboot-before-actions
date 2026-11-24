@@ -1,2 +1,0 @@
-- Postpone actions on a system until a running or imminent
-  reboot has finished (bsc#1290254)

@@ -1,2 +1,0 @@
-- Read the user login and e-mail length limits from the
-  rhnConfiguration table instead of `rhn.conf`

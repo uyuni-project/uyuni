@@ -1,2 +1,0 @@
-- Fix ISE when changing the SSL set of an existing repository
-  (bsc#1281341)

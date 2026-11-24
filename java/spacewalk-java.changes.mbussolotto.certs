@@ -1,2 +1,0 @@
-- Store peripheral servers certificates in /etc/rhn/ca/ instead
-  of /etc/pki/trust/anchors/

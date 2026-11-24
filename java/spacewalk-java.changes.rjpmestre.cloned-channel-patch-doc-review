@@ -1,2 +1,0 @@
-- Clarify cloned patch reuse in the 'channel.software.clone' and
-  'errata.clone*' API documentation (bsc#1282231)

@@ -1,2 +1,0 @@
-- Remove the unused configuration option
-  `server.satellite.rhn_parent`

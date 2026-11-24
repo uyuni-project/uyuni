@@ -1,2 +1,0 @@
-- Fix corrupted dates in API responses under concurrent
-  requests (bsc#1284783)
