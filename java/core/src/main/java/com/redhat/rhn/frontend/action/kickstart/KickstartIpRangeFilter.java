@@ -23,9 +23,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidIpAddressException;
 import com.redhat.rhn.manager.kickstart.IpAddress;
 import com.redhat.rhn.manager.kickstart.IpAddressRange;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.Locale;
 import java.util.Map;
 
@@ -33,8 +30,6 @@ import java.util.Map;
  * KickstartIpRangeFilter
  */
 public class KickstartIpRangeFilter extends BaseListFilter {
-
-    private static final Logger LOG = LogManager.getLogger(KickstartIpRangeFilter.class);
 
     /**
      * ${@inheritDoc}
@@ -62,7 +57,7 @@ public class KickstartIpRangeFilter extends BaseListFilter {
 
         boolean contained;
         try {
-            contained = filterOnRange(criteria, min.toString(), max.toString());
+            contained = IpAddressRange.contains(criteria, min.toString(), max.toString());
         }
         catch (InvalidIpAddressException e) {
             contained = false;
@@ -70,25 +65,5 @@ public class KickstartIpRangeFilter extends BaseListFilter {
 
         return contained;
 
-    }
-
-    /**
-     * Returns true if the search ip is within the min and max
-     *  helper method used by filter and by other things
-     * @param search the ip address to search for
-     * @param min the min ipaddress
-     * @param max the max ipaddress
-     * @return true if it is contained, false otherwise
-     */
-    public boolean filterOnRange(String search, String min, String max) {
-        LOG.debug("search: {}, min: {}, max: {}", search, min, max);
-        IpAddress minIp = new IpAddress(min);
-        IpAddress maxIp = new IpAddress(max);
-        IpAddress searchIp = new IpAddress(search);
-
-        IpAddressRange ipRange = new IpAddressRange(minIp.getLongNumber(),
-                maxIp.getLongNumber());
-
-        return ipRange.isIpAddressContained(searchIp);
     }
 }
