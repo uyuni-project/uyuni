@@ -24,7 +24,7 @@
 
 %{?!python_module:%define python_module() python-%{**} python3-%{**}}
 Name:           uyuni-cobbler-helper
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        Python helper functions for %{productprettyname} Cobbler snippets
 License:        Apache-2.0
