@@ -14,14 +14,21 @@ package com.redhat.rhn.manager.contentmgmt;
 
 import static com.redhat.rhn.manager.contentmgmt.ContentManagerTestUtils.buildProjectWithEnvironments;
 import static com.redhat.rhn.manager.contentmgmt.ContentManagerTestUtils.getRegularChannels;
+import static java.util.Optional.empty;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType;
+import com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule;
+import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataTestBuilder;
@@ -30,6 +37,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
@@ -48,6 +56,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -306,6 +315,147 @@ class ContentManagerHotfixTest extends BaseHandlerTestCase {
         }
     }
 
+    /**
+     * Tests the cleanup of hotfix channels: an erratum cloned into the hotfix channels leaves the hotfix channel of
+     * an environment once the regular channels of that environment get it, by build or promote. Three errata are
+     * added to the sources of a built and promoted project with dev, test and prod: one spread over both child
+     * channels, one with packages only in the base channel, one with packages only in a child channel. They are
+     * cloned into all hotfix channels, then the project is built and promoted environment by environment.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testHotfixChannelCleanupOnBuildAndPromote() throws Exception {
+        Org org = admin.getOrg();
+        List<String> envLabels = List.of(DEV, "test", "prod");
+        SpreadProject project = buildSpreadProject("cpchild", envLabels.toArray(String[]::new));
+        Package basePkg = PackageTest.createTestPackage(org, "baseOnly");
+        Package childPkg = PackageTest.createTestPackage(org, "childOnly");
+        project.base().addPackages(List.of(basePkg));
+        project.child1().addPackages(List.of(childPkg));
+        Errata baseOnly = new ErrataTestBuilder().addPackages(basePkg).addChannel(project.base()).buildAndSave();
+        Errata childOnly = new ErrataTestBuilder().addPackages(childPkg).addChannel(project.child1()).buildAndSave();
+        List<Errata> newErrata = List.of(project.spread(), baseOnly, childOnly);
+        Set<Long> newPackageIds = new HashSet<>(project.spreadPackageIds());
+        newPackageIds.addAll(ids(List.of(basePkg, childPkg)));
+
+        for (Errata erratum : newErrata) {
+            contentManager.cloneIntoHotfixChannels(admin, erratum.getAdvisoryName(),
+                    envLabels.stream().map(ContentManagerHotfixTest::cpchildHotfixLabel).toList());
+        }
+        Set<Long> cloneIds = newErrata.stream().map(e -> getCloneOf(org, e).getId()).collect(toSet());
+        assertEquals(3, cloneIds.size());
+        for (String envLabel : envLabels) {
+            assertChannelHasErratasAndPackages(org, cpchildHotfixLabel(envLabel), cloneIds, newPackageIds);
+        }
+
+        // build: the first environment gets the errata, its hotfix channel is cleaned up, the others are not
+        contentManager.buildProject("cpchild", empty(), false, admin);
+        assertRegularChannelsHold(org, DEV, cloneIds, newPackageIds);
+        assertRegularChannelsHold(org, "test", Set.of(), Set.of());
+        assertHotfixChannelsHold(org, Map.of(DEV, false, "test", true, "prod", true), cloneIds, newPackageIds);
+
+        // promote dev
+        contentManager.promoteProject("cpchild", DEV, false, admin);
+        assertRegularChannelsHold(org, "test", cloneIds, newPackageIds);
+        assertRegularChannelsHold(org, "prod", Set.of(), Set.of());
+        assertHotfixChannelsHold(org, Map.of(DEV, false, "test", false, "prod", true), cloneIds, newPackageIds);
+
+        // promote test
+        contentManager.promoteProject("cpchild", "test", false, admin);
+        assertRegularChannelsHold(org, "prod", cloneIds, newPackageIds);
+        assertHotfixChannelsHold(org, Map.of(DEV, false, "test", false, "prod", false), cloneIds, newPackageIds);
+    }
+
+    /**
+     * Tests the cleanup of the hotfix channel with a cloned channel as project source: the source holds a clone
+     * of a vendor erratum, owned by the organization. Cloning it into the hotfix channel uses that clone itself,
+     * and so does building. After the build the clone left the hotfix channel with its packages, but it still
+     * exists and is still in the source and in the regular channel.
+     */
+    @Test
+    public void testHotfixChannelCleanupWithClonedSource() {
+        Org org = admin.getOrg();
+        Package initialPkg = PackageTest.createTestPackage(org, "initialCloned");
+        Channel original = createChannelWithPackages(admin, initialPkg);
+        Channel clonedSource = ChannelFactoryTest.createTestClonedChannel(original, admin);
+        clonedSource.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
+        clonedSource.addPackages(List.of(initialPkg));
+        ChannelFactory.save(clonedSource);
+        buildProjectWithEnvironments(contentManager, admin, "cpcloned", clonedSource, DEV);
+        String hotfixLabel = "cpcloned-dev-hotfix";
+
+        // a vendor erratum arrives in the original channel and its clone in the cloned source
+        Package pkg = PackageTest.createTestPackage(org, "clonedSourcePkg");
+        original.addPackages(List.of(pkg));
+        Errata vendor = new ErrataTestBuilder().addPackages(pkg).addChannel(original).buildAndSave();
+        Errata clone = ErrataFactory.lookupById(ErrataHelper.cloneErrataFaster(vendor.getId(), org));
+        clonedSource.addPackages(List.of(pkg));
+        clonedSource.addErrata(clone);
+        ChannelFactory.save(clonedSource);
+
+        // cloning into the hotfix channel uses the clone itself
+        SyncedErratumWithPackages synced =
+                contentManager.cloneIntoHotfixChannel(admin, clone.getAdvisoryName(), hotfixLabel);
+        assertEquals(clone.getId(), synced.errata().getId());
+        assertTrue(ErrataFactory.lookupErrataByOriginal(org, clone).isEmpty(), "no clone of the clone");
+        assertChannelHasErratasAndPackages(org, hotfixLabel, Set.of(clone.getId()), ids(List.of(pkg)));
+
+        contentManager.buildProject("cpcloned", empty(), false, admin);
+
+        assertChannelHasErratasAndPackages(org, hotfixLabel, Set.of(), Set.of());
+        Channel regular = lookupSingleRegularChannel(org, "cpcloned", DEV);
+        assertEquals(Set.of(clone.getId()), ids(regular.getErratas(), Errata::getId), "regular errata");
+        assertEquals(ids(List.of(initialPkg, pkg)), ids(regular.getPackages(), Package::getId), "regular packages");
+        assertTrue(ids(lookupChannel(org, clonedSource.getLabel()).getErratas(), Errata::getId)
+                .contains(clone.getId()), "the clone stays in the source");
+        assertEquals(List.of(clone.getId()),
+                ErrataFactory.lookupErrataByOriginal(org, vendor).stream().map(Errata::getId).toList());
+    }
+
+    /**
+     * Tests the cleanup of the hotfix channel when a build brings only one of two errata in the hotfix channel to
+     * the regular channel: a filter denies the other one. Only the built erratum leaves the hotfix channel, the
+     * denied one stays there with its packages, including a package both errata declare.
+     */
+    @Test
+    public void testHotfixChannelCleanupKeepsFilteredErrata() {
+        Org org = admin.getOrg();
+        Channel filteredSource = createChannelWithPackages(admin, PackageTest.createTestPackage(org, "initialFlt"));
+        buildProjectWithEnvironments(contentManager, admin, "cpfilter", filteredSource, DEV);
+        String hotfixLabel = "cpfilter-dev-hotfix";
+
+        Package builtPkg = PackageTest.createTestPackage(org, "builtPkg");
+        Package deniedPkg = PackageTest.createTestPackage(org, "deniedPkg");
+        Package sharedPkg = PackageTest.createTestPackage(org, "sharedPkg");
+        filteredSource.addPackages(List.of(builtPkg, deniedPkg, sharedPkg));
+        Errata built = new ErrataTestBuilder().addPackages(builtPkg, sharedPkg).addChannel(filteredSource)
+                .buildAndSave();
+        Errata denied = new ErrataTestBuilder().addPackages(deniedPkg, sharedPkg).addChannel(filteredSource)
+                .buildAndSave();
+        contentManager.cloneIntoHotfixChannel(admin, built.getAdvisoryName(), hotfixLabel);
+        contentManager.cloneIntoHotfixChannel(admin, denied.getAdvisoryName(), hotfixLabel);
+        Long builtClone = getCloneOf(org, built).getId();
+        Long deniedClone = getCloneOf(org, denied).getId();
+        assertChannelHasErratasAndPackages(org, hotfixLabel, Set.of(builtClone, deniedClone),
+                ids(List.of(builtPkg, deniedPkg, sharedPkg)));
+
+        FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "advisory_name", denied.getAdvisoryName());
+        ContentFilter filter = contentManager.createFilter("deny-hotfix", Rule.DENY, EntityType.ERRATUM, criteria,
+                admin);
+        contentManager.attachFilter("cpfilter", filter.getId(), admin);
+        contentManager.buildProject("cpfilter", empty(), false, admin);
+
+        assertChannelHasErratasAndPackages(org, hotfixLabel, Set.of(deniedClone), ids(List.of(deniedPkg, sharedPkg)));
+        Channel regular = lookupSingleRegularChannel(org, "cpfilter", DEV);
+        Set<Long> regularErrata = ids(regular.getErratas(), Errata::getId);
+        Set<Long> regularPackages = ids(regular.getPackages(), Package::getId);
+        assertTrue(regularErrata.contains(builtClone), "regular channel holds the built erratum");
+        assertFalse(regularErrata.contains(deniedClone), "regular channel does not hold the denied erratum");
+        assertTrue(regularPackages.containsAll(ids(List.of(builtPkg, sharedPkg))), "regular built packages");
+        assertFalse(regularPackages.contains(deniedPkg.getId()), "regular channel does not hold the denied package");
+    }
+
     // Utility methods
 
     /**
@@ -407,11 +557,15 @@ class ContentManagerHotfixTest extends BaseHandlerTestCase {
      * A project with a base channel and two child channels as sources, and an erratum added to the sources after
      * the project was built.
      *
+     * @param base the base source channel
+     * @param child1 the first child source channel
+     * @param child2 the second child source channel
      * @param spread the erratum, declaring three packages: two served by the first child, one by the second
      * @param spreadPackageIds the ids of the packages of the erratum
      * @param initialPackagesBySource the package every source channel held when the project was built, by channel id
      */
-    private record SpreadProject(Errata spread, Set<Long> spreadPackageIds,
+    private record SpreadProject(Channel base, Channel child1, Channel child2, Errata spread,
+                                 Set<Long> spreadPackageIds,
                                  Map<Long, Package> initialPackagesBySource) { }
 
     /**
@@ -445,10 +599,61 @@ class ContentManagerHotfixTest extends BaseHandlerTestCase {
         Errata spread = new ErrataTestBuilder().addPackages(pkg1, pkg2, pkg3)
                 .addChannel(child1).addChannel(child2).buildAndSave();
 
-        return new SpreadProject(spread, ids(List.of(pkg1, pkg2, pkg3)), Map.of(
+        return new SpreadProject(base, child1, child2, spread, ids(List.of(pkg1, pkg2, pkg3)), Map.of(
                 base.getId(), initialBasePkg,
                 child1.getId(), initialChild1Pkg,
                 child2.getId(), initialChild2Pkg));
+    }
+
+    private Channel lookupSingleRegularChannel(Org org, String projectLabel, String envLabel) {
+        Channel regular = getRegularChannels(ContentManager.lookupEnvironment(envLabel, projectLabel, admin)
+                .orElseThrow()).iterator().next();
+        return lookupChannel(org, regular.getLabel());
+    }
+
+    private static String cpchildHotfixLabel(String envLabel) {
+        return "cpchild-" + envLabel + "-hotfix";
+    }
+
+    /**
+     * Asserts the regular (non hotfix) channels of an environment of project "cpchild" hold the given errata and
+     * packages, or none of them when the given sets are empty. The initial content is ignored.
+     *
+     * @param org the organization owning the project
+     * @param envLabel the environment label
+     * @param errataIds the ids of the errata, empty to expect none of the errata in play
+     * @param packageIds the ids of the packages
+     */
+    private void assertRegularChannelsHold(Org org, String envLabel, Set<Long> errataIds, Set<Long> packageIds) {
+        Set<Long> channelErrataIds = new HashSet<>();
+        Set<Long> channelPackageIds = new HashSet<>();
+        for (Channel regular : getRegularChannels(
+                ContentManager.lookupEnvironment(envLabel, "cpchild", admin).orElseThrow())) {
+            Channel channel = lookupChannel(org, regular.getLabel());
+            channelErrataIds.addAll(ids(channel.getErratas(), Errata::getId));
+            channelPackageIds.addAll(ids(channel.getPackages(), Package::getId));
+        }
+        if (errataIds.isEmpty()) {
+            assertTrue(channelPackageIds.stream().noneMatch(packageIds::contains), envLabel + " has no new packages");
+            return;
+        }
+        assertTrue(channelErrataIds.containsAll(errataIds), envLabel + " regular channels hold the errata");
+        assertTrue(channelPackageIds.containsAll(packageIds), envLabel + " regular channels hold the packages");
+    }
+
+    /**
+     * Asserts which hotfix channels of project "cpchild" still hold the given errata and packages: all of them,
+     * or nothing.
+     *
+     * @param org the organization owning the project
+     * @param holdsContent for each environment label, whether its hotfix channel holds the content
+     * @param errataIds the ids of the errata
+     * @param packageIds the ids of the packages
+     */
+    private static void assertHotfixChannelsHold(Org org, Map<String, Boolean> holdsContent, Set<Long> errataIds,
+                                                 Set<Long> packageIds) {
+        holdsContent.forEach((envLabel, holds) -> assertChannelHasErratasAndPackages(org,
+                cpchildHotfixLabel(envLabel), holds ? errataIds : Set.of(), holds ? packageIds : Set.of()));
     }
 
     /**

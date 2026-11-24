@@ -1,0 +1,3 @@
+- Remove patches from the hotfix channel of the first content
+  lifecycle environment once building adds them to its other
+  channels
