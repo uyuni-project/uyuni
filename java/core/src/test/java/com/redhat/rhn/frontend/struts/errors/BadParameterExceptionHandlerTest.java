@@ -14,16 +14,15 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.common.errors;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+package com.redhat.rhn.frontend.struts.errors;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.logging.log4j.Level;
@@ -40,12 +39,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import jakarta.servlet.http.HttpServletResponse;
-
 /**
- * PermissionExceptionHandlerTest
+ * BadParameterExceptionHandlerTest
  */
-public class PermissionExceptionHandlerTest extends MockObjectTestCase {
+public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
 
     private TraceBackAction tba;
 
@@ -57,19 +54,21 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
         MessageQueue.startMessaging();
     }
 
+
     @Test
     public void testExecute() throws Exception {
 
         /*
-         * Turn off logging and tracebacks Logging complains and sends warnings
-         * (expected) Tracebacks will get sent to root@localhost
+         * Turn off logging and tracebacks
+         * Logging complains and sends warnings (expected)
+         * Tracebacks will get sent to root@localhost
          */
-        Logger log = LogManager.getLogger(PermissionExceptionHandler.class);
-        Level orig = log.getLevel();
+        Logger log = LogManager.getLogger(BadParameterExceptionHandler.class);
+        Level origLevel = log.getLevel();
         Configurator.setLevel(this.getClass().getName(), Level.OFF);
         try {
 
-            PermissionException ex = new PermissionException("Simply a test");
+            BadParameterException ex = new BadParameterException("Invalid test parameter");
 
             final ActionMapping mapping = mock(ActionMapping.class, "mapping");
             context().checking(new Expectations() { {
@@ -78,23 +77,23 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
             } });
 
             RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-
-            HttpServletResponse response = mock(HttpServletResponse.class);
-            context.checking(new Expectations() {{
-                oneOf(response).setStatus(with(any(Integer.class)));
-            }});
-
+            RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
             DynaActionForm form = new DynaActionForm();
 
-            PermissionExceptionHandler peh = new PermissionExceptionHandler();
+            BadParameterExceptionHandler bpeh = new BadParameterExceptionHandler();
 
-            peh.execute(ex, new ExceptionConfig(), mapping, form, request, response);
-            assertEquals(ex, request.getAttribute("error"));
+            bpeh.execute(ex, new ExceptionConfig(), mapping, form, request, response);
         }
         finally {
             // Turn tracebacks and logging back on
-            Thread.sleep(1000); // wait for message to be sent
-            Configurator.setLevel(this.getClass().getName(), orig);
+            // wait for message to be sent
+            int tries = 0;
+            Thread.sleep(1000);
+            while (MessageQueue.getMessageCount() != 0 && tries  < 10) {
+                Thread.sleep(100);
+                tries++;
+            }
+            Configurator.setLevel(this.getClass().getName(), origLevel);
         }
     }
 
@@ -103,4 +102,5 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
         MessageQueue.stopMessaging();
         MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
     }
+
 }

@@ -1177,19 +1177,19 @@ SPDX-License-Identifier: GPL-2.0-only
   <global-exceptions>
     <exception type="com.redhat.rhn.common.hibernate.LookupException"
       path="/WEB-INF/pages/common/errors/lookup.jsp" key="date"
-      handler="com.redhat.rhn.common.errors.LookupExceptionHandler"/>
+      handler="com.redhat.rhn.frontend.struts.errors.LookupExceptionHandler"/>
     <exception type="com.redhat.rhn.frontend.action.common.BadParameterException"
       path="/WEB-INF/pages/common/errors/badparam.jsp" key="date"
-      handler="com.redhat.rhn.common.errors.BadParameterExceptionHandler"/>
+      handler="com.redhat.rhn.frontend.struts.errors.BadParameterExceptionHandler"/>
     <exception type="com.redhat.rhn.common.security.PermissionException"
       path="/WEB-INF/pages/common/errors/permission.jsp" key="frontend.actions.channels.manager.add.permsfailure"
-      handler="com.redhat.rhn.common.errors.PermissionExceptionHandler"/>
+      handler="com.redhat.rhn.frontend.struts.errors.PermissionExceptionHandler"/>
     <exception type="com.redhat.rhn.frontend.xmlrpc.NoSuchKickstartException"
       path="/WEB-INF/pages/common/errors/nosuchkickstart.jsp" key="date"
-      handler="com.redhat.rhn.common.errors.NoSuchKickstartExceptionHandler"/>
+      handler="com.redhat.rhn.frontend.struts.errors.NoSuchKickstartExceptionHandler"/>
     <exception type="com.redhat.rhn.manager.MissingCapabilityException"
       path="/WEB-INF/pages/common/errors/missingcapability.jsp" key="date"
-      handler="com.redhat.rhn.common.errors.SatelliteExceptionHandler"/>
+      handler="com.redhat.rhn.frontend.struts.errors.SatelliteExceptionHandler"/>
   </global-exceptions>
 
   <!--
