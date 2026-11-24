@@ -1,0 +1,2 @@
+- Remove `rhn_server_upload_package-push.conf`; the `/PACKAGE-PUSH`
+  handler used by `rhnpush` now logs to `rhn_server.log`

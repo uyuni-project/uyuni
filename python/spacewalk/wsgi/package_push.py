@@ -25,6 +25,6 @@ def application(environ, start_response):
         environ,
         start_response,
         "package_push",
-        "server.upload.package-push",
+        "server",
         "spacewalk.server.apacheUploadServer",
     )
