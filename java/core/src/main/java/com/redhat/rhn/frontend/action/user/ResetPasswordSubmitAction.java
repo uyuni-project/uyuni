@@ -72,7 +72,9 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
 
         String token = (form.get("token") == null ? null : form.get("token").toString());
         ResetPassword rp = ResetPasswordFactory.lookupByToken(token);
-        ActionErrors errors = ResetPasswordFactory.findErrors(rp);
+        ActionErrors errors = new ActionErrors();
+        ResetPasswordFactory.findErrorKey(rp)
+                .ifPresent(key -> errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(key)));
 
         // If there are any token-failures - reject and leave
         if (!errors.isEmpty()) {

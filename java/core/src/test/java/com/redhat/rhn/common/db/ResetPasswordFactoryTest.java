@@ -27,13 +27,10 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
-import java.util.Iterator;
+import java.util.Optional;
 
 public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
 
@@ -149,46 +146,23 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testFindErrors() {
+    public void testFindErrorKey() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
-        assertNotNull(rp);
+        assertEquals(Optional.empty(), ResetPasswordFactory.findErrorKey(rp));
 
-        // Everything OK
-        ActionErrors errors = ResetPasswordFactory.findErrors(rp);
-        assertNotNull(errors);
-        assertTrue(errors.isEmpty());
+        assertEquals(Optional.of("resetpassword.jsp.error.notoken"),
+                ResetPasswordFactory.findErrorKey(null));
 
-        // No Token
-        errors = ResetPasswordFactory.findErrors(null);
-        assertEquals(1, errors.size());
-        Iterator<ActionMessage> iter = errors.get(ActionMessages.GLOBAL_MESSAGE);
-        while (iter.hasNext()) {
-            ActionMessage am = iter.next();
-            assertEquals("resetpassword.jsp.error.notoken", am.getKey());
-        }
-
-        // Invalid token
         ResetPassword rp1 = ResetPasswordFactory.createNewEntryFor(user);
         rp1.setIsValid(false);
-        errors = ResetPasswordFactory.findErrors(rp1);
-        assertEquals(1, errors.size());
-        iter = errors.get(ActionMessages.GLOBAL_MESSAGE);
-        while (iter.hasNext()) {
-            ActionMessage am = iter.next();
-            assertEquals("resetpassword.jsp.error.invalidtoken", am.getKey());
-        }
+        assertEquals(Optional.of("resetpassword.jsp.error.invalidtoken"),
+                ResetPasswordFactory.findErrorKey(rp1));
         rp1.setIsValid(true);
 
-        // Expired token
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, -1);
         rp1.setCreated(cal.getTime());
-        errors = ResetPasswordFactory.findErrors(rp1);
-        assertEquals(1, errors.size());
-        iter = errors.get(ActionMessages.GLOBAL_MESSAGE);
-        while (iter.hasNext()) {
-            ActionMessage am = iter.next();
-            assertEquals("resetpassword.jsp.error.expiredtoken", am.getKey());
-        }
+        assertEquals(Optional.of("resetpassword.jsp.error.expiredtoken"),
+                ResetPasswordFactory.findErrorKey(rp1));
     }
 }
