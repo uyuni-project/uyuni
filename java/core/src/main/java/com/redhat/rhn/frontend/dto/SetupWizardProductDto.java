@@ -17,7 +17,7 @@
 
 package com.redhat.rhn.frontend.dto;
 
-import com.redhat.rhn.frontend.struts.Selectable;
+import com.redhat.rhn.common.util.Selectable;
 
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;

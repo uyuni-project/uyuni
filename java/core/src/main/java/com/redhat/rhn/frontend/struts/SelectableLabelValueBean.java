@@ -16,6 +16,7 @@
  */
 package com.redhat.rhn.frontend.struts;
 
+import com.redhat.rhn.common.util.SelectableAdapter;
 
 /**
  * SelectableLabelValueBean

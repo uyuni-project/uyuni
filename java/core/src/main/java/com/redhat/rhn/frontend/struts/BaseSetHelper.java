@@ -17,7 +17,9 @@
 package com.redhat.rhn.frontend.struts;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.Expandable;
 import com.redhat.rhn.common.util.MethodUtil;
+import com.redhat.rhn.common.util.Selectable;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetImpl;
@@ -281,7 +283,7 @@ public class BaseSetHelper {
      * @param set this is an Set that holds the selections
      * @param dataSet the dataset that contains everything in the list.
      *                Note theitems in the dataset are expected to implement
-     *                'com.redhat.rhn.frontend.struts.Selectable'.
+     *                'com.redhat.rhn.common.util.Selectable'.
      *                These are required for use with rhnset.
      */
     public void syncSelections(Set set, List dataSet) {
@@ -328,7 +330,7 @@ public class BaseSetHelper {
      * @param listName the name of the list to grab the data from.
      * @param dataSet the dataset that contains everything in the list.
      *                Note theitems in the dataset are expected to implement
-     *                'com.redhat.rhn.frontend.struts.Selectable'.
+     *                'com.redhat.rhn.common.util.Selectable'.
      *                These are required for use with rhnset.
      */
     public void selectAll(Set set,

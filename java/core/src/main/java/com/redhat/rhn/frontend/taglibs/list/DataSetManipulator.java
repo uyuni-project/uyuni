@@ -19,8 +19,8 @@ package com.redhat.rhn.frontend.taglibs.list;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DynamicComparator;
+import com.redhat.rhn.common.util.Expandable;
 import com.redhat.rhn.frontend.html.HtmlTag;
-import com.redhat.rhn.frontend.struts.Expandable;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import org.apache.commons.lang3.StringUtils;

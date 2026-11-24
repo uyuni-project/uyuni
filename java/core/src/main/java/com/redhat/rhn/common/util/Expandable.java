@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,37 +14,22 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.struts;
+package com.redhat.rhn.common.util;
 
+import java.util.List;
 
 
 /**
- * Selectable
+ * Expandable
+ * Mainly used to work with the new List tag
+ * To use a tree like behaviour
  */
-public interface Selectable {
+public interface Expandable {
     /**
-     *
-     * @return true if the object is selectable
+     * Expands and returns the children
+     * List needs to be either Identifiable or Selectable
+     * @return the child object
      */
-    boolean isSelectable();
+    List expand();
 
-    /**
-     *
-     * @return true if selected
-     */
-    boolean isSelected();
-
-    /**
-     * sets the selection parameter
-     * @param selected true if the system is selected
-     */
-    void setSelected(boolean selected);
-
-    /**
-     *
-     * @return the value of the selection key
-     *           used in the "selectable" column
-     *           of an rhn list tag.
-     */
-    String getSelectionKey();
 }

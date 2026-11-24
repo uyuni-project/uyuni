@@ -16,7 +16,7 @@
  */
 package com.redhat.rhn.frontend.taglibs.list;
 
-import com.redhat.rhn.frontend.struts.Expandable;
+import com.redhat.rhn.common.util.Expandable;
 
 import java.util.ArrayList;
 import java.util.List;

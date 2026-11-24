@@ -17,6 +17,7 @@
  */
 package com.redhat.rhn.domain.token;
 
+import com.redhat.rhn.common.util.Scrubber;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -30,7 +31,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.struts.Scrubber;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import java.util.List;
