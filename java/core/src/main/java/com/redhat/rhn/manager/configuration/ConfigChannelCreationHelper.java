@@ -26,8 +26,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.file.ConfigFileData;
 import com.redhat.rhn.manager.configuration.file.SLSFileData;
 
-import org.apache.struts.action.DynaActionForm;
-
 
 /**
  * ConfigChannelValidator
@@ -51,31 +49,6 @@ public class ConfigChannelCreationHelper {
      * @throws ValidatorException on bad data
      */
     public void validate(String label, String name, String description) {
-        validate(label, name, description, null);
-    }
-
-    /**
-     * Basically validates the passed in form and returns
-     * a validator result for bad data..
-     * @param form  the DynaForm that may be used
-     *              for validating through the UI
-     * @throws ValidatorException on bad data
-     */
-    public void validate(DynaActionForm form) {
-        validate(form.getString(LABEL), form.getString(NAME), form.getString(DESCRIPTION), form);
-    }
-
-    /**
-     * Basically validates the passed in data and returns
-     * a validator result for bad data..
-     * @param label  the UNIQUE label of the config channel
-     * @param name   the name of the config channel
-     * @param description the description of the config channel
-     * @param form  the DynaForm that may be used
-     *              for validating through the UI
-     * @throws ValidatorException on bad data
-     */
-    private void validate(String label, String name, String description, DynaActionForm form) {
         LocalizationService ls = LocalizationService.getInstance();
         ValidatorResult result = new ValidatorResult();
 
@@ -93,9 +66,6 @@ public class ConfigChannelCreationHelper {
             result.addError(new ValidatorError(ERROR_CONFIG_CHANNEL_LABEL,
                                                 ls.getMessage(LABEL)));
         }
-        else if (form != null) {
-            form.set(LABEL, label);
-        }
         // Check name
         if (name == null || name.trim().isEmpty()) {
             result.addError(new ValidatorError(ERROR_REQUIRED,
@@ -106,16 +76,10 @@ public class ConfigChannelCreationHelper {
                                                 ls.getMessage(NAME),
                                                 MAX_NAME_LENGTH));
         }
-        else if (form != null) {
-            form.set(NAME, name);
-        }
         // Check description
         if (description == null || description.trim().isEmpty()) {
             result.addError(new ValidatorError(ERROR_REQUIRED,
                                                 ls.getMessage(DESCRIPTION)));
-        }
-        else if (form != null) {
-            form.set(DESCRIPTION, description);
         }
         if (!result.isEmpty()) {
             throw new ValidatorException(result);
@@ -139,17 +103,6 @@ public class ConfigChannelCreationHelper {
             throw new ValidatorException(result);
         }
         return ct;
-    }
-
-    /**
-     * populates the config channel reading the fields from a
-     * dyna action form
-     * @param cc the channel to populate
-     * @param form the form to retrieve the data from.
-     * @throws ValidatorException  on bad data
-     */
-    public void update(ConfigChannel cc, DynaActionForm form) {
-        update(cc, form.getString(NAME), form.getString(LABEL), form.getString(DESCRIPTION));
     }
 
     /**
