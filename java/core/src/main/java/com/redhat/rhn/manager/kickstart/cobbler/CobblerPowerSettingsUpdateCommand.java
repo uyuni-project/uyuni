@@ -39,6 +39,13 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
      */
     public static final String POWER_MANAGEMENT_DUMMY_NAME = "dummy_for_power_management";
 
+    /** Power settings keys, used as UI form fields and API map keys. */
+    public static final String POWER_TYPE = "powerType";
+    public static final String POWER_ADDRESS = "powerAddress";
+    public static final String POWER_USERNAME = "powerUsername";
+    public static final String POWER_PASSWORD = "powerPassword";
+    public static final String POWER_ID = "powerId";
+
     /** The log. */
     private static Logger log = LogManager.getLogger(CobblerPowerSettingsUpdateCommand.class);
 
