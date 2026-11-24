@@ -56,7 +56,7 @@ SPDX-License-Identifier: GPL-2.0-only
                         ${paginationMessage}
                 </div>
                 <div class="col-md-6 text-right">
-                        <a class="js-spa" href="/rhn/manager/systems/list/all?q=>0&qc=outdated_packages">
+                        <a class="js-spa" href="/rhn/manager/systems/list/all?q=>0&qc=outdated_pkg_count">
                                 <bean:message key="yourrhn.jsp.allcriticalsystems" />
                         </a>
                 </div>

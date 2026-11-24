@@ -957,6 +957,27 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
     }
 
     /**
+     * @return the number of actions.
+     */
+    public Long getActionsCount() {
+        return actionsCount;
+    }
+
+    /**
+     * @return the number of unscheduled erratas.
+     */
+    public Long getUnscheduledErrataCount() {
+        return unscheduledErrataCount;
+    }
+
+    /**
+     * @return true if the system is running an autoinstallation.
+     */
+    public boolean isKickstarting() {
+        return kickstarting;
+    }
+
+    /**
      * @return Returns <code>true</code> if the last checkin dates too much.
      */
     public boolean checkinOverdue() {

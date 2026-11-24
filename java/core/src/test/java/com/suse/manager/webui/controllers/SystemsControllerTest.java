@@ -20,12 +20,14 @@ package com.suse.manager.webui.controllers;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -35,6 +37,7 @@ import com.redhat.rhn.testing.SparkTestUtils;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.utils.PagedSqlQueryBuilder.FilterWithValue;
 import com.suse.manager.webui.services.TestSaltApi;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
@@ -50,6 +53,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
@@ -281,11 +285,196 @@ public class SystemsControllerTest extends BaseControllerTestCase {
     @MethodSource("provideValuesForFilterParser")
     public void testFilterParserIsProxy(String value, String expectedFilter, String expectedValue) {
         PageControl pc = new PageControl(0, 25, "name", true, "system_kind", value);
-        var parser = SystemsController.getFilterParser(pc);
+        var parser = SystemsController.getFilterParser(pc, false);
         var actualFilter = parser.apply(Optional.of(pc));
 
         assertEquals(String.format(" %s CAST(:filter_value AS BOOLEAN) ", expectedFilter), actualFilter.getFilter());
         assertEquals(expectedValue, actualFilter.getValue());
+    }
+
+    private static FilterWithValue parseFilter(String column, String data) {
+        return parseFilter(column, data, false);
+    }
+
+    private static FilterWithValue parseFilter(String column, String data, boolean raiseErrors) {
+        PageControl pc = new PageControl(0, 25, "name", true, column, data);
+        return SystemsController.getFilterParser(pc, raiseErrors).apply(Optional.of(pc));
+    }
+
+    private static Stream<Arguments> provideTextFields() {
+        // SystemSerializer field, column used in the query
+        return Stream.of(
+                Arguments.of("name", "server_name"),
+                Arguments.of("id", "id"),
+                Arguments.of("channel_labels", "channel_labels"),
+                Arguments.of("entitlement", "entitlement"),
+                Arguments.of("creator_name", "creator_name"),
+                Arguments.of("status_type", "status_type")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTextFields")
+    public void testFilterParserTextFields(String field, String expectedColumn) {
+        FilterWithValue contains = parseFilter(field, "foo");
+        assertEquals(String.format(" %s ILIKE :filter_value ", expectedColumn), contains.getFilter());
+        assertEquals("%foo%", contains.getValue());
+
+        FilterWithValue notContains = parseFilter(field, "!foo");
+        assertEquals(String.format(" %s NOT ILIKE :filter_value ", expectedColumn), notContains.getFilter());
+        assertEquals("%foo%", notContains.getValue());
+
+        FilterWithValue equal = parseFilter(field, "=foo");
+        assertEquals(String.format(" %s = :filter_value ", expectedColumn), equal.getFilter());
+        assertEquals("foo", equal.getValue());
+
+        FilterWithValue notEqual = parseFilter(field, "!=foo");
+        assertEquals(String.format(" %s != :filter_value ", expectedColumn), notEqual.getFilter());
+        assertEquals("foo", notEqual.getValue());
+    }
+
+    private static Stream<Arguments> provideNumberFields() {
+        // SystemSerializer field, column used in the query
+        return Stream.of(
+                Arguments.of("group_count", "group_count"),
+                Arguments.of("security_errata", "security_errata"),
+                Arguments.of("bug_errata", "bug_errata"),
+                Arguments.of("enhancement_errata", "enhancement_errata"),
+                Arguments.of("outdated_pkg_count", "outdated_packages"),
+                Arguments.of("config_files_with_difference", "config_files_with_difference"),
+                Arguments.of("extra_pkg_count", "extra_pkg_count"),
+                Arguments.of("actions_count", "actions_count"),
+                Arguments.of("unscheduled_errata_count", "unscheduled_errata_count")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideNumberFields")
+    public void testFilterParserNumberFields(String field, String expectedColumn) {
+        FilterWithValue implicitEqual = parseFilter(field, "5");
+        assertEquals(String.format(" %s = :filter_value ", expectedColumn), implicitEqual.getFilter());
+        assertEquals(5L, implicitEqual.getValue());
+
+        for (String operator : List.of("=", "!=", "<", "<=", ">", ">=")) {
+            FilterWithValue filter = parseFilter(field, operator + " 12");
+            assertEquals(String.format(" %s %s :filter_value ", expectedColumn, operator), filter.getFilter());
+            assertEquals(12L, filter.getValue());
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideNumberFields")
+    public void testFilterParserNumberFieldsInvalidValue(String field) {
+        FilterWithValue ignored = parseFilter(field, "abc", false);
+        assertEquals("", ignored.getFilter());
+
+        assertThrows(InvalidParameterException.class, () -> parseFilter(field, "abc", true));
+    }
+
+    @Test
+    public void testFilterParserTotalErrataCount() {
+        FilterWithValue filter = parseFilter("total_errata_count", ">= 3");
+        assertTrue(filter.getFilter().contains("security_errata + bug_errata + enhancement_errata"),
+                "Unexpected filter: " + filter.getFilter());
+        assertTrue(filter.getFilter().trim().endsWith(">= :filter_value"),
+                "Unexpected filter: " + filter.getFilter());
+        assertEquals(3L, filter.getValue());
+    }
+
+    private static Stream<String> provideBooleanFields() {
+        return Stream.of("mgr_server", "proxy", "virtual_host", "virtual_guest", "requires_reboot", "kickstarting");
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideBooleanFields")
+    public void testFilterParserBooleanFields(String field) {
+        FilterWithValue implicitEqual = parseFilter(field, "true");
+        assertEquals(String.format(" %s = CAST(:filter_value AS BOOLEAN) ", field), implicitEqual.getFilter());
+        assertEquals("true", implicitEqual.getValue());
+
+        FilterWithValue equal = parseFilter(field, "= false");
+        assertEquals(String.format(" %s = CAST(:filter_value AS BOOLEAN) ", field), equal.getFilter());
+        assertEquals("false", equal.getValue());
+
+        FilterWithValue notEqual = parseFilter(field, "!= true");
+        assertEquals(String.format(" %s != CAST(:filter_value AS BOOLEAN) ", field), notEqual.getFilter());
+        assertEquals("true", notEqual.getValue());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideBooleanFields")
+    public void testFilterParserBooleanFieldsInvalidValue(String field) {
+        assertEquals("", parseFilter(field, "maybe", false).getFilter());
+
+        assertThrows(InvalidParameterException.class, () -> parseFilter(field, "maybe", true));
+    }
+
+    private static Stream<String> provideDateFields() {
+        return Stream.of("last_checkin", "created");
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideDateFields")
+    public void testFilterParserDateFields(String field) {
+        FilterWithValue date = parseFilter(field, ">= 2026-11-23");
+        assertEquals(String.format(" CAST(%s AS DATE) >= CAST(:filter_value AS DATE) ", field), date.getFilter());
+        assertEquals("2026-11-23", date.getValue());
+
+        FilterWithValue implicitEqual = parseFilter(field, "2026-11-23");
+        assertEquals(String.format(" CAST(%s AS DATE) = CAST(:filter_value AS DATE) ", field),
+                implicitEqual.getFilter());
+
+        FilterWithValue dateTime = parseFilter(field, "< 2026-11-23T14:08:00Z");
+        assertEquals(String.format(" %s < CAST(:filter_value AS TIMESTAMPTZ) ", field), dateTime.getFilter());
+        assertEquals("2026-11-23T14:08Z", dateTime.getValue());
+
+        FilterWithValue dateTimeWithoutOffset = parseFilter(field, "> 2026-11-23T14:08:00");
+        assertEquals(String.format(" %s > CAST(:filter_value AS TIMESTAMPTZ) ", field),
+                dateTimeWithoutOffset.getFilter());
+        assertEquals("2026-11-23T14:08Z", dateTimeWithoutOffset.getValue());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideDateFields")
+    public void testFilterParserDateFieldsInvalidValue(String field) {
+        assertEquals("", parseFilter(field, "yesterday", false).getFilter());
+
+        assertThrows(InvalidParameterException.class, () -> parseFilter(field, "yesterday", true));
+    }
+
+    private static Stream<Arguments> provideDaysFields() {
+        // SystemSerializer field, date column used in the query
+        return Stream.of(
+                Arguments.of("last_checkin_days", "last_checkin"),
+                Arguments.of("created_days", "created")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideDaysFields")
+    public void testFilterParserDaysFields(String field, String expectedColumn) {
+        String fiveDaysAgo = LocalDate.now().minusDays(5).toString();
+
+        // The date comparison operators are inverted compared to the number of days
+        for (String[] operators : new String[][] {{"<", ">"}, {"<=", ">="}, {">", "<"}, {">=", "<="},
+                {"=", "="}, {"!=", "!="}}) {
+            FilterWithValue filter = parseFilter(field, operators[0] + " 5");
+            assertEquals(String.format(" CAST(%s AS DATE) %s CAST(:filter_value AS DATE) ",
+                    expectedColumn, operators[1]), filter.getFilter(), "Wrong filter for " + operators[0]);
+            assertEquals(fiveDaysAgo, filter.getValue());
+        }
+
+        FilterWithValue implicitEqual = parseFilter(field, "5");
+        assertEquals(String.format(" CAST(%s AS DATE) = CAST(:filter_value AS DATE) ", expectedColumn),
+                implicitEqual.getFilter());
+        assertEquals(fiveDaysAgo, implicitEqual.getValue());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideDaysFields")
+    public void testFilterParserDaysFieldsInvalidValue(String field) {
+        assertEquals("", parseFilter(field, "abc", false).getFilter());
+        assertEquals("", parseFilter(field, "abc", true).getFilter());
     }
 
 }

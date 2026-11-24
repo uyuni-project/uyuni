@@ -78,9 +78,9 @@ public class PagedSqlQueryBuilderTest extends MockObjectTestCase {
     public void testParseFilter(String type, String data, String pattern, Object value) {
         Map<String, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue>> parsers = new HashMap<>();
         parsers.put("text", pc -> PagedSqlQueryBuilder.parseFilterAsText(pc));
-        parsers.put("number", pc -> PagedSqlQueryBuilder.parseFilterAsNumber(pc));
-        parsers.put("date", pc -> PagedSqlQueryBuilder.parseFilterAsDate(pc));
-        parsers.put("boolean", pc -> PagedSqlQueryBuilder.parseFilterAsBoolean(pc));
+        parsers.put("number", pc -> PagedSqlQueryBuilder.parseFilterAsNumber(pc, false));
+        parsers.put("date", pc -> PagedSqlQueryBuilder.parseFilterAsDate(pc, false));
+        parsers.put("boolean", pc -> PagedSqlQueryBuilder.parseFilterAsBoolean(pc, false));
 
         Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser = parsers.get(type);
 
