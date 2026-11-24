@@ -141,13 +141,21 @@ def get_reverse_net(net)
 end
 
 # Returns true if a RepoMDError line timestamped at or after start_time (a "YYYY-MM-DD HH:MM:SS"
-# string from the target node's own clock, matching the log4j2 %d prefix) exists in the taskomatic log. Comparing
-# against a recorded start time -- rather than tailing a fixed number of lines or lines
-# after a line-count marker -- avoids both stale matches from earlier in the log and
-# missed matches if the log grows faster than a fixed window can capture.
+# string from the target node's own clock) exists in the taskomatic log. The log lines carry
+# only an "HH:MM:SS" prefix (an optional leading date is ignored), so only the time of day is compared.
+# A line time more than 12 hours before the start time of day is taken as past midnight, which is
+# fine as long as the wait is much shorter than 12 hours. Comparing against a recorded start time
+# -- rather than tailing a fixed number of lines or lines after a line-count marker -- avoids
+# both stale matches from earlier in the log and missed matches if the log grows faster than a
+# fixed window can capture.
 def recent_taskomatic_repomd_error?(node, start_time)
+  to_seconds = ->(time) { time.split(':').map(&:to_i).then { |h, m, s| (h * 3600) + (m * 60) + s } }
+  start_seconds = to_seconds.call(start_time[/\d{2}:\d{2}:\d{2}\z/])
   output, _code = node.run("grep RepoMDError #{TASKOMATIC_LOG_PATH} | tail -5", check_errors: false, exec_option: '--')
-  output.lines.any? { |line| line[0..18] >= start_time }
+  output.lines.any? do |line|
+    time = line[/\A(?:\d{4}-\d{2}-\d{2}[ T])?(\d{2}:\d{2}:\d{2})/, 1]
+    time && (diff = to_seconds.call(time) - start_seconds) && (diff >= 0 || diff < -43_200)
+  end
 end
 
 # Repeatedly executes a block raising an exception in case it is not finished within timeout seconds
@@ -1224,6 +1232,18 @@ def api_client_for(host = 'server')
   $api_test_by_host[host] ||= new_api_client(host: host)
 end
 
+# Build a well-formed repository URL of an exact length by padding a query string onto it
+#
+# @param base_url [String] The URL to pad, without query string.
+# @param length [Integer] The exact length of the returned URL, longer than base_url plus '?p='.
+# @return [String] The padded URL.
+def padded_repo_url(base_url, length)
+  prefix = "#{base_url}?p="
+  raise ArgumentError, "Cannot build a #{length}-character URL from #{base_url}" if length <= prefix.length
+
+  prefix + ('a' * (length - prefix.length))
+end
+
 # Get a time in the future, adding the minutes passed as parameter
 #
 # @param minutes_to_add [Integer] The number of minutes to add to the current time.
@@ -1457,4 +1477,34 @@ end
 # @return [Boolean] true if any of the hosts has its environment variable set
 def any_host_configured?(host_keys)
   host_keys.any? { |host_key| ENV_VAR_BY_HOST.key?(host_key) && ENV.key?(ENV_VAR_BY_HOST[host_key]) }
+end
+
+# Refreshes the SCC data of the server with mgr-sync.
+def refresh_scc
+  refresh_timeout = 600
+  get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync refresh', timeout: refresh_timeout)
+end
+
+# Checks with mgr-sync that the SLE15 product of the given service pack and its main channels are synced.
+def assert_sle15_product_added(sp_version)
+  output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
+  log "Products list:\n#{output}"
+  match = "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
+  raise ScriptError, "Not included:\n #{match}" unless output.include? match
+
+  match = "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"
+  raise ScriptError, "Not included:\n #{match}" unless output.include? match
+
+  match = "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"
+  raise ScriptError, "Not included:\n #{match}" unless output.include? match
+end
+
+# Counts the rows of the hub reportdb system table that belong to a system managed by a peripheral.
+# The mgm_id of a peripheral is the id of its system record on the hub.
+def hub_reportdb_system_rows(minion_host, peripheral_host)
+  peripheral = systems_registered_as(peripheral_host, on: 'server').first
+  raise StandardError, "#{peripheral_host} is not registered on hub" if peripheral.nil?
+
+  # Integer() raises on an empty result, so a failed query is not read as zero rows
+  Integer(reportdb_value("SELECT count(*) FROM system WHERE mgm_id = #{peripheral['id']} AND profile_name = '#{get_system_name(minion_host)}';"))
 end

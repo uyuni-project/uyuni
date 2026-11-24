@@ -32,7 +32,7 @@ SPDX-License-Identifier: Apache-2.0
 Below, `<hub>`, `<peripheral1>`, `<monitoring>` etc. stand for the FQDN of the host in that role.
 
 **Run sets:**
-- `run_sets/hub_server_to_server.yml` — Focus A (hub + peripherals only; C-01 needs a minion).
+- `run_sets/hub_server_to_server.yml` — Focus A plus B-01, B-03/B-04 and C-01 (hub, peripheral and one `sle_minion`; a missing minion skips the `@sle_minion` scenarios).
 - `run_sets/hub_full_topology.yml` — everything above plus the minion-based Focus B features and C-01 (needs a minion; the proxy scenarios B-02 run only as build-validation features).
 - `run_sets/hub_build_validation/*.yml` — per-peripheral BV features under `features/hub/build_validation/` (server setup, channel sync, activation key, bootstrap repo, proxy, minions, smoke tests).
 
@@ -172,7 +172,7 @@ curl -sk https://<hub>/hub/rpc/api
 - **Regenerate Credentials** (mirror credentials) works and sync still succeeds afterwards.
 - Long repository URLs (BUG-019, fixed by bsc#1259230): `rhnContentSource.source_url` is `VARCHAR(4096)`; a URL longer than 2048 characters must not cause an HTTP 500.
 
-**Automation:** partial — `features/hub/srv_hub_channel_synchronization.feature` covers Method A, Method B (trigger from Hub Details), Method C (sync.hub add, list and trigger, with a new channel synced to peripheral1 and verified), cloned/vendor/custom channels, org mapping and credential regeneration. Not automated: synced channel/org counters. Long `source_url`: no automated regression (no step creates a repo with an arbitrary URL length); BUG-019 is covered by the schema fix only.
+**Automation:** partial — `features/hub/srv_hub_channel_synchronization.feature` covers Method A, Method B (trigger from Hub Details), Method C (sync.hub add, list and trigger, with a new channel synced to peripheral1 and verified), cloned/vendor/custom channels, org mapping and credential regeneration. Not automated: synced channel/org counters. Long `source_url` (BUG-019): automated by creating a repository with a 2100-character URL through the API on the hub, attaching it to a custom channel, syncing that channel to peripheral1 through the sync.hub API and checking it exists there; package content is not checked.
 
 ---
 

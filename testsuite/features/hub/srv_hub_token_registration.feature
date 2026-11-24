@@ -13,7 +13,6 @@ Feature: Hub peripheral registration using access tokens
   As an authorized user
   I want to register a peripheral using a pre-issued access token (plan A-03/A-04)
 
-
   Scenario: Issue a new access token on peripheral1 for the hub
     Given I am authorized for the "Admin" section on "peripheral1"
     When I issue a new access token for hub on "peripheral1"

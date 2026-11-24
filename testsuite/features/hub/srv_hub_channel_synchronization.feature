@@ -17,10 +17,9 @@ Feature: Hub ISSv3 channel synchronization to peripheral
   Scenario: Log in as admin user for channel sync tests
     Given I am authorized for the "Admin" section
 
-  Scenario: Pre-requisite: register peripheral1 as peripheral for channel sync tests
-    When I add "peripheral1" as peripheral using administrator credentials
-    And I wait until I see "is currently registered as peripheral of this hub" text
-    Then I should see "peripheral1" in peripherals list
+  Scenario: Pre-requisite: peripheral1 is registered as peripheral for channel sync tests
+    When I follow the left menu "Admin > Hub Configuration > Peripherals Configuration"
+    Then I should see "peripheral1" hostname
 
   Scenario: Clone a channel on hub for sync testing
     When I follow the left menu "Software > Manage > Channels"
@@ -41,10 +40,13 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     And I follow "List/Remove Patches"
     Then I should see a "There are no patches associated with this channel." text
 
-  Scenario: Configure cloned channel sync from hub to peripheral1 via hub UI - Method A
+  Scenario: Configure cloned channel sync from hub to peripheral1 via hub UI
     When I configure hub to sync channel "Fake-Clone-RPM-SLES15SP7-Channel" to "peripheral1"
     # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1271703
     Then I should see a "Channels synced correctly to peripheral!" text
+
+  Scenario: Wait for the cloned channel metadata to be generated on the hub
+    When I wait until the repository metadata of channel "clone-fake-rpm-suse-channel" is generated on the hub
 
   Scenario: Trigger channel sync from hub to peripheral1
     Given I am authorized for the "Admin" section on "peripheral1"
@@ -105,9 +107,22 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     And I wait until the channel "test-hub-custom-channel" has been synced on peripheral1
     Then channel "test-hub-custom-channel" should exist on "peripheral1" for the test organization admin
 
-  # BUG-019 (QE test plan): HTTP 500 on peripheral channel sync when rhnContentSource.source_url
-  # exceeded VARCHAR(2048). Fixed by bsc#1259230, which widens source_url to VARCHAR(4096).
-  # No automated regression: no step creates a repo with an arbitrary URL length.
+  # (bsc#1259230): HTTP 500 on peripheral channel sync when rhnContentSource.source_url
+  # exceeded VARCHAR(2048); the column is now VARCHAR(4096). The 2100-character URL is a plain
+  # URL with a padded query string: well-formed, never fetched, so no package content is asserted.
+  Scenario: Create a channel with a repository URL longer than 2048 characters on hub
+    When I create the following channels:
+      | LABEL                     | NAME                      | SUMMARY                   | ARCH           | PARENT |
+      | test-hub-long-url-channel | Test Hub Long URL Channel | Test Hub Long URL Channel | channel-x86_64 |        |
+    And I create a repo with label "test-hub-long-url-repo" and a source URL of "2100" characters on the hub
+    And I associate repo "test-hub-long-url-repo" with channel "test-hub-long-url-channel"
+
+  Scenario: Sync the channel with the long repository URL from hub to peripheral1
+    Given I am authorized for the "Admin" section
+    When I add channel "test-hub-long-url-channel" to the sync list of "peripheral1" for organization "Test Default Organization" via the hub API
+    And I trigger channel sync to "peripheral1" via the hub API
+    And I wait until the channel "test-hub-long-url-channel" has been synced on peripheral1
+    Then channel "test-hub-long-url-channel" should exist on "peripheral1" for the test organization admin
 
   Scenario: Regenerate mirror credentials for peripheral1 and verify sync still works
     When I regenerate mirror credentials for peripheral "peripheral1"
@@ -145,3 +160,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
 
   Scenario: Cleanup: delete API channel from hub
     When I delete the software channel with label "test-hub-api-channel"
+
+  Scenario: Cleanup: delete long repository URL channel and repo from hub
+    When I delete the software channel with label "test-hub-long-url-channel"
+    And I delete the repo with label "test-hub-long-url-repo"

@@ -16,12 +16,9 @@ Feature: Hub peripheral deregistration and state cleanup
   Scenario: Log in as admin user for cleanup
     Given I am authorized for the "Admin" section
 
-  Scenario: Pre-requisite: ensure peripheral1 is deregistered before test
-    When I unregister "peripheral1" from hub if registered
-
-  Scenario: Pre-requisite: register peripheral1 and sync a channel for deregistration tests
-    When I add "peripheral1" as peripheral using administrator credentials
-    And I wait until I see "is currently registered as peripheral of this hub" text
+  Scenario: Pre-requisite: peripheral1 is registered, sync a channel for deregistration tests
+    When I follow the left menu "Admin > Hub Configuration > Peripherals Configuration"
+    Then I should see "peripheral1" hostname
     And I configure hub to sync channel "SLE-Product-SLES15-SP7-Pool for x86_64" to "peripheral1"
     Given I am authorized for the "Admin" section on "peripheral1"
     When I initiate channel sync from peripheral "peripheral1"

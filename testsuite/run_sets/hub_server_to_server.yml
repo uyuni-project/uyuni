@@ -3,12 +3,17 @@
 # SPDX-License-Identifier: MIT
 
 # Hub server-to-server run set.
-# Requires: one hub (SERVER) and one peripheral (SERVER2).
-# No proxy or minion nodes needed. SERVER3 is optional: without it the cross-CA scenarios of
-# srv_hub_token_registration.feature are skipped.
+# Requires: one hub (SERVER), one peripheral (SERVER2) and one SLE minion (MINION, bootstrapped to
+# peripheral1). Without MINION the @sle_minion scenarios are skipped, and so are the reporting
+# scenarios that need the minion. No proxy nodes needed. SERVER3 is optional: without it the
+# cross-CA scenarios of srv_hub_token_registration.feature are skipped.
+# SCC credentials are needed when the hub does not have SLES15-SP7 or SL Micro 6.2 yet (srv_hub_prerequisites.feature).
 # Tag: @hub_server_to_server
 
 ## Hub server-to-server features BEGIN ##
+
+# Prerequisite: SLES15-SP7 and SL Micro 6.2 products and the SL Micro bootstrap repository on the hub
+- features/hub/srv_hub_prerequisites.feature
 
 # A-01/A-02: Hub deployment check and registration via admin credentials
 - features/hub/srv_hub_setup_registration.feature
@@ -19,6 +24,18 @@
 # A-05: Access token lifecycle (issue/invalidate/reactivate/delete)
 - features/hub/srv_hub_token_lifecycle.feature
 
+# B-01: peripheral-as-hub-minion bootstrap ordering.
+# Its SL Micro 6.2 bootstrap repository is provided by srv_hub_prerequisites.feature. Placed here because
+# srv_hub_token_lifecycle.feature deregisters peripheral1 in its cleanup, giving this feature the
+# clean deregistered state it needs, and its own cleanup leaves peripheral1 deregistered.
+- features/hub/srv_hub_peripheral_as_minion.feature
+
+# B-03..B-04: sle_minion bootstrapped to peripheral1 (needed by the reporting feature).
+# Registers peripheral1, which stays registered through channel_synchronization, xmlrpc, issv2,
+# reporting and verification_cleanup; channel_synchronization, reporting and verification_cleanup
+# now require this feature to run before them.
+- features/hub/srv_hub_minion_on_peripheral.feature
+
 # A-06: ISSv3 online channel synchronization hub -> peripheral
 - features/hub/srv_hub_channel_synchronization.feature
 
@@ -28,10 +45,8 @@
 # A-09: ISSv2 CLI export/import
 - features/hub/srv_hub_issv2_export_import.feature
 
-# C-01: srv_hub_reporting.feature is NOT listed here — it requires a managed minion
-# behind peripheral1 (sle_minion bootstrapped via srv_hub_minion_on_peripheral.feature)
-# to populate the hub reportdb. Without it the "one row per peripheral" check finds
-# 0 distinct mgm_id rows. Reporting runs in hub_full_topology.yml where that minion exists.
+# C-01: Hub reportdb aggregation (removes sle_minion from peripheral1 at the end)
+- features/hub/srv_hub_reporting.feature
 
 # A-10: Peripheral deregistration and state cleanup
 - features/hub/srv_hub_verification_cleanup.feature
