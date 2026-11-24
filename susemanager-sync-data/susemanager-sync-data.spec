@@ -22,7 +22,7 @@
 # The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 Name:           susemanager-sync-data
-Version:        5.3.3
+Version:        5.3.4
 Release:        0
 Summary:        %{productprettyname} specific scripts
 License:        GPL-2.0-only
