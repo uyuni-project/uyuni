@@ -109,4 +109,49 @@ public class ImageFileTypeFactoryTest extends BaseTestCaseWithUser {
                 List.copyOf(ImageFileTypeFactory.filterAllowedFiles(
                         List.of(BASENAME + ".xz", BASENAME + ".gz"), BASENAME, user.getOrg()).keySet()));
     }
+
+    @Test
+    public void testDisabledLongerExtensionExcludesShorterMatch() {
+        for (String extension : List.of(".tar.xz", ".install.iso")) {
+            ImageFileType disabled = new ImageFileType();
+            disabled.setOrg(user.getOrg());
+            disabled.setExtension(extension);
+            disabled.setEnabled(false);
+            HibernateFactory.getSession().persist(disabled);
+        }
+        TestUtils.flushSession();
+
+        List<String> files = List.of(BASENAME + ".xz", BASENAME + ".tar.xz",
+                BASENAME + ".iso", BASENAME + ".install.iso");
+        Map<String, String> allowed = ImageFileTypeFactory.filterAllowedFiles(files, BASENAME, user.getOrg());
+
+        // the disabled .tar.xz and .install.iso keep their files excluded
+        // despite the enabled shorter extensions .xz and .iso
+        assertEquals(List.of(files.get(0), files.get(2)), List.copyOf(allowed.keySet()));
+        assertEquals("image", allowed.get(files.get(0)));
+        assertEquals("image", allowed.get(files.get(2)));
+
+        // the enabled lookup hides the disabled entries
+        Map<String, ImageFileType> enabled = ImageFileTypeFactory.lookupEnabledFileTypes(user.getOrg());
+        assertTrue(enabled.containsKey(".xz") && enabled.containsKey(".iso"));
+        assertFalse(enabled.containsKey(".tar.xz") || enabled.containsKey(".install.iso"));
+    }
+
+    @Test
+    public void testOrgOverridesDefaultDisabled() {
+        ImageFileType raw = new ImageFileType();
+        raw.setOrg(user.getOrg());
+        raw.setExtension(".raw");
+        raw.setEnabled(true);
+        HibernateFactory.getSession().persist(raw);
+        TestUtils.flushSession();
+
+        Map<String, ImageFileType> enabled = ImageFileTypeFactory.lookupEnabledFileTypes(user.getOrg());
+        assertTrue(enabled.containsKey(".raw"));
+        assertTrue(enabled.get(".raw").isEnabled());
+        assertFalse(lookupDefaultType(".raw").isEnabled());
+        assertEquals("image", enabled.get(".raw").getFiletype());
+        assertEquals(Map.of(BASENAME + ".raw", "image"),
+                ImageFileTypeFactory.filterAllowedFiles(List.of(BASENAME + ".raw"), BASENAME, user.getOrg()));
+    }
 }

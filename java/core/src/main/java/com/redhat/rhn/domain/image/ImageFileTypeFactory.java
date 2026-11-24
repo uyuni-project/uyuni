@@ -60,6 +60,19 @@ public class ImageFileTypeFactory extends HibernateFactory {
      * @return the enabled file types by extension
      */
     public static Map<String, ImageFileType> lookupEnabledFileTypes(Org org) {
+        Map<String, ImageFileType> typesByExtension = lookupFileTypes(org);
+        typesByExtension.values().removeIf(type -> !type.isEnabled());
+        return typesByExtension;
+    }
+
+    /**
+     * Return the file types of an organization keyed by their extension, disabled entries included.
+     * An entry of the organization overrides the default entry with the same extension.
+     *
+     * @param org the organization owning the build
+     * @return the file types by extension, including the disabled ones
+     */
+    private static Map<String, ImageFileType> lookupFileTypes(Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ImageFileType> criteria = builder.createQuery(ImageFileType.class);
         Root<ImageFileType> root = criteria.from(ImageFileType.class);
@@ -72,14 +85,15 @@ public class ImageFileTypeFactory extends HibernateFactory {
                 .forEach(type -> typesByExtension.put(type.getExtension(), type));
         types.stream().filter(type -> type.getOrg() != null)
                 .forEach(type -> typesByExtension.put(type.getExtension(), type));
-        typesByExtension.values().removeIf(type -> !type.isEnabled());
         return typesByExtension;
     }
 
     /**
      * Keep only the files which are the image itself (file named exactly as the basename, which is an
      * uncompressed PXE/KIS image) or which have an extension enabled for the organization, mapped to the
-     * filetype of the matched extension. When several extensions match, the longest one wins.
+     * filetype of the matched extension. When several extensions match, the longest one wins, whether it
+     * is enabled or disabled: disabling an extension keeps its files excluded even if a shorter matching
+     * extension is enabled.
      *
      * @param paths file paths or file names
      * @param basename the basename of the image
@@ -87,7 +101,7 @@ public class ImageFileTypeFactory extends HibernateFactory {
      * @return the allowed subset of the given paths mapped to their filetype, in the original order
      */
     public static Map<String, String> filterAllowedFiles(List<String> paths, String basename, Org org) {
-        Map<String, ImageFileType> typesByExtension = lookupEnabledFileTypes(org);
+        Map<String, ImageFileType> typesByExtension = lookupFileTypes(org);
         Map<String, String> allowedFiles = new LinkedHashMap<>();
         for (String path : paths) {
             String fileName = Path.of(path).getFileName().toString();
@@ -98,6 +112,7 @@ public class ImageFileTypeFactory extends HibernateFactory {
                 typesByExtension.entrySet().stream()
                         .filter(entry -> fileName.endsWith(entry.getKey()))
                         .max(Comparator.comparingInt(entry -> entry.getKey().length()))
+                        .filter(entry -> entry.getValue().isEnabled())
                         .ifPresent(entry -> allowedFiles.put(path, entry.getValue().getFiletype()));
             }
         }
