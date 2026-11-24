@@ -20,6 +20,8 @@ package com.redhat.rhn.frontend.xmlrpc;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.manager.errata.RetractedErrataException;
 
+import com.suse.common.errors.UyuniErrorCategory;
+import com.suse.common.errors.UyuniGeneralException;
 import com.suse.manager.maintenance.NotInMaintenanceModeException;
 
 import java.nio.channels.OverlappingFileLockException;
@@ -56,6 +58,11 @@ public class ExceptionTranslator {
 
         if (t instanceof RetractedErrataException) {
             return new XmlRpcFault(2602, t.getMessage());
+        }
+
+        // Same fault as ValidationException; UNKNOWN errors are internal ones and fall through to the generic fault
+        if (t instanceof UyuniGeneralException report && report.getCategory() != UyuniErrorCategory.UNKNOWN) {
+            return new XmlRpcFault(2800, report.getMessage());
         }
 
         // For any other unhandled exception, we still need to send something to the client.
