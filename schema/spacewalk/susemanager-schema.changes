@@ -1,4 +1,30 @@
 -------------------------------------------------------------------
+Tue Nov 24 13:36:52 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3-0
+  * Adjust RBAC endpoints for removed OpenSCAP scan scheduling API
+    methods and Struts pages
+  * Fix planner estimates for package files, provides and changelogs
+    to avoid slow parallel queries during repodata generation
+    (bsc#1286091)
+  * Use the canonical Asia/Karachi timezone for Pakistan
+  * Remove access mapping for the retired internal Storybook page
+  * Make the deprecated kickstart auth command optional
+    (gh#uyuni-project/uyuni#6467, bsc#1286150)
+  * Introduce counting dimensions for systems with the Multi-Linux
+    Support in Pay-as-you-go environments, covering the regular and
+    long-term support versions and the EMS and HA extensions
+  * Store only the default value of database configuration keys and
+    initialize the value with NULL
+  * Move the HTTP proxy settings into the rhnConfiguration table
+  * Move the reposync settings into the rhnConfiguration table
+  * Add the RBAC endpoints of the Server Settings page
+  * Move the user login and e-mail length limits into the
+    rhnConfiguration table
+  * Add SLE16 installer generation
+  * Add support for setting action description via webUI and API
+
+-------------------------------------------------------------------
 Wed Oct 07 18:28:42 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2-0

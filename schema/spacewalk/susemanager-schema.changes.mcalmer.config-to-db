@@ -1,2 +1,0 @@
-- Store only the default value of database configuration keys and
-  initialize the value with NULL
