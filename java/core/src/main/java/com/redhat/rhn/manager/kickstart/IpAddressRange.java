@@ -183,6 +183,18 @@ public class IpAddressRange implements Serializable {
     }
 
     /**
+     * @param search the ip address to search for
+     * @param min the lowest ip address of the range
+     * @param max the highest ip address of the range
+     * @return true if search is within min and max
+     */
+    public static boolean contains(String search, String min, String max) {
+        IpAddressRange range = new IpAddressRange(new IpAddress(min).getLongNumber(),
+                new IpAddress(max).getLongNumber());
+        return range.isIpAddressContained(new IpAddress(search));
+    }
+
+    /**
      *
      * @param rangeIn Range coming in
      * @return if this range is before the other
