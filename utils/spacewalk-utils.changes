@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Nov 24 13:41:54 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3-0
+  * Show the configured repository metadata directory in the error
+    message of `spacewalk-clone-by-date`
+  * Add empty base channel and Uyuni Client Tools for RHEL10 to
+    spacewalk-common-channels
+
+-------------------------------------------------------------------
 Thu Oct 08 00:52:35 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2-0
