@@ -30,7 +30,7 @@
 %endif
 
 Name:           spacewalk-proxy-html
-Version:        5.3.1
+Version:        5.3.2
 Release:        0
 Summary:        The HTML component for Spacewalk Proxy
 License:        GPL-2.0-only
