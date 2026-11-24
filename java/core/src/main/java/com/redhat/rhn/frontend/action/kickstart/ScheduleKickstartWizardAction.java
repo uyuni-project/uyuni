@@ -102,9 +102,6 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
     public static final String VALID_CNAMES = "valid_cnames_";
     public static final String KERNEL_PARAMS = "kernelParams";
     public static final String KERNEL_PARAMS_TYPE = "kernelParamsType";
-    public static final String KERNEL_PARAMS_DISTRO = "distro";
-    public static final String KERNEL_PARAMS_PROFILE = "profile";
-    public static final String KERNEL_PARAMS_CUSTOM = "custom";
     private static final String COBBLER_ONLY_PROFILE = "cobblerOnlyProfile";
     public static final String POST_KERNEL_PARAMS = "postKernelParams";
     public static final String POST_KERNEL_PARAMS_TYPE = "postKernelParamsType";
@@ -519,11 +516,11 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         }
 
         if (StringUtils.isEmpty(form.getString(KERNEL_PARAMS_TYPE))) {
-            form.set(KERNEL_PARAMS_TYPE, KERNEL_PARAMS_DISTRO);
+            form.set(KERNEL_PARAMS_TYPE, KickstartScheduleCommand.KERNEL_PARAMS_DISTRO);
         }
 
         if (StringUtils.isEmpty(form.getString(POST_KERNEL_PARAMS_TYPE))) {
-            form.set(POST_KERNEL_PARAMS_TYPE, KERNEL_PARAMS_DISTRO);
+            form.set(POST_KERNEL_PARAMS_TYPE, KickstartScheduleCommand.KERNEL_PARAMS_DISTRO);
         }
 
         SdcHelper.ssmCheck(ctx.getRequest(), sid, user);
@@ -552,7 +549,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                 SystemRecord rec = SystemRecord.lookupById(con, cmd.getServer().getCobblerId());
                 if (rec != null && rec.getProfile() != null && profile.getName().equals(rec.getProfile().getName())) {
                     if (StringUtils.isBlank(form.getString(KERNEL_PARAMS_TYPE))) {
-                        form.set(KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
+                        form.set(KERNEL_PARAMS_TYPE, KickstartScheduleCommand.KERNEL_PARAMS_CUSTOM);
 
                         String kernelOptions = rec.getKernelOptions()
                                 .map(profile::convertOptionsMap)
@@ -562,7 +559,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                     }
 
                     if (StringUtils.isBlank(form.getString(POST_KERNEL_PARAMS_TYPE))) {
-                        form.set(POST_KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
+                        form.set(POST_KERNEL_PARAMS_TYPE, KickstartScheduleCommand.KERNEL_PARAMS_CUSTOM);
 
                         String kernelOptionsPost = rec.getKernelOptionsPost()
                                 .map(profile::convertOptionsMap)
@@ -984,44 +981,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         String customKey = !isPost ? KERNEL_PARAMS : POST_KERNEL_PARAMS;
         String type = form.getString(typeKey);
 
-        return parseKernelOptions(form.getString(customKey), type, profileCobblerId,
+        return KickstartScheduleCommand.parseKernelOptions(form.getString(customKey), type, profileCobblerId,
                 isPost, context.getCurrentUser());
-    }
-
-
-    /**
-     * Parses the kernel options or Post kernel options
-     * from the given set of params
-     *  This is a handy method used in both SSM and SDC KS scheduling.
-     * @param customOptions the kickstartScheduleWizardForm that holds the form fields.
-     * @param paramsType  either KERNEL_PARAMS_CUSTOM _DISTRO or _PROFILE
-     * @param cobblerId the cobbler profile id
-     * @param isPost true if caller is interested in getting the
-     *              post kernel options and not the pre.
-     * @param user the user doing the request
-     * @return the kernel options selected by the user.
-     */
-    public static String parseKernelOptions(String customOptions,
-            String paramsType,
-            String cobblerId,
-            boolean isPost, User user) {
-
-        CobblerConnection con  = CobblerXMLRPCHelper.
-                getConnection(user);
-        if (KERNEL_PARAMS_CUSTOM.equals(paramsType)) {
-            return customOptions;
-        }
-        org.cobbler.Profile profile = org.cobbler.Profile.lookupById(con,
-                cobblerId);
-        CobblerObject ret = profile;
-
-        if (KERNEL_PARAMS_DISTRO.equals(paramsType)) {
-            ret = profile.getDistro();
-        }
-        if (!isPost) {
-            return ret.convertOptionsMap(ret.getKernelOptions().orElse(new HashMap<>()));
-        }
-        return ret.convertOptionsMap(ret.getKernelOptionsPost().orElse(new HashMap<>()));
-
     }
 }
