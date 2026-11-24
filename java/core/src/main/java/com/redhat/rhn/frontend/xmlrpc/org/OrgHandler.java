@@ -24,6 +24,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.common.validator.ValidatorService;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -34,7 +35,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.OrgDto;
-import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.MigrationToSameOrgException;
@@ -198,7 +198,7 @@ public class OrgHandler extends BaseHandler {
         values.put("firstNames", firstName);
         values.put("lastName", lastName);
 
-        ValidatorResult result = RhnValidationHelper.validate(this.getClass(),
+        ValidatorResult result = ValidatorService.getInstance().validateObject(this.getClass(),
                 values, new LinkedList<>(values.keySet()), VALIDATION_XSD);
 
         if (!result.isEmpty()) {

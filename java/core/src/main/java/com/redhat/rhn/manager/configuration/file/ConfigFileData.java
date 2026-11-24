@@ -22,13 +22,13 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.common.validator.ValidatorService;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigInfo;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.frontend.action.configuration.ConfigFileForm;
-import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationValidation;
 
 import org.apache.commons.lang3.StringUtils;
@@ -335,7 +335,7 @@ public abstract class ConfigFileData {
         }
 
         // Struts-validation errors?  Bug out if so
-        ValidatorResult result = RhnValidationHelper.validate(this.getClass(),
+        ValidatorResult result = ValidatorService.getInstance().validateObject(this.getClass(),
                                             makeValidationMap(), null,
                                             VALIDATION_XSD);
         if (!result.isEmpty()) {

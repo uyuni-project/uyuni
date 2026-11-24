@@ -19,11 +19,11 @@ package com.redhat.rhn.manager.configuration.file;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.common.validator.ValidatorService;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigInfo;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
-import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationValidation;
 
 
@@ -94,7 +94,7 @@ public class SymlinkData extends DirectoryData {
            validatePath();
        }
        // Struts-validation errors?  Bug out if so
-       ValidatorResult result = RhnValidationHelper.validate(this.getClass(),
+       ValidatorResult result = ValidatorService.getInstance().validateObject(this.getClass(),
                                            makeValidationMap(), null,
                                            VALIDATION_XSD);
        ValidatorError ve = validateSELinux();
