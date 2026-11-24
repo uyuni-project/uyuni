@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov 24 14:22:54 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.2-0
+  * Introduce handling of license handling using reuse
+
+-------------------------------------------------------------------
 Mon Aug 03 16:36:53 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0
