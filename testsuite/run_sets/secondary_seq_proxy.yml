@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# Secondary family 'seq_proxy'. See run_sets/secondary.yml and secondary_parallelizable.yml for the legacy full sets.
+
+- features/secondary/proxy_container_cobbler_pxeboot.feature
+- features/secondary/proxy_container_retail_pxeboot.feature
+- features/secondary/proxy_container_retail_mass_import.feature

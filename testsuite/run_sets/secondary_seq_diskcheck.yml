@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
+# Secondary family 'seq_diskcheck'. See run_sets/secondary.yml and secondary_parallelizable.yml for the legacy full sets.
+# keep this one last since it can cause the server to stop
+
+- features/secondary/srv_diskcheck.feature
