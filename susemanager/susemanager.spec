@@ -54,7 +54,7 @@
 %global pythonsmroot %{python3_sitelib}/spacewalk
 
 Name:           susemanager
-Version:        5.3.3
+Version:        5.3.4
 Release:        0
 Summary:        %{productprettyname} specific scripts
 License:        GPL-2.0-only
