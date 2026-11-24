@@ -855,7 +855,7 @@ It should list all clients on all peripheral servers.
 1. To test OpenScap install:
     - `transactional-update pkg install openscap-utils`
     - reboot
-1. Try also monitoring feature (Prometheus exporter formula)
+1. Try also monitoring feature (Prometheus exporter formula) - Automated: covered by `features/secondary/min_monitoring.feature` and Build Validation smoke tests.
 
 ### 7.11 Test `spacewalk-hostname-rename`
 * Priority: low

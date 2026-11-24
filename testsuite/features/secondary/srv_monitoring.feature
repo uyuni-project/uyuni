@@ -64,6 +64,10 @@ Feature: Disable and re-enable monitoring of the server
     And port "5556" should be closed
     And port "5557" should be closed
 
+@monitoring_server
+  Scenario: Verify server self-monitoring targets are down in Prometheus
+    Then the server self-monitoring targets should be down on "monitoring_server"
+
   Scenario: Enable monitoring from the UI
     When I follow the left menu "Admin > Manager Configuration > Monitoring"
     And I wait until I see "Server self monitoring" text
@@ -99,3 +103,8 @@ Feature: Disable and re-enable monitoring of the server
     And port "3334" should be closed
     And port "5556" should be open
     And port "5557" should be open
+
+@monitoring_server
+  Scenario: Verify server self-monitoring targets and metrics in Prometheus
+    Then the server self-monitoring targets should be up on "monitoring_server"
+    And the server self-monitoring metrics should be available on "monitoring_server"

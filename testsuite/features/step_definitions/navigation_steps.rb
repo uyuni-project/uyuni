@@ -1166,9 +1166,15 @@ When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
     case service
     when 'Proxy' then [443, 'https', '/pub/', 'Index of /pub']
     when 'Prometheus' then [9090, 'http', '/query', 'Prometheus Time Series Collection']
-    when 'Prometheus node exporter' then [9100, 'http', '', 'Node Exporter']
-    when 'Prometheus apache exporter' then [9117, 'http', '', 'Apache Exporter']
-    when 'Prometheus postgres exporter' then [9187, 'http', '', 'Postgres Exporter']
+    when 'Prometheus node exporter'
+      warn 'DEPRECATION: Visiting node exporter endpoint directly is deprecated; prefer Prometheus integration steps.'
+      [9100, 'http', '', 'Node Exporter']
+    when 'Prometheus apache exporter'
+      warn 'DEPRECATION: Visiting apache exporter endpoint directly is deprecated; prefer Prometheus integration steps.'
+      [9117, 'http', '', 'Apache Exporter']
+    when 'Prometheus postgres exporter'
+      warn 'DEPRECATION: Visiting postgres exporter endpoint directly is deprecated; prefer Prometheus integration steps.'
+      [9187, 'http', '', 'Postgres Exporter']
     when 'Grafana' then [3000, 'http', '', 'Grafana Labs']
     else raise ScriptError, "Unknown port for service #{service}"
     end
