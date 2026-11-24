@@ -1,3 +1,0 @@
-- Remove `debug`, `traceback_mail` and `quiet_mail` from
-  `rhn_server.conf`. They are already defined in the global
-  `rhn.conf` defaults

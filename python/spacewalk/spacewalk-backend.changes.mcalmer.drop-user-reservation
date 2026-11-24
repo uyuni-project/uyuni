@@ -1,3 +1,0 @@
-- Remove the unused user reservation and validation functions from
-  `rhnUser` and the configuration options `disallowed_suffixes` and
-  `disallow_user_creation`

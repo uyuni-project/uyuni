@@ -1,2 +1,0 @@
-- Remove the unused function `suseLib.send()` and the configuration
-  options `timeout` and `disable_expect` it used

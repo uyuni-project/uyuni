@@ -1,3 +1,0 @@
-- Define `repomd_cache_mount_point` in the default `rhn.conf` and
-  use it when removing the repository metadata of a channel and in
-  the metadata signing scripts

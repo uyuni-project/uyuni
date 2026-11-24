@@ -1,3 +1,0 @@
-- Remove the configuration option `enable_nvrea`. Packages with the
-  same NEVRA but a different checksum are always handled as
-  different packages
