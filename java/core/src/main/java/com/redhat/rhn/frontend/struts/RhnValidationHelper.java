@@ -17,9 +17,7 @@
 
 package com.redhat.rhn.frontend.struts;
 
-import com.redhat.rhn.common.validator.Validator;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorService;
 import com.redhat.rhn.common.validator.ValidatorWarning;
@@ -30,7 +28,6 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import java.net.URL;
 import java.util.List;
 
 import jakarta.mail.internet.AddressException;
@@ -240,25 +237,8 @@ public class RhnValidationHelper {
      */
     public static ValidatorResult validate(Class base, Object toValidate,
             List fieldNames, String xsdName) {
-        Validator validator;
-
-        try {
-
-            URL xsd = base.getResource(xsdName);
-            if (xsd == null) {
-                throw new IllegalArgumentException(
-                        "Could not find validator for " + xsdName + " and " +
-                                base.getName());
-            }
-            validator = Validator.getInstance(xsd);
-
-        }
-        catch (java.io.IOException ioe) {
-            throw new ValidatorException("Failed to instantiate Validator");
-        }
-
-        return ValidatorService.getInstance().validateObject(toValidate,
-                validator, fieldNames);
+        return ValidatorService.getInstance().validateObject(base, toValidate,
+                fieldNames, xsdName);
     }
 
     /**

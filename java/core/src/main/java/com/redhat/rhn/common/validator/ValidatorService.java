@@ -21,6 +21,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -112,6 +113,33 @@ public class ValidatorService {
             }
         }
         return result;
+    }
+
+    /**
+     * Validate an object against an XSD found relative to the given class.
+     *
+     * @param base the class from which to look up the XSD
+     * @param validateIn the object to validate
+     * @param constraintNames List of constraints to validate, or null for all
+     * @param xsdName the path of the XSD, relative to base or absolute
+     * @return ValidatorResult
+     */
+    public ValidatorResult validateObject(Class<?> base, Object validateIn,
+            List<String> constraintNames, String xsdName) {
+        Validator validator;
+        try {
+            URL xsd = base.getResource(xsdName);
+            if (xsd == null) {
+                throw new IllegalArgumentException(
+                        "Could not find validator for " + xsdName + " and " +
+                                base.getName());
+            }
+            validator = Validator.getInstance(xsd);
+        }
+        catch (java.io.IOException ioe) {
+            throw new ValidatorException("Failed to instantiate Validator");
+        }
+        return validateObject(validateIn, validator, constraintNames);
     }
 
     /**
