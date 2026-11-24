@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.PackageSearchAction;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ErrataTestUtils;
@@ -111,7 +110,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
         List<PackageOverview> results =
                 PackageFactory.packageSearch(pids, arches, user.getId(), null,
-                        PackageSearchAction.ARCHITECTURE);
+                        PackageFactory.SEARCH_ARCHITECTURE);
         assertNotNull(results);
     }
 
