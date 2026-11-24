@@ -59,14 +59,14 @@ public class PowerManagementAction extends RhnAction {
     /** The log. */
     private static Logger log = LogManager.getLogger(PowerManagementAction.class);
     public static final String TYPES = "types";
-    public static final String POWER_TYPE = "powerType";
-    public static final String POWER_ADDRESS = "powerAddress";
-    public static final String POWER_USERNAME = "powerUsername";
-    public static final String POWER_PASSWORD = "powerPassword";
+    public static final String POWER_TYPE = CobblerPowerSettingsUpdateCommand.POWER_TYPE;
+    public static final String POWER_ADDRESS = CobblerPowerSettingsUpdateCommand.POWER_ADDRESS;
+    public static final String POWER_USERNAME = CobblerPowerSettingsUpdateCommand.POWER_USERNAME;
+    public static final String POWER_PASSWORD = CobblerPowerSettingsUpdateCommand.POWER_PASSWORD;
     public static final String POWER_NO_AGENT = "powerNoAgent";
 
     /** Attribute name. */
-    public static final String POWER_ID = "powerId";
+    public static final String POWER_ID = CobblerPowerSettingsUpdateCommand.POWER_ID;
 
     /** Attribute name. */
     public static final String POWER_STATUS_ON = "powerStatusOn";

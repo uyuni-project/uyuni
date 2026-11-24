@@ -20,6 +20,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.rhnpackage.MissingArchitectureException;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.frontend.action.channel.PackageSearchHelper;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
@@ -79,10 +80,10 @@ public abstract class BaseSearchAction extends RhnAction {
     public static final String CHANNEL_ARCH = "channel_arch";
     public static final String CHANNEL_ARCHES = "channelArches";
     public static final String CHANNEL_FILTER = "channel_filter";
-    public static final String OPT_FREE_FORM = "search_free_form";
-    public static final String OPT_NAME_AND_DESC = "search_name_and_description";
-    public static final String OPT_NAME_AND_SUMMARY = "search_name_and_summary";
-    public static final String OPT_NAME_ONLY = "search_name";
+    public static final String OPT_FREE_FORM = PackageSearchHelper.OPT_FREE_FORM;
+    public static final String OPT_NAME_AND_DESC = PackageSearchHelper.OPT_NAME_AND_DESC;
+    public static final String OPT_NAME_AND_SUMMARY = PackageSearchHelper.OPT_NAME_AND_SUMMARY;
+    public static final String OPT_NAME_ONLY = PackageSearchHelper.OPT_NAME_ONLY;
     public static final String RELEVANT = PackageFactory.SEARCH_RELEVANT;
     public static final String WHERE_CRITERIA = "whereCriteria";
 
