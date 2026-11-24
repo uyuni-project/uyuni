@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Nov 24 13:58:22 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3-0
+  * Add connect timeout to HTTPSConnection and apply
+    timeout before connect (bsc#1277719)
+
+-------------------------------------------------------------------
 Thu Oct 08 01:01:42 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2-0
