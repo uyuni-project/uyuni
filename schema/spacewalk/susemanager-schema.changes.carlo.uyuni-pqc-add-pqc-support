@@ -1,1 +1,2 @@
-- Add db fields to enable PQC signing
+- Add db fields to enable Post-Quantum Cryptography signing
+- Add updateAllPeripherals api endpoint

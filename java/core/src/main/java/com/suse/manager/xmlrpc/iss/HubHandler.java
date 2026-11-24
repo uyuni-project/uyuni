@@ -734,6 +734,26 @@ public class HubHandler extends BaseHandler {
     }
 
     /**
+     * Synchronize all peripherals with hub GPG key and PQC certificate
+     *
+     * @param loggedInUser The current user
+     * @return 1 on success, exception otherwise
+     * @apidoc.doc Synchronize all peripherals with hub GPG key and PQC certificate
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
+     */
+    public int updateAllPeripherals(User loggedInUser) {
+        ensureSatAdmin(loggedInUser);
+        try {
+            hubManager.updateAllPeripherals(loggedInUser);
+        }
+        catch (IllegalArgumentException ex) {
+            throw new InvalidParameterException(logAndGetErrorMessage(ex, "Illegal state"));
+        }
+        return 1;
+    }
+
+    /**
      * Regenerate the username and the password for an existing peripheral.
      * @param loggedInUser The current user
      * @param fqdn         the FQDN identifying the peripheral Server

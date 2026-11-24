@@ -16,6 +16,9 @@ package com.suse.manager.model.hub;
 import java.util.Map;
 
 public class UpdatableServerData {
+    public static final String GPG_KEY_DATA_KEY = "gpg_key";
+    public static final String PQC_CERT_DATA_KEY = "pqc_cert";
+
     private final boolean rootCADefined;
 
     private final String rootCA;
@@ -36,10 +39,10 @@ public class UpdatableServerData {
         if (null != dataMap) {
             this.rootCADefined = dataMap.containsKey("root_ca");
             this.rootCA = dataMap.get("root_ca");
-            this.gpgKeyDefined = dataMap.containsKey("gpg_key");
-            this.gpgKey = dataMap.get("gpg_key");
-            this.pqcCertDefined = dataMap.containsKey("pqc_cert");
-            this.pqcCert = dataMap.get("pqc_cert");
+            this.gpgKeyDefined = dataMap.containsKey(GPG_KEY_DATA_KEY);
+            this.gpgKey = dataMap.get(GPG_KEY_DATA_KEY);
+            this.pqcCertDefined = dataMap.containsKey(PQC_CERT_DATA_KEY);
+            this.pqcCert = dataMap.get(PQC_CERT_DATA_KEY);
         }
         else {
             this.rootCADefined = false;

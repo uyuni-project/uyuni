@@ -989,9 +989,9 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         assertNull(hub.getPqcCert());
 
         UpdatableServerData data = new UpdatableServerData(Map.of(
-                "gpg_key", "---- BEGIN NEW GPG PUB KEY -----",
+                UpdatableServerData.GPG_KEY_DATA_KEY, "---- BEGIN NEW GPG PUB KEY -----",
                 "root_ca", "---- BEGIN NEW ROOT CA ----",
-                "pqc_cert", "---- BEGIN NEW PQC CERT ----")
+                UpdatableServerData.PQC_CERT_DATA_KEY, "---- BEGIN NEW PQC CERT ----")
         );
 
         MockHubManager mockHubManager = new MockHubManager(hubFactory, clientFactoryMock,

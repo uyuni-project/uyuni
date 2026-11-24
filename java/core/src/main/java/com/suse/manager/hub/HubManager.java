@@ -1866,6 +1866,54 @@ public class HubManager {
     }
 
     /**
+     * Synchronize all peripherals with hub GPG key and PQC certificate
+     *
+     * @param user The current user
+     */
+    public void updateAllPeripherals(User user) throws PermissionException {
+        ensureSatAdmin(user);
+        updateAllPeripherals();
+    }
+
+    private void updateAllPeripherals() {
+        List<String> allErrors = new ArrayList<>();
+
+        List<IssPeripheral> allPeripherals = hubFactory.listPeripherals();
+        allPeripherals.forEach(peripheral -> {
+            try {
+                IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(peripheral.getFqdn());
+                var internalClient = clientFactory.newInternalClient(peripheral.getFqdn(), accessToken.getToken(),
+                        peripheral.getRootCa());
+
+                // Send the local GPG key used to sign metadata, if configured.
+                // This forces metadata checking on the peripheral server when mirroring from the Hub
+                String localGpgKey =
+                        (ConfigDefaults.get().isMetadataSigningEnabled()) ? CertificateUtils.loadGpgKey() : "";
+
+                // Send the local PQC certificate used to sign metadata, if configured.
+                // This forces metadata checking on the peripheral server when mirroring from the Hub
+                String localPqcCert =
+                        (ConfigDefaults.get().isPqcMetadataSigningEnabled()) ? CertificateUtils.loadPqcCert() : "";
+
+                //empty values remove the old gpg key or pwc certificate
+                Map<String, String> dataMap = new HashMap<>();
+                dataMap.put(UpdatableServerData.GPG_KEY_DATA_KEY, localGpgKey);
+                dataMap.put(UpdatableServerData.PQC_CERT_DATA_KEY, localPqcCert);
+
+                internalClient.setHubDetails(dataMap);
+            }
+            catch (Exception eIn) {
+                LOG.error("Error updating GPG/PQC keys in peripheral {} : {}", peripheral.getFqdn(), eIn.getMessage());
+                allErrors.add("[%s]: %s".formatted(peripheral.getFqdn(), eIn.getMessage()));
+            }
+        });
+
+        if (!allErrors.isEmpty()) {
+            throw new RuntimeException(String.join("\n", allErrors));
+        }
+    }
+
+    /**
      * Delete an ISS v1 slave if it's also registered as a ISS v3 peripheral
      * @param user the user performing the operation
      * @param fqdn the fully qualified domain name of the slave and corresponding peripheral

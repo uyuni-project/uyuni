@@ -5793,6 +5793,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.update_all_peripherals' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/sync/hub/updateAllPeripherals' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.sync.hub.migrate_from_iss_v2' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/sync/hub/migrateFromISSv2' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
