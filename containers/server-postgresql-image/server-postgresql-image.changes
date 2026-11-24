@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Nov 24 13:49:18 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.3
+  * Add DISKCHECKALERT_FREE_MB and DISKTHRESHOLD_FREE_MB environment
+    variables to define the disk check thresholds as available
+    space in MB
+  * Read the disk check thresholds at runtime in
+    get_pgsql_disk_severity()
+
+-------------------------------------------------------------------
 Thu Oct 08 01:10:07 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.2
