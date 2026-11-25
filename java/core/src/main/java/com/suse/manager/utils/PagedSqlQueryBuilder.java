@@ -61,7 +61,7 @@ public class PagedSqlQueryBuilder {
 
     private static final Pattern NUMBER_FILTER_REGEX = Pattern.compile("^([<>!=]{0,2}) *([^ ]*)$");
 
-    private static final Pattern INVALID_COLUMN_CHARS_REGEX = Pattern.compile("[^A-Za-z0-9-_.]");
+    private static final Pattern INVALID_COLUMN_CHARS_REGEX = Pattern.compile("[^A-Za-z0-9-_.+ ]");
 
     private static final Logger LOG = LogManager.getLogger(PagedSqlQueryBuilder.class);
 
