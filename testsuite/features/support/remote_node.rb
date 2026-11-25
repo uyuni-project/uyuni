@@ -14,8 +14,9 @@ class RemoteNode
   #
   # @param host [String] The hostname of the remote node.
   # @param port [Integer] The port to use for the SSH connection.
+  #   On cloud providers clients are real instances, not containers: they always listen on HOST_SSH_PORT.
   # @return [RemoteNode] The remote node.
-  def initialize(host, port: SSH_PORT_BY_HOST.fetch(host, HOST_SSH_PORT))
+  def initialize(host, port: $is_cloud_provider ? HOST_SSH_PORT : SSH_PORT_BY_HOST.fetch(host, HOST_SSH_PORT))
     @host = host
     @port = port
     puts "Initializing a remote node for '#{@host}'."

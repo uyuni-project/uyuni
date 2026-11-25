@@ -18,7 +18,7 @@ Feature: Bootstrap a RHEL 9 Salt SSH minion
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
     And I enter the hostname of "rhel9_sshminion" as "hostname"
-    And I enter "2222" as "port"
+    And I enter the SSH port of "rhel9_sshminion" as "port"
     And I enter "linux" as "password"
     And I select "1-rhel9_sshminion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present

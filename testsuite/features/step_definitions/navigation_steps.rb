@@ -532,6 +532,10 @@ When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, field|
   step %(I enter "#{system_name}" as "#{field}")
 end
 
+When(/^I enter the SSH port of "([^"]*)" as "([^"]*)"$/) do |host, field|
+  fill_in(field, with: get_target(host).port.to_s, fill_options: { clear: :backspace })
+end
+
 When(/^I select the hostname of "([^"]*)" from "([^"]*)"((?: if present)?)$/) do |host, field, if_present|
   begin
     system_name = get_system_name(host)
