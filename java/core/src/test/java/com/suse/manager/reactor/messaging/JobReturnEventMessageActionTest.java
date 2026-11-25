@@ -2297,6 +2297,73 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertNull(info.getPillar());
     }
 
+    @Test
+    public void testKiwiImageInspectRetaggedFilesRemainInSet() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
+            allowing(saltServiceMock).removeFile(with(any(Path.class)));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
+        }});
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+        // schedule the build; all artefacts are collected with type "image" and get
+        // retagged to their real types (kernel, initrd) by the inspection
+        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), null, profile, new Date(), user);
+        ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
+        buildAction = TestUtils.reload(buildAction);
+        ImageInfo info = ImageInfoFactory.lookupByBuildAction(buildAction).orElseThrow();
+        info.setName("POS_Image_JeOS6");
+        info.setVersion("6.0.0");
+        info.setRevisionNumber(1);
+        for (String name : List.of("POS_Image_JeOS6.x86_64-6.0.0",
+                "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default",
+                "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz")) {
+            ImageTestUtils.createImageFile(info, "POS_Image_JeOS6-6.0.0-1/" + name, "image");
+        }
+        info.getImageFiles().forEach(f -> f.setChecksum(ChecksumFactory.safeCreate(
+                DigestUtils.sha256Hex(f.getFileName()), "sha256")));
+
+        long inspectId = ImageInfoFactory.scheduleInspect(info, new Date(), user);
+        final ImageInspectAction inspectAction = (ImageInspectAction) TestUtils.reload(
+                ActionFactory.lookupById(inspectId));
+
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("image.inspect.kiwi.json", inspectId));
+        JsonElement jsonResult = event.get().getData().getResult(JsonElement.class);
+
+        inspectAction.handleUpdateServerAction(
+                inspectAction.getServerActions().iterator().next(), jsonResult, null);
+
+        // 'type' participates in the ImageFile hash: after retagging, the elements must
+        // still be addressable and removable in the hash-backed imageFiles set
+        ImageFile initrd = info.getImageFiles().stream()
+                .filter(f -> "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz".equals(f.getFileName()))
+                .findFirst().orElseThrow();
+        ImageFile kernel = info.getImageFiles().stream()
+                .filter(f -> "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default"
+                        .equals(f.getFileName()))
+                .findFirst().orElseThrow();
+        assertEquals("initrd", initrd.getType());
+        assertEquals("kernel", kernel.getType());
+        assertTrue(info.getImageFiles().contains(initrd));
+        assertTrue(info.getImageFiles().contains(kernel));
+
+        ImageInfoFactory.deleteImageFile(initrd, saltServiceMock);
+        assertFalse(info.getImageFiles().contains(initrd));
+    }
+
     private static org.jmock.api.Action deleteCollectedFile() {
         return new CustomAction("delete the collected file") {
             @Override

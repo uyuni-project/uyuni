@@ -356,10 +356,16 @@ public class ImageInspectAction extends Action {
 
         imageInfo.getImageFiles().stream()
                 .filter(file -> !file.isExternal())
+                .toList()
                 .forEach(file -> {
                     String type = typesByName.get(file.getFileName());
-                    if (type != null) {
+                    // 'type' participates in ImageFile.equals/hashCode, which are used by
+                    // the hash-based imageFiles set: retagging must keep the element
+                    // addressable, so it leaves and re-enters the set
+                    if (type != null && !type.equals(file.getType())) {
+                        imageInfo.getImageFiles().remove(file);
                         file.setType(type);
+                        imageInfo.getImageFiles().add(file);
                     }
                 });
 
