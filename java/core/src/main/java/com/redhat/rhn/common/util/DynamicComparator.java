@@ -17,7 +17,6 @@
 package com.redhat.rhn.common.util;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.frontend.struts.RequestContext;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
@@ -39,6 +38,7 @@ import java.util.Comparator;
  *
  */
 public class DynamicComparator<T> implements Comparator<T>  {
+    private static final String SORT_ASC = "asc";
 
     private String fieldName;
     private int order;
@@ -49,11 +49,10 @@ public class DynamicComparator<T> implements Comparator<T>  {
      * @param fieldNameIn Name of field you want to use in
      * the bean to compare to
      *
-     * @param sortOrder Should be either <code>RequestContext.LIST_SORT_ASC</code> or
-     * <code>RequestContext.LIST_SORT_DESC</code>
+     * @param sortOrder Should be either "asc" or "desc"
      */
     public DynamicComparator(String fieldNameIn, String sortOrder) {
-        this (fieldNameIn, RequestContext.SORT_ASC.equals(sortOrder));
+        this (fieldNameIn, SORT_ASC.equals(sortOrder));
     }
 
     /**
