@@ -57,6 +57,7 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -119,11 +120,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.api.Invocation;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.lib.action.CustomAction;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -160,6 +163,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
     private SystemEntitlementManager systemEntitlementManager;
     protected Path metadataDirOfficial;
+    private Path osImageStoreDir;
+    private String originalOsImageStorePath;
     private SaltUtils saltUtils;
     private SaltServerActionService saltServerActionService;
 
@@ -178,6 +183,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new SaltKeyUtils(saltServiceMock));
         metadataDirOfficial = Files.createTempDirectory("meta");
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
+        osImageStoreDir = Files.createTempDirectory("os-images");
+        originalOsImageStorePath = OSImageStoreUtils.getOsImageStorePath();
+        OSImageStoreUtils.setOsImageStorePath(osImageStoreDir.toString() + "/");
         Path systemLockDir = metadataDirOfficial.resolve("system-lock");
         Path systemLockFile = Paths.get(systemLockDir.toString(),  "form.yml");
         Files.createDirectories(systemLockDir);
@@ -186,6 +194,16 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
+    }
+
+    @AfterEach
+    public void tearDownOsImageStore() throws Exception {
+        if (osImageStoreDir != null) {
+            FileUtils.deleteDirectory(osImageStoreDir.toFile());
+        }
+        if (originalOsImageStorePath != null) {
+            OSImageStoreUtils.setOsImageStorePath(originalOsImageStorePath);
+        }
     }
 
     /**
@@ -2098,8 +2116,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
-                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/",
-                            user.getOrg().getId()))));
+                    with(equal(OSImageStoreUtils.getOSImageStorePathForOrg(user.getOrg()) +
+                            "POS_Image_JeOS6-6.0.0-0/")));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
