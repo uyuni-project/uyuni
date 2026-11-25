@@ -22,7 +22,7 @@ import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.ssm.ChannelActionDAO;
+import com.redhat.rhn.manager.ssm.ChannelActionDAO;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 

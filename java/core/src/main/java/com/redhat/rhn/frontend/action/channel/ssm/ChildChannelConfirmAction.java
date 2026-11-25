@@ -30,6 +30,7 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.manager.ssm.ChannelActionDAO;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
