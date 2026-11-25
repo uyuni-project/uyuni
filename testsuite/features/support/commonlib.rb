@@ -1,6 +1,8 @@
 # Copyright (c) 2013-2026 SUSE LLC.
 # SPDX-License-Identifier: MIT
 
+require 'erb'
+require 'json'
 require 'tempfile'
 require 'yaml'
 require 'nokogiri'
@@ -688,6 +690,93 @@ end
 # @return [String] The result from the SQL query.
 def reportdb_server_query(query)
   "echo \"#{query}\" | spacewalk-sql --reportdb --select-mode -"
+end
+
+# Returns the CPE of a system and the number of OVAL vulnerability rows whose platform CPE matches it.
+# The match mirrors CVEAuditManagerOVAL#isCpeCoveredByOval: either CPE is a prefix of the other.
+#
+# @param system_id [Integer] The system ID in the server database.
+# @return [Array<String, Integer>] The CPE ('' when the system has none) and the row count.
+def oval_coverage(system_id)
+  query = 'SELECT s.cpe, count(v.id) FROM rhnServer s ' \
+          'LEFT JOIN suseOVALPlatform p ON starts_with(s.cpe, p.cpe) OR starts_with(p.cpe, s.cpe) ' \
+          'LEFT JOIN suseOVALPlatformVulnerable v ON v.platform_id = p.id ' \
+          "WHERE s.id = #{system_id.to_i} GROUP BY s.cpe"
+  output, _code = get_target('server').run("echo \"#{query}\" | spacewalk-sql --select-mode -")
+  lines = output.lines.map(&:strip)
+  separator = lines.index { |line| line.match?(/^[-+]+$/) }
+  row = separator && lines[separator + 1]
+  raise ScriptError, "System #{system_id} not found in the server database:\n#{output}" unless row&.include?('|')
+
+  cpe, count = row.split('|', 2).map(&:strip)
+  [cpe, count.to_i]
+end
+
+# Rewrites the OVAL sources of the server with empty URLs: every product stays supported, but the OVAL sync downloads
+# nothing for it, and then deletes the OVAL data it did not refresh. The first call backs up the packaged file.
+#
+# @yield [Hash] The 'sources' section, to point one product at a fixture before the file is written.
+def oval_write_sources
+  server = get_target('server')
+  server.run("test -f #{OVAL_CONFIG_BACKUP} || cp -p #{OVAL_CONFIG_PATH} #{OVAL_CONFIG_BACKUP}")
+  output, _err, _code = server.run("cat #{OVAL_CONFIG_BACKUP}", separated_results: true)
+  config = JSON.parse(output)
+  config['sources'].each_value { |family| family['content'].each_value { |urls| urls.replace('vulnerability' => '', 'patch' => '') } }
+  yield config['sources'] if block_given?
+  oval_inject(JSON.pretty_generate(config), OVAL_CONFIG_PATH)
+end
+
+# Serves an OVAL fixture declaring the CVE for milkyway-dummy older than 2.0-1.1 on the product of the host's CPE,
+# and points the OVAL sources of the server at it. The server fetches it from localhost, which never goes through
+# the proxy (HttpClientAdapter#useProxyFor).
+#
+# @param cve [String] The CVE identifier the fixture declares.
+# @param host [String] The SLES host whose rhnServer.cpe the fixture targets.
+def oval_use_fixture(cve, host)
+  cpe, _count = oval_coverage(get_system_id(get_target(host)))
+  _cpe, _part, _vendor, product, version, update = cpe.split(':')
+  raise ScriptError, "#{host} has the CPE '#{cpe}', but the OVAL fixture only covers SLES" unless product == 'sles'
+
+  # The product derives the platform CPE from the 'sles-release is ==15.7' test of the fixture: 15.7 -> sles:15:sp7
+  release = update ? "#{version}.#{update.delete_prefix('sp')}" : version
+  template = File.read(File.join(File.dirname(__FILE__), '..', 'upload_files', 'oval-fixture.xml.erb'))
+  oval_inject(ERB.new(template).result_with_hash(cve: cve, cpe: cpe, release: release), OVAL_FIXTURE_PATH)
+  url = "http://localhost/pub/#{File.basename(OVAL_FIXTURE_PATH)}"
+  oval_write_sources { |sources| sources['SUSE_LINUX_ENTERPRISE_SERVER']['content'][version]['vulnerability'] = url }
+end
+
+# Puts the packaged OVAL sources back and removes the fixture and its downloaded copy. Safe to call more than once.
+def oval_restore_sources
+  server = get_target('server')
+  server.run("test ! -f #{OVAL_CONFIG_BACKUP} || mv -f #{OVAL_CONFIG_BACKUP} #{OVAL_CONFIG_PATH}")
+  server.run("rm -f #{OVAL_FIXTURE_PATH} /var/cache/rhn/ovals/#{File.basename(OVAL_FIXTURE_PATH)}")
+end
+
+# Deletes the OVAL platforms no vulnerability row refers to. A sync deletes old vulnerability rows but never the
+# platforms, and a platform matching the CPE of a system makes the CVE audit consider that system covered by OVAL.
+def oval_delete_platforms_without_data
+  query = 'DELETE FROM suseOVALPlatform p WHERE NOT EXISTS (SELECT 1 FROM suseOVALPlatformVulnerable v WHERE v.platform_id = p.id)'
+  get_target('server').run("echo \"#{query}\" | spacewalk-sql -")
+end
+
+# Deletes every OVAL vulnerable package, vulnerability and platform row, children first. Used when a scenario of the
+# fixture feature fails, so that the clients are not left covered by OVAL data for the features that run next.
+def oval_delete_all_data
+  query = 'DELETE FROM suseOVALVulnerablePackage; DELETE FROM suseOVALPlatformVulnerable; DELETE FROM suseOVALPlatform'
+  get_target('server').run("echo \"#{query}\" | spacewalk-sql -")
+end
+
+# Writes content into a world-readable file on the server: tomcat reads the OVAL sources too.
+#
+# @param content [String] The file content.
+# @param remote_file [String] The path of the file on the server.
+def oval_inject(content, remote_file)
+  file = generate_temp_file(File.basename(remote_file), content)
+  raise ScriptError, "Failed to copy #{remote_file} from the controller to the server" unless file_inject(get_target('server'), file.path, remote_file)
+
+  get_target('server').run("chmod 644 #{remote_file}")
+ensure
+  file&.close!
 end
 
 # Runs a single-value query (no double quotes in it) against the reportdb of a server.

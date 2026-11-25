@@ -626,6 +626,30 @@ Then(/^the taskomatic logs should not contain errors$/) do
   end
 end
 
+Then(/^OVAL vulnerability data should( not)? exist for the OS of "([^"]*)"$/) do |negated, host|
+  cpe, count = oval_coverage(get_system_id(get_target(host)))
+  raise ScriptError, "#{host} has no CPE in the server database, so no OVAL data can match it" if cpe.empty?
+  raise ScriptError, "#{count} OVAL vulnerability rows on the server still match the CPE #{cpe} of #{host}" if negated && count.positive?
+  raise ScriptError, "No OVAL vulnerability data on the server matches the CPE #{cpe} of #{host}" if !negated && count.zero?
+end
+
+When(/^I point the OVAL sources of the server to a fixture declaring "([^"]*)" for the OS of "([^"]*)"$/) do |cve, host|
+  oval_use_fixture(cve, host)
+end
+
+When(/^I clear the OVAL sources of the server$/) do
+  oval_write_sources
+end
+
+When(/^I restore the OVAL sources of the server$/) do
+  oval_restore_sources
+end
+
+# The product never deletes OVAL platforms: without this, the minion stays "covered by OVAL" for later features
+When(/^I delete the OVAL platforms of the server that have no vulnerability data$/) do
+  oval_delete_platforms_without_data
+end
+
 Then(/^the logs messages should not contain SELinux denials$/) do
   server = get_target('server')
   # Without a terminal, ausearch reads stdin instead of the audit logs and never returns: --input-logs forces the logs.

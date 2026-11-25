@@ -587,6 +587,20 @@ Then(/^the table row for "([^"]*)" should( not)? contain "([^"]*)" icon$/) do |r
   end
 end
 
+# The data-source warning is the title of an icon next to the patch status. within raises when the row is missing,
+# so the negative form cannot pass on an absent system.
+Then(/^the CVE audit row for "([^"]*)" should( not)? show the "([^"]*)" warning$/) do |host, should_not, warning|
+  system_name = get_system_name(host)
+  icon = "i[title=\"#{warning}\"]"
+  within(:xpath, "//tr[.//a[normalize-space(.)='#{system_name}']]") do
+    if should_not
+      raise ScriptError, "CVE audit row for #{system_name} shows the warning \"#{warning}\"" unless has_no_css?(icon, wait: 2)
+    else
+      raise ScriptError, "CVE audit row for #{system_name} does not show the warning \"#{warning}\"" unless has_css?(icon, wait: 2)
+    end
+  end
+end
+
 When(/^I wait at most ([0-9]+) seconds until table row for "([^"]*)" contains button "([^"]*)"$/) do |timeout, text, button|
   xpath_query = "//tr[td[contains(., '#{text}')]]/td/descendant::*[self::a or self::button][@title='#{button}']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_f)

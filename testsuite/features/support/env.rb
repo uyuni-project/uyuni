@@ -359,6 +359,21 @@ After('@scope_cobbler') do |scenario|
   end
 end
 
+# A feature tagged @oval_fixture replaces the package-owned OVAL sources of the server and syncs a fixture. Put the
+# sources back and remove the OVAL rows as soon as one of its scenarios fails, in case its cleanup scenarios do not run
+# (for example when the watchdog skips the rest of the run). A sync still running at that moment is not waited for.
+After('@oval_fixture') do |scenario|
+  next unless scenario.failed?
+
+  # Each step on its own: a failed file restore must not prevent the database cleanup. Failed remote commands raise
+  # ScriptError, which is not a StandardError.
+  { 'restore the OVAL sources' => :oval_restore_sources, 'delete the OVAL data' => :oval_delete_all_data }.each do |action, helper|
+    __send__(helper)
+  rescue StandardError, ScriptError => e
+    warn "Failed to #{action} of the server: #{e.message}"
+  end
+end
+
 # Remove the files extracted from remote hosts to be attached in the browser
 After do
   @attach_dirs&.each { |dir| FileUtils.rm_rf(dir) }
