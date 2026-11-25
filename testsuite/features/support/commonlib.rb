@@ -1232,6 +1232,29 @@ def api_client_for(host = 'server')
   $api_test_by_host[host] ||= new_api_client(host: host)
 end
 
+# Returns the systems registered on a server whose name is the system name of a host.
+#
+# @param host [String] The target host whose system name is searched.
+# @param on [String] The server to search ('server', 'server2', 'server3', 'peripheral1', ...).
+# @return [Array<Hash>] The systems whose name matches exactly, empty when none is registered.
+def systems_registered_as(host, on:)
+  system_name = get_system_name(host)
+  api_client_for(on).system.search_by_name(Regexp.escape(system_name)).select { |system| system['name'] == system_name }
+end
+
+# Deletes the system of a host from a server, but only when it is registered there.
+# Avoids calling the delete API on an absent system.
+#
+# @param host [String] The target host whose system is deleted.
+# @param on [String] The server to delete it from.
+def delete_system_if_registered(host, on:)
+  if systems_registered_as(host, on: on).empty?
+    log "#{host} is not registered on #{on}, nothing to delete"
+  else
+    api_client_for(on).system.delete_systems_by_name([get_system_name(host)])
+  end
+end
+
 # Build a well-formed repository URL of an exact length by padding a query string onto it
 #
 # @param base_url [String] The URL to pad, without query string.

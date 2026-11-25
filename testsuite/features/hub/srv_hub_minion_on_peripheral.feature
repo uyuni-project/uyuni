@@ -16,7 +16,7 @@ Feature: Hub - minion managed via peripheral server
   I want to register a peripheral, sync channels, and manage minions through the peripheral (plan B-01..B-04)
 
   Scenario: Pre-requisite: deregister sle_minion from the hub
-    When I delete "sle_minion" system using the api from "server"
+    When I delete "sle_minion" system from "server" if it is registered
     And I perform a full salt minion cleanup on "sle_minion"
     Then "sle_minion" should not be registered
 

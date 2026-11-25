@@ -933,12 +933,6 @@ When(/^I bootstrap "([^"]*)" as a Salt minion of hub(?: using activation key "([
   using_server('server') { bootstrap_from_ui(host, key_label) }
 end
 
-# Returns the systems registered on a server whose name is the system name of a host.
-def systems_registered_as(host, on:)
-  system_name = get_system_name(host)
-  api_client_for(on).system.search_by_name(Regexp.escape(system_name)).select { |system| system['name'] == system_name }
-end
-
 Then(/^I should see "([^"]*)" registered on "([^"]*)"$/) do |minion_host, server_host|
   raise StandardError, "#{minion_host} not found on #{server_host}" if systems_registered_as(minion_host, on: server_host).empty?
 end
@@ -949,6 +943,10 @@ end
 
 Then(/^I should not see "([^"]*)" registered on hub$/) do |minion_host|
   raise StandardError, "#{minion_host} unexpectedly found on hub" unless systems_registered_as(minion_host, on: 'server').empty?
+end
+
+When(/^I delete "([^"]*)" system from "([^"]*)" if it is registered$/) do |minion_host, server_host|
+  delete_system_if_registered(minion_host, on: server_host)
 end
 
 Given(/^"([^"]*)" is registered on "([^"]*)"$/) do |minion_host, server_host|
