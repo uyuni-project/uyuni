@@ -29,6 +29,8 @@ export type SystemCveSeverity = "CRITICAL" | "IMPORTANT" | "MODERATE" | "LOW" | 
 
 export const ALL_SEVERITIES: SystemCveSeverity[] = ["CRITICAL", "IMPORTANT", "MODERATE", "LOW", "UNKNOWN"];
 
+const DEFAULT_SEVERITIES: SystemCveSeverity[] = ["CRITICAL", "IMPORTANT"];
+
 export const SEVERITY_LABEL: Record<SystemCveSeverity, string> = {
   CRITICAL: t("Critical"),
   IMPORTANT: t("Important"),
@@ -105,7 +107,7 @@ type Props = {
 
 export function SystemCve({ serverId, ovalState }: Props) {
   const [statuses, setStatuses] = useState<SystemCveStatus[]>([]);
-  const [severities, setSeverities] = useState<SystemCveSeverity[]>([]);
+  const [severities, setSeverities] = useState<SystemCveSeverity[]>(DEFAULT_SEVERITIES);
 
   if (ovalState === "DISABLED") {
     return (

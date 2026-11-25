@@ -56,7 +56,15 @@ describe("System CVE page", () => {
     expect(screen.getByLabelText("Status")).toBeTruthy();
     expect(screen.getByText("All statuses")).toBeTruthy();
     expect(screen.getByLabelText("Severity")).toBeTruthy();
-    expect(screen.getByText("All severities")).toBeTruthy();
     expect(screen.queryByRole("checkbox")).toBeNull();
+  });
+
+  test("preselects only the critical and important severities", () => {
+    render(<SystemCve serverId={1} ovalState="ENABLED" />);
+
+    expect(screen.getByText("Critical")).toBeTruthy();
+    expect(screen.getByText("Important")).toBeTruthy();
+    expect(screen.queryByText("Moderate")).toBeNull();
+    expect(screen.queryByText("All severities")).toBeNull();
   });
 });
