@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.ErrataTestUtils;
 
 import com.suse.manager.errata.advisorymap.ErrataAdvisoryMapManager;
@@ -29,7 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.Month;
 
-public class SUSEAdvisoryMapErrataParserTest extends BaseErrataTestCase {
+public class SUSEAdvisoryMapErrataParserTest extends BaseTestCase {
 
     public static void createTestAdvisoryMapDatabase() throws IOException {
 

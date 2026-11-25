@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.ErrataTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ import java.time.Month;
 /**
  * Tests for {@link AmazonErrataParser}
  */
-public class AmazonErrataParserTest extends BaseErrataTestCase {
+public class AmazonErrataParserTest extends BaseTestCase {
 
     /**
      * Test to ensure correct parsing of the url and the id for Amazon Linux 2.

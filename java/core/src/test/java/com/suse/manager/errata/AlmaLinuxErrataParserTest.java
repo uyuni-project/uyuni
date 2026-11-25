@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.ErrataTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ import java.time.Month;
 /**
  * Tests for {@link AlmaLinuxErrataParser}
  */
-public class AlmaLinuxErrataParserTest extends BaseErrataTestCase {
+public class AlmaLinuxErrataParserTest extends BaseTestCase {
 
     /**
      * Test to ensure correct parsing of the url and the id in a valid case.
