@@ -1,0 +1,2 @@
+- CVE-2026-109921: Check that the system can be accessed before
+  using its pillar (bsc#1290236)

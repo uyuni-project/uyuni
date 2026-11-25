@@ -3567,6 +3567,32 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     /**
+     * Test the SystemHandler.getPillar method for a user without access to the system
+     * @throws Exception if anything fail
+     */
+    @Test
+    public void testGetPillarNoAccess() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(admin);
+        Org otherOrg = UserTestUtils.createOrg();
+        User otherUser = UserTestUtils.createUser("foreigner", otherOrg.getId());
+        Pillar newPillar = new Pillar("new_pillar", Collections.singletonMap("key", "value"), minion);
+        minion.addPillar(newPillar);
+        minion = TestUtils.saveAndReload(minion);
+        assertEquals(2, minion.getPillars().size());
+        final Long id = minion.getId();
+        final String minionId = minion.getMinionId();
+
+        SystemHandler systemHandler = getMockedHandler();
+        assertThrows(NoSuchSystemException.class, () -> {
+            systemHandler.getPillar(otherUser, id.intValue(), "new_pillar");
+        }, "Missing expected exception getting pillar by system id");
+
+        assertThrows(NoSuchSystemException.class, () -> {
+            systemHandler.getPillar(otherUser, minionId, "new_pillar");
+        }, "Missing expected exception getting pillar by minion id");
+    }
+
+    /**
      * Test the SystemHandler.setPillar method
      * @throws Exception if anything fail
      */
@@ -3583,6 +3609,31 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, minion.getPillars().size());
         assertTrue(minion.getPillarByCategory("stored_pillar").isPresent());
         assertEquals("value", minion.getPillarByCategory("stored_pillar").get().getPillar().get("key"));
+    }
+
+    /**
+     * Test the SystemHandler.setPillar method for a user with access to the system
+     * @throws Exception if anything fail
+     */
+    @Test
+    public void testSetPillarNoAccess() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(admin);
+        assertEquals(1, minion.getPillars().size());
+        final Long id = minion.getId();
+        final String minionId = minion.getMinionId();
+
+        Org otherOrg = UserTestUtils.createOrg();
+        User otherUser = UserTestUtils.createUser("foreigner", otherOrg.getId());
+
+        SystemHandler systemHandler = getMockedHandler();
+        Map<String, Object> pillarData = Collections.singletonMap("key", "value");
+        assertThrows(NoSuchSystemException.class, () -> {
+            systemHandler.setPillar(otherUser, id.intValue(), "stored_pillar", pillarData);
+        }, "Missing expected exception setting pillar by system id");
+
+        assertThrows(NoSuchSystemException.class, () -> {
+            systemHandler.setPillar(otherUser, minionId, "stored_pillar", pillarData);
+        }, "Missing expected exception setting pillar by minion id");
     }
 
     /**

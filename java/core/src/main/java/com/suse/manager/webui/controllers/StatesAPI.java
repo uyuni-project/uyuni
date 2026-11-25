@@ -16,6 +16,7 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
@@ -47,6 +48,7 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -159,11 +161,11 @@ public class StatesAPI {
         post("/manager/api/states/applyall", asJson(withUser(this::applyHighstate)));
         get("/manager/api/states/match", asJson(withUser(this::matchStates)));
         post("/manager/api/states/save", asJson(withUser(this::saveConfigChannels)));
-        get("/manager/api/states/packages", asJson(this::packages));
+        get("/manager/api/states/packages", asJson(withUser(this::packages)));
         post("/manager/api/states/packages/save", asJson(withUser(this::savePackages)));
-        get("/manager/api/states/packages/match", asJson(this::matchPackages));
-        get("/manager/api/states/highstate", this::showHighstate);
-        get("/manager/api/states/summary", asJson(this::listSummary));
+        get("/manager/api/states/packages/match", asJson(withUser(this::matchPackages)));
+        get("/manager/api/states/highstate", withUser(this::showHighstate));
+        get("/manager/api/states/summary", asJson(withUser(this::listSummary)));
         get("/manager/api/states/:channelId/content", withUser(this::stateContent));
     }
 
@@ -172,11 +174,13 @@ public class StatesAPI {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return JSON result of the API call
      */
-    public String packages(Request request, Response response) {
+    public String packages(Request request, Response response, User user) throws NoSuchSystemException {
         String serverId = request.queryParams("sid");
         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(Long.valueOf(serverId)));
+        checkUserHasPermissionsOnServer(server, user);
         return GSON.toJson(latestPackageStatesJSON(server));
     }
 
@@ -201,9 +205,10 @@ public class StatesAPI {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return JSON result of the API call
      */
-    public String matchPackages(Request request, Response response) {
+    public String matchPackages(Request request, Response response, User user) {
         String target = request.queryParams("target");
         String targetLowerCase = target.toLowerCase();
         String serverId = request.queryParams("sid");
@@ -211,6 +216,7 @@ public class StatesAPI {
 
         // Find matches among this server's current packages states
         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(Long.valueOf(serverId)));
+        checkUserHasPermissionsOnServer(server, user);
         Set<PackageStateJson> matching = latestPackageStatesJSON(server).stream()
                 .filter(p -> p.getName().toLowerCase().contains(targetLowerCase))
                 .collect(Collectors.toSet());
@@ -246,6 +252,7 @@ public class StatesAPI {
         List<ConfigChannel> assignedStates = handleTarget(type, id,
                 (serverId) -> {
                     MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(id));
+                    checkUserHasPermissionsOnServer(server, user);
                     return StateFactory.latestConfigChannels(server);
                 },
                 (groupId) -> {
@@ -307,7 +314,7 @@ public class StatesAPI {
                 },
                 (orgId) -> {
                         Org org = getEntityIfExists(OrgFactory.lookupById(json.getTargetId()));
-                        checkUserHasPermissionsOnOrg(org);
+                        checkUserHasPermissionsOnOrg(org, user);
                         return org;
                 }
             );
@@ -368,8 +375,10 @@ public class StatesAPI {
         }
     }
 
-    private void checkUserHasPermissionsOnOrg(Org org) {
-        // TODO
+    private void checkUserHasPermissionsOnOrg(Org org, User user) {
+        if (!user.getOrg().equals(org) || !user.hasRole(ORG_ADMIN)) {
+            Spark.halt(HttpStatus.SC_FORBIDDEN);
+        }
     }
 
     /**
@@ -521,7 +530,7 @@ public class StatesAPI {
                     },
                     (orgId) -> {
                         Org org = getEntityIfExists(OrgFactory.lookupById(json.getTargetId()));
-                        checkUserHasPermissionsOnOrg(org);
+                        checkUserHasPermissionsOnOrg(org, user);
                         List<Long> minionServerIds = MinionServerFactory
                                 .lookupByOrg(org).stream()
                                 .map(MinionServer::getId)
@@ -755,14 +764,16 @@ public class StatesAPI {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return JSON result of state.show_highstate
      */
-    public String showHighstate(Request request, Response response) {
+    public String showHighstate(Request request, Response response, User user) {
         response.type("text/yaml");
         return MinionServerFactory
                 .lookupById(Long.valueOf(request.queryParams("sid")))
                 .map(minion -> {
                     final String minionId = minion.getMinionId();
+                    checkUserHasPermissionsOnServer(minion, user);
                     try {
                         MinionList minions = new MinionList(minionId);
                         // sync to minion before showing highstate
@@ -796,12 +807,16 @@ public class StatesAPI {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return JSON array of state origin objects
      */
-    public String listSummary(Request request, Response response) {
+    public String listSummary(Request request, Response response, User user) {
         return MinionServerFactory
                 .lookupById(Long.valueOf(request.queryParams("sid")))
-                .map(StateSourceService::getSystemStateSources)
+                .map(minion -> {
+                    checkUserHasPermissionsOnServer(minion, user);
+                    return StateSourceService.getSystemStateSources(minion);
+                })
                 .map(stateSources -> SparkApplicationHelper.json(response, stateSources, new TypeToken<>() { }))
                 .orElse("Server not found.");
     }
