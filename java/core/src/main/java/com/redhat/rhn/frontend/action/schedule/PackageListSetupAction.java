@@ -53,7 +53,9 @@ public class PackageListSetupAction extends RhnAction implements Listable<Row> {
         User user = requestContext.getCurrentUser();
         Action action = ActionManager.lookupAction(user, actionId);
 
-        action.setRequestAttributeTypePackages(request);
+        if (action.listsPackages()) {
+            request.setAttribute("type", "packages");
+        }
 
         ListHelper helper = new ListHelper(this, request);
         helper.execute();

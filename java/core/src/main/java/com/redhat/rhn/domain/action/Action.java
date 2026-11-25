@@ -54,6 +54,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -75,7 +76,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Action - Class representation of the table rhnAction.
@@ -669,31 +669,27 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     }
 
     /**
-     * sets the "dry run" attribute to a servlet request
-     * @param request servlet request where to set the attribute
-     * @return true if "dry run"
+     * @param serverId the server to check
+     * @return true if this is a dist upgrade dry run for the given server
      */
-    public boolean setRequestAttributeDryRun(HttpServletRequest request) {
-        request.setAttribute("typeDistUpgradeDryRun", false);
+    public boolean isDistUpgradeDryRun(Long serverId) {
         return false;
     }
 
     /**
-     * sets the "playbook" attribute to a servlet request
-     * @param request      servlet request where to set the attribute
      * @param serverAction the server action to get a formatted list of inventory systems accessible to the user
      * @param user         the current user
+     * @return the formatted inventory if this is a playbook action, empty otherwise
      */
-    public void setRequestAttributePlaybook(HttpServletRequest request, ServerAction serverAction, User user) {
-        request.setAttribute("typePlaybook", false);
+    public Optional<String> getPlaybookInventory(ServerAction serverAction, User user) {
+        return Optional.empty();
     }
 
     /**
-     * sets the "packages" attribute to a servlet request
-     * @param request servlet request where to set the attribute
+     * @return true if the action works on a list of packages
      */
-    public void setRequestAttributeTypePackages(HttpServletRequest request) {
-        //default does nothing
+    public boolean listsPackages() {
+        return false;
     }
 
     /**

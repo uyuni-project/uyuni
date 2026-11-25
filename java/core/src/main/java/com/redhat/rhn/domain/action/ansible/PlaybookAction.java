@@ -39,7 +39,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToOne;
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * PlaybookAction - Action class representing the execution of an Ansible playbook
@@ -122,9 +121,7 @@ public class PlaybookAction extends Action {
      * {@inheritDoc}
      */
     @Override
-    public void setRequestAttributePlaybook(HttpServletRequest request, ServerAction serverAction, User user) {
-        request.setAttribute("typePlaybook", true);
-        String inventory = new PlaybookActionFormatter(this).getTargetedSystems(serverAction, user);
-        request.setAttribute("inventory", inventory);
+    public Optional<String> getPlaybookInventory(ServerAction serverAction, User user) {
+        return Optional.of(new PlaybookActionFormatter(this).getTargetedSystems(serverAction, user));
     }
 }
