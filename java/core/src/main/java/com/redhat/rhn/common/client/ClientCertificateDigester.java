@@ -33,6 +33,15 @@ public class ClientCertificateDigester {
 
     private static void configureDigester(Digester digester) {
         digester.setValidating(false);
+        try {
+            digester.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            digester.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            digester.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            digester.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Failed to secure XML Digester against XXE", e);
+        }
 
         digester.addObjectCreate("params", ClientCertificate.class);
         digester.addObjectCreate("*/param/value/struct/member/", Member.class);
