@@ -368,6 +368,7 @@ public class ContentManager {
         ensureOrgAdmin(user);
         return lookupEnvironment(envLabel, projectLabel, user)
                 .map(env -> {
+                    ContentProjectFactory.validateEnvironmentRemovable(env);
                     ContentProject project = env.getContentProject();
                     removeRecurringActionsForEnvironment(env, user);
                     if (env.getNextEnvironmentOpt().isEmpty() && env.getPrevEnvironmentOpt().isPresent()) {
