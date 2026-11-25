@@ -1,6 +1,6 @@
 # pylint: disable=missing-module-docstring
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021--2026 SUSE LLC
 # SPDX-License-Identifier: MIT
 #
 # All modifications and additions to the file contributed by third parties
@@ -186,7 +186,9 @@ def _get_installed_suse_products():
                 "version": product_xml.find("./version").text,
                 "arch": product_xml.find("./arch").text,
             }
-            if product["name"] == "sle-manager-tools":
+            if product["name"] == "sle-manager-tools" or product["name"].startswith(
+                "Multi-Linux-ManagerTools"
+            ):
                 # no payg product has manager tools. When it appears, it comes from
                 # a registration against SUSE Manager
                 continue
