@@ -779,6 +779,10 @@ public class RecurringActionController {
             throw new ValidatorException(LocalizationService.getInstance()
                     .getMessage("recurring_action.empty_clm_project"));
         }
+        if (buildType.getProject() != null && !buildType.getProject().getLabel().equals(projectLabel)) {
+            throw new ValidatorException(LocalizationService.getInstance()
+                    .getMessage("recurring_action.cannot_change_project"));
+        }
         ContentProject project = ContentManager.lookupProject(projectLabel, user)
                 .orElseThrow(() -> new ValidatorException("Project not found: " + projectLabel));
         if (project.getFirstEnvironmentOpt().isEmpty()) {
@@ -800,10 +804,18 @@ public class RecurringActionController {
             throw new ValidatorException(LocalizationService.getInstance()
                     .getMessage("recurring_action.empty_clm_project"));
         }
+        if (promoteType.getProject() != null && !promoteType.getProject().getLabel().equals(projectLabel)) {
+            throw new ValidatorException(LocalizationService.getInstance()
+                    .getMessage("recurring_action.cannot_change_project"));
+        }
         String envLabel = details.getEnvironmentLabel();
         if (StringUtils.isBlank(envLabel)) {
             throw new ValidatorException(LocalizationService.getInstance()
                     .getMessage("recurring_action.empty_clm_environment"));
+        }
+        if (promoteType.getEnvironment() != null && !promoteType.getEnvironment().getLabel().equals(envLabel)) {
+            throw new ValidatorException(LocalizationService.getInstance()
+                    .getMessage("recurring_action.cannot_change_environment"));
         }
         ContentProject project = ContentManager.lookupProject(projectLabel, user)
                 .orElseThrow(() -> new ValidatorException("Project not found: " + projectLabel));

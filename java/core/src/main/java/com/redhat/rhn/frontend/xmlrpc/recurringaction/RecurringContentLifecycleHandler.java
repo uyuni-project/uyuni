@@ -101,30 +101,21 @@ public class RecurringContentLifecycleHandler extends BaseHandler {
      *      #prop_desc("int", "id", "the ID of the action to update")
      *      #prop_desc("string", "name", "the name of the action (optional)")
      *      #prop_desc("string", "cron_expr", "the execution frequency of the action (optional)")
-     *      #prop_desc("string", "project_label", "the label of the target Content Project (optional)")
      *      #prop_desc("boolean", "active", "whether the action should be active (optional)")
      *  #struct_end()
      * @apidoc.returntype #param_desc("int", "id", "the ID of the updated recurring action")
      */
     public int updateBuild(User loggedInUser, Map<String, Object> actionProps) {
         ensureOrgAdmin(loggedInUser);
-        RecurringAction action = actionHandler.updateAction(actionProps, loggedInUser);
-        if (!(action.getRecurringActionType() instanceof RecurringContentLifecycleType buildType)) {
-            throw new InvalidArgsException("Action is not a CLM build action");
-        }
         if (actionProps.containsKey("project_label")) {
-            String projectLabel = (String) actionProps.get("project_label");
-            ContentProject project = ContentManager.lookupProject(projectLabel, loggedInUser)
-                    .orElseThrow(() -> new EntityNotExistsFaultException("Project not found: " + projectLabel));
-            if (project.getFirstEnvironmentOpt().isEmpty()) {
-                throw new InvalidArgsException("Cannot schedule recurring build for project '" + projectLabel +
-                        "': project has no environments configured.");
-            }
-            if (project.lookupSwSourceLeader().isEmpty()) {
-                throw new InvalidArgsException("Cannot schedule recurring build for project '" + projectLabel +
-                        "': project has no base channel associated with it.");
-            }
-            buildType.setProject(project);
+            throw new InvalidArgsException("Cannot change the Content Project of an existing recurring action.");
+        }
+        if (actionProps.containsKey("environment_label")) {
+            throw new InvalidArgsException("Cannot change the Content Environment of an existing recurring action.");
+        }
+        RecurringAction action = actionHandler.updateAction(actionProps, loggedInUser);
+        if (!(action.getRecurringActionType() instanceof RecurringContentLifecycleType)) {
+            throw new InvalidArgsException("Action is not a CLM build action");
         }
         return actionHandler.save(loggedInUser, action);
     }
@@ -194,34 +185,21 @@ public class RecurringContentLifecycleHandler extends BaseHandler {
      *      #prop_desc("int", "id", "the ID of the action to update")
      *      #prop_desc("string", "name", "the name of the action (optional)")
      *      #prop_desc("string", "cron_expr", "the execution frequency of the action (optional)")
-     *      #prop_desc("string", "project_label", "the label of the target Content Project (optional)")
-     *      #prop_desc("string", "environment_label", "the label of the environment to promote (optional)")
      *      #prop_desc("boolean", "active", "whether the action should be active (optional)")
      *  #struct_end()
      * @apidoc.returntype #param_desc("int", "id", "the ID of the updated recurring action")
      */
     public int updatePromote(User loggedInUser, Map<String, Object> actionProps) {
         ensureOrgAdmin(loggedInUser);
+        if (actionProps.containsKey("project_label")) {
+            throw new InvalidArgsException("Cannot change the Content Project of an existing recurring action.");
+        }
+        if (actionProps.containsKey("environment_label")) {
+            throw new InvalidArgsException("Cannot change the Content Environment of an existing recurring action.");
+        }
         RecurringAction action = actionHandler.updateAction(actionProps, loggedInUser);
         if (!(action.getRecurringActionType() instanceof RecurringContentLifecycleType promoteType)) {
             throw new InvalidArgsException("Action is not a CLM promote action");
-        }
-        if (actionProps.containsKey("project_label")) {
-            String projectLabel = (String) actionProps.get("project_label");
-            ContentProject project = ContentManager.lookupProject(projectLabel, loggedInUser)
-                    .orElseThrow(() -> new EntityNotExistsFaultException("Project not found: " + projectLabel));
-            promoteType.setProject(project);
-        }
-        if (actionProps.containsKey("environment_label")) {
-            String envLabel = (String) actionProps.get("environment_label");
-            String projectLabel = promoteType.getProject().getLabel();
-            ContentEnvironment env = ContentManager.lookupEnvironment(envLabel, projectLabel, loggedInUser)
-                    .orElseThrow(() -> new EntityNotExistsFaultException("Environment not found: " + envLabel));
-            if (env.getNextEnvironmentOpt().isEmpty()) {
-                throw new InvalidArgsException("Environment '" + envLabel +
-                        "' is the last environment in the project lifecycle and cannot be promoted.");
-            }
-            promoteType.setEnvironment(env);
         }
         if (promoteType.getEnvironment() == null) {
             throw new InvalidArgsException("Environment is required for CLM promote action");

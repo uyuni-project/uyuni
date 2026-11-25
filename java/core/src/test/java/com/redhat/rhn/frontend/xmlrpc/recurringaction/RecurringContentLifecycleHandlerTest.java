@@ -227,4 +227,48 @@ public class RecurringContentLifecycleHandlerTest extends JMockBaseTestCaseWithU
                 "cron_expr", TEST_CRON_EXPR
         )));
     }
+
+    @Test
+    public void testUpdateBuildChangeProjectFails() {
+        int actionId = clmHandler.createBuild(user, Map.of(
+                "project_label", testProject.getLabel(),
+                "name", "test-build-fixed-proj",
+                "cron_expr", TEST_CRON_EXPR
+        ));
+
+        assertThrows(InvalidArgsException.class, () -> clmHandler.updateBuild(user, Map.of(
+                "id", actionId,
+                "project_label", "other-project"
+        )));
+    }
+
+    @Test
+    public void testUpdatePromoteChangeProjectFails() {
+        int actionId = clmHandler.createPromote(user, Map.of(
+                "project_label", testProject.getLabel(),
+                "environment_label", testEnv.getLabel(),
+                "name", "test-promote-fixed-proj",
+                "cron_expr", TEST_CRON_EXPR
+        ));
+
+        assertThrows(InvalidArgsException.class, () -> clmHandler.updatePromote(user, Map.of(
+                "id", actionId,
+                "project_label", "other-project"
+        )));
+    }
+
+    @Test
+    public void testUpdatePromoteChangeEnvironmentFails() {
+        int actionId = clmHandler.createPromote(user, Map.of(
+                "project_label", testProject.getLabel(),
+                "environment_label", testEnv.getLabel(),
+                "name", "test-promote-fixed-env",
+                "cron_expr", TEST_CRON_EXPR
+        ));
+
+        assertThrows(InvalidArgsException.class, () -> clmHandler.updatePromote(user, Map.of(
+                "id", actionId,
+                "environment_label", "other-env"
+        )));
+    }
 }
