@@ -285,7 +285,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
       rows.push({
         label: t("Deployed Version") + ":",
         value:
-          typeof details.targetEnvironmentVersion === "number"
+          typeof details.targetEnvironmentVersion === "number" && details.targetEnvironmentVersion > 0
             ? `v${details.targetEnvironmentVersion}`
             : t("not built"),
       });
@@ -305,7 +305,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
         value: (
           <>
             {details.environmentName ? `${details.environmentName} (${details.environmentLabel}) ` : "-"}
-            {typeof details.sourceEnvironmentVersion === "number" && (
+            {typeof details.sourceEnvironmentVersion === "number" && details.sourceEnvironmentVersion > 0 && (
               <span className="text-muted">(v{details.sourceEnvironmentVersion})</span>
             )}
           </>
@@ -316,7 +316,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
         value: (
           <>
             {details.nextEnvironmentName ? `${details.nextEnvironmentName} (${details.nextEnvironmentLabel}) ` : "-"}
-            {typeof details.targetEnvironmentVersion === "number" && (
+            {typeof details.targetEnvironmentVersion === "number" && details.targetEnvironmentVersion > 0 && (
               <span className="text-muted">(v{details.targetEnvironmentVersion})</span>
             )}
           </>
@@ -332,6 +332,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
         );
       } else if (
         typeof details.sourceEnvironmentVersion === "number" &&
+        details.sourceEnvironmentVersion > 0 &&
         typeof details.targetEnvironmentVersion === "number"
       ) {
         if (details.sourceEnvironmentVersion === details.targetEnvironmentVersion) {

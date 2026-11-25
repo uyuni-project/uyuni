@@ -9602,6 +9602,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="recurring_action.empty_clm_environment" xml:space="preserve">
         <source>No Content Environment selected</source>
       </trans-unit>
+      <trans-unit id="recurring_action.clm_project_not_found" xml:space="preserve">
+        <source>Project not found: '{0}'</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.clm_environment_not_found" xml:space="preserve">
+        <source>Environment not found: '{0}'</source>
+      </trans-unit>
       <trans-unit id="recurring_action.clm_project_no_environments" xml:space="preserve">
         <source>Cannot schedule recurring build for project ''{0}'': project has no environments configured.</source>
       </trans-unit>

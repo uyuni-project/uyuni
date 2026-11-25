@@ -784,7 +784,8 @@ public class RecurringActionController {
                     .getMessage("recurring_action.cannot_change_project"));
         }
         ContentProject project = ContentManager.lookupProject(projectLabel, user)
-                .orElseThrow(() -> new ValidatorException("Project not found: " + projectLabel));
+                .orElseThrow(() -> new ValidatorException(LocalizationService.getInstance()
+                        .getMessage("recurring_action.clm_project_not_found", projectLabel)));
         if (project.getFirstEnvironmentOpt().isEmpty()) {
             throw new ValidatorException(LocalizationService.getInstance()
                     .getMessage("recurring_action.clm_project_no_environments", projectLabel));
@@ -818,9 +819,11 @@ public class RecurringActionController {
                     .getMessage("recurring_action.cannot_change_environment"));
         }
         ContentProject project = ContentManager.lookupProject(projectLabel, user)
-                .orElseThrow(() -> new ValidatorException("Project not found: " + projectLabel));
+                .orElseThrow(() -> new ValidatorException(LocalizationService.getInstance()
+                        .getMessage("recurring_action.clm_project_not_found", projectLabel)));
         ContentEnvironment env = ContentManager.lookupEnvironment(envLabel, projectLabel, user)
-                .orElseThrow(() -> new ValidatorException("Environment not found: " + envLabel));
+                .orElseThrow(() -> new ValidatorException(LocalizationService.getInstance()
+                        .getMessage("recurring_action.clm_environment_not_found", envLabel)));
         if (env.getNextEnvironmentOpt().isEmpty()) {
             throw new ValidatorException(LocalizationService.getInstance()
                     .getMessage("recurring_action.clm_environment_no_successor", envLabel));

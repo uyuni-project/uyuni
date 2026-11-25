@@ -117,9 +117,10 @@ class RecurringClmPicker extends Component<Props, State> {
     return (
       <div className="form-horizontal">
         <FormGroup className="form-group">
-          <Label name={t("Content Project")} className="col-sm-3" required />
+          <Label name={t("Content Project")} className="col-sm-3" htmlFor="clm-project-select" required />
           <div className="col-sm-6">
             <select
+              id="clm-project-select"
               className="form-control"
               value={selectedProjectLabel}
               onChange={this.handleProjectChange}
@@ -158,9 +159,10 @@ class RecurringClmPicker extends Component<Props, State> {
 
         {isPromote && (
           <FormGroup className="form-group">
-            <Label name={t("Target Environment")} className="col-sm-3" required />
+            <Label name={t("Source Environment")} className="col-sm-3" htmlFor="clm-environment-select" required />
             <div className="col-sm-6">
               <select
+                id="clm-environment-select"
                 className="form-control"
                 value={selectedEnvironmentLabel}
                 onChange={this.handleEnvironmentChange}

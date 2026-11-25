@@ -158,7 +158,10 @@ class RecurringActionsEdit extends Component<Props, State> {
 
   getTypes = () => {
     if (window.entityType === "CLM") {
-      return ["CLM Build", "CLM Promote"];
+      return [
+        { label: t("CLM Build"), value: "CLM Build" },
+        { label: t("CLM Promote"), value: "CLM Promote" },
+      ];
     }
     let types = ["Highstate", "Custom state"];
     if (window.entityType === "MINION") {
