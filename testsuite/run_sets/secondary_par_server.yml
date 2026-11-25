@@ -12,6 +12,10 @@
 - features/secondary/srv_activationkey_api.feature
 - features/secondary/srv_mainpage.feature
 - features/secondary/srv_user_api.feature
+- features/secondary/srv_access_control.feature
+- features/secondary/srv_access_control_api.feature
+- features/secondary/srv_access_control_permissions.feature
+- features/secondary/srv_access_control_pages.feature
 - features/secondary/srv_salt_download_endpoint.feature
 - features/secondary/srv_docker_advanced_content_management.feature
 - features/secondary/srv_datepicker.feature

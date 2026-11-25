@@ -130,6 +130,10 @@ Then(/^I should get at least user "([^"]*)"$/) do |user|
   assert_includes(@users.map { |u| u['login'] }, user)
 end
 
+Then(/^the user "([^"]*)" should not be present$/) do |user|
+  raise ScriptError, "The user #{user} is present" if $api_test.user.exists?(user)
+end
+
 When(/^I call user\.list_roles\(\) on user "([^"]*)"$/) do |user|
   @roles = $api_test.user.list_roles(user)
 end
@@ -202,8 +206,8 @@ Then(/^the GPG key fingerprint "([^"]*)" should have user name "([^"]*)" via API
   assert_includes(key['names'], name)
 end
 
-When(/^I make sure "([^"]*)" is not present$/) do |user|
-  $api_test.user.delete(user) if $api_test.user.exists?(user)
+Given(/^the user "([^"]*)" does not exist$/) do |user|
+  $api_test.user.remove_if_present(user)
 end
 
 When(/^I call user\.remove_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |luser, rolename|
@@ -239,7 +243,87 @@ Given(/^I create a user with name "([^"]*)" and password "([^"]*)"(?: with roles
   end
 end
 
+# access namespace
+
+# access.* calls authenticate as the last identity logged into the web UI: log in as admin first.
+Given(/^the access group "([^"]*)" does not exist$/) do |label|
+  $api_test.access.remove_role_if_present(label)
+end
+
+When(/^I delete the access group "([^"]*)"$/) do |label|
+  raise ScriptError, "The access group #{label} could not be deleted" unless $api_test.access.delete_role(label) == 1
+end
+
+Then(/^the access group "([^"]*)" should be present$/) do |label|
+  raise ScriptError, "The access group #{label} is not present" unless $api_test.access.role_present?(label)
+end
+
+Then(/^the access group "([^"]*)" should not be present$/) do |label|
+  raise ScriptError, "The access group #{label} is present" if $api_test.access.role_present?(label)
+end
+
+When(/^I call access\.create_role\(\) with label "([^"]*)"(?: copying the permissions of ((?:"[^"]*"(?: and )?)+))?$/) do |label, sources|
+  role = $api_test.access.create_role(label, "QE RBAC #{label}", sources.to_s.scan(/"([^"]*)"/).flatten)
+  raise ScriptError, "The access group #{label} was created as #{role['label']}" unless role['label'] == label
+end
+
+When(/^I call access\.list_namespaces\(\)$/) do
+  @permissions = $api_test.access.list_namespaces
+end
+
+When(/^I call access\.list_permissions\(\) on "([^"]*)"$/) do |label|
+  @permissions = $api_test.access.list_permissions(label)
+end
+
+When(/^I call user\.list_permissions\(\) on user "([^"]*)"$/) do |user|
+  @permissions = $api_test.user.list_permissions(user)
+end
+
+When(/^I call access\.grant_access\(\) on "([^"]*)" with namespace "([^"]*)" and mode "([RW])"$/) do |label, namespace, mode|
+  raise ScriptError, "Access to #{namespace} (#{mode}) was not granted to #{label}" unless $api_test.access.grant_access(label, [namespace], [mode]) == 1
+end
+
+When(/^I call access\.revoke_access\(\) on "([^"]*)" with namespace "([^"]*)" and mode "([RW])"$/) do |label, namespace, mode|
+  raise ScriptError, "Access to #{namespace} (#{mode}) was not revoked from #{label}" unless $api_test.access.revoke_access(label, [namespace], [mode]) == 1
+end
+
+Then(/^I should get permission "([^"]*)" with mode "([RW])"$/) do |namespace, mode|
+  raise ScriptError, "Permission #{namespace} (#{mode}) not found" unless $api_test.access.permission_listed?(@permissions, namespace, mode)
+end
+
+Then(/^I should not get permission "([^"]*)" with mode "([RW])"$/) do |namespace, mode|
+  raise ScriptError, "Permission #{namespace} (#{mode}) found" if $api_test.access.permission_listed?(@permissions, namespace, mode)
+end
+
+Then(/^I should get no permissions$/) do
+  raise ScriptError, "Unexpected permissions: #{@permissions.map { |perm| perm['namespace'] }.join(', ')}" unless @permissions.empty?
+end
+
+Then(/^I should get an API fault with "([^"]*)" when I call access\.list_roles\(\)$/) do |message|
+  expect_api_fault(message, http_status: 403) { $api_test.access.list_roles }
+end
+
+Then(/^I should get an API fault with "([^"]*)" when I call access\.create_role\(\) with label "([^"]*)"$/) do |message, label|
+  expect_api_fault(message, http_status: 403) { $api_test.access.create_role(label, "QE RBAC #{label}") }
+end
+
+Then(/^I should get an API fault with "([^"]*)" when I call access\.delete_role\(\) on "([^"]*)"$/) do |message, label|
+  expect_api_fault(message) { $api_test.access.delete_role(label) }
+end
+
+Then(/^I should get an API fault with "([^"]*)" when I call access\.grant_access\(\) on "([^"]*)" with namespace "([^"]*)" and mode "([RW])"$/) do |message, label, namespace, mode|
+  expect_api_fault(message) { $api_test.access.grant_access(label, [namespace], [mode]) }
+end
+
 # channel namespace
+
+When(/^I call channel\.list_software_channels\(\)$/) do
+  @software_channels = $api_test.channel.list_software_channels
+end
+
+Then(/^I should get at least one software channel$/) do
+  raise ScriptError, 'No software channel listed' if @software_channels.empty?
+end
 
 When(/^I create a repo with label "([^"]*)" and url$/) do |label|
   url = "http://#{get_target('server').full_hostname}/pub/AnotherRepo/"

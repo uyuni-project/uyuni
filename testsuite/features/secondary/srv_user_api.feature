@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2026 SUSE LLC
 # SPDX-License-Identifier: MIT
 
 @scope_api
@@ -13,8 +13,8 @@ Feature: API "user" namespace
     Then I should get at least one role that matches "_admin" suffix
 
   Scenario: Create user
-    When I make sure "testuser" is not present
-    And I call user.create() with login "testuser"
+    Given the user "testuser" does not exist
+    When I call user.create() with login "testuser"
     And I call user.list_users()
     Then I should get at least user "testuser"
 
