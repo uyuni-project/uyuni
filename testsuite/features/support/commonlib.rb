@@ -703,6 +703,21 @@ def reportdb_value(query, host: 'server')
   value.nil? || value.match?(/^\(\d+ rows?\)$/) ? '' : value
 end
 
+# Checks that a port is listening inside a podman container. It runs the host's ss in the container network
+# namespace, so it needs no tool in the image and covers UDP (TFTP) too.
+#
+# @param host [String] The host running the container ('server', 'proxy', ...).
+# @param container [String] The name of the podman container.
+# @param port [String] The port number.
+# @raise [ScriptError] If the sockets cannot be listed or nothing listens on the port.
+def check_container_port_listening(host, container, port)
+  cmd = "nsenter --target \"$(podman inspect --format '{{.State.Pid}}' #{container})\" --net ss -H -lntu 'sport = :#{port}'"
+  # Only stdout tells whether a socket matched: a harmless diagnostic on stderr must not turn into a pass
+  output, error, code = get_target(host).run(cmd, runs_in_container: false, separated_results: true, check_errors: false)
+  raise ScriptError, "Cannot list the sockets of container \"#{container}\" on #{host}: #{output}#{error}" unless code.zero?
+  raise ScriptError, "Port #{port} is not listening in container \"#{container}\" on #{host}: #{error}" if output.strip.empty?
+end
+
 # Retrieves the uptime of a given host.
 #
 # @param [String] host The hostname or IP address of the target host.

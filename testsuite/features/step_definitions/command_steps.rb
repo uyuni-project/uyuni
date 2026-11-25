@@ -2209,6 +2209,10 @@ When(/^I trigger the healthcheck of "([^"]*)" container on "([^"]*)"( and expect
   end
 end
 
+Then(/^port "(\d+)" should be listening in the "([^"]*)" container on "([^"]*)"$/) do |port, container, host|
+  check_container_port_listening(host, container, port)
+end
+
 Then(/^I wait for the "([^"]*)" container to be running for more than "(\d+)" seconds on "([^"]*)"$/) do |container, seconds, host|
   node = get_target(host)
   cmd = "START_STR=$(podman inspect --format='{{.State.StartedAt}}' #{container}) && START=$(date -d \"${START_STR% *}\" +%s) && echo $(($(date +%s) - ${START}))"
