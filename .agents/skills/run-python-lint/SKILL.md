@@ -1,17 +1,20 @@
 ---
 name: run-python-lint
-description: Run Black and Pylint via python/linting/lint.sh locally (no container), committing Black reformatting of untouched code separately. Use when linting or formatting Python, or before finishing a Python change.
+description: Run Black and Pylint locally with python/linting/lint.sh -l. Use when linting or formatting Python, or before finishing a Python change.
 ---
 
 # Running Black and Pylint on Python code
 
 Run from the repository root with `python/linting/lint.sh`. It runs
 `black -t py36` and then `pylint` with `python/linting/pylintrc`.
+For `susemanager/`, use its Makefile `pylint` target instead (see
+`AGENTS.md`).
 
 ## In the sandbox: always use `-l`
 
 Without `-l` the script pulls and runs a container image, which does not work
-in the sandbox. `-l` uses the locally installed `black` and `pylint`:
+in the sandbox. `-l` uses the locally installed `black` and `pylint`;
+check first that both are available (`command -v black pylint`):
 
 ```bash
 ./python/linting/lint.sh -l <path> [<path> ...]   # files or directories
@@ -38,30 +41,27 @@ those unrelated changes must be committed too.
 functional change, so the functional diff stays reviewable. Two ways:
 
 1. **Format first (preferred).** Before editing a file, run
-   `./python/linting/lint.sh -l <file>`. If it changes anything, hand the
-   user a commit for just that reformatting, then make the functional change
-   on top.
+   `./python/linting/lint.sh -l <file>`. If it changes anything, keep that
+   reformatting as a separate change (its own commit if the user asks for
+   commits), then make the functional change on top.
 2. **Format afterwards.** After the change, run the script. Separate the
-   formatting-only hunks from the functional ones (for example by
-   stashing/reverting the functional change, formatting, and committing the
-   formatting first, or by staging the hunks separately) and give the user
-   two commits: formatting, then the change. A fixup/rebase on the user's
-   side is also fine if the code was already committed.
+   formatting-only hunks from the functional ones so they can become two
+   commits: formatting, then the change. If the user asks for commits, do
+   this for example by stashing the functional change, formatting, and
+   committing the formatting first, or by staging the hunks separately;
+   otherwise tell the user which hunks are formatting-only. A fixup/rebase
+   on the user's side is also fine if the code was already committed.
 
-Check the result with `git diff` before handing over: the formatting commit
-must contain no functional changes, and the functional commit must be
+Check the result with `git diff` before handing over: the formatting change
+must contain no functional changes, and the functional change must be
 already Black-clean (a second run of the script changes nothing).
 
 ## Pylint
 
-Pylint output is a report; nothing is fixed automatically. A non-zero exit
-code (for example 20) means Pylint reported findings. Fix findings in code you changed. Do not fix
-pre-existing findings in untouched code. Do not add `# pylint: disable`
-comments unless existing code in the same file does the same for the same
-reason.
-
-## Committing
-
-Whether to prepare commits is up to the user. Only provide commit commands
-if the user asks for them; then follow the commit instructions from the
-global configuration, with the formatting commit first.
+Pylint output is a report; nothing is fixed automatically. Its exit code is
+a bit mask of the message categories found (for example 20 = warning 4 +
+convention 16), so a non-zero code means findings, not a tool failure. Fix
+findings in code you changed; compare their line numbers with
+`git diff -U0 -- <file>`. Do not fix pre-existing findings in untouched
+code. Do not add `# pylint: disable` comments unless existing code in the
+same file does the same for the same reason.

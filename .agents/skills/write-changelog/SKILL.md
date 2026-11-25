@@ -1,6 +1,6 @@
 ---
 name: write-changelog
-description: Write a package changelog fragment (<package>.changes.<author>.<topic>) and validate it with the CI "Changelogs" checker. Use when a change needs a changelog entry or one must be checked.
+description: Write and validate a package changelog fragment (package.changes.author.topic). Use when a change needs a changelog entry or one must be checked.
 ---
 
 # Writing changelog entries
@@ -76,8 +76,10 @@ Only a dot that ends a sentence stays unquoted. Version numbers such as
 ## Validate locally
 
 The workflow runs `.github/workflows/changelogs/changelogs.py` with the
-changed files as arguments. It needs the `python-bugzilla` module. In the
-sandbox, install it into a throwaway venv outside the repository:
+changed files as arguments. It needs the `python-bugzilla` module. Check
+whether it is available (`python3 -c 'import bugzilla'`); if it is, use
+`python3` below instead of the venv. Otherwise, for example in the sandbox,
+install it into a throwaway venv outside the repository:
 
 ```bash
 python3 -m venv /tmp/chlogvenv && /tmp/chlogvenv/bin/pip -q install 'python-bugzilla~=3.2.0'
@@ -93,18 +95,15 @@ base=$(git merge-base <target-branch> HEAD)
 ```
 
 `<target-branch>` is the branch the PR goes to (for example
-`origin/master`). `git diff "$base"` compares the branch point with the
-working tree, so it covers commits, staged and unstaged edits, but not
-commits that landed on the target branch later. Check that the untracked
-list contains only files that belong to the change. The checker needs the
-other changed files to know which packages are affected; passing only the
-fragment fails with "Changelog added without changes". Without `--pr-number` and `--tracker-file`,
-PR/tracker/Bugzilla checks are skipped. Success prints
+`origin/master`). Several main branches are active; if the target is not
+known from the task, ask the user instead of assuming `master`.
+
+`git diff "$base"` compares the branch point with the working tree, so it
+covers commits, staged and unstaged edits, but not commits that landed on
+the target branch later. Check that the untracked list contains only files
+that belong to the change. The checker needs the other changed files to
+know which packages are affected; passing only the fragment fails with
+"Changelog added without changes". Without `--pr-number` and
+`--tracker-file`, PR/tracker/Bugzilla checks are skipped. Success prints
 `Changelog test passed`; otherwise each problem is listed with file and
 line.
-
-## Committing
-
-Whether to prepare commits is up to the user. Only provide commit commands
-if the user asks for them; then follow the commit instructions from the
-global configuration.

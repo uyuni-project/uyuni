@@ -1,6 +1,6 @@
 ---
 name: run-java-tests
-description: Run java/core JUnit tests from the sandbox, including one-time Maven setup and database check. Use when asked to run or verify Java tests.
+description: Run java/core JUnit tests, including database check and one-time Maven setup. Use when running or verifying Java tests.
 ---
 
 # Running Java unit tests
@@ -10,10 +10,22 @@ from the repository root.
 
 ## 1. Check the database
 
-The database runs in a container. In a sandbox (for example a podman-based
-sandbox), containers usually cannot be started and `localhost` is not the
-host, so the user must start it on the host (ask them; do not try to start
-containers):
+The database runs in a container. First check whether the test config
+exists and the database is reachable:
+
+```bash
+grep db_host java/buildconf/test/rhn.conf
+timeout 20 bash -c '</dev/tcp/<db_host>/5432' && echo db-ok
+```
+
+`<db_host>` is the value from `rhn.conf`: `host.containers.internal` in a
+sandbox, `localhost` otherwise. If both commands succeed, continue with
+step 2.
+
+Otherwise the database has to be started. In a sandbox (for example a
+podman-based sandbox), containers usually cannot be started and `localhost`
+is not the host, so the user must start it on the host (ask them; do not
+try to start containers):
 
 ```bash
 cd java && make -f Makefile.docker confighost podmanrun
@@ -30,15 +42,9 @@ make -C java -f Makefile.docker confighost
 
 Outside a sandbox, `cd java && make -f Makefile.docker` pulls the image,
 writes `rhn.conf` for localhost and runs the database in the foreground on
-localhost:5432; keep it running in a separate terminal while tests run, and
-use `localhost` instead of `host.containers.internal` below.
+localhost:5432; keep it running in a separate terminal while tests run.
 
-Verify config and reachability:
-
-```bash
-grep db_host java/buildconf/test/rhn.conf        # host.containers.internal
-timeout 20 bash -c '</dev/tcp/host.containers.internal/5432' && echo db-ok
-```
+Repeat the check above afterwards.
 
 ## 2. One-time Maven setup
 
@@ -62,24 +68,29 @@ mvn -f java/core test -DskipTests=false -Dtest=<TestClass>
 mvn -f java/core test -DskipTests=false -Dtest=<TestClass>#<method>
 ```
 
-The run is slow, so start it in the background and filter the noisy
-resolver warnings:
+The run takes minutes. Run it detached (in Claude Code with the Bash
+tool's `run_in_background`, otherwise in a separate terminal or with `&`)
+and write the output to a log file in the git-ignored `target/` directory
+instead of piping it through `tail`, which would hide the failure details:
 
 ```bash
-set -o pipefail
-mvn -f java/core test -DskipTests=false -Dtest=<TestClass> 2>&1 | grep -v -e WARNING -e Progress -e Download | tail -40
+mkdir -p java/core/target
+mvn -f java/core test -DskipTests=false -Dtest=<TestClass> > java/core/target/test-run.log 2>&1
+echo "exit code: $?"
 ```
 
-`pipefail` keeps Maven's exit code; without it the pipeline returns
-`tail`'s status and a failed build looks successful.
+Then check the result:
 
-Look for `Tests run: N, Failures: F, Errors: E` and `BUILD SUCCESS`.
-Per-test reports are in `java/core/target/surefire-reports/`.
+```bash
+grep -E 'Tests run:|FAIL|ERROR|BUILD' java/core/target/test-run.log
+```
+
+Look for `Tests run: N, Failures: F, Errors: E` and `BUILD SUCCESS`. For
+failing tests, read the per-class reports in
+`java/core/target/surefire-reports/` (`<package>.<TestClass>.txt` has the
+assertion messages and stack traces).
 
 ## Notes
 
 - Run the narrowest test class first; widen only if the change crosses modules.
 - Report honestly if tests could not run (DB unreachable, build failure).
-- Whether to prepare commits is up to the user. Only provide commit commands
-  if the user asks for them; then follow the commit instructions from the
-  global configuration.

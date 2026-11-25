@@ -1,6 +1,6 @@
 ---
 name: check-reuse-licensing
-description: Add SPDX headers or REUSE.toml annotations to new files and run the CI "REUSE Compliance Check" locally. Use when adding files or asked about license headers.
+description: Add SPDX headers or REUSE.toml annotations to new files and run reuse lint. Use when adding files or for license headers.
 ---
 
 # Copyright and license information (REUSE)
@@ -16,7 +16,7 @@ Add this header at the top, below any shebang, in the file's own comment
 syntax (for example `#` in `tito.props`, not `<!-- -->`):
 
 ```text
-SPDX-FileCopyrightText: <current year> SUSE LLC
+SPDX-FileCopyrightText: <year the file is created> SUSE LLC
 
 SPDX-License-Identifier: <license>
 ```
@@ -27,7 +27,8 @@ SPDX-License-Identifier: <license>
   grep -h -m1 SPDX-License-Identifier <dir>/* 2>/dev/null | sort | uniq -c
   ```
 
-- The license must have a file in `LICENSES/`.
+- The license must have a file in `LICENSES/`
+  (`ls LICENSES/<license>.txt`).
 - A classic copyright block with an `SPDX-License-Identifier` line is
   sufficient.
 
@@ -45,7 +46,9 @@ Third-party files keep their upstream copyright and license, recorded in
 
 ## Check
 
-`reuse` is installed in the sandbox. Check single files quickly:
+`reuse` is usually installed in the sandbox; check with
+`command -v reuse`. If it is missing, report that the check was left to CI
+instead of installing it. Check single files quickly:
 
 ```bash
 reuse lint-file <file> [<file> ...]
@@ -62,5 +65,4 @@ reuse lint
 Do not truncate the output with `head` or `tail`: the problem files are
 listed first and the result last, and a pipe hides the exit code. Success
 (exit code 0) ends with `Congratulations! Your project is compliant`. Failures
-list the files under `MISSING COPYRIGHT AND LICENSING INFORMATION`. If
-`reuse` is not installed, report that the check was left to CI.
+list the files under `MISSING COPYRIGHT AND LICENSING INFORMATION`.

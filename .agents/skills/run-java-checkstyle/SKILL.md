@@ -1,6 +1,6 @@
 ---
 name: run-java-checkstyle
-description: Run Checkstyle with the repository config on java/core, java/webapp, java/doclets or microservices/*. Use when checking Java style or before finishing a Java change.
+description: Run Checkstyle on java/ or microservices/ modules. Use when checking Java code style or before finishing a Java change.
 ---
 
 # Running Checkstyle on Java code
@@ -29,21 +29,26 @@ Pick the module that contains the changed files:
 | `microservices/uyuni-java-common/` | `microservices/uyuni-java-common`   |
 | `microservices/coco-attestation/`  | `microservices/coco-attestation`    |
 
-```bash
-set -o pipefail
-mvn -f <module>/pom.xml checkstyle:check 2>&1 | grep -v -e WARNING -e Progress -e Download | tail -30
-```
+Write the output to a log file in the module's git-ignored `target/`
+directory instead of piping it through `tail`, which can hide violations
+in a module with many findings:
 
-`pipefail` keeps Maven's exit code instead of `tail`'s.
+```bash
+mkdir -p <module>/target
+mvn -f <module>/pom.xml checkstyle:check > <module>/target/checkstyle-run.log 2>&1
+echo "exit code: $?"
+grep -E '^\[ERROR\]|Checkstyle violations|BUILD' <module>/target/checkstyle-run.log
+```
 
 Success ends with `You have 0 Checkstyle violations.` and `BUILD SUCCESS`.
 Violations are listed as `[ERROR] <file>:[line,col] ... [CheckName]`.
 
 On a fresh checkout the first run downloads the plugin and takes a while;
-later runs take 5 to 40 seconds depending on the module. Network access to Maven Central works in the sandbox; do not use
-`-o`. For microservices that depend on `uyuni-java-common`, install it first
-(`mvn -q -f microservices/uyuni-java-common/pom.xml install`) if resolution
-fails.
+later runs take 5 to 40 seconds depending on the module. Network access to
+Maven Central works in the sandbox; do not use `-o`. For microservices
+that depend on `uyuni-java-common`, install it first
+(`mvn -q -f microservices/uyuni-java-common/pom.xml install`) if
+resolution fails.
 
 ## Details
 
