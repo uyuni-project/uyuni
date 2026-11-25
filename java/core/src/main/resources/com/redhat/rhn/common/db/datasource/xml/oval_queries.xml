@@ -106,7 +106,7 @@ SPDX-License-Identifier: GPL-2.0-only
     </write-mode>
 
     <mode name="list_system_cve_errata">
-        <query params="sid">
+        <query params="sid, max_rank">
             SELECT DISTINCT ON (errataCve.cve_id, errata.id)
                 errataCve.cve_id AS cve_id,
                 errata.id AS errata_id,
@@ -130,7 +130,7 @@ SPDX-License-Identifier: GPL-2.0-only
             JOIN suseCVEServerChannel cveChannel
               ON cveChannel.server_id = :sid
                 AND cveChannel.channel_id = channelErrata.channel_id
-                AND cveChannel.channel_rank &lt; 100000
+                AND cveChannel.channel_rank &lt; :max_rank
             JOIN rhnChannel channel
               ON channel.id = channelErrata.channel_id
             LEFT JOIN rhnServerChannel serverChannel

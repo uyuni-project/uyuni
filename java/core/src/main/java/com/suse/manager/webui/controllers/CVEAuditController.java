@@ -43,6 +43,7 @@ import com.redhat.rhn.manager.audit.SystemCVEResult;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
+import com.suse.manager.utils.EnumNameParser;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -56,6 +57,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -127,8 +129,8 @@ public class CVEAuditController {
      * @return the JSON page
      */
     public static String systemCves(Request request, Response response, User user, Server server) {
-        Set<PatchStatus> statuses = parseSystemCveStatuses(request.params("statuses"));
-        Set<OvalSeverity> severities = parseSystemCveSeverities(request.params("severities"));
+        Set<PatchStatus> statuses = parseCommaSeparated(request.params("statuses"), PatchStatus.class);
+        Set<OvalSeverity> severities = parseCommaSeparated(request.params("severities"), OvalSeverity.class);
         PageControlHelper pageHelper = new PageControlHelper(request, "cveName");
         PageControl pc = pageHelper.getPageControl();
 
@@ -139,40 +141,10 @@ public class CVEAuditController {
                 new TypeToken<>() { });
     }
 
-    /**
-     * Parse a comma separated list of status names, ignoring unknown values.
-     *
-     * @param value the raw value, may be null
-     * @return the parsed statuses
-     */
-    static Set<PatchStatus> parseSystemCveStatuses(String value) {
-        return parseEnumNames(value, PatchStatus.class);
-    }
-
-    /**
-     * Parse a comma separated list of severity names, ignoring unknown values. An empty result means any severity.
-     *
-     * @param value the raw value, may be null
-     * @return the parsed severities
-     */
-    static Set<OvalSeverity> parseSystemCveSeverities(String value) {
-        return parseEnumNames(value, OvalSeverity.class);
-    }
-
-    private static <E extends Enum<E>> Set<E> parseEnumNames(String value, Class<E> type) {
-        Set<E> result = EnumSet.noneOf(type);
-        if (value == null) {
-            return result;
-        }
-        for (String token : value.split(",")) {
-            try {
-                result.add(Enum.valueOf(type, token.trim()));
-            }
-            catch (IllegalArgumentException e) {
-                log.debug("Ignoring unknown {} value: {}", type.getSimpleName(), token);
-            }
-        }
-        return result;
+    private static <E extends Enum<E>> Set<E> parseCommaSeparated(String value, Class<E> type) {
+        List<String> names = value == null ? null : Arrays.stream(value.split(",")).map(String::trim).toList();
+        return EnumNameParser.parse(names, type,
+                e -> log.debug("Ignoring unknown {} value: {}", type.getSimpleName(), e.getMessage()));
     }
 
     /**

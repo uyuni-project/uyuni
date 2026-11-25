@@ -44,7 +44,7 @@ public class SystemCVEResult extends BaseTupleDto {
     private List<Errata> errata = new ArrayList<>();
 
     /**
-     * Constructor used by {@link com.suse.manager.utils.PagedSqlQueryBuilder}
+     * Constructor used to read the rows of the query of {@link SystemCVEAuditManager}
      *
      * @param tuple JPA tuple with the columns id, cve_name, status and severity
      */

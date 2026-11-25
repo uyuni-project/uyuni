@@ -20,12 +20,9 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.SystemCVEAuditManagerTest;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.TestUtils;
-
-import com.suse.oval.OvalSeverity;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -33,7 +30,6 @@ import com.google.gson.JsonParser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -149,21 +145,5 @@ public class CVEAuditControllerSystemCveTest extends BaseControllerTestCase {
                 "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI", "CRITICAL");
         assertEquals(0, JsonParser.parseString(CVEAuditController.systemCves(critical, response, user, server))
                 .getAsJsonObject().get("total").getAsLong());
-    }
-
-    @Test
-    public void testParseSystemCveSeverities() {
-        assertEquals(EnumSet.of(OvalSeverity.CRITICAL, OvalSeverity.UNKNOWN),
-                CVEAuditController.parseSystemCveSeverities("CRITICAL, UNKNOWN,bogus"));
-        assertEquals(EnumSet.noneOf(OvalSeverity.class), CVEAuditController.parseSystemCveSeverities("all"));
-        assertEquals(EnumSet.noneOf(OvalSeverity.class), CVEAuditController.parseSystemCveSeverities(null));
-    }
-
-    @Test
-    public void testParseSystemCveStatuses() {
-        assertEquals(EnumSet.of(PatchStatus.PATCHED, PatchStatus.AFFECTED_PATCH_UNAVAILABLE),
-                CVEAuditController.parseSystemCveStatuses("PATCHED, AFFECTED_PATCH_UNAVAILABLE,bogus"));
-        assertEquals(EnumSet.noneOf(PatchStatus.class), CVEAuditController.parseSystemCveStatuses("none"));
-        assertEquals(EnumSet.noneOf(PatchStatus.class), CVEAuditController.parseSystemCveStatuses(null));
     }
 }

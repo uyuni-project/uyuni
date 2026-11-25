@@ -33,6 +33,7 @@ import com.redhat.rhn.manager.audit.SystemCVEResult;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 
 import com.suse.manager.api.ReadOnly;
+import com.suse.manager.utils.EnumNameParser;
 import com.suse.oval.OvalSeverity;
 
 import java.util.Comparator;
@@ -121,28 +122,17 @@ public class CVEAuditHandler extends BaseHandler {
                                                   List<String> severities) throws FaultException {
         Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
 
-        Set<PatchStatus> statuses = parseNames(patchStatusLabels, PatchStatus.class);
+        Set<PatchStatus> statuses = EnumNameParser.parse(patchStatusLabels, PatchStatus.class, e -> {
+            throw new MethodInvalidParamException(e);
+        });
         if (statuses.isEmpty()) {
             statuses = EnumSet.allOf(PatchStatus.class);
         }
-        Set<OvalSeverity> severitySet = parseNames(severities, OvalSeverity.class);
+        Set<OvalSeverity> severitySet = EnumNameParser.parse(severities, OvalSeverity.class, e -> {
+            throw new MethodInvalidParamException(e);
+        });
 
         return SystemCVEAuditManager.listCves(server, statuses, severitySet, new PageControl(1, 0));
-    }
-
-    private static <E extends Enum<E>> Set<E> parseNames(List<String> names, Class<E> type) {
-        Set<E> result = EnumSet.noneOf(type);
-        if (names != null) {
-            for (String name : names) {
-                try {
-                    result.add(Enum.valueOf(type, name));
-                }
-                catch (IllegalArgumentException e) {
-                    throw new MethodInvalidParamException(e);
-                }
-            }
-        }
-        return result;
     }
 
     /**

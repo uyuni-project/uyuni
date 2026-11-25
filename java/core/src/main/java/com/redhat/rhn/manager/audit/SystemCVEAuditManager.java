@@ -383,6 +383,7 @@ public class SystemCVEAuditManager {
         SelectMode mode = ModeFactory.getMode("oval_queries", "list_system_cve_errata");
         Map<String, Object> params = new HashMap<>();
         params.put("sid", server.getId());
+        params.put("max_rank", PREDECESSOR_PRODUCT_RANK_BOUNDARY);
         DataResult<Row> rows = mode.execute(params, cveIds);
 
         Map<Long, List<SystemCVEResult.Errata>> errataByCve = new HashMap<>();
