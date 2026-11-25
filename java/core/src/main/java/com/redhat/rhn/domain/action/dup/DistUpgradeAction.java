@@ -24,9 +24,7 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.frontend.struts.RequestContext;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
@@ -76,7 +74,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * DistUpgradeAction - Class representation of distribution upgrade action.
@@ -629,14 +626,8 @@ public class DistUpgradeAction extends Action {
      * {@inheritDoc}
      */
     @Override
-    public boolean setRequestAttributeDryRun(HttpServletRequest request) {
-        RequestContext requestContext = new RequestContext(request);
-        Server server = requestContext.lookupAndBindServer();
-
-        DistUpgradeActionDetails details = getDetails(server.getId());
-        boolean typeDistUpgradeDryRun = details != null && details.isDryRun();
-        request.setAttribute("typeDistUpgradeDryRun", typeDistUpgradeDryRun);
-
-        return typeDistUpgradeDryRun;
+    public boolean isDistUpgradeDryRun(Long serverId) {
+        DistUpgradeActionDetails details = getDetails(serverId);
+        return details != null && details.isDryRun();
     }
 }
