@@ -29,9 +29,9 @@ If every changed file is under `testsuite/`, work from
 [`testsuite/AGENTS.md`](testsuite/AGENTS.md) and its
 `CODING_STANDARDS.md`. Do not apply the subsystem sections below (frontend,
 Java, Python, schema, Salt, and their build and test commands) to testsuite
-work. The repository-wide sections still apply: Working practices, Generated
-and derived files, Licensing headers (REUSE), and CI, packaging, and
-deployment.
+work. The repository-wide sections still apply: Working practices, Commits,
+Generated and derived files, Licensing headers (REUSE), and CI, packaging,
+and deployment.
 
 For mixed changes, follow the section for each other subsystem touched, and
 `testsuite/AGENTS.md` for the files under `testsuite/`.
@@ -80,14 +80,24 @@ changed. Do not assume that conventions are uniform across subsystems.
   migration before adding a new one.
 - Keep dependency changes intentional. Update the corresponding lockfile or
   package metadata and explain why the dependency is needed.
-- Never commit credentials, tokens, hostnames from private environments, or
-  generated test secrets.
 - Do not run release, OBS promotion, image publication, or deployment commands
   unless the user explicitly requests that operation. These commands affect
   external infrastructure and may consume credentials from the environment.
 - Do not discard unrelated worktree changes. Avoid destructive Git operations.
+
+## Commits
+
+- Whether to prepare commits is up to the user. Create commits or provide
+  commit commands only when the user asks for them.
+- Keep each commit to one logical change. Put formatting-only changes (for
+  example Black reformatting of untouched code) in their own commit before
+  the functional change.
 - Keep commit messages short: a brief summary of what the commit does and
   why. Do not list every changed class, function, or keyword.
+- Never commit credentials, tokens, hostnames from private environments, or
+  generated test secrets.
+- Do not commit build output or generated files; see
+  [Generated and derived files](#generated-and-derived-files).
 
 ## Generated and derived files
 
