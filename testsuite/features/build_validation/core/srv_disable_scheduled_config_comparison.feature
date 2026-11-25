@@ -12,3 +12,8 @@ Feature: Do not let the nightly configuration comparison interfere with our BV t
     And I choose "disabled"
     And I click on "Update Schedule"
     And I click on "Disable Schedule"
+
+  Scenario: Check that the comparison schedule is disabled
+    When I follow the left menu "Admin > Task Schedules"
+    And I follow "compare-configs-default"
+    Then I should see a "Schedule isn't active any more." text
