@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.struts.RequestContext;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,6 +31,8 @@ import java.util.Map;
  */
 public class KickstartAclHandler extends BaseHandler {
     private static final String USER = "user";
+    private static final String KSTREE_ID = "kstid";
+    private static final String KICKSTART_ID = "ksid";
     private KickstartData getKickstart(User usr, String[] params) {
         String ksStr = params[0];
         Long id = null;
@@ -88,7 +89,7 @@ public class KickstartAclHandler extends BaseHandler {
      */
     public boolean aclTreeIsSynced(Map<String, Object> ctx, String[] params) {
         User usr = (User)ctx.get(USER);
-        Long id = getAsLong(ctx.get(RequestContext.KSTREE_ID));
+        Long id = getAsLong(ctx.get(KSTREE_ID));
         if (id == null) {
             return false;
         }
@@ -108,7 +109,7 @@ public class KickstartAclHandler extends BaseHandler {
      */
     public boolean aclProfileIsValid(Map<String, Object> ctx, String[] params) {
         User usr = (User)ctx.get(USER);
-        Long id = getAsLong(ctx.get(RequestContext.KICKSTART_ID));
+        Long id = getAsLong(ctx.get(KICKSTART_ID));
         if (id == null) {
             return false;
         }
