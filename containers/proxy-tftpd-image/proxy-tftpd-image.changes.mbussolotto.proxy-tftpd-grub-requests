@@ -1,3 +1,4 @@
 - Ignore retransmitted TFTP requests that are already being served
+  (bsc#1290960)
 - Answer GRUB config file probes locally instead of forwarding
-  them to the server
+  them to the server (bsc#1290960)
