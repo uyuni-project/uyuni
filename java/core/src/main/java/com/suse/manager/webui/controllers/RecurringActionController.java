@@ -225,7 +225,7 @@ public class RecurringActionController {
     public static String getDetails(Request request, Response response, User user) {
         long id = Long.parseLong(request.params("id"));
         Optional<RecurringAction> action = RecurringActionManager.find(id);
-        if (action.isEmpty()) {
+        if (action.isEmpty() || !action.get().canAccess(user)) {
             return notFound(response, "Action " + id + " not found");
         }
         return json(response, actionToDetailsDto(action.get()), new TypeToken<>() { });
