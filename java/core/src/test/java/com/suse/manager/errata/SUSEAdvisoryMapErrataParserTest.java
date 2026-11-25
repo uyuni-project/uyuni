@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.testing.ErrataTestUtils;
 
 import com.suse.manager.errata.advisorymap.ErrataAdvisoryMapManager;
 
@@ -59,7 +60,7 @@ public class SUSEAdvisoryMapErrataParserTest extends BaseErrataTestCase {
     }
 
     private Errata createTestErrata(String updateTag, String advisory) {
-        return createErrataWithUpdateTag(updateTag, advisory, ErrataFactory.ERRATA_TYPE_SECURITY,
+        return ErrataTestUtils.createTestErrataWithUpdateTag(updateTag, advisory, ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2025, Month.FEBRUARY, 8), 1L);
     }
 

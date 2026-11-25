@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.testing.ErrataTestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -40,7 +41,7 @@ public class SUSERESErrataParserTest extends BaseErrataTestCase {
     public void testCanBuildValidLinkAndId() throws ErrataParsingException {
 
         final SUSERESErrataParser parser = new SUSERESErrataParser();
-        final Errata errata = createErrata("RHSA-2021:3666", ErrataFactory.ERRATA_TYPE_BUG,
+        final Errata errata = ErrataTestUtils.createTestErrata("RHSA-2021:3666", ErrataFactory.ERRATA_TYPE_BUG,
                 LocalDate.of(2021, Month.SEPTEMBER, 27), 1L);
 
         final String id = parser.getAnnouncementId(errata);
@@ -56,7 +57,7 @@ public class SUSERESErrataParserTest extends BaseErrataTestCase {
     @Test
     public void testThrowsExceptionWhenAdvisoryIsNotAvailable() {
         final SUSERESErrataParser parser = new SUSERESErrataParser();
-        final Errata errata = createErrata(null, ErrataFactory.ERRATA_TYPE_SECURITY,
+        final Errata errata = ErrataTestUtils.createTestErrata(null, ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2019, Month.FEBRUARY, 8), 1L);
 
         try {
@@ -74,7 +75,7 @@ public class SUSERESErrataParserTest extends BaseErrataTestCase {
     @Test
     public void testThrowsExceptionWhenAdvisoryPrefixIsInvalid() {
         final SUSERESErrataParser parser = new SUSERESErrataParser();
-        final Errata errata = createErrata("SUSE-2021:3666", ErrataFactory.ERRATA_TYPE_SECURITY,
+        final Errata errata = ErrataTestUtils.createTestErrata("SUSE-2021:3666", ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2019, Month.FEBRUARY, 8), 1L);
 
         try {

@@ -12,46 +12,11 @@
  */
 package com.suse.manager.errata;
 
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.testing.BaseTestCase;
-
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 
 /**
  * Base class for testing implementations of {@link com.suse.manager.errata.VendorSpecificErrataParser}
  */
 abstract class BaseErrataTestCase extends BaseTestCase {
 
-    /**
-     * Builds a test errata object
-     */
-    protected Errata createErrata(String advisory, String type, LocalDate issuedDate, Long release) {
-        final Errata errata = new Errata();
-
-        if (issuedDate != null) {
-            errata.setIssueDate(Date.from(issuedDate.atStartOfDay(ZoneOffset.systemDefault()).toInstant()));
-        }
-
-        errata.setAdvisory(advisory);
-        errata.setAdvisoryRel(release);
-        errata.setAdvisoryType(type);
-        return errata;
-    }
-
-    /**
-     * Builds a test errata object with one channel owning an update tag
-     */
-    protected Errata createErrataWithUpdateTag(String updateTag,
-                                               String advisory, String type, LocalDate issuedDate, Long release) {
-        final Errata errata = createErrata(advisory, type, issuedDate, release);
-
-        Channel ch = new Channel();
-        ch.setUpdateTag(updateTag);
-        ch.addErrata(errata);
-
-        return errata;
-    }
 }
