@@ -18,8 +18,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentLifecycleType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
@@ -81,8 +80,9 @@ public class RecurringContentLifecycleHandler extends BaseHandler {
 
         RecurringAction action =
                 actionHandler.createAction(RecurringActionType.ActionType.CLM_BUILD, props, loggedInUser);
-        RecurringContentBuildType buildType = (RecurringContentBuildType) action.getRecurringActionType();
+        RecurringContentLifecycleType buildType = (RecurringContentLifecycleType) action.getRecurringActionType();
         buildType.setProject(project);
+        buildType.setEnvironment(null);
 
         return actionHandler.save(loggedInUser, action);
     }
@@ -109,7 +109,7 @@ public class RecurringContentLifecycleHandler extends BaseHandler {
     public int updateBuild(User loggedInUser, Map<String, Object> actionProps) {
         ensureOrgAdmin(loggedInUser);
         RecurringAction action = actionHandler.updateAction(actionProps, loggedInUser);
-        if (!(action.getRecurringActionType() instanceof RecurringContentBuildType buildType)) {
+        if (!(action.getRecurringActionType() instanceof RecurringContentLifecycleType buildType)) {
             throw new InvalidArgsException("Action is not a CLM build action");
         }
         if (actionProps.containsKey("project_label")) {
@@ -173,7 +173,7 @@ public class RecurringContentLifecycleHandler extends BaseHandler {
 
         RecurringAction action =
                 actionHandler.createAction(RecurringActionType.ActionType.CLM_PROMOTE, props, loggedInUser);
-        RecurringContentPromoteType promoteType = (RecurringContentPromoteType) action.getRecurringActionType();
+        RecurringContentLifecycleType promoteType = (RecurringContentLifecycleType) action.getRecurringActionType();
         promoteType.setProject(project);
         promoteType.setEnvironment(env);
 
@@ -203,7 +203,7 @@ public class RecurringContentLifecycleHandler extends BaseHandler {
     public int updatePromote(User loggedInUser, Map<String, Object> actionProps) {
         ensureOrgAdmin(loggedInUser);
         RecurringAction action = actionHandler.updateAction(actionProps, loggedInUser);
-        if (!(action.getRecurringActionType() instanceof RecurringContentPromoteType promoteType)) {
+        if (!(action.getRecurringActionType() instanceof RecurringContentLifecycleType promoteType)) {
             throw new InvalidArgsException("Action is not a CLM promote action");
         }
         if (actionProps.containsKey("project_label")) {
@@ -222,6 +222,9 @@ public class RecurringContentLifecycleHandler extends BaseHandler {
                         "' is the last environment in the project lifecycle and cannot be promoted.");
             }
             promoteType.setEnvironment(env);
+        }
+        if (promoteType.getEnvironment() == null) {
+            throw new InvalidArgsException("Environment is required for CLM promote action");
         }
         return actionHandler.save(loggedInUser, action);
     }

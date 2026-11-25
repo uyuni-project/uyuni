@@ -21,8 +21,7 @@ import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentLifecycleType;
 import com.redhat.rhn.frontend.dto.BaseTupleDto;
 
 import java.util.List;
@@ -53,14 +52,9 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
         setTargetId(recurringActionIn.getEntityId());
         setTargetName(getEntityName(recurringActionIn));
         setActionType(recurringActionIn.getActionType());
-        if (recurringActionIn.getRecurringActionType() instanceof RecurringContentBuildType buildType) {
-            if (buildType.getProject() != null) {
-                setProjectLabel(buildType.getProject().getLabel());
-            }
-        }
-        else if (recurringActionIn.getRecurringActionType() instanceof RecurringContentPromoteType promoteType) {
-            if (promoteType.getProject() != null) {
-                setProjectLabel(promoteType.getProject().getLabel());
+        if (recurringActionIn.getRecurringActionType() instanceof RecurringContentLifecycleType clmType) {
+            if (clmType.getProject() != null) {
+                setProjectLabel(clmType.getProject().getLabel());
             }
         }
     }
@@ -337,18 +331,13 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
             case ORG:
                 return ((OrgRecurringAction) action).getOrg().getName();
             case NO_ENTITY:
-                if (action.getRecurringActionType() instanceof RecurringContentBuildType buildType) {
-                    if (buildType.getProject() != null) {
-                        return buildType.getProject().getName();
+                if (action.getRecurringActionType() instanceof RecurringContentLifecycleType clmType) {
+                    if (clmType.getProject() != null && clmType.getEnvironment() != null) {
+                        return clmType.getProject().getName() + " (" +
+                                clmType.getEnvironment().getName() + ")";
                     }
-                }
-                else if (action.getRecurringActionType() instanceof RecurringContentPromoteType promoteType) {
-                    if (promoteType.getProject() != null && promoteType.getEnvironment() != null) {
-                        return promoteType.getProject().getName() + " (" +
-                                promoteType.getEnvironment().getName() + ")";
-                    }
-                    if (promoteType.getProject() != null) {
-                        return promoteType.getProject().getName();
+                    if (clmType.getProject() != null) {
+                        return clmType.getProject().getName();
                     }
                 }
                 return "-";

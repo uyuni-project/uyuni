@@ -16,6 +16,8 @@ package com.redhat.rhn.domain.recurringactions.type;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 
+import java.util.Optional;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -24,29 +26,52 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 /**
- * Recurring Action type for CLM promote implementation
+ * Recurring Action type for CLM build and promote implementations.
  */
 @Entity
-@Table(name = "suseRecurringContentPromote")
-public class RecurringContentPromoteType extends RecurringActionType {
+@Table(name = "suseRecurringContentAction")
+public class RecurringContentLifecycleType extends RecurringActionType {
 
     private ContentProject project;
     private ContentEnvironment environment;
+    private ActionType actionType;
 
     /**
      * Standard constructor
      */
-    public RecurringContentPromoteType() {
+    public RecurringContentLifecycleType() {
     }
 
     /**
-     * Constructor
+     * Constructor specifying action type
+     *
+     * @param actionTypeIn the action type
+     */
+    public RecurringContentLifecycleType(ActionType actionTypeIn) {
+        super();
+        this.actionType = actionTypeIn;
+    }
+
+    /**
+     * Constructor for CLM build
+     *
+     * @param projectIn the content project
+     */
+    public RecurringContentLifecycleType(ContentProject projectIn) {
+        super();
+        this.actionType = ActionType.CLM_BUILD;
+        this.project = projectIn;
+    }
+
+    /**
+     * Constructor for CLM promote
      *
      * @param projectIn the content project
      * @param environmentIn the content environment
      */
-    public RecurringContentPromoteType(ContentProject projectIn, ContentEnvironment environmentIn) {
+    public RecurringContentLifecycleType(ContentProject projectIn, ContentEnvironment environmentIn) {
         super();
+        this.actionType = ActionType.CLM_PROMOTE;
         this.project = projectIn;
         this.environment = environmentIn;
     }
@@ -54,7 +79,22 @@ public class RecurringContentPromoteType extends RecurringActionType {
     @Override
     @Transient
     public ActionType getActionType() {
-        return ActionType.CLM_PROMOTE;
+        if (getRecurringAction() != null && getRecurringAction().getActionType() != null) {
+            return getRecurringAction().getActionType();
+        }
+        if (this.actionType != null) {
+            return this.actionType;
+        }
+        return environment == null ? ActionType.CLM_BUILD : ActionType.CLM_PROMOTE;
+    }
+
+    /**
+     * Sets the action type
+     *
+     * @param actionTypeIn the action type
+     */
+    public void setActionType(ActionType actionTypeIn) {
+        this.actionType = actionTypeIn;
     }
 
     /**
@@ -78,12 +118,12 @@ public class RecurringContentPromoteType extends RecurringActionType {
     }
 
     /**
-     * Gets the content environment
+     * Gets the content environment (null for build actions)
      *
      * @return the content environment
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "env_id", nullable = false)
+    @JoinColumn(name = "env_id")
     public ContentEnvironment getEnvironment() {
         return this.environment;
     }
@@ -95,5 +135,13 @@ public class RecurringContentPromoteType extends RecurringActionType {
      */
     public void setEnvironment(ContentEnvironment environmentIn) {
         this.environment = environmentIn;
+    }
+
+    /**
+     * @return optional of the content environment
+     */
+    @Transient
+    public Optional<ContentEnvironment> getEnvironmentOpt() {
+        return Optional.ofNullable(environment);
     }
 }

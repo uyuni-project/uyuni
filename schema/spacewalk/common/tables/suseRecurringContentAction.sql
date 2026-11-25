@@ -10,19 +10,19 @@
 --
 -- SPDX-License-Identifier: GPL-2.0-only
 --
-CREATE TABLE suseRecurringContentPromote
+CREATE TABLE suseRecurringContentAction
 (
   rec_id            NUMERIC NOT NULL
-                    CONSTRAINT suse_recurring_ct_prm_id_pk PRIMARY KEY
-                    CONSTRAINT suse_rec_ct_prm_rec_fk
+                    CONSTRAINT suse_recurring_ct_act_id_pk PRIMARY KEY
+                    CONSTRAINT suse_rec_ct_act_rec_fk
                       REFERENCES suseRecurringAction(id)
                       ON DELETE CASCADE,
   project_id        NUMERIC NOT NULL
-                    CONSTRAINT suse_rec_ct_prm_prj_fk
+                    CONSTRAINT suse_rec_ct_act_prj_fk
                       REFERENCES suseContentProject(id)
                       ON DELETE CASCADE,
-  env_id            NUMERIC NOT NULL
-                    CONSTRAINT suse_rec_ct_prm_env_fk
+  env_id            NUMERIC
+                    CONSTRAINT suse_rec_ct_act_env_fk
                       REFERENCES suseContentEnvironment(id)
                       ON DELETE CASCADE
 );

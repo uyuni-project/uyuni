@@ -20,8 +20,7 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentLifecycleType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
@@ -98,25 +97,16 @@ public class RecurringActionSerializer extends ApiResponseSerializer<RecurringAc
             builder.add("playbook_path", ((RecurringPlaybook) src.getRecurringActionType()).getPlaybookPath());
             builder.add("test", ((RecurringPlaybook) src.getRecurringActionType()).isTestMode());
         }
-        else if (src.getActionType().equals(RecurringActionType.ActionType.CLM_BUILD)) {
-            RecurringContentBuildType buildType = (RecurringContentBuildType) src.getRecurringActionType();
-            if (buildType.getProject() != null) {
-                builder.add("project_id", buildType.getProject().getId());
-                builder.add("project_label", buildType.getProject().getLabel());
-                builder.add("project_name", buildType.getProject().getName());
+        else if (src.getRecurringActionType() instanceof RecurringContentLifecycleType clmType) {
+            if (clmType.getProject() != null) {
+                builder.add("project_id", clmType.getProject().getId());
+                builder.add("project_label", clmType.getProject().getLabel());
+                builder.add("project_name", clmType.getProject().getName());
             }
-        }
-        else if (src.getActionType().equals(RecurringActionType.ActionType.CLM_PROMOTE)) {
-            RecurringContentPromoteType promoteType = (RecurringContentPromoteType) src.getRecurringActionType();
-            if (promoteType.getProject() != null) {
-                builder.add("project_id", promoteType.getProject().getId());
-                builder.add("project_label", promoteType.getProject().getLabel());
-                builder.add("project_name", promoteType.getProject().getName());
-            }
-            if (promoteType.getEnvironment() != null) {
-                builder.add("environment_id", promoteType.getEnvironment().getId());
-                builder.add("environment_label", promoteType.getEnvironment().getLabel());
-                builder.add("environment_name", promoteType.getEnvironment().getName());
+            if (clmType.getEnvironment() != null) {
+                builder.add("environment_id", clmType.getEnvironment().getId());
+                builder.add("environment_label", clmType.getEnvironment().getLabel());
+                builder.add("environment_name", clmType.getEnvironment().getName());
             }
         }
 

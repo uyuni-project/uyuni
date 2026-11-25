@@ -133,14 +133,9 @@ public class RecurringActionFactory extends HibernateFactory {
      */
     public static List<RecurringAction> listActionsForProject(ContentProject project) {
         return getSession().createQuery("""
-                        SELECT action FROM RecurringAction action
-                         WHERE action in (
-                            SELECT bld.recurringAction FROM RecurringContentBuildType bld WHERE bld.project = :project
-                         )
-                         OR action in (
-                            SELECT prm.recurringAction FROM RecurringContentPromoteType prm WHERE prm.project = :project
-                         )
-                         ORDER BY action.id DESC
+                        SELECT clm.recurringAction FROM RecurringContentLifecycleType clm
+                         WHERE clm.project = :project
+                         ORDER BY clm.recurringAction.id DESC
                         """, RecurringAction.class)
                 .setParameter("project", project)
                 .list();
@@ -154,9 +149,9 @@ public class RecurringActionFactory extends HibernateFactory {
      */
     public static List<RecurringAction> listActionsForEnvironment(ContentEnvironment environment) {
         return getSession().createQuery("""
-                        SELECT prm.recurringAction FROM RecurringContentPromoteType prm
-                         WHERE prm.environment = :env
-                         ORDER BY prm.recurringAction.id DESC
+                        SELECT clm.recurringAction FROM RecurringContentLifecycleType clm
+                         WHERE clm.environment = :env
+                         ORDER BY clm.recurringAction.id DESC
                         """, RecurringAction.class)
                 .setParameter("env", environment)
                 .list();
@@ -188,14 +183,13 @@ public class RecurringActionFactory extends HibernateFactory {
             "  when ra.target_type = 'organization' then org.name " +
             "  when ra.target_type = 'group' then sg.name " +
             "  when ra.target_type = 'minion' then minion.name " +
-            "  when ra.target_type = 'no-entity' and ra.action_type = 'CLM_BUILD' then rcb_cp.name " +
-            "  when ra.target_type = 'no-entity' and ra.action_type = 'CLM_PROMOTE' then " +
-            "    rcp_cp.name || ' (' || rcp_env.name || ')' " +
+            "  when ra.target_type = 'no-entity' and rca_env.name is not null then " +
+            "    rca_cp.name || ' (' || rca_env.name || ')' " +
+            "  when ra.target_type = 'no-entity' and rca_cp.name is not null then rca_cp.name " +
             "  when ra.target_type = 'no-entity' then '-' " +
             "end as target_name, " +
             "case" +
-            "  when ra.target_type = 'no-entity' and ra.action_type = 'CLM_BUILD' then rcb_cp.label " +
-            "  when ra.target_type = 'no-entity' and ra.action_type = 'CLM_PROMOTE' then rcp_cp.label " +
+            "  when ra.target_type = 'no-entity' then rca_cp.label " +
             "end as project_label, " +
             "case" +
             "  when ra.target_type = 'organization' then 'ORG' " +
@@ -210,11 +204,9 @@ public class RecurringActionFactory extends HibernateFactory {
             "left join rhnservergroup sg on sg.id = ra.group_id " +
             "left join rhnserver minion on minion.id = ra.minion_id " +
             "left join web_customer org on org.id = ra.org_id " +
-            "left join suseRecurringContentBuild rcb on rcb.rec_id = ra.id " +
-            "left join suseContentProject rcb_cp on rcb_cp.id = rcb.project_id " +
-            "left join suseRecurringContentPromote rcp on rcp.rec_id = ra.id " +
-            "left join suseContentProject rcp_cp on rcp_cp.id = rcp.project_id " +
-            "left join suseContentEnvironment rcp_env on rcp_env.id = rcp.env_id" +
+            "left join suseRecurringContentAction rca on rca.rec_id = ra.id " +
+            "left join suseContentProject rca_cp on rca_cp.id = rca.project_id " +
+            "left join suseContentEnvironment rca_env on rca_env.id = rca.env_id" +
             ") ra ";
         List<Org> orgs = user.hasRole(RoleFactory.SAT_ADMIN) ? OrgFactory.lookupAllOrgs() : List.of(user.getOrg());
         Map<String, Object> params = Map.of("orgsIds", orgs.stream().map(Org::getId).collect(Collectors.toList()));

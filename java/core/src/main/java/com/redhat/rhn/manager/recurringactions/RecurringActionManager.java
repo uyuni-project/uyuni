@@ -34,8 +34,7 @@ import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentLifecycleType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
@@ -144,9 +143,9 @@ public class RecurringActionManager extends BaseManager {
             case SCAPPOLICY:
                 return new RecurringScapPolicy(false);
             case CLM_BUILD:
-                return new RecurringContentBuildType();
+                return new RecurringContentLifecycleType(RecurringActionType.ActionType.CLM_BUILD);
             case CLM_PROMOTE:
-                return new RecurringContentPromoteType();
+                return new RecurringContentLifecycleType(RecurringActionType.ActionType.CLM_PROMOTE);
             default:
                 throw new UnsupportedOperationException("type not supported");
         }

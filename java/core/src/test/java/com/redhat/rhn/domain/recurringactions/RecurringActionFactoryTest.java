@@ -22,12 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentLifecycleType;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -137,6 +137,11 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testListAllActions() throws Exception {
+        // Ensure clean state for user's org before asserting exact set equality
+        RecurringActionFactory.listAllRecurringActions(user, new PageControl(), PagedSqlQueryBuilder::parseFilterAsText)
+                .forEach(json -> RecurringActionFactory.lookupById(json.getRecurringActionId())
+                        .ifPresent(RecurringActionFactory::delete));
+
         var minionAction = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
         minionAction.setName("action name 1");
@@ -367,7 +372,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setCreator(user);
         RecurringActionFactory.save(action);
 
-        var buildType = new RecurringContentBuildType(cp);
+        var buildType = new RecurringContentLifecycleType(cp);
         buildType.setRecurringAction(action);
         buildType.setId(action.getId());
         action.setRecurringActionType(buildType);
@@ -385,21 +390,27 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertTrue(lookedUp.isPresent());
         assertEquals(action.getId(), lookedUp.get().getId());
         assertEquals(RecurringActionType.ActionType.CLM_BUILD, lookedUp.get().getActionType());
-        assertTrue(lookedUp.get().getRecurringActionType() instanceof RecurringContentBuildType);
+        assertTrue(lookedUp.get().getRecurringActionType() instanceof RecurringContentLifecycleType);
         assertEquals(cp.getId(),
-                ((RecurringContentBuildType) lookedUp.get().getRecurringActionType()).getProject().getId());
+                ((RecurringContentLifecycleType) lookedUp.get().getRecurringActionType()).getProject().getId());
 
         List<RecurringAction> projectActions = RecurringActionFactory.listActionsForProject(cp);
         assertEquals(1, projectActions.size());
         assertEquals(action.getId(), projectActions.get(0).getId());
+
+        RecurringActionFactory.delete(action);
     }
 
     @Test
-    public void testContentBuildAndPromoteTypes() {
-        var buildType = new RecurringContentBuildType();
+    public void testContentLifecycleType() {
+        var buildType = new RecurringContentLifecycleType();
         assertEquals(RecurringActionType.ActionType.CLM_BUILD, buildType.getActionType());
 
-        var promoteType = new RecurringContentPromoteType();
+        ContentProject cp = new ContentProject("test-p", "Test", "Desc", user.getOrg());
+        ContentEnvironment env = new ContentEnvironment("dev", "Dev", "Desc", cp);
+        var promoteType = new RecurringContentLifecycleType(cp, env);
         assertEquals(RecurringActionType.ActionType.CLM_PROMOTE, promoteType.getActionType());
+        assertEquals(cp, promoteType.getProject());
+        assertEquals(env, promoteType.getEnvironment());
     }
 }

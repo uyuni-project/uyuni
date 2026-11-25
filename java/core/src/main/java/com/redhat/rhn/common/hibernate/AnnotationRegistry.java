@@ -253,8 +253,7 @@ import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.state.InternalState;
 import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
 import com.redhat.rhn.domain.recurringactions.state.RecurringInternalState;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentLifecycleType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
@@ -683,8 +682,7 @@ public class AnnotationRegistry {
             RepoMetadata.class,
             RhnConfiguration.class,
             RecurringConfigChannel.class,
-            RecurringContentBuildType.class,
-            RecurringContentPromoteType.class,
+            RecurringContentLifecycleType.class,
             RecurringHighstate.class,
             RecurringInternalState.class,
             RecurringPlaybook.class,

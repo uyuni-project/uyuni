@@ -28,8 +28,7 @@ import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentLifecycleType;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
@@ -102,9 +101,11 @@ public class RecurringContentLifecycleHandlerTest extends JMockBaseTestCaseWithU
         assertEquals(CLM_BUILD, action.getActionType());
         assertEquals("test-build-action", action.getName());
         assertEquals(RecurringAction.TargetType.NO_ENTITY, action.getTargetType());
-        assertTrue(action.getRecurringActionType() instanceof RecurringContentBuildType);
+        assertTrue(action.getRecurringActionType() instanceof RecurringContentLifecycleType);
         assertEquals(testProject.getId(),
-                ((RecurringContentBuildType) action.getRecurringActionType()).getProject().getId());
+                ((RecurringContentLifecycleType) action.getRecurringActionType()).getProject().getId());
+        org.junit.jupiter.api.Assertions.assertNull(
+                ((RecurringContentLifecycleType) action.getRecurringActionType()).getEnvironment());
 
         List<RecurringAction> projectActions = clmHandler.listByProject(user, testProject.getLabel());
         assertEquals(1, projectActions.size());
@@ -143,8 +144,8 @@ public class RecurringContentLifecycleHandlerTest extends JMockBaseTestCaseWithU
         assertEquals(CLM_PROMOTE, action.getActionType());
         assertEquals("test-promote-action", action.getName());
         assertEquals(RecurringAction.TargetType.NO_ENTITY, action.getTargetType());
-        assertTrue(action.getRecurringActionType() instanceof RecurringContentPromoteType);
-        RecurringContentPromoteType promoteType = (RecurringContentPromoteType) action.getRecurringActionType();
+        assertTrue(action.getRecurringActionType() instanceof RecurringContentLifecycleType);
+        RecurringContentLifecycleType promoteType = (RecurringContentLifecycleType) action.getRecurringActionType();
         assertEquals(testProject.getId(), promoteType.getProject().getId());
         assertEquals(testEnv.getId(), promoteType.getEnvironment().getId());
 

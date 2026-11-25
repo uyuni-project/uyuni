@@ -24,8 +24,7 @@ import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentLifecycleType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
@@ -90,12 +89,13 @@ public class RecurringActionJob extends RhnJavaJob {
 
     private void scheduleAction(JobExecutionContext context, RecurringAction action) {
         RecurringActionType actionType = action.getRecurringActionType();
-        if (actionType instanceof RecurringContentBuildType buildType) {
-            executeClmBuild(buildType, action);
-            return;
-        }
-        if (actionType instanceof RecurringContentPromoteType promoteType) {
-            executeClmPromote(promoteType, action);
+        if (actionType instanceof RecurringContentLifecycleType clmType) {
+            if (action.getActionType() == RecurringActionType.ActionType.CLM_BUILD) {
+                executeClmBuild(clmType, action);
+            }
+            else {
+                executeClmPromote(clmType, action);
+            }
             return;
         }
 
@@ -115,10 +115,10 @@ public class RecurringActionJob extends RhnJavaJob {
         }
     }
 
-    private void executeClmBuild(RecurringContentBuildType buildType, RecurringAction action) {
+    private void executeClmBuild(RecurringContentLifecycleType buildType, RecurringAction action) {
         ContentProject project = buildType.getProject();
         if (project == null) {
-            log.warn("RecurringContentBuildType {} has no project assigned, skipping execution",
+            log.warn("RecurringContentLifecycleType {} has no project assigned, skipping execution",
                     action.getId());
             return;
         }
@@ -151,11 +151,11 @@ public class RecurringActionJob extends RhnJavaJob {
         }
     }
 
-    private void executeClmPromote(RecurringContentPromoteType promoteType, RecurringAction action) {
+    private void executeClmPromote(RecurringContentLifecycleType promoteType, RecurringAction action) {
         ContentProject project = promoteType.getProject();
         ContentEnvironment env = promoteType.getEnvironment();
         if (project == null || env == null) {
-            log.warn("RecurringContentPromoteType {} has missing project or environment, skipping execution",
+            log.warn("RecurringContentLifecycleType {} has missing project or environment, skipping execution",
                     action.getId());
             return;
         }

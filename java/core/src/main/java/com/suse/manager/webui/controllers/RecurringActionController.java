@@ -47,8 +47,7 @@ import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentBuildType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringContentPromoteType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentLifecycleType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
@@ -384,58 +383,57 @@ public class RecurringActionController {
             dto.setExtraVars(HibernateFactory.getByteArrayContents(
                     ((RecurringPlaybook) action.getRecurringActionType()).getExtraVars()));
         }
-        else if (RecurringActionType.ActionType.CLM_BUILD.equals(action.getActionType())) {
-            RecurringContentBuildType buildType = (RecurringContentBuildType) action.getRecurringActionType();
-            ContentProject project = buildType.getProject();
+        else if (action.getRecurringActionType() instanceof RecurringContentLifecycleType clmType) {
+            ContentProject project = clmType.getProject();
             if (project != null) {
                 dto.setProjectLabel(project.getLabel());
                 dto.setProjectName(project.getName());
-                project.getFirstEnvironmentOpt().ifPresent(firstEnv -> {
-                    dto.setEnvironmentLabel(firstEnv.getLabel());
-                    dto.setEnvironmentName(firstEnv.getName());
-                    dto.setTargetEnvironmentVersion(firstEnv.getVersion());
-                });
-
-                Long currentVer = project.getFirstEnvironmentOpt().map(ContentEnvironment::getVersion).orElse(null);
-                List<ClmBuildHistoryDto> history = project.getHistoryEntries().stream()
-                        .sorted(Comparator.comparing(ContentProjectHistoryEntry::getVersion).reversed())
-                        .limit(10)
-                        .map(entry -> {
-                            ClmBuildHistoryDto hDto = new ClmBuildHistoryDto();
-                            hDto.setVersion(entry.getVersion());
-                            hDto.setCreated(entry.getCreated());
-                            hDto.setMessage(entry.getMessage());
-                            if (entry.getUser() != null) {
-                                hDto.setUserName(entry.getUser().getLogin());
-                            }
-                            boolean isAuto = entry.getMessage() != null &&
-                                    entry.getMessage().contains("recurring action");
-                            hDto.setAutomated(isAuto);
-                            hDto.setCurrent(currentVer != null && currentVer.equals(entry.getVersion()));
-                            return hDto;
-                        })
-                        .collect(Collectors.toList());
-                dto.setBuildHistory(history);
             }
-        }
-        else if (RecurringActionType.ActionType.CLM_PROMOTE.equals(action.getActionType())) {
-            RecurringContentPromoteType promoteType = (RecurringContentPromoteType) action.getRecurringActionType();
-            if (promoteType.getProject() != null) {
-                dto.setProjectLabel(promoteType.getProject().getLabel());
-                dto.setProjectName(promoteType.getProject().getName());
-            }
-            if (promoteType.getEnvironment() != null) {
-                ContentEnvironment srcEnv = promoteType.getEnvironment();
-                dto.setEnvironmentLabel(srcEnv.getLabel());
-                dto.setEnvironmentName(srcEnv.getName());
-                dto.setSourceEnvironmentVersion(srcEnv.getVersion());
 
-                srcEnv.getNextEnvironmentOpt().ifPresent(nextEnv -> {
-                    dto.setNextEnvironmentLabel(nextEnv.getLabel());
-                    dto.setNextEnvironmentName(nextEnv.getName());
-                    dto.setTargetEnvironmentVersion(nextEnv.getVersion());
-                    dto.setTargetEnvironmentModified(nextEnv.getModified());
-                });
+            if (RecurringActionType.ActionType.CLM_BUILD.equals(action.getActionType())) {
+                if (project != null) {
+                    project.getFirstEnvironmentOpt().ifPresent(firstEnv -> {
+                        dto.setEnvironmentLabel(firstEnv.getLabel());
+                        dto.setEnvironmentName(firstEnv.getName());
+                        dto.setTargetEnvironmentVersion(firstEnv.getVersion());
+                    });
+
+                    Long currentVer = project.getFirstEnvironmentOpt().map(ContentEnvironment::getVersion).orElse(null);
+                    List<ClmBuildHistoryDto> history = project.getHistoryEntries().stream()
+                            .sorted(Comparator.comparing(ContentProjectHistoryEntry::getVersion).reversed())
+                            .limit(10)
+                            .map(entry -> {
+                                ClmBuildHistoryDto hDto = new ClmBuildHistoryDto();
+                                hDto.setVersion(entry.getVersion());
+                                hDto.setCreated(entry.getCreated());
+                                hDto.setMessage(entry.getMessage());
+                                if (entry.getUser() != null) {
+                                    hDto.setUserName(entry.getUser().getLogin());
+                                }
+                                boolean isAuto = entry.getMessage() != null &&
+                                        entry.getMessage().contains("recurring action");
+                                hDto.setAutomated(isAuto);
+                                hDto.setCurrent(currentVer != null && currentVer.equals(entry.getVersion()));
+                                return hDto;
+                            })
+                            .collect(Collectors.toList());
+                    dto.setBuildHistory(history);
+                }
+            }
+            else if (RecurringActionType.ActionType.CLM_PROMOTE.equals(action.getActionType())) {
+                if (clmType.getEnvironment() != null) {
+                    ContentEnvironment srcEnv = clmType.getEnvironment();
+                    dto.setEnvironmentLabel(srcEnv.getLabel());
+                    dto.setEnvironmentName(srcEnv.getName());
+                    dto.setSourceEnvironmentVersion(srcEnv.getVersion());
+
+                    srcEnv.getNextEnvironmentOpt().ifPresent(nextEnv -> {
+                        dto.setNextEnvironmentLabel(nextEnv.getLabel());
+                        dto.setNextEnvironmentName(nextEnv.getName());
+                        dto.setTargetEnvironmentVersion(nextEnv.getVersion());
+                        dto.setTargetEnvironmentModified(nextEnv.getModified());
+                    });
+                }
             }
         }
         return dto;
@@ -752,11 +750,17 @@ public class RecurringActionController {
         else if (action.getRecurringActionType() instanceof RecurringPlaybook playbookType) {
             setPlaybookDetails(playbookType, details);
         }
-        else if (action.getRecurringActionType() instanceof RecurringContentBuildType buildType) {
-            setClmBuildDetails(buildType, details, action.getCreator());
-        }
-        else if (action.getRecurringActionType() instanceof RecurringContentPromoteType promoteType) {
-            setClmPromoteDetails(promoteType, details, action.getCreator());
+        else if (action.getRecurringActionType() instanceof RecurringContentLifecycleType clmType) {
+            if (RecurringActionType.ActionType.CLM_BUILD.equals(action.getActionType())) {
+                setClmBuildDetails(clmType, details, action.getCreator());
+            }
+            else if (RecurringActionType.ActionType.CLM_PROMOTE.equals(action.getActionType())) {
+                setClmPromoteDetails(clmType, details, action.getCreator());
+                if (clmType.getEnvironment() == null) {
+                    throw new ValidatorException(LocalizationService.getInstance()
+                            .getMessage("recurring_action.empty_clm_environment"));
+                }
+            }
         }
 
         String cron = json.getCron();
@@ -768,7 +772,7 @@ public class RecurringActionController {
         action.setCronExpr(cron);
     }
 
-    private static void setClmBuildDetails(RecurringContentBuildType buildType,
+    private static void setClmBuildDetails(RecurringContentLifecycleType buildType,
                                            RecurringActionDetailsDto details, User user) {
         String projectLabel = details.getProjectLabel();
         if (StringUtils.isBlank(projectLabel)) {
@@ -786,9 +790,10 @@ public class RecurringActionController {
                     .getMessage("recurring_action.clm_project_no_base_channel", projectLabel));
         }
         buildType.setProject(project);
+        buildType.setEnvironment(null);
     }
 
-    private static void setClmPromoteDetails(RecurringContentPromoteType promoteType,
+    private static void setClmPromoteDetails(RecurringContentLifecycleType promoteType,
                                              RecurringActionDetailsDto details, User user) {
         String projectLabel = details.getProjectLabel();
         if (StringUtils.isBlank(projectLabel)) {
