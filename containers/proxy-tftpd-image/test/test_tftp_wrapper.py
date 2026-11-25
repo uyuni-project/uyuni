@@ -235,6 +235,33 @@ def test_handler_routing(config_data):
         assert mock_http.call_args[0][0] == "http://localhost/tftp/other/file"
 
 
+def test_handler_ignores_grub_config_probes(config_data):
+    handler = tftp_wrapper.TFTPHandler(
+        "127.0.0.1",
+        "127.0.0.2",
+        "grub/grub.cfg-01-aa-bb-cc-dd-ee-ff",
+        {},
+        "/root",
+        "http://localhost",
+        config_data["proxy_fqdn_1234"],
+        config_data["server_fqdn"],
+        None,
+        config_data["replace_fqdns"],
+    )
+
+    with patch("tftp_wrapper.requests.get") as mock_get:
+        with pytest.raises(FileNotFoundError):
+            handler.get_response_data_delayed()
+        mock_get.assert_not_called()
+
+    # The real config file is still forwarded
+    handler._path = "grub/grub.cfg"
+    with patch("tftp_wrapper.HttpResponseData") as mock_http:
+        handler.get_response_data_delayed()
+        mock_http.assert_called_once()
+        assert mock_http.call_args[0][0] == "http://localhost/tftp/grub/grub.cfg"
+
+
 def test_http_response_data_read():
     url = "http://localhost/tftp/file"
     with patch("tftp_wrapper.requests.get") as mock_get:

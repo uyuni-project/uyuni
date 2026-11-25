@@ -1,0 +1,2 @@
+- Answer GRUB config file probes locally instead of forwarding
+  them to the server

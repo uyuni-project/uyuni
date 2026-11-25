@@ -325,6 +325,10 @@ class TFTPHandler(BaseHandler):
             # ignore other pxelinux.cfg files
             logging.debug("Got request for %s, ignoring", path)
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), path)
+        elif path.startswith("grub/grub.cfg-"):
+            # GRUB probes UUID, MAC and IP based names first, cobbler never creates them
+            logging.debug("Got request for %s, ignoring", path)
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), path)
         elif path.startswith("grub/") and path.endswith("_menu_items.cfg"):
             logging.debug("Got request for %s, filtering HTTP", path)
             return HttpResponseDataFilteredGrub(
