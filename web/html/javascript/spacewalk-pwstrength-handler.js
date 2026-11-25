@@ -259,7 +259,7 @@ function updateTickIcon() {
 jQuery(document).ready(function () {
   jQuery('input[name="desiredpassword"], #confirmpass').on("input", updateTickIcon);
   jQuery
-    .getJSON("/rhn/manager/api/admin/config/password-policy")
+    .getJSON("/rhn/manager/api/password-policy")
     .done(function (response) {
       try {
         passwordPolicy = JSON.parse(response.data);
