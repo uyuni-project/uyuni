@@ -18,7 +18,7 @@
 /*
  * Copyright (c) 2010 SUSE LLC
  */
-package com.redhat.rhn.frontend.action.channel.manage;
+package com.redhat.rhn.manager.errata;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;

@@ -64,7 +64,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 import com.redhat.rhn.frontend.dto.Bug;
 import com.redhat.rhn.frontend.dto.CVE;
 import com.redhat.rhn.frontend.dto.ChannelOverview;

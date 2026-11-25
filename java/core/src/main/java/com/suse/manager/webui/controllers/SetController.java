@@ -21,10 +21,10 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.post;
 
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.frontend.taglibs.ItemSelector;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.manager.rhnset.SetLabels;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;

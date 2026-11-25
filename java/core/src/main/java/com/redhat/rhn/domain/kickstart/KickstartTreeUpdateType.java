@@ -15,7 +15,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.kickstart;
+package com.redhat.rhn.domain.kickstart;
 
 /**
  * types of kickstart tree update strategies

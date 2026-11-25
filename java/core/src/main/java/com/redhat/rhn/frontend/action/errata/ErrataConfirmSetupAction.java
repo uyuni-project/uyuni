@@ -21,7 +21,6 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
@@ -30,6 +29,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.rhnset.SetLabels;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;

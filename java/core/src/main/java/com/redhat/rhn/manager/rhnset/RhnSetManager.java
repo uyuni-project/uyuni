@@ -19,7 +19,6 @@ package com.redhat.rhn.manager.rhnset;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
-import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.manager.BaseManager;
 
 import com.suse.manager.webui.websocket.Notification;

@@ -17,7 +17,7 @@
 package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.ssm.ChannelActionDAO;
+import com.redhat.rhn.manager.ssm.ChannelActionDAO;
 
 import java.util.Collection;
 
