@@ -23,7 +23,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 import com.redhat.rhn.manager.session.SessionManager;
@@ -183,7 +183,8 @@ public class RouteFactory {
                 throw Spark.halt(HttpStatus.SC_BAD_REQUEST, e.getMessage());
             }
 
-            String sessionKey = new RequestContext(req.raw()).getWebSession().getKey();
+            String sessionKey = PxtSessionDelegateFactory.getInstance().newPxtSessionDelegate()
+                    .getPxtSession(req.raw()).getKey();
             try {
                 // Find an overload matching the parameter names and types
                 MethodCall call = findMethod(methods, requestParams, sessionKey, req);
