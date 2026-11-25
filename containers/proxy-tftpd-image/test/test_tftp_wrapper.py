@@ -262,6 +262,38 @@ def test_handler_ignores_grub_config_probes(config_data):
         assert mock_http.call_args[0][0] == "http://localhost/tftp/grub/grub.cfg"
 
 
+def test_server_ignores_resent_requests(config_data):
+    # Do not bind the TFTP port
+    with patch.object(tftp_wrapper.BaseServer, "__init__", return_value=None):
+        server = tftp_wrapper.TFTPServer(
+            "127.0.0.1",
+            69,
+            5,
+            2,
+            "/root",
+            "localhost",
+            config_data["proxy_fqdn_1234"],
+            config_data["server_fqdn"],
+            None,
+            config_data["replace_fqdns"],
+        )
+    server_addr = ("127.0.0.1", 69)
+    peer = ("10.0.0.1", 2000)
+    path = "grub/grub.cfg"
+
+    with patch("tftp_wrapper.TFTPHandler", side_effect=lambda *_: MagicMock()):
+        first = server.get_handler(server_addr, peer, path, {})
+        first.is_alive.return_value = True
+
+        # Resent request while the first one is still being served
+        assert server.get_handler(server_addr, peer, path, {}) is None
+        # A new request of the same client comes from another port
+        assert server.get_handler(server_addr, ("10.0.0.1", 2001), path, {}) is not None
+
+        first.is_alive.return_value = False
+        assert server.get_handler(server_addr, peer, path, {}) is not None
+
+
 def test_http_response_data_read():
     url = "http://localhost/tftp/file"
     with patch("tftp_wrapper.requests.get") as mock_get:
