@@ -24,7 +24,7 @@ const hasUppercase = (value) => /\p{Uppercase}/u.test(value);
 const hasLowercase = (value) => /\p{Lowercase}/u.test(value);
 const hasDigit = (value) => /\p{Nd}/u.test(value);
 const hasSpecialCharacter = (value) =>
-  [...value].some((char) => passwordPolicy.specialChars.includes(char));
+  [...value].some((char) => (passwordPolicy.specialChars || "").includes(char));
 const hasJavaWhitespace = (value) =>
   /[\t\n\u000B\f\r\u001C-\u001F\u0020\u1680\u2000-\u2006\u2008-\u200A\u2028\u2029\u205F\u3000]/u.test(value);
 
@@ -138,7 +138,7 @@ function updateTickIcon() {
     if (passwordPolicy.specialCharFlag) {
       // Must contain at least one configured special character
       items.push(
-        `${hasSpecialCharacter(password) ? "✓" : "-"} ${t("Special Characters")}: ${passwordPolicy.specialChars}`
+        `${hasSpecialCharacter(password) ? "✓" : "-"} ${t("Special Characters")}: ${passwordPolicy.specialChars || ""}`
       );
     }
 
@@ -180,6 +180,23 @@ function updateTickIcon() {
       .attr("data-bs-original-title", message);
   }
 
+  // Check the confirmation separately from the policy, so identical passwords are never reported as a mismatch
+  function updateConfirmTick() {
+    if (!desiredpassConfirmVal) {
+      neutral(jQuery("#confirmtick"));
+      updateTooltip("#confirmtick", t("Confirm the password"));
+    } else if (desiredpassVal !== desiredpassConfirmVal) {
+      danger(jQuery("#confirmtick"));
+      updateTooltip("#confirmtick", t("Passwords do not match"));
+    } else if (validatePassword(desiredpassVal)) {
+      success(jQuery("#confirmtick"));
+      updateTooltip("#confirmtick", t("Password match"));
+    } else {
+      neutral(jQuery("#confirmtick"));
+      updateTooltip("#confirmtick", t("Passwords match, but the password does not meet the requirements"));
+    }
+  }
+
   if (passwordPolicyLoadFailed) {
     neutral(jQuery("#desiredtick"));
     neutral(jQuery("#confirmtick"));
@@ -214,17 +231,7 @@ function updateTickIcon() {
         danger(jQuery("#desiredtick"));
       }
       updateTooltip("#desiredtick", getPasswordValidationMessage(desiredpassVal));
-
-      if (!desiredpassConfirmVal) {
-        neutral(jQuery("#confirmtick"));
-        updateTooltip("#confirmtick", t("Confirm the password"));
-      } else if (validatePassword(desiredpassVal) && desiredpassVal === desiredpassConfirmVal) {
-        success(jQuery("#confirmtick"));
-        updateTooltip("#confirmtick", t("Password match"));
-      } else {
-        danger(jQuery("#confirmtick"));
-        updateTooltip("#confirmtick", t("Passwords do not match"));
-      }
+      updateConfirmTick();
     }
   }
   // on create user pages
@@ -242,16 +249,7 @@ function updateTickIcon() {
     }
 
     // Confirm password icon
-    if (!desiredpassConfirmVal) {
-      neutral(jQuery("#confirmtick"));
-      updateTooltip("#confirmtick", t("Confirm the password"));
-    } else if (validatePassword(desiredpassVal) && desiredpassVal === desiredpassConfirmVal) {
-      success(jQuery("#confirmtick"));
-       updateTooltip("#confirmtick", t("Password match"));
-    } else {
-      danger(jQuery("#confirmtick"));
-      updateTooltip("#confirmtick", t("Passwords do not match"));
-    }
+    updateConfirmTick();
   }
 }
 
