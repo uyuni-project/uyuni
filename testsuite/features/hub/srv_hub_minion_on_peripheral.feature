@@ -47,6 +47,12 @@ Feature: Hub - minion managed via peripheral server
     And I follow the left menu "Systems > Activation Keys"
     Then I should see a "1-hub-test-key" text
 
+  Scenario: Sync the SLES15-SP7 channels from hub to peripheral1 for the sle_minion bootstrap
+    Given I am authorized for the "Admin" section
+    When I configure hub to sync all "sles15-sp7" channels to "peripheral1"
+    And I initiate channel sync from peripheral "peripheral1"
+    Then I should see a "Successfully scheduled a channels synchronization." text
+
   Scenario: Create the bootstrap repository on peripheral1 peripheral for sle_minion
     When I wait until all synchronized channels for "sles15-sp7" have finished on peripheral1
     And I create the bootstrap repository for "sle_minion" on peripheral1
