@@ -177,7 +177,8 @@ function updateTickIcon() {
   function updateTooltip(selector, message) {
     jQuery(selector)
       .attr("title", message)
-      .attr("data-bs-original-title", message);
+      .attr("data-bs-original-title", message)
+      .attr("aria-label", message);
   }
 
   // Check the confirmation separately from the policy, so identical passwords are never reported as a mismatch
@@ -218,10 +219,8 @@ function updateTickIcon() {
     // No password entered yet
     if (!desiredpassVal) {
       neutral(jQuery("#desiredtick"));
-      neutral(jQuery("#confirmtick"));
-
-       updateTooltip("#desiredtick", t("Leave blank to keep your current password."));
-       updateTooltip("#confirmtick", t("Confirm the password"));
+      updateTooltip("#desiredtick", t("Leave blank to keep your current password."));
+      updateConfirmTick();
     }
     // Password entered
     else {
@@ -256,6 +255,16 @@ function updateTickIcon() {
 // document ready handler
 jQuery(document).ready(function () {
   jQuery('input[name="desiredpassword"], #confirmpass').on("input", updateTickIcon);
+  jQuery('input[name="desiredpassword"]').attr("aria-describedby", "desiredtick");
+  jQuery("#confirmpass").attr("aria-describedby", "confirmtick");
+  // The shared tooltip setup only reacts to hover, so also show the requirements on keyboard focus or tap
+  jQuery("#desiredtick, #confirmtick")
+    .on("focus", function () {
+      bootstrap.Tooltip.getOrCreateInstance(this).show();
+    })
+    .on("blur", function () {
+      bootstrap.Tooltip.getOrCreateInstance(this).hide();
+    });
   jQuery
     .getJSON("/rhn/manager/api/password-policy")
     .done(function (response) {

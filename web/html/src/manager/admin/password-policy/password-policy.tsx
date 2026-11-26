@@ -22,6 +22,7 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
   const policy_endpoint = "/rhn/manager/api/admin/config/password-policy";
   const [defaults, setDefaults] = useState(prop.defaults);
   const [policy, setPolicy] = useState(prop.policy);
+  const [isValid, setIsValid] = useState(true);
 
   return (
     <TopPanel title={t("Server Configuration - Password Policy")} icon="fa-info-circle">
@@ -67,7 +68,7 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
           </li>
         </ul>
       </div>
-      <Form model={policy} onChange={(model) => setPolicy({ ...model })}>
+      <Form model={policy} onChange={(model) => setPolicy({ ...model })} onValidate={setIsValid}>
         <Panel headingLevel="h2" title={t("Password Policy Settings")}>
           {/* Minimum Length */}
           <Text
@@ -133,6 +134,7 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
           {/* Allowed Special Characters */}
           <Text
             label={t("Required Special Characters")}
+            required={policy.specialCharFlag}
             disabled={!policy.specialCharFlag}
             name="specialChars"
             labelClass="col-md-3 text-left"
@@ -170,6 +172,7 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
                   id="saveButton"
                   className="btn-primary btn-large"
                   text={t("Save")}
+                  disabled={!isValid}
                   action={() => {
                     Network.post(policy_endpoint, policy)
                       .then(() => {
