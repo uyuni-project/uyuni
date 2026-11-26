@@ -64,6 +64,7 @@ Requires:       python3
 Summary:        Utility used by any DB schema in %{productprettyname}
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
+Requires:       python3
 
 %description sanity
 Provides schema-source-sanity-check script for external usage.

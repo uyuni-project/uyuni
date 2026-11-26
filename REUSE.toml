@@ -209,6 +209,7 @@ path = [
   "python/test/unit/spacewalk/satellite_tools/repodata/**",
   "python/test/unit/spacewalk/common/translations/**",
   "python/test/unit/spacewalk/common/unit-test.*",
+  "schema/spacewalk/man/*.pod",
   "spacewalk/admin/man/*.pod",
   "spacewalk/certs-tools/*.txt",
   "spacewalk/config/var/lib/cobbler/snippets/*",

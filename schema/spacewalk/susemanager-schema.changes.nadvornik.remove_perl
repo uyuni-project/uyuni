@@ -1,2 +1,3 @@
 - Convert spacewalk-schema-upgrade and spacewalk-sql from perl
   to python
+- Require python3 for the `susemanager-schema-utility` scripts

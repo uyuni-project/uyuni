@@ -5,6 +5,8 @@
 
 . /usr/lib/entrypoint-lib.sh
 
+set -eu
+
 # Abort early as with configured system we might not have mandatory variables that are checked later
 check_current_installation
 
@@ -60,17 +62,24 @@ run_sql() {
     fi
 
     # If -t (tuples only) is requested to capture stdout in subshells, only suppress stderr.
-    # Otherwise, suppress both stdout and stderr to keep container setup logs clean.
+    # Otherwise, suppress stdout to keep container setup logs clean, but keep
+    # stderr so a failing psql aborts the setup with a visible error message.
     if [[ " ${*} " =~ " -t " ]]; then
-        PGPASSWORD="${PASS}" psql -U "${USER}" -h "${HOST}" -p "${PORT}" -d "${DBNAME}" -v ON_STOP_ERROR=ON "${@}" 2> /dev/null
+        PGPASSWORD="${PASS}" psql -U "${USER}" -h "${HOST}" -p "${PORT}" -d "${DBNAME}" -v ON_ERROR_STOP=ON "${@}" 2> /dev/null
     else
-        PGPASSWORD="${PASS}" psql -U "${USER}" -h "${HOST}" -p "${PORT}" -d "${DBNAME}" -v ON_STOP_ERROR=ON "${@}" > /dev/null 2>&1
+        PGPASSWORD="${PASS}" psql -U "${USER}" -h "${HOST}" -p "${PORT}" -d "${DBNAME}" -v ON_ERROR_STOP=ON "${@}" > /dev/null
     fi
 }
 
 # Helper to generate high-entropy sha256 secrets
 generate_secret() {
     head -c 512 /dev/urandom | sha256sum | cut -d' ' -f1
+}
+
+# Helper to format a value as a single-quoted SQL literal, doubling embedded
+# single quotes so the statement cannot be broken or injected.
+sql_quote() {
+    printf "'%s'" "${1//\'/\'\'}"
 }
 
 # Helper to write configuration settings to both main and prep rhn.conf
@@ -125,21 +134,6 @@ mount_point = /var/spacewalk
 kickstart_mount_point = /var/spacewalk
 repomd_cache_mount_point = /var/cache
 
-# Proxy Settings
-# Use proxy FQDN, or FQDN:port
-server.satellite.http_proxy =
-server.satellite.http_proxy_username =
-server.satellite.http_proxy_password =
-# no_proxy is a comma-separated list of domains or IP addresses
-server.satellite.no_proxy =
-
-# Inter-Server Sync Settings
-# Completely disable ISS.
-# If set to 1, then no slave will be able to sync from this server
-# this option does not affect ability to sync to this server from
-# another spacewalk (or hosted).
-disable_iss = 0
-
 # Database Configuration
 db_backend = postgresql
 db_host =
@@ -160,9 +154,6 @@ report_db_password =
 report_db_ssl_enabled =
 report_db_sslrootcert =
 
-# Localization Settings
-server.nls_lang = english.UTF8
-
 # Web / Satellite configuration
 web.satellite = 1
 web.satellite_install =
@@ -181,9 +172,7 @@ session_secret_4 =
 server.secret_key =
 
 # Security Settings
-encrypted_passwords = 1
 web.restrict_mail_domains =
-pam_auth_service = susemanager
 
 # System Snapshots Enabled
 enable_snapshots = 1
@@ -203,9 +192,6 @@ enable_tftp =
 
 # Product Information
 product_name =
-
-# Extended reposync filters to use the entire NEVRA
-server.satellite.reposync_nevra_filter = 0
 EOF
         fi
     done
@@ -237,19 +223,10 @@ EOF
     update_rhn_conf "mount_point" "/var/spacewalk"
     update_rhn_conf "kickstart_mount_point" "/var/spacewalk"
     update_rhn_conf "repomd_cache_mount_point" "/var/cache"
-    update_rhn_conf "server.satellite.http_proxy" ""
-    update_rhn_conf "server.satellite.http_proxy_username" ""
-    update_rhn_conf "server.satellite.http_proxy_password" ""
-    update_rhn_conf "server.satellite.no_proxy" ""
-    update_rhn_conf "disable_iss" "0"
-    update_rhn_conf "server.nls_lang" "english.UTF8"
     update_rhn_conf "web.satellite" "1"
     update_rhn_conf "web.satellite_install" ""
-    update_rhn_conf "encrypted_passwords" "1"
     update_rhn_conf "web.restrict_mail_domains" ""
     update_rhn_conf "enable_snapshots" "1"
-    update_rhn_conf "pam_auth_service" "susemanager"
-    update_rhn_conf "server.satellite.reposync_nevra_filter" "0"
 
     # Generate high-entropy secrets
     for i in {1..4}; do
@@ -297,7 +274,7 @@ setup_db_postgres() {
 
     echo "Populating the database"
     PGPASSWORD="${MANAGER_PASS}" PGOPTIONS='--client-min-messages=error -c standard_conforming_strings=on' \
-        psql -U "${MANAGER_USER}" -p "${MANAGER_DB_PORT}" -d "${MANAGER_DB_NAME}" -h "${MANAGER_DB_HOST}" -v ON_STOP_ERROR=ON -q -b < /usr/share/susemanager/db/postgres/main.sql > /dev/null 2>&1
+        psql -U "${MANAGER_USER}" -p "${MANAGER_DB_PORT}" -d "${MANAGER_DB_NAME}" -h "${MANAGER_DB_HOST}" -v ON_ERROR_STOP=ON -q -b < /usr/share/susemanager/db/postgres/main.sql > /dev/null
 }
 
 setup_spacewalk() {
@@ -325,17 +302,19 @@ setup_spacewalk() {
         echo "Setting up SUSE Customer Center credentials..."
         local scc_pass_enc
         scc_pass_enc=$(echo -n "${SCC_PASS}" | base64 | tr -d '\n')
+        # The default SCC URL can be overridden in the package config defaults
         local scc_url="https://scc.suse.com"
-        if [ -f /etc/susemanager.conf ]; then
-            local url_val
-            url_val=$(grep "^scc_url" /etc/susemanager.conf | cut -d'=' -f2 | xargs)
-            if [ -n "${url_val}" ]; then
-                scc_url="${url_val}"
-            fi
+        local scc_url_file="/usr/share/rhn/config-defaults/rhn_server_susemanager.conf"
+        local url_val=""
+        if [ -f "${scc_url_file}" ]; then
+            url_val=$(sed -n 's/^[[:space:]]*scc_url[[:space:]]*=[[:space:]]*"\{0,1\}\([^"]*\)"\{0,1\}[[:space:]]*$/\1/p' "${scc_url_file}" | head -n 1)
+        fi
+        if [ -n "${url_val}" ]; then
+            scc_url="${url_val}"
         fi
 
         # Insert credentials via database
-        local insert_query="INSERT INTO suseCredentials (id, user_id, type, username, password, url) VALUES (sequence_nextval('suse_credentials_id_seq'), NULL, 'scc', '${SCC_USER}', '${scc_pass_enc}', '${scc_url}');"
+        local insert_query="INSERT INTO suseCredentials (id, user_id, type, username, password, url) VALUES (sequence_nextval('suse_credentials_id_seq'), NULL, 'scc', $(sql_quote "${SCC_USER}"), $(sql_quote "${scc_pass_enc}"), $(sql_quote "${scc_url}"));"
         echo "${insert_query}" | run_sql "${MANAGER_DB_NAME}"
     fi
 
@@ -344,7 +323,7 @@ setup_spacewalk() {
     local chk_val
     chk_val=$(echo "${chk_query}" | run_sql "${MANAGER_DB_NAME}" -t || true)
     if [ -z "${chk_val}" ]; then
-        local ins_query="INSERT INTO rhnTemplateString (id, category_id, label, value, description) VALUES (sequence_nextval('rhn_template_str_id_seq'), (SELECT id FROM rhnTemplateCategory WHERE label = 'org_strings'), 'hostname', '${UYUNI_HOSTNAME}', 'Host name for the Red Hat Satellite');"
+        local ins_query="INSERT INTO rhnTemplateString (id, category_id, label, value, description) VALUES (sequence_nextval('rhn_template_str_id_seq'), (SELECT id FROM rhnTemplateCategory WHERE label = 'org_strings'), 'hostname', $(sql_quote "${UYUNI_HOSTNAME}"), 'Host name for the Red Hat Satellite');"
         echo "${ins_query}" | run_sql "${MANAGER_DB_NAME}"
     fi
 
