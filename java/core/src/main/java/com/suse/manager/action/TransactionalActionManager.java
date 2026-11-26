@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -29,8 +30,10 @@ import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressStatus;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistoryId;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.maintenance.NotInMaintenanceModeException;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ResumeTransactionalActionEventMessage;
 import com.suse.manager.webui.services.SaltParameters;
@@ -61,6 +64,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -72,6 +76,8 @@ public class TransactionalActionManager {
     private static final Logger LOG = LogManager.getLogger(TransactionalActionManager.class);
 
     private static final List<String> DIRECT_CALL_EXECUTOR = List.of("direct_call");
+
+    private static final Set<String> REBOOT_STATES = Set.of("reboot", "rebootifneeded");
 
     private static final List<String> HIGHSTATE_POST_TRANSACTIONAL_STATES = List.of(
             "ansible",
@@ -380,7 +386,7 @@ public class TransactionalActionManager {
         addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
 
         List<String> transactionalStates = useTransactionalUpdate ?
-                replaceFormulasState(states) :
+                replaceFormulasState(states).stream().filter(state -> !REBOOT_STATES.contains(state)).toList() :
                 getTransactionalPhaseStates(states);
 
         if (states.contains("formulas")) {
@@ -598,13 +604,56 @@ public class TransactionalActionManager {
             Long minionServerId, Long actionId, JsonElement jsonResult, boolean failed) {
         MinionTransactionalActionHistory history = lookupOrCreateActionHistory(minionServerId, actionId);
         Action action = ActionFactory.lookupById(actionId);
-        return handleTransactionalResult(history, action, minionServerId, actionId, jsonResult, failed,
+        TransactionalResult result = handleTransactionalResult(history, action, minionServerId, actionId,
+                jsonResult, failed,
                 TransactionalActionManager::scheduleSnapshotRefresh,
                 (resumeActionId, resumeMinionServerId) -> scheduleResumeAfterCommit(
                         resumeActionId,
                         resumeMinionServerId,
                         (actionIdIn, serverIdIn) -> MessageQueue.publish(
                                 new ResumeTransactionalActionEventMessage(actionIdIn, serverIdIn))));
+        if (!result.isFailed() && !scheduleRequestedReboot(action, minionServerId,
+                TransactionalActionManager::scheduleRebootStates)) {
+            history.recordTransactionalApplyFailed(history.getPrerequisiteResult());
+            return TransactionalResult.failed("Transactional states applied. Unable to schedule the requested reboot.");
+        }
+        return result;
+    }
+
+    static boolean scheduleRequestedReboot(
+            Action action, Long minionServerId, BiPredicate<ApplyStatesAction, Long> scheduler) {
+        if (action instanceof ApplyStatesAction applyStatesAction &&
+                applyStatesAction.getDetails() != null &&
+                !applyStatesAction.getDetails().isTest() &&
+                applyStatesAction.getDetails().getMods().stream().anyMatch(REBOOT_STATES::contains)) {
+            try {
+                return scheduler.test(applyStatesAction, minionServerId);
+            }
+            catch (NotInMaintenanceModeException e) {
+                LOG.error("Unable to schedule the requested reboot for transactional action {} on minion {}: " +
+                        "outside the maintenance window", action.getId(), minionServerId, e);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean scheduleRebootStates(ApplyStatesAction action, Long minionServerId) {
+        List<String> states = action.getDetails().getMods().stream().filter(REBOOT_STATES::contains).toList();
+        try {
+            // A reboot cannot be part of the snapshot or wait for its own activation.
+            ApplyStatesAction rebootAction = ActionManager.scheduleApplyStates(
+                    action.getSchedulerUser(), List.of(minionServerId), states,
+                    action.getDetails().getPillarsMap(), new Date(), Optional.of(false), false);
+            rebootAction.setName("Apply " + states + " requested by action " + action.getId());
+            new TaskomaticApi().scheduleActionExecution(rebootAction);
+            return true;
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Unable to schedule the requested reboot for transactional action {} on minion {}",
+                    action.getId(), minionServerId, e);
+            return false;
+        }
     }
 
     static TransactionalResult handleTransactionalResult(
@@ -913,10 +962,24 @@ public class TransactionalActionManager {
      * Record that a transactional apply action was completed after reboot.
      *
      * @param minionServerId minion server id
-     * @param actionId action id
+     * @param action action being finalized
      */
-    public static void recordTransactionalApplyFinalized(Long minionServerId, Long actionId) {
-        lookupOrCreateActionHistory(minionServerId, actionId).recordTransactionalApplyFinalized();
+    public static void recordTransactionalApplyFinalized(Long minionServerId, Action action) {
+        recordTransactionalApplyFinalized(lookupOrCreateActionHistory(minionServerId, action.getId()),
+                action.getServerAction(minionServerId));
+    }
+
+    static void recordTransactionalApplyFinalized(MinionTransactionalActionHistory history, ServerAction serverAction) {
+        history.recordTransactionalApplyFinalized();
+        if (serverAction == null) {
+            LOG.warn("Unable to finalize server action {} for server {}: target not found",
+                    history.getActionId(), history.getMinionServerId());
+        }
+        else if (serverAction.isStatusPickedUp()) {
+            // Actions started before reboot states were separated may still be waiting for a continuation.
+            serverAction.setStatusCompleted();
+            serverAction.setCompletionTime(new Date());
+        }
     }
 
     private static MinionTransactionalActionHistory lookupOrCreateActionHistory(Long minionServerId, Long actionId) {
@@ -1099,7 +1162,8 @@ public class TransactionalActionManager {
                     if ("formulas".equals(state)) {
                         return postTransactionalFormulas.stream();
                     }
-                    return TRANSACTIONAL_STATES.contains(state) ? Stream.empty() : Stream.of(state);
+                    return TRANSACTIONAL_STATES.contains(state) || REBOOT_STATES.contains(state) ?
+                            Stream.empty() : Stream.of(state);
                 })
                 .toList();
     }
