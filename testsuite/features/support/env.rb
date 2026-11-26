@@ -1062,6 +1062,11 @@ Before('@skip_for_rhel10_like') do |scenario|
   skip_this_scenario if rhel10_minion_tags.any? { |tag| scenario.source_tag_names.include?(tag) }
 end
 
+# skip tests if the Red Hat-like minion runs EL10 or newer
+Before('@skip_if_rhlike_el10') do
+  skip_this_scenario if rhlike_minion_version_equals_or_higher?(10)
+end
+
 # do some tests only if we have SCC credentials
 Before('@scc_credentials') do
   skip_this_scenario unless $scc_credentials

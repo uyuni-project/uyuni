@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2025 SUSE LLC
+# Copyright (c) 2022-2026 SUSE LLC
 # SPDX-License-Identifier: MIT
 # This feature depends on:
 # - features/secondary/srv_monitoring.feature: as this feature disables/re-enables monitoring capabilities
@@ -25,13 +25,23 @@ Feature: Monitor MLM environment with Prometheus on a Red Hat-like Salt minion
     And I click on "Save"
     And I wait until I see "Formula saved" text
 
-  Scenario: Configure Prometheus exporter formula on the Red Hat-like minion
+  Scenario: Configure the Prometheus node exporter formula on the Red Hat-like minion
     When I follow "Formulas" in the content area
     And I follow "Prometheus Exporters" in the content area
     And I click on "Expand All Sections"
     Then I should see a "Enable and configure Prometheus exporters for managed systems." text
     When I check "node" exporter
-    And I check "apache" exporter
+    And I click on "Save"
+    Then I should see a "Formula saved" text
+
+@skip_if_rhlike_el10
+  Scenario: Configure the Prometheus Apache and Postgres exporter formula on the Red Hat-like minion
+    Given I am on the Systems overview page of this "rhlike_minion"
+    When I follow "Formulas" in the content area
+    And I follow "Prometheus Exporters" in the content area
+    And I click on "Expand All Sections"
+    Then I should see a "Enable and configure Prometheus exporters for managed systems." text
+    When I check "apache" exporter
     And I check "postgres" exporter
     And I click on "Save"
     Then I should see a "Formula saved" text
@@ -47,14 +57,21 @@ Feature: Monitor MLM environment with Prometheus on a Red Hat-like Salt minion
     And I wait until event "Apply highstate scheduled" is completed
 
 @skip_if_github_validation
-  Scenario: Wait for service
+  Scenario: Wait for the node exporter service
     When I wait until "node" exporter service is active on "rhlike_minion"
-    And I wait until "apache" exporter service is active on "rhlike_minion"
+
+@skip_if_github_validation
+@skip_if_rhlike_el10
+  Scenario: Wait for the Apache and Postgres exporter services
+    When I wait until "apache" exporter service is active on "rhlike_minion"
     And I wait until "postgres" exporter service is active on "rhlike_minion"
 
-  Scenario: Visit monitoring endpoints on the Red Hat-like minion
+  Scenario: Visit the node monitoring endpoint on the Red Hat-like minion
     When I visit "Prometheus node exporter" endpoint of this "rhlike_minion"
-    And I visit "Prometheus apache exporter" endpoint of this "rhlike_minion"
+
+@skip_if_rhlike_el10
+  Scenario: Visit the Apache and Postgres monitoring endpoints on the Red Hat-like minion
+    When I visit "Prometheus apache exporter" endpoint of this "rhlike_minion"
     And I visit "Prometheus postgres exporter" endpoint of this "rhlike_minion"
 
   Scenario: Cleanup: undo Prometheus exporter formulas on the Red Hat-like minion
