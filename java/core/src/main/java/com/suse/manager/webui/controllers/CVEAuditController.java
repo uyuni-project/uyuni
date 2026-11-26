@@ -98,7 +98,7 @@ public class CVEAuditController {
 
         get("/manager/systems/details/audit/cve",
                 withCsrfToken(withDocsLocale(withUserAndServer(CVEAuditController::systemCveView))), jade);
-        get("/manager/api/systems/:sid/details/audit/cve/:statuses/:severities",
+        get("/manager/api/systems/:sid/details/audit/cve",
                 asJson(withUserAndServer(CVEAuditController::systemCves)));
     }
 
@@ -119,8 +119,8 @@ public class CVEAuditController {
 
     /**
      * Returns a page of the CVEs affecting the system, as paged JSON.
-     * Path param 'statuses' is a comma separated list of {@link PatchStatus} names ('none' for no status).
-     * Path param 'severities' is a comma separated list of {@link OvalSeverity} names ('all' for any severity).
+     * Query param 'statuses' is a comma separated list of {@link PatchStatus} names.
+     * Query param 'severities' is a comma separated list of {@link OvalSeverity} names, any severity if omitted.
      *
      * @param request the request object
      * @param response the response object
@@ -129,8 +129,8 @@ public class CVEAuditController {
      * @return the JSON page
      */
     public static String systemCves(Request request, Response response, User user, Server server) {
-        Set<PatchStatus> statuses = parseCommaSeparated(request.params("statuses"), PatchStatus.class);
-        Set<OvalSeverity> severities = parseCommaSeparated(request.params("severities"), OvalSeverity.class);
+        Set<PatchStatus> statuses = parseCommaSeparated(request.queryParams("statuses"), PatchStatus.class);
+        Set<OvalSeverity> severities = parseCommaSeparated(request.queryParams("severities"), OvalSeverity.class);
         PageControlHelper pageHelper = new PageControlHelper(request, "cveName");
         PageControl pc = pageHelper.getPageControl();
 

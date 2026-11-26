@@ -17,11 +17,14 @@ import PageControl from "./page-control";
  */
 export default class PagedDataEndpoint {
   uri: URL;
+  /** The query string the endpoint was created with, kept in every request */
+  baseSearch: string;
   get: (callback: (promise: Promise<any>) => any, pageControl: PageControl) => void;
   curReq: Cancelable | null | undefined;
 
   constructor(uri: URL) {
     this.uri = uri;
+    this.baseSearch = uri.search;
     this.get = debounce(this.doGet, 300);
   }
 
@@ -104,10 +107,10 @@ export default class PagedDataEndpoint {
   }
 
   /**
-   * Resets the query string and returns an empty one
+   * Resets the query string to the initial one and returns it
    */
   getNewQuery() {
-    this.uri.search = "";
+    this.uri.search = this.baseSearch;
     return this.uri.searchParams;
   }
 }

@@ -89,9 +89,11 @@ export const getSystemCveDataUrl = (
 ): string => {
   const selectedStatuses =
     statuses.length > 0 ? ALL_STATUSES.filter((status) => statuses.includes(status)) : ALL_STATUSES;
-  const severitySegment =
-    severities.length > 0 ? ALL_SEVERITIES.filter((severity) => severities.includes(severity)).join(",") : "all";
-  return `/rhn/manager/api/systems/${serverId}/details/audit/cve/${selectedStatuses.join(",")}/${severitySegment}`;
+  const url = `/rhn/manager/api/systems/${serverId}/details/audit/cve?statuses=${selectedStatuses.join(",")}`;
+  if (severities.length === 0) {
+    return url;
+  }
+  return `${url}&severities=${ALL_SEVERITIES.filter((severity) => severities.includes(severity)).join(",")}`;
 };
 
 /** External CVE details pages, the same ones the CVE Audit page links to */
@@ -108,6 +110,8 @@ type Props = {
 export function SystemCve({ serverId, ovalState }: Props) {
   const [statuses, setStatuses] = useState<SystemCveStatus[]>([]);
   const [severities, setSeverities] = useState<SystemCveSeverity[]>(DEFAULT_SEVERITIES);
+  // Used as the Table key too: changing the filters restarts the table from the first page
+  const dataUrl = getSystemCveDataUrl(serverId, statuses, severities);
 
   if (ovalState === "DISABLED") {
     return (
@@ -161,7 +165,8 @@ export function SystemCve({ serverId, ovalState }: Props) {
         </div>
       </div>
       <Table
-        data={getSystemCveDataUrl(serverId, statuses, severities)}
+        key={dataUrl}
+        data={dataUrl}
         identifier={(row: SystemCveRow) => row.id}
         selectable={false}
         initialItemsPerPage={pageSize}

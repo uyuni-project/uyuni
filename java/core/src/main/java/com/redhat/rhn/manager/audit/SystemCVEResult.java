@@ -17,6 +17,7 @@ import com.redhat.rhn.frontend.dto.BaseTupleDto;
 
 import com.suse.oval.OvalSeverity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +36,13 @@ public class SystemCVEResult extends BaseTupleDto {
      * @param channelLabel the label of the best channel offering the advisory
      * @param assigned true if that channel is assigned to the system
      */
-    public record Errata(long id, String advisory, String channelLabel, boolean assigned) { }
+    public record Errata(long id, String advisory, String channelLabel, boolean assigned) implements Serializable { }
 
     private Long id;
     private String cveName;
     private PatchStatus status;
     private OvalSeverity severity;
-    private List<Errata> errata = new ArrayList<>();
+    private ArrayList<Errata> errata = new ArrayList<>();
 
     /**
      * Constructor used to read the rows of the query of {@link SystemCVEAuditManager}
@@ -96,6 +97,6 @@ public class SystemCVEResult extends BaseTupleDto {
      * @param errataIn the advisories fixing the CVE on the system
      */
     public void setErrata(List<Errata> errataIn) {
-        errata = errataIn;
+        errata = new ArrayList<>(errataIn);
     }
 }

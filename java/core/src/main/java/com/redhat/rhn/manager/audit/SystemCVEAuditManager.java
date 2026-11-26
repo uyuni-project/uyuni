@@ -107,11 +107,30 @@ public class SystemCVEAuditManager {
         List<Tuple> rows = SystemCVEAuditFactory.listCveRows(server, statuses, severities, pc);
         DataResult<SystemCVEResult> result =
                 new DataResult<>(rows.stream().map(SystemCVEResult::new).collect(Collectors.toList()));
-        // The total comes from the window function, it is unknown if the page is past the last row
-        result.setTotalSize(rows.isEmpty() ? 0 : rows.get(0).get("total", Number.class).intValue());
+        result.setTotalSize(getTotal(server, statuses, severities, pc, rows));
 
         addErrata(server, result);
         return result;
+    }
+
+    /**
+     * The total comes from the window function of the first row. A page past the last row has no rows,
+     * so the first page is queried to get the total.
+     */
+    private static int getTotal(Server server, Set<PatchStatus> statuses, Set<OvalSeverity> severities,
+                                PageControl pc, List<Tuple> pageRows) {
+        List<Tuple> rows = pageRows;
+        if (rows.isEmpty() && pc.getStart() > 1) {
+            int start = pc.getStart();
+            pc.setStart(1);
+            try {
+                rows = SystemCVEAuditFactory.listCveRows(server, statuses, severities, pc);
+            }
+            finally {
+                pc.setStart(start);
+            }
+        }
+        return rows.isEmpty() ? 0 : rows.get(0).get("total", Number.class).intValue();
     }
 
     private static void addErrata(Server server, List<SystemCVEResult> cves) {

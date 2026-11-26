@@ -27,21 +27,21 @@ describe("System CVE page", () => {
     expect(view.queryByRole("table")).toBeNull();
   });
 
-  test("builds the data URL with the statuses as path segment, in a stable order", () => {
+  test("builds the data URL with the statuses as query parameter, in a stable order", () => {
     expect(getSystemCveDataUrl(42, ["PATCHED", "AFFECTED_PATCH_UNAVAILABLE"])).toBe(
-      "/rhn/manager/api/systems/42/details/audit/cve/AFFECTED_PATCH_UNAVAILABLE,PATCHED/all"
+      "/rhn/manager/api/systems/42/details/audit/cve?statuses=AFFECTED_PATCH_UNAVAILABLE,PATCHED"
     );
   });
 
   test("an empty status selection requests all statuses", () => {
     expect(getSystemCveDataUrl(42, [])).toBe(
-      "/rhn/manager/api/systems/42/details/audit/cve/" + ALL_STATUSES.join(",") + "/all"
+      "/rhn/manager/api/systems/42/details/audit/cve?statuses=" + ALL_STATUSES.join(",")
     );
   });
 
-  test("adds the selected severities as path segment, in a stable order", () => {
+  test("adds the selected severities as query parameter, in a stable order", () => {
     expect(getSystemCveDataUrl(42, ["PATCHED"], ["UNKNOWN", "CRITICAL"])).toBe(
-      "/rhn/manager/api/systems/42/details/audit/cve/PATCHED/CRITICAL,UNKNOWN"
+      "/rhn/manager/api/systems/42/details/audit/cve?statuses=PATCHED&severities=CRITICAL,UNKNOWN"
     );
   });
 

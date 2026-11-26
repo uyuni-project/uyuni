@@ -38,7 +38,7 @@ import spark.Request;
 
 public class CVEAuditControllerSystemCveTest extends BaseControllerTestCase {
 
-    private static final String API_URL = "/manager/api/systems/:sid/details/audit/cve/:statuses/:severities";
+    private static final String API_URL = "/manager/api/systems/:sid/details/audit/cve";
 
     @AfterEach
     public void tearDownCVEAuditControllerSystemCveTest() {
@@ -80,8 +80,9 @@ public class CVEAuditControllerSystemCveTest extends BaseControllerTestCase {
         Server server = createServerWithAffectedCve(cveName);
 
         Request request = getRequestWithCsrfAndParams(API_URL,
-                Map.of("p", "1", "ps", "10", "s", "1", "sc", "status"),
-                server.getId(), "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI,PATCHED", "all");
+                Map.of("p", "1", "ps", "10", "s", "1", "sc", "status",
+                        "statuses", "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI,PATCHED"),
+                server.getId());
         String json = CVEAuditController.systemCves(request, response, user, server);
 
         JsonObject result = JsonParser.parseString(json).getAsJsonObject();
@@ -108,8 +109,9 @@ public class CVEAuditControllerSystemCveTest extends BaseControllerTestCase {
                 pkgName, "1.0", "2");
 
         Request request = getRequestWithCsrfAndParams(API_URL,
-                Map.of("p", "1", "ps", "2", "q", prefix, "qc", "cveName", "s", "1", "sc", "cveName"),
-                server.getId(), "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI", "all");
+                Map.of("p", "1", "ps", "2", "q", prefix, "qc", "cveName", "s", "1", "sc", "cveName",
+                        "statuses", "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI"),
+                server.getId());
         JsonObject result = JsonParser.parseString(CVEAuditController.systemCves(request, response, user, server))
                 .getAsJsonObject();
 
@@ -125,7 +127,7 @@ public class CVEAuditControllerSystemCveTest extends BaseControllerTestCase {
         Server server = createServerWithAffectedCve("CVE-2099-" + TestUtils.randomNumeric(7));
 
         Request request = getRequestWithCsrfAndParams(API_URL,
-                Map.of("p", "1", "ps", "10"), server.getId(), "PATCHED", "all");
+                Map.of("p", "1", "ps", "10", "statuses", "PATCHED"), server.getId());
         String json = CVEAuditController.systemCves(request, response, user, server);
 
         assertEquals(0, JsonParser.parseString(json).getAsJsonObject().get("total").getAsLong());
@@ -136,13 +138,13 @@ public class CVEAuditControllerSystemCveTest extends BaseControllerTestCase {
         Config.get().setString(ConfigDefaults.CVE_AUDIT_ENABLE_OVAL_METADATA, "true");
         Server server = createServerWithAffectedCve("CVE-2099-" + TestUtils.randomNumeric(7));
 
-        Request unknown = getRequestWithCsrfAndParams(API_URL, Map.of("p", "1", "ps", "10"), server.getId(),
-                "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI", "UNKNOWN");
+        Request unknown = getRequestWithCsrfAndParams(API_URL, Map.of("p", "1", "ps", "10",
+                "statuses", "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI", "severities", "UNKNOWN"), server.getId());
         assertEquals(1, JsonParser.parseString(CVEAuditController.systemCves(unknown, response, user, server))
                 .getAsJsonObject().get("total").getAsLong());
 
-        Request critical = getRequestWithCsrfAndParams(API_URL, Map.of("p", "1", "ps", "10"), server.getId(),
-                "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI", "CRITICAL");
+        Request critical = getRequestWithCsrfAndParams(API_URL, Map.of("p", "1", "ps", "10",
+                "statuses", "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI", "severities", "CRITICAL"), server.getId());
         assertEquals(0, JsonParser.parseString(CVEAuditController.systemCves(critical, response, user, server))
                 .getAsJsonObject().get("total").getAsLong());
     }

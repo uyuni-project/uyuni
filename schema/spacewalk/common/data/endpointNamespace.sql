@@ -4406,7 +4406,7 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.audit.cve' AND ns.access_mode = 'R'
-    AND ep.endpoint = '/manager/api/systems/:sid/details/audit/cve/:statuses/:severities' AND ep.http_method = 'GET'
+    AND ep.endpoint = '/manager/api/systems/:sid/details/audit/cve' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep

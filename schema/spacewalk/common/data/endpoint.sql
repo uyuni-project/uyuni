@@ -2741,7 +2741,7 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/manager/systems/details/audit/cve', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('', '/manager/api/systems/:sid/details/audit/cve/:statuses/:severities', 'GET', 'W', True)
+    VALUES ('', '/manager/api/systems/:sid/details/audit/cve', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/api/states/applyall', 'POST', 'W', True)

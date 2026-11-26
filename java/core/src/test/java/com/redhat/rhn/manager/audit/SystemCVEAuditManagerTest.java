@@ -374,6 +374,14 @@ public class SystemCVEAuditManagerTest extends BaseTestCase {
         assertEquals(3, page.getTotalSize());
         assertEquals(prefix + "0", page.get(0).getCveName());
         assertEquals(prefix + "1", page.get(1).getCveName());
+
+        // A page past the last row is empty but keeps the total
+        pc.setStart(11);
+        DataResult<SystemCVEResult> outOfRange = SystemCVEAuditManager.listCves(server, ALL, Set.of(), pc);
+
+        assertEquals(0, outOfRange.size());
+        assertEquals(3, outOfRange.getTotalSize());
+        assertEquals(11, pc.getStart());
     }
 
     @Test
