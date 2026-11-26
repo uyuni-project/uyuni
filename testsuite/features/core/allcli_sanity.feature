@@ -48,6 +48,8 @@ Feature: Sanity checks
     And port "80" should be listening in the "uyuni-server" container on "server"
     And port "443" should be listening in the "uyuni-server" container on "server"
     And port "69" should be listening in the "uyuni-tftpd" container on "server"
+    And port "8216" should be listening in the "uyuni-saline-0" container on "server"
+    And port "2830" should be listening in the "uyuni-hub-xmlrpc-0" container on "server"
 
 @proxy
   Scenario: The proxy is healthy
