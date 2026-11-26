@@ -62,8 +62,12 @@ Feature: Hub - minion managed via peripheral server
     And I should not see "sle_minion" registered on hub
 
   Scenario: Install a package on sle_minion from hub-synced channel on peripheral1
+    # sumaform pre-installs andromeda-dummy on the minion, and the Install page hides installed packages
     Given I am authorized for the "Admin" section on "peripheral1"
+    And I remove package "andromeda-dummy" from this "sle_minion" without error control
+    And I refresh the package list of "sle_minion" on "peripheral1" via the API
     And I am on the Systems overview page of this "sle_minion" on peripheral1
+    And I wait until event "Package List Refresh scheduled by admin" is completed
     When I follow "Software" in the content area
     And I follow "Install" in the content area
     And I enter "andromeda-dummy" as the filtered package name
@@ -84,11 +88,13 @@ Feature: Hub - minion managed via peripheral server
     Then I should see a "andromeda-dummy" link
 
   Scenario: Downgrade andromeda-dummy to old version on sle_minion for errata test
+    Given I am authorized for the "Admin" section on "peripheral1"
     When I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_minion" without error control
     And I refresh the metadata for "sle_minion"
-    And I refresh packages list via spacecmd on "sle_minion"
-    And I wait until refresh package list on "sle_minion" is finished
+    And I refresh the package list of "sle_minion" on "peripheral1" via the API
+    And I am on the Systems overview page of this "sle_minion" on peripheral1
+    And I wait until event "Package List Refresh scheduled by admin" is completed
 
   Scenario: Apply errata andromeda-dummy-6789 on sle_minion via peripheral1 peripheral API
     When I apply erratum "andromeda-dummy-6789" on "sle_minion" via "peripheral1" peripheral API

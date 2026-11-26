@@ -939,6 +939,14 @@ def systems_registered_as(host, on:)
   api_client_for(on).system.search_by_name(Regexp.escape(system_name)).select { |system| system['name'] == system_name }
 end
 
+# The spacecmd package refresh steps always talk to the hub, where a minion of a peripheral is not registered.
+When(/^I refresh the package list of "([^"]*)" on "([^"]*)" via the API$/) do |minion_host, server_host|
+  systems = systems_registered_as(minion_host, on: server_host)
+  raise StandardError, "#{minion_host} not found on #{server_host}" if systems.empty?
+
+  api_client_for(server_host).system.schedule_package_refresh(systems.first['id'], DateTime.now)
+end
+
 Then(/^I should see "([^"]*)" registered on "([^"]*)"$/) do |minion_host, server_host|
   raise StandardError, "#{minion_host} not found on #{server_host}" if systems_registered_as(minion_host, on: server_host).empty?
 end
