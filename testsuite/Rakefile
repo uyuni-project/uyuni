@@ -3,6 +3,7 @@
 
 require 'rake'
 require 'rubygems'
+require 'English'
 require 'yaml'
 require 'json'
 require 'cucumber/rake/task'
@@ -104,6 +105,12 @@ namespace :cucumber do
       # The forked cucumber runner signals failure with `exit` (SystemExit), not RuntimeError
       rescue RuntimeError, SystemExit => e
         cucumber_error = e
+      # When cucumber is killed by a signal (e.g. SIGKILL from the OOM killer, see `journalctl -k`
+      # on the controller) the runner's `exit res.exitstatus` gets nil and raises TypeError
+      rescue TypeError
+        raise unless $CHILD_STATUS&.signaled?
+
+        cucumber_error = RuntimeError.new("Cucumber was killed: #{$CHILD_STATUS}")
       end
     end
     if filename == :reference_reposync
