@@ -10,3 +10,6 @@ Feature: Configure salt on the server after the installation
 
   Scenario: Allow remote access to the Cobbler API
     When I enable remote access to the Cobbler API on the RKE2 server
+
+  Scenario: Log the Salt events for the final checks
+    When I start logging the Salt events on the RKE2 server
