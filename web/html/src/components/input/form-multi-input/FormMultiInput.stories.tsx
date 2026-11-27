@@ -23,7 +23,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Manages dynamic lists of form fields with add/remove functionality. Uses a prefix-based naming scheme (`prefix{index}_fieldname`) to track items in the form model. Each item can be a simple row or nested in a Panel. Ideal for managing lists like remote hosts, email addresses, or any repeating data structures.",
+          "Manages dynamic lists of form fields with add/remove functionality. Uses a prefix-based naming scheme (`prefix{index}_fieldname`) to track items in the form model. Items are laid out on a single line, as a group of stacked fields, or in their own Panel, depending on `variant`. Ideal for managing lists like remote hosts, email addresses, or any repeating data structures.",
       },
     },
   },
@@ -35,6 +35,7 @@ const meta = {
     title: "Email Addresses",
     prefix: "item",
     disabled: false,
+    variant: "singleLine",
   },
   argTypes: {
     id: {
@@ -56,11 +57,11 @@ const meta = {
     },
     panelIcon: {
       control: false,
-      description: "Function returning an icon class for each item's panel. If provided, items are wrapped in panels.",
+      description: "Function returning an icon class for each item's Panel. Only used by the `panel` variant.",
     },
     panelTitle: {
       control: false,
-      description: "Function returning a title for each item's panel. If provided, items are wrapped in panels.",
+      description: "Function returning a title for each item's Panel. Only used by the `panel` variant.",
     },
     header: {
       control: false,
@@ -68,7 +69,8 @@ const meta = {
     },
     rowClass: {
       control: "text",
-      description: "CSS class applied to the row containing each item's fields.",
+      description:
+        "CSS class applied to the element containing each item's fields. Used by the `singleLine` and `group` variants.",
     },
     panelHeading: {
       control: "select",
@@ -79,6 +81,12 @@ const meta = {
     panelClassName: {
       control: "text",
       description: "CSS class for the wrapping Panel.",
+    },
+    variant: {
+      control: "select",
+      options: ["panel", "singleLine", "group"],
+      description:
+        "Layout of the items. `singleLine` puts each item on one line with the remove button at its end, `group` stacks each item's fields with the remove button in the top-right corner and a divider between items, `panel` wraps each item in its own Panel.",
     },
     onAdd: {
       action: "item added",
@@ -140,6 +148,7 @@ const SimpleListExample = (args: Partial<FormMultiInputProps>) => {
         rowClass={args.rowClass}
         panelHeading={args.panelHeading}
         panelClassName={args.panelClassName}
+        variant={args.variant}
       >
         {(index) => (
           <Text
@@ -167,85 +176,6 @@ export const Playground: Story = {
       description: {
         story:
           "Interactive FormMultiInput for managing a list of email addresses. Click + to add items, - to remove them. Submit to see the form model.",
-      },
-    },
-  },
-};
-
-const RemoteHostsComponent = () => {
-  const [model, setModel] = useState<Record<string, string>>({
-    host0_name: "prod-server-01",
-    host0_port: "22",
-  });
-
-  const handleAdd = (index: number) => {
-    setModel({
-      ...model,
-      [`host${index}_name`]: "",
-      [`host${index}_port`]: "22",
-    });
-  };
-
-  const handleRemove = (index: number) => {
-    const newModel = Object.entries(model).reduce(
-      (acc, [key, value]) => {
-        if (!key.startsWith(`host${index}_`)) {
-          acc[key] = value;
-        }
-        return acc;
-      },
-      {} as Record<string, string>
-    );
-    setModel(newModel);
-  };
-
-  return (
-    <Form
-      model={model}
-      onChange={(newModel) => {
-        setModel({ ...newModel });
-        action("form changed")(newModel);
-      }}
-      onSubmit={() => action("form submitted")(model)}
-    >
-      <FormMultiInput id="hosts" title="Remote Hosts" prefix="host" onAdd={handleAdd} onRemove={handleRemove}>
-        {(index) => (
-          <>
-            <Text
-              name={`host${index}_name`}
-              label="Hostname"
-              placeholder="server.example.com"
-              required
-              labelClass="col-md-3"
-              divClass="col-md-6"
-            />
-            <Text
-              name={`host${index}_port`}
-              label="Port"
-              placeholder="22"
-              required
-              labelClass="col-md-3"
-              divClass="col-md-6"
-            />
-          </>
-        )}
-      </FormMultiInput>
-      <div className="form-group">
-        <div className="col-md-offset-3 offset-md-3 col-md-6">
-          <SubmitButton className="btn-primary" text="Save Configuration" />
-        </div>
-      </div>
-    </Form>
-  );
-};
-
-export const RemoteHosts: Story = {
-  render: () => <RemoteHostsComponent />,
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story: "Managing a list of remote hosts with hostname and port fields. Starts with one pre-filled host.",
       },
     },
   },
@@ -292,6 +222,7 @@ const WithPanelsComponent = () => {
         prefix="db"
         onAdd={handleAdd}
         onRemove={handleRemove}
+        variant="panel"
         panelIcon={() => "fa-database"}
         panelTitle={(index) => `Database ${index + 1}`}
       >
@@ -346,87 +277,6 @@ export const WithPanels: Story = {
   },
 };
 
-const WithHeaderComponent = () => {
-  const [model, setModel] = useState<Record<string, string>>({});
-
-  const handleAdd = (index: number) => {
-    setModel({ ...model, [`env${index}_key`]: "", [`env${index}_value`]: "" });
-  };
-
-  const handleRemove = (index: number) => {
-    const newModel = Object.entries(model).reduce(
-      (acc, [key, value]) => {
-        if (!key.startsWith(`env${index}_`)) {
-          acc[key] = value;
-        }
-        return acc;
-      },
-      {} as Record<string, string>
-    );
-    setModel(newModel);
-  };
-
-  return (
-    <Form
-      model={model}
-      onChange={(newModel) => setModel({ ...newModel })}
-      onSubmit={() => action("form submitted")(model)}
-    >
-      <FormMultiInput
-        id="env-vars"
-        title="Environment Variables"
-        prefix="env"
-        onAdd={handleAdd}
-        onRemove={handleRemove}
-        header={
-          <div className="alert alert-info" style={{ marginBottom: "15px" }}>
-            <i className="fa fa-info-circle" /> Add environment variables as key-value pairs. They will be available to
-            the application at runtime.
-          </div>
-        }
-      >
-        {(index) => (
-          <>
-            <Text
-              name={`env${index}_key`}
-              label="Key"
-              placeholder="API_KEY"
-              required
-              labelClass="col-md-3"
-              divClass="col-md-4"
-            />
-            <Text
-              name={`env${index}_value`}
-              label="Value"
-              placeholder="secret-value"
-              required
-              labelClass="col-md-3"
-              divClass="col-md-4"
-            />
-          </>
-        )}
-      </FormMultiInput>
-      <div className="form-group">
-        <div className="col-md-offset-3 offset-md-3 col-md-6">
-          <SubmitButton className="btn-primary" text="Apply Variables" />
-        </div>
-      </div>
-    </Form>
-  );
-};
-
-export const WithHeader: Story = {
-  render: () => <WithHeaderComponent />,
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story: "Using the header prop to display instructions or context above the item list.",
-      },
-    },
-  },
-};
-
 const DisabledComponent = () => {
   const [model, setModel] = useState<Record<string, string>>({
     tag0_name: "production",
@@ -446,6 +296,7 @@ const DisabledComponent = () => {
         onAdd={() => {}}
         onRemove={() => {}}
         disabled={true}
+        variant="singleLine"
       >
         {(index) => (
           <Text name={`tag${index}_name`} label="Tag" labelClass="col-md-3" divClass="col-md-6" disabled={true} />
@@ -462,115 +313,6 @@ export const Disabled: Story = {
     docs: {
       description: {
         story: "Disabled FormMultiInput. Remove buttons are disabled, preventing item deletion.",
-      },
-    },
-  },
-};
-
-const ComplexFormComponent = () => {
-  const [model, setModel] = useState<Record<string, string>>({
-    contact0_name: "John Doe",
-    contact0_email: "john@example.com",
-    contact0_phone: "+1-555-0100",
-    contact0_role: "admin",
-  });
-
-  const handleAdd = (index: number) => {
-    setModel({
-      ...model,
-      [`contact${index}_name`]: "",
-      [`contact${index}_email`]: "",
-      [`contact${index}_phone`]: "",
-      [`contact${index}_role`]: "",
-    });
-  };
-
-  const handleRemove = (index: number) => {
-    const newModel = Object.entries(model).reduce(
-      (acc, [key, value]) => {
-        if (!key.startsWith(`contact${index}_`)) {
-          acc[key] = value;
-        }
-        return acc;
-      },
-      {} as Record<string, string>
-    );
-    setModel(newModel);
-  };
-
-  return (
-    <Form
-      model={model}
-      onChange={(newModel) => {
-        setModel({ ...newModel });
-        action("form changed")(newModel);
-      }}
-      onSubmit={() => action("form submitted")(model)}
-      formDirection="form-horizontal"
-    >
-      <FormMultiInput
-        id="contacts"
-        title="Emergency Contacts"
-        prefix="contact"
-        onAdd={handleAdd}
-        onRemove={handleRemove}
-        panelIcon={() => "fa-user"}
-        panelTitle={(index) => model[`contact${index}_name`] || `Contact ${index + 1}`}
-      >
-        {(index) => (
-          <>
-            <Text
-              name={`contact${index}_name`}
-              label="Full Name"
-              placeholder="John Doe"
-              required
-              labelClass="col-md-3"
-              divClass="col-md-6"
-            />
-            <Text
-              name={`contact${index}_email`}
-              label="Email"
-              placeholder="john@example.com"
-              required
-              labelClass="col-md-3"
-              divClass="col-md-6"
-            />
-            <Text
-              name={`contact${index}_phone`}
-              label="Phone"
-              placeholder="+1-555-0100"
-              required
-              labelClass="col-md-3"
-              divClass="col-md-6"
-            />
-            <Text
-              name={`contact${index}_role`}
-              label="Role"
-              placeholder="admin"
-              required
-              labelClass="col-md-3"
-              divClass="col-md-6"
-            />
-          </>
-        )}
-      </FormMultiInput>
-      <div className="form-group">
-        <div className="col-md-offset-3 offset-md-3 col-md-6">
-          <SubmitButton className="btn-success" text="Save Contacts" />
-        </div>
-      </div>
-    </Form>
-  );
-};
-
-export const ComplexForm: Story = {
-  render: () => <ComplexFormComponent />,
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story:
-          "Complex example with multiple fields per item. Panel titles update dynamically based on the contact's name. Note how the prefix-based naming keeps all fields organized in the model.",
       },
     },
   },
@@ -599,122 +341,76 @@ const useMultiInputModel = (
   return { model, setModel, onAdd, onRemove };
 };
 
-const FormFieldStyleComponent = () => {
+const SingleLineComponent = () => {
   const { model, setModel, onAdd, onRemove } = useMultiInputModel(
-    "intermediateCA",
-    { "": "" },
-    { intermediateCA0: "" }
-  );
-
-  return (
-    <Form model={model} onChange={(newModel) => setModel({ ...newModel })} formDirection="form-horizontal">
-      <Text name="rootCA" label="Root CA" type="file" labelClass="col-md-3" divClass="col-md-6" />
-      <div className="form-group">
-        <FormMultiInput
-          id="intermediateCAs"
-          title="Intermediate CAs"
-          prefix="intermediateCA"
-          onAdd={onAdd}
-          onRemove={onRemove}
-          panelHeading="label"
-          panelClassName="panel-default col-md-6 offset-md-3 no-padding"
-        >
-          {(index) => (
-            <Text
-              name={`intermediateCA${index}`}
-              label="An intermediate CA certificate (PEM format)"
-              type="file"
-              divClass="col-md-8"
-              labelClass="col-md-4 no-padding"
-              className="col-md-11"
-            />
-          )}
-        </FormMultiInput>
-      </div>
-      <Text name="proxyCertificate" label="Proxy certificate" type="file" labelClass="col-md-3" divClass="col-md-6" />
-    </Form>
-  );
-};
-
-export const FormFieldStyle: Story = {
-  render: () => <FormFieldStyleComponent />,
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story:
-          'Embedding the list among regular form fields, as the proxy configuration pages do. `panelHeading="label"` renders the title like a field label and `panelClassName` places the panel in the form grid. Each item has a single field named `{prefix}{index}`, without a suffix.',
-      },
-    },
-  },
-};
-
-const PanelTitleOnlyComponent = () => {
-  const { model, setModel, onAdd, onRemove } = useMultiInputModel(
-    "repo",
-    { _url: "" },
-    { repo0_url: "https://download.example.com/repo" }
-  );
-
-  return (
-    <Form model={model} onChange={(newModel) => setModel({ ...newModel })}>
-      <FormMultiInput
-        id="repositories"
-        title="Repositories"
-        prefix="repo"
-        onAdd={onAdd}
-        onRemove={onRemove}
-        panelTitle={(index) => `Repository ${index + 1}`}
-      >
-        {(index) => <Text name={`repo${index}_url`} label="URL" labelClass="col-md-3" divClass="col-md-6" />}
-      </FormMultiInput>
-    </Form>
-  );
-};
-
-export const PanelTitleOnly: Story = {
-  render: () => <PanelTitleOnlyComponent />,
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story: "Passing only `panelTitle` is enough to wrap each item in its own Panel, without an icon.",
-      },
-    },
-  },
-};
-
-const RowClassComponent = () => {
-  const { model, setModel, onAdd, onRemove } = useMultiInputModel(
-    "alias",
+    "server",
     { _name: "" },
-    { alias0_name: "web01", alias1_name: "web02" }
+    { server0_name: "ntp1.example.com", server1_name: "ntp2.example.com" }
   );
 
   return (
     <Form model={model} onChange={(newModel) => setModel({ ...newModel })}>
       <FormMultiInput
-        id="aliases"
-        title="Host Aliases"
-        prefix="alias"
+        id="ntp-servers"
+        title="NTP Servers"
+        prefix="server"
         onAdd={onAdd}
         onRemove={onRemove}
-        rowClass="align-items-center"
+        variant="singleLine"
       >
-        {(index) => <Text name={`alias${index}_name`} label="Alias" labelClass="col-md-3" divClass="col-md-6" />}
+        {(index) => <Text name={`server${index}_name`} label="Server" labelClass="col-md-3" divClass="col-md-6" />}
       </FormMultiInput>
     </Form>
   );
 };
 
-export const RowClass: Story = {
-  render: () => <RowClassComponent />,
+export const SingleLine: Story = {
+  render: () => <SingleLineComponent />,
   parameters: {
     controls: { disable: true },
     docs: {
       description: {
         story:
-          "`rowClass` adds CSS classes to each item row in the default (non-panel) layout, here to center the fields and the remove button vertically. It has no effect when items are wrapped in panels.",
+          '`variant="singleLine"` shows each item on its own line, with the label, the input and the remove button aligned horizontally.',
+      },
+    },
+  },
+};
+
+const GroupComponent = () => {
+  const { model, setModel, onAdd, onRemove } = useMultiInputModel(
+    "mirror",
+    { _url: "", _user: "" },
+    {
+      mirror0_url: "https://mirror1.example.com",
+      mirror0_user: "admin",
+      mirror1_url: "https://mirror2.example.com",
+      mirror1_user: "",
+    }
+  );
+
+  return (
+    <Form model={model} onChange={(newModel) => setModel({ ...newModel })}>
+      <FormMultiInput id="mirrors" title="Mirrors" prefix="mirror" onAdd={onAdd} onRemove={onRemove} variant="group">
+        {(index) => (
+          <>
+            <Text name={`mirror${index}_url`} label="URL" labelClass="col-md-3" divClass="col-md-6" />
+            <Text name={`mirror${index}_user`} label="User" labelClass="col-md-3" divClass="col-md-6" />
+          </>
+        )}
+      </FormMultiInput>
+    </Form>
+  );
+};
+
+export const Group: Story = {
+  render: () => <GroupComponent />,
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          '`variant="group"` stacks the fields of each item, puts the remove button in the top-right corner of the group and separates groups with a divider. Removing a group removes all its fields.',
       },
     },
   },

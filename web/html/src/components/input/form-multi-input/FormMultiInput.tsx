@@ -13,6 +13,15 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { FormContext } from "../form/Form";
 
+/**
+ * Layout of the items:
+ * - `singleLine`: each item on one line, with the remove button at the end of the line
+ * - `group`: the fields of each item stacked vertically, with the remove button in the
+ *   top-right corner and a divider between items
+ * - `panel`: each item in its own Panel, with the remove button in the Panel heading
+ */
+export type FormMultiInputVariant = "singleLine" | "group" | "panel";
+
 type Props = {
   /** Id of the component */
   id: string;
@@ -44,20 +53,16 @@ type Props = {
   /** Whether the fields are enabled or not. */
   disabled?: boolean;
 
-  /** Icon to display for the group panel of each row.
-   * If neither this nor the panelTitle parameter is defined, the row fields
-   * will not be grouped into a panel. */
+  /** Icon to display in the Panel of each item, only used by the `panel` variant */
   panelIcon?: (idx: number) => string;
 
-  /** Title to display for the group panel of each row.
-   * If neither this nor the panelIcon parameter is defined, the row fields
-   * will not be grouped into a panel. */
+  /** Title to display in the Panel of each item, only used by the `panel` variant */
   panelTitle?: (idx: number) => string;
 
   /** Content to display between the title and the first fields */
   header?: ReactNode;
 
-  /** CSS class for the row containing the fields of one item */
+  /** CSS class for the element containing the fields of one item, used by the `singleLine` and `group` variants */
   rowClass?: string;
 
   /** HTML tag name containing the panel header text */
@@ -65,6 +70,9 @@ type Props = {
 
   /** CSS class for the wrapping Panel */
   panelClassName?: string;
+
+  /** Layout of the items */
+  variant: FormMultiInputVariant;
 };
 
 /**
@@ -137,7 +145,7 @@ export function getOrderedItemsFromModel(model: any, prefix: string): number[] {
  * }}
  * ```
  */
-export function FormMultiInput({ disabled = false, ...props }: Props) {
+export function FormMultiInput({ disabled = false, variant, ...props }: Props) {
   const formContext = useContext(FormContext);
   const items = getOrderedItemsFromModel(formContext.model, props.prefix);
   const new_index = (items.length > 0 && items[items.length - 1] + 1) || 0;
@@ -161,30 +169,54 @@ export function FormMultiInput({ disabled = false, ...props }: Props) {
       {items.map((index) => {
         const removeButton = (
           <Button
-            icon="fa-minus"
+            icon="fa-trash"
             title={t("Remove")}
             id={`remove_${props.prefix}${index}`}
-            className="btn-default btn-sm"
+            className="btn-tertiary btn-sm"
             handler={() => props.onRemove(index)}
             disabled={disabled}
           />
         );
         const children = props.children(index);
-        if (!DEPRECATED_unsafeEquals(props.panelTitle, null) || !DEPRECATED_unsafeEquals(props.panelIcon, null)) {
-          const icon = !DEPRECATED_unsafeEquals(props.panelIcon, null) ? props.panelIcon(index) : null;
-          const title = !DEPRECATED_unsafeEquals(props.panelTitle, null) ? props.panelTitle(index) : null;
+        if (variant === "singleLine") {
           return (
-            <Panel key={`${props.prefix}${index}`} icon={icon} title={title} headingLevel="h3" buttons={removeButton}>
+            <div
+              key={`${props.prefix}${index}-singleline`}
+              className={`d-flex align-items-start gap-2 multi-field-singleline ${props.rowClass ?? ""}`}
+            >
+              <div className="flex-grow-1">{children}</div>
+              {removeButton}
+            </div>
+          );
+        }
+        if (variant === "group") {
+          const isLast = index === items[items.length - 1];
+          return (
+            <div
+              key={`${props.prefix}${index}-group`}
+              className={`multi-field-group ${isLast ? "" : "border-bottom mb-3"} pb-3 ${props.rowClass ?? ""}`}
+            >
+              <div className="d-flex justify-content-end mb-2">{removeButton}</div>
+              {children}
+            </div>
+          );
+        }
+        if (variant === "panel") {
+          if (!DEPRECATED_unsafeEquals(props.panelTitle, null) || !DEPRECATED_unsafeEquals(props.panelIcon, null)) {
+            const icon = !DEPRECATED_unsafeEquals(props.panelIcon, null) ? props.panelIcon(index) : null;
+            const title = !DEPRECATED_unsafeEquals(props.panelTitle, null) ? props.panelTitle(index) : null;
+            return (
+              <Panel key={`${props.prefix}${index}`} icon={icon} title={title} headingLevel="h3" buttons={removeButton}>
+                {children}
+              </Panel>
+            );
+          }
+          return (
+            <Panel key={`${props.prefix}${index}`} title={`Item ${index + 1}`} headingLevel="h3" buttons={removeButton}>
               {children}
             </Panel>
           );
         }
-        return (
-          <div key={`${props.prefix}${index}-panelrow`} className={`row multi-field-panelrow ${props.rowClass}`}>
-            {children}
-            {removeButton}
-          </div>
-        );
       })}
     </Panel>
   );
