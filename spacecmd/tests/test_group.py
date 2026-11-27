@@ -15,6 +15,7 @@ from unittest.mock import MagicMock, patch, mock_open, call, ANY
 # pylint: disable-next=unused-import
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.group
+import spacecmd.shell
 from xmlrpc import client as xmlrpclib
 
 
@@ -1645,3 +1646,59 @@ class TestSCGroup:
                 "prf-e\nprf-f",
             ],
         )
+
+    # pylint: disable-next=redefined-outer-name
+    def test_completer_group_addconfigchannels(self, shell):
+        """
+        Test tab completer groups on addconfigchannels.
+        """
+        text = "group"
+        shell.do_group_list = MagicMock(return_value=["group1", "group2"])
+        completer = MagicMock()
+        with patch("spacecmd.group.tab_completer", completer):
+            spacecmd.group.complete_group_addconfigchannels(
+                shell, text, "group_addconfigchannels group", None, None
+            )
+            assert completer.called
+            call_id, ret_text = completer.call_args_list[0][0]
+            assert call_id == ["group1", "group2"]
+            assert ret_text == text
+
+    # pylint: disable-next=redefined-outer-name
+    def test_completer_group_removeconfigchannels(self, shell):
+        """
+        Test tab completer groups on removeconfigchannels.
+        """
+        text = "group"
+        shell.do_group_list = MagicMock(return_value=["group1", "group2"])
+        completer = MagicMock()
+        with patch("spacecmd.group.tab_completer", completer):
+            spacecmd.group.complete_group_removeconfigchannels(
+                shell, text, "group_removeconfigchannels group", None, None
+            )
+            assert completer.called
+            call_id, ret_text = completer.call_args_list[0][0]
+            assert call_id == ["group1", "group2"]
+            assert ret_text == text
+
+    def test_completer_group_addconfigchannels_shell_runtime(self):
+        """
+        Test tab completer with SpacewalkShell instance.
+        """
+        sw_shell = spacecmd.shell.SpacewalkShell(MagicMock(), "/tmp", MagicMock())
+        sw_shell.do_group_list = MagicMock(return_value=["group1", "group2"])
+        res = sw_shell.complete_group_addconfigchannels(
+            "gr", "group_addconfigchannels gr", 0, 26
+        )
+        assert res == ["group1", "group2"]
+
+    def test_completer_group_removeconfigchannels_shell_runtime(self):
+        """
+        Test tab completer with SpacewalkShell instance.
+        """
+        sw_shell = spacecmd.shell.SpacewalkShell(MagicMock(), "/tmp", MagicMock())
+        sw_shell.do_group_list = MagicMock(return_value=["group1", "group2"])
+        res = sw_shell.complete_group_removeconfigchannels(
+            "gr", "group_removeconfigchannels gr", 0, 29
+        )
+        assert res == ["group1", "group2"]
