@@ -31,10 +31,15 @@ def proxy_flavours(hosts = PROXY_HOSTS)
   defined_hosts.map { |host| proxy_flavour(host) }.uniq
 end
 
-# Looks up the MU repositories of a client; 'proxy_<flavour>' falls back to 'proxy'
+# Looks up the MU repositories of a client.
+# 'proxy_<flavour>' tries its own key, then the merged hub key for its OS
+# ('proxy_transactional' for SL Micro, 'proxy_non_transactional' otherwise), then 'proxy'.
 #
 # @param client [String] the key in custom_repositories.json
 # @return [Hash, nil] repository name to URL, or nil if none is configured
 def custom_repositories_for(client)
-  $custom_repositories[client] || (client.start_with?('proxy_') ? $custom_repositories['proxy'] : nil)
+  return $custom_repositories[client] unless client.start_with?('proxy_')
+
+  variant = client.start_with?('proxy_slmicro') ? 'proxy_transactional' : 'proxy_non_transactional'
+  $custom_repositories[client] || $custom_repositories[variant] || $custom_repositories['proxy']
 end
