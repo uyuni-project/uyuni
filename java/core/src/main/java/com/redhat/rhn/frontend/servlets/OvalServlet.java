@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2011 Red Hat, Inc.
+ * Copyright (c) 2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -26,7 +27,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jdom.JDOMException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -257,8 +257,7 @@ public class OvalServlet extends HttpServlet {
         }
     }
 
-    private String aggregateOvalFiles(List<File> files)
-            throws JDOMException, IOException {
+    private String aggregateOvalFiles(List<File> files) throws IOException {
         OvalFileAggregator aggregator = new OvalFileAggregator();
         String retval = null;
         for (File f : files) {
