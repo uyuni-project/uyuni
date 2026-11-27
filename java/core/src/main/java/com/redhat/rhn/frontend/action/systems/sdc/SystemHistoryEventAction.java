@@ -43,6 +43,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
+import java.util.Optional;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -121,9 +123,12 @@ public class SystemHistoryEventAction extends RhnAction {
                             .ifPresent(result -> request.setAttribute("transactionalPrerequisiteResult", result));
                 });
 
-        boolean typeDistUpgradeDryRun = action.setRequestAttributeDryRun(request);
+        boolean typeDistUpgradeDryRun = action.isDistUpgradeDryRun(server.getId());
+        request.setAttribute("typeDistUpgradeDryRun", typeDistUpgradeDryRun);
 
-        action.setRequestAttributePlaybook(request, serverAction, requestContext.getCurrentUser());
+        Optional<String> inventory = action.getPlaybookInventory(serverAction, requestContext.getCurrentUser());
+        request.setAttribute("typePlaybook", inventory.isPresent());
+        inventory.ifPresent(i -> request.setAttribute("inventory", i));
 
         if (!serverAction.isStatusCompleted() &&
                 !serverAction.isStatusFailed()) {

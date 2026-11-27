@@ -16,7 +16,7 @@
  */
 package com.redhat.rhn.frontend.taglibs;
 
-import com.redhat.rhn.frontend.struts.Expandable;
+import com.redhat.rhn.common.util.Expandable;
 
 
 /**

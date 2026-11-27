@@ -334,4 +334,11 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         return cmd;
     }
 
+    @Test
+    public void testGetKickstartHost() {
+        String proxyHeader = "1006681409::1151513167.96:21600.0:VV/xFNEmCYOuHxEBAs7BEw==:proxy1.example.com," +
+                "1006681408::1151513034.3:21600.0:w2lm+XWSFJMVCGBK1dZXXQ==:proxy2.example.com";
+        assertEquals("proxy1.example.com", KickstartScheduleCommand.getKickstartHost(proxyHeader));
+        assertEquals(ConfigDefaults.get().getJavaHostname(), KickstartScheduleCommand.getKickstartHost(null));
+    }
 }

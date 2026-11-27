@@ -24,15 +24,15 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.kickstart.KickstartRawData;
+import com.redhat.rhn.domain.kickstart.KickstartTreeUpdateType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.builder.KickstartBuilder;
 import com.redhat.rhn.domain.kickstart.builder.KickstartParser;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.kickstart.KickstartIpRangeFilter;
-import com.redhat.rhn.frontend.action.kickstart.KickstartTreeUpdateType;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
+import com.redhat.rhn.manager.kickstart.IpAddressRange;
 import com.redhat.rhn.manager.kickstart.KickstartCloneCommand;
 import com.redhat.rhn.manager.kickstart.KickstartDeleteCommand;
 import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
@@ -463,10 +463,8 @@ public class KickstartHandler extends BaseHandler {
     public String findKickstartForIp(User loggedInUser, String ipAddress) {
         List<KickstartIpRange> ranges = KickstartFactory.lookupRangeByOrg(loggedInUser
                 .getOrg());
-        KickstartIpRangeFilter filter = new KickstartIpRangeFilter();
         for (KickstartIpRange range : ranges) {
-            if (filter.filterOnRange(ipAddress, range.getMinString(), range
-                    .getMaxString())) {
+            if (IpAddressRange.contains(ipAddress, range.getMinString(), range.getMaxString())) {
                 return range.getKsdata().getLabel();
             }
         }

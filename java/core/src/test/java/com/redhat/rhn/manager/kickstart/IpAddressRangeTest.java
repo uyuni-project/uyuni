@@ -17,6 +17,7 @@
 package com.redhat.rhn.manager.kickstart;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -112,4 +113,10 @@ public class IpAddressRangeTest extends BaseTestCaseWithUser {
         assertTrue(range1.isIpAddressContained(min4));
     }
 
+    @Test
+    public void testContains() {
+        assertTrue(IpAddressRange.contains("192.168.1.3", "192.168.1.1", "192.168.1.5"));
+        assertTrue(IpAddressRange.contains("192.168.1.5", "192.168.1.1", "192.168.1.5"));
+        assertFalse(IpAddressRange.contains("192.168.1.6", "192.168.1.1", "192.168.1.5"));
+    }
 }

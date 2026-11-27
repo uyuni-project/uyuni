@@ -14,7 +14,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.channel.ssm;
+package com.redhat.rhn.manager.ssm;
 
 import java.util.HashSet;
 import java.util.Set;

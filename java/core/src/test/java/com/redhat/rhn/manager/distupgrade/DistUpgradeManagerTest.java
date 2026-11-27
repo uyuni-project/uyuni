@@ -624,6 +624,11 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         assertEquals(server, serverActions.iterator().next().getServer());
         DistUpgradeActionDetails details = action.getDetails(server.getId());
         assertTrue(details.isDryRun());
+        assertTrue(action.isDistUpgradeDryRun(server.getId()));
+        assertFalse(action.isDistUpgradeDryRun(-1L));
+        details.setDryRun(false);
+        assertFalse(action.isDistUpgradeDryRun(server.getId()));
+        details.setDryRun(true);
         assertFalse(details.isAllowVendorChange());
         //These products will be removed after migration
         assertEquals(addonProduct.getName(), details.getMissingSuccessors());

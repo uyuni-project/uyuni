@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import java.util.Map;
@@ -33,6 +32,8 @@ import java.util.Set;
  * PackageAclHandler
  */
 public class PackageAclHandler extends BaseHandler {
+
+    private static final String TOKEN_ID = "tid";
 
     /**
      * Returns true if the Token whose id matches the given tid,
@@ -46,7 +47,7 @@ public class PackageAclHandler extends BaseHandler {
             return false;
         }
 
-        Long tid = getAsLong(ctx.get(RequestContext.TOKEN_ID));
+        Long tid = getAsLong(ctx.get(TOKEN_ID));
         User user = (User) ctx.get("user");
         Token t = TokenFactory.lookup(tid, user.getOrg());
         for (ServerGroupType sgt : t.getEntitlements()) {

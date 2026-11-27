@@ -16,7 +16,6 @@
  */
 package com.redhat.rhn.frontend.action.kickstart;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.common.util.StringUtil;
@@ -30,6 +29,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.kickstart.IpAddress;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
 import com.redhat.rhn.manager.kickstart.KickstartManager;
+import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.kickstart.KickstartSessionUpdateCommand;
 
 import org.apache.commons.lang3.StringUtils;
@@ -75,7 +75,7 @@ public class KickstartHelper {
         "(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}.\\d{1,3})";
     private static final String KSDATA = "ksdata";
 
-    public static final String XRHNPROXYAUTH = "X-RHN-Proxy-Auth";
+    public static final String XRHNPROXYAUTH = KickstartScheduleCommand.XRHNPROXYAUTH;
 
     /**
      * Constructor
@@ -266,27 +266,7 @@ public class KickstartHelper {
     public String getKickstartHost() {
         log.debug("KickstartHelper.getKickstartHost()");
 
-        // Example proxy header:
-        // X-RHN-Proxy-Auth : 1006681409::1151513167.96:21600.0:VV/xF
-        // NEmCYOuHxEBAs7BEw==:fjs-0-08.rhndev.redhat.com,1006681408
-        // ::1151513034.3:21600.0:w2lm+XWSFJMVCGBK1dZXXQ==:fjs-0-11.
-        // rhndev.redhat.com,1006678487::1152567362.02:21600.0:t15l
-        // gsaTRKpX6AxkUFQ11A==:fjs-0-12.rhndev.redhat.com
-
-        String proxyHeader = request.getHeader(XRHNPROXYAUTH);
-
-        if (!StringUtils.isEmpty(proxyHeader)) {
-            String[] proxies = StringUtils.split(proxyHeader, ",");
-            String firstProxy = proxies[0];
-            // Now we have: 1006681409::1151513167.96:21600.0:VV/xF
-            // NEmCYOuHxEBAs7BEw==:fjs-0-08.rhndev.redhat.com
-            log.debug("first1: {}", firstProxy);
-            String[] chunks = StringUtils.split(firstProxy, ":");
-            firstProxy = chunks[chunks.length - 1];
-            log.debug("Kickstart host from proxy header: {}", firstProxy);
-            return firstProxy;
-        }
-        return ConfigDefaults.get().getJavaHostname();
+        return KickstartScheduleCommand.getKickstartHost(request.getHeader(XRHNPROXYAUTH));
     }
 
     /**

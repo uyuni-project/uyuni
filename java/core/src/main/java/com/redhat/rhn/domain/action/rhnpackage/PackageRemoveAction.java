@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * PackageRemoveAction
@@ -90,7 +89,7 @@ public class PackageRemoveAction extends PackageAction {
      * {@inheritDoc}
      */
     @Override
-    public void setRequestAttributeTypePackages(HttpServletRequest request) {
-        request.setAttribute("type", "packages");
+    public boolean listsPackages() {
+        return true;
     }
 }

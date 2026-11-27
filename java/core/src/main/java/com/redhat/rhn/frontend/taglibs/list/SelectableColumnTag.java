@@ -17,7 +17,7 @@
 package com.redhat.rhn.frontend.taglibs.list;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.frontend.struts.Expandable;
+import com.redhat.rhn.common.util.Expandable;
 import com.redhat.rhn.frontend.taglibs.RhnListTagFunctions;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListSetHelper;
 

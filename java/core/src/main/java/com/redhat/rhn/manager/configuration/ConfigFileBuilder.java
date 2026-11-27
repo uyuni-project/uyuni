@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.configuration.ConfigFileForm;
 import com.redhat.rhn.manager.configuration.file.ConfigFileData;
 
 import org.apache.commons.lang3.StringUtils;
@@ -135,10 +134,10 @@ public class ConfigFileBuilder {
                 if (form.isBinary()) {
                     // if not given, use the default value
                     if (delimStart == null) {
-                        delimStart = ConfigFileForm.DEFAULT_CONFIG_DELIM_START;
+                        delimStart = ConfigFileData.DEFAULT_CONFIG_DELIM_START;
                     }
                     if (delimEnd == null) {
-                        delimEnd = ConfigFileForm.DEFAULT_CONFIG_DELIM_END;
+                        delimEnd = ConfigFileData.DEFAULT_CONFIG_DELIM_END;
                     }
                 }
             }

@@ -46,7 +46,7 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
+import com.redhat.rhn.manager.errata.ErrataHelper;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;

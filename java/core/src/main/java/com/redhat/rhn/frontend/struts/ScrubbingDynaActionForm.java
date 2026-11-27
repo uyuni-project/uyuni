@@ -16,6 +16,8 @@
  */
 package com.redhat.rhn.frontend.struts;
 
+import com.redhat.rhn.common.util.Scrubber;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.DynaActionForm;
 

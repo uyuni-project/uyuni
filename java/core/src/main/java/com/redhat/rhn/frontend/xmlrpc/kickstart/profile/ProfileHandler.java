@@ -29,13 +29,12 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
+import com.redhat.rhn.domain.kickstart.KickstartTreeUpdateType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.RepoInfo;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.kickstart.KickstartIpRangeFilter;
-import com.redhat.rhn.frontend.action.kickstart.KickstartTreeUpdateType;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartOptionValue;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
@@ -52,6 +51,7 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.keys.KeysHandler;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.kickstart.IpAddress;
+import com.redhat.rhn.manager.kickstart.IpAddressRange;
 import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
 import com.redhat.rhn.manager.kickstart.KickstartIpCommand;
@@ -1088,10 +1088,8 @@ public class ProfileHandler extends BaseHandler {
     */
    public int removeIpRange(User loggedInUser, String ksLabel, String ipAddress) {
        KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
-       KickstartIpRangeFilter filter = new KickstartIpRangeFilter();
        for (KickstartIpRange range : ksdata.getIps()) {
-           if (filter.filterOnRange(ipAddress, range.getMinString(), range
-                   .getMaxString())) {
+           if (IpAddressRange.contains(ipAddress, range.getMinString(), range.getMaxString())) {
                ksdata.getIps().remove(range);
                return 1;
            }
