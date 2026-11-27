@@ -50,6 +50,7 @@ import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
+import com.redhat.rhn.manager.errata.syncwithpackages.dto.SyncedErratumWithPackages;
 
 import com.suse.manager.api.ReadOnly;
 
@@ -77,7 +78,7 @@ public class ContentManagementHandler extends BaseHandler {
      * Initialize a handler specifying a content manager instance.
      */
     public ContentManagementHandler() {
-        contentManager = new ContentManager();
+        this(new ContentManager());
     }
 
     /**
@@ -1038,6 +1039,66 @@ public class ContentManagementHandler extends BaseHandler {
                                                                                   String advisoryName) {
         try {
             return contentManager.listCompatibleHotfixChannelLabelsByProject(advisoryName, loggedInUser);
+        }
+        catch (EntityNotExistsException eIn) {
+            throw new EntityNotExistsFaultException(eIn);
+        }
+    }
+
+    /**
+     * Clone errata into a hotfix channel, together with their associated packages.
+     *
+     * @param loggedInUser the user
+     * @param advisoryName the advisory name
+     * @param hotfixChannelLabel the label of the target channel
+     * @return the synchronization result
+     *
+     * @apidoc.doc Clone errata into a hotfix channel, together with the packages each erratum ships.
+     * (Note: Module metadata of modular channels is currently not updated)
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "advisoryName", "the advisory name to synchronize.")
+     * @apidoc.param #param_desc("string", "hotfixChannelLabel", "the label of the hotfix channel")
+     * @apidoc.returntype $SyncedErratumSerializer
+     */
+    public SyncedErratumWithPackages cloneErrataIntoHotfixChannel(
+            User loggedInUser,
+            String advisoryName,
+            String hotfixChannelLabel
+    ) {
+        try {
+            return contentManager.cloneIntoHotfixChannel(loggedInUser, advisoryName, hotfixChannelLabel);
+        }
+        catch (EntityNotExistsException eIn) {
+            throw new EntityNotExistsFaultException(eIn);
+        }
+    }
+
+    /**
+     * Clone errata into multiple hotfix channels, together with associated packages.
+     *
+     * @param loggedInUser the user
+     * @param advisoryName the advisory name
+     * @param hotfixChannelLabels the label of the target channel
+     * @return the synchronization result
+     *
+     * @apidoc.doc Clone errata into multiple hotfix channels, together with the packages the erratum ships.
+     * (Note: Module metadata of modular channels is currently not updated)
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "advisoryName", "the advisory name to synchronize.")
+     * @apidoc.param #array_single_desc("string", "hotfixChannelLabels", "the labels of the hotfix channels")
+     * @apidoc.returntype
+     *  #struct_begin("Hotfix Channel Label")
+     *      #prop_desc("array", "hotfixChannelLabel", "Actual hotfix channel label is the key into the struct")
+     *          $SyncedErratumSerializer
+     *  #struct_end()
+     */
+    public Map<String, SyncedErratumWithPackages> cloneErrataIntoHotfixChannels(
+            User loggedInUser,
+            String advisoryName,
+            List<String> hotfixChannelLabels
+    ) {
+        try {
+            return contentManager.cloneIntoHotfixChannels(loggedInUser, advisoryName, hotfixChannelLabels);
         }
         catch (EntityNotExistsException eIn) {
             throw new EntityNotExistsFaultException(eIn);

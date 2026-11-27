@@ -6673,6 +6673,16 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.contentmanagement.clone_errata_into_hotfix_channel' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/contentmanagement/cloneErrataIntoHotfixChannel' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.contentmanagement.clone_errata_into_hotfix_channels' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/contentmanagement/cloneErrataIntoHotfixChannels' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.contentmanagement.generate_project_difference' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/contentmanagement/generateProjectDifference' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
