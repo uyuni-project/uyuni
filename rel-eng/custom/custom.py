@@ -201,6 +201,9 @@ class ChartBuilder(ContainerBuilder):
         "templates",
         "LICENSE",
         "README.md",
+        # Files used by the Rancher UI
+        "questions.yml",
+        "app-readme.md",
     ]
 
     def tgz(self):
