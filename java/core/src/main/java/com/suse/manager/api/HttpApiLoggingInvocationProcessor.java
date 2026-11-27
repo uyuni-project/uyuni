@@ -82,7 +82,10 @@ public class HttpApiLoggingInvocationProcessor extends LoggingInvocationProcesso
 
     private Map<String, String> getParamMap(Request request) {
         Map<String, String> paramsMap = getQueryMapParams(request);
-        paramsMap.putAll(parseBody(request.body()));
+        // Multipart bodies can be very large uploads, which must not be read into memory
+        if (!RouteFactory.isMultipartRequest(request)) {
+            paramsMap.putAll(parseBody(request.body()));
+        }
         return paramsMap;
     }
 
