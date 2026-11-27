@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.ErrataTestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +33,7 @@ import java.time.Month;
 /**
  * Test for {@link OracleErrataParser}
  */
-public class OracleErrataParserTest extends BaseErrataTestCase {
+public class OracleErrataParserTest extends BaseTestCase {
 
     /**
      * Test to ensure correct parsing of the url and the id in a valid case.
@@ -40,7 +42,7 @@ public class OracleErrataParserTest extends BaseErrataTestCase {
     public void testCanBuildValidLinkAndId() throws ErrataParsingException {
 
         final OracleErrataParser parser = new OracleErrataParser();
-        final Errata errata = createErrata("ELSA-2021-3791", ErrataFactory.ERRATA_TYPE_SECURITY,
+        final Errata errata = ErrataTestUtils.createTestErrata("ELSA-2021-3791", ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2021, Month.OCTOBER, 22), 1L);
 
         final String id = parser.getAnnouncementId(errata);
@@ -56,7 +58,7 @@ public class OracleErrataParserTest extends BaseErrataTestCase {
     @Test
     public void testThrowsExceptionWhenAdvisoryIsNotAvailable() {
         final OracleErrataParser parser = new OracleErrataParser();
-        final Errata errata = createErrata(null, ErrataFactory.ERRATA_TYPE_SECURITY,
+        final Errata errata = ErrataTestUtils.createTestErrata(null, ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2019, Month.FEBRUARY, 8), 1L);
 
         try {

@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.ErrataTestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +33,7 @@ import java.time.Month;
 /**
  * Tests For {@link AlibabaErrataParser}
  */
-public class AlibabaErrataParserTest extends BaseErrataTestCase {
+public class AlibabaErrataParserTest extends BaseTestCase {
 
     /**
      * Test to ensure correct parsing of the url and the id in a valid case.
@@ -40,8 +42,8 @@ public class AlibabaErrataParserTest extends BaseErrataTestCase {
     public void testCanBuildValidLinkAndId() throws ErrataParsingException {
 
         final AlibabaErrataParser parser = new AlibabaErrataParser();
-        final Errata errata = createErrata("ALINUX2-SA-2019:0019", ErrataFactory.ERRATA_TYPE_SECURITY,
-                LocalDate.of(2019, Month.FEBRUARY, 8), 1L);
+        final Errata errata = ErrataTestUtils.createTestErrata("ALINUX2-SA-2019:0019",
+                ErrataFactory.ERRATA_TYPE_SECURITY, LocalDate.of(2019, Month.FEBRUARY, 8), 1L);
 
         final String id = parser.getAnnouncementId(errata);
         final URI uri = parser.getAdvisoryUri(errata);
@@ -56,7 +58,7 @@ public class AlibabaErrataParserTest extends BaseErrataTestCase {
     @Test
     public void testThrowsExceptionWhenAdvisoryIsNotAvailable() {
         final AlibabaErrataParser parser = new AlibabaErrataParser();
-        final Errata errata = createErrata(null, ErrataFactory.ERRATA_TYPE_SECURITY,
+        final Errata errata = ErrataTestUtils.createTestErrata(null, ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2019, Month.FEBRUARY, 8), 1L);
 
         try {

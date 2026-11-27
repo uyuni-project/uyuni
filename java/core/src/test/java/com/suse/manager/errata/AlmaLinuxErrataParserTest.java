@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.ErrataTestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +33,7 @@ import java.time.Month;
 /**
  * Tests for {@link AlmaLinuxErrataParser}
  */
-public class AlmaLinuxErrataParserTest extends BaseErrataTestCase {
+public class AlmaLinuxErrataParserTest extends BaseTestCase {
 
     /**
      * Test to ensure correct parsing of the url and the id in a valid case.
@@ -40,7 +42,7 @@ public class AlmaLinuxErrataParserTest extends BaseErrataTestCase {
     public void testCanBuildValidLinkAndId() throws ErrataParsingException {
 
         final AlmaLinuxErrataParser parser = new AlmaLinuxErrataParser();
-        final Errata errata = createErrata("ALSA-2021:3893", ErrataFactory.ERRATA_TYPE_SECURITY,
+        final Errata errata = ErrataTestUtils.createTestErrata("ALSA-2021:3893", ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2021, Month.OCTOBER, 21), 1L);
 
         final String id = parser.getAnnouncementId(errata);
@@ -56,7 +58,7 @@ public class AlmaLinuxErrataParserTest extends BaseErrataTestCase {
     @Test
     public void testThrowsExceptionWhenAdvisoryIsNotAvailable() {
         final AlmaLinuxErrataParser parser = new AlmaLinuxErrataParser();
-        final Errata errata = createErrata(null, ErrataFactory.ERRATA_TYPE_SECURITY,
+        final Errata errata = ErrataTestUtils.createTestErrata(null, ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2021, Month.OCTOBER, 21), 1L);
 
         try {

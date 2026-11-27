@@ -48,8 +48,11 @@ import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -244,6 +247,47 @@ public class ErrataTestUtils {
         Errata result = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         result.setCves(cves);
         return TestUtils.saveAndFlush(result);
+    }
+
+    /**
+     * Creates a test errata object
+     * @param advisory the advisory
+     * @param type the advisory type
+     * @param issuedDate the errata issued date
+     * @param release the advisory release
+     * @return the test errata object
+     */
+    public static Errata createTestErrata(String advisory, String type, LocalDate issuedDate, Long release) {
+        final Errata errata = new Errata();
+
+        if (issuedDate != null) {
+            errata.setIssueDate(Date.from(issuedDate.atStartOfDay(ZoneOffset.systemDefault()).toInstant()));
+        }
+
+        errata.setAdvisory(advisory);
+        errata.setAdvisoryRel(release);
+        errata.setAdvisoryType(type);
+        return errata;
+    }
+
+    /**
+     * Creates a test errata object with one channel owning an update tag
+     * @param updateTag the update tag
+     * @param advisory the advisory
+     * @param type the advisory type
+     * @param issuedDate the errata issued date
+     * @param release the advisory release
+     * @return the test errata object
+     */
+    public static Errata createTestErrataWithUpdateTag(String updateTag,
+                                               String advisory, String type, LocalDate issuedDate, Long release) {
+        final Errata errata = createTestErrata(advisory, type, issuedDate, release);
+
+        Channel ch = new Channel();
+        ch.setUpdateTag(updateTag);
+        ch.addErrata(errata);
+
+        return errata;
     }
 
     /**

@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.ErrataTestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +33,7 @@ import java.time.Month;
 /**
  * Tests for {@link AmazonErrataParser}
  */
-public class AmazonErrataParserTest extends BaseErrataTestCase {
+public class AmazonErrataParserTest extends BaseTestCase {
 
     /**
      * Test to ensure correct parsing of the url and the id for Amazon Linux 2.
@@ -40,7 +42,7 @@ public class AmazonErrataParserTest extends BaseErrataTestCase {
     public void testCanBuildValidLinkAndIdForAL2() throws ErrataParsingException {
 
         final AmazonErrataParser parser = new AmazonErrataParser();
-        final Errata errata = createErrata("ALAS2-2021-1710", ErrataFactory.ERRATA_TYPE_SECURITY,
+        final Errata errata = ErrataTestUtils.createTestErrata("ALAS2-2021-1710", ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2021, Month.SEPTEMBER, 30), 1L);
 
         final String id = parser.getAnnouncementId(errata);
@@ -57,7 +59,7 @@ public class AmazonErrataParserTest extends BaseErrataTestCase {
     public void testCanBuildValidLinkAndIdForAL1() throws ErrataParsingException {
 
         final AmazonErrataParser parser = new AmazonErrataParser();
-        final Errata errata = createErrata("ALAS-2021-1538", ErrataFactory.ERRATA_TYPE_SECURITY,
+        final Errata errata = ErrataTestUtils.createTestErrata("ALAS-2021-1538", ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2021, Month.SEPTEMBER, 30), 1L);
 
         final String id = parser.getAnnouncementId(errata);
@@ -74,7 +76,7 @@ public class AmazonErrataParserTest extends BaseErrataTestCase {
     public void testThrowsExceptionWhenAdvisoryIsNull() {
 
         final AmazonErrataParser parser = new AmazonErrataParser();
-        final Errata errata = createErrata("WRONGFORMAT123", ErrataFactory.ERRATA_TYPE_SECURITY,
+        final Errata errata = ErrataTestUtils.createTestErrata("WRONGFORMAT123", ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2012, Month.OCTOBER, 21), 1L);
 
         try {
@@ -93,7 +95,7 @@ public class AmazonErrataParserTest extends BaseErrataTestCase {
     public void testThrowsExceptionWhenPrefixIsUnknown() {
 
         final AmazonErrataParser parser = new AmazonErrataParser();
-        final Errata errata = createErrata("WRONG-2012-1567", ErrataFactory.ERRATA_TYPE_SECURITY,
+        final Errata errata = ErrataTestUtils.createTestErrata("WRONG-2012-1567", ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2012, Month.OCTOBER, 21), 1L);
 
         try {
@@ -112,7 +114,7 @@ public class AmazonErrataParserTest extends BaseErrataTestCase {
     public void testThrowsExceptionWhenFormatIsUnknown() {
 
         final AmazonErrataParser parser = new AmazonErrataParser();
-        final Errata errata = createErrata(null, ErrataFactory.ERRATA_TYPE_SECURITY,
+        final Errata errata = ErrataTestUtils.createTestErrata(null, ErrataFactory.ERRATA_TYPE_SECURITY,
                 LocalDate.of(2012, Month.OCTOBER, 21), 1L);
 
         try {
