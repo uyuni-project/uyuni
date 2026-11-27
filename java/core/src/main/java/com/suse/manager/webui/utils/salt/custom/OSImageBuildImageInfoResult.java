@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 SUSE LLC
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -16,78 +16,16 @@
  */
 package com.suse.manager.webui.utils.salt.custom;
 
-import com.suse.manager.webui.utils.salt.custom.ImageChecksum.Checksum;
-
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The resulting image info from kiwi-image-build
  */
 public class OSImageBuildImageInfoResult {
 
-    /**
-     * SPDX SBOM generated as part of the Kiwi build.
-     */
-    public static class Sbom {
-        @SerializedName("hash")
-        private Checksum checksum;
-        private String filepath;
-        private String filename;
-        private Long size;
-
-        /**
-         * @return the checksum
-         */
-        public Checksum getChecksum() {
-            return checksum;
-        }
-
-        /**
-         * @return the filepath
-         */
-        public String getFilepath() {
-            return filepath;
-        }
-
-        /**
-         * @return the filename
-         */
-        public String getFilename() {
-            return filename;
-        }
-
-        /**
-         * @return the file size
-         */
-        public Long getSize() {
-            return size;
-        }
-    }
-
-    private OSImageInspectSlsResult.Bundle bundle;
-    private List<OSImageInspectSlsResult.Bundle> bundles;
     private OSImageInspectSlsResult.Image image;
-    private OSImageInspectSlsResult.BootImage boot_image;
-    private Sbom sbom;
-
-    /**
-     * @return the bundle info
-     */
-    public List<OSImageInspectSlsResult.Bundle> getBundles() {
-        if (bundles != null) {
-            return bundles;
-        }
-        else if (bundle != null) {
-            return Collections.singletonList(bundle);
-        }
-        else {
-            return Collections.emptyList();
-        }
-    }
+    private List<String> files;
 
     /**
      * @return the image info
@@ -97,16 +35,9 @@ public class OSImageBuildImageInfoResult {
     }
 
     /**
-     * @return the boot image info
+     * @return the paths of the build artefacts on the build host
      */
-    public Optional<OSImageInspectSlsResult.BootImage> getBootImage() {
-        return Optional.ofNullable(boot_image);
-    }
-
-    /**
-     * @return the SPDX SBOM, if Kiwi generated one
-     */
-    public Optional<Sbom> getSbom() {
-        return Optional.ofNullable(sbom);
+    public List<String> getFiles() {
+        return files != null ? files : Collections.emptyList();
     }
 }

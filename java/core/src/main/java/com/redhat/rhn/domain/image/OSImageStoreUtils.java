@@ -29,6 +29,13 @@ public class OSImageStoreUtils {
 
     private OSImageStoreUtils() { }
 
+    /**
+     * Setter for the OS Image Store base path, used for testing.
+     * @param path the base local path of the OS Image Store
+     */
+    public static void setOsImageStorePath(String path) {
+        osImageStorePath = path;
+    }
 
     /**
      * Returns a OS Image Store Path for an Org

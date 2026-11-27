@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016--2026 SUSE LLC
+ * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -49,12 +50,14 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -93,6 +96,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.utils.RhelUtilsTest;
+import com.suse.manager.saltboot.SaltbootException;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
@@ -116,9 +120,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
+import org.jmock.api.Invocation;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.jmock.lib.action.CustomAction;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -155,6 +163,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
     private SystemEntitlementManager systemEntitlementManager;
     protected Path metadataDirOfficial;
+    private Path osImageStoreDir;
+    private String originalOsImageStorePath;
     private SaltUtils saltUtils;
     private SaltServerActionService saltServerActionService;
 
@@ -173,6 +183,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new SaltKeyUtils(saltServiceMock));
         metadataDirOfficial = Files.createTempDirectory("meta");
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
+        osImageStoreDir = Files.createTempDirectory("os-images");
+        originalOsImageStorePath = OSImageStoreUtils.getOsImageStorePath();
+        OSImageStoreUtils.setOsImageStorePath(osImageStoreDir.toString() + "/");
         Path systemLockDir = metadataDirOfficial.resolve("system-lock");
         Path systemLockFile = Paths.get(systemLockDir.toString(),  "form.yml");
         Files.createDirectories(systemLockDir);
@@ -181,6 +194,16 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
+    }
+
+    @AfterEach
+    public void tearDownOsImageStore() throws Exception {
+        if (osImageStoreDir != null) {
+            FileUtils.deleteDirectory(osImageStoreDir.toFile());
+        }
+        if (originalOsImageStorePath != null) {
+            OSImageStoreUtils.setOsImageStorePath(originalOsImageStorePath);
+        }
     }
 
     /**
@@ -1911,53 +1934,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         ServerFactory.save(server);
 
-        MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
                     with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
-            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
-                    with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0")),
-                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
-                            user.getOrg().getId()))));
-            will(returnValue(Optional.of(mockResult)));
-            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
-                    with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.initrd")),
-                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
-                            user.getOrg().getId()))));
-            will(returnValue(Optional.of(mockResult)));
-            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
-                    with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54" +
-                            "-default.kernel")),
-                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
-                            user.getOrg().getId()))));
-            will(returnValue(Optional.of(mockResult)));
-            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
-                    with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.spdx.json")),
-                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
-                            user.getOrg().getId()))));
-            will(returnValue(Optional.of(mockResult)));
-            allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format(
-                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0",
-                            user.getOrg().getId())))));
-            will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format(
-                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0.initrd",
-                            user.getOrg().getId())))));
-            will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format(
-                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
-                                    "-5.3.18-150300.59.54-default.kernel",
-                            user.getOrg().getId())))));
-            will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format(
-                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/" +
-                                    "POS_Image_JeOS7.x86_64-7.0.0.spdx.json",
-                            user.getOrg().getId())))));
-            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)), with(any(String.class)),
+                    with(any(String.class)));
+            will(writeCollectedFile());
+            allowing(saltServiceMock).removeFile(with(any(Path.class)));
+            will(deleteCollectedFile());
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
         }});
@@ -1971,28 +1955,29 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("POS_Image_JeOS7", info.getName());
             assertEquals("7.0.0", info.getVersion());
             assertEquals(1, info.getRevisionNumber());
-            assertNotNull(info.getChecksum());
-            assertEquals("7057ea9a15784f469e03f2de045d3c73",
-                info.getChecksum().getChecksum());
+            // Kiwi does not provide a checksum for uncompressed images
+            assertNull(info.getChecksum());
             String pathPrefix = "POS_Image_JeOS7-7.0.0-1/";
-            // check initrd file
-            ImageFile file = info.getImageFiles().stream().filter(f -> f.getType().equals("initrd")).findFirst().get();
-            assertEquals("47a5391bd6c5f62c328605b0375b1216", file.getChecksum().getChecksum());
-            assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0.initrd", file.getFile());
-            // check kernel
-            file = info.getImageFiles().stream().filter(f -> f.getType().equals("kernel")).findFirst().get();
-            assertEquals("62c7d8dbb3ac208fbfa92d6034f361bc", file.getChecksum().getChecksum());
-            assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54-default.kernel",
-                    file.getFile());
-            // check image
-            file = info.getImageFiles().stream().filter(f -> f.getType().equals("image")).findFirst().get();
-            assertEquals("7057ea9a15784f469e03f2de045d3c73", file.getChecksum().getChecksum());
-            assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0", file.getFile());
-            // check SPDX SBOM
-            file = info.getImageFiles().stream().filter(f -> f.getType().equals("sbom")).findFirst().get();
-            assertEquals("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                    file.getChecksum().getChecksum());
-            assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0.spdx.json", file.getFile());
+            String basename = "POS_Image_JeOS7.x86_64-7.0.0";
+            // only allowed artefacts are collected, .md5, .sha256 and .packages are filtered out
+            assertEquals(Set.of(
+                    pathPrefix + basename,
+                    pathPrefix + basename + ".initrd",
+                    pathPrefix + basename + "-5.3.18-150300.59.54-default.kernel"),
+                    info.getImageFiles().stream().map(ImageFile::getFile).collect(Collectors.toSet()));
+            // the server calculates sha256 of the collected files, the filetype comes from the database
+            Map<String, String> typesByFile = info.getImageFiles().stream()
+                    .collect(Collectors.toMap(f -> Path.of(f.getFile()).getFileName().toString(),
+                            ImageFile::getType));
+            assertEquals(Map.of(
+                    basename, "image",
+                    basename + ".initrd", "initrd",
+                    basename + "-5.3.18-150300.59.54-default.kernel", "kernel"), typesByFile);
+            info.getImageFiles().forEach(file -> {
+                assertEquals("sha256", file.getChecksum().getChecksumType().getLabel());
+                assertEquals(DigestUtils.sha256Hex(Path.of(file.getFile()).getFileName().toString()),
+                        file.getChecksum().getChecksum());
+            });
         });
         ImageInfoFactory.delete(image, saltServiceMock);
         TestUtils.flushSession();
@@ -2007,33 +1992,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         ServerFactory.save(server);
 
-        MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
                     with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
-            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
-                    with(equal("/var/lib/Kiwi/build137/images/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz")),
-                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
-                            user.getOrg().getId()))));
-            will(returnValue(Optional.of(mockResult)));
-            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
-                    with(equal("/var/lib/Kiwi/build137/images/" +
-                            "POS_Image_JeOS7.x86_64-7.0.0-build129.spdx.json")),
-                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
-                            user.getOrg().getId()))));
-            will(returnValue(Optional.of(mockResult)));
-            allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format(
-                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
-                                    "-build129.tar.xz",
-                            user.getOrg().getId())))));
-            will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format(
-                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/" +
-                                    "POS_Image_JeOS7.x86_64-7.0.0-build129.spdx.json",
-                            user.getOrg().getId())))));
-            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)), with(any(String.class)),
+                    with(any(String.class)));
+            will(writeCollectedFile());
+            allowing(saltServiceMock).removeFile(with(any(Path.class)));
+            will(deleteCollectedFile());
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
         }});
@@ -2047,20 +2013,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("POS_Image_JeOS7", info.getName());
             assertEquals("7.0.0", info.getVersion());
             assertEquals(1, info.getRevisionNumber());
-            assertNotNull(info.getChecksum());
-            assertEquals("7057ea9a15784f469e03f2de045d3c73",
-                    info.getChecksum().getChecksum());
-            ImageFile file = info.getImageFiles().stream()
-                    .filter(f -> f.getType().equals("bundle")).findFirst().get();
-            assertEquals("93321bc25fe417787f311cdcfa67dfde470e2a1e7481d4c5f8e55a6684576029",
+            assertNull(info.getChecksum());
+            // only the bundle is collected, its .sha256 file is filtered out
+            assertEquals(1, info.getImageFiles().size());
+            ImageFile file = info.getImageFiles().iterator().next();
+            assertEquals("POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz", file.getFile());
+            assertEquals("image", file.getType());
+            assertEquals(DigestUtils.sha256Hex("POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz"),
                     file.getChecksum().getChecksum());
-            assertEquals("POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz",
-                    file.getFile());
-            file = info.getImageFiles().stream().filter(f -> f.getType().equals("sbom")).findFirst().get();
-            assertEquals("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-                    file.getChecksum().getChecksum());
-            assertEquals("POS_Image_JeOS7-7.0.0-1/" +
-                    "POS_Image_JeOS7.x86_64-7.0.0-build129.spdx.json", file.getFile());
         });
         ImageInfoFactory.delete(image, saltServiceMock);
         TestUtils.flushSession();
@@ -2078,14 +2038,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
                     with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
-            allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/image", user.getOrg().getId())))));
-            will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/kernel", user.getOrg().getId())))));
-            will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/initrd", user.getOrg().getId())))));
+            allowing(saltServiceMock).removeFile(with(any(Path.class)));
             will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
@@ -2095,9 +2048,18 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
-        ImageInfo image = doTestKiwiImageInspect(server, profile, "image.inspect.kiwi.json", info -> {
+        ImageInfo image = doTestKiwiImageInspect(server, profile, "image.inspect.kiwi.json", info -> { }, info -> {
             assertNotNull(info.getInspectAction().getId());
             assertEquals(286, info.getPackages().size());
+
+            // the inspection determines the type of the collected files
+            Map<String, String> types = info.getImageFiles().stream()
+                    .collect(Collectors.toMap(f -> Path.of(f.getFile()).getFileName().toString(),
+                            ImageFile::getType));
+            assertEquals(Map.of(
+                    "POS_Image_JeOS6.x86_64-6.0.0", "image",
+                    "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default", "kernel",
+                    "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz", "initrd"), types);
 
             Pillar pillar = info.getPillar();
 
@@ -2154,8 +2116,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
-                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/",
-                            user.getOrg().getId()))));
+                    with(equal(OSImageStoreUtils.getOSImageStorePathForOrg(user.getOrg()) +
+                            "POS_Image_JeOS6-6.0.0-0/")));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
@@ -2165,7 +2127,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
 
-        doTestKiwiImageInspect(server, profile, "image.inspect.kiwi_compressed.json", (info) -> {
+        doTestKiwiImageInspect(server, profile, "image.inspect.kiwi_compressed.json", info -> { }, (info) -> {
             assertNotNull(info.getInspectAction().getId());
             assertEquals(286, info.getPackages().size());
 
@@ -2193,6 +2155,236 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("09bb15011453c7a50cfa5bdc0359fb17",
                         images.get("POS_Image_JeOS6").get("6.0.0-1").get("compressed_hash"));
         });
+    }
+
+    @Test
+    public void testKiwiImageInspectChecksumMismatch() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
+        }});
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+        // the stored file differs from the file inspected on the minion
+        doTestKiwiImageInspect(server, profile, "image.inspect.kiwi.json",
+                info -> info.getImageFiles().stream()
+                        .filter(f -> f.getFile().endsWith(".gz"))
+                        .forEach(f -> f.setChecksum(ChecksumFactory.safeCreate(DigestUtils.sha256Hex("corrupted"),
+                                "sha256"))),
+                info -> {
+                    ServerAction serverAction = info.getInspectAction().getServerActions().iterator().next();
+                    assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
+                    assertTrue(serverAction.getResultMsg().contains("initrd-netboot-suse-SLES12.x86_64-2.1.1.gz"));
+                    assertFalse(serverAction.getResultMsg().contains("kernel"));
+                    assertTrue(info.getPackages().isEmpty());
+                    assertNull(info.getPillar());
+                    // no re-tagging for failed validation
+                    assertTrue(info.getImageFiles().stream().allMatch(f -> "image".equals(f.getType())));
+                });
+    }
+
+    @Test
+    public void testKiwiImageInspectSelectsInspectedImageFile() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
+        }});
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+        doTestKiwiImageInspect(server, profile, "image.inspect.kiwi_compressed.json", info -> {
+            info.setChecksum(null);
+            // another image artefact with a different checksum was collected as well: the uncompressed
+            // POS_Image_JeOS6.x86_64-6.0.0.gz next to the inspected POS_Image_JeOS6.x86_64-6.0.0
+            String decoy = "POS_Image_JeOS6-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0.gz";
+            ImageTestUtils.createImageFile(info, decoy, "image");
+            info.getImageFiles().stream()
+                    .filter(f -> f.getFile().equals(decoy))
+                    .forEach(f -> f.setChecksum(ChecksumFactory.safeCreate(
+                            DigestUtils.sha256Hex(f.getFileName()), "sha256")));
+        }, info -> {
+            Pillar pillar = user.getOrg().getPillars().stream()
+                .filter(item -> ("Image" + info.getId()).equals(item.getCategory()))
+                .findFirst()
+                .get();
+
+            Map<String, Object> map = pillar.getPillar();
+
+            Map<String, Map<String, Map<String, Object>>> images =
+                        (Map<String, Map<String, Map<String, Object>>>) map.get("images");
+            Map<String, Object> details = images.get("POS_Image_JeOS6").get("6.0.0-1");
+            // the pillar must describe the inspected image file, not the other collected artefact
+            assertEquals("https://ftp/saltboot/image/POS_Image_JeOS6.x86_64-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0",
+                        details.get("url"));
+            Map<String, Object> sync = (Map<String, Object>) details.get("sync");
+            assertTrue(((String) sync.get("url"))
+                        .endsWith("/POS_Image_JeOS6-6.0.0-1/POS_Image_JeOS6.x86_64-6.0.0"));
+            assertEquals(
+                    info.getImageFiles().stream()
+                            .filter(f -> f.getFileName().equals("POS_Image_JeOS6.x86_64-6.0.0"))
+                            .findFirst().get().getChecksum().getChecksum(),
+                    info.getChecksum().getChecksum());
+        });
+    }
+
+    @Test
+    public void testKiwiImageInspectWithoutCollectedImageFile() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
+        }});
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+        // schedule the build and collect only the boot image artefacts, leaving out the inspected image
+        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), null, profile, new Date(), user);
+        ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
+        buildAction = TestUtils.reload(buildAction);
+        ImageInfo info = ImageInfoFactory.lookupByBuildAction(buildAction).orElseThrow();
+        info.setName("POS_Image_JeOS6");
+        info.setVersion("6.0.0");
+        info.setRevisionNumber(1);
+        for (String name : List.of(
+                "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default",
+                "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz")) {
+            ImageTestUtils.createImageFile(info, "POS_Image_JeOS6-6.0.0-1/" + name, "image");
+        }
+        info.getImageFiles().forEach(f -> f.setChecksum(ChecksumFactory.safeCreate(
+                DigestUtils.sha256Hex(f.getFileName()), "sha256")));
+
+        long inspectId = ImageInfoFactory.scheduleInspect(info, new Date(), user);
+        final ImageInspectAction inspectAction = (ImageInspectAction) TestUtils.reload(
+                ActionFactory.lookupById(inspectId));
+
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("image.inspect.kiwi_compressed.json", inspectId));
+        JsonElement jsonResult = event.get().getData().getResult(JsonElement.class);
+
+        // no pillar can be generated without the inspected image file
+        assertThrows(SaltbootException.class, () -> inspectAction.handleUpdateServerAction(
+                inspectAction.getServerActions().iterator().next(), jsonResult, null));
+        assertNull(info.getPillar());
+    }
+
+    @Test
+    public void testKiwiImageInspectRetaggedFilesRemainInSet() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minion.local");
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
+            allowing(saltServiceMock).removeFile(with(any(Path.class)));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            will(returnValue(Optional.empty()));
+        }});
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+
+        ActivationKey key = ImageTestUtils.createActivationKey(user);
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+
+        // schedule the build; all artefacts are collected with type "image" and get
+        // retagged to their real types (kernel, initrd) by the inspection
+        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), null, profile, new Date(), user);
+        ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
+        buildAction = TestUtils.reload(buildAction);
+        ImageInfo info = ImageInfoFactory.lookupByBuildAction(buildAction).orElseThrow();
+        info.setName("POS_Image_JeOS6");
+        info.setVersion("6.0.0");
+        info.setRevisionNumber(1);
+        for (String name : List.of("POS_Image_JeOS6.x86_64-6.0.0",
+                "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default",
+                "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz")) {
+            ImageTestUtils.createImageFile(info, "POS_Image_JeOS6-6.0.0-1/" + name, "image");
+        }
+        info.getImageFiles().forEach(f -> f.setChecksum(ChecksumFactory.safeCreate(
+                DigestUtils.sha256Hex(f.getFileName()), "sha256")));
+
+        long inspectId = ImageInfoFactory.scheduleInspect(info, new Date(), user);
+        final ImageInspectAction inspectAction = (ImageInspectAction) TestUtils.reload(
+                ActionFactory.lookupById(inspectId));
+
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("image.inspect.kiwi.json", inspectId));
+        JsonElement jsonResult = event.get().getData().getResult(JsonElement.class);
+
+        inspectAction.handleUpdateServerAction(
+                inspectAction.getServerActions().iterator().next(), jsonResult, null);
+
+        // 'type' participates in the ImageFile hash: after retagging, the elements must
+        // still be addressable and removable in the hash-backed imageFiles set
+        ImageFile initrd = info.getImageFiles().stream()
+                .filter(f -> "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz".equals(f.getFileName()))
+                .findFirst().orElseThrow();
+        ImageFile kernel = info.getImageFiles().stream()
+                .filter(f -> "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default"
+                        .equals(f.getFileName()))
+                .findFirst().orElseThrow();
+        assertEquals("initrd", initrd.getType());
+        assertEquals("kernel", kernel.getType());
+        assertTrue(info.getImageFiles().contains(initrd));
+        assertTrue(info.getImageFiles().contains(kernel));
+
+        ImageInfoFactory.deleteImageFile(initrd, saltServiceMock);
+        assertFalse(info.getImageFiles().contains(initrd));
+    }
+
+    private static org.jmock.api.Action deleteCollectedFile() {
+        return new CustomAction("delete the collected file") {
+            @Override
+            public Object invoke(Invocation invocation) throws Throwable {
+                Files.deleteIfExists((Path) invocation.getParameter(0));
+                return Optional.of(true);
+            }
+        };
+    }
+
+    private static org.jmock.api.Action writeCollectedFile() {
+        return new CustomAction("write the collected file with its name as content") {
+            @Override
+            public Object invoke(Invocation invocation) throws Throwable {
+                Path targetDir = Path.of((String) invocation.getParameter(2));
+                String filename = Path.of((String) invocation.getParameter(1)).getFileName().toString();
+                Files.createDirectories(targetDir);
+                Files.writeString(targetDir.resolve(filename), filename);
+                return Optional.of(new MgrUtilRunner.ExecResult());
+            }
+        };
     }
 
     private ImageInfo doTestKiwiImageBuild(MinionServer server, ImageProfile profile,
@@ -2227,6 +2419,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     private ImageInfo doTestKiwiImageInspect(MinionServer server, ImageProfile profile,
                                              String returnEventJson,
+                                             Consumer<ImageInfo> beforeInspect,
                                              Consumer<ImageInfo> assertions)
             throws Exception {
         // schedule the build
@@ -2242,9 +2435,16 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         imgInfoBuild.get().setVersion("6.0.0");
         imgInfoBuild.get().setRevisionNumber(1);
 
-        ImageTestUtils.createImageFile(imgInfoBuild.get(), "kernel", "kernel");
-        ImageTestUtils.createImageFile(imgInfoBuild.get(), "initrd", "initrd");
-        ImageTestUtils.createImageFile(imgInfoBuild.get(), "image", "image");
+        // collection stores the artefacts with the filetype of the matched extension,
+        // with server side calculated checksums
+        for (String name : List.of("POS_Image_JeOS6.x86_64-6.0.0",
+                "initrd-netboot-suse-SLES12.x86_64-2.1.1.kernel.4.4.126-94.22-default",
+                "initrd-netboot-suse-SLES12.x86_64-2.1.1.gz")) {
+            ImageTestUtils.createImageFile(imgInfoBuild.get(), "POS_Image_JeOS6-6.0.0-1/" + name, "image");
+        }
+        imgInfoBuild.get().getImageFiles().forEach(file -> file.setChecksum(ChecksumFactory.safeCreate(
+                DigestUtils.sha256Hex(Path.of(file.getFile()).getFileName().toString()), "sha256")));
+        beforeInspect.accept(imgInfoBuild.get());
 
         actionId = ImageInfoFactory.scheduleInspect(imgInfoBuild.get(), new Date(), user);
 

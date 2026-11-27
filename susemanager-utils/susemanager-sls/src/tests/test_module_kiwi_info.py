@@ -177,3 +177,132 @@ def test_inspect_bundles():
             assert ret is not None
             assert isinstance(ret, list)
             assert ret == expected_ret
+
+
+BASENAME = "POS_Image.x86_64-7.0.0"
+DEST = "/var/lib/Kiwi/build1/images.build"
+BUNDLE_DEST = "/var/lib/Kiwi/build1/images/"
+
+
+def _build_info(directories, existing, hash_files=None, bundle_dest=None):
+    """
+    Run build_info with the given directory listings, existing files and kiwi hash file contents
+    """
+    hash_files = hash_files or {}
+
+    def file_exists(path):
+        return path in existing or path in hash_files
+
+    salt_mocks = {
+        "file.readdir": MagicMock(side_effect=lambda path: directories[path]),
+        "file.file_exists": MagicMock(side_effect=file_exists),
+        "cp.get_file_str": MagicMock(side_effect=lambda path: hash_files[path]),
+    }
+    buildinfo = {"main": {"image.basename": BASENAME, "image.type": "pxe"}}
+    with patch.dict(kiwi_info.__salt__, salt_mocks), patch.object(
+        kiwi_info, "parse_buildinfo", return_value=buildinfo
+    ), patch.object(kiwi_info, "parse_kiwi_result", return_value={}):
+        return kiwi_info.build_info(DEST, "build1", bundle_dest)
+
+
+def test_build_info_files():
+    dest_files = [
+        ".",
+        "..",
+        BASENAME,
+        BASENAME + ".initrd.xz",
+        BASENAME + "-5.14.21-default.kernel",
+        BASENAME + ".xz",
+        BASENAME + ".md5",
+        BASENAME + ".packages",
+        BASENAME + ".sha256",
+        "kiwi.result",
+        "unrelated.xz",
+    ]
+    existing = {f"{DEST}/{f}" for f in dest_files if f not in (".", "..")}
+
+    hash_files = {f"{DEST}/{BASENAME}.sha256": "ab12 1490026496 1 90000 1\n"}
+
+    ret = _build_info({DEST: dest_files}, existing, hash_files)
+
+    assert ret["image"]["hash"] == "sha256:ab12"
+    assert ret["files"] == sorted(
+        f"{DEST}/{f}" for f in dest_files if f.startswith(BASENAME)
+    )
+    assert ret["image"]["basename"] == BASENAME
+    assert ret["image"]["type"] == "pxe"
+    assert "boot_image" not in ret
+
+
+def test_build_info_hash_of_compressed_image():
+    dest_files = [BASENAME + ".xz", BASENAME + ".md5", BASENAME + ".sha256"]
+    existing = {f"{DEST}/{f}" for f in dest_files}
+    hash_files = {
+        f"{DEST}/{BASENAME}.md5": "a64dbc025c748bde968b888db6b7b9e3 1490026496 1 90000 1\n",
+    }
+
+    ret = _build_info(
+        {DEST: dest_files}, existing - {f"{DEST}/{BASENAME}.sha256"}, hash_files
+    )
+
+    assert ret["image"]["hash"] == "md5:a64dbc025c748bde968b888db6b7b9e3"
+
+
+def test_build_info_no_hash_for_uncompressed_image():
+    dest_files = [BASENAME, BASENAME + ".md5"]
+    existing = {f"{DEST}/{f}" for f in dest_files}
+    hash_files = {
+        f"{DEST}/{BASENAME}.md5": "a64dbc025c748bde968b888db6b7b9e3 1490026496 1\n",
+    }
+
+    ret = _build_info({DEST: dest_files}, existing, hash_files)
+
+    assert "hash" not in ret["image"]
+
+
+def test_build_info_bundle_files():
+    bundle_files = [BASENAME + "-build1.tar.xz", BASENAME + "-build1.tar.xz.sha256"]
+    existing = {BUNDLE_DEST + f for f in bundle_files}
+
+    ret = _build_info(
+        {DEST: [BASENAME, BASENAME + ".packages"], BUNDLE_DEST: bundle_files},
+        existing,
+        bundle_dest=BUNDLE_DEST,
+    )
+
+    assert ret["files"] == [BUNDLE_DEST + f for f in bundle_files]
+
+
+def test_inspect_image_files_checksums():
+    existing = {
+        f"{DEST}/{BASENAME}",
+        BUNDLE_DEST + BASENAME + "-build1.tar.xz",
+    }
+    hashes = {
+        f"{DEST}/{BASENAME}": "aa",
+        BUNDLE_DEST + BASENAME + "-build1.tar.xz": "bb",
+    }
+    details = {"image": {"basename": BASENAME, "type": "pxe"}}
+    salt_mocks = {
+        "file.file_exists": MagicMock(side_effect=lambda path: path in existing),
+        "file.is_link": MagicMock(return_value=False),
+        "file.get_hash": MagicMock(side_effect=lambda path, form: hashes[path]),
+    }
+    with patch.dict(kiwi_info.__salt__, salt_mocks), patch.object(
+        kiwi_info, "image_details", return_value=details
+    ), patch.object(kiwi_info, "parse_packages", return_value=[]), patch.object(
+        kiwi_info, "inspect_boot_image", return_value={"kernel": {}, "initrd": {}}
+    ):
+        ret = kiwi_info.inspect_image(
+            DEST,
+            "build1",
+            BUNDLE_DEST,
+            files=[BASENAME, BASENAME + "-build1.tar.xz", "missing.xz"],
+        )
+
+    # files which do not exist are left out, the server treats them as missing
+    assert ret["files"] == {
+        BASENAME: "sha256:aa",
+        BASENAME + "-build1.tar.xz": "sha256:bb",
+    }
+    assert "boot_image" in ret

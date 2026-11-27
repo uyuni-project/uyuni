@@ -1,0 +1,3 @@
+- Collect all Kiwi image artefacts and validate their checksums
+- Legacy Kiwi PXE builds using the kernel naming
+  `<basename>.kernel.<version>` are no longer supported
