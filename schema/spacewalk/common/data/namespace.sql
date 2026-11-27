@@ -1253,6 +1253,12 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.contentmanagement.build_project', 'W', 'Build a Project')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.contentmanagement.clone_errata_into_hotfix_channel', 'W', 'Clone an errata into a hotfix channel, together with their packages')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.contentmanagement.clone_errata_into_hotfix_channels', 'W', 'Clone an errata into multiple hotfix channels, together with their packages')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.contentmanagement.generate_project_difference', 'W', 'Generate the difference for a CLM project.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)

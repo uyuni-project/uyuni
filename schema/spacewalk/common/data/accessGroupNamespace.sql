@@ -471,6 +471,8 @@ INSERT INTO access.accessGroupNamespace
         'api.contentmanagement.attach_filter',
         'api.contentmanagement.attach_source',
         'api.contentmanagement.build_project',
+        'api.contentmanagement.clone_errata_into_hotfix_channel',
+        'api.contentmanagement.clone_errata_into_hotfix_channels',
         'api.contentmanagement.generate_project_difference',
         'api.contentmanagement.generate_environment_difference',
         'api.contentmanagement.create_app_stream_filters',
