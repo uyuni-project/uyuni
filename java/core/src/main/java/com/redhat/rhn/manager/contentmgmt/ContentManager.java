@@ -72,13 +72,22 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.redhat.rhn.frontend.events.AnalyzeAlignTablesMsg;
+import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
+import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
+import com.redhat.rhn.manager.channel.CreateChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesManager;
+import com.redhat.rhn.manager.errata.syncwithpackages.SyncErrataWithPackagesManagerImpl;
+import com.redhat.rhn.manager.errata.syncwithpackages.dto.SyncedErratumWithPackages;
+import com.redhat.rhn.manager.user.UserManager;
 
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
@@ -88,13 +97,18 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -105,7 +119,11 @@ public class ContentManager {
 
     private static final Logger LOG = LogManager.getLogger(ContentManager.class);
     private static final String DELIMITER = "-";
+    private static final String HOTFIX_LABEL = "hotfix";
+    private static final String HOTFIX_NAME = "Hotfix";
     private ModulemdApi modulemdApi;
+    private final SyncErrataWithPackagesManager syncErrataWithPackagesManager =
+            new SyncErrataWithPackagesManagerImpl();
 
     /**
      * Initialize a new instance
@@ -390,6 +408,10 @@ public class ContentManager {
             return src;
         }
         else if (sourceType == SW_CHANNEL) {
+            if (HOTFIX_LABEL.equals(sourceLabel)) {
+                throw new ContentManagementException("Channel with label '" + HOTFIX_LABEL +
+                        "' cannot be a source, its label collides with the hotfix channels");
+            }
             Channel channel = getChannel(sourceLabel, user);
             SoftwareProjectSource newSource = new SoftwareProjectSource(project, channel);
             project.addSource(newSource, position);
@@ -650,7 +672,15 @@ public class ContentManager {
             throw new IllegalStateException("Environment " + envLabel + " must have exactly one leader channel");
         }
 
-        alignEnvironment(nextEnv, baseChannels.get(0), childChannels.stream(), emptyList(), async, user);
+        // the hotfix channel gets promoted like the other channels
+        Channel hotfixChannel = ensureHotfixTarget(env, user).getChannel();
+        Stream<Channel> childAndHotfixChannels = Stream.concat(
+                childChannels.stream().filter(c -> !c.equals(hotfixChannel)),
+                Stream.of(hotfixChannel));
+
+        alignEnvironment(nextEnv, baseChannels.get(0), childAndHotfixChannels, emptyList(), async, user);
+        // on the first promotion the hotfix channel gets cloned as a regular target, flag it
+        ensureHotfixTarget(nextEnv, user);
 
         nextEnv.setVersion(env.getVersion());
     }
@@ -695,6 +725,7 @@ public class ContentManager {
         }
 
         buildSoftwareSources(firstEnv, async, user);
+        ensureHotfixTarget(firstEnv, user);
         ContentProjectHistoryEntry entry = addHistoryEntry(message, user, project);
         firstEnv.setVersion(entry.getVersion());
     }
@@ -737,6 +768,10 @@ public class ContentManager {
             throw new ContentManagementException("Channel " + channelLabel + " does not exist");
         }
         if (!channel.isCloned()) {
+            if (isHotfixChannel(currentEnv, channel)) {
+                LOG.debug("Hotfix channel {} has no original to compare with", channelLabel);
+                return;
+            }
             throw new ContentManagementException("Channel is not a cloned channel: %s"
                     .formatted(channelLabel));
         }
@@ -776,6 +811,8 @@ public class ContentManager {
 
             List<Channel> channels = currentEnv.getTargets().stream()
                     .flatMap(tgt -> stream(tgt.asSoftwareTarget()))
+                    // the hotfix channel of the first Environment has no original to compare with
+                    .filter(tgt -> !tgt.isHotfix() || tgt.getChannel().isCloned())
                     .map(SoftwareEnvironmentTarget::getChannel).toList();
             for (Channel channel : channels) {
                 if (!channel.isCloned()) {
@@ -802,7 +839,11 @@ public class ContentManager {
      */
     public void diffEnvironmentChannel(ContentProject project, ContentEnvironment env, Channel channel,
                                         List<ContentFilter> filters) throws DependencyResolutionException {
-        if (filters == null) {
+        if (isHotfixChannel(env, channel)) {
+            // promoting copies the hotfix channel without filters
+            filters = emptyList();
+        }
+        else if (filters == null) {
             DependencyResolver resolver = new DependencyResolver(project, this.modulemdApi);
             DependencyResolutionResult result = resolver.resolveFilters(project.getActiveFilters());
             filters = result.getFilters();
@@ -980,12 +1021,20 @@ public class ContentManager {
         List<Pair<Channel, SoftwareEnvironmentTarget>> newSrcTgtPairs =
                 cloneChannelsToEnv(env, baseChannel, childChannels, user);
 
+        // the hotfix channel is not a project source, keep it below the current leader channel
+        Channel leaderChannel = newSrcTgtPairs.get(0).getRight().getChannel();
+        env.getTargets().stream()
+                .flatMap(t -> t.asSoftwareTarget().stream())
+                .filter(SoftwareEnvironmentTarget::isHotfix)
+                .forEach(tgt -> tgt.getChannel().setParentChannel(leaderChannel));
+
         // remove targets that are not needed anymore
         Set<SoftwareEnvironmentTarget> newTargets = newSrcTgtPairs.stream()
                 .map(Pair::getRight)
                 .collect(toSet());
         env.getTargets().stream()
                 .flatMap(t -> stream(t.asSoftwareTarget()))
+                .filter(tgt -> !tgt.isHotfix())
                 .filter(tgt -> !newTargets.contains(tgt))
                 .sorted((t1, t2) -> Boolean.compare(t1.getChannel().isBaseChannel(), t2.getChannel().isBaseChannel()))
                 .forEach(ContentProjectFactory::purgeTarget);
@@ -1137,6 +1186,303 @@ public class ContentManager {
         oldSuccessors.forEach(c -> c.setOriginal(targetChannel));
 
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(env, targetChannel);
+        env.addTarget(target);
+        return target;
+    }
+
+    /**
+     * List the hotfix channels an errata can be cloned into: the hotfix channels of all environments of
+     * the projects having a channel related to the errata as a source. A channel is related if it is in
+     * the same clone tree as a channel of the errata.
+     *
+     * @param advisoryName the advisory name of the errata
+     * @param user the user
+     * @return the hotfix channels accessible by the user
+     */
+    public List<Channel> listCompatibleHotfixChannels(String advisoryName, User user) {
+        Errata errata = Optional.ofNullable(ErrataFactory.lookupByAdvisoryAndOrg(advisoryName, user.getOrg()))
+                .or(() -> Optional.ofNullable(ErrataFactory.lookupByAdvisoryAndOrg(advisoryName, null)))
+                .orElseThrow(() -> new EntityNotExistsException(advisoryName));
+        return ContentProjectFactory.listHotfixChannelsRelatedToErrata(errata, user);
+    }
+
+    /**
+     * List the hotfix channels an errata can be cloned into, grouped by content project.
+     * See {@link #listCompatibleHotfixChannels(String, User)} for the channels that are considered.
+     *
+     * @param advisoryName the advisory name of the errata
+     * @param user the user
+     * @return the labels of the hotfix channels accessible by the user, by project label. The projects are
+     * sorted by label, the channels by the position of their environment in the project, from the first
+     * to the last.
+     */
+    public Map<String, List<String>> listCompatibleHotfixChannelLabelsByProject(String advisoryName, User user) {
+        Map<ContentProject, List<SoftwareEnvironmentTarget>> targetsByProject =
+                ContentProjectFactory.listEnvironmentTargetsByChannels(
+                        listCompatibleHotfixChannels(advisoryName, user)).stream()
+                        .collect(groupingBy(target -> target.getContentEnvironment().getContentProject()));
+
+        Map<String, List<String>> result = new TreeMap<>();
+        targetsByProject.forEach((project, targets) -> {
+            List<ContentEnvironment> environments = project.getEnvironmentsStream().toList();
+            result.put(project.getLabel(), targets.stream()
+                    .sorted(Comparator.comparingInt(target -> environments.indexOf(target.getContentEnvironment())))
+                    .map(target -> target.getChannel().getLabel())
+                    .toList());
+        });
+        return result;
+    }
+
+    /**
+     * Clones an erratum with its packages into a hotfix channel. See
+     * {@link #cloneIntoHotfixChannels(User, String, List)}.
+     *
+     * @param user the user
+     * @param advisoryName the advisory name, of an erratum of the user org or of a vendor erratum
+     * @param hotfixLabel the label of the hotfix channel that the user must be an administrator of
+     * @return the synchronized erratum
+     */
+    public SyncedErratumWithPackages cloneIntoHotfixChannel(User user, String advisoryName, String hotfixLabel) {
+        return cloneIntoHotfixChannels(user, advisoryName, List.of(hotfixLabel)).get(hotfixLabel);
+    }
+
+    /**
+     * Clones an erratum with its packages into hotfix channels, as
+     * {@link SyncErrataWithPackagesManager#syncByCriteria(User, String, List, boolean, boolean, boolean)} does for
+     * each of them. Every channel must be a hotfix channel compatible with the erratum (see
+     * {@link #listCompatibleHotfixChannels(String, User)}), otherwise none is changed. The other environments of
+     * the projects are not changed: promoting does that.
+     *
+     * @param user the user
+     * @param advisoryName the advisory name, of an erratum of the user org or of a vendor erratum
+     * @param hotfixLabels the labels of the hotfix channels that the user must be an administrator of
+     * @return the synchronized erratum by hotfix channel label
+     */
+    public Map<String, SyncedErratumWithPackages> cloneIntoHotfixChannels(
+            User user,
+            String advisoryName,
+            List<String> hotfixLabels
+    ) {
+        if (hotfixLabels.isEmpty()) {
+            throw new InvalidParameterException("hotfixLabels must not be empty");
+        }
+
+        // validate every hotfix channel before changing any
+        List<Channel> compatibleHotfixChannels = listCompatibleHotfixChannels(advisoryName, user);
+
+        // Later on, synchronizing will lock each channel until the transaction ends. Sorting by id makes concurrent
+        // requests lock shared channels in the same order, so they cannot deadlock on each other's channel locks.
+        Set<Channel> hotfixChannels = new TreeSet<>(Comparator.comparing(Channel::getId));
+        for (String label : hotfixLabels) {
+            Channel hotfix = ChannelFactory.lookupByLabelAndUser(label, user);
+            if (hotfix == null) {
+                throw new NoSuchChannelException(label);
+            }
+            if (!UserManager.verifyChannelAdmin(user, hotfix)) {
+                throw new PermissionCheckFailureException("User " + user.getLogin() +
+                        " does not have access to channel " + hotfix.getName());
+            }
+            if (!compatibleHotfixChannels.contains(hotfix)) {
+                throw new InvalidChannelException("Channel " + label + " is not a hotfix channel compatible with " +
+                        advisoryName);
+            }
+            hotfixChannels.add(hotfix);
+        }
+
+        // Once all channels are validated, synchronize them
+        Map<String, SyncedErratumWithPackages> synced = new LinkedHashMap<>();
+        hotfixChannels.forEach(hotfix -> synced.put(hotfix.getLabel(), syncErrataWithPackagesManager
+                .syncByCriteria(user, hotfix.getLabel(), List.of(advisoryName), true, false, true).erratas().get(0)));
+        return synced;
+    }
+
+    /**
+     * Create the missing hotfix channels in all built {@link ContentEnvironment}s.
+     * The channels are created on behalf of an active administrator of the project organization.
+     */
+    public void createMissingHotfixChannels() {
+        Map<Long, Optional<User>> orgAdmins = new HashMap<>();
+        for (ContentEnvironment env : ContentProjectFactory.listEnvironmentsWithMissingHotfixTarget()) {
+            ContentProject project = env.getContentProject();
+            Optional<User> orgAdmin = orgAdmins.computeIfAbsent(project.getOrg().getId(),
+                    orgId -> project.getOrg().getActiveOrgAdmins().stream().findFirst());
+            if (orgAdmin.isEmpty()) {
+                LOG.warn("No active administrator in organization {}, cannot create hotfix channel " +
+                        "for Environment {} of Content Project {}", project.getOrg().getId(), env.getLabel(),
+                        project.getLabel());
+                continue;
+            }
+            try {
+                // creates the missing hotfix channels of the previous Environments too
+                ensureHotfixTarget(env, orgAdmin.get());
+            }
+            catch (RuntimeException e) {
+                LOG.error("Unable to create hotfix channel for Environment {} of Content Project {}",
+                        env.getLabel(), project.getLabel(), e);
+            }
+        }
+    }
+
+    /**
+     * Ensure the {@link ContentEnvironment} has a hotfix {@link SoftwareEnvironmentTarget}.
+     *
+     * The hotfix channel is a child of the Environment's base channel. It is cloned from the previous
+     * Environment's hotfix channel, which gets created first when it is missing, or created empty if there is
+     * no built previous Environment.
+     *
+     * @param env the Environment
+     * @param user the user
+     * @return the hotfix target of the Environment
+     * @throws ContentManagementException when the Environment has no base channel, or another channel in the
+     * Environment has the label of the hotfix channel
+     */
+    public SoftwareEnvironmentTarget ensureHotfixTarget(ContentEnvironment env, User user) {
+        List<SoftwareEnvironmentTarget> swTargets = env.getTargets().stream()
+                .flatMap(t -> t.asSoftwareTarget().stream())
+                .toList();
+        Optional<SoftwareEnvironmentTarget> hotfixTarget = swTargets.stream()
+                .filter(SoftwareEnvironmentTarget::isHotfix)
+                .findFirst();
+        if (hotfixTarget.isPresent()) {
+            return hotfixTarget.get();
+        }
+
+        Channel baseChannel = findBaseChannel(env)
+                .orElseThrow(() -> new ContentManagementException("Environment " + env.getLabel() +
+                        " of Content Project " + env.getContentProject().getLabel() + " has no base channel"));
+        // an unbuilt previous Environment, e.g. a newly inserted first one, has no hotfix channel to clone
+        Optional<Channel> prevHotfixChannel = env.getPrevEnvironmentOpt()
+                .filter(prevEnv -> findBaseChannel(prevEnv).isPresent())
+                .map(prevEnv -> ensureHotfixTarget(prevEnv, user).getChannel());
+        String label = prefixString(env) + HOTFIX_LABEL;
+
+        Optional<SoftwareEnvironmentTarget> labelTarget = swTargets.stream()
+                .filter(tgt -> tgt.getChannel().getLabel().equals(label))
+                .findFirst();
+        if (labelTarget.isPresent()) {
+            SoftwareEnvironmentTarget existingTarget = labelTarget.get();
+            // promoting clones the hotfix channel as a regular target
+            boolean isPromotedHotfix = prevHotfixChannel.isPresent() &&
+                    existingTarget.getChannel().asCloned().map(ClonedChannel::getOriginal)
+                            .equals(prevHotfixChannel);
+            if (!isPromotedHotfix) {
+                throw new ContentManagementException("Channel " + label + " in Environment " + env.getLabel() +
+                        " of Content Project " + env.getContentProject().getLabel() +
+                        " collides with the hotfix channel label. Detach the source channel with label '" +
+                        HOTFIX_LABEL + "' from the project.");
+            }
+            existingTarget.setHotfix(true);
+            return existingTarget;
+        }
+
+        SoftwareEnvironmentTarget target = prevHotfixChannel
+                .map(prev -> createSoftwareTarget(prev, of(baseChannel), env, user, false))
+                .orElseGet(() -> createNewHotfixTarget(env, baseChannel, label, user));
+        target.setHotfix(true);
+        // the repodata generation of the new channel sets the target to BUILT
+        target.setStatus(EnvironmentTarget.Status.GENERATING_REPODATA);
+        return target;
+    }
+
+    private static Optional<Channel> findBaseChannel(ContentEnvironment env) {
+        return env.getTargets().stream()
+                .flatMap(t -> stream(t.asSoftwareTarget()))
+                .map(SoftwareEnvironmentTarget::getChannel)
+                .filter(Channel::isBaseChannel)
+                .findFirst();
+    }
+
+    /**
+     * Removes from the hotfix channel of the first {@link ContentEnvironment} the errata, and their packages, that
+     * the given regular target of that Environment holds after building it. Errata are matched by the erratum they
+     * were cloned from in the first place, as clones may have different advisory names. The hotfix channels of the
+     * other Environments are cleaned up when they get promoted.
+     *
+     * @param target the built target
+     * @param user the user
+     */
+    public void removeBuiltErrataFromHotfixChannel(SoftwareEnvironmentTarget target, User user) {
+        ContentEnvironment env = target.getContentEnvironment();
+        if (target.isHotfix() || env.getPrevEnvironmentOpt().isPresent()) {
+            return;
+        }
+        Optional<Channel> hotfixChannel = env.getTargets().stream()
+                .flatMap(t -> stream(t.asSoftwareTarget()))
+                .filter(SoftwareEnvironmentTarget::isHotfix)
+                .map(SoftwareEnvironmentTarget::getChannel)
+                .findFirst();
+        if (hotfixChannel.isEmpty()) {
+            return;
+        }
+        Channel hotfix = hotfixChannel.get();
+        // serialize with cloning errata into the hotfix channel, before reading its errata
+        ChannelFactory.lock(hotfix);
+
+        Set<Long> builtRootIds = target.getChannel().getErratas().stream()
+                .map(e -> getRootOriginal(e).getId())
+                .collect(toSet());
+        Map<Boolean, Set<Errata>> builtOrKept = hotfix.getErratas().stream()
+                .collect(partitioningBy(e -> builtRootIds.contains(getRootOriginal(e).getId()), toSet()));
+        Set<Errata> builtErrata = builtOrKept.get(true);
+        if (builtErrata.isEmpty()) {
+            return;
+        }
+        LOG.info("Removing {} built errata from hotfix channel {}", builtErrata.size(), hotfix.getLabel());
+        ErrataManager.removeErratumAndPackagesFromChannel(builtErrata, builtOrKept.get(false), hotfix, user);
+        // the regular channel may hold another clone of the same original: delete clones left in no channel
+        builtErrata.stream()
+                .filter(e -> e.getChannels().isEmpty())
+                .forEach(e -> ErrataManager.deleteErratum(user, e));
+
+        // the packages were removed in the database directly, prune them from the in-memory channel as well
+        HibernateFactory.getSession().flush();
+        List<Long> realIds = ChannelFactory.getPackageIds(hotfix.getId());
+        hotfix.removePackages(hotfix.getPackages().stream()
+                .filter(p -> !realIds.contains(p.getId()))
+                .collect(toSet()));
+        ChannelManager.refreshWithNewestPackages(hotfix, "java::removeBuiltErrataFromHotfixChannel");
+        // removing the errata also dropped the needed cache entries the systems of the hotfix channel get from
+        // the regular channels: recompute the cache of these systems
+        ErrataCacheManager.updateErrataAndPackageCacheForChannel(hotfix.getId());
+    }
+
+    /**
+     * Returns the erratum the given erratum was cloned from in the first place, or the erratum itself if it is not
+     * a clone.
+     *
+     * @param errata the erratum
+     * @return the root original erratum
+     */
+    private static Errata getRootOriginal(Errata errata) {
+        Errata current = HibernateFactory.unproxy(errata);
+        while (current instanceof ClonedErrata cloned && cloned.getOriginal() != null) {
+            current = HibernateFactory.unproxy(cloned.getOriginal());
+        }
+        return current;
+    }
+
+    private static boolean isHotfixChannel(ContentEnvironment env, Channel channel) {
+        return env.getTargets().stream()
+                .flatMap(t -> stream(t.asSoftwareTarget()))
+                .anyMatch(tgt -> tgt.isHotfix() && tgt.getChannel().equals(channel));
+    }
+
+    private SoftwareEnvironmentTarget createNewHotfixTarget(ContentEnvironment env, Channel baseChannel,
+            String label, User user) {
+        String name = prefixString(env) + HOTFIX_NAME;
+        CreateChannelCommand createCmd = new CreateChannelCommand();
+        createCmd.setUser(user);
+        createCmd.setLabel(label);
+        createCmd.setName(name);
+        createCmd.setSummary(name);
+        createCmd.setArchLabel(baseChannel.getChannelArch().getLabel());
+        createCmd.setChecksumLabel(baseChannel.getChecksumTypeLabel());
+        createCmd.setParentLabel(baseChannel.getLabel());
+        createCmd.setGpgCheck(baseChannel.isGPGCheck());
+        Channel channel = createCmd.create();
+        syncGpgKeyInfo(baseChannel, channel);
+
+        SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(env, channel);
         env.addTarget(target);
         return target;
     }

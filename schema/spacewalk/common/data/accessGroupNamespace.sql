@@ -412,6 +412,7 @@ INSERT INTO access.accessGroupNamespace
         'api.channel.software.list_packages_without_channel',
         'api.channel.software.clone',
         'api.channel.software.merge_errata',
+        'api.channel.software.sync_errata_with_packages',
         'api.channel.software.regenerate_needed_cache',
         'api.channel.software.regenerate_yum_cache',
         'api.channel.software.list_vendor_repo_filters',
@@ -478,7 +479,8 @@ INSERT INTO access.accessGroupNamespace
         'api.contentmanagement.create_project',
         'api.contentmanagement.detach_filter',
         'api.contentmanagement.detach_source',
-        'api.contentmanagement.list_environment_difference'
+        'api.contentmanagement.list_environment_difference',
+        'api.contentmanagement.list_compatible_hotfix_channel_labels_for_advisory',
         'api.contentmanagement.list_filter_criteria',
         'api.contentmanagement.list_filters',
         'api.contentmanagement.list_project_environments',

@@ -1,0 +1,7 @@
+- Allow cloning channels without a product on PAYG instances
+- Add a hotfix flag to software targets of content lifecycle
+  environments
+- Create missing hotfix channels of built content lifecycle
+  environments on startup
+- Create the hotfix channel when building or promoting a content
+  lifecycle environment

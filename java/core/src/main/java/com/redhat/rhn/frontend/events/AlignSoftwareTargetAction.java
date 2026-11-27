@@ -69,6 +69,7 @@ public class AlignSoftwareTargetAction implements MessageAction {
             LOG.info("Asynchronously aligning: {}", msg);
             Instant start = Instant.now();
             contentManager.alignEnvironmentTargetSync(filters, sourceChannel, targetChannel, msg.getUser());
+            contentManager.removeBuiltErrataFromHotfixChannel(target, msg.getUser());
             target.setStatus(Status.GENERATING_REPODATA);
             LOG.info("Finished aligning {} in {}", msg, Duration.between(start, Instant.now()));
         }

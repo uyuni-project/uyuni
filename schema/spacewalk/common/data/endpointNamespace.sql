@@ -6518,6 +6518,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.channel.software.sync_errata_with_packages' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/channel/software/syncErrataWithPackages' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.channel.software.sync_repo' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/channel/software/syncRepo' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
@@ -6705,6 +6710,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.contentmanagement.detach_source' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/contentmanagement/detachSource' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.contentmanagement.list_compatible_hotfix_channel_labels_for_advisory' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/contentmanagement/listCompatibleHotfixChannelLabelsForAdvisory' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep

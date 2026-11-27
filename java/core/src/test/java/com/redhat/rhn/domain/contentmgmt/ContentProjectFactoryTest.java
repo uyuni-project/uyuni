@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -54,6 +55,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import jakarta.persistence.PersistenceException;
 
 /**
  * Tests for {@link com.redhat.rhn.domain.contentmgmt.ContentProjectFactory}
@@ -554,6 +557,56 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(target);
 
         assertEquals(target, ContentProjectFactory.lookupSwEnvironmentTargetById(target.getId()).get());
+    }
+
+    /**
+     * Tests persisting the hotfix flag of {@link SoftwareEnvironmentTarget}
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testSwEnvironmentTargetHotfixFlag() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
+        ContentProjectFactory.save(envdev);
+        cp.setFirstEnvironment(envdev);
+
+        SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev,
+                ChannelTestUtils.createBaseChannel(user));
+        ContentProjectFactory.save(target);
+        SoftwareEnvironmentTarget hotfixTarget = new SoftwareEnvironmentTarget(envdev,
+                ChannelTestUtils.createBaseChannel(user));
+        hotfixTarget.setHotfix(true);
+        ContentProjectFactory.save(hotfixTarget);
+        TestUtils.flushAndClearSession();
+
+        assertFalse(ContentProjectFactory.lookupSwEnvironmentTargetById(target.getId()).get().isHotfix());
+        assertTrue(ContentProjectFactory.lookupSwEnvironmentTargetById(hotfixTarget.getId()).get().isHotfix());
+    }
+
+    /**
+     * Test that a {@link Channel} can be the target of only one {@link ContentEnvironment}
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testSwEnvironmentTargetChannelIsUnique() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
+        ContentProjectFactory.save(envdev);
+        cp.setFirstEnvironment(envdev);
+        ContentEnvironment envtest = new ContentEnvironment("test", "Test", null, cp);
+        ContentProjectFactory.save(envtest);
+        ContentProjectFactory.insertEnvironment(envtest, of(envdev));
+
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        ContentProjectFactory.save(new SoftwareEnvironmentTarget(envdev, channel));
+        TestUtils.flushSession();
+
+        ContentProjectFactory.save(new SoftwareEnvironmentTarget(envtest, channel));
+        assertThrows(PersistenceException.class, TestUtils::flushSession);
     }
 
     /**
