@@ -41,9 +41,8 @@ class RemoteNode
       @has_kubectl = ssh('which kubectl', host: @target).last.zero?
     end
 
+    clear_container_motd(uyuni_not_installed)
     if @host == 'server' && !@has_kubectl && !uyuni_not_installed
-      # Remove /etc/motd inside the container, or any output from run will contain the content of /etc/motd
-      run('rm -f /etc/motd && touch /etc/motd')
       out, code = run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
     else
       out, _err, code = ssh('hostname -f', host: @target)
@@ -378,6 +377,14 @@ class RemoteNode
   def clear_motd
     ssh('rm -f /etc/motd && touch /etc/motd', host: @target)
     ssh_command('rm -f /etc/motd && touch /etc/motd', @target, port: HOST_SSH_PORT) if @port != HOST_SSH_PORT
+  end
+
+  # Empties /etc/motd inside the server container, or any output from run will contain the content of /etc/motd.
+  # Do it on Kubernetes too: the banner also breaks git over SSH into the container (git_pillar).
+  def clear_container_motd(uyuni_not_installed)
+    return if @host != 'server' || uyuni_not_installed
+
+    run('rm -f /etc/motd && touch /etc/motd')
   end
 
   # Obtain the Public IP for a node
