@@ -20,9 +20,12 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchUserException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.user.UserManager;
+
+import java.util.Optional;
 
 /**
  * XmlRpcUserHelper
@@ -56,7 +59,8 @@ public class XmlRpcUserHelper {
     public User lookupTargetUser(User loggedInUser, String login)
         throws FaultException {
         try {
-            return UserManager.lookupUser(loggedInUser, login);
+            return Optional.ofNullable(UserManager.lookupUser(loggedInUser, login))
+                    .orElseThrow(() -> UserFactory.getNoUserException(login));
         }
         catch (PermissionException e) {
             throw new PermissionCheckFailureException();
