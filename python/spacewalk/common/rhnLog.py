@@ -44,32 +44,19 @@ from spacewalk.common.rhnConfig import cfg_component
 import logging
 from uyuni.common.fileutils import getUidGid
 
-
 LOG = None
 
 # helper function to format the current time in the log format
 
 
 def log_time():
-    if time.daylight:
-        # altzone provides the DST-corrected time
-        tz_offset = time.altzone
-    else:
-        # DST is not in effect
-        tz_offset = time.timezone
-    # Unfortunately, -3601 / 3600 == 2
-    # Also, tz_offset's sign is reverted: it is positive west of GMT
-    if tz_offset < 0:
-        sign = "+"
-    else:
-        sign = "-"
-    hours, secs = divmod(abs(tz_offset), 3600)
-    mins = secs / 60
-
+    now = time.localtime(time.time())
+    # tm_gmtoff is the offset in effect at this time, so it follows DST changes
+    sign = "+" if now.tm_gmtoff >= 0 else "-"
+    hours, secs = divmod(abs(now.tm_gmtoff), 3600)
     # pylint: disable-next=consider-using-f-string
-    tz_offset_string = " %s%02d:%02d" % (sign, hours, mins)
-    t = time.strftime("%Y/%m/%d %H:%M:%S", time.localtime(time.time()))
-    return t + tz_offset_string
+    tz_offset_string = " %s%02d:%02d" % (sign, hours, secs // 60)
+    return time.strftime("%Y/%m/%d %H:%M:%S", now) + tz_offset_string
 
 
 # function for setting the close-on-exec flag

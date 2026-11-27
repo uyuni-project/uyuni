@@ -1,0 +1,2 @@
+- Show the correct UTC offset in log timestamps outside daylight
+  saving time (gh#uyuni-project/uyuni#12809)
