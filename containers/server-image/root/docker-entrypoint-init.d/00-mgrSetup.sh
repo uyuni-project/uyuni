@@ -5,6 +5,8 @@
 
 . /usr/lib/entrypoint-lib.sh
 
+set -eu
+
 # Abort early as with configured system we might not have mandatory variables that are checked later
 check_current_installation
 
@@ -59,7 +61,194 @@ run_sql() {
         PORT="${REPORT_DB_PORT}"
     fi
 
-    PGPASSWORD="${PASS}" psql -U "${USER}" -h "${HOST}" -p "${PORT}" -d "${DBNAME}" -v ON_STOP_ERROR=ON "${@}" > /dev/null 2>&1
+    # If -t (tuples only) is requested to capture stdout in subshells, only suppress stderr.
+    # Otherwise, suppress stdout to keep container setup logs clean, but keep
+    # stderr so a failing psql aborts the setup with a visible error message.
+    if [[ " ${*} " =~ " -t " ]]; then
+        PGPASSWORD="${PASS}" psql -U "${USER}" -h "${HOST}" -p "${PORT}" -d "${DBNAME}" -v ON_ERROR_STOP=ON "${@}" 2> /dev/null
+    else
+        PGPASSWORD="${PASS}" psql -U "${USER}" -h "${HOST}" -p "${PORT}" -d "${DBNAME}" -v ON_ERROR_STOP=ON "${@}" > /dev/null
+    fi
+}
+
+# Helper to generate high-entropy sha256 secrets
+generate_secret() {
+    head -c 512 /dev/urandom | sha256sum | cut -d' ' -f1
+}
+
+# Helper to format a value as a single-quoted SQL literal, doubling embedded
+# single quotes so the statement cannot be broken or injected.
+sql_quote() {
+    printf "'%s'" "${1//\'/\'\'}"
+}
+
+# Helper to write configuration settings to both main and prep rhn.conf
+update_rhn_conf() {
+    local key="${1}"
+    local value="${2}"
+    local files=("/etc/rhn/rhn.conf" "/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf")
+
+    # Escape special characters for sed replacement to prevent syntax issues:
+    # 1. Backslashes: \ -> \\
+    local escaped_val="${value//\\/\\\\}"
+    # 2. Ampersands:  & -> \&
+    escaped_val="${escaped_val//&/\\&}"
+    # 3. Pipe (our chosen sed delimiter): | -> \|
+    escaped_val="${escaped_val//|/\\|}"
+
+    for file in "${files[@]}"; do
+        mkdir -p "$(dirname "${file}")"
+        touch "${file}"
+
+        if grep -q "^[[:space:]]*${key}[[:space:]]*=" "${file}"; then
+            # Replace the existing key line (matching optional spaces around '=')
+            sed -i "s|^[[:space:]]*${key}[[:space:]]*=.*|${key} = ${escaped_val}|" "${file}"
+        else
+            # Append the key-value pair if it doesn't exist
+            echo "${key} = ${value}" >> "${file}"
+        fi
+    done
+}
+
+initialize_rhn_conf() {
+    local files=("/etc/rhn/rhn.conf" "/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf")
+
+    for file in "${files[@]}"; do
+        if [ ! -s "${file}" ]; then
+            echo "Initializing ${file}"
+            mkdir -p "$(dirname "${file}")"
+            cat > "${file}" << 'EOF'
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
+######################################################################
+# Uyuni/Spacewalk Main Configuration File
+######################################################################
+
+# Traceback Email Address for notifications
+traceback_mail =
+
+# Storage Mount Points
+mount_point = /var/spacewalk
+kickstart_mount_point = /var/spacewalk
+repomd_cache_mount_point = /var/cache
+
+# Database Configuration
+db_backend = postgresql
+db_host =
+db_port =
+db_name =
+db_user =
+db_password =
+db_ssl_enabled =
+db_sslrootcert =
+
+# Report Database Configuration
+report_db_backend = postgresql
+report_db_host =
+report_db_port =
+report_db_name =
+report_db_user =
+report_db_password =
+report_db_ssl_enabled =
+report_db_sslrootcert =
+
+# Web / Satellite configuration
+web.satellite = 1
+web.satellite_install =
+
+# Session & High-Entropy Secrets
+web.session_swap_secret_1 =
+web.session_swap_secret_2 =
+web.session_swap_secret_3 =
+web.session_swap_secret_4 =
+
+session_secret_1 =
+session_secret_2 =
+session_secret_3 =
+session_secret_4 =
+
+server.secret_key =
+
+# Security Settings
+web.restrict_mail_domains =
+
+# System Snapshots Enabled
+enable_snapshots = 1
+
+# Cobbler Integration
+cobbler.host = localhost
+
+# Hostnames
+hostname =
+java.hostname =
+
+# Mail Configuration
+default_mail_from =
+
+# TFTP Configuration
+enable_tftp =
+
+# Product Information
+product_name =
+EOF
+        fi
+    done
+
+    update_rhn_conf "db_backend" "postgresql"
+    update_rhn_conf "db_host" "${MANAGER_DB_HOST}"
+    update_rhn_conf "db_port" "${MANAGER_DB_PORT}"
+    update_rhn_conf "db_name" "${MANAGER_DB_NAME}"
+    update_rhn_conf "db_user" "${MANAGER_USER}"
+    update_rhn_conf "db_password" "${MANAGER_PASS}"
+    update_rhn_conf "db_ssl_enabled" "${MANAGER_DB_SSL_ENABLED}"
+    update_rhn_conf "db_sslrootcert" "${MANAGER_DB_CA_CERT}"
+
+    update_rhn_conf "report_db_backend" "postgresql"
+    update_rhn_conf "report_db_host" "${REPORT_DB_HOST}"
+    update_rhn_conf "report_db_port" "${REPORT_DB_PORT}"
+    update_rhn_conf "report_db_name" "${REPORT_DB_NAME}"
+    update_rhn_conf "report_db_user" "${REPORT_DB_USER}"
+    update_rhn_conf "report_db_password" "${REPORT_DB_PASS}"
+    update_rhn_conf "report_db_ssl_enabled" "${REPORT_DB_SSL_ENABLED}"
+    update_rhn_conf "report_db_sslrootcert" "${REPORT_DB_CA_CERT}"
+
+    update_rhn_conf "traceback_mail" "${MANAGER_ADMIN_EMAIL}"
+    update_rhn_conf "java.hostname" "${UYUNI_HOSTNAME}"
+    update_rhn_conf "hostname" "${UYUNI_HOSTNAME}"
+    update_rhn_conf "enable_tftp" "${MANAGER_ENABLE_TFTP}"
+    update_rhn_conf "product_name" "${PRODUCT_NAME}"
+
+    update_rhn_conf "mount_point" "/var/spacewalk"
+    update_rhn_conf "kickstart_mount_point" "/var/spacewalk"
+    update_rhn_conf "repomd_cache_mount_point" "/var/cache"
+    update_rhn_conf "web.satellite" "1"
+    update_rhn_conf "web.satellite_install" ""
+    update_rhn_conf "web.restrict_mail_domains" ""
+    update_rhn_conf "enable_snapshots" "1"
+
+    # Generate high-entropy secrets
+    for i in {1..4}; do
+        update_rhn_conf "session_secret_${i}" "$(generate_secret)"
+        update_rhn_conf "web.session_swap_secret_${i}" "$(generate_secret)"
+    done
+    update_rhn_conf "server.secret_key" "$(generate_secret)"
+
+    # Cobbler host configuration
+    update_rhn_conf "cobbler.host" "localhost"
+
+    # Container-specific OCI SSL override
+    if [ "${container:="unknown"}" = "oci" ]; then
+        update_rhn_conf "server.no_ssl" "1"
+    fi
+
+    # Mail From
+    if [ -z "${MANAGER_MAIL_FROM}" ]; then
+        MANAGER_MAIL_FROM="${PRODUCT_NAME} (${UYUNI_HOSTNAME}) <root@${UYUNI_HOSTNAME}>"
+    fi
+    update_rhn_conf "default_mail_from" "${MANAGER_MAIL_FROM}"
+
 }
 
 setup_reportdb() {
@@ -69,30 +258,6 @@ setup_reportdb() {
             echo "DROP SCHEMA IF EXISTS ${schema} CASCADE;" | run_sql "${REPORT_DB_NAME}"
         done
     fi
-
-    # Some tools in the setup call spacewalk-sql and require the db to be defined in rhn.conf at an early stage
-    cat >> /etc/rhn/rhn.conf << EOF
-report_db_backend=postgresql
-report_db_host=${REPORT_DB_HOST}
-report_db_port=${REPORT_DB_PORT}
-report_db_name=${REPORT_DB_NAME}
-report_db_user=${REPORT_DB_USER}
-report_db_password=${REPORT_DB_PASS}
-report_db_ssl_enabled=${REPORT_DB_SSL_ENABLED}
-report_db_sslrootcert=${REPORT_DB_CA_CERT}
-EOF
-
-    # Can go away with ISSv1
-    cat >> /var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf << EOF
-report_db_backend=postgresql
-report_db_host=${REPORT_DB_HOST}
-report_db_port=${REPORT_DB_PORT}
-report_db_name=${REPORT_DB_NAME}
-report_db_user=${REPORT_DB_USER}
-report_db_password=${REPORT_DB_PASS}
-report_db_ssl_enabled=${REPORT_DB_SSL_ENABLED}
-report_db_sslrootcert=${REPORT_DB_CA_CERT}
-EOF
 
     echo "Populating the report database"
     run_sql "${REPORT_DB_NAME}" < /usr/share/susemanager/db/reportdb/main.sql
@@ -109,82 +274,76 @@ setup_db_postgres() {
 
     echo "Populating the database"
     PGPASSWORD="${MANAGER_PASS}" PGOPTIONS='--client-min-messages=error -c standard_conforming_strings=on' \
-        psql -U "${MANAGER_USER}" -p "${MANAGER_DB_PORT}" -d "${MANAGER_DB_NAME}" -h "${MANAGER_DB_HOST}" -v ON_STOP_ERROR=ON -q -b < /usr/share/susemanager/db/postgres/main.sql > /dev/null 2>&1
-
-    # Some tools in the setup call spacewalk-sql and require the db to be defined in rhn.conf at an early stage
-    cat >> /etc/rhn/rhn.conf << EOF 2> /dev/null
-db_backend=postgresql
-db_host=${MANAGER_DB_HOST}
-db_port=${MANAGER_DB_PORT}
-db_name=${MANAGER_DB_NAME}
-db_user=${MANAGER_USER}
-db_password=${MANAGER_PASS}
-db_ssl_enabled=${MANAGER_DB_SSL_ENABLED}
-EOF
-
+        psql -U "${MANAGER_USER}" -p "${MANAGER_DB_PORT}" -d "${MANAGER_DB_NAME}" -h "${MANAGER_DB_HOST}" -v ON_ERROR_STOP=ON -q -b < /usr/share/susemanager/db/postgres/main.sql > /dev/null
 }
 
 setup_spacewalk() {
     # Deploy the SSL certificates
+    local no_ssl=""
     if [ "${container:="unknown"}" = "oci" ]; then
         /usr/bin/spacewalk-setup-httpd --no-ssl
+        no_ssl="y"
     else
         /usr/bin/spacewalk-setup-httpd
     fi
     /usr/sbin/update-ca-certificates
 
-    echo "admin-email = ${MANAGER_ADMIN_EMAIL}
-ssl-config-sslvhost = Y
-db-backend=postgresql
-db-user=${MANAGER_USER}
-db-password=${MANAGER_PASS}
-db-name=${MANAGER_DB_NAME}
-db-host=${MANAGER_DB_HOST}
-db-port=${MANAGER_DB_PORT}
-db-ssl-enabled=${MANAGER_DB_SSL_ENABLED}
-db-ca-cert=${MANAGER_DB_CA_CERT}
-report-db-ca-cert=${REPORT_DB_CA_CERT}
-externaldb-provider=${EXTERNALDB_PROVIDER}
-report-db-backend=postgresql
-report-db-name=${REPORT_DB_NAME}
-report-db-host=${REPORT_DB_HOST}
-report-db-port=${REPORT_DB_PORT}
-report-db-user=${REPORT_DB_USER}
-report-db-password=${REPORT_DB_PASS}
-report-db-ssl-enabled=${REPORT_DB_SSL_ENABLED}
-enable-tftp=${MANAGER_ENABLE_TFTP}
-product_name=${PRODUCT_NAME}
-hostname=${UYUNI_HOSTNAME}
-" > /root/spacewalk-answers
-
-    if [ -n "${SCC_USER}" ]; then
-        echo "scc-user = ${SCC_USER}
-scc-pass = ${SCC_PASS}
-" >> /root/spacewalk-answers
-        PARAM_CC="--scc"
+    # Validate hostname is lowercase
+    if [ "${UYUNI_HOSTNAME}" != "$(echo "${UYUNI_HOSTNAME}" | tr '[:upper:]' '[:lower:]')" ]; then
+        echo "ERROR: Hostname '${UYUNI_HOSTNAME}' contains uppercase letters." >&2
+        echo "It can cause Proxy communications to fail." >&2
+        exit 4
     fi
 
-    if [ "${container}" = "oci" ]; then
-        echo "no-ssl = Y
-" >> /root/spacewalk-answers
+    echo "Configuring Spacewalk..."
+
+    # Set up organization credentials if scc is requested
+    if [ -n "${SCC_USER:-}" ] && [ -n "${SCC_PASS:-}" ]; then
+        echo "Setting up SUSE Customer Center credentials..."
+        local scc_pass_enc
+        scc_pass_enc=$(echo -n "${SCC_PASS}" | base64 | tr -d '\n')
+        # The default SCC URL can be overridden in the package config defaults
+        local scc_url="https://scc.suse.com"
+        local scc_url_file="/usr/share/rhn/config-defaults/rhn_server_susemanager.conf"
+        local url_val=""
+        if [ -f "${scc_url_file}" ]; then
+            url_val=$(sed -n 's/^[[:space:]]*scc_url[[:space:]]*=[[:space:]]*"\{0,1\}\([^"]*\)"\{0,1\}[[:space:]]*$/\1/p' "${scc_url_file}" | head -n 1)
+        fi
+        if [ -n "${url_val}" ]; then
+            scc_url="${url_val}"
+        fi
+
+        # Insert credentials via database
+        local insert_query="INSERT INTO suseCredentials (id, user_id, type, username, password, url) VALUES (sequence_nextval('suse_credentials_id_seq'), NULL, 'scc', $(sql_quote "${SCC_USER}"), $(sql_quote "${scc_pass_enc}"), $(sql_quote "${scc_url}"));"
+        echo "${insert_query}" | run_sql "${MANAGER_DB_NAME}"
+    fi
+
+    # Update template hostname in database
+    local chk_query="SELECT value FROM rhnTemplateString WHERE label = 'hostname';"
+    local chk_val
+    chk_val=$(echo "${chk_query}" | run_sql "${MANAGER_DB_NAME}" -t || true)
+    if [ -z "${chk_val}" ]; then
+        local ins_query="INSERT INTO rhnTemplateString (id, category_id, label, value, description) VALUES (sequence_nextval('rhn_template_str_id_seq'), (SELECT id FROM rhnTemplateCategory WHERE label = 'org_strings'), 'hostname', $(sql_quote "${UYUNI_HOSTNAME}"), 'Host name for the Red Hat Satellite');"
+        echo "${ins_query}" | run_sql "${MANAGER_DB_NAME}"
+    fi
+
+    # Configure Cobbler
+    /usr/bin/spacewalk-setup-cobbler --apache2-config-directory "/etc/apache2/conf.d" -f "${UYUNI_HOSTNAME}"
+
+    # Check if cobblerd is running
+    if pgrep -f cobblerd > /dev/null; then
+        cobbler mkloaders
+        cobbler sync
+    fi
+
+    if [ "${no_ssl}" = "y" ]; then
         sed '/ssl/Id' -i /etc/apache2/conf.d/zz-spacewalk-www.conf
-        echo "server.no_ssl = 1" >> /etc/rhn/rhn.conf
         sed '/<IfDefine SSL/,/<\/IfDefine SSL/d' -i /etc/apache2/listen.conf
     fi
 
-    /usr/bin/spacewalk-setup --clear-db ${PARAM_CC:-} --answer-file=/root/spacewalk-answers
-    SWRET="${?}"
-    # rm /root/spacewalk-answers
-    if [ "${SWRET}" != "0" ]; then
-        echo "ERROR: spacewalk-setup failed" >&2
-        exit 1
-    fi
-
-    if [ -z "${MANAGER_MAIL_FROM}" ]; then
-        MANAGER_MAIL_FROM="${PRODUCT_NAME} (${UYUNI_HOSTNAME}) <root@${UYUNI_HOSTNAME}>"
-    fi
-    if ! grep -E "^(web\.)?default_mail_from" /etc/rhn/rhn.conf > /dev/null; then
-        echo "default_mail_from = ${MANAGER_MAIL_FROM}" >> /etc/rhn/rhn.conf
+    # Enable Spacewalk services if command is available
+    if [ -x /usr/sbin/spacewalk-service ]; then
+        /usr/sbin/spacewalk-service --level 35 enable || echo "Warning: spacewalk-service enable failed"
     fi
 
     # The CA needs to be added to the database for Kickstart use.
@@ -267,6 +426,7 @@ setup_product_name() {
 }
 
 setup_product_name
+initialize_rhn_conf
 setup_db_postgres
 setup_reportdb
 setup_spacewalk

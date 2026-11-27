@@ -74,7 +74,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
 
         List<String> argList = new LinkedList<>();
         argList.add("/usr/bin/sudo");
-        argList.add("/usr/bin/rhn-config-satellite.pl");
+        argList.add("/usr/bin/rhn-config-satellite");
         argList.add("--target=" + configFilePath);
         for (Map.Entry<String, String> entry : optionMap.entrySet()) {
             // We don't want to put the actual string 'null' in rhn.conf.  See bz: 189600
@@ -88,9 +88,6 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
             somethingChanged = true;
         }
 
-        argList.add("2>&1");
-        argList.add(">");
-        argList.add("/dev/null");
         String[] returnStringArray = argList.toArray(new String[0]);
         if (logger.isDebugEnabled()) {
             logger.debug("getCommandArguments(String, Iterator) - end - return value={}", (Object) returnStringArray);
