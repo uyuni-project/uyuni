@@ -210,6 +210,12 @@ public class Config {
             return null;
         }
 
+        // environment variables take precedence.
+        String result = System.getenv(value);
+        if (result != null) {
+            return result;
+        }
+
         int lastDot = value.lastIndexOf('.');
         String ns = "";
         String property = value;
@@ -221,7 +227,7 @@ public class Config {
             LOGGER.debug("getString() -     getString() -> Getting property: {}",
                     StringUtil.sanitizeLogInput(property));
         }
-        String result = configValues.getProperty(property);
+        result = configValues.getProperty(property);
         LOGGER.debug("getString() -     getString() -> result: {}", result);
         if (result == null) {
             if (!ns.isEmpty()) {
