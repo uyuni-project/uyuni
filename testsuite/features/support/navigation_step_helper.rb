@@ -112,6 +112,19 @@ def follow_left_menu(menu_path)
   find_and_wait_click(:xpath, target_link_path).click
 end
 
+# Navigates to a URL with retry if Playwright aborts the navigation (e.g. net::ERR_ABORTED).
+def visit_with_retry(url)
+  visit(url)
+rescue Playwright::Error => e
+  raise unless e.message.include?('net::ERR_ABORTED')
+
+  # net::ERR_ABORTED can fire when previous in-flight navigations or SUMA's SSE/streaming
+  # connections collide with a new page navigation. Wait briefly for connections to settle and retry once.
+  warn "Navigation to #{url} aborted (#{e.message.lines.first.chomp}) — retrying once"
+  sleep 1
+  visit(url)
+end
+
 # Logs the web UI in as the given user, on the server the browser currently points at.
 def login_as_user(user, passwd)
   # Record the identity for whichever host the web UI is currently pointed at, so

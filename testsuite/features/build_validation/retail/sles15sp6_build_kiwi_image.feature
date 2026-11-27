@@ -43,5 +43,6 @@ Feature: Build OS image for SLES 15 SP6
     Then I should see the image for "sles15sp6_terminal" is built
 
   Scenario: Check the built SLES 15 SP6 OS image
-    When I open the details page of the image for "sles15sp6_terminal"
+    When I follow the left menu "Images > Image List"
+    And I open the details page of the image for "sles15sp6_terminal"
     Then I should see a link to download the image for "sles15sp6_terminal"
