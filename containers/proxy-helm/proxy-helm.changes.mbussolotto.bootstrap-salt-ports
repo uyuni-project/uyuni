@@ -1,0 +1,3 @@
+- Refuse to change the Salt ports of an existing installation
+  unless `services.salt.allowPortsChange` is set
+- Report the Salt NodePorts of the proxy to the server
