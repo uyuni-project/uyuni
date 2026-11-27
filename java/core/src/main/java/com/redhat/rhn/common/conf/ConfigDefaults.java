@@ -618,8 +618,8 @@ public class ConfigDefaults {
      * Returns all the available page sizes.
      * Note this is only meant to check
      * if the web.page_sizes config entry is set
-     * you might want to use PageSizeDecorator.getPageSizes instead.
-     * @see com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator
+     * you might want to use PageControl.getPageSizes instead.
+     * @see com.redhat.rhn.frontend.listview.PageControl
      * for more info.
      * @return the comma separated list of page sizes or "".
      */
@@ -631,8 +631,8 @@ public class ConfigDefaults {
      * Returns the default page size config entry.
      * Note this is only meant to check
      * if the web.default_page_size config entry is set
-     * you might want to use PageSizeDecorator.getDefaultPageSize instead.
-     * @see com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator
+     * you might want to use PageControl.getDefaultPageSize instead.
+     * @see com.redhat.rhn.frontend.listview.PageControl
      * for more info.
      * @return the default page size config entry or "".
      */

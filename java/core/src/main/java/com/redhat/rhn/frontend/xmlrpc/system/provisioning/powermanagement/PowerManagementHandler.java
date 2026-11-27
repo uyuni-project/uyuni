@@ -21,7 +21,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.kickstart.PowerManagementAction;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
@@ -135,14 +134,14 @@ public class PowerManagementHandler extends BaseHandler {
         Map<String, String> result = new HashMap<>();
         List<String> types = listTypes(loggedInUser);
         if (systemRecord == null) {
-            result.put(PowerManagementAction.POWER_TYPE, types.get(0));
+            result.put(CobblerPowerSettingsUpdateCommand.POWER_TYPE, types.get(0));
         }
         else {
-            result.put(PowerManagementAction.POWER_TYPE, systemRecord.getPowerType());
-            result.put(PowerManagementAction.POWER_ADDRESS, systemRecord.getPowerAddress());
-            result.put(PowerManagementAction.POWER_USERNAME, systemRecord.getPowerUsername());
-            result.put(PowerManagementAction.POWER_PASSWORD, systemRecord.getPowerPassword());
-            result.put(PowerManagementAction.POWER_ID, systemRecord.getPowerId());
+            result.put(CobblerPowerSettingsUpdateCommand.POWER_TYPE, systemRecord.getPowerType());
+            result.put(CobblerPowerSettingsUpdateCommand.POWER_ADDRESS, systemRecord.getPowerAddress());
+            result.put(CobblerPowerSettingsUpdateCommand.POWER_USERNAME, systemRecord.getPowerUsername());
+            result.put(CobblerPowerSettingsUpdateCommand.POWER_PASSWORD, systemRecord.getPowerPassword());
+            result.put(CobblerPowerSettingsUpdateCommand.POWER_ID, systemRecord.getPowerId());
         }
         return result;
     }
@@ -171,11 +170,11 @@ public class PowerManagementHandler extends BaseHandler {
     public int setDetails(User loggedInUser, Integer sid, Map<String, String> data) {
         CobblerPowerSettingsUpdateCommand cmd = new CobblerPowerSettingsUpdateCommand(
                 loggedInUser, lookupServer(loggedInUser, sid),
-                data.get(PowerManagementAction.POWER_TYPE),
-                data.get(PowerManagementAction.POWER_ADDRESS),
-                data.get(PowerManagementAction.POWER_USERNAME),
-                data.get(PowerManagementAction.POWER_PASSWORD),
-                data.get(PowerManagementAction.POWER_ID));
+                data.get(CobblerPowerSettingsUpdateCommand.POWER_TYPE),
+                data.get(CobblerPowerSettingsUpdateCommand.POWER_ADDRESS),
+                data.get(CobblerPowerSettingsUpdateCommand.POWER_USERNAME),
+                data.get(CobblerPowerSettingsUpdateCommand.POWER_PASSWORD),
+                data.get(CobblerPowerSettingsUpdateCommand.POWER_ID));
         ValidatorError error = cmd.store();
         if (error != null) {
             throw new InvalidParameterException(error.getMessage());
@@ -210,11 +209,11 @@ public class PowerManagementHandler extends BaseHandler {
         CobblerUnregisteredPowerSettingsUpdateCommand cmd =
                 new CobblerUnregisteredPowerSettingsUpdateCommand(
                 loggedInUser, name,
-                data.get(PowerManagementAction.POWER_TYPE),
-                data.get(PowerManagementAction.POWER_ADDRESS),
-                data.get(PowerManagementAction.POWER_USERNAME),
-                data.get(PowerManagementAction.POWER_PASSWORD),
-                data.get(PowerManagementAction.POWER_ID));
+                data.get(CobblerPowerSettingsUpdateCommand.POWER_TYPE),
+                data.get(CobblerPowerSettingsUpdateCommand.POWER_ADDRESS),
+                data.get(CobblerPowerSettingsUpdateCommand.POWER_USERNAME),
+                data.get(CobblerPowerSettingsUpdateCommand.POWER_PASSWORD),
+                data.get(CobblerPowerSettingsUpdateCommand.POWER_ID));
         ValidatorError error = cmd.store();
         if (error != null) {
             throw new InvalidParameterException(error.getMessage());

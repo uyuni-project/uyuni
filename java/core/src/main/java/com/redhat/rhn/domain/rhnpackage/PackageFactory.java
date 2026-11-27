@@ -29,7 +29,6 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.BaseSearchAction;
 import com.redhat.rhn.frontend.dto.BooleanWrapper;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.manager.user.UserManager;
@@ -66,6 +65,12 @@ public class PackageFactory extends HibernateFactory {
     public static final String ARCH_TYPE_RPM = "rpm";
     public static final String ARCH_TYPE_DEB = "deb";
     public static final String ARCH_TYPE_TAR = "tar";
+
+    // Search types accepted by packageSearch
+    public static final String SEARCH_ARCHITECTURE = "architecture";
+    public static final String SEARCH_CHANNEL = "channel";
+    public static final String SEARCH_RELEVANT = "relevant";
+    public static final String SEARCH_ALL = "all";
 
     private static final Map<String, Set<String>> PACKAGE_CAPABILITY_MAP;
     static {
@@ -545,7 +550,7 @@ public class PackageFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         SelectMode m;
 
-        if (searchType.equals(BaseSearchAction.ARCHITECTURE)) {
+        if (searchType.equals(SEARCH_ARCHITECTURE)) {
             if (!(archLabels != null && !archLabels.isEmpty())) {
                 throw new MissingArchitectureException(
                         "archLabels must not be null for architecture search!");
@@ -568,7 +573,7 @@ public class PackageFactory extends HibernateFactory {
             CachedStatement cs = m.getQuery();
             cs.modifyQuery(":channel_arch_labels", archLabels, value -> value.matches("^[a-zA-Z0-9\\-_]*$"));
         }
-        else if (searchType.equals(BaseSearchAction.RELEVANT)) {
+        else if (searchType.equals(SEARCH_RELEVANT)) {
             if (relevantUserId == null) {
                 throw new IllegalArgumentException(
                         "relevantUserId must not be null for relevant search!");
@@ -576,7 +581,7 @@ public class PackageFactory extends HibernateFactory {
             params.put("uid", relevantUserId);
             m = ModeFactory.getMode("Package_queries", "relevantSearchById");
         }
-        else if (searchType.equals(BaseSearchAction.CHANNEL)) {
+        else if (searchType.equals(SEARCH_CHANNEL)) {
             if (filterChannelId == null) {
                 throw new IllegalArgumentException(
                         "filterChannelId must not be null for channel search!");

@@ -53,7 +53,6 @@ import com.redhat.rhn.frontend.dto.SystemSearchResult;
 import com.redhat.rhn.frontend.dto.UserOverview;
 import com.redhat.rhn.frontend.dto.VisibleSystems;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.SatManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -527,7 +526,7 @@ public class UserManager extends BaseManager {
         user.setUsePamAuthentication(usePam); //set it back
 
         //Set default page size also :)
-        user.setPageSize(PageSizeDecorator.getDefaultPageSize());
+        user.setPageSize(PageControl.getDefaultPageSize());
         storeUser(user); //save the user via hibernate
 
         return user;

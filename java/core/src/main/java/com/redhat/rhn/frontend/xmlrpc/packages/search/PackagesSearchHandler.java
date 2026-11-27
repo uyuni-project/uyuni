@@ -18,11 +18,11 @@ package com.redhat.rhn.frontend.xmlrpc.packages.search;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.TokenPackage;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.BaseSearchAction;
 import com.redhat.rhn.frontend.action.channel.PackageSearchHelper;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
@@ -80,7 +80,7 @@ public class PackagesSearchHandler extends BaseHandler {
     @ReadOnly
     public List<PackageOverview> name(String sessionKey, String name)
         throws FaultException {
-        return performSearch(sessionKey, name, BaseSearchAction.OPT_NAME_ONLY);
+        return performSearch(sessionKey, name, PackageSearchHelper.OPT_NAME_ONLY);
     }
 
     /**
@@ -103,7 +103,7 @@ public class PackagesSearchHandler extends BaseHandler {
     @ReadOnly
     public List<PackageOverview> nameAndDescription(String sessionKey, String query)
         throws FaultException {
-        return performSearch(sessionKey, query, BaseSearchAction.OPT_NAME_AND_DESC);
+        return performSearch(sessionKey, query, PackageSearchHelper.OPT_NAME_AND_DESC);
     }
 
     /**
@@ -126,7 +126,7 @@ public class PackagesSearchHandler extends BaseHandler {
     @ReadOnly
     public List<PackageOverview> nameAndSummary(String sessionKey, String query)
         throws FaultException {
-        return performSearch(sessionKey, query, BaseSearchAction.OPT_NAME_AND_SUMMARY);
+        return performSearch(sessionKey, query, PackageSearchHelper.OPT_NAME_AND_SUMMARY);
     }
     /**
      * Advanced method to search lucene indexes with a passed in query written in Lucene
@@ -160,7 +160,7 @@ public class PackagesSearchHandler extends BaseHandler {
     public List<PackageOverview> advanced(String sessionKey, String luceneQuery)
         throws FaultException {
 
-        return performSearch(sessionKey, luceneQuery, BaseSearchAction.OPT_FREE_FORM);
+        return performSearch(sessionKey, luceneQuery, PackageSearchHelper.OPT_FREE_FORM);
     }
 
 
@@ -204,7 +204,7 @@ public class PackagesSearchHandler extends BaseHandler {
             throw new InvalidChannelLabelException();
         }
         List<PackageOverview> pkgs = performSearch(sessionKey, luceneQuery,
-                        BaseSearchAction.OPT_FREE_FORM);
+                        PackageSearchHelper.OPT_FREE_FORM);
         WebSession session = SessionManager.loadSession(sessionKey);
         User user = session.getUser();
         Channel channel = ChannelManager.lookupByLabelAndUser(channelLabel, user);
@@ -266,7 +266,7 @@ public class PackagesSearchHandler extends BaseHandler {
             throw new MethodInvalidParamException();
         }
         List<PackageOverview> pkgs = performSearch(sessionKey, luceneQuery,
-                        BaseSearchAction.OPT_FREE_FORM);
+                        PackageSearchHelper.OPT_FREE_FORM);
         WebSession session = SessionManager.loadSession(sessionKey);
         User user = session.getUser();
         // Lookup what packages are in the activation key and filter
@@ -316,7 +316,7 @@ public class PackagesSearchHandler extends BaseHandler {
         List<PackageOverview> pkgs = null;
         try {
             pkgs = PackageSearchHelper.performSearch(sessionId, query, mode, null, null,
-                            true, null, BaseSearchAction.WHERE_ALL);
+                            true, null, PackageFactory.SEARCH_ALL);
         }
         catch (MalformedURLException | XmlRpcFault e) {
             log.info("Caught Exception", e);

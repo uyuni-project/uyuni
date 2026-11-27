@@ -55,7 +55,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public abstract class RhnAction extends Action {
 
-    public static final String SUBMITTED = "submitted";
+    public static final String SUBMITTED = RequestContext.SUBMITTED;
     /**
      * Returns a StrutsDelegate object.
      *
