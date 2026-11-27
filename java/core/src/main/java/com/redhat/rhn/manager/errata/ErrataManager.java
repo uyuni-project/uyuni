@@ -89,6 +89,7 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
@@ -2258,4 +2259,19 @@ public class ErrataManager extends BaseManager {
         }
         return patchId;
     }
+
+    public static Set<Errata> mergeErrata(User user, String mergeFromLabel, String mergeToLabel, String startDate, String endDate) {
+        Channel mergeFrom = ChannelManager.lookupByLabelAndUser(mergeFromLabel, user);
+        Channel mergeTo = ChannelManager.lookupByLabelAndUser(mergeToLabel, user);
+
+        if (!UserManager.verifyChannelAdmin(user, mergeTo)) {
+            throw new PermissionException("Only channel admins can merge errata into " + mergeToLabel);
+        }
+
+        List<Errata> fromErrata = ErrataFactory.lookupByChannelBetweenDates(
+                user.getOrg(), mergeFrom, startDate, endDate);
+        return mergeErrataToChannel(user, new HashSet<>(fromErrata), mergeTo, mergeFrom);
+    }
+
+
 }
