@@ -1,0 +1,11 @@
+- Update dompurify from version 3.4.15 to 3.4.17
+- CVE-2026-109344: dompurify: DOM XSS via subtrees detached by
+  IN_PLACE afterSanitize hooks (bsc#1285061)
+- CVE-2026-109345: dompurify: XSS via the rawtext root returned by
+  IN_PLACE sanitization (bsc#1285100)
+- CVE-2026-116802: dompurify: XSS via SMIL attributeName guard
+  bypass in XHTML mode (bsc#1288109)
+- CVE-2026-116803: dompurify: DOM XSS via subtrees detached by
+  IN_PLACE hooks (bsc#1288109)
+- CVE-2026-116804: dompurify: SAFE_FOR_TEMPLATES bypass via shadow
+  root content (bsc#1288109)

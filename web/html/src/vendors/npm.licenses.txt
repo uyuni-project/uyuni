@@ -10241,7 +10241,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --------------------------------------------------------------------------------
 
-Package: dompurify@3.4.15
+Package: dompurify@3.4.17
 License text:
 
 
