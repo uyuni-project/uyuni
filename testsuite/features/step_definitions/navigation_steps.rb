@@ -473,6 +473,11 @@ When(/^I go to the home page$/) do
   visit Capybara.app_host
 end
 
+# Open a server path directly, without the menu, e.g. to check that a page is denied
+When(/^I visit the "([^"]*)" path$/) do |path|
+  visit(path)
+end
+
 Given(/^I access the host the first time$/) do
   visit Capybara.app_host
   raise ScriptError, "Text 'Create #{product} Administrator' not found" unless check_text?("Create #{product} Administrator")

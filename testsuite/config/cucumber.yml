@@ -27,6 +27,7 @@ onboarding: --tags @scope_onboarding
 openscap: --tags @scope_openscap
 power_management: --tags @scope_power_management
 project_lotus: --tags @scope_project_lotus
+rbac: --tags @scope_rbac
 recurring_actions: --tags @scope_recurring_actions
 reportdb: --tags @scope_reportdb
 res: --tags @scope_res

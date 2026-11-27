@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 SUSE LLC.
+# Copyright (c) 2022-2026 SUSE LLC.
 # SPDX-License-Identifier: MIT
 
 # This class represents a user in the namespace.
@@ -82,5 +82,22 @@ class NamespaceUser
   # @return [Object] The result of the API call.
   def get_details(user)
     @test.call('user.getDetails', sessionKey: @test.token, login: user)
+  end
+
+  # Lists the effective RBAC permissions of a user.
+  #
+  # @param user [String] The user's login name.
+  # @return [Array<Hash>] The namespaces granted, each with a 'namespace' and an 'access_mode'.
+  def list_permissions(user)
+    @test.call('user.listPermissions', sessionKey: @test.token, login: user)
+  end
+
+  # Deletes a user when it exists, so that a test starts from a clean state.
+  #
+  # @param user [String] The user's login name.
+  def remove_if_present(user)
+    return unless exists?(user)
+
+    raise ScriptError, "The user #{user} could not be deleted" unless delete(user) == 1
   end
 end

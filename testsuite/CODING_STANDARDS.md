@@ -21,6 +21,10 @@ Mechanical rules live in tooling, not here: RuboCop (`testsuite/.rubocop.yml`, r
 
 - Search `features/step_definitions/` before adding a step. A new step that overlaps an existing one extends it or reuses it (#12615: `podman container ... should be running` already existed).
 - Step names say what is observed or changed. `When` is a change, `Then` an observation, and the word "check" is noise (#12615).
+- Word a step by its role, not "I make sure ..." (#13012):
+  - A precondition is a `Given` that makes the state true and does not fail when it already holds: `Given the access group "Admins" does not exist` deletes the group if it is there.
+  - A verification is a `Then` with "should" that reads the state itself, with no earlier "call" step feeding it: `Then the access group "Admins" should not be present`.
+  - An action is a `When` that starts with "I" and fails when it cannot happen: `When I delete the access group "Admins"`.
 - Scenario and step names match what the code does: proxy vs server, the resource actually touched (#12583).
 - A new parameter on a shared helper, such as `RemoteNode`, is documented in its doc comment. Remove one that the final design no longer needs (#12654).
 - Do not future-proof. Handle the repo, format or platform that exists today (#12324).
@@ -33,6 +37,8 @@ Mechanical rules live in tooling, not here: RuboCop (`testsuite/.rubocop.yml`, r
 
 - Use the suite's `log` helper instead of `puts`.
 - Avoid global state between scenarios.
+- A new step raises `ScriptError` with a message instead of using a minitest assertion (#13012).
+- A step that expects an API refusal checks the message of the fault (`expect_api_fault`), as a transport error is a `SystemCallError` too (#13012).
 
 ## Failures and error messages
 

@@ -1,6 +1,7 @@
-# Copyright (c) 2022-2024 SUSE LLC.
+# Copyright (c) 2022-2026 SUSE LLC.
 # SPDX-License-Identifier: MIT
 
+require_relative 'namespaces/access'
 require_relative 'namespaces/actionchain'
 require_relative 'namespaces/activationkey'
 require_relative 'namespaces/admin'
@@ -37,6 +38,7 @@ class ApiTest
   #
   # @param host [String] The target host ('server', 'server2', 'server3', ...).
   def initialize(host)
+    @access = NamespaceAccess.new(self)
     @actionchain = NamespaceActionchain.new(self)
     @activationkey = NamespaceActivationkey.new(self)
     @admin = NamespaceAdmin.new(self)
@@ -67,6 +69,7 @@ class ApiTest
     end
   end
 
+  attr_reader :access
   attr_reader :actionchain
   attr_reader :activationkey
   attr_reader :admin
