@@ -8,13 +8,14 @@ set -e
 
 PQC_MIN_OPENSSL_VER="3.5.0"
 PQC_SIGNATURE_EXTENSION="p7s"
-PQC_CUSTOM_KEYS_DIR="/root/.pqkeys"
-PQC_CUSTOM_PRIVATE_KEY_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-priv.pem"
-PQC_CUSTOM_PUBLIC_KEY_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-pub.pem"
-PQC_CUSTOM_CERTIFICATE_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-cert.pem"
+PQC_DEFAULT_KEYS_DIR="/root/.pqkeys"
+PQC_DEFAULT_PRIVATE_KEY_FILE="$PQC_DEFAULT_KEYS_DIR/mgr-pqc-priv.pem"
+PQC_DEFAULT_PUBLIC_KEY_FILE="$PQC_DEFAULT_KEYS_DIR/mgr-pqc-pub.pem"
+PQC_DEFAULT_CERTIFICATE_FILE="$PQC_DEFAULT_KEYS_DIR/mgr-pqc-cert.pem"
+PQC_DEFAULT_CERTIFICATE_DAYS=3650
 
 RHN_CONF="/etc/rhn/rhn.conf"
-PQC_CUSTOM_CERTIFICATE_SUBJECT="/CN=Multi-Linux Manager Custom PQC Key/O=Multi-Linux Manager"
+PQC_DEFAULT_CERTIFICATE_SUBJECT="/CN=Multi-Linux Manager Custom PQC Key/O=Multi-Linux Manager"
 PQC_RHN_CONF_SIGN_ENTRY="sign_pqc_metadata"
 PQC_CUSTOM_SIGNATURE_FILENAME="repomd.xml.$PQC_SIGNATURE_EXTENSION"
 
@@ -22,6 +23,11 @@ PQC_SALT_EXPORT_DIR="/srv/susemanager/salt/pqc"
 PQC_SALT_EXPORT_CERTIFICATE_FILE="$PQC_SALT_EXPORT_DIR/mgr-pqc-cert.pem"
 PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE="$(spacewalk-cfg-get documentroot)/pub/mgr-pqc-cert.pem"
 
+SIGNING_CONF="/etc/rhn/signing.conf"
+PQC_SIGNING_CONF_PRIVATE_KEY_PASSWD_ENTRY="PQCPASS"
+PQC_SIGNING_CONF_PRIVATE_KEY_FILE_ENTRY="PQCPRIVKEYFILE"
+PQC_SIGNING_CONF_PUBLIC_KEY_FILE_ENTRY="PQCPUBKEYFILE"
+PQC_SIGNING_CONF_CERTIFICATE_FILE_ENTRY="PQCCERTFILE"
 
 function check_openssl_available {
     if command -v /usr/bin/openssl >&2>/dev/null; then
@@ -45,27 +51,35 @@ function check_openssl_min_version {
     fi
 }
 
-function remove_old_pqc_keys {
-    rm -f $PQC_CUSTOM_CERTIFICATE_FILE
-    rm -f $PQC_CUSTOM_PUBLIC_KEY_FILE
-    rm -f $PQC_CUSTOM_PRIVATE_KEY_FILE
-    mkdir -p $PQC_CUSTOM_KEYS_DIR
-    chmod 700 $PQC_CUSTOM_KEYS_DIR
-}
-
 function generate_pqc_key_pair_certificate {
+    #remove if present, create dirs
+    rm -f $PQC_PRIVATE_KEY_FILE
+    mkdir -p "$(dirname "$PQC_PRIVATE_KEY_FILE")"
+    rm -f $PQC_PUBLIC_KEY_FILE
+    mkdir -p "$(dirname "$PQC_PUBLIC_KEY_FILE")"
+
     #PQC key pair
-    /usr/bin/openssl genpkey -algorithm mldsa87 -out $PQC_CUSTOM_PRIVATE_KEY_FILE -outpubkey $PQC_CUSTOM_PUBLIC_KEY_FILE
-    chmod 400 $PQC_CUSTOM_PRIVATE_KEY_FILE
-    chmod 444 $PQC_CUSTOM_PUBLIC_KEY_FILE
-    echo "Generated PQC private key: ${PQC_CUSTOM_PRIVATE_KEY_FILE}"
-    echo "Generated PQC public key: ${PQC_CUSTOM_PUBLIC_KEY_FILE}"
+    export ENV_PQC_KEY_PWD="$PQC_PRIVATE_KEY_PASSWD"
+    /usr/bin/openssl genpkey -algorithm mldsa87 -out $PQC_PRIVATE_KEY_FILE -outpubkey $PQC_PUBLIC_KEY_FILE -aes-256-cbc -pass env:ENV_PQC_KEY_PWD
+    unset ENV_PQC_KEY_PWD
+
+    chmod 400 $PQC_PRIVATE_KEY_FILE
+    chmod 444 $PQC_PUBLIC_KEY_FILE
+    echo "Generated PQC private key: ${PQC_PRIVATE_KEY_FILE}"
+    echo "Generated PQC public key: ${PQC_PUBLIC_KEY_FILE}"
+
+    #remove if present, create dirs
+    rm -f $PQC_CERTIFICATE_FILE
+    mkdir -p "$(dirname "$PQC_CERTIFICATE_FILE")"
 
     #certificate
-    /usr/bin/openssl x509 -new -key $PQC_CUSTOM_PRIVATE_KEY_FILE -subj "${PQC_CUSTOM_CERTIFICATE_SUBJECT}" > $PQC_CUSTOM_CERTIFICATE_FILE
-    chmod 444 $PQC_CUSTOM_CERTIFICATE_FILE
-    echo "Generated PQC certificate: ${PQC_CUSTOM_CERTIFICATE_FILE}"
-    /usr/bin/openssl x509 -in "${PQC_CUSTOM_CERTIFICATE_FILE}" -noout -subject
+    export ENV_PQC_KEY_PWD="$PQC_PRIVATE_KEY_PASSWD"
+    /usr/bin/openssl x509 -new -key $PQC_PRIVATE_KEY_FILE -passin env:ENV_PQC_KEY_PWD -days $PQC_CERTIFICATE_DAYS -subj "${PQC_CERTIFICATE_SUBJECT}" > $PQC_CERTIFICATE_FILE
+    unset ENV_PQC_KEY_PWD
+
+    chmod 444 $PQC_CERTIFICATE_FILE
+    echo "Generated PQC certificate: ${PQC_CERTIFICATE_FILE}"
+    /usr/bin/openssl x509 -in "${PQC_CERTIFICATE_FILE}" -noout -subject
 }
 
 function do_generate_pqc_key {
@@ -75,12 +89,18 @@ function do_generate_pqc_key {
     #check openssl is at least of version >= 3.5
     check_openssl_min_version
 
-    #remove old keys and certificate
-    remove_old_pqc_keys
-
     #remove exported certificates
     remove_pqc_public_certificate_from_salt_dir
     remove_pqc_public_certificate_to_http_pub_dir
+
+    #ask password to protect private key
+    ask_pqc_private_key_password
+
+    #save password and filenames in signing.conf
+    save_to_config_file "$SIGNING_CONF" "$PQC_SIGNING_CONF_PRIVATE_KEY_PASSWD_ENTRY" "$PQC_PRIVATE_KEY_PASSWD" "#PQC PASSPHRASE"
+    save_to_config_file "$SIGNING_CONF" "$PQC_SIGNING_CONF_PRIVATE_KEY_FILE_ENTRY" "$PQC_PRIVATE_KEY_FILE" "#PQC PRIVATE KEY FILE"
+    save_to_config_file "$SIGNING_CONF" "$PQC_SIGNING_CONF_PUBLIC_KEY_FILE_ENTRY" "$PQC_PUBLIC_KEY_FILE" "#PQC PUBLIC KEY FILE"
+    save_to_config_file "$SIGNING_CONF" "$PQC_SIGNING_CONF_CERTIFICATE_FILE_ENTRY" "$PQC_CERTIFICATE_FILE" "#PQC CERTIFICATE FILE"
 
     #create PQC key pair
     generate_pqc_key_pair_certificate
@@ -93,23 +113,23 @@ function is_pqc_metadata_signing_enabled {
 }
 
 function ensure_pqc_metadata_signing_key_exists {
-    if [ ! -f "$PQC_CUSTOM_PRIVATE_KEY_FILE" ]; then
+    if [ ! -f "$PQC_PRIVATE_KEY_FILE" ]; then
         echo "ERROR. No PQC private key to sign metadata has been created."
         echo "You may want to run 'mgr-pqc-sign-metadata-ctl generate-key'"
         exit 1
     fi
-    if [ ! -f "$PQC_CUSTOM_PUBLIC_KEY_FILE" ]; then
+    if [ ! -f "$PQC_PUBLIC_KEY_FILE" ]; then
         echo "ERROR. No PQC public key to sign metadata has been created."
         echo "You may want to run 'mgr-pqc-sign-metadata-ctl generate-key'"
         exit 1
     fi
-    if [ ! -f "$PQC_CUSTOM_CERTIFICATE_FILE" ]; then
+    if [ ! -f "$PQC_CERTIFICATE_FILE" ]; then
         echo "ERROR. No PQC certificate key to sign metadata has been created."
         echo "You may want to run 'mgr-pqc-sign-metadata-ctl generate-key'"
         exit 1
     fi
 
-    echo "OK. Key ${PQC_CUSTOM_CERTIFICATE_FILE}."
+    echo "OK. Key ${PQC_CERTIFICATE_FILE}."
 }
 
 function ensure_pqc_metadata_signing_entry_rhn_conf {
@@ -135,7 +155,7 @@ function export_pqc_public_certificate_to_salt_dir {
     chown salt:salt "$PQC_SALT_EXPORT_DIR"
     chmod 775 "$PQC_SALT_EXPORT_DIR"
 
-    cp -fa "$PQC_CUSTOM_CERTIFICATE_FILE" "$PQC_SALT_EXPORT_CERTIFICATE_FILE"
+    cp -fa "$PQC_CERTIFICATE_FILE" "$PQC_SALT_EXPORT_CERTIFICATE_FILE"
     chmod 644 ${PQC_SALT_EXPORT_CERTIFICATE_FILE}
     echo "DONE. Exported public PQC certificate to ${PQC_SALT_EXPORT_CERTIFICATE_FILE}."
 }
@@ -152,7 +172,7 @@ function remove_pqc_public_certificate_from_salt_dir {
 function export_pqc_public_certificate_to_http_pub_dir {
     rm -f "$PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE"
 
-    cp -fa "$PQC_CUSTOM_CERTIFICATE_FILE" "$PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE"
+    cp -fa "$PQC_CERTIFICATE_FILE" "$PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE"
     chmod 644 ${PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE}
     echo "DONE. Exported public PQC certificate to ${PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE}."
 }
@@ -167,6 +187,8 @@ function remove_pqc_public_certificate_to_http_pub_dir {
 }
 
 function do_enable_pqc_metadata_signing {
+    # read info from config file
+    read_from_config_file
     # check if the PQC signing key exists
     ensure_pqc_metadata_signing_key_exists
     # make sure PQC sign metadata entry =1 in rhn.conf
@@ -177,12 +199,42 @@ function do_enable_pqc_metadata_signing {
     export_pqc_public_certificate_to_http_pub_dir
 }
 
+function check_signing_config_file {
+    source $SIGNING_CONF
+
+    #check for variables to exists AND not to be empty
+    if [[ -n "${!PQC_SIGNING_CONF_PRIVATE_KEY_PASSWD_ENTRY:-}" ]]; then
+      echo "OK. PQC password is present in config $SIGNING_CONF."
+    else
+      echo "ERROR. Unable to find PQC password in config file $SIGNING_CONF" >&2
+    fi
+
+    if [[ -n "${!PQC_SIGNING_CONF_PRIVATE_KEY_FILE_ENTRY:-}" ]]; then
+      echo "OK. PQC private key file name is present in config $SIGNING_CONF."
+    else
+      echo "ERROR. Unable to find PQC private key file in config file $SIGNING_CONF" >&2
+    fi
+
+    if [[ -n "${!PQC_SIGNING_CONF_PUBLIC_KEY_FILE_ENTRY:-}" ]]; then
+      echo "OK. PQC public key file name is present in config $SIGNING_CONF."
+    else
+      echo "ERROR. Unable to find PQC public key file in config file $SIGNING_CONF" >&2
+    fi
+
+    if [[ -n "${!PQC_SIGNING_CONF_CERTIFICATE_FILE_ENTRY:-}" ]]; then
+      echo "OK. PQC certificate file name is present in config $SIGNING_CONF."
+    else
+      echo "ERROR. Unable to find PQC certificate key file in config file $SIGNING_CONF" >&2
+    fi
+}
 
 function do_check_pqc_metadata_signing {
     # check PQC sign metadata entry in rhn.conf
     if is_pqc_metadata_signing_enabled; then
         echo "Metadata PQC signing is enabled in ${RHN_CONF}."
         echo
+
+        check_signing_config_file
 
         # check salt key export file
         if [ -f "$PQC_SALT_EXPORT_CERTIFICATE_FILE" ]; then
@@ -312,27 +364,198 @@ function do_regenerate_metadata {
     echo "done."
 }
 
+function save_to_config_file {
+  CONFIG_FILE=$1
+  KEY_TO_SAVE=$2
+  VALUE_TO_SAVE=$3
+  COMMENT_ABOVE=$4
 
+  if [ ! -r $CONFIG_FILE ]; then
+      echo "No config file found: ${CONFIG_FILE}" >&2
+      exit 1
+  fi
 
-function usage {
-    echo "Usage: mgr-pqc-sign-metadata-ctl [generate-key [cert_subj] | enable | disable | check-channels | check-config | regen-metadata]"
-    echo "  generate-key [cert_subj]  Generates PQC keys and certificate."
-    echo "                            Optional: certificate subject. E.g. '/CN=Company PQC Key/O=My Company/emailAddress=me@example.com'"
-    echo "  enable                    Enable PQC signing of repository metadata."
-    echo "  disable                   Disable PQC signing of repository metadata."
-    echo "  check-channels            Check if the cached channels repodata is signed."
-    echo "  check-config              Check configuration and report any problems. This is the default option."
-    echo "  regen-metadata            Restart services and schedule metadata regeneration."
+  # make sure key is in configuration file
+  if grep --quiet "^${KEY_TO_SAVE}.*=.*$" $CONFIG_FILE; then
+      # edit configuration file to save key value
+      sed -i "s|${KEY_TO_SAVE}=\".*\"\s*$|${KEY_TO_SAVE}=\"${VALUE_TO_SAVE}\"|g" "$CONFIG_FILE"
+      echo "DONE. Saved ${KEY_TO_SAVE} in ${CONFIG_FILE}."
+  else
+      # add line to configuration file
+      echo "" >> "$CONFIG_FILE"
+      echo "${COMMENT_ABOVE}" >> "$CONFIG_FILE"
+      echo "${KEY_TO_SAVE}=\"${VALUE_TO_SAVE}\"" >> "$CONFIG_FILE"
+      echo "DONE. Saved new ${KEY_TO_SAVE} in ${CONFIG_FILE}."
+  fi
 }
 
+function read_from_config_file {
+    source $SIGNING_CONF
+
+    #check for variables to exists AND not to be empty
+    if [[ -z "${!PQC_SIGNING_CONF_PRIVATE_KEY_PASSWD_ENTRY:-}" ]]; then
+      echo "Unable to find PQC password in config file $SIGNING_CONF" >&2
+      exit 1
+    fi
+    if [[ -z "${!PQC_SIGNING_CONF_PRIVATE_KEY_FILE_ENTRY:-}" ]]; then
+      echo "Unable to find PQC private key file in config file $SIGNING_CONF" >&2
+      exit 1
+    fi
+    if [[ -z "${!PQC_SIGNING_CONF_PUBLIC_KEY_FILE_ENTRY:-}" ]]; then
+      echo "Unable to find PQC public key file in config file $SIGNING_CONF" >&2
+      exit 1
+    fi
+    if [[ -z "${!PQC_SIGNING_CONF_CERTIFICATE_FILE_ENTRY:-}" ]]; then
+      echo "Unable to find PQC certificate key file in config file $SIGNING_CONF" >&2
+      exit 1
+    fi
+
+    PQC_PRIVATE_KEY_PASSWD="${!PQC_SIGNING_CONF_PRIVATE_KEY_PASSWD_ENTRY}"
+    PQC_PRIVATE_KEY_FILE="${!PQC_SIGNING_CONF_PRIVATE_KEY_FILE_ENTRY}"
+    PQC_PUBLIC_KEY_FILE="${!PQC_SIGNING_CONF_PUBLIC_KEY_FILE_ENTRY}"
+    PQC_CERTIFICATE_FILE="${!PQC_SIGNING_CONF_CERTIFICATE_FILE_ENTRY}"
+}
+
+function ask_pqc_private_key_password {
+  while true; do
+      read -s -p "Enter PQC private key password: " PQC_PRIVATE_KEY_PASSWD
+      echo ""
+      read -s -p "Confirm PQC private key password: " PASSWD_CHECK
+      echo ""
+
+      if [[ "$PQC_PRIVATE_KEY_PASSWD" != "$PASSWD_CHECK" ]]; then
+          echo "Error: Passwords do not match. Try again."
+          continue
+      fi
+
+      break
+  done
+}
+
+function check_absolute_file_path {
+    FILE_PATH="$1"
+
+    #Checks the path starts with '/'
+    if [[ "$FILE_PATH" != /* ]]; then
+        echo "Error: '$FILE_PATH' is not an absolute path (must start with '/')." >&2
+        exit 1
+    fi
+
+    #Checks it does not end with '/' (file, not directory)
+    if [[ "$FILE_PATH" == */ ]]; then
+        echo "Error: '$FILE_PATH' ends with a slash." >&2
+        exit 1
+    fi
+}
+
+function check_valid_days {
+    NUMBER_OF_DAYS="$1"
+    # Validate that DAYS is a positive integer (1 or greater, no spaces, signs, or decimals)
+    if [[ ! "$NUMBER_OF_DAYS" =~ ^[1-9][0-9]*$ ]]; then
+        echo "Error: Invalid validity period in days: '$NUMBER_OF_DAYS'. Expected a positive integer." >&2
+        exit 1
+    fi
+}
+
+function usage {
+    echo "Usage: mgr-pqc-sign-metadata-ctl [generate-key [options] | enable | disable | check-channels | check-config | regen-metadata]"
+    echo "  generate-key    Generates PQC keys and certificate and enables PQC signing of repository metadata."
+    echo "                   Optional Arguments:"
+    echo "                   -s|--subj <cert_subj> Certificate subject. E.g. '/CN=Company PQC Key/O=My Company/emailAddress=me@example.com']"
+    echo "                         (default: $PQC_DEFAULT_CERTIFICATE_SUBJECT)"
+    echo "                   -p|--priv <pqc_private_key_filename> Private key file name (absolute path)"
+    echo "                         (default: $PQC_DEFAULT_PRIVATE_KEY_FILE)"
+    echo "                   -u|--pub <pqc_public_key_filename> Public key file name (absolute path)"
+    echo "                         (default: $PQC_DEFAULT_PUBLIC_KEY_FILE)"
+    echo "                   -c|--cert <pqc_certificate_filename> Certificate file name (absolute path)"
+    echo "                         (default: $PQC_DEFAULT_CERTIFICATE_FILE)"
+    echo "                   -d|--days <certificate_validity_days> Certificate validity in days"
+    echo "                         (default: $PQC_DEFAULT_CERTIFICATE_DAYS)"
+    echo "  enable          Enable PQC signing of repository metadata."
+    echo "  disable         Disable PQC signing of repository metadata."
+    echo "  check-channels  Check if the cached channels repodata is signed."
+    echo "  check-config    Check configuration and report any problems. This is the default option."
+    echo "  regen-metadata  Restart services and schedule metadata regeneration."
+}
+
+#defaults
+PQC_CERTIFICATE_SUBJECT=$PQC_DEFAULT_CERTIFICATE_SUBJECT
+PQC_PRIVATE_KEY_FILE=$PQC_DEFAULT_PRIVATE_KEY_FILE
+PQC_PUBLIC_KEY_FILE=$PQC_DEFAULT_PUBLIC_KEY_FILE
+PQC_CERTIFICATE_FILE=$PQC_DEFAULT_CERTIFICATE_FILE
+PQC_CERTIFICATE_DAYS=$PQC_DEFAULT_CERTIFICATE_DAYS
 
 if [ -n "$1" ]; then
 
     if [[  "$1" = "generate-key" ]]; then
-        if [ -n "$2" ]; then
-            PQC_CUSTOM_CERTIFICATE_SUBJECT="$2"
-        fi
+          shift
+          while [[ $# -gt 0 ]]; do
+            case "$1" in
+                -s|--subj)
+                    if [[ -n "$2" && "$2" != -* ]]; then
+                        PQC_CERTIFICATE_SUBJECT="$2"
+                        shift 2
+                    else
+                        echo "Error: -s|--subj requires a certificate subject." >&2
+                        usage
+                        exit 1
+                    fi
+                    ;;
+                -p|--priv)
+                    if [[ -n "$2" && "$2" != -* ]]; then
+                        PQC_PRIVATE_KEY_FILE="$2"
+                        check_absolute_file_path "$2"
+                        shift 2
+                    else
+                        echo "Error: -p|--priv requires a private key filename argument." >&2
+                        usage
+                        exit 1
+                    fi
+                    ;;
+                -u|--pub)
+                    if [[ -n "$2" && "$2" != -* ]]; then
+                        PQC_PUBLIC_KEY_FILE="$2"
+                        check_absolute_file_path "$2"
+                        shift 2
+                    else
+                        echo "Error: -u|--pub requires a public key filename argument." >&2
+                        usage
+                        exit 1
+                    fi
+                    ;;
+                -c|--cert)
+                    if [[ -n "$2" && "$2" != -* ]]; then
+                        PQC_CERTIFICATE_FILE="$2"
+                        check_absolute_file_path "$2"
+                        shift 2
+                    else
+                        echo "Error: -c|--cert requires a certificate filename argument." >&2
+                        usage
+                        exit 1
+                    fi
+                    ;;
+                -d|--days)
+                    if [[ -n "$2" && "$2" != -* ]]; then
+                        PQC_CERTIFICATE_DAYS="$2"
+                        check_valid_days "$2"
+                        shift 2
+                    else
+                        echo "Error: -d|--days requires positive integer argument." >&2
+                        usage
+                        exit 1
+                    fi
+                    ;;
+                *)
+                    echo "Error: Unknown option '$1' for generate-key." >&2
+                    usage
+                    exit 1
+                    ;;
+            esac
+        done
         do_generate_pqc_key
+        do_enable_pqc_metadata_signing
+        do_check_pqc_metadata_signing
+        warn_effective_changes
     elif [[  "$1" = "enable" ]]; then
         do_enable_pqc_metadata_signing
         warn_effective_changes
