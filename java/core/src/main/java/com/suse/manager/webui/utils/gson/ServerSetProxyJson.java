@@ -29,6 +29,8 @@ public class ServerSetProxyJson {
     /** The earliest execution date */
     private Long proxy;
 
+    private String proxyFqdn;
+
     /**
      * @return the server id
      */
@@ -41,6 +43,13 @@ public class ServerSetProxyJson {
      */
     public Long getProxy() {
         return proxy;
+    }
+
+    /**
+     * @return the proxy FQDN
+     */
+    public String getProxyFqdn() {
+        return proxyFqdn;
     }
 
 }

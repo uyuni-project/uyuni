@@ -222,7 +222,8 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
                         with(any(SSLCertManager.class)),
                         with(any(String.class)),
                         with(any(String.class)),
-                        with(any(String.class))
+                        with(any(String.class)),
+                        with(any(List.class))
                 );
                 will(throwException(new SSLCertGenerationException(expectedErrorMessage)));
             }});
@@ -295,7 +296,8 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
                         with(any(SSLCertManager.class)),
                         with(any(String.class)),
                         with(any(String.class)),
-                        with(any(String.class))
+                        with(any(String.class)),
+                        with(any(List.class))
                 );
                 will(returnValue(expectedProxyConfigFiles));
             }});

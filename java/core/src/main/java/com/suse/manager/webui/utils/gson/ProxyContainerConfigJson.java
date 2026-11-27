@@ -55,6 +55,8 @@ public class ProxyContainerConfigJson {
     private String caKey;
     private String caPassword;
     private List<String> cnames;
+    @SerializedName("additionalFQDNs")
+    private List<String> additionalFqdns;
     private String country;
     private String state;
     private String city;
@@ -173,5 +175,15 @@ public class ProxyContainerConfigJson {
             return new SSLCertData(proxyFqdn, cnames, country, state, city, org, orgUnit, sslEmail);
         }
         return null;
+    }
+
+    /**
+     * @return value of additionalFqdns
+     */
+    public List<String> getAdditionalFqdns() {
+        if (additionalFqdns != null && !additionalFqdns.isEmpty()) {
+            return additionalFqdns;
+        }
+        return List.of();
     }
 }
