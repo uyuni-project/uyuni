@@ -125,7 +125,7 @@ export function AllSystems(props: Props) {
         />
 
         <Column
-          columnKey="outdated_packages"
+          columnKey="outdated_pkg_count"
           comparator={Utils.sortByText}
           header={t("Packages")}
           cell={(item) => {

@@ -61,6 +61,7 @@ import com.suse.manager.hub.HubManager;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.utils.PagedSqlQueryBuilder.FilterWithValue;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.MinionActionUtils;
@@ -207,7 +208,7 @@ public class SystemsController {
         PageControlHelper pageHelper = new PageControlHelper(request, "server_name");
         PageControl pc = pageHelper.getPageControl();
 
-        var parser = getFilterParser(pc);
+        var parser = getFilterParser(pc, false);
 
         // When getting ids for the select all we just get all systems ID matching the filter, no paging
         if ("id".equals(pageHelper.getFunction())) {
@@ -236,22 +237,56 @@ public class SystemsController {
     /**
      * Helper function to create the filter parser
      * @param pc - the page control object
+     * @param raiseErrors raise conversion errors if any
      * @return - the filter parser
      */
     public static Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue>
-        getFilterParser(PageControl pc) {
-        Map<String, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue>> mapping = Map.of(
-                "outdated_packages", PagedSqlQueryBuilder::parseFilterAsNumber,
-                "extra_pkg_count", PagedSqlQueryBuilder::parseFilterAsNumber,
-                "config_files_with_differences", PagedSqlQueryBuilder::parseFilterAsNumber,
-                "group_count", PagedSqlQueryBuilder::parseFilterAsNumber,
-                "requires_reboot", PagedSqlQueryBuilder::parseFilterAsBoolean,
-                "total_errata_count",
+        getFilterParser(PageControl pc, boolean raiseErrors) {
+        Map<String, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue>> mapping = new HashMap<>();
+        mapping.put("name", pageControl -> {
+            pageControl.ifPresent(
+                control -> {
+                    // Map the property name from the API to the DB column name
+                    control.setFilterColumn("server_name");
+                }
+            );
+            return PagedSqlQueryBuilder.parseFilterAsText(pageControl);
+        });
+        mapping.put("group_count", c ->PagedSqlQueryBuilder.parseFilterAsNumber(c, raiseErrors));
+        mapping.put("security_errata",  c ->PagedSqlQueryBuilder.parseFilterAsNumber(c, raiseErrors));
+        mapping.put("bug_errata",  c ->PagedSqlQueryBuilder.parseFilterAsNumber(c, raiseErrors));
+        mapping.put("enhancement_errata",  c ->PagedSqlQueryBuilder.parseFilterAsNumber(c, raiseErrors));
+        mapping.put("outdated_pkg_count", pageControl -> {
+            pageControl.ifPresent(control -> {
+                control.setFilterColumn("outdated_packages");
+            });
+            return PagedSqlQueryBuilder.parseFilterAsNumber(pageControl, raiseErrors);
+        });
+        mapping.put("total_errata_count",
                 pageControl -> {
                     pageControl.ifPresent(c -> c.setFilterColumn("security_errata + bug_errata + enhancement_errata"));
-                    return PagedSqlQueryBuilder.parseFilterAsNumber(pageControl);
-                },
-                "system_kind",
+                    return PagedSqlQueryBuilder.parseFilterAsNumber(pageControl, raiseErrors);
+                });
+        mapping.put("config_files_with_difference", c ->PagedSqlQueryBuilder.parseFilterAsNumber(c, raiseErrors));
+        mapping.put("last_checkin", c ->PagedSqlQueryBuilder.parseFilterAsDate(c, raiseErrors));
+        mapping.put("mgr_server", c ->PagedSqlQueryBuilder.parseFilterAsBoolean(c, raiseErrors));
+        mapping.put("proxy", c ->PagedSqlQueryBuilder.parseFilterAsBoolean(c, raiseErrors));
+        mapping.put("virtual_host", c ->PagedSqlQueryBuilder.parseFilterAsBoolean(c, raiseErrors));
+        mapping.put("virtual_guest", c ->PagedSqlQueryBuilder.parseFilterAsBoolean(c, raiseErrors));
+        mapping.put("extra_pkg_count", c ->PagedSqlQueryBuilder.parseFilterAsNumber(c, raiseErrors));
+        mapping.put("requires_reboot", c ->PagedSqlQueryBuilder.parseFilterAsBoolean(c, raiseErrors));
+        mapping.put("actions_count", c ->PagedSqlQueryBuilder.parseFilterAsNumber(c, raiseErrors));
+        mapping.put("kickstarting", c ->PagedSqlQueryBuilder.parseFilterAsBoolean(c, raiseErrors));
+        mapping.put("unscheduled_errata_count", c ->PagedSqlQueryBuilder.parseFilterAsNumber(c, raiseErrors));
+        mapping.put("last_checkin_days", c ->parseFilterAsDays(c, "last_checkin", raiseErrors));
+        mapping.put("created", c ->PagedSqlQueryBuilder.parseFilterAsDate(c, raiseErrors));
+        mapping.put("created_days", c -> parseFilterAsDays(c, "created", raiseErrors));
+
+        // In this case last_boot is not loaded from the suseSystemOverview table, we cannot get it easily
+        // The SystemOverviewSerializer probably gets it differently.
+
+        // Needed only by the Systems list UI
+        mapping.put("system_kind",
                 pageControl -> {
                     pageControl.ifPresent(
                         control -> {
@@ -281,26 +316,8 @@ public class SystemsController {
                                 control.setFilter(false);
                             }
                         });
-                    return PagedSqlQueryBuilder.parseFilterAsBoolean(pageControl);
-                },
-            "created_days",
-                pageControl -> {
-                    pageControl.ifPresent(control -> {
-                        control.setFilterColumn("created");
-                        Matcher matcher = Pattern.compile("^([<>!=]*) *(\\d+)$").matcher(control.getFilterData());
-                        if (matcher.matches()) {
-                            long value = Long.parseLong(matcher.group(2));
-                            control.setFilterData(matcher.group(1) +
-                                    DateTimeFormatter.ISO_LOCAL_DATE.format(
-                                            LocalDateTime.now().minusDays(value).toLocalDate()));
-                        }
-                        else {
-                            control.setFilter(false);
-                        }
-                    });
-                    return PagedSqlQueryBuilder.parseFilterAsDate(pageControl);
-                }
-        );
+                    return PagedSqlQueryBuilder.parseFilterAsBoolean(pageControl, raiseErrors);
+                });
 
         Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser =
                 PagedSqlQueryBuilder::parseFilterAsText;
@@ -697,4 +714,39 @@ public class SystemsController {
             }
         });
     }
+
+    /**
+     * Creates a number filter using a number of days
+     * Supported operators: <, <=, >, >=, =, !=. Default is =
+     *
+     * @param pc the page control
+     * @param name the name of the filter column to set in the computed query
+     * @param raiseErrors raise conversion errors if any
+     * @return the parse filter and its value
+     */
+    public static FilterWithValue parseFilterAsDays(Optional<PageControl> pc, String name, boolean raiseErrors) {
+        pc.ifPresent(control -> {
+            control.setFilterColumn(name);
+            Matcher matcher = Pattern.compile("^([<>!=]*) *(\\d+)$").matcher(control.getFilterData());
+            if (matcher.matches()) {
+                long value = Long.parseLong(matcher.group(2));
+                String operator = matcher.group(1);
+                // Number of days and date order operators need to be inverted to keep the semantic
+                if (operator.contains("<")) {
+                    operator = operator.replace("<", ">");
+                }
+                else {
+                    operator = operator.replace(">", "<");
+                }
+                control.setFilterData(operator +
+                        DateTimeFormatter.ISO_LOCAL_DATE.format(
+                                LocalDateTime.now().minusDays(value).toLocalDate()));
+            }
+            else {
+                control.setFilter(false);
+            }
+        });
+        return PagedSqlQueryBuilder.parseFilterAsDate(pc, raiseErrors);
+    }
+
 }

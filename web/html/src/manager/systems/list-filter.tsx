@@ -50,7 +50,7 @@ const allListOptions = [
   { value: "system_kind", label: t("System Kind"), type: FilterOptionType.SELECT, filterOptions: SYSTEM_KIND_OPTIONS },
   { value: "status_type", label: t("Updates"), type: FilterOptionType.SELECT, filterOptions: STATUS_TYPE_OPTIONS },
   { value: "total_errata_count", label: t("Patches"), type: FilterOptionType.NUMERIC },
-  { value: "outdated_packages", label: t("Packages"), type: FilterOptionType.NUMERIC },
+  { value: "outdated_pkg_count", label: t("Packages"), type: FilterOptionType.NUMERIC },
   { value: "extra_pkg_count", label: t("Extra Packages"), type: FilterOptionType.NUMERIC },
   { value: "config_files_with_differences", label: t("Config Diffs"), type: FilterOptionType.NUMERIC },
   { value: "channel_labels", label: t("Base Channel"), type: FilterOptionType.TEXT },

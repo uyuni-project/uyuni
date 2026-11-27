@@ -332,7 +332,8 @@ public class SystemManager extends BaseManager {
         pc.setFilter(true);
         pc.setFilterColumn("id");
         pc.setFilterData("=" + sid.toString());
-        DataResult<SystemOverview> systems = systemListNew(user, PagedSqlQueryBuilder::parseFilterAsNumber, pc);
+        DataResult<SystemOverview> systems = systemListNew(user,
+                c ->PagedSqlQueryBuilder.parseFilterAsNumber(c, false), pc);
         return !systems.stream().filter(sys -> sys.getRequiresReboot()).findFirst().isEmpty();
     }
 
@@ -351,7 +352,7 @@ public class SystemManager extends BaseManager {
         pc.setFilter(true);
         pc.setFilterColumn("requires_reboot");
         pc.setFilterData("true");
-        return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsBoolean, pc);
+        return systemListNew(user, pageControl -> PagedSqlQueryBuilder.parseFilterAsBoolean(pageControl, false), pc);
     }
 
     /**
@@ -367,7 +368,7 @@ public class SystemManager extends BaseManager {
         pc.setFilter(true);
         pc.setFilterColumn("extra_pkg_count");
         pc.setFilterData(">0");
-        return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsNumber, pc);
+        return systemListNew(user, c ->PagedSqlQueryBuilder.parseFilterAsNumber(c, false), pc);
     }
 
     /**
@@ -939,7 +940,7 @@ public class SystemManager extends BaseManager {
         pc.setFilter(true);
         pc.setFilterColumn("virtual_guest");
         pc.setFilterData("false");
-        return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsBoolean, pc);
+        return systemListNew(user, pageControl ->PagedSqlQueryBuilder.parseFilterAsBoolean(pageControl, false), pc);
     }
 
     /**
@@ -1090,7 +1091,7 @@ public class SystemManager extends BaseManager {
         pc.setFilter(true);
         pc.setFilterColumn("outdated_packages");
         pc.setFilterData(">0");
-        return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsNumber, pc);
+        return systemListNew(user, c ->PagedSqlQueryBuilder.parseFilterAsNumber(c, false), pc);
     }
 
     /**
@@ -1104,7 +1105,7 @@ public class SystemManager extends BaseManager {
         pc.setFilter(true);
         pc.setFilterColumn("group_count");
         pc.setFilterData("=0");
-        return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsNumber, pc);
+        return systemListNew(user, c ->PagedSqlQueryBuilder.parseFilterAsNumber(c, false), pc);
     }
 
     /**
@@ -1129,7 +1130,7 @@ public class SystemManager extends BaseManager {
         }
         pageControl.setSortColumn("created");
         pageControl.setSortDescending(true);
-        return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsDate, pageControl);
+        return systemListNew(user, c ->PagedSqlQueryBuilder.parseFilterAsDate(c, false), pageControl);
     }
 
     /**

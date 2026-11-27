@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.dto.BaseTupleDto;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +31,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,7 +61,7 @@ public class PagedSqlQueryBuilder {
 
     private static final Pattern NUMBER_FILTER_REGEX = Pattern.compile("^([<>!=]{0,2}) *([^ ]*)$");
 
-    private static final Pattern INVALID_COLUMN_CHARS_REGEX = Pattern.compile("[^A-Za-z0-9-_.]");
+    private static final Pattern INVALID_COLUMN_CHARS_REGEX = Pattern.compile("[^A-Za-z0-9-_.+ ]");
 
     private static final Logger LOG = LogManager.getLogger(PagedSqlQueryBuilder.class);
 
@@ -201,14 +206,20 @@ public class PagedSqlQueryBuilder {
      * Supported operators: = and !=. Default is =.
      *
      * @param pc the page control
+     * @param raiseError If set to true, raise an error when failing to parse the value
      * @return the parse filter and its value
+     * @throws InvalidParameterException if the filter data cannot be parsed to a boolean and raiseError is true.
      */
-    public static FilterWithValue parseFilterAsBoolean(Optional<PageControl> pc) {
+    public static FilterWithValue parseFilterAsBoolean(Optional<PageControl> pc, boolean raiseError)
+            throws InvalidParameterException {
         String filterColumn = sanitizeColumnNames(pc.map(PageControl::getFilterColumn).orElse(""));
         return parseFilterAsComparable(pc, EQUAL_OPERATOR_ONLY_REGEX, EQUAL_FILTER_REGEX, (operator, value) -> {
             if (Stream.of("true", "false").anyMatch(v -> v.equalsIgnoreCase(value))) {
                 return new FilterWithValue(
                         String.format(" %s %s CAST(:filter_value AS BOOLEAN) ", filterColumn, operator), value);
+            }
+            else if (raiseError) {
+                throw new InvalidParameterException("a boolean value needs to be 'false' or 'true' (case insensitive)");
             }
             return FilterWithValue.NO_FILTER;
         });
@@ -219,21 +230,51 @@ public class PagedSqlQueryBuilder {
      * Supported operators: <, <=, >, >=, =, !=. Default is =
      *
      * @param pc the page control
+     * @param raiseError If set to true, raise an error when failing to parse the value
      * @return the parse filter and its value
+     * @throws InvalidParameterException if the filter data cannot be parsed to a LocalDate and raiseError is true.
      */
-    public static FilterWithValue parseFilterAsDate(Optional<PageControl> pc) {
+    public static FilterWithValue parseFilterAsDate(Optional<PageControl> pc, boolean raiseError)
+        throws InvalidParameterException {
         String filterColumn = sanitizeColumnNames(pc.map(PageControl::getFilterColumn).orElse(""));
         return parseFilterAsComparable(pc, NUMBER_OPERATOR_ONLY_REGEX, NUMBER_FILTER_REGEX, (operator, value) -> {
+            // Try Date-only (YYYY-MM-DD) cast to UTC DATE
             try {
                 LocalDate.parse(value);
                 return new FilterWithValue(String.format(" CAST(%s AS DATE) %s CAST(:filter_value AS DATE) ",
                         filterColumn, operator), value);
             }
             catch (DateTimeException e) {
-                // That wasn't a date, ignore
+                // That wasn't a date, try a DateTime before shouting
+                LOG.trace("Failed to parse '{}' as date, trying as a datetime: {}", value, e);
+            }
+
+            // Datetime (with offset or offset-less assumed UTC) -> compare against TIMESTAMPTZ
+            try {
+                OffsetDateTime dateTime = parseDateTimeWithUtcDefault(value);
+                return new FilterWithValue(
+                    String.format(" %s %s CAST(:filter_value AS TIMESTAMPTZ) ", filterColumn, operator),
+                    dateTime.toString()
+                );
+            }
+            catch (DateTimeException e) {
+                if (raiseError) {
+                    throw new InvalidParameterException(
+                        "invalid datetime, expected ISO-8601 datetime (e.g., 2026-11-23T14:08:00Z) or date (YYYY-MM-DD)"
+                    );
+                }
             }
             return FilterWithValue.NO_FILTER;
         });
+    }
+
+    private static OffsetDateTime parseDateTimeWithUtcDefault(String value) {
+        try {
+            return OffsetDateTime.parse(value);
+        }
+        catch (DateTimeParseException ignored) {
+            return LocalDateTime.parse(value).atOffset(ZoneOffset.UTC);
+        }
     }
 
     /**
@@ -241,9 +282,10 @@ public class PagedSqlQueryBuilder {
      * Supported operators: <, <=, >, >=, =, !=. Default is =
      *
      * @param pc the page control
+     * @param raiseError If set to true, raise an error when failing to parse the value
      * @return the parse filter and its value
      */
-    public static FilterWithValue parseFilterAsNumber(Optional<PageControl> pc) {
+    public static FilterWithValue parseFilterAsNumber(Optional<PageControl> pc, boolean raiseError) {
         String filterColumn = sanitizeColumnNames(pc.map(PageControl::getFilterColumn).orElse(""));
         return parseFilterAsComparable(pc, NUMBER_OPERATOR_ONLY_REGEX, NUMBER_FILTER_REGEX, (operator, value) -> {
             Number filterValue;
@@ -255,6 +297,9 @@ public class PagedSqlQueryBuilder {
                     filterValue = Double.parseDouble(value);
                 }
                 catch (NumberFormatException e1) {
+                    if (raiseError) {
+                        throw new InvalidParameterException("invalid number");
+                    }
                     return FilterWithValue.NO_FILTER;
                 }
             }
@@ -344,6 +389,8 @@ public class PagedSqlQueryBuilder {
             query = query.setParameter("filter_value", filter.getValue());
             countQuery = countQuery.setParameter("filter_value", filter.getValue());
         }
+
+        LOG.debug("Query to run: '{}', filter_value: {}", sql, filter.getValue());
 
         List<T> rows = runQuery(query, clazz);
 

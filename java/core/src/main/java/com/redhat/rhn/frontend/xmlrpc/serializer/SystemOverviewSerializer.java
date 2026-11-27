@@ -23,6 +23,9 @@ import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 /**
@@ -39,9 +42,11 @@ import java.util.Date;
  *     #prop_desc("int", "bug_errata", "number of applied bug erratas")
  *     #prop_desc("int", "enhancement_errata", "number of applied enhancement erratas")
  *     #prop_desc("int", "outdated_pkg_count", "number of out-of-date packages")
+ *     #prop_desc("int", "total_errata_count", "number of applied enhancement, bug and security erratas")
  *     #prop_desc("int", "config_files_with_difference", "number of configuration files changed")
  *     #prop_desc("string", "channel_labels", "channel set on the system")
  *     #prop_desc("$date", "last_checkin", "last time server successfully checked in")
+ *     #prop_desc("int", "last_checkin_days", "number of days since the last time server successfully checked in")
  *     #prop_desc("boolean", "mgr_server", "true if the system is a peripheral server")
  *     #prop_desc("boolean", "proxy", "true if the system is a proxy")
  *     #prop_array("entitlement", "string", "List of entitlements of the system")
@@ -49,8 +54,13 @@ import java.util.Date;
  *     #prop_desc("boolean", "virtual_guest", "true if the system is a virtual guest")
  *     #prop_desc("int", "extra_pkg_count", "number of packages not belonging to any assigned channel")
  *     #prop_desc("boolean", "requires_reboot", "true if the systems needs to be rebooted")
+ *     #prop_desc("int", "actions_count", "number of actions of the system")
+ *     #prop_desc("boolean", "kickstarting", "true if the system is running an autoinstallation")
+ *     #prop_desc("int", "unscheduled_errata_count", "number of unscheduled errata of the system")
+ *     #prop_desc("string", "creator_name", "user who registered the system")
  *     #prop_desc("$date", "created", "server registration time")
- *     #prop_desc("$date", "last_boot", "last server boot time")
+ *     #prop_desc("int", "created_days", "number of days since the server registration")
+ *     #prop_desc("$date", "last_boot", "last server boot time (may not be set)")
  * #struct_end()
  */
 public class SystemOverviewSerializer extends ApiResponseSerializer<SystemOverview> {
@@ -70,6 +80,7 @@ public class SystemOverviewSerializer extends ApiResponseSerializer<SystemOvervi
                 .add("bug_errata", src.getBugErrata())
                 .add("enhancement_errata", src.getEnhancementErrata())
                 .add("outdated_pkg_count", src.getOutdatedPackages())
+                .add("total_errata_count", src.getSecurityErrata() + src.getBugErrata() + src.getEnhancementErrata())
                 .add("config_files_with_difference", src.getConfigFilesWithDifferences())
                 .add("channel_labels", src.getChannelLabels())
                 .add("last_checkin", src.getLastCheckinDate())
@@ -80,11 +91,27 @@ public class SystemOverviewSerializer extends ApiResponseSerializer<SystemOvervi
                 .add("virtual_guest", src.getVirtualGuest())
                 .add("extra_pkg_count", src.getExtraPkgCount())
                 .add("requires_reboot", src.getRequiresReboot())
+                .add("actions_count", src.getActionsCount())
+                .add("kickstarting", src.isKickstarting())
+                .add("unscheduled_errata_count", src.getUnscheduledErrataCount())
+                .add("creator_name", src.getCreatorName())
                 .add("status_type", src.getStatusType());
+
+        Date lastCheckinDate = src.getLastCheckinDate();
+        if (lastCheckinDate != null) {
+            long days = ChronoUnit.DAYS.between(
+                    LocalDateTime.ofInstant(lastCheckinDate.toInstant(), ZoneId.systemDefault()),
+                    LocalDateTime.now());
+            builder.add("last_checkin_days", days);
+        }
 
         Date regDate = src.getCreated();
         if (regDate != null) {
             builder.add("created", regDate);
+            long days = ChronoUnit.DAYS.between(
+                    LocalDateTime.ofInstant(regDate.toInstant(), ZoneId.systemDefault()),
+                    LocalDateTime.now());
+            builder.add("created_days", days);
         }
 
         Date lastBoot = src.getLastBootAsDate();

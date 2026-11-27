@@ -7111,7 +7111,7 @@ public class SystemHandler extends BaseHandler {
         }
         pc.setSortDescending(sortDescending);
         DataResult<SystemOverview> dr = SystemManager.systemListNew(
-                loggedInUser, SystemsController.getFilterParser(pc), pc);
+                loggedInUser, SystemsController.getFilterParser(pc, true), pc);
         dr.elaborate();
         Map<String, Object> result = new HashMap<>();
         result.put("total", dr.getTotalSize());
