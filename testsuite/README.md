@@ -58,6 +58,8 @@ environment.
 To know how to test with or without optional components like a proxy, a Red Hat-like minion or a SSH minion, look at
 the [optional components instructions](documentation/optional.md).
 
+For Cobbler setup and provisioning tests, see [Testing Cobbler](documentation/cobbler.md).
+
 ## Development environment
 
 To set up an IDE or editor (RubyMine or VS Code / VSCodium) and to run the RuboCop linter
