@@ -300,21 +300,20 @@ export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
               headingLevel="h2"
               className="panel-default col-md-6 col-md-offset-3 offset-md-3 no-padding"
             >
-              <div className="row">
-                <FormMultiInput
-                  id="cnames"
-                  title={t("Alternate CNAMEs")}
-                  prefix="cnames"
-                  onAdd={onAddField("cnames")}
-                  onRemove={onRemoveField("cnames")}
-                  panelHeading="label"
-                  panelClassName="panel-default col-md-8 col-md-offset-1 offset-md-1 no-padding"
-                >
-                  {(index) => (
-                    <Text name={`cnames${index}`} label={t("CNAME")} labelClass="col-md-3" divClass="col-md-6" />
-                  )}
-                </FormMultiInput>
-              </div>
+              <FormMultiInput
+                id="cnames"
+                title={t("Alternate CNAMEs")}
+                prefix="cnames"
+                onAdd={onAddField("cnames")}
+                onRemove={onRemoveField("cnames")}
+                panelHeading="label"
+                panelClassName="panel-default"
+                variant="singleLine"
+              >
+                {(index) => (
+                  <Text name={`cnames${index}`} label={t("CNAME")} labelClass="col-md-3" divClass="col-md-6" />
+                )}
+              </FormMultiInput>
               <Text
                 name="country"
                 label={t("2-letter country code")}
@@ -349,8 +348,9 @@ export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
                 prefix="intermediateCAs"
                 onAdd={onAddField("intermediateCAs")}
                 onRemove={onRemoveField("intermediateCAs")}
-                panelClassName="panel-default col-md-8 col-md-offset-1 offset-md-1 no-padding"
+                panelClassName="panel panel-default col-md-6 col-md-offset-3 offset-md-3 no-padding"
                 panelHeading="label"
+                variant="singleLine"
               >
                 {(index) => (
                   <Text

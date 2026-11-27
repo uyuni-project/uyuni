@@ -242,28 +242,27 @@ export function ProxyConfig({
                 divClass="col-md-6"
                 required={anyCertFieldFilled}
               />
-              <div className="row">
-                <FormMultiInput
-                  id="intermediateCAs"
-                  title={t("Intermediate CAs")}
-                  prefix="intermediateCAs"
-                  onAdd={onAddField("intermediateCAs")}
-                  onRemove={onRemoveField("intermediateCAs")}
-                  panelHeading="label"
-                  panelClassName="panel-default col-md-6 offset-md-3 no-padding"
-                >
-                  {(index) => (
-                    <Text
-                      name={`intermediateCAs${index}`}
-                      label={t("An intermediate CA certificate (PEM format)")}
-                      type="file"
-                      divClass="col-md-8"
-                      labelClass="col-md-4 no-padding"
-                      className="col-md-11"
-                    />
-                  )}
-                </FormMultiInput>
-              </div>
+              <FormMultiInput
+                id="intermediateCAs"
+                title={t("Intermediate CAs")}
+                prefix="intermediateCAs"
+                onAdd={onAddField("intermediateCAs")}
+                onRemove={onRemoveField("intermediateCAs")}
+                panelHeading="label"
+                panelClassName="panel-default col-md-6 offset-md-3 no-padding"
+                variant="singleLine"
+              >
+                {(index) => (
+                  <Text
+                    name={`intermediateCAs${index}`}
+                    label={t("An intermediate CA certificate (PEM format)")}
+                    type="file"
+                    divClass="col-md-8"
+                    labelClass="col-md-4 no-padding"
+                    className="col-md-11"
+                  />
+                )}
+              </FormMultiInput>
               <Text
                 name="proxyCertificate"
                 label={t("Proxy certificate")}
