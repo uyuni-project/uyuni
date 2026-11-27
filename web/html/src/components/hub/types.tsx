@@ -65,6 +65,7 @@ export type IssServerDetailData = {
 
 export type HubDetailData = {
   gpgKey: string | null;
+  pqcCert: string | null;
 } & IssServerDetailData;
 
 export type PeripheralDetailData = {

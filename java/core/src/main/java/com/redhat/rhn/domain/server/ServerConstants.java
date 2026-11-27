@@ -34,6 +34,7 @@ public class ServerConstants {
     public static final String LEAP = "Leap";
     public static final String LEAPMICRO = "openSUSE Leap Micro";
     public static final String OPENSUSEMICROOS = "openSUSE MicroOS";
+    public static final String TUMBLEWEED = "openSUSE Tumbleweed";
     public static final String UBUNTU = "Ubuntu";
     public static final String DEBIAN = "Debian";
     public static final String REDHAT = "RedHat";

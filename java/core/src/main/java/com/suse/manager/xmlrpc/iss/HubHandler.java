@@ -44,6 +44,8 @@ import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.manager.xmlrpc.InvalidCertificateException;
+import com.suse.utils.GpgKeyException;
+import com.suse.utils.PqcKeyException;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -445,6 +447,7 @@ public class HubHandler extends BaseHandler {
      *      #struct_begin("data")
      *          #prop_desc("string", "root_ca", "The root ca")
      *          #prop_desc("string", "gpg_key", "The root gpg key - only for role HUB")
+     *          #prop_desc("string", "pqc_cert", "The root PQC key - only for role HUB")
      *      #struct_end()
      *  @apidoc.returntype #return_int_success()
      */
@@ -459,6 +462,14 @@ public class HubHandler extends BaseHandler {
         }
         catch (IllegalArgumentException ex) {
             throw new InvalidParameterException(logAndGetErrorMessage(ex, "Illegal state"));
+        }
+        catch (GpgKeyException ex) {
+            throw new InvalidParameterException(logAndGetErrorMessage(ex,
+                    "Unexpected error while processing the GPG key"));
+        }
+        catch (PqcKeyException ex) {
+            throw new InvalidParameterException(logAndGetErrorMessage(ex,
+                    "Unexpected error while processing the PQC key"));
         }
         return 1;
     }
@@ -718,6 +729,26 @@ public class HubHandler extends BaseHandler {
         catch (Exception ex) {
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
                     "Error while synchronizing channels for {}", fqdn));
+        }
+        return 1;
+    }
+
+    /**
+     * Synchronize all peripherals with hub GPG key and PQC certificate
+     *
+     * @param loggedInUser The current user
+     * @return 1 on success, exception otherwise
+     * @apidoc.doc Synchronize all peripherals with hub GPG key and PQC certificate
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
+     */
+    public int updateAllPeripherals(User loggedInUser) {
+        ensureSatAdmin(loggedInUser);
+        try {
+            hubManager.updateAllPeripherals(loggedInUser);
+        }
+        catch (IllegalArgumentException ex) {
+            throw new InvalidParameterException(logAndGetErrorMessage(ex, "Illegal state"));
         }
         return 1;
     }

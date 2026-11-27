@@ -84,4 +84,20 @@ pkg_gpgcheck={{ args['pkg_gpgcheck'] }}
 type={{ args['type'] }}
 {%- endif %}
 
+{%- if salt['pillar.get']('mgr_pqc_metadata_signing_enabled', false) %}
+{%- if args['pqc_check'] == "1" %}
+{%- if args['minion_os_supports_pqc'] == "1" %}
+{%- if salt['file.file_exists']('/usr/lib/zypp/plugins/sigcheck/pqcverification') %}
+repo_sigcheck_plugin=pqcverification
+{%- else %}
+# PQC signing enabled but zypper PQC plugin not found
+{%- endif %}
+{%- else %}
+# PQC signing enabled but not supported by this OS type
+{%- endif %}
+{%- else %}
+# PQC signing not enabled for this channel
+{%- endif %}
+{%- endif %}
+
 {% endfor %}

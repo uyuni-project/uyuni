@@ -32,6 +32,8 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/hub/sync/setHubDetails', 'POST', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/hub/managerinfo', 'GET', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
@@ -4508,6 +4510,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.syncPeripheralChannels', '/manager/api/sync/hub/syncPeripheralChannels', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.updateAllPeripherals', '/manager/api/sync/hub/updateAllPeripherals', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.migrateFromISSv2', '/manager/api/sync/hub/migrateFromISSv2', 'POST', 'A', True)

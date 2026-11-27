@@ -56,6 +56,7 @@ public abstract class BaseRepoCommand {
     private Set<SslContentSource> sslContentSourcesToAdd = new HashSet<>();
     private Set<SslContentSource> sslContentSourcesToDelete = new HashSet<>();
     private boolean metadataSigned;
+    private boolean pqcMetadataSigned;
 
     /**
      * Creates an instance
@@ -193,7 +194,21 @@ public abstract class BaseRepoCommand {
      * @param md set if metadata are signed
      */
     public void setMetadataSigned(boolean md) {
-        this.metadataSigned = md;
+        metadataSigned = md;
+    }
+
+    /**
+     * @return true if metadata should be PQC signed
+     */
+    public boolean getPqcMetadataSigned() {
+        return pqcMetadataSigned;
+    }
+
+    /**
+     * @param md set if metadata are PQC signed
+     */
+    public void setPqcMetadataSigned(boolean md) {
+        pqcMetadataSigned = md;
     }
 
     /**
@@ -264,6 +279,7 @@ public abstract class BaseRepoCommand {
             }
         }
         repo.setMetadataSigned(this.metadataSigned);
+        repo.setPqcMetadataSigned(this.pqcMetadataSigned);
 
         ChannelFactory.save(repo);
     }

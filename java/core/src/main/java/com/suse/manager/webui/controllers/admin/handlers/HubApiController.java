@@ -63,6 +63,8 @@ import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.utils.CertificateUtils;
+import com.suse.utils.GpgKeyException;
+import com.suse.utils.PqcKeyException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -472,7 +474,14 @@ public class HubApiController {
         catch (TaskomaticApiException e) {
             return internalServerError(response, LOC.getMessage("hub.cannot_refresh_certificate"));
         }
-
+        catch (GpgKeyException ex) {
+            //should never happen
+            return internalServerError(response, "Unexpected error while processing the GPG key");
+        }
+        catch (PqcKeyException ex) {
+            //should never happen
+            return internalServerError(response, "Unexpected error while processing the PQC key");
+        }
         return success(response);
     }
 

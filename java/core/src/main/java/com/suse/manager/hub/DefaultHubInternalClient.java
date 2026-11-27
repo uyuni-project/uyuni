@@ -77,8 +77,8 @@ public class DefaultHubInternalClient implements HubInternalClient {
     }
 
     @Override
-    public void registerHub(String token, String rootCA, String gpgKey) throws IOException {
-        invokePost("hub/sync", "registerHub", new RegisterJson(token, rootCA, gpgKey));
+    public void registerHub(String token, String rootCA, String gpgKey, String pqcCert) throws IOException {
+        invokePost("hub/sync", "registerHub", new RegisterJson(token, rootCA, gpgKey, pqcCert));
     }
 
     @Override
@@ -138,6 +138,11 @@ public class DefaultHubInternalClient implements HubInternalClient {
     @Override
     public ServerInfoJson getServerInfo() throws IOException {
         return invokeGet("hub", "serverInfo", ServerInfoJson.class);
+    }
+
+    @Override
+    public void setHubDetails(Map<String, String> data) throws IOException {
+        invokePost("hub/sync", "setHubDetails", data);
     }
 
     private <R> R invokeGet(String namespace, String apiMethod, Type responseType)

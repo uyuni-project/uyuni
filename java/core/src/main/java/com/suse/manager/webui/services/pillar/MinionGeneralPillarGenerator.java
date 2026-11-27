@@ -126,7 +126,7 @@ public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
      * @param chan the channel
      * @return a {@link Map} containing the pillar data
      */
-    public Map<String, Object> getChannelPillarData(MinionServer minion, AccessToken accessToken,
+    private Map<String, Object> getChannelPillarData(MinionServer minion, AccessToken accessToken,
             Channel chan) {
         Map<String, Object> chanProps = new HashMap<>();
         chanProps.put("alias", "susemanager:" + chan.getLabel());
@@ -169,6 +169,15 @@ public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
             chanProps.put("pkg_gpgcheck", chan.isGPGCheck() ? "1" : "0");
         }
         // For Type deb the packages are not signed. No need to set a GPG key here.
+
+        if (ConfigDefaults.get().isPqcMetadataSigningEnabled()) {
+            if (chan.isTypeRpm()) {
+                chanProps.put("pqc_check", chan.isPqcCheck() ? "1" : "0");
+            }
+        }
+
+        //
+        chanProps.put("minion_os_supports_pqc", minion.doesOsSupportPQC() ? "1" : "0");
 
         // Flag to override dnf modularity failsafe mechanism (module_hotfixes)
         chanProps.put("cloned_nonmodular", chan.isCloned() && !chan.isModular());

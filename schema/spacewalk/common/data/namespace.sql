@@ -1556,6 +1556,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.sync.hub.sync_peripheral_channels', 'W', 'Sync channels with the peripheral server')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.update_all_peripherals', 'W', 'Update all peripherals with hub GPG key and PQC certificate')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.sync.hub.migrate_from_iss_v2', 'W', 'Migrate ISSv2 to Hub environment')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)

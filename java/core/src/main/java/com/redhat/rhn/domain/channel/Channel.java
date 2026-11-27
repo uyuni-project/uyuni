@@ -116,6 +116,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     @Column(name = "gpg_key_fp")
     private String GPGKeyFp;
 
+    @Column(name = "pqc_check")
+    @Convert(converter = YesNoConverter.class)
+    private boolean pqcCheck;
+
     @Column
     private String label;
 
@@ -248,6 +252,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         erratas = new HashSet<>();
         access = PRIVATE;
         GPGCheck = true;
+        pqcCheck = false;
         channelSyncFlag = new ChannelSyncFlag();
         channelSyncFlag.setChannel(this);
         autoSync = true;
@@ -1177,6 +1182,20 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public void setGPGCheck(boolean gpgCheckIn) {
         this.GPGCheck = gpgCheckIn;
+    }
+
+    /**
+     * @return the pqcCheck
+     */
+    public boolean isPqcCheck() {
+        return pqcCheck;
+    }
+
+    /**
+     * @param pqcCheckIn the pqcCheck to set
+     */
+    public void setPqcCheck(boolean pqcCheckIn) {
+        this.pqcCheck = pqcCheckIn;
     }
 
     /**

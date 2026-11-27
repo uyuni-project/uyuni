@@ -140,6 +140,25 @@ export class ServerDetailsForm extends Component<Props, State> {
               </div>
             </li>
           )}
+          {this.state.model.role === IssRole.Hub && (
+            <li className="list-group-item">
+              <div className="row">
+                <div className="col-md-2">
+                  <strong>{t("PQC Public Certificate:")}</strong>
+                </div>
+                <div className="col-md-10">
+                  <LargeTextAttachment
+                    value={(this.state.model as HubDetailData).pqcCert}
+                    filename="pqc-cert.pem"
+                    presentMessage={t("A customized PQC key is currently configured for this hub.")}
+                    absentMessage={t("This hub is currently not using a custom PQC key.")}
+                    buttonMode={ButtonMode.Icon}
+                    editable={false}
+                  />
+                </div>
+              </div>
+            </li>
+          )}
           <li className="list-group-item">
             <div className="row">
               <div className="col-md-2">

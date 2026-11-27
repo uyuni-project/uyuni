@@ -16,6 +16,9 @@ package com.suse.manager.model.hub;
 import java.util.Map;
 
 public class UpdatableServerData {
+    public static final String GPG_KEY_DATA_KEY = "gpg_key";
+    public static final String PQC_CERT_DATA_KEY = "pqc_cert";
+
     private final boolean rootCADefined;
 
     private final String rootCA;
@@ -23,6 +26,10 @@ public class UpdatableServerData {
     private final boolean gpgKeyDefined;
 
     private final String gpgKey;
+
+    private final boolean pqcCertDefined;
+
+    private final String pqcCert;
 
     /**
      * Builds an instance from the given map
@@ -32,14 +39,18 @@ public class UpdatableServerData {
         if (null != dataMap) {
             this.rootCADefined = dataMap.containsKey("root_ca");
             this.rootCA = dataMap.get("root_ca");
-            this.gpgKeyDefined = dataMap.containsKey("gpg_key");
-            this.gpgKey = dataMap.get("gpg_key");
+            this.gpgKeyDefined = dataMap.containsKey(GPG_KEY_DATA_KEY);
+            this.gpgKey = dataMap.get(GPG_KEY_DATA_KEY);
+            this.pqcCertDefined = dataMap.containsKey(PQC_CERT_DATA_KEY);
+            this.pqcCert = dataMap.get(PQC_CERT_DATA_KEY);
         }
         else {
             this.rootCADefined = false;
             this.rootCA = null;
             this.gpgKeyDefined = false;
             this.gpgKey = null;
+            this.pqcCertDefined = false;
+            this.pqcCert = null;
         }
     }
 
@@ -85,5 +96,27 @@ public class UpdatableServerData {
         }
 
         return gpgKey;
+    }
+
+    /**
+     * Check if the PQC certificate is defined
+     * @return true if the PQC certificate is part of this object
+     */
+    public boolean hasPqcCert() {
+        return pqcCertDefined;
+    }
+
+    /**
+     * Returns the value of the PQC certificate, possibly null.
+     * @return the value of the PQC certificate
+     * @throws IllegalStateException if the field is not defined in this object
+     * Use {@link #hasPqcCert()} to check beforehand.
+     */
+    public String getPqcCert() {
+        if (!pqcCertDefined) {
+            throw new IllegalStateException("pqcCert is not defined");
+        }
+
+        return pqcCert;
     }
 }

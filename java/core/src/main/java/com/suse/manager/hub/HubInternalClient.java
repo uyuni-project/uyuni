@@ -21,6 +21,7 @@ import com.suse.manager.model.hub.ServerInfoJson;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Hub Inter-Server-Sync Client to connect a remote server and invoke the private server-to-server Rest-like API
@@ -32,9 +33,10 @@ public interface HubInternalClient {
      * @param token the token issued by the remote server to grant access
      * @param rootCA the root certificate, if needed
      * @param gpgKey the gpg key, if needed
+     * @param pqcCert the PQC certificate, if needed
      * @throws IOException when the communication fails
      */
-    void registerHub(String token, String rootCA, String gpgKey) throws IOException;
+    void registerHub(String token, String rootCA, String gpgKey, String pqcCert) throws IOException;
 
     /**
      * Store the SCC credentials on the remote peripheral server
@@ -114,4 +116,12 @@ public interface HubInternalClient {
      * @throws IOException when the communication fails
      */
     ServerInfoJson getServerInfo() throws IOException;
+
+    /**
+     * updates hub details on peripheral (rootCA, custom GPG key and custom PQC certificate)
+     *
+     * @param data the map containing the new values
+     * @throws IOException when the communication fails
+     */
+    void setHubDetails(Map<String, String> data) throws IOException;
 }
