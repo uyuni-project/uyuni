@@ -87,6 +87,13 @@ Feature: Setup containerized proxy
     And podman container "uyuni-proxy-ssh" should be running on "proxy"
     And podman container "uyuni-proxy-tftpd" should be running on "proxy"
 
+  Scenario: The containerized proxy listens on its ports
+    Then port "4505" should be listening in the "uyuni-proxy-salt-broker" container on "proxy"
+    And port "4506" should be listening in the "uyuni-proxy-salt-broker" container on "proxy"
+    And port "80" should be listening in the "uyuni-proxy-httpd" container on "proxy"
+    And port "443" should be listening in the "uyuni-proxy-httpd" container on "proxy"
+    And port "69" should be listening in the "uyuni-proxy-tftpd" container on "proxy"
+
   Scenario: The containerized proxy should be registered automatically
     When I follow the left menu "Systems"
     And I wait until I see the name of "proxy", refreshing the page

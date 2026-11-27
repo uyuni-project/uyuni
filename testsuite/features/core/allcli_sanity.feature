@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2025 SUSE LLC
+# Copyright (c) 2019-2026 SUSE LLC
 # SPDX-License-Identifier: MIT
 
 Feature: Sanity checks
@@ -36,6 +36,20 @@ Feature: Sanity checks
     And podman container "uyuni-tftpd" should be running on "server"
     And podman container "uyuni-server-attestation-0" should be running on "server"
     And podman container "uyuni-hub-xmlrpc-0" should be running on "server"
+
+@containerized_server
+@skip_if_rke2
+  Scenario: Podman containers pass their healthcheck and listen on their ports
+    When I trigger the healthcheck of "uyuni-db" container on "server"
+    And I trigger the healthcheck of "uyuni-server" container on "server"
+    Then port "5432" should be listening in the "uyuni-db" container on "server"
+    And port "4505" should be listening in the "uyuni-server" container on "server"
+    And port "4506" should be listening in the "uyuni-server" container on "server"
+    And port "80" should be listening in the "uyuni-server" container on "server"
+    And port "443" should be listening in the "uyuni-server" container on "server"
+    And port "69" should be listening in the "uyuni-tftpd" container on "server"
+    And port "8216" should be listening in the "uyuni-saline-0" container on "server"
+    And port "2830" should be listening in the "uyuni-hub-xmlrpc-0" container on "server"
 
 @proxy
   Scenario: The proxy is healthy
