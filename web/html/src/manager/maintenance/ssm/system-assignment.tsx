@@ -9,7 +9,7 @@ import { useState } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Messages, MessageType } from "components/messages/messages";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Panel } from "components/panels/Panel";
 
 import { SchedulePickerForm, WithMaintenanceSchedules } from "./schedule-picker";
 
@@ -18,7 +18,8 @@ function SystemAssignment(props: { systems: string[] }) {
   return (
     <>
       <Messages items={messages} />
-      <BootstrapPanel
+      <Panel
+        headingLevel="h2"
         title={t("Maintenance Schedules")}
         icon="fa-clock-o"
         header={
@@ -31,7 +32,7 @@ function SystemAssignment(props: { systems: string[] }) {
         <WithMaintenanceSchedules systems={props.systems} onMessage={setMessages}>
           {(schedules, onAssign) => <SchedulePickerForm schedules={schedules} onAssign={onAssign} />}
         </WithMaintenanceSchedules>
-      </BootstrapPanel>
+      </Panel>
     </>
   );
 }

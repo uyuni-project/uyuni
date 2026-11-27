@@ -13,7 +13,7 @@ import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionChainLink, ActionLink, ChannelLink, SystemLink } from "components/links";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Panel } from "components/panels/Panel";
 import { PopUp } from "components/popup";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
@@ -147,7 +147,8 @@ class BaseChannelPage extends Component<BaseChannelProps, BaseChannelState> {
     const defaultOption = <option value="-1">{t("System Default Base Channel")}</option>;
 
     return (
-      <BootstrapPanel
+      <Panel
+        headingLevel="h2"
         title={t("Base Channel")}
         icon="spacewalk-icon-software-channels"
         header={
@@ -247,7 +248,7 @@ class BaseChannelPage extends Component<BaseChannelProps, BaseChannelState> {
           title={t("Systems subscribed to")}
           onClosePopUp={this.onCloseServersListPopup}
         />
-      </BootstrapPanel>
+      </Panel>
     );
   }
 }
@@ -545,7 +546,8 @@ class ChildChannelPage extends Component<ChildChannelProps, ChildChannelState> {
       );
     });
     return (
-      <BootstrapPanel
+      <Panel
+        headingLevel="h2"
         title={t("Child Channels")}
         icon="spacewalk-icon-software-channels"
         header={
@@ -567,7 +569,7 @@ class ChildChannelPage extends Component<ChildChannelProps, ChildChannelState> {
           title={t("Systems to subscribe to")}
           onClosePopUp={this.onCloseServersListPopup}
         />
-      </BootstrapPanel>
+      </Panel>
     );
   }
 }
@@ -714,7 +716,8 @@ class SummaryPage extends Component<SummaryPageProps, SummaryPageState> {
     });
 
     return (
-      <BootstrapPanel
+      <Panel
+        headingLevel="h2"
         title={t("Channel Changes Overview")}
         icon="spacewalk-icon-software-channels"
         footer={this.props.footer}
@@ -738,7 +741,7 @@ class SummaryPage extends Component<SummaryPageProps, SummaryPageState> {
           title={t("Systems to subscribe to")}
           onClosePopUp={this.onCloseServersListPopup}
         />
-      </BootstrapPanel>
+      </Panel>
     );
   }
 
@@ -763,7 +766,8 @@ type ResultPageProps = {
 class ResultPage extends Component<ResultPageProps> {
   render() {
     return (
-      <BootstrapPanel
+      <Panel
+        headingLevel="h2"
         title={t("Channel Changes Actions")}
         icon="spacewalk-icon-software-channels"
         footer={this.props.footer}
@@ -807,7 +811,7 @@ class ResultPage extends Component<ResultPageProps> {
             }}
           />
         </Table>
-      </BootstrapPanel>
+      </Panel>
     );
   }
 }

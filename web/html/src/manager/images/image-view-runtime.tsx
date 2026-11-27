@@ -8,7 +8,7 @@ import { Component } from "react";
 
 import { productName } from "core/user-preferences";
 
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Panel } from "components/panels/Panel";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
@@ -50,9 +50,9 @@ class ImageViewRuntime extends Component<ImageViewRuntimeProps> {
     return (
       <div>
         {msg ? (
-          <BootstrapPanel>
+          <Panel headingLevel="h2">
             <h4>{msg}</h4>
-          </BootstrapPanel>
+          </Panel>
         ) : (
           runtimeInfo
         )}
@@ -134,7 +134,7 @@ class ClusterInfo extends Component<ClusterInfoProps> {
   render() {
     const data = this.props.data;
     return (
-      <BootstrapPanel title={this.renderTitle(data)}>
+      <Panel headingLevel="h2" title={this.renderTitle(data)}>
         <div className="table-responsive">
           <table className="table">
             <tbody>
@@ -149,7 +149,7 @@ class ClusterInfo extends Component<ClusterInfoProps> {
             </tbody>
           </table>
         </div>
-      </BootstrapPanel>
+      </Panel>
     );
   }
 }

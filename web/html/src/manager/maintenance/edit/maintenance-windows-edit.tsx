@@ -7,7 +7,8 @@
 import { useRef, useState } from "react";
 
 import { AsyncButton, Button } from "components/buttons";
-import { InnerPanel } from "components/panels/InnerPanel";
+import { Panel } from "components/panels/Panel";
+import { TopPanel } from "components/panels/TopPanel";
 
 import MaintenanceCalendarEdit from "./calendar-edit";
 import MaintenanceScheduleEdit from "./schedule-edit";
@@ -49,46 +50,46 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
     </div>,
   ];
 
-  const buttonsLeft = [
-    <div className="btn-group pull-left" key="back-button">
-      <Button
-        id="back-btn"
-        className="btn-default"
-        icon="fa-chevron-left"
-        text={t("Back")}
-        handler={() => props.onActionChanged("back")}
-      />
-    </div>,
-  ];
+  const backButton = (
+    <Button
+      id="back-btn"
+      className="btn-default"
+      icon="fa-chevron-left"
+      text={t("Back")}
+      handler={() => props.onActionChanged("back")}
+    />
+  );
 
   return (
-    <InnerPanel
+    <TopPanel
       title={t("Maintenance") + " " + (type === "schedule" ? t("Schedule") : t("Calendar"))}
       icon="spacewalk-icon-schedule"
-      buttonsLeft={buttonsLeft}
+      button={backButton}
     >
-      {(type === "schedule" && (
-        <MaintenanceScheduleEdit
-          ref={child}
-          isEdit={isEdit()}
-          schedule={props.selected}
-          calendarNames={props.calendarNames}
-          onEdit={props.onEdit}
-        />
-      )) ||
-        (type === "calendar" && (
-          <MaintenanceCalendarEdit
+      <Panel>
+        {(type === "schedule" && (
+          <MaintenanceScheduleEdit
             ref={child}
-            messages={props.messages}
             isEdit={isEdit()}
-            calendar={props.selected}
-            onRefresh={props.onRefresh}
+            schedule={props.selected}
+            calendarNames={props.calendarNames}
             onEdit={props.onEdit}
-            isLoading={(i) => setIcalLoading(i)}
           />
-        ))}
-      {buttons}
-    </InnerPanel>
+        )) ||
+          (type === "calendar" && (
+            <MaintenanceCalendarEdit
+              ref={child}
+              messages={props.messages}
+              isEdit={isEdit()}
+              calendar={props.selected}
+              onRefresh={props.onRefresh}
+              onEdit={props.onEdit}
+              isLoading={(i) => setIcalLoading(i)}
+            />
+          ))}
+        {buttons}
+      </Panel>
+    </TopPanel>
   );
 };
 

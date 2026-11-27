@@ -12,7 +12,7 @@ import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
@@ -161,7 +161,7 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
     details.cronTimes.minute = details.cronTimes.minute.padStart(2, "0");
 
     return (
-      <BootstrapPanel title={t("Schedule Details")}>
+      <Panel headingLevel="h2" title={t("Schedule Details")}>
         <div className="table-responsive">
           <table className="table">
             <tbody>
@@ -205,13 +205,13 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
             </tbody>
           </table>
         </div>
-      </BootstrapPanel>
+      </Panel>
     );
   }
 
   showPlaybookDetails() {
     return (
-      <BootstrapPanel title={t("Playbook details")}>
+      <Panel headingLevel="h2" title={t("Playbook details")}>
         <div className="table-responsive">
           <table className="table">
             <tbody>
@@ -230,13 +230,13 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
             </tbody>
           </table>
         </div>
-      </BootstrapPanel>
+      </Panel>
     );
   }
 
   render() {
     const buttons = [
-      <div className="btn-group pull-right" key="buttons-right">
+      <div key="buttons-right">
         <Button
           text={t("Back")}
           icon="fa-chevron-left"

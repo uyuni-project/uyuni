@@ -93,7 +93,7 @@ const ScapPolicy = (): JSX.Element => {
   );
 
   const renderActions = (row: ScapPolicyData) => (
-    <div className="btn-group">
+    <>
       <LinkButton
         className="btn-default btn-sm"
         title={t("Details")}
@@ -114,7 +114,7 @@ const ScapPolicy = (): JSX.Element => {
         item={row}
         onClick={setSelected}
       />
-    </div>
+    </>
   );
 
   return (

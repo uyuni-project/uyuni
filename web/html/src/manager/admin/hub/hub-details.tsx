@@ -64,7 +64,7 @@ export class HubDetails extends Component<Props, State> {
         icon="fa-cogs"
         helpUrl="specialized-guides/large-deployments/hub-online-sync.html#_access_hub_server_details_from_the_peripheral_server"
         button={
-          <div className="btn-group pull-right">
+          <>
             {this.state.hub !== null && (
               <>
                 <DeregisterServer
@@ -76,7 +76,7 @@ export class HubDetails extends Component<Props, State> {
                 {this.renderSyncBunch()}
               </>
             )}
-          </div>
+          </>
         }
       >
         {this.state.hub === null ? (

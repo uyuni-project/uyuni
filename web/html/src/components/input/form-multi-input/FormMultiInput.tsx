@@ -8,7 +8,6 @@ import { type ReactNode, useContext } from "react";
 
 import { Button } from "components/buttons";
 import { Panel } from "components/panels/Panel";
-import { PanelRow } from "components/panels/PanelRow";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
@@ -181,10 +180,10 @@ export function FormMultiInput({ disabled = false, ...props }: Props) {
           );
         }
         return (
-          <PanelRow key={`${props.prefix}${index}-panelrow`} className={`multi-field-panelrow ${props.rowClass}`}>
+          <div key={`${props.prefix}${index}-panelrow`} className={`row multi-field-panelrow ${props.rowClass}`}>
             {children}
             {removeButton}
-          </PanelRow>
+          </div>
         );
       })}
     </Panel>

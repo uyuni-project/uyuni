@@ -6,6 +6,7 @@
 
 import type { ReactNode } from "react";
 
+import { IconTag } from "components/icontag";
 import { HelpLink } from "components/utils/HelpLink";
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
   button?: ReactNode;
   title: string;
   icon?: string;
+  iconType?: string;
   children?: ReactNode;
 };
 
@@ -22,9 +24,9 @@ export function TopPanel(props: Props) {
   return (
     <>
       <div className="spacewalk-toolbar-h1">
-        {props.button}
+        <div className="pull-right btn-group">{props.button}</div>
         <h1>
-          {props.icon && <i className={`fa ${props.icon}`} />}
+          {props.iconType ? <IconTag type={props.iconType} /> : props.icon && <i className={`fa ${props.icon}`} />}
           {t(props.title)}
           &nbsp;
           {help}

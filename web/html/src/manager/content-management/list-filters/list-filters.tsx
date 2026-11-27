@@ -135,7 +135,7 @@ const ListFilters = (props: Props) => {
   };
 
   const panelButtons = (
-    <div className="pull-right btn-group">
+    <>
       {hasEditingPermissions && (
         <FilterEdit
           id="create-filter-button"
@@ -148,7 +148,7 @@ const ListFilters = (props: Props) => {
           onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
         />
       )}
-    </div>
+    </>
   );
 
   const actionButtons = [

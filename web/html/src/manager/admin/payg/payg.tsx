@@ -70,15 +70,7 @@ const Payg = (props: Props) => {
     <TopPanel
       title={t("Instance Hostname: {host}", { host: payg.properties.host })}
       button={
-        <div className="pull-right btn-group">
-          <ModalButton
-            className="btn-danger"
-            title={t("Delete")}
-            text={t("Delete")}
-            target="delete-payg-modal"
-            disabled={props.readOnly}
-          />
-        </div>
+        <ModalButton className="btn-danger" text={t("Delete")} target="delete-payg-modal" disabled={props.readOnly} />
       }
     >
       <DeleteDialog

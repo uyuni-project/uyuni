@@ -227,7 +227,7 @@ class VirtualHostManager extends Component<Props, State> {
 
   render() {
     const panelButtons = (
-      <div className="pull-right btn-group">
+      <>
         {this.state.action !== "create" && this.state.action !== "edit" && this.state.action !== "details" && (
           <DropdownButton
             text={t("Create")}
@@ -241,7 +241,7 @@ class VirtualHostManager extends Component<Props, State> {
             ))}
           />
         )}
-      </div>
+      </>
     );
     return (
       <TopPanel

@@ -13,7 +13,7 @@ import { SystemLink } from "components/links";
 import { localizedMoment } from "utils/datetime";
 
 import { Button } from "../buttons";
-import { BootstrapPanel } from "../panels/BootstrapPanel";
+import { Panel } from "../panels/Panel";
 import { Column } from "../table/Column";
 import { Table } from "../table/Table";
 import { AttestationReport, renderStatus, renderTime } from "./Utils";
@@ -31,7 +31,7 @@ class CoCoAttestationTable extends Component<Props> {
 
   render = () => {
     return (
-      <BootstrapPanel>
+      <Panel headingLevel="h2">
         <div className="panel panel-default">
           <div className="panel-heading">
             <div>
@@ -129,7 +129,7 @@ class CoCoAttestationTable extends Component<Props> {
             </Table>
           </div>
         </div>
-      </BootstrapPanel>
+      </Panel>
     );
   };
 }

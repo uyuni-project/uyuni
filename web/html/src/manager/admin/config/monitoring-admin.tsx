@@ -20,6 +20,7 @@ import Network from "utils/network";
 
 import styles from "./monitoring-admin.module.scss";
 import useMonitoringApi from "./use-monitoring-api";
+import { TopPanel } from "components/panels/TopPanel";
 
 const { capitalize } = Utils;
 
@@ -321,95 +322,91 @@ const MonitoringAdmin = () => {
   }
 
   return (
-    <div className="responsive-wizard">
-      {messages && <Messages items={messages} />}
-      <div className="spacewalk-toolbar-h1">
-        <div className="spacewalk-toolbar"></div>
-        <h1>
-          <i className="fa fa-info-circle"></i>
-          {t("{productName} Configuration - Monitoring", {
-            productName,
-          })}
-          <HelpLink url={`${isUyuni ? "uyuni" : "suse-manager"}/administration/monitoring.html`} />
-        </h1>
-      </div>
-      <div className="page-summary">
-        <p>{t("Set up monitoring for your {productName} server.", { productName })}</p>
-      </div>
-      <div className="spacewalk-content-nav">
-        <ul className="nav nav-tabs">
-          <li>
-            <a className="js-spa" href="/rhn/admin/config/GeneralConfig.do?">
-              {t("General")}
-            </a>
-          </li>
-          <li>
-            <a className="js-spa" href="/rhn/admin/config/BootstrapConfig.do?">
-              {t("Bootstrap Script")}
-            </a>
-          </li>
-          <li>
-            <a className="js-spa" href="/rhn/admin/config/Orgs.do?">
-              {t("Organizations")}
-            </a>
-          </li>
-          <li>
-            <a className="js-spa" href="/rhn/admin/config/Restart.do?">
-              {t("Restart")}
-            </a>
-          </li>
-          <li>
-            <a className="js-spa" href="/rhn/admin/config/Cobbler.do?">
-              {t("Cobbler")}
-            </a>
-          </li>
-          <li className="active js-spa">
-            <a href="/rhn/manager/admin/config/monitoring?">{t("Monitoring")}</a>
-          </li>
-          <li className="js-spa">
-            <a href="/rhn/manager/admin/config/password-policy?">{t("Password Policy")}</a>
-          </li>
-          <li className="js-spa">
-            <a href="/rhn/manager/admin/config/server-settings?">{t("Server Settings")}</a>
-          </li>
-        </ul>
-      </div>
-      <Panel
-        key="schedule"
-        title={t("Monitoring")}
-        headingLevel="h4"
-        footer={
-          <div className="row">
-            <div className="col-md-offset-3 offset-md-3 col-md-9">{buttons}</div>
-          </div>
-        }
+    <div className="responsive-wizard">   
+      <TopPanel
+        title={t("{productName} Configuration - Monitoring", {productName,})}
+        icon="fa-info-circle"
+        helpUrl={`/administration/monitoring.html`}
       >
-        <div className="row">
-          <div className="col-md-9">
+        <div className="page-summary">
+          {messages && <Messages items={messages} />}
+          <p>{t("Set up monitoring for your {productName} server.", { productName })}</p>
+        </div>
+        <div className="spacewalk-content-nav">
+          <ul className="nav nav-tabs">
+            <li>
+              <a className="js-spa" href="/rhn/admin/config/GeneralConfig.do?">
+                {t("General")}
+              </a>
+            </li>
+            <li>
+              <a className="js-spa" href="/rhn/admin/config/BootstrapConfig.do?">
+                {t("Bootstrap Script")}
+              </a>
+            </li>
+            <li>
+              <a className="js-spa" href="/rhn/admin/config/Orgs.do?">
+                {t("Organizations")}
+              </a>
+            </li>
+            <li>
+              <a className="js-spa" href="/rhn/admin/config/Restart.do?">
+                {t("Restart")}
+              </a>
+            </li>
+            <li>
+              <a className="js-spa" href="/rhn/admin/config/Cobbler.do?">
+                {t("Cobbler")}
+              </a>
+            </li>
+            <li className="active js-spa">
+              <a href="/rhn/manager/admin/config/monitoring?">{t("Monitoring")}</a>
+            </li>
+            <li className="js-spa">
+              <a href="/rhn/manager/admin/config/password-policy?">{t("Password Policy")}</a>
+            </li>
+            <li className="js-spa">
+              <a href="/rhn/manager/admin/config/server-settings?">{t("Server Settings")}</a>
+            </li>
+          </ul>
+        </div>
+        <Panel
+          key="schedule"
+          title={t("Monitoring")}
+          headingLevel="h4"
+          footer={
             <div className="row">
-              <div className="col-md-4 text-left">
-                <label>{t("Monitoring")}</label>
-              </div>
-              <div className="col-md-8">
-                {exportersStatus ? (
-                  <ExportersList exporters={exportersStatus} messages={exportersMessages} />
-                ) : (
-                  <ListPlaceholder />
-                )}
-                {restartNeeded ? (
-                  <div>
-                    <Icon type="system-reboot" className="text-warning fa-1-5x" />
-                    <a href="/rhn/admin/config/Restart.do?">{t("Restarting")}</a>
-                    {t(" Tomcat and Taskomatic is needed for the configuration changes to take effect.")}
-                  </div>
-                ) : null}
-                <ExportersMessages messages={exportersMessages} />
+              <div className="col-md-offset-3 offset-md-3 col-md-9">{buttons}</div>
+            </div>
+          }
+        >
+          <div className="row">
+            <div className="col-md-9">
+              <div className="row">
+                <div className="col-md-4 text-left">
+                  <label>{t("Monitoring")}</label>
+                </div>
+                <div className="col-md-8">
+                  {exportersStatus ? (
+                    <ExportersList exporters={exportersStatus} messages={exportersMessages} />
+                  ) : (
+                    <ListPlaceholder />
+                  )}
+                  {restartNeeded ? (
+                    <div>
+                      <Icon type="system-reboot" className="text-warning fa-1-5x" />
+                      <a href="/rhn/admin/config/Restart.do?">{t("Restarting")}</a>
+                      {t(" Tomcat and Taskomatic is needed for the configuration changes to take effect.")}
+                    </div>
+                  ) : null}
+                  <ExportersMessages messages={exportersMessages} />
+                </div>
               </div>
             </div>
+            <HelpPanel />
           </div>
-          <HelpPanel />
-        </div>
-      </Panel>
+        </Panel>
+      </TopPanel>
     </div>
   );
 };

@@ -70,7 +70,7 @@ const ListProjects = (props: Props) => {
   }));
 
   const panelButtons = (
-    <div className="pull-right btn-group">
+    <>
       {hasEditingPermissions && (
         <LinkButton
           id="createcontentproject"
@@ -81,7 +81,7 @@ const ListProjects = (props: Props) => {
           href="/rhn/manager/contentmanagement/project"
         />
       )}
-    </div>
+    </>
   );
 
   return (

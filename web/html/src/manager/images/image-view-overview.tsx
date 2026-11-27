@@ -15,7 +15,7 @@ import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
 import { DateTime as InputDateTime } from "components/input/datetime/DateTime";
 import { Form } from "components/input/form/Form";
-import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { Panel } from "components/panels/Panel";
 import { PopUp } from "components/popup";
 
 import { localizedMoment } from "utils";
@@ -617,10 +617,14 @@ class ImageViewOverview extends Component<ImageViewOverviewProps> {
     const data = this.props.data;
     return (
       <div>
-        {this.hasBuilt() && <BootstrapPanel title={t("Image Status")}>{this.renderStatus(data)}</BootstrapPanel>}
+        {this.hasBuilt() && (
+          <Panel headingLevel="h2" title={t("Image Status")}>
+            {this.renderStatus(data)}
+          </Panel>
+        )}
         <div className="row">
           <div className="col-md-6">
-            <BootstrapPanel title={t("Image Info")}>
+            <Panel headingLevel="h2" title={t("Image Info")}>
               <div className="auto-overflow">
                 <ImageInfo
                   data={data}
@@ -628,10 +632,10 @@ class ImageViewOverview extends Component<ImageViewOverviewProps> {
                   gotRuntimeInfo={this.props.gotRuntimeInfo}
                 />
               </div>
-            </BootstrapPanel>
+            </Panel>
           </div>
           <div className="col-md-6">
-            <BootstrapPanel title={t("Build Status")}>
+            <Panel headingLevel="h2" title={t("Build Status")}>
               <div>
                 <h3>{t("Build")}</h3>
                 <BuildStatus data={data} />
@@ -667,15 +671,15 @@ class ImageViewOverview extends Component<ImageViewOverviewProps> {
                   </div>
                 </div>
               )}
-            </BootstrapPanel>
+            </Panel>
           </div>
         </div>
         {data.customData && Object.keys(data.customData).length > 0 && (
           <div className="row">
             <div className="col-md-12">
-              <BootstrapPanel title={t("Custom Image Information")}>
+              <Panel headingLevel="h2" title={t("Custom Image Information")}>
                 <ImageCustomInfo data={data} />
-              </BootstrapPanel>
+              </Panel>
             </div>
           </div>
         )}

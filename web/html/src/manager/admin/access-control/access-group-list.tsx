@@ -93,13 +93,11 @@ const AccessGroupList = () => {
     <TopPanel
       title={t("Access Group Management")}
       button={
-        <div className="pull-right btn-group">
-          <LinkButton
-            className="btn-primary"
-            text={t("Create Access Group")}
-            href="/rhn/manager/admin/access-control/create-access-group"
-          />
-        </div>
+        <LinkButton
+          className="btn-primary"
+          text={t("Create Access Group")}
+          href="/rhn/manager/admin/access-control/create-access-group"
+        />
       }
     >
       <Messages items={messages} />
