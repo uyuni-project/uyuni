@@ -19,9 +19,20 @@ require_relative 'xmlrpc_client'
 require_relative 'http_client'
 require 'date'
 require 'logger'
+require 'timeout'
 
 # Abstract parent class describing an API test
 class ApiTest
+  # Wall-clock limit of one API call is this factor times DEFAULT_TIMEOUT.
+  # The XML-RPC client only bounds each read (DEFAULT_TIMEOUT), and ApiRetry may repeat a read-only call
+  # twice, so the factor leaves room for three attempts plus the login and logout round trips.
+  API_CALL_TIMEOUT_FACTOR = 4
+  private_constant :API_CALL_TIMEOUT_FACTOR
+
+  # Seconds to let a killed API thread run its ensure block (logout, unlock) before giving up on it.
+  API_THREAD_KILL_GRACE = 10
+  private_constant :API_THREAD_KILL_GRACE
+
   # Creates objects that are used to interact with the API.
   #
   # @param host [String] The target host ('server', 'server2', 'server3', ...).
@@ -77,6 +88,7 @@ class ApiTest
   # @param name [String] The name of the method you want to call.
   # @param params [Array] The parameters to pass to the API call.
   # @return [Object] The response from the API call.
+  # @raise [Timeout::Error] If the call does not finish within DEFAULT_TIMEOUT * API_CALL_TIMEOUT_FACTOR seconds.
   def call(name, *params)
     thread =
       Thread.new do
@@ -85,13 +97,30 @@ class ApiTest
             manage_api_lock(name)
             response = make_api_call(name, *params)
           ensure
-            @connection.call('auth.logout', sessionKey: @token) if @token
-            api_unlock if name.include?('user.')
+            begin
+              @connection.call('auth.logout', sessionKey: @token) if @token
+            ensure
+              api_unlock if name.include?('user.')
+            end
           end
           response
         end
       end
-    thread.value
+    limit = DEFAULT_TIMEOUT * API_CALL_TIMEOUT_FACTOR
+    return thread.value if thread.join(limit)
+
+    # Killing the thread runs its ensure blocks: the mutex is released, the session closed and the lock freed.
+    thread.kill
+    begin
+      thread.join(API_THREAD_KILL_GRACE)
+    rescue StandardError, ScriptError => e
+      # join re-raises an error from the thread's ensure block (e.g. a failing logout, which the HTTP client
+      # reports as ScriptError); keep the timeout as the failure
+      @logger.warn("Cleanup of API call '#{name}' failed after the timeout: #{e.class}: #{e.message}")
+    end
+    raise Timeout::Error,
+          "API call '#{name}' to #{@host} did not finish within #{limit} seconds " \
+          '(it may also have been waiting for an earlier hung call on the same client)'
   end
 
   private
