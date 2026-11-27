@@ -16,13 +16,12 @@
  */
 package com.redhat.rhn.taskomatic.task.checkin;
 
-import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.TimeConversion;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 /**
@@ -125,12 +124,11 @@ public class SystemSummary {
         }
         else {
             try {
-                this.lastCheckin = new SimpleDateFormat(
-                        LocalizationService.RHN_DB_DATEFORMAT).parse(lastCheckinIn);
+                this.lastCheckin = TimeConversion.dateFromDbDateTimeString(lastCheckinIn);
             }
-            catch (ParseException e) {
-                throw new IllegalArgumentException("lastCheckin must be of the: [" +
-                        LocalizationService.RHN_DB_DATEFORMAT + "] it was: " +
+            catch (DateTimeParseException e) {
+                throw new IllegalArgumentException("lastCheckin must be in the format [" +
+                        TimeConversion.LOCAL_DATE_TIME_PATTERN + "], it was: " +
                         lastCheckinIn);
             }
         }

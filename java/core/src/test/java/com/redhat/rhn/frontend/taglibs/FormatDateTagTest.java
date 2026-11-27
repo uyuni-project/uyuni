@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
@@ -28,7 +29,10 @@ import com.redhat.rhn.testing.TagTestUtils;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import jakarta.servlet.jsp.JspException;
 
@@ -81,5 +85,45 @@ public class FormatDateTagTest extends BaseTestCase {
         catch (JspException e) {
             fail(e.toString());
         }
+    }
+
+    @Test
+    public void testDefaultPatternInContextTimeZone() throws JspException {
+        Locale originalLocale = Locale.getDefault();
+        try {
+            Locale.setDefault(Locale.US);
+            Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("Europe/Berlin"));
+
+            assertEquals("2010-04-01 15:04:24 CEST", renderBody(new FormatDateTag()));
+        }
+        finally {
+            Locale.setDefault(originalLocale);
+            Context.freeCurrentContext();
+        }
+    }
+
+    @Test
+    public void testDefaultPatternWithTypeUsesTagLocale() throws JspException {
+        try {
+            Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("Europe/Berlin"));
+            FormatDateTag tag = new FormatDateTag();
+            tag.setType("both");
+            tag.setLocale(Locale.GERMAN);
+
+            // the default pattern wins over the date and time styles
+            assertEquals("2010-04-01 15:04:24 MESZ", renderBody(tag));
+        }
+        finally {
+            Context.freeCurrentContext();
+        }
+    }
+
+    private static String renderBody(FormatDateTag tag) throws JspException {
+        TagTestHelper tth = TagTestUtils.setupTagTest(tag, null);
+        tag.setPageContext(tth.getPageContext());
+        tag.setValue(Date.from(Instant.parse("2010-04-01T13:04:24Z")));
+        tag.doStartTag();
+        String out = tth.getPageContext().getOut().toString();
+        return out.substring(out.indexOf('>') + 1, out.lastIndexOf("  </time>"));
     }
 }

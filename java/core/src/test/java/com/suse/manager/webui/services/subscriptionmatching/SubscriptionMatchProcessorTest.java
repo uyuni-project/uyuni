@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -39,7 +40,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -506,7 +507,9 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertTrue(data.getMessages().isEmpty());
     }
 
-    private Date date(String source) throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(source);
+    // the trailing Z of the sources is ignored: they are local times in the JVM time zone
+    private Date date(String source) {
+        return TimeConversion.dateFromLocalDateTimeString(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"), source);
     }
 }

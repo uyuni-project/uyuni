@@ -17,6 +17,7 @@
 package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
@@ -27,9 +28,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
@@ -394,12 +394,11 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         }
         else {
             try {
-                this.lastCheckin = new SimpleDateFormat(
-                        LocalizationService.RHN_DB_DATEFORMAT).parse(lastCheckinIn);
+                this.lastCheckin = TimeConversion.dateFromDbDateTimeString(lastCheckinIn);
             }
-            catch (ParseException e) {
-                throw new IllegalArgumentException("lastCheckin must be of the: [" +
-                        LocalizationService.RHN_DB_DATEFORMAT + "] it was: " +
+            catch (DateTimeParseException e) {
+                throw new IllegalArgumentException("lastCheckin must be in the format [" +
+                        TimeConversion.LOCAL_DATE_TIME_PATTERN + "], it was: " +
                         lastCheckinIn);
             }
         }

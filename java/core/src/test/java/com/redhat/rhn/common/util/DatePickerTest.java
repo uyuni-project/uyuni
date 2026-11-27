@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,6 +48,11 @@ public class DatePickerTest  {
         p = makePicker(Locale.GERMAN);
         assertFalse(p.isLatin());
         assertTrue(p.isDayBeforeMonth());
+
+        // 12-hour clock with day periods (上午/下午)
+        p = makePicker(Locale.TAIWAN);
+        assertTrue(p.isLatin());
+        assertFalse(p.isDayBeforeMonth());
     }
 
     @Test
@@ -108,10 +113,8 @@ public class DatePickerTest  {
         assertNull(p.getYear());
     }
 
-    private Date parseDate(String date) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm", Locale.ENGLISH);
-        sdf.setTimeZone(TZ);
-        return sdf.parse(date);
+    private Date parseDate(String date) {
+        return Date.from(LocalDateTime.parse(date).atZone(TZ.toZoneId()).toInstant());
     }
 
     private DatePicker makePicker(Locale locale, int yearDirection) {

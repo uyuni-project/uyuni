@@ -122,7 +122,6 @@ public class SCCSubscriptionJson {
      */
     public Date getExpiresAt() {
         // The date-time supposed to be strictly ISO-8601.
-        // Note that SimpleDateFormat is not ISO-8601 compliant on up to Java 6 inclusive.
         return this.expiresAt == null ? null : Date.from(Instant.parse(this.expiresAt));
     }
 

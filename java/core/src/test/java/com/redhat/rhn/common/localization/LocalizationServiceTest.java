@@ -32,7 +32,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -194,8 +194,7 @@ public class LocalizationServiceTest extends BaseTestCase {
 
         // Here we test converting a Pacific Standard Time date from the RHN
         // Database format to the standard Java format + timezone in GMT.
-        Date dt = new SimpleDateFormat(LocalizationService.RHN_DB_DATEFORMAT +
-                " z").parse("2004-12-10 13:20:00 PST");
+        Date dt = Date.from(Instant.parse("2004-12-10T21:20:00Z")); // 2004-12-10 13:20:00 PST
 
         DateFormat df = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -309,5 +308,23 @@ public class LocalizationServiceTest extends BaseTestCase {
                                     " 5 systems (http://www.redhat.com).";
         String actual = ls.getPlainText("testMessage.html", 5);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testFormatCustomDateUsesContextTimeZone() {
+        Locale originalLocale = Locale.getDefault();
+        try {
+            Locale.setDefault(Locale.US);
+            Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("Europe/Berlin"));
+
+            assertEquals("2010-04-01 15:04:24 CEST",
+                    ls.formatCustomDate(Date.from(Instant.parse("2010-04-01T13:04:24Z"))));
+            assertEquals("2010-01-01 13:00:00 CET",
+                    ls.formatCustomDate(Date.from(Instant.parse("2010-01-01T12:00:00Z"))));
+        }
+        finally {
+            Locale.setDefault(originalLocale);
+            Context.freeCurrentContext();
+        }
     }
 }

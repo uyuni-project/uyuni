@@ -22,6 +22,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.common.util.TimeConversion;
 import com.redhat.rhn.frontend.context.Context;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -32,7 +33,6 @@ import java.io.File;
 import java.text.Collator;
 import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,11 +58,6 @@ import java.util.TreeSet;
  */
 public class LocalizationService {
 
-    /**
-     * DateFormat used by RHN database queries. Useful for converting RHN dates
-     * into java.util.Dates so they can be formatted based on Locale.
-     */
-    public static final String RHN_DB_DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String RHN_CUSTOM_DATEFORMAT = "yyyy-MM-dd HH:mm:ss z";
     private static final String DOC_FOLDER = "/usr/share/susemanager/www/htdocs/docs";
 
@@ -458,10 +453,8 @@ public class LocalizationService {
      * @return String representation of given date for set timezone
      */
     public String formatCustomDate(Date date) {
-        TimeZone tz = determineTimeZone();
-        SimpleDateFormat sdf = new SimpleDateFormat(RHN_CUSTOM_DATEFORMAT);
-        sdf.setTimeZone(tz);
-        return sdf.format(date);
+        return TimeConversion.localDateTimeWithZoneNameString(date, determineTimeZone(),
+                Locale.getDefault(Locale.Category.FORMAT));
     }
 
     /**

@@ -16,12 +16,6 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -38,7 +32,6 @@ public class HistoryEvent extends BaseDto {
     private String historyType;
     private String historyTypeName;
     private String details;
-    private static Logger logger = LogManager.getLogger(HistoryEvent.class);
     /**
      * gets details of the event
      * @return details
@@ -65,27 +58,6 @@ public class HistoryEvent extends BaseDto {
      */
     public void setCompleted(Date completedIn) {
         this.completed = completedIn;
-    }
-
-
-    /**
-     * sets the completed date based on a string format dateFormat
-     * @param completedIn the date in a string format
-     */
-    public void setCompleted(String completedIn) {
-        String dateFormat = "yyyy-MM-dd kk:mm:ss";
-        SimpleDateFormat format = new SimpleDateFormat(dateFormat);
-
-        if (completedIn == null) {
-            this.completed = null;
-            return;
-        }
-        try {
-            this.completed = format.parse(completedIn);
-        }
-        catch (ParseException e) {
-            logger.error("Cannot parse {} according to format {}", completedIn, dateFormat, e);
-        }
     }
 
     /**

@@ -21,11 +21,13 @@ import static com.redhat.rhn.frontend.action.systems.SystemSearchHelperIndex.SNA
 
 import com.redhat.rhn.domain.Labeled;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.TimeZone;
 import java.util.function.UnaryOperator;
 
 public enum SystemSearchHelperType implements Labeled {
@@ -65,6 +67,10 @@ public enum SystemSearchHelperType implements Labeled {
     LOC_ROOM("systemsearch_location_room", SERVER_INDEX, buildPrefixQuery("room")),
     LOC_RACK("systemsearch_location_rack", SERVER_INDEX, buildPrefixQuery("rack")),
     UUID("systemsearch_uuid", SERVER_INDEX, buildPrefixQuery("uuid"));
+
+    // Lucene uses GMT for indexing
+    private static final DateTimeFormatter LUCENE_DATE_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyyMMddHHmm").withZone(ZoneId.of("GMT"));
 
     private static final List<SystemSearchHelperType> ALL_TYPES = List.of(
             NAME_AND_DESCRIPTION,
@@ -209,12 +215,7 @@ public enum SystemSearchHelperType implements Labeled {
     }
 
     private static String formatDateString(Date d) {
-        String dateFormat = "yyyyMMddHHmm";
-        java.text.SimpleDateFormat sdf =
-                new java.text.SimpleDateFormat(dateFormat);
-        // Lucene uses GMT for indexing
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        return sdf.format(d);
+        return LUCENE_DATE_FORMATTER.format(Instant.ofEpochMilli(d.getTime()));
     }
 
     private static UnaryOperator<String> buildQuerySearchCheckin() {
