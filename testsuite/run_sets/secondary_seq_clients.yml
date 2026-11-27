@@ -7,6 +7,10 @@
 - features/secondary/buildhost_osimage_build_image.feature
 - features/secondary/allcli_reboot.feature
 - features/secondary/min_cve_audit.feature
+# OVAL data is global server state and stays after this feature: keep it sequential and after
+# min_cve_audit.feature, whose "List systems by patch status via API before patch" scenario
+# fails once OVAL data is synced (bsc#1291585)
+- features/secondary/allcli_oval_cve_audit.feature
 - features/secondary/min_rhlike_openscap_audit.feature
 - features/secondary/min_rhlike_remote_command.feature
 - features/secondary/min_rhlike_ssh.feature

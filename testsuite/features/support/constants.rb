@@ -3,6 +3,12 @@
 
 TASKOMATIC_LOG_PATH = '/var/log/rhn/rhn_taskomatic_daemon.log'.freeze
 
+# OVAL sources of the server (a package-owned file in the container) and the fixture served from the pub directory.
+# The backup sits next to the original, so a container restart, which resets the original, also drops the backup.
+OVAL_CONFIG_PATH = '/usr/share/susemanager/oval/oval.config.json'.freeze
+OVAL_CONFIG_BACKUP = "#{OVAL_CONFIG_PATH}.orig".freeze
+OVAL_FIXTURE_PATH = '/srv/www/htdocs/pub/oval-fixture.xml'.freeze
+
 # Default wait, in seconds, before giving up (also needed outside Cucumber, e.g. by the Rakefile)
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 

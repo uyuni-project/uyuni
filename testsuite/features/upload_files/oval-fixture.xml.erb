@@ -1,0 +1,61 @@
+<!--
+Copyright (c) 2026 SUSE LLC.
+SPDX-License-Identifier: MIT
+
+OVAL fixture of allcli_oval_cve_audit.feature, in the format of the SUSE OVAL feeds: milkyway-dummy older than
+2.0-1.1 is affected by <%= cve %> on the SLES release <%= release %>. The product derives the platform CPE from the
+"sles-release is ==" test, so it must match the rhnServer.cpe of the minion (<%= cpe %>).
+-->
+<oval_definitions xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
+                  xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5">
+  <definitions>
+    <definition id="oval:org.uyuni.testsuite:def:1" version="1" class="vulnerability">
+      <metadata>
+        <title><%= cve %></title>
+        <description>Fake vulnerability of the testsuite package milkyway-dummy</description>
+        <advisory from="security@suse.de">
+          <cve><%= cve %></cve>
+          <affected_cpe_list>
+            <cpe><%= cpe %></cpe>
+          </affected_cpe_list>
+        </advisory>
+      </metadata>
+      <criteria operator="AND">
+        <criterion test_ref="oval:org.uyuni.testsuite:tst:1" comment="SUSE Linux Enterprise Server <%= release %> is installed"/>
+        <criterion test_ref="oval:org.uyuni.testsuite:tst:2" comment="milkyway-dummy-2.0-1.1 is installed"/>
+      </criteria>
+    </definition>
+  </definitions>
+  <tests>
+    <rpminfo_test id="oval:org.uyuni.testsuite:tst:1" version="1" comment="sles-release is ==<%= release %>"
+                  check="at least one" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+      <object object_ref="oval:org.uyuni.testsuite:obj:1"/>
+      <state state_ref="oval:org.uyuni.testsuite:ste:1"/>
+    </rpminfo_test>
+    <rpminfo_test id="oval:org.uyuni.testsuite:tst:2" version="1" comment="milkyway-dummy is &lt;2.0-1.1"
+                  check="at least one" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+      <object object_ref="oval:org.uyuni.testsuite:obj:2"/>
+      <state state_ref="oval:org.uyuni.testsuite:ste:2"/>
+    </rpminfo_test>
+  </tests>
+  <objects>
+    <rpminfo_object id="oval:org.uyuni.testsuite:obj:1" version="1"
+                    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+      <name>sles-release</name>
+    </rpminfo_object>
+    <rpminfo_object id="oval:org.uyuni.testsuite:obj:2" version="1"
+                    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+      <name>milkyway-dummy</name>
+    </rpminfo_object>
+  </objects>
+  <states>
+    <rpminfo_state id="oval:org.uyuni.testsuite:ste:1" version="1"
+                   xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+      <version operation="equals"><%= release %></version>
+    </rpminfo_state>
+    <rpminfo_state id="oval:org.uyuni.testsuite:ste:2" version="1"
+                   xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+      <evr datatype="evr_string" operation="less than">0:2.0-1.1</evr>
+    </rpminfo_state>
+  </states>
+</oval_definitions>
