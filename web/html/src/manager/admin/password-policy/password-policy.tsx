@@ -12,6 +12,7 @@ import { DEPRECATED_Check, Form, Text } from "components/input";
 import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import { MessagesContainer, showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
+import HelpIcon from "components/utils/HelpIcon";
 
 import Network from "utils/network";
 
@@ -21,6 +22,7 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
   const policy_endpoint = "/rhn/manager/api/admin/config/password-policy";
   const [defaults, setDefaults] = useState(prop.defaults);
   const [policy, setPolicy] = useState(prop.policy);
+  const [isValid, setIsValid] = useState(true);
 
   return (
     <TopPanel title={t("Server Configuration - Password Policy")} icon="fa-info-circle">
@@ -66,7 +68,7 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
           </li>
         </ul>
       </div>
-      <Form model={policy} onChange={(model) => setPolicy({ ...model })}>
+      <Form model={policy} onChange={(model) => setPolicy({ ...model })} onValidate={setIsValid}>
         <Panel headingLevel="h2" title={t("Password Policy Settings")}>
           {/* Minimum Length */}
           <Text
@@ -131,12 +133,20 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
 
           {/* Allowed Special Characters */}
           <Text
-            label={t("Allowed Special Characters")}
+            label={t("Required Special Characters")}
+            required={policy.specialCharFlag}
             disabled={!policy.specialCharFlag}
             name="specialChars"
             labelClass="col-md-3 text-left"
-            divClass="col-md-3"
+            divClass="col-md-3 d-flex gap-3"
             defaultValue={defaults.specialChars?.toLocaleString()}
+            hint={
+              <HelpIcon
+                text={t(
+                  "When enabled, passwords must contain at least one of the specified characters. Other special characters are also allowed."
+                )}
+              />
+            }
           />
           {/* Restrict Character Occurrence */}
           <DEPRECATED_Check
@@ -162,6 +172,7 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
                   id="saveButton"
                   className="btn-primary btn-large"
                   text={t("Save")}
+                  disabled={!isValid}
                   action={() => {
                     Network.post(policy_endpoint, policy)
                       .then(() => {

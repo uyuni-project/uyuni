@@ -67,6 +67,7 @@ public class PasswordPolicyController {
         get("/manager/api/admin/config/password-policy/default", withUser(this::defaultPasswordPolicy));
         get("/manager/api/admin/config/password-policy", withUser(this::getPasswordPolicy));
         post("/manager/api/admin/config/password-policy/validate-password", withUser(this::validatePassword));
+        get("/manager/api/password-policy", this::getPublicPasswordPolicy);
     }
 
     /**
@@ -137,6 +138,18 @@ public class PasswordPolicyController {
         if (!user.hasRole(SAT_ADMIN)) {
             throw new PermissionException(SAT_ADMIN);
         }
+        return getPublicPasswordPolicy(request, response);
+    }
+
+    /**
+     * get the current password policy without requiring authentication, so that password
+     * forms (including the first user creation) can show the requirements
+     *
+     * @param request  the request
+     * @param response the response
+     * @return the current password policy
+     */
+    public String getPublicPasswordPolicy(Request request, Response response) {
         try {
             PasswordPolicy passwordPolicyProperties = PasswordPolicy.buildFromFactory();
             return json(GSON, response, ResultJson.success(

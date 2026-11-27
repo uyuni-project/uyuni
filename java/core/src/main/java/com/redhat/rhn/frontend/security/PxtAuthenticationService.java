@@ -70,6 +70,8 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         routes.add("/rhn/ResetPasswordSubmit");
         routes.add("/rhn/saltboot");
         routes.add("/rhn/hub");
+        // password policy requirements, shown on password forms such as the first user creation
+        routes.add("/rhn/manager/api/password-policy");
         // HTTP API public endpoints
         routes.addAll(HttpApiRegistry.getUnautenticatedRoutes());
         UNPROTECTED_URIS = Set.copyOf(routes);
