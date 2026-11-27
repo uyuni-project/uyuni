@@ -1,0 +1,2 @@
+- Fix spacecmd group_addsystems and group_removesystems
+  IndexError when system arguments are missing
