@@ -20,13 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionTest;
+import com.redhat.rhn.domain.kickstart.RepoInfo;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -44,6 +48,14 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         helper = new KickstartUrlHelper(ksdata, "spacewalk.example.com");
+    }
+
+    /**
+     * Restores the default kickstart URL scheme.
+     */
+    @AfterEach
+    public void tearDown() {
+        Config.get().remove(ConfigDefaults.KICKSTART_URL_SCHEME);
     }
 
     @Test
@@ -127,6 +139,21 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
             KickstartUrlHelper.COBBLER_SERVER_VARIABLE;
 
         assertEquals(expected, helper.getCobblerMediaUrlBase());
+    }
+
+    @Test
+    public void testHttpsUrlScheme() {
+        Config.get().setString(ConfigDefaults.KICKSTART_URL_SCHEME, "https");
+        helper = new KickstartUrlHelper(ksdata);
+        assertEquals("https://" + KickstartUrlHelper.COBBLER_SERVER_VARIABLE,
+            helper.getCobblerMediaUrlBase());
+        assertEquals("https://" + KickstartUrlHelper.COBBLER_SERVER_VARIABLE +
+            "$" + KickstartUrlHelper.COBBLER_MEDIA_VARIABLE, helper.getCobblerMediaUrl());
+
+        RepoInfo repo = RepoInfo.create("AppStream", "AppStream");
+        assertEquals("repo --name=AppStream --baseurl=https://" + KickstartUrlHelper.COBBLER_SERVER_VARIABLE +
+            "$" + KickstartUrlHelper.COBBLER_MEDIA_VARIABLE + "/AppStream/AppStream",
+            repo.getFormattedCommand(ksdata));
     }
 
     @Test

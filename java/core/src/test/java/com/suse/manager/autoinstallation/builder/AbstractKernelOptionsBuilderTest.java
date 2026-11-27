@@ -15,6 +15,8 @@ package com.suse.manager.autoinstallation.builder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
@@ -26,6 +28,7 @@ import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -104,6 +107,14 @@ public class AbstractKernelOptionsBuilderTest extends MockObjectTestCase {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         user = mock(User.class, "user");
         parentChannel = mock(Channel.class, "parentChannel");
+    }
+
+    /**
+     * Restores the default kickstart URL scheme.
+     */
+    @AfterEach
+    public void tearDown() {
+        Config.get().remove(ConfigDefaults.KICKSTART_URL_SCHEME);
     }
 
     private KickstartableTree tree() {
@@ -197,6 +208,55 @@ public class AbstractKernelOptionsBuilderTest extends MockObjectTestCase {
      */
     @Test
     public void testInstallerUpdatesValueWithoutChild() {
+        OrgGlobalTestBuilder builder = new OrgGlobalTestBuilder(FQDN);
+        builder.childrenToReturn = Stream.empty();
+        assertEquals("0", builder.selfUpdateOption(tree()).toString());
+    }
+
+    /**
+     * The distro tree URL uses the configured https scheme.
+     */
+    @Test
+    public void testDistTreeUrlHttps() {
+        Config.get().setString(ConfigDefaults.KICKSTART_URL_SCHEME, "https");
+        TestBuilder builder = new TestBuilder(FQDN, user);
+        assertEquals("https://" + FQDN + "/ks/dist/tree1", builder.distTreeUrl(tree()));
+    }
+
+    /**
+     * The Cobbler system autoinstall URL uses the configured https scheme.
+     */
+    @Test
+    public void testSystemAutoinstallUrlHttps() {
+        Config.get().setString(ConfigDefaults.KICKSTART_URL_SCHEME, "https");
+        SystemRecord system = mock(SystemRecord.class, "system" + ++mockId);
+        checking(new Expectations() {{
+            allowing(system).getName(); will(returnValue("system1"));
+        }});
+        TestBuilder builder = new TestBuilder(FQDN, user);
+        assertEquals("https://" + FQDN + "/cblr/svc/op/autoinstall/system/system1",
+                builder.cobblerSystemAutoinstallUrl(system));
+    }
+
+    /**
+     * The installer-updates URL uses the configured https scheme.
+     */
+    @Test
+    public void testInstallerUpdatesValueHttps() {
+        Config.get().setString(ConfigDefaults.KICKSTART_URL_SCHEME, "https");
+        OrgGlobalTestBuilder builder = new OrgGlobalTestBuilder(FQDN);
+        builder.childrenToReturn = Stream.of(child("child1", true));
+        assertEquals("https://" + FQDN + "/ks/dist/child/child1/tree1",
+                builder.selfUpdateOption(tree()).toString());
+    }
+
+    /**
+     * Without an installer-updates child the self update stays disabled
+     * with 0, regardless of the configured scheme.
+     */
+    @Test
+    public void testInstallerUpdatesValueWithoutChildHttps() {
+        Config.get().setString(ConfigDefaults.KICKSTART_URL_SCHEME, "https");
         OrgGlobalTestBuilder builder = new OrgGlobalTestBuilder(FQDN);
         builder.childrenToReturn = Stream.empty();
         assertEquals("0", builder.selfUpdateOption(tree()).toString());
