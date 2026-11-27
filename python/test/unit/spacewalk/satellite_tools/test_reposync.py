@@ -149,6 +149,7 @@ class RepoSyncTest(unittest.TestCase):
                     "repo_label": None,
                     "id": None,
                     "metadata_signed": "N",
+                    "pqc_metadata_signed": "N",
                     "repo_type": "yum",
                 }
             ],
@@ -1200,6 +1201,7 @@ class SyncTest(unittest.TestCase):
                 [
                     {
                         "metadata_signed": "N",
+                        "pqc_metadata_signed": None,
                         "repo_label": "channel-label-1",
                         "id": 508,
                         "source_url": [url1],
@@ -1207,6 +1209,7 @@ class SyncTest(unittest.TestCase):
                     },
                     {
                         "metadata_signed": "Y",
+                        "pqc_metadata_signed": None,
                         "repo_label": "channel-label-2",
                         "id": 509,
                         "source_url": [url2],
