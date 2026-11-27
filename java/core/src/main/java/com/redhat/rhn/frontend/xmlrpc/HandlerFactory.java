@@ -194,7 +194,7 @@ public class HandlerFactory {
         factory.addHandler("admin.ssh", new AdminSshHandler(saltApi));
         factory.addHandler("ansible", new AnsibleHandler(new AnsibleManager(GlobalInstanceHolder.SALT_API)));
         factory.addHandler("api", new ApiHandler(factory));
-        factory.addHandler("audit", new CVEAuditHandler());
+        factory.addHandler("audit", new CVEAuditHandler(xmlRpcSystemHelper));
         factory.addHandler("auth", new AuthHandler());
         factory.addHandler("channel", channelHandler);
         factory.addHandler("channel.access", new ChannelAccessHandler());

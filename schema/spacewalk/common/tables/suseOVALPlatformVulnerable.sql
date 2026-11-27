@@ -29,6 +29,7 @@ CREATE TABLE suseOVALPlatformVulnerable
                             ON DELETE CASCADE,
     cve_id               NUMERIC NOT NULL
                             REFERENCES rhnCve (id),
+    severity             VARCHAR(16),
     last_modified        TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
                          CONSTRAINT platform_prod_cve_id_uq UNIQUE (platform_id, product_os_id, cve_id)
 );

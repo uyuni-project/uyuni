@@ -581,6 +581,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.audit.coco', 'R', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('systems.audit.cve', 'R', 'View the CVEs affecting a system')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.states.highstate', 'W', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -1392,6 +1395,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.audit.list_systems_by_patch_status', 'R', 'List visible systems with their patch status regarding a given CVE')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.audit.list_cves_by_system', 'R', 'List the CVEs affecting a system with their patch status and severity')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.image.delta.create_delta_image', 'W', 'Import an image and schedule an inspect afterwards. The "size" entries in the pillar')

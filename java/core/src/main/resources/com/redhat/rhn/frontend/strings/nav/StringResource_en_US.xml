@@ -431,6 +431,12 @@
           <context context-type="sourcefile">/rhn/manager/systems/details/schedule-scap-scan</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="nav.system.audit.cve">
+          <source>CVE</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/audit/cve</context>
+        </context-group>
+      </trans-unit>
       <!-- CoCo Attestation -->
       <trans-unit id="nav.system.coco">
         <source>Confidential Computing</source>

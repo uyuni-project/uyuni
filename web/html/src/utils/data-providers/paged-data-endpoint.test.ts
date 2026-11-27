@@ -37,6 +37,17 @@ describe("paged data endpoint", () => {
     expect(endpoint.uri.search).toBe("");
   });
 
+  test("Keeps the query parameters of the initial URL", () => {
+    const endpoint = new PagedDataEndpoint(new URL(PATH + "?statuses=PATCHED", ORIGIN));
+    endpoint.setPage(new PageControl(1, 10));
+    expect(endpoint.uri.searchParams.get("statuses")).toBe("PATCHED");
+    expect(endpoint.uri.searchParams.get("ps")).toBe("10");
+
+    endpoint.setSelectAll("abc");
+    expect(endpoint.uri.searchParams.get("statuses")).toBe("PATCHED");
+    expect(endpoint.uri.searchParams.has("ps")).toBe(false);
+  });
+
   test("Page query filter parameters", () => {
     const pageControl = new PageControl(1, 10, "mystring", null, "mycolumn");
     const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));

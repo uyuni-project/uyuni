@@ -28,7 +28,9 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 
 import com.suse.oval.manager.OVALResourcesCache;
+import com.suse.oval.ovaltypes.Advisory;
 import com.suse.oval.ovaltypes.DefinitionType;
+import com.suse.oval.ovaltypes.MetadataType;
 import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
@@ -103,8 +105,14 @@ public class OVALCachingFactory extends HibernateFactory {
             Optional<VulnerablePackagesExtractor> vulnerablePackagesExtractor =
                     VulnerablePackagesExtractors.create(definition, rootType.getOsFamily(), ovalResourcesCache);
 
-            vulnerablePackagesExtractor.ifPresent(vPackage ->
-                productVulnerablePackages.addAll(vPackage.extract()));
+            OvalSeverity severity = OvalSeverity.fromOval(Optional.ofNullable(definition.getMetadata())
+                    .flatMap(MetadataType::getAdvisory)
+                    .flatMap(Advisory::getSeverity)
+                    .orElse(null));
+            vulnerablePackagesExtractor.ifPresent(vPackage -> vPackage.extract().forEach(pvp -> {
+                pvp.setSeverity(severity);
+                productVulnerablePackages.add(pvp);
+            }));
         }
 
         int totalSaved = 0;
@@ -118,6 +126,7 @@ public class OVALCachingFactory extends HibernateFactory {
                     params.put("os_product_family", ovalOsProduct.getOsFamily().toString());
                     params.put("os_product_version", ovalOsProduct.getOsVersion());
                     params.put("cve_name", cve);
+                    params.put("severity", pvp.getSeverity().toDbValue());
                     params.put("package_name", vp.getName());
                     params.put("fix_epoch", vp.getFixVersion().map(PackageEvr::getEpoch).orElse(null));
                     params.put("fix_version", vp.getFixVersion().map(PackageEvr::getVersion).orElse(null));
