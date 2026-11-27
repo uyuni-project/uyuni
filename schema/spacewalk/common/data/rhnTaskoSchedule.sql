@@ -22,11 +22,6 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
         current_timestamp, '0 * * * * ?');
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
-    VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'cobbler-sync-default',
-        (SELECT id FROM rhnTaskoBunch WHERE name='cobbler-sync-bunch'),
-        current_timestamp, '0 0/5 * * * ?');
-
-INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'channel-repodata-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='channel-repodata-bunch'),
         current_timestamp, '0 * * * * ?');
@@ -89,6 +84,13 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'mgr-forward-registration-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='mgr-forward-registration-bunch'),
         current_timestamp, '0 0/15 * * * ?');
+
+-- Every 30 minutes
+
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+    VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'cobbler-sync-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='cobbler-sync-bunch'),
+        current_timestamp, '0 0/30 * * * ?');
 
 -- Every hour
 
