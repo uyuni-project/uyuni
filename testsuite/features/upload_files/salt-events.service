@@ -1,0 +1,8 @@
+[Unit]
+Description=Log salt events
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+ExecStart=sh -c 'salt-run state.event pretty=True >/var/log/rhn/salt-event.log'
