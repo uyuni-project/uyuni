@@ -325,6 +325,10 @@ class TFTPHandler(BaseHandler):
             # ignore other pxelinux.cfg files
             logging.debug("Got request for %s, ignoring", path)
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), path)
+        elif path.startswith("grub/grub.cfg-"):
+            # GRUB probes UUID, MAC and IP based names first, cobbler never creates them
+            logging.debug("Got request for %s, ignoring", path)
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), path)
         elif path.startswith("grub/") and path.endswith("_menu_items.cfg"):
             logging.debug("Got request for %s, filtering HTTP", path)
             return HttpResponseDataFilteredGrub(
@@ -367,10 +371,19 @@ class TFTPServer(BaseServer):
         self._server_fqdn = server_fqdn
         self._capath = capath
         self._replace_fqdns = replace_fqdns
+        self._handlers = {}
         super().__init__(address, port, retries, timeout, None)
 
     def get_handler(self, server_addr, peer, path, options):
-        return TFTPHandler(
+        self._handlers = {
+            key: handler
+            for key, handler in self._handlers.items()
+            if handler.is_alive()
+        }
+        if (peer, path) in self._handlers:
+            logging.debug("Request for %s from %s is already being served", path, peer)
+            return None
+        handler = TFTPHandler(
             server_addr,
             peer,
             path,
@@ -382,6 +395,8 @@ class TFTPServer(BaseServer):
             self._capath,
             self._replace_fqdns,
         )
+        self._handlers[(peer, path)] = handler
+        return handler
 
 
 def get_arguments():
