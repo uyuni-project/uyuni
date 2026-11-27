@@ -19,6 +19,8 @@ package com.redhat.rhn.frontend.xmlrpc.contentmgmt;
 
 import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -33,11 +35,24 @@ import com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.ContentValidationFaultException;
+import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
+import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
+import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.contentmgmt.MockModulemdApi;
+import com.redhat.rhn.manager.errata.syncwithpackages.dto.SyncedErratumWithPackages;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.jmock.junit5.JUnit5Mockery;
+import org.jmock.lib.concurrent.Synchroniser;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +62,16 @@ public class ContentManagementHandlerTest extends BaseHandlerTestCase {
 
     private ContentManager manager = new ContentManager(new MockModulemdApi());
     private ContentManagementHandler handler = new ContentManagementHandler(manager);
+
+    private static final String ADVISORY = "CLM-2026:1234";
+    private static final String DEV_HOTFIX = "cp-dev-hotfix";
+    private static final String TEST_HOTFIX = "cp-test-hotfix";
+
+    @RegisterExtension
+    protected final Mockery context = new JUnit5Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+    }};
 
     @Test
     public void testCreateModuleFilter() {
@@ -172,5 +197,134 @@ public class ContentManagementHandlerTest extends BaseHandlerTestCase {
         catch (ContentValidationFaultException e) {
             assertEquals("Module 'mymodule:notexists' not found.", e.getMessage());
         }
+    }
+
+    /**
+     * Tests the result of the content manager is returned when cloning an erratum into one hotfix channel.
+     */
+    @Test
+    void testCloneErrataIntoHotfixChannel() {
+        ContentManager mockedManager = context.mock(ContentManager.class);
+        SyncedErratumWithPackages synced = new SyncedErratumWithPackages(null, List.of());
+        context.checking(new Expectations() {{
+            oneOf(mockedManager).cloneIntoHotfixChannel(admin, ADVISORY, DEV_HOTFIX);
+            will(returnValue(synced));
+        }});
+
+        assertSame(synced,
+                new ContentManagementHandler(mockedManager).cloneErrataIntoHotfixChannel(admin, ADVISORY, DEV_HOTFIX));
+    }
+
+    /**
+     * Tests the result of the content manager is returned when cloning an erratum into several hotfix channels.
+     */
+    @Test
+    void testCloneErrataIntoHotfixChannels() {
+        ContentManager mockedManager = context.mock(ContentManager.class);
+        SyncedErratumWithPackages synced = new SyncedErratumWithPackages(null, List.of());
+        Map<String, SyncedErratumWithPackages> result = Map.of(DEV_HOTFIX, synced, TEST_HOTFIX, synced);
+        List<String> labels = List.of(DEV_HOTFIX, TEST_HOTFIX);
+        context.checking(new Expectations() {{
+            oneOf(mockedManager).cloneIntoHotfixChannels(admin, ADVISORY, labels);
+            will(returnValue(result));
+        }});
+
+        assertEquals(result,
+                new ContentManagementHandler(mockedManager).cloneErrataIntoHotfixChannels(admin, ADVISORY, labels));
+    }
+
+    /**
+     * Tests the errors of the content manager reach the caller unchanged when cloning into one hotfix channel, except
+     * an unknown advisory, which becomes a fault.
+     */
+    @Test
+    void testCloneErrataIntoHotfixChannelErrors() {
+        ContentManager mockedManager = context.mock(ContentManager.class);
+        ContentManagementHandler mockedHandler = new ContentManagementHandler(mockedManager);
+        List<RuntimeException> errors = List.of(
+                new InvalidChannelException("not a hotfix channel"),
+                new NoSuchChannelException(DEV_HOTFIX),
+                new PermissionCheckFailureException("not a channel admin"));
+
+        for (RuntimeException error : errors) {
+            context.checking(new Expectations() {{
+                oneOf(mockedManager).cloneIntoHotfixChannel(admin, ADVISORY, DEV_HOTFIX);
+                will(throwException(error));
+            }});
+
+            assertSame(error, assertThrows(error.getClass(),
+                    () -> mockedHandler.cloneErrataIntoHotfixChannel(admin, ADVISORY, DEV_HOTFIX)));
+        }
+
+        context.checking(new Expectations() {{
+            oneOf(mockedManager).cloneIntoHotfixChannel(admin, ADVISORY, DEV_HOTFIX);
+            will(throwException(new EntityNotExistsException(ADVISORY)));
+        }});
+        assertThrows(EntityNotExistsFaultException.class,
+                () -> mockedHandler.cloneErrataIntoHotfixChannel(admin, ADVISORY, DEV_HOTFIX));
+    }
+
+    /**
+     * Tests the errors of the content manager reach the caller unchanged when cloning into several hotfix
+     * channels, except an unknown advisory, which becomes a fault.
+     */
+    @Test
+    void testCloneErrataIntoHotfixChannelsErrors() {
+        ContentManager mockedManager = context.mock(ContentManager.class);
+        ContentManagementHandler mockedHandler = new ContentManagementHandler(mockedManager);
+        List<String> labels = List.of(DEV_HOTFIX, TEST_HOTFIX);
+        List<RuntimeException> errors = List.of(
+                new InvalidParameterException("hotfixLabels must not be empty"),
+                new InvalidChannelException("not a hotfix channel"),
+                new NoSuchChannelException(TEST_HOTFIX),
+                new PermissionCheckFailureException("not a channel admin"));
+
+        for (RuntimeException error : errors) {
+            context.checking(new Expectations() {{
+                oneOf(mockedManager).cloneIntoHotfixChannels(admin, ADVISORY, labels);
+                will(throwException(error));
+            }});
+
+            assertSame(error, assertThrows(error.getClass(),
+                    () -> mockedHandler.cloneErrataIntoHotfixChannels(admin, ADVISORY, labels)));
+        }
+
+        context.checking(new Expectations() {{
+            oneOf(mockedManager).cloneIntoHotfixChannels(admin, ADVISORY, labels);
+            will(throwException(new EntityNotExistsException(ADVISORY)));
+        }});
+        assertThrows(EntityNotExistsFaultException.class,
+                () -> mockedHandler.cloneErrataIntoHotfixChannels(admin, ADVISORY, labels));
+    }
+
+    /**
+     * Tests the result of the content manager is returned when listing the compatible hotfix channels.
+     */
+    @Test
+    void testListCompatibleHotfixChannelLabelsForAdvisory() {
+        ContentManager mockedManager = context.mock(ContentManager.class);
+        Map<String, List<String>> result = Map.of("cp", List.of(DEV_HOTFIX, TEST_HOTFIX));
+        context.checking(new Expectations() {{
+            oneOf(mockedManager).listCompatibleHotfixChannelLabelsByProject(ADVISORY, admin);
+            will(returnValue(result));
+        }});
+
+        assertEquals(result, new ContentManagementHandler(mockedManager)
+                .listCompatibleHotfixChannelLabelsForAdvisory(admin, ADVISORY));
+    }
+
+    /**
+     * Tests an unknown advisory is reported as a fault when listing the compatible hotfix channels.
+     */
+    @Test
+    void testListCompatibleHotfixChannelLabelsForUnknownAdvisory() {
+        ContentManager mockedManager = context.mock(ContentManager.class);
+        context.checking(new Expectations() {{
+            oneOf(mockedManager).listCompatibleHotfixChannelLabelsByProject(ADVISORY, admin);
+            will(throwException(new EntityNotExistsException(ADVISORY)));
+        }});
+
+        assertThrows(EntityNotExistsFaultException.class, () -> new ContentManagementHandler(mockedManager)
+                .listCompatibleHotfixChannelLabelsForAdvisory(admin, ADVISORY));
     }
 }
