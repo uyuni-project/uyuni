@@ -20,9 +20,9 @@ package com.suse.proxy;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.UyuniGeneralException;
 import com.redhat.rhn.testing.BaseTestCase;
 
+import com.suse.common.errors.UyuniGeneralException;
 import com.suse.proxy.update.ProxyConfigUpdateContext;
 import com.suse.proxy.update.ProxyConfigUpdateContextHandler;
 import com.suse.proxy.update.ProxyConfigUpdateFacadeImpl;

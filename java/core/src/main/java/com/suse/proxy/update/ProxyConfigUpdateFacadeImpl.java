@@ -13,8 +13,8 @@
 
 package com.suse.proxy.update;
 
-import static com.redhat.rhn.common.ErrorReportingStrategies.logReportingStrategy;
-import static com.redhat.rhn.common.ErrorReportingStrategies.validationReportingStrategy;
+import static com.suse.common.errors.ErrorReportingStrategies.logReportingStrategy;
+import static com.suse.common.errors.ErrorReportingStrategies.validationReportingStrategy;
 import static java.util.Arrays.asList;
 
 import com.redhat.rhn.domain.user.User;

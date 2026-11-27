@@ -18,10 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.UyuniError;
-import com.redhat.rhn.common.UyuniErrorReport;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.suse.common.errors.UyuniError;
+import com.suse.common.errors.UyuniErrorReport;
 
 import org.jmock.Expectations;
 import org.jmock.api.Invocation;

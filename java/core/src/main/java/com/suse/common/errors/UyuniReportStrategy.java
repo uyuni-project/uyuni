@@ -14,26 +14,19 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+package com.suse.common.errors;
 
-package com.redhat.rhn.common;
-
-import java.io.Serializable;
+import java.util.List;
 
 /**
- * Represents a generic error in scope of uyuni
+ * Interface for strategy reporting errors
+ * @param <E> the type of errors
  */
-public class UyuniError implements Serializable {
-    private final String message;
+public interface UyuniReportStrategy<E> {
 
     /**
-     * Constructor
-     * @param messageIn the error message
+     * Report a list of errors
+     * @param errors the list of errors
      */
-    public UyuniError(String messageIn) {
-        this.message = messageIn;
-    }
-
-    public String getMessage() {
-        return message;
-    }
+    void report(List<E> errors);
 }

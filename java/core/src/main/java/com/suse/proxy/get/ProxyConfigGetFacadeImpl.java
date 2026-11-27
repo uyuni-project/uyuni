@@ -13,7 +13,7 @@
 
 package com.suse.proxy.get;
 
-import static com.redhat.rhn.common.ErrorReportingStrategies.logReportingStrategy;
+import static com.suse.common.errors.ErrorReportingStrategies.logReportingStrategy;
 import static com.suse.proxy.ProxyConfigUtils.PROXY_PILLAR_CATEGORY;
 import static com.suse.utils.Predicates.isAbsent;
 import static java.util.Arrays.asList;

@@ -10209,6 +10209,36 @@ For a detailed analysis, please refer to the log files.
       <trans-unit id="product_migration.addon_or_higher">
         <source>{0} or higher</source>
       </trans-unit>
+      <trans-unit id="common.error.required" xml:space="preserve">
+        <source>{1} is required</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Common error templates: {0} is the offending value, {1} the field or object</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="common.error.illegal_value" xml:space="preserve">
+        <source>Invalid value for {1}: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Common error templates: {0} is the offending value, {1} the field or object</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="common.error.not_found" xml:space="preserve">
+        <source>{1} {0} not found</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Common error templates: {0} is the offending value, {1} the field or object</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="common.error.already_exists" xml:space="preserve">
+        <source>{1} {0} already exists</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Common error templates: {0} is the offending value, {1} the field or object</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="common.error.in_use" xml:space="preserve">
+        <source>{1} {0} is still in use</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Common error templates: {0} is the offending value, {1} the field or object</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

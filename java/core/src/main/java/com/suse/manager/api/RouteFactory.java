@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 import com.redhat.rhn.manager.session.SessionManager;
 
+import com.suse.common.errors.UyuniGeneralException;
 import com.suse.utils.ParameterizedTypeImpl;
 
 import com.google.gson.Gson;
@@ -218,7 +219,8 @@ public class RouteFactory {
                 // rollback here.
                 // The equivalent for XMLRPC is implemented in BaseHandler.invoke
                 HibernateFactory.rollbackTransaction();
-                if (!(exceptionInMethod instanceof FaultException)) {
+                if (!(exceptionInMethod instanceof FaultException ||
+                        exceptionInMethod instanceof UyuniGeneralException)) {
                     if (LOG.isInfoEnabled()) {
                         LOG.warn("{}: is not a fault exception.", exceptionInMethod.getClass().getName(),
                                 exceptionInMethod);

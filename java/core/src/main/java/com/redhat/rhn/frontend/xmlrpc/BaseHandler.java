@@ -41,6 +41,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.common.errors.UyuniErrorCategory;
+import com.suse.common.errors.UyuniGeneralException;
 import com.suse.manager.api.ApiIgnore;
 import com.suse.manager.api.ApiType;
 import com.suse.manager.api.ReadOnly;
@@ -164,6 +166,10 @@ public class BaseHandler implements XmlRpcInvocationHandler {
                 // FaultExceptions are "bad request" type of exceptions
                 // Normally they should be thrown as response to the client but there's no need to log them as errors.
                 log.debug("'{}' returned: [{}] {}", methodCalled, fault.getErrorCode(), fault.getMessage());
+            }
+            else if (cause instanceof UyuniGeneralException report &&
+                    report.getCategory() != UyuniErrorCategory.UNKNOWN) {
+                log.debug("'{}' returned: {}", methodCalled, report.getMessage());
             }
             else {
                 log.error("Error calling method: ", e);

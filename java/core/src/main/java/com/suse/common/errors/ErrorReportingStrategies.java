@@ -15,9 +15,11 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common;
+package com.suse.common.errors;
 
 import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
+
+import com.redhat.rhn.common.RhnRuntimeException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,6 +36,7 @@ public class ErrorReportingStrategies {
         throw new UnsupportedOperationException(NOT_INSTANTIABLE);
     }
 
+    // Default strategy - throw a {@code UyuniGeneralException} with all registered errors
     private static final UyuniReportStrategy<UyuniError> VALIDATION_REPORT_STRATEGY;
 
     static {
@@ -57,7 +60,10 @@ public class ErrorReportingStrategies {
      * @param obj Object to log
      * @param message Message to log
      * @return Supplier of RhnRuntimeException that logs the message and throw the exception
+     * @deprecated throw {@code new RhnRuntimeException(message, cause)} instead: the entry point logs it,
+     * so logging here logs it twice
      */
+    @Deprecated
     public static Supplier<RhnRuntimeException> raiseAndLog(Object obj, String message) {
         Logger logger = getLogger(obj);
         return () -> {

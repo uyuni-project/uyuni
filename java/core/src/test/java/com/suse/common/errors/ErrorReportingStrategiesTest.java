@@ -15,11 +15,13 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common;
+package com.suse.common.errors;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.redhat.rhn.common.RhnRuntimeException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;

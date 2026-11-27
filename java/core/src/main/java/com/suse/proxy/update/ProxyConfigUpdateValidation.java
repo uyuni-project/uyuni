@@ -39,12 +39,12 @@ import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_TFTPD;
 import static com.suse.utils.Predicates.isAbsent;
 import static java.lang.String.format;
 
-import com.redhat.rhn.common.UyuniErrorReport;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
+import com.suse.common.errors.UyuniErrorReport;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 
 import org.apache.logging.log4j.LogManager;

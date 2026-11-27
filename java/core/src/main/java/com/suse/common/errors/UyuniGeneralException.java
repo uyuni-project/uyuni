@@ -15,10 +15,12 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common;
+package com.suse.common.errors;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Represents a Uyuni general exception
@@ -37,6 +39,23 @@ public class UyuniGeneralException extends RuntimeException implements Serializa
 
     public List<UyuniError> getErrors() {
         return errors;
+    }
+
+    /**
+     * Returns the category of the whole report, used by the entry points to choose the response:
+     * the category of its errors if they all share one, UNKNOWN if any error is UNKNOWN,
+     * INVALID_ARGUMENT for a mix of the other categories.
+     * @return the category of the report
+     */
+    public UyuniErrorCategory getCategory() {
+        Set<UyuniErrorCategory> categories = errors.stream().map(UyuniError::getCategory).collect(Collectors.toSet());
+        if (categories.size() == 1) {
+            return categories.iterator().next();
+        }
+        if (categories.isEmpty() || categories.contains(UyuniErrorCategory.UNKNOWN)) {
+            return UyuniErrorCategory.UNKNOWN;
+        }
+        return UyuniErrorCategory.INVALID_ARGUMENT;
     }
 
     /**

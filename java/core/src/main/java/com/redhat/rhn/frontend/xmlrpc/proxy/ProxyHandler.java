@@ -24,7 +24,6 @@ import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_REPLACE;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.RhnRuntimeException;
-import com.redhat.rhn.common.UyuniGeneralException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
@@ -47,6 +46,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.common.errors.UyuniGeneralException;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
@@ -55,7 +55,6 @@ import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.proxy.migrate.ProxyBackupApplyState;
 import com.suse.proxy.update.ProxyConfigUpdateFacade;
-
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

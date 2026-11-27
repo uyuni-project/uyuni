@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
-package com.redhat.rhn.common;
+package com.suse.common.errors;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -100,5 +100,14 @@ public class UyuniErrorReportTest {
         List<UyuniError> errors = errorReport.getErrors();
         assertEquals(1, errors.size());
         assertNull(errors.get(0).getMessage());
+    }
+
+    @Test
+    public void testRegisterErrorWithCategory() {
+        UyuniErrorReport report = new UyuniErrorReport();
+        UyuniError coded = new UyuniError(UyuniErrorCategory.NOT_FOUND, "serverId", "Server 42 not found");
+        report.register(coded);
+
+        assertEquals(List.of(coded), report.getErrors());
     }
 }

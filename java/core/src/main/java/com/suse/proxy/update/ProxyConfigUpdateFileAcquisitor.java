@@ -21,8 +21,7 @@ package com.suse.proxy.update;
 import static com.suse.utils.Predicates.isAbsent;
 import static java.lang.String.format;
 
-import com.redhat.rhn.common.UyuniErrorReport;
-
+import com.suse.common.errors.UyuniErrorReport;
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
