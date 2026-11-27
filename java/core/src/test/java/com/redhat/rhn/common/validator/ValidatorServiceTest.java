@@ -16,7 +16,9 @@
  */
 package com.redhat.rhn.common.validator;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.testing.TestUtils;
@@ -26,6 +28,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * ValidatorTest - Test that the ValidatorService functions properly
@@ -91,6 +94,25 @@ public class ValidatorServiceTest {
 
         assertNotNull(
             ValidatorService.getInstance().validateObject(to, validator));
+    }
+
+    @Test
+    public void testValidateObjectWithXsdOfBaseClass() {
+        TestObject to = new TestObject();
+        to.setStringField("somevaluelkjajsjlfdlkjaslkjdf0980934098234");
+        to.setLongField(10L);
+        to.setSecondStringField("someothervalue");
+        ValidatorService service = ValidatorService.getInstance();
+
+        assertFalse(service.validateObject(TestObject.class, to, null, "TestObject.xsd").isEmpty());
+        assertTrue(service.validateObject(TestObject.class, to, List.of("secondStringField"),
+                "TestObject.xsd").isEmpty());
+    }
+
+    @Test
+    public void testValidateObjectMissingXsd() {
+        assertThrows(IllegalArgumentException.class, () -> ValidatorService.getInstance()
+                .validateObject(TestObject.class, new TestObject(), null, "NoSuch.xsd"));
     }
 
     /**

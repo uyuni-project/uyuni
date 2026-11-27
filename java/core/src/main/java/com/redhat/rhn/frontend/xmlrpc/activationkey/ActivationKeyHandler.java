@@ -24,6 +24,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.common.validator.ValidatorService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
@@ -40,7 +41,6 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
@@ -167,8 +167,7 @@ public class ActivationKeyHandler extends BaseHandler {
             throw new InvalidChannelException(e);
         }
 
-        // Validate the input parameters.  We will use the RhnValidationHelper
-        // for this which is also used to validate input if user entered it from the UI.
+        // Validate the input parameters with the same XSD validation the UI uses.
         Map<String, String> values = new HashMap<>();
         values.put("description", description);
         values.put("key", key);
@@ -176,7 +175,7 @@ public class ActivationKeyHandler extends BaseHandler {
             values.put("usageLimit", usageLimit.toString());
         }
 
-        ValidatorResult result = RhnValidationHelper.validate(this.getClass(),
+        ValidatorResult result = ValidatorService.getInstance().validateObject(this.getClass(),
                 values, new LinkedList<>(values.keySet()), VALIDATION_XSD);
 
         if (!result.isEmpty()) {

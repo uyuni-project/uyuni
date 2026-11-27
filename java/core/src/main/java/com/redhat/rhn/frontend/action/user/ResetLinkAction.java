@@ -60,7 +60,9 @@ public class ResetLinkAction extends RhnAction {
         // Does token exist, and is it valid?
         ResetPassword rp = ResetPasswordFactory.lookupByToken(token);
 
-        ActionErrors errs = ResetPasswordFactory.findErrors(rp);
+        ActionErrors errs = new ActionErrors();
+        ResetPasswordFactory.findErrorKey(rp)
+                .ifPresent(key -> errs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(key)));
         if (!errs.isEmpty()) {
             addErrors(request, errs);
             return mapping.findForward(INVALID);

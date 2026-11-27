@@ -14,49 +14,50 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.common.errors;
-
+package com.redhat.rhn.frontend.struts.errors;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ExceptionHandler;
+import org.apache.struts.config.ExceptionConfig;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * SatelliteExceptionHandler
+ * PermissionExceptionHandler
  */
-public class SatelliteExceptionHandler extends ExceptionHandler {
-    private Exception exception;
+public class NoSuchKickstartExceptionHandler extends ExceptionHandler {
 
     /**
+     * Custom Handler for HibernateLookupExceptions
      * {@inheritDoc}
      */
     @Override
-    protected void logException(Exception ex) {
-        Logger log = LogManager.getLogger(LookupExceptionHandler.class);
-        log.error(ex);
-        exception = ex;
-    }
+    public ActionForward execute(Exception ex, ExceptionConfig exConfig,
+                                 ActionMapping mapping, ActionForm form,
+                                 HttpServletRequest request, HttpServletResponse response)
+                                 throws ServletException {
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        request.setAttribute("error", ex);
 
-    @Override
-    protected void storeException(HttpServletRequest request, String property,
-                                  ActionMessage msg, ActionForward forward, String scope) {
+
         TraceBackEvent evt = new TraceBackEvent();
         RequestContext requestContext = new RequestContext(request);
         User usr = requestContext.getCurrentUser();
         evt.setUser(usr);
         evt.setRequest(request);
-        evt.setException(exception);
+        evt.setException(ex);
         MessageQueue.publish(evt);
-        request.setAttribute("error", exception);
+
+        return super.execute(ex, exConfig, mapping, form, request, response);
     }
+
 }

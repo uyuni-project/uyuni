@@ -85,10 +85,13 @@ public class ChannelOverviewAction extends RhnAction {
         // If submitting, validate
         if (isSubmitted(daForm)) {
             try {
-                helper.validate(daForm);
+                String label = daForm.getString("cofLabel");
+                String name = daForm.getString("cofName");
+                String description = daForm.getString("cofDescription");
+                helper.validate(label, name, description);
                 if (cc != null) {
                     String channelOldLabel = cc.getLabel();
-                    helper.update(cc, daForm);
+                    helper.update(cc, name, label, description);
                     ConfigurationManager.getInstance().save(cc,
                             ofNullable(channelOldLabel));
                     createInitSlsFile(cc, request, daForm);
