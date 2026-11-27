@@ -1,0 +1,4 @@
+description:
+  Test formula that is not supported on transactional systems.
+transactional:
+  mode: disabled

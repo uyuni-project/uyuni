@@ -1,0 +1,6 @@
+description:
+  Test formula with a transactional part and a live part.
+transactional:
+  mode: transactional_then_live
+  live_state_ids:
+    - mgr_then_live_formula_live

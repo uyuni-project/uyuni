@@ -1,0 +1,4 @@
+description:
+  Test formula with an invalid transactional mode.
+transactional:
+  mode: nonsense

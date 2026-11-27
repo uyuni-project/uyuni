@@ -1,0 +1,2 @@
+description:
+  Test formula that writes a file in the transactional phase.
