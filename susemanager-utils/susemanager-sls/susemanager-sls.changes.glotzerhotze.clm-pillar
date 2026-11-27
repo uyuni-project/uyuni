@@ -1,0 +1,3 @@
+- Add the Content Lifecycle Management project, environment,
+  version and build message of a minion's channels to the
+  'clm' pillar
