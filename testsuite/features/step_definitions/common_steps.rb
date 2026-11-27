@@ -347,7 +347,8 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
 end
 
 When(/^I push package "([^"]*)" into "([^"]*)" channel through "([^"]*)"$/) do |package_filepath, channel, minion|
-  command = "mgrpush -u admin -p admin --server=#{get_target('server').full_hostname} --nosig -c #{channel} #{package_filepath}"
+  # use https: without a scheme mgrpush calls http://<server>/APP, which the RKE2 ingress redirects to https (308) and mgrpush does not follow
+  command = "mgrpush -u admin -p admin --server=https://#{get_target('server').full_hostname} --nosig -c #{channel} #{package_filepath}"
   get_target(minion).run(command, timeout: 500)
   package_filename = File.basename(package_filepath)
   get_target('server').run_until_ok("find /var/spacewalk/packages -name \"#{package_filename}\" | grep -q \"#{package_filename}\"", timeout: 500)
