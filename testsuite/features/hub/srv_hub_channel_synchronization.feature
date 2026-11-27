@@ -119,7 +119,9 @@ Feature: Hub ISSv3 channel synchronization to peripheral
 
   Scenario: Sync the channel with the long repository URL from hub to peripheral1
     Given I am authorized for the "Admin" section
-    When I add channel "test-hub-long-url-channel" to the sync list of "peripheral1" for organization "Test Default Organization" via the hub API
+    # The peripheral refresh finds nothing to sync until the hub has generated the channel metadata
+    When I wait until the repository metadata of channel "test-hub-long-url-channel" is generated on the hub
+    And I add channel "test-hub-long-url-channel" to the sync list of "peripheral1" for organization "Test Default Organization" via the hub API
     And I trigger channel sync to "peripheral1" via the hub API
     And I wait until the channel "test-hub-long-url-channel" has been synced on peripheral1
     Then channel "test-hub-long-url-channel" should exist on "peripheral1" for the test organization admin

@@ -95,6 +95,8 @@ class ApiTest
   def call(name, *params)
     thread =
       Thread.new do
+        # thread.value re-raises to the caller, which may handle it (e.g. 'no such user'): no stderr trace
+        Thread.current.report_on_exception = false
         @semaphore.synchronize do
           begin
             manage_api_lock(name)
