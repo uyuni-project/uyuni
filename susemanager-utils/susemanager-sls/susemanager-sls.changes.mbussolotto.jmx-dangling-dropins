@@ -1,0 +1,2 @@
+- Remove obsolete JMX migration and cleanup steps from the
+  monitoring states (bsc#1253687)
