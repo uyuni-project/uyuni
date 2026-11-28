@@ -75,6 +75,7 @@ def _run(
         stdout=subprocess.PIPE,
         stderr=subprocess.DEVNULL,
         encoding="utf-8",
+        errors="replace",
         check=False,  # checked by caller
     )
 
