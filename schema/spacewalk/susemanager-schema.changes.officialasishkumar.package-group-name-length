@@ -1,0 +1,3 @@
+- Allow package groups longer than 100 characters, so that
+  repositories like Intel oneAPI can be synchronized
+  (gh#uyuni-project/uyuni#12849)

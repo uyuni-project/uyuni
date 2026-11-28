@@ -21,7 +21,7 @@ CREATE TABLE rhnPackageGroup
     id        NUMERIC NOT NULL
                   CONSTRAINT rhn_package_group_id_pk PRIMARY KEY
                   ,
-    name      VARCHAR(100) NOT NULL,
+    name      VARCHAR(512) NOT NULL,
     created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
     modified  TIMESTAMPTZ

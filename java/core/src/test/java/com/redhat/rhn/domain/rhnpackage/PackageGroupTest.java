@@ -17,8 +17,10 @@
  */
 package com.redhat.rhn.domain.rhnpackage;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -41,6 +43,25 @@ public class PackageGroupTest extends BaseTestCase {
         assertNotNull(p);
         //make sure we got committed to the db.
         assertNotNull(p.getId());
+    }
+
+    /**
+     * Some vendors use package groups longer than 100 characters: make sure
+     * lookup_package_group, used when importing packages, can store them.
+     */
+    @Test
+    public void testLookupPackageGroupWithLongName() {
+        String name = TestUtils.randomString(512);
+
+        Long id = HibernateFactory.getSession()
+                .createNativeQuery("SELECT lookup_package_group(:name) AS id", Long.class)
+                .addScalar("id", Long.class)
+                .setParameter("name", name)
+                .getSingleResult();
+
+        PackageGroup group = HibernateFactory.getSession().find(PackageGroup.class, id);
+        assertNotNull(group);
+        assertEquals(name, group.getName());
     }
 
     /**
