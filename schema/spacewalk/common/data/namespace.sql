@@ -1169,6 +1169,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.channel.software.update_repo_label', 'W', 'Updates repository label')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.channel.software.update_repo_signed_metadata', 'W', 'Updates whether a repository has signed metadata')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.channel.software.update_repo_ssl', 'W', 'Updates repository SSL certificates')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
