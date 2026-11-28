@@ -22,6 +22,8 @@ run_ansible_playbook:
     - playbook: {{ pillar["playbook_path"] }}
     - rundir: {{ pillar["rundir"] }}
     - flush_cache: {{ pillar["flush_cache"] }}
+    - check: {{ pillar.get("check", False) }}
+    - diff: {{ pillar.get("check", False) }}
 {%- if "extra_vars" in pillar %}
     - extra_vars: {{ pillar["extra_vars"] }}
 {% endif %}
