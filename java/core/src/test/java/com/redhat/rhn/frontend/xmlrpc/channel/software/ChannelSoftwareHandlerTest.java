@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -33,6 +34,7 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.ChannelTestUtility;
+import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactoryTest;
@@ -52,6 +54,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchContentSourceException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchUserException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
@@ -1084,6 +1087,49 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, csh.listPackagesWithoutChannel(regular, 0, -10).size());
         assertEquals(0, csh.listPackagesWithoutChannel(regular, -10, -10).size());
         assertEquals(0, csh.listPackagesWithoutChannel(regular, numOrphans, 200).size());
+    }
+
+    @Test
+    public void testUpdateRepoSignedMetadataByLabel() {
+        String label = "repo-" + TestUtils.randomString();
+        String url = "https://example.com/" + label;
+        ContentSource repo = handler.createRepo(admin, label, "yum", url);
+        assertFalse(repo.getMetadataSigned());
+
+        ContentSource updated = handler.updateRepoSignedMetadata(admin, label, true);
+        assertTrue(updated.getMetadataSigned());
+
+        TestUtils.flushAndClearSession();
+        ContentSource reloaded = ChannelFactory.lookupContentSource(repo.getId(), admin.getOrg());
+        assertTrue(reloaded.getMetadataSigned());
+        assertEquals(label, reloaded.getLabel());
+        assertEquals(url, reloaded.getSourceUrl());
+
+        handler.updateRepoSignedMetadata(admin, label, false);
+        TestUtils.flushAndClearSession();
+        assertFalse(ChannelFactory.lookupContentSource(repo.getId(), admin.getOrg()).getMetadataSigned());
+    }
+
+    @Test
+    public void testUpdateRepoSignedMetadataById() {
+        String label = "repo-" + TestUtils.randomString();
+        ContentSource repo = handler.createRepo(admin, label, "yum", "https://example.com/" + label,
+                "", "", "", true);
+        assertTrue(repo.getMetadataSigned());
+
+        ContentSource updated = handler.updateRepoSignedMetadata(admin, repo.getId().intValue(), false);
+        assertFalse(updated.getMetadataSigned());
+
+        TestUtils.flushAndClearSession();
+        assertFalse(ChannelFactory.lookupContentSource(repo.getId(), admin.getOrg()).getMetadataSigned());
+    }
+
+    @Test
+    public void testUpdateRepoSignedMetadataOfUnknownRepo() {
+        assertThrows(NoSuchContentSourceException.class,
+                () -> handler.updateRepoSignedMetadata(admin, "nonexistent-" + TestUtils.randomString(), true));
+        assertThrows(NoSuchContentSourceException.class,
+                () -> handler.updateRepoSignedMetadata(admin, -1, true));
     }
 
     private ChannelSoftwareHandler getMockedHandler() throws Exception {

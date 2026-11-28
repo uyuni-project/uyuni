@@ -2498,6 +2498,50 @@ public class ChannelSoftwareHandler extends BaseHandler {
          return repo;
      }
 
+    /**
+     * Updates whether a repository has signed metadata
+     * @param loggedInUser The current user
+     * @param id ID of the repo
+     * @param hasSignedMetadata whether the repository has signed metadata
+     * @return the updated repo
+     *
+     * @apidoc.doc Updates whether a repository has signed metadata
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "id", "repository ID")
+     * @apidoc.param #param_desc("boolean", "hasSignedMetadata", "true if the repository
+     *     has signed metadata, false otherwise")
+     * @apidoc.returntype $ContentSourceSerializer
+     */
+    public ContentSource updateRepoSignedMetadata(User loggedInUser, Integer id,
+            boolean hasSignedMetadata) {
+        ContentSource repo = lookupContentSourceById(id.longValue(), loggedInUser.getOrg());
+        repo.setMetadataSigned(hasSignedMetadata);
+        ChannelFactory.save(repo);
+        return repo;
+    }
+
+    /**
+     * Updates whether a repository has signed metadata
+     * @param loggedInUser The current user
+     * @param label of the repo
+     * @param hasSignedMetadata whether the repository has signed metadata
+     * @return the updated repo
+     *
+     * @apidoc.doc Updates whether a repository has signed metadata
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "repository label")
+     * @apidoc.param #param_desc("boolean", "hasSignedMetadata", "true if the repository
+     *     has signed metadata, false otherwise")
+     * @apidoc.returntype $ContentSourceSerializer
+     */
+    public ContentSource updateRepoSignedMetadata(User loggedInUser, String label,
+            boolean hasSignedMetadata) {
+        ContentSource repo = lookupContentSourceByLabel(label, loggedInUser.getOrg());
+        repo.setMetadataSigned(hasSignedMetadata);
+        ChannelFactory.save(repo);
+        return repo;
+    }
+
    /**
     * Updates a repository
     * @param loggedInUser The current user
