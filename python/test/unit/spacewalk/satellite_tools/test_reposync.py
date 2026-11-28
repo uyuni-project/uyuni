@@ -452,6 +452,32 @@ class RepoSyncTest(unittest.TestCase):
         )
 
     @patch("spacewalk.common.rhnConfig.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.reposync.log2", Mock())
+    @patch("spacewalk.satellite_tools.reposync.os", os)
+    @patch("spacewalk.satellite_tools.reposync.log", Mock())
+    @patch("spacewalk.satellite_tools.reposync.ThreadedDownloader")
+    @patch("spacewalk.satellite_tools.reposync.multiprocessing.Pool", MagicMock())
+    def test_import_packages_skips_duplicate_entries(self, downloader):
+        """
+        When the repository lists the same package twice
+        Then the RepoSync.import_packages function should download it only once
+        """
+        rs = _init_reposync(self.reposync)
+        _mock_rhnsql(self.reposync, [None, []])
+        downloader.return_value.failed_pkgs = []
+
+        packs = self._mock_packages_list(["dup.rpm", "dup.rpm"])
+        for pack in packs:
+            pack.checksum_type = "sha256"
+            pack.checksum = "abc123"
+        plugin = self._mock_repo_plugin(packs)
+
+        with patch("spacewalk.common.rhnConfig.CFG", self._mock_cfg()):
+            rs.import_packages(plugin, None, "unused-url-string", None)
+
+        self.assertEqual(downloader.return_value.add.call_count, 1)
+
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     @patch("spacewalk.satellite_tools.reposync.send_error_mail")
     def test_sync_raises_channel_timeout(self, send_error_mail):
         rs = self._create_mocked_reposync()
