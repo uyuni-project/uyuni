@@ -124,6 +124,20 @@ When('I enable remote access to the Cobbler API on the RKE2 server') do
   get_target('server').run("mgrctl exec -- sh -c #{Shellwords.escape(script)}", runs_in_container: false)
 end
 
+# The podman server gets this from sumaform (server_containerized/testsuite.sls); on RKE2 the server is
+# installed by the testsuite, so the Salt event logger read by srv_debug.feature is set up here, after the install.
+When('I start logging the Salt events on the RKE2 server') do
+  server = get_target('server')
+  source = "#{File.dirname(__FILE__)}/../upload_files/salt-events.service"
+  success = file_inject(server, source, '/usr/lib/systemd/system/salt-events.service')
+  raise ScriptError, 'File injection failed' unless success
+
+  server.run('systemctl daemon-reload')
+  server.run('systemctl start salt-events.service')
+  server.run_until_ok('systemctl is-active salt-events.service')
+  server.run_until_ok('test -f /var/log/rhn/salt-event.log')
+end
+
 Then('the setup marker file should exist on "server"') do
   server_pod = get_pod_name('server', 'server')
   cmd = "kubectl exec -n uyuni #{server_pod} -- test -f /var/spacewalk/.MANAGER_SETUP_COMPLETE && echo 'EXISTS'"
