@@ -393,6 +393,7 @@ INSERT INTO access.accessGroupNamespace
         'api.channel.software.sync_repo',
         'api.channel.software.update_repo',
         'api.channel.software.update_repo_label',
+        'api.channel.software.update_repo_signed_metadata',
         'api.channel.software.update_repo_ssl',
         'api.channel.software.update_repo_url'
     )

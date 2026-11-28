@@ -6533,6 +6533,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.channel.software.update_repo_signed_metadata' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/channel/software/updateRepoSignedMetadata' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.channel.software.update_repo_ssl' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/channel/software/updateRepoSsl' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
