@@ -296,6 +296,7 @@ public class SaltUtils {
      */
     private static void applyDeltaPackageInfo(
             Map<String, Change<Xor<String, List<Pkg.Info>>>> changes, Server server) {
+        PackageType type = server.getPackageType();
         // normalise salts type madness
         Map<String, Change<List<Pkg.Info>>> collect = changes.entrySet().stream()
                 .collect(
@@ -317,10 +318,11 @@ public class SaltUtils {
             // Sometimes Salt lists the same NEVRA twice, only with different installation timestamps.
             // Use a merge function is to ignore these duplicate entries.
             Map<String, Info> newPackages = change.getNewValue().stream()
-                    .collect(Collectors.toMap(info -> packageToKey(name, info), Function.identity(), (a, b) -> a));
+                    .collect(Collectors.toMap(info -> packageToKey(name, info, type), Function.identity(),
+                            (a, b) -> a));
 
             change.getOldValue().stream().forEach(info -> {
-                String key = packageToKey(name, info);
+                String key = packageToKey(name, info, type);
                 if (!newPackages.containsKey(key)) {
                     Optional.ofNullable(currentPackages.get(key))
                     .ifPresent(ip -> server.getPackages().remove(ip));
@@ -328,12 +330,13 @@ public class SaltUtils {
             });
 
             List<InstalledPackage> packagesToAdd = newPackages.values().stream()
-                    .map(info -> Optional.ofNullable(currentPackages.get(packageToKey(name, info))))
+                    .map(info -> Optional.ofNullable(currentPackages.get(packageToKey(name, info, type))))
                     .filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
 
             Map<String, Tuple2<String, Info>> packagesToCreate = newPackages.values().stream()
-                    .filter(info -> !currentPackages.containsKey(packageToKey(name, info)))
-                    .collect(Collectors.toMap(info -> packageToKey(name, info), info -> new Tuple2<>(name, info)));
+                    .filter(info -> !currentPackages.containsKey(packageToKey(name, info, type)))
+                    .collect(Collectors.toMap(info -> packageToKey(name, info, type),
+                            info -> new Tuple2<>(name, info)));
 
             packagesToAdd.addAll(createPackagesFromSalt(packagesToCreate, server));
             server.getPackages().addAll(packagesToAdd);
@@ -758,9 +761,10 @@ public class SaltUtils {
      *
      * @param name the package name
      * @param info the package info
+     * @param type the package type of the system
      * @return the key
      */
-    public static String packageToKey(String name, Pkg.Info info) {
+    public static String packageToKey(String name, Pkg.Info info, PackageType type) {
 
         StringBuilder sb = new StringBuilder();
 
@@ -770,7 +774,8 @@ public class SaltUtils {
                 new PackageEvr(
                         info.getEpoch().orElse(null),
                         info.getVersion().orElseThrow(),
-                        info.getRelease().orElse("X"),
+                        // A missing release is stored as "0" for RPM (see parsePackageEvr), "X" for Debian
+                        info.getRelease().orElse(type == PackageType.RPM ? "0" : "X"),
                         PackageType.RPM
                 ).toUniversalEvrString()
         );
@@ -785,10 +790,11 @@ public class SaltUtils {
      * returned by Salt)
      *
      * @param entry the package
+     * @param type the package type of the system
      * @return the key
      */
-    public static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
-        return packageToKey(entry.getKey(), entry.getValue());
+    public static String packageToKey(Map.Entry<String, Pkg.Info> entry, PackageType type) {
+        return packageToKey(entry.getKey(), entry.getValue(), type);
     }
 
     /**
