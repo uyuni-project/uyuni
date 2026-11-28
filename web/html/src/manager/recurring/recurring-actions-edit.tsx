@@ -8,6 +8,7 @@ import { Component } from "react";
 
 import _isEqual from "lodash/isEqual";
 
+import { RecurringClmPicker } from "manager/recurring/recurring-clm-picker";
 import { RecurringPlaybookPicker } from "manager/recurring/recurring-playbook-picker";
 
 import { AsyncButton, Button } from "components/buttons";
@@ -121,6 +122,12 @@ class RecurringActionsEdit extends Component<Props, State> {
     if (actionType === "Ansible Playbook") {
       actionType = "Playbook";
     }
+    if (actionType === "CLM Build") {
+      return "CLM_BUILD";
+    }
+    if (actionType === "CLM Promote") {
+      return "CLM_PROMOTE";
+    }
     return actionType.replace(/\s+/g, "").toUpperCase();
   };
 
@@ -140,10 +147,22 @@ class RecurringActionsEdit extends Component<Props, State> {
         targetType: window.entityType,
         targetId: window.minions?.[0].id,
       });
+    } else if (window.entityType === "CLM") {
+      Object.assign(this.state, {
+        targetType: "NO_ENTITY",
+        targetId: window.orgId || 0,
+        actionTypeDescription: "CLM Build",
+      });
     }
   };
 
   getTypes = () => {
+    if (window.entityType === "CLM") {
+      return [
+        { label: t("CLM Build"), value: "CLM Build" },
+        { label: t("CLM Promote"), value: "CLM Promote" },
+      ];
+    }
     let types = ["Highstate", "Custom state"];
     if (window.entityType === "MINION") {
       types.push("Scap Policy");
@@ -235,6 +254,16 @@ class RecurringActionsEdit extends Component<Props, State> {
     return Promise.resolve(policies);
   };
 
+  onSelectClm = (projectLabel: string, environmentLabel?: string) => {
+    this.setState((prevState) => ({
+      details: {
+        ...prevState.details,
+        projectLabel,
+        environmentLabel,
+      },
+    }));
+  };
+
   toggleTestState = () => {
     const { details } = this.state;
     details.test = !this.state.details.test;
@@ -258,14 +287,22 @@ class RecurringActionsEdit extends Component<Props, State> {
     if (!this.state.details.type && this.isEdit()) {
       return false;
     }
+    const isClm =
+      window.entityType === "CLM" ||
+      this.state.actionTypeDescription === "CLM Build" ||
+      this.state.actionTypeDescription === "CLM Promote";
+    const panelIcon = isClm ? "spacewalk-icon-lifecycle" : "spacewalk-icon-salt";
+
     const buttons = [
       <div className="btn-group pull-right" key="buttons-right">
-        <Toggler
-          text={t("Test mode")}
-          value={this.state.details.test}
-          className="btn"
-          handler={this.toggleTestState.bind(this)}
-        />
+        {!isClm && (
+          <Toggler
+            text={t("Test mode")}
+            value={this.state.details.test}
+            className="btn"
+            handler={this.toggleTestState.bind(this)}
+          />
+        )}
         {this.state.actionTypeDescription === "Custom state" && this.hasTransactionalSystems() && (
           <Toggler
             text={t("Use transactional update")}
@@ -296,7 +333,7 @@ class RecurringActionsEdit extends Component<Props, State> {
     return (
       <InnerPanel
         title={this.isEdit() ? this.state.scheduleName : t("Schedule Recurring Action")}
-        icon="spacewalk-icon-salt"
+        icon={panelIcon}
         buttonsLeft={buttonsLeft}
         buttons={buttons}
       >
@@ -357,6 +394,21 @@ class RecurringActionsEdit extends Component<Props, State> {
             variables={this.state.details.extraVars}
             onSelectPlaybook={this.onSelectPlaybook}
           />
+        )}
+        {(this.state.actionTypeDescription === "CLM Build" || this.state.actionTypeDescription === "CLM Promote") && (
+          <span>
+            <h3>
+              {t("Content Lifecycle Configuration")}
+              &nbsp;
+            </h3>
+            <RecurringClmPicker
+              actionType={this.state.actionTypeDescription === "CLM Promote" ? "CLM_PROMOTE" : "CLM_BUILD"}
+              projectLabel={this.state.details.projectLabel}
+              environmentLabel={this.state.details.environmentLabel}
+              disabled={this.isEdit()}
+              onSelectClm={this.onSelectClm}
+            />
+          </span>
         )}
       </InnerPanel>
     );

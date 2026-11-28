@@ -20,6 +20,8 @@ package com.redhat.rhn.domain.recurringactions;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.state.InternalState;
@@ -108,6 +110,54 @@ public class RecurringActionFactory extends HibernateFactory {
     }
 
     /**
+     * List all recurring actions of target type NO_ENTITY for the given Org.
+     *
+     * @param org the Org
+     * @return list of recurring actions
+     */
+    public static List<RecurringAction> listNoEntityRecurringActions(Org org) {
+        return getSession().createQuery("""
+                        SELECT action FROM NoEntityRecurringAction action
+                         WHERE action.org = :org
+                         ORDER BY action.id DESC
+                        """, RecurringAction.class)
+                .setParameter("org", org)
+                .list();
+    }
+
+    /**
+     * List all recurring actions associated with a Content Project
+     *
+     * @param project the Content Project
+     * @return list of recurring actions
+     */
+    public static List<RecurringAction> listActionsForProject(ContentProject project) {
+        return getSession().createQuery("""
+                        SELECT clm.recurringAction FROM RecurringContentLifecycleType clm
+                         WHERE clm.project = :project
+                         ORDER BY clm.recurringAction.id DESC
+                        """, RecurringAction.class)
+                .setParameter("project", project)
+                .list();
+    }
+
+    /**
+     * List all recurring actions associated with a Content Environment
+     *
+     * @param environment the Content Environment
+     * @return list of recurring actions
+     */
+    public static List<RecurringAction> listActionsForEnvironment(ContentEnvironment environment) {
+        return getSession().createQuery("""
+                        SELECT clm.recurringAction FROM RecurringContentLifecycleType clm
+                         WHERE clm.environment = :env
+                         ORDER BY clm.recurringAction.id DESC
+                        """, RecurringAction.class)
+                .setParameter("env", environment)
+                .list();
+    }
+
+    /**
      * List all {@link RecurringAction}s that are associated with entities
      * belonging to the {@link Org} of given {@link User}.
      *
@@ -125,7 +175,7 @@ public class RecurringActionFactory extends HibernateFactory {
             "ra.name as schedule_name, " +
             "ra.active as active, " +
             "case" +
-            "  when ra.target_type = 'organization' then org.id " +
+            "  when ra.target_type in ('organization', 'no-entity') then org.id " +
             "  when ra.target_type = 'group' then sg.id " +
             "  when ra.target_type = 'minion' then minion.id " +
             "end as target_id, " +
@@ -133,20 +183,30 @@ public class RecurringActionFactory extends HibernateFactory {
             "  when ra.target_type = 'organization' then org.name " +
             "  when ra.target_type = 'group' then sg.name " +
             "  when ra.target_type = 'minion' then minion.name " +
+            "  when ra.target_type = 'no-entity' and rca_env.name is not null then " +
+            "    rca_cp.name || ' (' || rca_env.name || ')' " +
+            "  when ra.target_type = 'no-entity' and rca_cp.name is not null then rca_cp.name " +
+            "  when ra.target_type = 'no-entity' then '-' " +
             "end as target_name, " +
+            "case" +
+            "  when ra.target_type = 'no-entity' then rca_cp.label " +
+            "end as project_label, " +
             "case" +
             "  when ra.target_type = 'organization' then 'ORG' " +
             "  else UPPER(ra.target_type) " +
             "end as target_type, " +
             "case" +
-            "  when ra.target_type = 'organization' then ra.org_id " +
+            "  when ra.target_type in ('organization', 'no-entity') then ra.org_id " +
             "  when ra.target_type = 'group' then sg.org_id " +
             "  when ra.target_type = 'minion' then minion.org_id " +
             "end as target_org " +
             "from suseRecurringAction ra " +
             "left join rhnservergroup sg on sg.id = ra.group_id " +
             "left join rhnserver minion on minion.id = ra.minion_id " +
-            "left join web_customer org on org.id = ra.org_id" +
+            "left join web_customer org on org.id = ra.org_id " +
+            "left join suseRecurringContentAction rca on rca.rec_id = ra.id " +
+            "left join suseContentProject rca_cp on rca_cp.id = rca.project_id " +
+            "left join suseContentEnvironment rca_env on rca_env.id = rca.env_id" +
             ") ra ";
         List<Org> orgs = user.hasRole(RoleFactory.SAT_ADMIN) ? OrgFactory.lookupAllOrgs() : List.of(user.getOrg());
         Map<String, Object> params = Map.of("orgsIds", orgs.stream().map(Org::getId).collect(Collectors.toList()));

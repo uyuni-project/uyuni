@@ -20,6 +20,7 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentLifecycleType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
@@ -49,6 +50,12 @@ import java.util.stream.Collectors;
  *   #prop("boolean", "flush_cache")
  *   #prop("string", "inventory_path")
  *   #prop("string", "playbook_path")
+ *   #prop("int", "project_id")
+ *   #prop("string", "project_label")
+ *   #prop("string", "project_name")
+ *   #prop("int", "environment_id")
+ *   #prop("string", "environment_label")
+ *   #prop("string", "environment_name")
  *   #prop("boolean", "active")
  * #struct_end()
  */
@@ -89,6 +96,18 @@ public class RecurringActionSerializer extends ApiResponseSerializer<RecurringAc
             builder.add("inventory_path", ((RecurringPlaybook) src.getRecurringActionType()).getInventoryPath());
             builder.add("playbook_path", ((RecurringPlaybook) src.getRecurringActionType()).getPlaybookPath());
             builder.add("test", ((RecurringPlaybook) src.getRecurringActionType()).isTestMode());
+        }
+        else if (src.getRecurringActionType() instanceof RecurringContentLifecycleType clmType) {
+            if (clmType.getProject() != null) {
+                builder.add("project_id", clmType.getProject().getId());
+                builder.add("project_label", clmType.getProject().getLabel());
+                builder.add("project_name", clmType.getProject().getName());
+            }
+            if (clmType.getEnvironment() != null) {
+                builder.add("environment_id", clmType.getEnvironment().getId());
+                builder.add("environment_label", clmType.getEnvironment().getLabel());
+                builder.add("environment_name", clmType.getEnvironment().getName());
+            }
         }
 
         return builder.build();

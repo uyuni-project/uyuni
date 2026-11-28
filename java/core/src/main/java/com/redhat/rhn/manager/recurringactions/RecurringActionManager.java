@@ -29,10 +29,12 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
+import com.redhat.rhn.domain.recurringactions.NoEntityRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentLifecycleType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
@@ -114,6 +116,8 @@ public class RecurringActionManager extends BaseManager {
                 return createGroupRecurringAction(actionType, entityId, user);
             case ORG:
                 return createOrgRecurringAction(actionType, entityId, user);
+            case NO_ENTITY:
+                return createNoEntityRecurringAction(actionType, entityId, user);
             default:
                 throw new UnsupportedOperationException("type not supported");
         }
@@ -138,6 +142,10 @@ public class RecurringActionManager extends BaseManager {
                 return new RecurringPlaybook(false);
             case SCAPPOLICY:
                 return new RecurringScapPolicy(false);
+            case CLM_BUILD:
+                return new RecurringContentLifecycleType(RecurringActionType.ActionType.CLM_BUILD);
+            case CLM_PROMOTE:
+                return new RecurringContentLifecycleType(RecurringActionType.ActionType.CLM_PROMOTE);
             default:
                 throw new UnsupportedOperationException("type not supported");
         }
@@ -152,6 +160,10 @@ public class RecurringActionManager extends BaseManager {
      */
     private static MinionRecurringAction createMinionRecurringAction(RecurringActionType.ActionType actionType,
                                                                      long minionId, User user) {
+        if (actionType.equals(RecurringActionType.ActionType.CLM_BUILD) ||
+                actionType.equals(RecurringActionType.ActionType.CLM_PROMOTE)) {
+            throw new UnsupportedOperationException("CLM action cannot be of entity type: minion");
+        }
         MinionServer minion = MinionServerFactory.lookupById(minionId)
                 .orElseThrow(() -> new EntityNotExistsException(MinionServer.class, minionId));
         if (actionType.equals(RecurringActionType.ActionType.PLAYBOOK) &&
@@ -173,6 +185,10 @@ public class RecurringActionManager extends BaseManager {
         if (actionType.equals(RecurringActionType.ActionType.PLAYBOOK)) {
             throw new UnsupportedOperationException("Playbook action cannot be of entity type: group");
         }
+        if (actionType.equals(RecurringActionType.ActionType.CLM_BUILD) ||
+                actionType.equals(RecurringActionType.ActionType.CLM_PROMOTE)) {
+            throw new UnsupportedOperationException("CLM action cannot be of entity type: group");
+        }
         ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
         if (group == null) {
             throw new EntityNotExistsException(ServerGroup.class, groupId);
@@ -192,11 +208,38 @@ public class RecurringActionManager extends BaseManager {
         if (actionType.equals(RecurringActionType.ActionType.PLAYBOOK)) {
             throw new UnsupportedOperationException("Playbook action cannot be of entity type: org");
         }
+        if (actionType.equals(RecurringActionType.ActionType.CLM_BUILD) ||
+                actionType.equals(RecurringActionType.ActionType.CLM_PROMOTE)) {
+            throw new UnsupportedOperationException("CLM action cannot be of entity type: org");
+        }
         Org org = OrgFactory.lookupById(orgId);
         if (org == null) {
             throw new EntityNotExistsException(Org.class, orgId);
         }
         return new OrgRecurringAction(
+                createRecurringActionType(actionType),
+                true, org, user);
+    }
+
+    /**
+     * Create a minimal no-entity recurring action (e.g. for CLM)
+     *
+     * @param actionType the action type
+     * @param orgId id of the organization
+     * @param user the user
+     * @return the newly created NoEntityRecurringAction
+     */
+    private static NoEntityRecurringAction createNoEntityRecurringAction(
+            RecurringActionType.ActionType actionType, long orgId, User user) {
+        if (!actionType.equals(RecurringActionType.ActionType.CLM_BUILD) &&
+                !actionType.equals(RecurringActionType.ActionType.CLM_PROMOTE)) {
+            throw new UnsupportedOperationException("No-entity action type must be CLM_BUILD or CLM_PROMOTE");
+        }
+        Org org = OrgFactory.lookupById(orgId);
+        if (org == null) {
+            throw new EntityNotExistsException(Org.class, orgId);
+        }
+        return new NoEntityRecurringAction(
                 createRecurringActionType(actionType),
                 true, org, user);
     }
@@ -249,6 +292,19 @@ public class RecurringActionManager extends BaseManager {
             throw new PermissionException("Org not accessible to user");
         }
         return RecurringActionFactory.listOrgRecurringActions(orgId);
+    }
+
+    /**
+     * List all no-entity recurring actions (e.g. CLM) for the given user's org.
+     *
+     * @param user the user
+     * @return list of recurring actions
+     */
+    public static List<RecurringAction> listNoEntityRecurringActions(User user) {
+        if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
+            throw new PermissionException("CLM recurring actions require org admin role");
+        }
+        return RecurringActionFactory.listNoEntityRecurringActions(user.getOrg());
     }
 
     /**

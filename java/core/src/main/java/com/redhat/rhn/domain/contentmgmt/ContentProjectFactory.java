@@ -312,13 +312,12 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
-     * Remove an environment from the path. Take care that chain stays intact.
-     * Also remove all channels belonging to this environment.
+     * Validate that an environment can be safely removed.
      *
-     * @param toRemove environment to remove.
+     * @param toRemove environment to validate
+     * @throws ContentManagementException if the environment cannot be removed
      */
-    public static void removeEnvironment(ContentEnvironment toRemove) {
-
+    public static void validateEnvironmentRemovable(ContentEnvironment toRemove) {
         // Check for custom child channels that were not built by the environment to be removed
         List<Channel> channels = toRemove.getTargets().stream()
                 .map(EnvironmentTarget::asSoftwareTarget).flatMap(Optional::stream)
@@ -330,10 +329,20 @@ public class ContentProjectFactory extends HibernateFactory {
                     .filter(b -> !childChannels.contains(b))
                     .map(Channel::getName).collect(Collectors.toList());
             if (!rogueChannels.isEmpty()) {
-                throw  new ContentManagementException(LocalizationService.getInstance().getMessage(
+                throw new ContentManagementException(LocalizationService.getInstance().getMessage(
                         "contentmanagement.non_environment_channels_found", rogueChannels));
             }
         });
+    }
+
+    /**
+     * Remove an environment from the path. Take care that chain stays intact.
+     * Also remove all channels belonging to this environment.
+     *
+     * @param toRemove environment to remove.
+     */
+    public static void removeEnvironment(ContentEnvironment toRemove) {
+        validateEnvironmentRemovable(toRemove);
 
         // let's purge all the targets in the environment firstly
         new ArrayList<>(toRemove.getTargets()).stream()

@@ -1,0 +1,33 @@
+--
+-- Copyright (c) 2026 SUSE LLC
+--
+-- This software is licensed to you under the GNU General Public License,
+-- version 2 (GPLv2). There is NO WARRANTY for this software, express or
+-- implied, including the implied warranties of MERCHANTABILITY or FITNESS
+-- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+-- along with this software; if not, see
+-- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+--
+CREATE TABLE IF NOT EXISTS suseRecurringContentAction
+(
+  rec_id            NUMERIC NOT NULL
+                    CONSTRAINT suse_recurring_ct_act_id_pk PRIMARY KEY
+                    CONSTRAINT suse_rec_ct_act_rec_fk
+                      REFERENCES suseRecurringAction(id)
+                      ON DELETE CASCADE,
+  project_id        NUMERIC NOT NULL
+                    CONSTRAINT suse_rec_ct_act_prj_fk
+                      REFERENCES suseContentProject(id)
+                      ON DELETE CASCADE,
+  env_id            NUMERIC
+                    CONSTRAINT suse_rec_ct_act_env_fk
+                      REFERENCES suseContentEnvironment(id)
+                      ON DELETE CASCADE
+);
+
+DROP INDEX IF EXISTS suse_rec_action_name_org_uq;
+CREATE UNIQUE INDEX suse_rec_action_name_org_uq
+    ON suseRecurringAction(name, org_id, target_type)
+    WHERE minion_id IS NULL AND group_id IS NULL AND org_id IS NOT NULL;

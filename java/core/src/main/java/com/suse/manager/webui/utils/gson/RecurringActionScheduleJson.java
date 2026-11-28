@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringContentLifecycleType;
 import com.redhat.rhn.frontend.dto.BaseTupleDto;
 
 import java.util.List;
@@ -51,6 +52,11 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
         setTargetId(recurringActionIn.getEntityId());
         setTargetName(getEntityName(recurringActionIn));
         setActionType(recurringActionIn.getActionType());
+        if (recurringActionIn.getRecurringActionType() instanceof RecurringContentLifecycleType clmType) {
+            if (clmType.getProject() != null) {
+                setProjectLabel(clmType.getProject().getLabel());
+            }
+        }
     }
 
     /**
@@ -69,12 +75,16 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
         setTargetType(getTupleValue(tuple, "target_type", String.class).orElse("-"));
         setCron(getTupleValue(tuple, "cron", String.class).orElse("-"));
         setActionType(getTupleValue(tuple, "action_type", String.class).orElse("-"));
+        setProjectLabel(getTupleValue(tuple, "project_label", String.class).orElse(null));
     }
 
     private Long recurringActionId;
 
     /** Target ID */
     private Long targetId;
+
+    /** Project label if CLM recurring action */
+    private String projectLabel;
 
     /** Ids of the entities members */
     private List<Long> memberIds;
@@ -138,6 +148,20 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
      */
     public Long getTargetId() {
         return targetId;
+    }
+
+    /**
+     * @return the project label
+     */
+    public String getProjectLabel() {
+        return projectLabel;
+    }
+
+    /**
+     * @param projectLabelIn the project label
+     */
+    public void setProjectLabel(String projectLabelIn) {
+        this.projectLabel = projectLabelIn;
     }
 
     /**
@@ -306,6 +330,17 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
                 return ((GroupRecurringAction) action).getGroup().getName();
             case ORG:
                 return ((OrgRecurringAction) action).getOrg().getName();
+            case NO_ENTITY:
+                if (action.getRecurringActionType() instanceof RecurringContentLifecycleType clmType) {
+                    if (clmType.getProject() != null && clmType.getEnvironment() != null) {
+                        return clmType.getProject().getName() + " (" +
+                                clmType.getEnvironment().getName() + ")";
+                    }
+                    if (clmType.getProject() != null) {
+                        return clmType.getProject().getName();
+                    }
+                }
+                return "-";
             default:
                 throw new IllegalStateException("Unsupported type " + action.getTargetType());
         }

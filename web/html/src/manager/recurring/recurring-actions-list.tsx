@@ -120,8 +120,14 @@ class RecurringActionsList extends Component<Props, State> {
 
   render() {
     const { isFilteredList } = this.props;
+    const isClm = window.entityType === "CLM";
     const disableCreate = !isFilteredList;
-    const emptyListText = `No schedules created.${disableCreate ? "" : " Use Create to add a schedule."}`;
+    const emptyListText = isClm
+      ? "No recurring actions configured for Content Lifecycle."
+      : `No schedules created.${disableCreate ? "" : " Use Create to add a schedule."}`;
+    const pageTitle = isClm ? t("Content Lifecycle Recurring Actions") : t(" Recurring Actions ");
+    const pageIcon = isClm ? "spacewalk-icon-lifecycle" : "spacewalk-icon-salt";
+    const pageHelpUrl = isClm ? "reference/clm/clm-projects.html" : "reference/schedule/recurring-actions.html";
 
     const buttons = [
       <div className="btn-group pull-right" key="buttons-right">
@@ -138,12 +144,12 @@ class RecurringActionsList extends Component<Props, State> {
     return (
       <>
         <h1>
-          <IconTag type="spacewalk-icon-salt" />
-          {t(" Recurring Actions ")}
-          <HelpLink url="reference/schedule/recurring-actions.html" />
+          <IconTag type={pageIcon} />
+          {" " + pageTitle + " "}
+          <HelpLink url={pageHelpUrl} />
         </h1>
         <p>{t("The following recurring actions have been created.")}</p>
-        {disableCreate ? (
+        {!isClm && disableCreate ? (
           <p>
             {t(
               "To create new recurring actions head to the system, group or organization you want to create the action for."
@@ -203,7 +209,15 @@ class RecurringActionsList extends Component<Props, State> {
             columnKey={isFilteredList ? "targetName" : "target_name"}
             comparator={Utils.sortByText}
             header={t("Target Name")}
-            cell={(row) => targetNameLink(row.targetName, row.targetType, row.targetId, row.targetAccessible)}
+            cell={(row) =>
+              targetNameLink(
+                row.targetName,
+                row.targetType,
+                row.targetId,
+                row.targetAccessible,
+                row.projectLabel ?? row.project_label
+              )
+            }
           />
           <Column
             columnClass="text-center"
