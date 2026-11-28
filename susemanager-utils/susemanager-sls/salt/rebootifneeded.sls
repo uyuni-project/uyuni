@@ -26,4 +26,8 @@ mgr_reboot_if_needed:
 {%- else %}
     - onlyif: '/usr/bin/zypper ps -s; [ $? -eq 102 ]'
 {%- endif %}
+{%- else %}
+mgr_reboot_if_needed:
+  test.nop:
+    - name: Reboot is disabled by configuration
 {%- endif %}

@@ -25,12 +25,14 @@ import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressStatus;
 import com.redhat.rhn.manager.action.ActionManager;
 
+import com.suse.manager.maintenance.NotInMaintenanceModeException;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -40,13 +42,18 @@ import com.google.gson.JsonParser;
 
 import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -818,6 +825,134 @@ public class TransactionalActionManagerTest {
             assertEquals(states, statesForMinion(calls, transactionalMinion));
             assertNull(transactionalCall.getPayload().get("module_executors"));
         }
+    }
+
+    @Test
+    public void testUptodateDoesNotDeferRebootUntilAfterReboot() {
+        MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
+        for (String rebootState : List.of("reboot", "rebootifneeded")) {
+            for (boolean useTransactionalUpdate : List.of(false, true)) {
+                List<String> states = List.of("uptodate", rebootState);
+                Map<LocalCall<?>, List<MinionSummary>> calls = applyStatesCalls(
+                        states, useTransactionalUpdate, Optional.empty(), false,
+                        List.of(regularMinion, transactionalMinion));
+
+                assertEquals(states, statesForMinion(calls, regularMinion));
+                assertEquals(List.of("uptodate"), statesForMinion(calls, transactionalMinion));
+                assertFalse(TransactionalActionManager.hasPostTransactionalState(
+                        applyStatesAction(states, useTransactionalUpdate)));
+            }
+        }
+    }
+
+    @Test
+    public void testStandaloneRebootStaysLiveEvenWithTransactionalFlag() {
+        MinionSummary minion = transactionalMinion(2L, "transactional");
+        for (String rebootState : List.of("reboot", "rebootifneeded")) {
+            Map<LocalCall<?>, List<MinionSummary>> calls = applyStatesCalls(
+                    List.of(rebootState), true, Optional.empty(), false, List.of(minion));
+            LocalCall<?> call = callForMinion(calls, minion);
+            assertEquals("state.apply", call.getPayload().get("fun"));
+            assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
+            assertEquals(List.of(rebootState), statesForMinion(calls, minion));
+        }
+    }
+
+    @Test
+    public void testRequestedRebootIsScheduledWithoutWaitingForSnapshotActivation() {
+        for (String rebootState : List.of("reboot", "rebootifneeded")) {
+            ApplyStatesAction action = applyStatesAction(List.of("uptodate", rebootState), false);
+            action.getDetails().setPillarsMap(Optional.of(Map.of("mgr_reboot_if_needed", false)));
+            List<Long> rebootTargets = new ArrayList<>();
+
+            assertTrue(TransactionalActionManager.scheduleRequestedReboot(action, 2L, (requestedAction, serverId) -> {
+                assertSame(action, requestedAction);
+                assertEquals(Map.of("mgr_reboot_if_needed", false),
+                        requestedAction.getDetails().getPillarsMap().orElseThrow());
+                rebootTargets.add(serverId);
+                return true;
+            }));
+
+            assertEquals(List.of(2L), rebootTargets);
+        }
+    }
+
+    @Test
+    public void testRequestedRebootIsNotScheduledForPreviewOrWithoutRebootSelection() {
+        ApplyStatesAction preview = applyStatesAction(List.of("uptodate", "rebootifneeded"), false);
+        preview.getDetails().setTest(true);
+        for (Action action : List.of(preview, applyStatesAction(List.of("uptodate"), false), new Action())) {
+            assertTrue(TransactionalActionManager.scheduleRequestedReboot(action, 2L, (ignored, serverId) -> {
+                throw new AssertionError("A reboot must not be scheduled");
+            }));
+        }
+    }
+
+    @Test
+    public void testRequestedRebootSchedulingFailureIsReported() {
+        ApplyStatesAction action = applyStatesAction(List.of("uptodate", "rebootifneeded"), false);
+        assertFalse(TransactionalActionManager.scheduleRequestedReboot(action, 2L, (ignored, serverId) -> false));
+    }
+
+    @Test
+    public void testRequestedRebootMaintenanceWindowRejectionIsReported() {
+        ApplyStatesAction action = applyStatesAction(List.of("uptodate", "rebootifneeded"), false);
+        AtomicInteger attempts = new AtomicInteger();
+
+        assertFalse(TransactionalActionManager.scheduleRequestedReboot(action, 2L, (ignored, serverId) -> {
+            attempts.incrementAndGet();
+            throw new NotInMaintenanceModeException(Set.of(), new Date());
+        }));
+
+        assertEquals(1, attempts.get());
+    }
+
+    @Test
+    public void testRequestedRebootDoesNotReplaceOtherAfterRebootWork() {
+        ApplyStatesAction action = applyStatesAction(List.of("uptodate", "custom", "rebootifneeded"), false);
+        MinionSummary minion = transactionalMinion(2L, "transactional");
+        Map<LocalCall<?>, List<MinionSummary>> calls = TransactionalActionManager.getAfterRebootSaltCalls(
+                action, List.of(minion), ignored -> List.of()).orElseThrow();
+        assertEquals(List.of("custom"), statesForMinion(calls, minion));
+    }
+
+    @Test
+    public void testRebootFinalizationCompletesLegacyActionWaitingForRebootState() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(true, false);
+        Mockery context = new Mockery();
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        ServerAction serverAction = context.mock(ServerAction.class);
+        context.checking(new Expectations() {{
+            oneOf(serverAction).isStatusPickedUp();
+            will(returnValue(true));
+            oneOf(serverAction).setStatusCompleted();
+            oneOf(serverAction).setCompletionTime(with(any(Date.class)));
+        }});
+
+        TransactionalActionManager.recordTransactionalApplyFinalized(history, serverAction);
+
+        context.assertIsSatisfied();
+        assertEquals(ProgressStatus.COMPLETED, history.getRebootStatus());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    public void testRebootFinalizationPreservesActionsNotInProgress() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        Mockery context = new Mockery();
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        ServerAction serverAction = context.mock(ServerAction.class);
+        context.checking(new Expectations() {{
+            oneOf(serverAction).isStatusPickedUp();
+            will(returnValue(false));
+        }});
+
+        TransactionalActionManager.recordTransactionalApplyFinalized(history, serverAction);
+
+        context.assertIsSatisfied();
     }
 
     @Test
